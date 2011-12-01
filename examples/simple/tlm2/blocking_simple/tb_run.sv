@@ -19,6 +19,7 @@
 //----------------------------------------------------------------------
 
 import uvm_pkg::*;
+`include "uvm_macros.svh"
 
 `include "apb_rw.sv"
 `include "initiator.sv"

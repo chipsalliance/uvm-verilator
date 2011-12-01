@@ -40,9 +40,8 @@ TEST = /usr/bin/test
 N_ERRS = 0
 N_FATALS = 0
 
-IUS =	irun -access rw -uvmhome $(UVM_HOME) \
-	-uvmnoautocompile $(UVM_HOME)/src/uvm.sv $(UVM_HOME)/src/dpi/uvm_dpi.cc -define NCSIM \
-	+UVM_VERBOSITY=$(UVM_VERBOSITY) -quiet 
+IUS =	irun -access rw -uvmhome $(UVM_HOME) +UVM_VERBOSITY=$(UVM_VERBOSITY) -quiet  +define+UVM_OBJECT_MUST_HAVE_CONSTRUCTOR
+
 
 CHECK = \
 	@$(TEST) \( `grep -c 'UVM_ERROR :    $(N_ERRS)' irun.log` -eq 1 \) -a \

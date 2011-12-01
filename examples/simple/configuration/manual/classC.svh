@@ -48,7 +48,7 @@ class C extends uvm_component;
     printer.print_field("s", s, 32);
     printer.print_array_header("myaa", myaa.num(), "aa_string_string");
     foreach(myaa[i])
-      printer.print_string($psprintf("myaa[%0s]", i), myaa[i]);
+      printer.print_string($sformatf("myaa[%0s]", i), myaa[i]);
     printer.print_array_footer();
   endfunction
 

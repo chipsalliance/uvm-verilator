@@ -43,7 +43,7 @@ class incr_read_byte_seq extends ubus_base_sequence;
  
   virtual task body();
     `uvm_info(get_type_name(),
-      $psprintf("%s starting with count = %0d", 
+      $sformatf("%s starting with count = %0d", 
       get_sequence_path(), count), UVM_MEDIUM);
     repeat(count) begin : repeat_block
       `uvm_do_with(read_byte_seq0,
@@ -80,7 +80,7 @@ class incr_write_byte_seq extends ubus_base_sequence;
 
   virtual task body();
     `uvm_info(get_type_name(),
-      $psprintf("%s starting with count = %0d",
+      $sformatf("%s starting with count = %0d",
       get_sequence_path(), count), UVM_MEDIUM);
     repeat(count) begin : repeat_block
       `uvm_do_with(write_byte_seq0,
@@ -112,7 +112,7 @@ class incr_read_write_read_seq extends ubus_base_sequence;
 
   virtual task body();
     `uvm_info(get_type_name(),
-      $psprintf("%s starting sequence",
+      $sformatf("%s starting sequence",
       get_sequence_path()), UVM_MEDIUM);
     `uvm_do(read0)
     `uvm_do(write0)
@@ -147,7 +147,7 @@ class r8_w8_r4_w4_seq extends ubus_base_sequence;
 
   virtual task body();
     `uvm_info(get_type_name(),
-      $psprintf("%s starting...",
+      $sformatf("%s starting...",
       get_sequence_path()), UVM_MEDIUM);
     `uvm_do_with(read_double_word_seq0, 
       { read_double_word_seq0.start_addr == start_address;
@@ -189,7 +189,7 @@ class read_modify_write_seq extends ubus_base_sequence;
 
   virtual task body();
     `uvm_info(get_type_name(),
-      $psprintf("%s starting...",
+      $sformatf("%s starting...",
       get_sequence_path()), UVM_MEDIUM);
     // READ A RANDOM LOCATION
     `uvm_do_with(read_byte_seq0, {read_byte_seq0.transmit_del == 0; })
@@ -204,7 +204,7 @@ class read_modify_write_seq extends ubus_base_sequence;
       { read_byte_seq0.start_addr == addr_check; } )
     assert(m_data0_check == read_byte_seq0.rsp.data[0]) else
       `uvm_error(get_type_name(),
-        $psprintf("%s Read Modify Write Read error!\n\tADDR: %h, EXP: %h, ACT: %h", 
+        $sformatf("%s Read Modify Write Read error!\n\tADDR: %h, EXP: %h, ACT: %h", 
         get_sequence_path(),addr_check,m_data0_check,read_byte_seq0.rsp.data[0]));
   endtask : body
 
@@ -232,7 +232,7 @@ class loop_read_modify_write_seq extends ubus_base_sequence;
   virtual task body();
     void'(uvm_config_db#(int)::get(null,get_full_name(),"itr", itr));
     `uvm_info(get_type_name(),
-      $psprintf("%s starting...itr = %0d",
+      $sformatf("%s starting...itr = %0d",
       get_sequence_path(),itr), UVM_NONE);
     for(int i = 0; i < itr; i++) begin
       `uvm_do(rmw_seq)

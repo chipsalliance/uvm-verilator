@@ -75,7 +75,7 @@ class uvm_random_stimulus #(type T=uvm_transaction) extends uvm_component;
   endfunction
 
 
-  local bit m_stop=0;
+  local bit m_stop;
 
 
   // Function: generate_stimulus

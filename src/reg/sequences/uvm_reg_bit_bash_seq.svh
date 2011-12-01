@@ -123,7 +123,7 @@ class uvm_reg_single_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_
          while (next_lsb < `UVM_REG_DATA_WIDTH)
             mode[next_lsb++] = "RO";
          
-         `uvm_info("uvm_reg_bit_bash_seq", $psprintf("Verifying bits in register %s in map \"%s\"...",
+         `uvm_info("uvm_reg_bit_bash_seq", $sformatf("Verifying bits in register %s in map \"%s\"...",
                                     rg.get_full_name(), maps[j].get_full_name()),UVM_LOW);
          
          // Bash the kth bit
@@ -147,7 +147,7 @@ class uvm_reg_single_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_
       uvm_reg_data_t  val, exp, v;
       bit bit_val;
 
-      `uvm_info("uvm_reg_bit_bash_seq", $psprintf("...Bashing %s bit #%0d", mode, k),UVM_HIGH);
+      `uvm_info("uvm_reg_bit_bash_seq", $sformatf("...Bashing %s bit #%0d", mode, k),UVM_HIGH);
       
       repeat (2) begin
          val = rg.get();
@@ -158,20 +158,20 @@ class uvm_reg_single_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_
          
          rg.write(status, val, UVM_FRONTDOOR, map, this);
          if (status != UVM_IS_OK) begin
-            `uvm_error("uvm_reg_bit_bash_seq", $psprintf("Status was %s when writing to register \"%s\" through map \"%s\".",
+            `uvm_error("uvm_reg_bit_bash_seq", $sformatf("Status was %s when writing to register \"%s\" through map \"%s\".",
                                         status, rg.get_full_name(), map.get_full_name()));
          end
          
          exp = rg.get() & ~dc_mask;
          rg.read(status, val, UVM_FRONTDOOR, map, this);
          if (status != UVM_IS_OK) begin
-            `uvm_error("uvm_reg_bit_bash_seq", $psprintf("Status was %s when reading register \"%s\" through map \"%s\".",
+            `uvm_error("uvm_reg_bit_bash_seq", $sformatf("Status was %s when reading register \"%s\" through map \"%s\".",
                                         status, rg.get_full_name(), map.get_full_name()));
          end
 
          val &= ~dc_mask;
          if (val !== exp) begin
-            `uvm_error("uvm_reg_bit_bash_seq", $psprintf("Writing a %b in bit #%0d of register \"%s\" with initial value 'h%h yielded 'h%h instead of 'h%h",
+            `uvm_error("uvm_reg_bit_bash_seq", $sformatf("Writing a %b in bit #%0d of register \"%s\" with initial value 'h%h yielded 'h%h instead of 'h%h",
                                         bit_val, k, rg.get_full_name(), v, val, exp));
          end
       end

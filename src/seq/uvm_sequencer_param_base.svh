@@ -41,8 +41,8 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   protected int m_num_last_reqs = 1;
   protected int num_last_items = m_num_last_reqs;
   protected int m_num_last_rsps = 1;
-  protected int m_num_reqs_sent = 0;
-  protected int m_num_rsps_received = 0;
+  protected int m_num_reqs_sent;
+  protected int m_num_rsps_received;
   uvm_sequencer_analysis_fifo #(RSP) sqr_rsp_analysis_fifo;
 
 
@@ -116,13 +116,13 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   // Function: last_req
   //
   // Returns the last request item by default.  If n is not 0, then it will get
-  // the n¿th before last request item.  If n is greater than the last request
+  // the nï¿½th before last request item.  If n is greater than the last request
   // buffer size, the function will return null.
   //
   function REQ last_req(int unsigned n = 0);
     if(n > m_num_last_reqs) begin
       uvm_report_warning("HSTOB",
-        $psprintf("Invalid last access (%0d), the max history is %0d", n,
+        $sformatf("Invalid last access (%0d), the max history is %0d", n,
         m_num_last_reqs));
       return null;
     end
@@ -188,7 +188,7 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   function RSP last_rsp(int unsigned n = 0);
     if(n > m_num_last_rsps) begin
       uvm_report_warning("HSTOB",
-        $psprintf("Invalid last access (%0d), the max history is %0d", n,
+        $sformatf("Invalid last access (%0d), the max history is %0d", n,
         m_num_last_rsps));
       return null;
     end
@@ -247,6 +247,7 @@ endfunction
 // -------------
 
 function void uvm_sequencer_param_base::connect_phase(uvm_phase phase);
+  super.connect_phase(phase);
   rsp_export.connect(sqr_rsp_analysis_fifo.analysis_export);
 endfunction
 
@@ -288,14 +289,14 @@ function void uvm_sequencer_param_base::send_request(uvm_sequence_base sequence_
     end
     m_last_req_push_front(param_t);
   end else begin
-    uvm_report_fatal(get_name(),$psprintf("send_request failed to cast sequence item"), UVM_NONE);
+    uvm_report_fatal(get_name(),$sformatf("send_request failed to cast sequence item"), UVM_NONE);
   end
 
   param_t.set_sequence_id(sequence_ptr.m_get_sqr_sequence_id(m_sequencer_id, 1));
   t.set_sequencer(this);
   if (m_req_fifo.try_put(param_t) != 1) begin
     uvm_report_fatal(get_full_name(), 
-                     $psprintf("Sequencer send_request not able to put to fifo, depth; %0d", m_req_fifo.size()), UVM_NONE);
+                     $sformatf("Sequencer send_request not able to put to fifo, depth; %0d", m_req_fifo.size()), UVM_NONE);
   end
 
   m_num_reqs_sent++;
@@ -338,7 +339,7 @@ function void uvm_sequencer_param_base::put_response (RSP t);
   end
   else begin
     uvm_report_info("Sequencer", 
-                    $psprintf("Dropping response for sequence %0d, sequence not found.  Probable cause: sequence exited or has been killed", 
+                    $sformatf("Dropping response for sequence %0d, sequence not found.  Probable cause: sequence exited or has been killed", 
                               t.get_sequence_id()));
   end
 endfunction
@@ -379,7 +380,7 @@ endfunction
 function void uvm_sequencer_param_base::set_num_last_reqs(int unsigned max);
   if(max > 1024) begin
     uvm_report_warning("HSTOB", 
-      $psprintf("Invalid last size; 1024 is the maximum and will be used"));
+      $sformatf("Invalid last size; 1024 is the maximum and will be used"));
     max = 1024;
   end
 
@@ -421,7 +422,7 @@ endfunction
 function void uvm_sequencer_param_base::set_num_last_rsps(int unsigned max);
   if(max > 1024) begin
     uvm_report_warning("HSTOB", 
-      $psprintf("Invalid last size; 1024 is the maximum and will be used"));
+      $sformatf("Invalid last size; 1024 is the maximum and will be used"));
     max = 1024;
   end
 

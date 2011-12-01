@@ -23,12 +23,10 @@
  
   
 //------------------------------------------------------------------------------
-// TITLE: Register Sequence and Predictor Classes
+// TITLE: Register Sequence Classes
 //------------------------------------------------------------------------------
 //
 // This section defines the base classes used for register stimulus generation.
-// It also defines a predictor component, which is used to update the register
-// model's mirror values based on transactions observed on a physical bus. 
 //------------------------------------------------------------------------------
 
                                                               
@@ -170,8 +168,11 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
   // this sequencer.
   //
   virtual task do_reg_item(uvm_reg_item rw);
-    assert(m_sequencer != null);
-    assert(adapter != null);
+    if (m_sequencer == null)
+     `uvm_fatal("REG/DO_ITEM/NULL","do_reg_item: m_sequencer is null") 
+    if (adapter == null)
+     `uvm_fatal("REG/DO_ITEM/NULL","do_reg_item: adapter handle is null") 
+
     `uvm_info("DO_RW_ACCESS",{"Doing transaction: ",rw.convert2string()},UVM_HIGH)
 
     if (parent_select == LOCAL) begin
@@ -539,211 +540,6 @@ virtual class uvm_reg_frontdoor extends uvm_reg_sequence #(uvm_sequence #(uvm_se
 
 endclass: uvm_reg_frontdoor
 
-
-
-class uvm_predict_s;
-   bit addr[uvm_reg_addr_t];
-   uvm_reg_item reg_item;
-endclass
-
-
-//------------------------------------------------------------------------------
-//
-// CLASS: uvm_reg_predictor
-//
-// Updates the register model mirror based on observed bus transactions
-//
-// This class converts observed bus transactions of type ~BUSTYPE~ to generic
-// registers transactions, determines the register being accessed based on the
-// bus address, then updates the register's mirror value with the observed bus
-// data, subject to the register's access mode. See <uvm_reg::predict> for details.
-//
-// Memories can be large, so their accesses are not predicted. Users can
-// periodically use backdoor peek/poke to update the memory mirror.
-//
-//------------------------------------------------------------------------------
-
-class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
-
-  `uvm_component_param_utils(uvm_reg_predictor#(BUSTYPE))
-  //`uvm_register_cb(uvm_reg_predictor #(BUSTYPE), uvm_reg_cbs)
-
-  // Variable: bus_in
-  //
-  // Observed bus transactions of type ~BUSTYPE~ are received from this
-  // port and processed.
-  //
-  // For each incoming transaction, the predictor will attempt to get the
-  // register or memory handle corresponding to the observed bus address. 
-  //
-  // If there is a match, the predictor calls the register or memory's
-  // predict method, passing in the observed bus data. The register or
-  // memory mirror will be updated with this data, subject to its configured
-  // access behavior--RW, RO, WO, etc. The predictor will also convert the
-  // bus transaction to a generic <uvm_reg_item> and send it out the
-  // ~reg_ap~ analysis port.
-  //
-  // If the register is wider than the bus, the
-  // predictor will collect the multiple bus transactions needed to
-  // determine the value being read or written.
-  //
-  uvm_analysis_imp #(BUSTYPE, uvm_reg_predictor #(BUSTYPE)) bus_in;
-
-
-  // Variable: reg_ap
-  //
-  // Analysis output port that publishes <uvm_reg_item> transactions
-  // converted from bus transactions received on ~bus_in~.
-  uvm_analysis_port #(uvm_reg_item) reg_ap;
-
-
-  // Variable: map
-  //
-  // The map used to convert a bus address to the corresponding register
-  // or memory handle. Must be configured before the run phase.
-  // 
-  uvm_reg_map map;
-
-
-  // Variable: adapter
-  //
-  // The adapter used to convey the parameters of a bus operation in 
-  // terms of a canonical <uvm_reg_bus_op> datum.
-  // The ~adapter~ must be configured before the run phase.
-  //
-  uvm_reg_adapter adapter;
-
-
-  // Function: new
-  //
-  // Create a new instance of this type, giving it the optional ~name~
-  // and ~parent~.
-  //
-  function new (string name, uvm_component parent);
-    super.new(name, parent);
-    bus_in = new("bus_in", this);
-    reg_ap = new("reg_ap", this);
-  endfunction
-
-
-  // Function: pre_predict
-  //
-  // Override this method to change the value or re-direct the
-  // target register
-  //
-  virtual function void pre_predict(uvm_reg_item rw);
-  endfunction
-
-  local uvm_predict_s m_pending[uvm_reg];
-
-
-  // Function- write
-  //
-  // not a user-level method. Do not call directly. See documentation
-  // for the ~bus_in~ member.
-  //
-  virtual function void write(BUSTYPE tr);
-     uvm_reg rg;
-     uvm_reg_bus_op rw;
-     assert(adapter != null);
-
-     // In case they forget to set byte_en
-     rw.byte_en = -1;
-     adapter.bus2reg(tr,rw);
-     rg = map.get_reg_by_offset(rw.addr, (rw.kind == UVM_READ));
-
-     // ToDo: Add memory look-up and call uvm_mem::XsampleX()
-
-     if (rg != null) begin
-       bit found;
-       uvm_reg_item reg_item;
-       uvm_reg_map local_map;
-       uvm_reg_map_info map_info;
-       uvm_predict_s predict_info;
- 
-       if (!m_pending.exists(rg)) begin
-         uvm_reg_item item = new;
-         predict_info =new;
-         item.element_kind = UVM_REG;
-         item.element      = rg;
-         item.path         = UVM_PREDICT;
-         item.map          = map;
-         item.kind         = rw.kind;
-         predict_info.reg_item = item;
-         m_pending[rg] = predict_info;
-       end
-       predict_info = m_pending[rg];
-       reg_item = predict_info.reg_item;
-
-       if (predict_info.addr.exists(rw.addr)) begin
-          `uvm_error("REG_PREDICT_COLLISION",{"Collision detected for register '",
-                     rg.get_full_name(),"'"})
-          // TODO: what to do with subsequent collisions?
-          m_pending.delete(rg);
-       end
-
-       local_map = rg.get_local_map(map,"predictor::write()");
-       map_info = local_map.get_reg_map_info(rg);
-
-       foreach (map_info.addr[i]) begin
-         if (rw.addr == map_info.addr[i]) begin
-            found = 1;
-           reg_item.value[0] |= rw.data << (i * map.get_n_bytes()*8);
-           predict_info.addr[rw.addr] = 1;
-           if (predict_info.addr.num() == map_info.addr.size()) begin
-              // We've captured the entire abstract register transaction.
-              uvm_predict_e predict_kind = 
-                  (reg_item.kind == UVM_WRITE) ? UVM_PREDICT_WRITE : UVM_PREDICT_READ;
-              pre_predict(reg_item);
-
-              rg.XsampleX(reg_item.value[0], rw.byte_en,
-                          reg_item.kind == UVM_READ, local_map);
-              begin
-                 uvm_reg_block blk = rg.get_parent();
-                 blk.XsampleX(map_info.offset,
-                              reg_item.kind == UVM_READ,
-                              local_map);
-              end
-
-              `uvm_info("REG_PREDICT", {"Observed ",reg_item.kind.name(),
-                        " transaction to register ",rg.get_full_name(), ": value='h",
-                         $sformatf("%0h",reg_item.value[0])},UVM_HIGH)
-              rg.do_predict(reg_item, predict_kind, rw.byte_en);
-              reg_ap.write(reg_item);
-              m_pending.delete(rg);
-           end
-           break;
-         end
-       end
-       if (!found)
-         `uvm_error("REG_PREDICT_INTERNAL",{"Unexpected failed address lookup for register '",
-                  rg.get_full_name(),"'"})
-     end
-     else begin
-       `uvm_info("REG_PREDICT_NOT_FOR_ME",
-          {"Observed transaction does not target a register: ",
-            $sformatf("%p",tr)},UVM_FULL)
-     end
-  endfunction
-
-  
-  // Function: check_phase
-  //
-  // Checks that no pending register transactions are still enqueued.
-
-  virtual function void check_phase(uvm_phase phase);
-     super.check_phase(phase);
-    if (m_pending.num() > 0) begin
-      `uvm_error("PENDING REG ITEMS",{"There are ",$sformatf("%0d",m_pending.num()),
-                 " incomplete register transactions still pending completion:"})
-       foreach (m_pending[l]) begin
-          uvm_reg rg=l;
-          $display("\n%s",rg.get_full_name());
-       end
-    end
-  endfunction
-
-endclass
 
 
 

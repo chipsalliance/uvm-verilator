@@ -409,7 +409,7 @@
     begin \
       foreach(F[aa_key]) begin \
           `uvm_print_int4(F[aa_key], R,  \
-                                {"[", $psprintf("%0d",aa_key), "]"}, p__) \
+                                {"[", $sformatf("%0d",aa_key), "]"}, p__) \
       end \
     end \
     p__.print_array_footer(F.num()); \

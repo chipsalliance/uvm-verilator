@@ -36,7 +36,7 @@ class vip_monitor extends uvm_monitor;
    local bit m_in_sync;
    local bit m_suspend;
    local bit m_suspended;
-   local uvm_process m_proc[$];
+   local process m_proc;
 
    function new(string name, uvm_component parent = null);
       super.new(name, parent);
@@ -75,11 +75,9 @@ class vip_monitor extends uvm_monitor;
    //
    virtual task reset_and_suspend();
       m_suspend = 1;
-
-      if (m_proc.size() > 0) begin
-         foreach (m_proc[i]) m_proc[i].kill();
-         m_proc.delete();
-         
+      if (m_proc != null) begin
+         m_proc.kill();
+         m_proc = null;
          wait (m_suspended);
       end
    endtask
@@ -104,9 +102,7 @@ class vip_monitor extends uvm_monitor;
          fork
             begin
                bit [7:0] symbol;
-               uvm_process p;
-               p = new(process::self()); 
-               m_proc.push_back(p);
+               m_proc = process::self(); 
 
                forever begin
                   bit ok;

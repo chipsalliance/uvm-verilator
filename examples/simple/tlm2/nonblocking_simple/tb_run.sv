@@ -18,6 +18,7 @@
 //----------------------------------------------------------------------
 
 import uvm_pkg::*;
+`include "uvm_macros.svh"
 
 `include "usb_xfer.sv"
 `include "host.sv"

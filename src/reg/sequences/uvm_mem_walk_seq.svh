@@ -114,7 +114,7 @@ class uvm_mem_single_walk_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_
          // Only deal with RW memories
          if (mem.get_access(maps[j]) != "RW") continue;
 
-         `uvm_info("uvm_mem_walk_seq", $psprintf("Walking memory %s in map \"%s\"...",
+         `uvm_info("uvm_mem_walk_seq", $sformatf("Walking memory %s in map \"%s\"...",
                                     mem.get_full_name(), maps[j].get_full_name()), UVM_LOW);
          
          // The walking process is, for address k:
@@ -127,20 +127,20 @@ class uvm_mem_single_walk_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_
             mem.write(status, k, ~k, UVM_FRONTDOOR, maps[j], this);
 
             if (status != UVM_IS_OK) begin
-               `uvm_error("uvm_mem_walk_seq", $psprintf("Status was %s when writing \"%s[%0d]\" through map \"%s\".",
+               `uvm_error("uvm_mem_walk_seq", $sformatf("Status was %s when writing \"%s[%0d]\" through map \"%s\".",
                                            status.name(), mem.get_full_name(), k, maps[j].get_full_name()));
             end
             
             if (k > 0) begin
                mem.read(status, k-1, val, UVM_FRONTDOOR, maps[j], this);
                if (status != UVM_IS_OK) begin
-                  `uvm_error("uvm_mem_walk_seq", $psprintf("Status was %s when reading \"%s[%0d]\" through map \"%s\".",
+                  `uvm_error("uvm_mem_walk_seq", $sformatf("Status was %s when reading \"%s[%0d]\" through map \"%s\".",
                                               status.name(), mem.get_full_name(), k, maps[j].get_full_name()));
                end
                else begin
                   exp = ~(k-1) & ((1'b1<<n_bits)-1);
                   if (val !== exp) begin
-                     `uvm_error("uvm_mem_walk_seq", $psprintf("\"%s[%0d-1]\" read back as 'h%h instead of 'h%h.",
+                     `uvm_error("uvm_mem_walk_seq", $sformatf("\"%s[%0d-1]\" read back as 'h%h instead of 'h%h.",
                                                  mem.get_full_name(), k, val, exp));
                      
                   end
@@ -148,7 +148,7 @@ class uvm_mem_single_walk_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_
                
                mem.write(status, k-1, k-1, UVM_FRONTDOOR, maps[j], this);
                if (status != UVM_IS_OK) begin
-                  `uvm_error("uvm_mem_walk_seq", $psprintf("Status was %s when writing \"%s[%0d-1]\" through map \"%s\".",
+                  `uvm_error("uvm_mem_walk_seq", $sformatf("Status was %s when writing \"%s[%0d-1]\" through map \"%s\".",
                                               status.name(), mem.get_full_name(), k, maps[j].get_full_name()));
                end
             end
@@ -156,13 +156,13 @@ class uvm_mem_single_walk_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_
             if (k == mem.get_size() - 1) begin
                mem.read(status, k, val, UVM_FRONTDOOR, maps[j], this);
                if (status != UVM_IS_OK) begin
-                  `uvm_error("uvm_mem_walk_seq", $psprintf("Status was %s when reading \"%s[%0d]\" through map \"%s\".",
+                  `uvm_error("uvm_mem_walk_seq", $sformatf("Status was %s when reading \"%s[%0d]\" through map \"%s\".",
                                               status.name(), mem.get_full_name(), k, maps[j].get_full_name()));
                end
                else begin
                   exp = ~(k) & ((1'b1<<n_bits)-1);
                   if (val !== exp) begin
-                     `uvm_error("uvm_mem_walk_seq", $psprintf("\"%s[%0d]\" read back as 'h%h instead of 'h%h.",
+                     `uvm_error("uvm_mem_walk_seq", $sformatf("\"%s[%0d]\" read back as 'h%h instead of 'h%h.",
                                                  mem.get_full_name(), k, val, exp));
                      
                   end

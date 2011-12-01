@@ -19,6 +19,9 @@
 // -------------------------------------------------------------
 //
 
+import uvm_pkg::*;
+`include "uvm_macros.svh"
+
 `include "apb_if.sv"
 `include "vip_if.sv"
 `include "dut.sv"

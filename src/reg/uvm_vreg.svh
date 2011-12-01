@@ -21,7 +21,7 @@
 //
 
 //------------------------------------------------------------------------------
-// Title: uvm_vreg
+// Title: Virtual Registers
 //------------------------------------------------------------------------------
 //
 // A virtual register is a collection of fields,
@@ -65,17 +65,17 @@ class uvm_vreg extends uvm_object;
 
    local uvm_vreg_field fields[$];   // Fields in LSB to MSB order
 
-   local uvm_mem                   mem;     // Where is it implemented?
-   local uvm_reg_addr_t                offset;  // Start of vreg[0]
-   local int unsigned                  incr;    // From start to start of next
-   local longint unsigned              size;    //number of vregs
-   local bit                           is_static;
+   local uvm_mem          mem;     // Where is it implemented?
+   local uvm_reg_addr_t   offset;  // Start of vreg[0]
+   local int unsigned     incr;    // From start to start of next
+   local longint unsigned size;    //number of vregs
+   local bit              is_static;
 
    local uvm_mem_region   region;    // Not NULL if implemented via MAM
   
    local semaphore atomic;   // Field RMW operations must be atomic
-   local string fname = "";
-   local int lineno = 0;
+   local string fname;
+   local int lineno;
    local bit read_in_progress;
    local bit write_in_progress;
 
@@ -613,8 +613,8 @@ endclass: uvm_vreg
 
 class uvm_vreg_cbs extends uvm_callback;
 
-   string fname = "";
-   int    lineno = 0;
+   string fname;
+   int    lineno;
 
    function new(string name = "uvm_reg_cbs");
       super.new(name);
@@ -742,11 +742,11 @@ function uvm_vreg::new(string       name,
    super.new(name);
 
    if (n_bits == 0) begin
-      `uvm_error("RegModel", $psprintf("Virtual register \"%s\" cannot have 0 bits", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Virtual register \"%s\" cannot have 0 bits", this.get_full_name()));
       n_bits = 1;
    end
    if (n_bits > `UVM_REG_DATA_WIDTH) begin
-      `uvm_error("RegModel", $psprintf("Virtual register \"%s\" cannot have more than %0d bits (%0d)", this.get_full_name(), `UVM_REG_DATA_WIDTH, n_bits));
+      `uvm_error("RegModel", $sformatf("Virtual register \"%s\" cannot have more than %0d bits (%0d)", this.get_full_name(), `UVM_REG_DATA_WIDTH, n_bits));
       n_bits = `UVM_REG_DATA_WIDTH;
    end
    this.n_bits = n_bits;
@@ -817,7 +817,7 @@ function void uvm_vreg::add_field(uvm_vreg_field field);
    
    // Check if there are too many fields in the register
    if (this.n_used_bits > this.n_bits) begin
-      `uvm_error("RegModel", $psprintf("Virtual fields use more bits (%0d) than available in virtual register \"%s\" (%0d)",
+      `uvm_error("RegModel", $sformatf("Virtual fields use more bits (%0d) than available in virtual register \"%s\" (%0d)",
                                      this.n_used_bits, this.get_full_name(), this.n_bits));
    end
 
@@ -825,7 +825,7 @@ function void uvm_vreg::add_field(uvm_vreg_field field);
    if (idx > 0) begin
       if (this.fields[idx-1].get_lsb_pos_in_register() +
           this.fields[idx-1].get_n_bits() > offset) begin
-         `uvm_error("RegModel", $psprintf("Field %s overlaps field %s in virtual register \"%s\"",
+         `uvm_error("RegModel", $sformatf("Field %s overlaps field %s in virtual register \"%s\"",
                                         this.fields[idx-1].get_name(),
                                         field.get_name(),
                                         this.get_full_name()));
@@ -834,7 +834,7 @@ function void uvm_vreg::add_field(uvm_vreg_field field);
    if (idx < this.fields.size()-1) begin
       if (offset + field.get_n_bits() >
           this.fields[idx+1].get_lsb_pos_in_register()) begin
-         `uvm_error("RegModel", $psprintf("Field %s overlaps field %s in virtual register \"%s\"",
+         `uvm_error("RegModel", $sformatf("Field %s overlaps field %s in virtual register \"%s\"",
                                         field.get_name(),
                                         this.fields[idx+1].get_name(),
 
@@ -897,22 +897,22 @@ function bit uvm_vreg::implement(longint unsigned n,
 
    if(n < 1)
    begin
-     `uvm_error("RegModel", $psprintf("Attempting to implement virtual register \"%s\" with a subscript less than one doesn't make sense",this.get_full_name()));
+     `uvm_error("RegModel", $sformatf("Attempting to implement virtual register \"%s\" with a subscript less than one doesn't make sense",this.get_full_name()));
       return 0;
    end
 
    if (mem == null) begin
-      `uvm_error("RegModel", $psprintf("Attempting to implement virtual register \"%s\" using a NULL uvm_mem reference", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Attempting to implement virtual register \"%s\" using a NULL uvm_mem reference", this.get_full_name()));
       return 0;
    end
 
    if (this.is_static) begin
-      `uvm_error("RegModel", $psprintf("Virtual register \"%s\" is static and cannot be dynamically implemented", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Virtual register \"%s\" is static and cannot be dynamically implemented", this.get_full_name()));
       return 0;
    end
 
    if (mem.get_block() != this.parent) begin
-      `uvm_error("RegModel", $psprintf("Attempting to implement virtual register \"%s\" on memory \"%s\" in a different block",
+      `uvm_error("RegModel", $sformatf("Attempting to implement virtual register \"%s\" on memory \"%s\" in a different block",
                                      this.get_full_name(),
                                      mem.get_full_name()));
       return 0;
@@ -922,7 +922,7 @@ function bit uvm_vreg::implement(longint unsigned n,
       int min_incr = (this.get_n_bytes()-1) / mem.get_n_bytes() + 1;
       if (incr == 0) incr = min_incr;
       if (min_incr > incr) begin
-         `uvm_error("RegModel", $psprintf("Virtual register \"%s\" increment is too small (%0d): Each virtual register requires at least %0d locations in memory \"%s\".",
+         `uvm_error("RegModel", $sformatf("Virtual register \"%s\" increment is too small (%0d): Each virtual register requires at least %0d locations in memory \"%s\".",
                                         this.get_full_name(), incr,
                                         min_incr, mem.get_full_name()));
          return 0;
@@ -931,19 +931,19 @@ function bit uvm_vreg::implement(longint unsigned n,
 
    // Is the memory big enough for ya?
    if (offset + (n * incr) > mem.get_size()) begin
-      `uvm_error("RegModel", $psprintf("Given Offset for Virtual register \"%s[%0d]\" is too big for memory %s@'h%0h", this.get_full_name(), n, mem.get_full_name(), offset));
+      `uvm_error("RegModel", $sformatf("Given Offset for Virtual register \"%s[%0d]\" is too big for memory %s@'h%0h", this.get_full_name(), n, mem.get_full_name(), offset));
       return 0;
    end
 
    region = mem.mam.reserve_region(offset,n*incr*mem.get_n_bytes());
 
    if (region == null) begin
-      `uvm_error("RegModel", $psprintf("Could not allocate a memory region for virtual register \"%s\"", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Could not allocate a memory region for virtual register \"%s\"", this.get_full_name()));
       return 0;
    end
 
    if (this.mem != null) begin
-      `uvm_info("RegModel", $psprintf("Virtual register \"%s\" is being moved re-implemented from %s@'h%0h to %s@'h%0h",
+      `uvm_info("RegModel", $sformatf("Virtual register \"%s\" is being moved re-implemented from %s@'h%0h to %s@'h%0h",
                                  this.get_full_name(),
                                  this.mem.get_full_name(),
                                  this.offset,
@@ -969,23 +969,23 @@ function uvm_mem_region uvm_vreg::allocate(longint unsigned n,
 
    if(n < 1)
    begin
-     `uvm_error("RegModel", $psprintf("Attempting to implement virtual register \"%s\" with a subscript less than one doesn't make sense",this.get_full_name()));
+     `uvm_error("RegModel", $sformatf("Attempting to implement virtual register \"%s\" with a subscript less than one doesn't make sense",this.get_full_name()));
       return null;
    end
 
    if (mam == null) begin
-      `uvm_error("RegModel", $psprintf("Attempting to implement virtual register \"%s\" using a NULL uvm_mem_mam reference", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Attempting to implement virtual register \"%s\" using a NULL uvm_mem_mam reference", this.get_full_name()));
       return null;
    end
 
    if (this.is_static) begin
-      `uvm_error("RegModel", $psprintf("Virtual register \"%s\" is static and cannot be dynamically allocated", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Virtual register \"%s\" is static and cannot be dynamically allocated", this.get_full_name()));
       return null;
    end
 
    mem = mam.get_memory();
    if (mem.get_block() != this.parent) begin
-      `uvm_error("RegModel", $psprintf("Attempting to allocate virtual register \"%s\" on memory \"%s\" in a different block",
+      `uvm_error("RegModel", $sformatf("Attempting to allocate virtual register \"%s\" on memory \"%s\" in a different block",
                                      this.get_full_name(),
                                      mem.get_full_name()));
       return null;
@@ -995,7 +995,7 @@ function uvm_mem_region uvm_vreg::allocate(longint unsigned n,
       int min_incr = (this.get_n_bytes()-1) / mem.get_n_bytes() + 1;
       if (incr == 0) incr = min_incr;
       if (min_incr < incr) begin
-         `uvm_error("RegModel", $psprintf("Virtual register \"%s\" increment is too small (%0d): Each virtual register requires at least %0d locations in memory \"%s\".",
+         `uvm_error("RegModel", $sformatf("Virtual register \"%s\" increment is too small (%0d): Each virtual register requires at least %0d locations in memory \"%s\".",
                                         this.get_full_name(), incr,
                                         min_incr, mem.get_full_name()));
          return null;
@@ -1005,12 +1005,12 @@ function uvm_mem_region uvm_vreg::allocate(longint unsigned n,
    // Need memory at least of size num_vregs*sizeof(vreg) in bytes.
    allocate = mam.request_region(n*incr*mem.get_n_bytes());
    if (allocate == null) begin
-      `uvm_error("RegModel", $psprintf("Could not allocate a memory region for virtual register \"%s\"", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Could not allocate a memory region for virtual register \"%s\"", this.get_full_name()));
       return null;
    end
 
    if (this.mem != null) begin
-     `uvm_info("RegModel", $psprintf("Virtual register \"%s\" is being moved re-allocated from %s@'h%0h to %s@'h%0h",
+     `uvm_info("RegModel", $sformatf("Virtual register \"%s\" is being moved re-allocated from %s@'h%0h to %s@'h%0h",
                                 this.get_full_name(),
                                 this.mem.get_full_name(),
                                 this.offset,
@@ -1038,7 +1038,7 @@ endfunction: get_region
 
 function void uvm_vreg::release_region();
    if (this.is_static) begin
-      `uvm_error("RegModel", $psprintf("Virtual register \"%s\" is static and cannot be dynamically released", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Virtual register \"%s\" is static and cannot be dynamically released", this.get_full_name()));
       return;
    end
 
@@ -1065,7 +1065,7 @@ endfunction: get_memory
 
 function uvm_reg_addr_t  uvm_vreg::get_offset_in_memory(longint unsigned idx);
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg::get_offset_in_memory() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg::get_offset_in_memory() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       return 0;
    end
@@ -1077,7 +1077,7 @@ endfunction
 function uvm_reg_addr_t  uvm_vreg::get_address(longint unsigned idx,
                                                    uvm_reg_map map = null);
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot get address of of unimplemented virtual register \"%s\".", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Cannot get address of of unimplemented virtual register \"%s\".", this.get_full_name()));
       return 0;
    end
 
@@ -1087,7 +1087,7 @@ endfunction: get_address
 
 function int unsigned uvm_vreg::get_size();
    if (this.size == 0) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg::get_size() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg::get_size() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       return 0;
    end
@@ -1103,7 +1103,7 @@ endfunction: get_n_bytes
 
 function int unsigned uvm_vreg::get_n_memlocs();
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg::get_n_memlocs() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg::get_n_memlocs() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       return 0;
    end
@@ -1114,7 +1114,7 @@ endfunction: get_n_memlocs
 
 function int unsigned uvm_vreg::get_incr();
    if (this.incr == 0) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg::get_incr() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg::get_incr() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       return 0;
    end
@@ -1125,7 +1125,7 @@ endfunction: get_incr
 
 function int uvm_vreg::get_n_maps();
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg::get_n_maps() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg::get_n_maps() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       return 0;
    end
@@ -1136,7 +1136,7 @@ endfunction: get_n_maps
 
 function void uvm_vreg::get_maps(ref uvm_reg_map maps[$]);
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg::get_maps() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg::get_maps() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       return;
    end
@@ -1147,7 +1147,7 @@ endfunction: get_maps
 
 function bit uvm_vreg::is_in_map(uvm_reg_map map);
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg::is_in_map() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg::is_in_map() on unimplemented virtual register \"%s\"",
                                   this.get_full_name()));
       return 0;
    end
@@ -1158,7 +1158,7 @@ endfunction
 
 function string uvm_vreg::get_access(uvm_reg_map map = null);
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg::get_rights() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg::get_rights() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       return "RW";
    end
@@ -1169,7 +1169,7 @@ endfunction: get_access
 
 function string uvm_vreg::get_rights(uvm_reg_map map = null);
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg::get_rights() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg::get_rights() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       return "RW";
    end
@@ -1190,7 +1190,7 @@ function uvm_vreg_field uvm_vreg::get_field_by_name(string name);
          return this.fields[i];
       end
    end
-   `uvm_warning("RegModel", $psprintf("Unable to locate field \"%s\" in virtual register \"%s\".",
+   `uvm_warning("RegModel", $sformatf("Unable to locate field \"%s\" in virtual register \"%s\".",
                                     name, this.get_full_name()));
    get_field_by_name = null;
 endfunction: get_field_by_name
@@ -1216,7 +1216,7 @@ task uvm_vreg::write(input  longint unsigned   idx,
    this.fname = fname;
    this.lineno = lineno;
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot write to unimplemented virtual register \"%s\".", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Cannot write to unimplemented virtual register \"%s\".", this.get_full_name()));
       status = UVM_NOT_OK;
       return;
    end
@@ -1290,7 +1290,7 @@ task uvm_vreg::write(input  longint unsigned   idx,
       value = (value & ~msk) | (tmp << lsb);
    end
 
-   `uvm_info("RegModel", $psprintf("Wrote virtual register \"%s\"[%0d] via %s with: 'h%h",
+   `uvm_info("RegModel", $sformatf("Wrote virtual register \"%s\"[%0d] via %s with: 'h%h",
                               this.get_full_name(), idx,
                               (path == UVM_FRONTDOOR) ? "frontdoor" : "backdoor",
                               value),UVM_MEDIUM);
@@ -1322,7 +1322,7 @@ task uvm_vreg::read(input  longint unsigned   idx,
    this.lineno = lineno;
 
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot read from unimplemented virtual register \"%s\".", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Cannot read from unimplemented virtual register \"%s\".", this.get_full_name()));
       status = UVM_NOT_OK;
       return;
    end
@@ -1392,7 +1392,7 @@ task uvm_vreg::read(input  longint unsigned   idx,
       value = (value & ~msk) | (tmp << lsb);
    end
 
-   `uvm_info("RegModel", $psprintf("Read virtual register \"%s\"[%0d] via %s: 'h%h",
+   `uvm_info("RegModel", $sformatf("Read virtual register \"%s\"[%0d] via %s: 'h%h",
                               this.get_full_name(), idx,
                               (path == UVM_FRONTDOOR) ? "frontdoor" : "backdoor",
                               value),UVM_MEDIUM);
@@ -1418,7 +1418,7 @@ task uvm_vreg::poke(input longint unsigned   idx,
    this.lineno = lineno;
 
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot poke in unimplemented virtual register \"%s\".", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Cannot poke in unimplemented virtual register \"%s\".", this.get_full_name()));
       status = UVM_NOT_OK;
       return;
    end
@@ -1439,7 +1439,7 @@ task uvm_vreg::poke(input longint unsigned   idx,
       lsb += this.mem.get_n_bytes() * 8;
    end
 
-   `uvm_info("RegModel", $psprintf("Poked virtual register \"%s\"[%0d] with: 'h%h",
+   `uvm_info("RegModel", $sformatf("Poked virtual register \"%s\"[%0d] with: 'h%h",
                               this.get_full_name(), idx, value),UVM_MEDIUM);
    this.fname = "";
    this.lineno = 0;
@@ -1462,7 +1462,7 @@ task uvm_vreg::peek(input longint unsigned   idx,
    this.lineno = lineno;
 
    if (this.mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot peek in from unimplemented virtual register \"%s\".", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Cannot peek in from unimplemented virtual register \"%s\".", this.get_full_name()));
       status = UVM_NOT_OK;
       return;
    end
@@ -1482,7 +1482,7 @@ task uvm_vreg::peek(input longint unsigned   idx,
       lsb += this.mem.get_n_bytes() * 8;
    end
 
-   `uvm_info("RegModel", $psprintf("Peeked virtual register \"%s\"[%0d]: 'h%h",
+   `uvm_info("RegModel", $sformatf("Peeked virtual register \"%s\"[%0d]: 'h%h",
                               this.get_full_name(), idx, value),UVM_MEDIUM);
    
    this.fname = "";
@@ -1497,9 +1497,9 @@ function void uvm_vreg::do_print (uvm_printer printer);
 endfunction
 
 function string uvm_vreg::convert2string();
-   string res_str = "";
-   string t_str = "";
-   bit with_debug_info = 1'b0;
+   string res_str;
+   string t_str;
+   bit with_debug_info;
    $sformat(convert2string, "Virtual register %s -- ", 
             this.get_full_name());
 

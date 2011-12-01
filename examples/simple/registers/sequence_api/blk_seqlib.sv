@@ -65,7 +65,7 @@ class blk_R_test_seq extends uvm_reg_sequence;
 
       // Perform a random number of INC operations
       n = ($urandom() % 7) + 3;
-      `uvm_info("blk_R_test_seq", $psprintf("Incrementing R %0d times...", n), UVM_NONE);
+      `uvm_info("blk_R_test_seq", $sformatf("Incrementing R %0d times...", n), UVM_NONE);
       repeat (n) begin
          write_reg(model.CTL, status, reg_fld_B_CTL_CTL::INC);
          data++;
@@ -76,7 +76,7 @@ class blk_R_test_seq extends uvm_reg_sequence;
 
       // Perform a random number of DEC operations
       n = ($urandom() % 8) + 2;
-      `uvm_info("blk_R_test_seq", $psprintf("Decrementing R %0d times...", n), UVM_NONE);
+      `uvm_info("blk_R_test_seq", $sformatf("Decrementing R %0d times...", n), UVM_NONE);
       repeat (n) begin
          write_reg(model.CTL, status, reg_fld_B_CTL_CTL::DEC);
          data--;

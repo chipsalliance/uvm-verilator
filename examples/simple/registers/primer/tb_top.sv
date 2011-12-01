@@ -21,6 +21,7 @@
 // -------------------------------------------------------------
 // 
 
+`include "uvm_macros.svh"
 `include "apb.sv"
 `include "dut.sv"
 

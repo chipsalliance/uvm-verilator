@@ -54,13 +54,13 @@ class uvm_reg_field extends uvm_object;
    local bit             m_written;
    local bit             m_read_in_progress;
    local bit             m_write_in_progress;
-   local string          m_fname = "";
-   local int             m_lineno = 0;
+   local string          m_fname;
+   local int             m_lineno;
    local int             m_cover_on;
-   local bit             m_individually_accessible = 0;
+   local bit             m_individually_accessible;
    local uvm_check_e     m_check;
 
-   local static int m_max_size = 0;
+   local static int m_max_size;
    local static bit m_policy_names[string];
 
    constraint uvm_reg_field_valid {
@@ -350,6 +350,22 @@ class uvm_reg_field extends uvm_object;
    extern virtual function uvm_reg_data_t get(string fname = "",
                                               int    lineno = 0);
 
+
+   // Function: get_mirrored_value
+   //
+   // Return the mirrored value of the field
+   //
+   // Does not actually read the value of the field in the design, only the mirrored value
+   // in the abstraction class. 
+   //
+   // If the field is write-only, the desired/mirrored
+   // value is the value last written and assumed
+   // to reside in the bits implementing it.
+   // Although a physical read operation would something different,
+   // the returned value is the actual content.
+   //
+   extern virtual function uvm_reg_data_t get_mirrored_value(string fname = "",
+                                              int    lineno = 0);
 
    // Function: reset
    //
@@ -783,7 +799,7 @@ function void uvm_reg_field::configure(uvm_reg        parent,
    m_parent = parent;
    if (size == 0) begin
       `uvm_error("RegModel",
-         $psprintf("Field \"%s\" cannot have 0 bits", get_full_name()));
+         $sformatf("Field \"%s\" cannot have 0 bits", get_full_name()));
       size = 1;
    end
 
@@ -913,7 +929,7 @@ function string uvm_reg_field::get_access(uvm_reg_map map = null);
         
          "WO", "WOC", "WOS", "WO1": begin
             `uvm_error("RegModel",
-                       $psprintf("%s field \"%s\" restricted to RO in map \"%s\"",
+                       $sformatf("%s field \"%s\" restricted to RO in map \"%s\"",
                                  get_access(), get_name(), map.get_full_name()))
          end
 
@@ -1203,8 +1219,10 @@ function uvm_reg_data_t  uvm_reg_field::XupdateX();
       "WOS":   XupdateX = m_desired;  // Warn if != 1
       "W1":    XupdateX = m_desired;
       "WO1":   XupdateX = m_desired;
-      default: XupdateX = m_desired;
+      default: XupdateX = m_desired;      
    endcase
+   XupdateX &= (1 << m_size) - 1;
+   
 endfunction: XupdateX
 
 
@@ -1219,7 +1237,7 @@ function void uvm_reg_field::set(uvm_reg_data_t  value,
    m_lineno = lineno;
    if (value >> m_size) begin
       `uvm_warning("RegModel",
-         $psprintf("Specified value (0x%h) greater than field \"%s\" size (%0d bits)",
+         $sformatf("Specified value (0x%h) greater than field \"%s\" size (%0d bits)",
              value, get_name(), m_size));
       value &= mask;
    end
@@ -1264,6 +1282,16 @@ function uvm_reg_data_t  uvm_reg_field::get(string  fname = "",
    m_lineno = lineno;
    get = m_desired;
 endfunction: get
+
+ 
+// get_mirrored_value
+
+function uvm_reg_data_t  uvm_reg_field::get_mirrored_value(string  fname = "",
+                                            int     lineno = 0);
+   m_fname = fname;
+   m_lineno = lineno;
+   get_mirrored_value = m_mirrored;
+endfunction: get_mirrored_value
 
 
 // reset
@@ -1483,7 +1511,7 @@ task uvm_reg_field::do_write(uvm_reg_item rw);
       m_parent.do_write(rw);
 
       if (bad_side_effect) begin
-         `uvm_warning("RegModel", $psprintf("Writing field \"%s\" will cause unintended side effects in adjoining Write-to-Clear or Write-to-Set fields in the same register", this.get_full_name()));
+         `uvm_warning("RegModel", $sformatf("Writing field \"%s\" will cause unintended side effects in adjoining Write-to-Clear or Write-to-Set fields in the same register", this.get_full_name()));
       end
    end
    else begin
@@ -1697,10 +1725,10 @@ function bit uvm_reg_field::is_indv_accessible(uvm_path_e  path,
    end
 
    begin
-     int fld_idx = 0;
+     int fld_idx;
      int bus_width = local_map.get_n_bytes();
      uvm_reg_field fields[$];
-     bit sole_field = 0;
+     bit sole_field;
 
      m_parent.get_fields(fields);
 
@@ -1898,10 +1926,10 @@ endfunction
 
 function string uvm_reg_field::convert2string();
    string fmt;
-   string res_str = "";
-   string t_str = "";
-   bit with_debug_info = 0;
-   string prefix = "";
+   string res_str;
+   string t_str;
+   bit with_debug_info;
+   string prefix;
    uvm_reg reg_=get_register();
 
    $sformat(fmt, "%0d'h%%%0dh", get_n_bits(),
@@ -1911,7 +1939,7 @@ function string uvm_reg_field::convert2string();
             reg_.get_name(),
             get_lsb_pos() + get_n_bits() - 1,
             get_lsb_pos(), m_desired,
-            (m_desired != m_mirrored) ? $psprintf({" (Mirror: ",fmt,")"},
+            (m_desired != m_mirrored) ? $sformatf({" (Mirror: ",fmt,")"},
                m_mirrored) : ""); 
 
    if (m_read_in_progress == 1'b1) begin

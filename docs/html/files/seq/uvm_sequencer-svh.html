@@ -70,7 +70,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_sequencer#(REQ,RSP).Variables" >Variables</a></td><td class=SDescription></td></tr>
   <!-- index=2 -->
 
-<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_sequencer#(REQ,RSP).seq_item_export" id=link8 onMouseOver="ShowTip(event, 'tt8', 'link8')" onMouseOut="HideTip('tt8')">seq_item_export</a></td><td class=SDescription>This export provides access to this sequencer&rsquo;s implementation of the sequencer interface, <a href="../tlm1/sqr_ifs-svh.html#uvm_sqr_if_base#(REQ,RSP)" class=LClass id=link9 onMouseOver="ShowTip(event, 'tt9', 'link9')" onMouseOut="HideTip('tt9')">uvm_sqr_if_base #(REQ,RSP)</a>, which defines the following methods:</td></tr>
+<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_sequencer#(REQ,RSP).seq_item_export" id=link8 onMouseOver="ShowTip(event, 'tt8', 'link8')" onMouseOut="HideTip('tt8')">seq_item_export</a></td><td class=SDescription>This export provides access to this sequencer&rsquo;s implementation of the sequencer interface, <a href="../tlm1/uvm_sqr_ifs-svh.html#uvm_sqr_if_base#(REQ,RSP)" class=LClass id=link9 onMouseOver="ShowTip(event, 'tt9', 'link9')" onMouseOut="HideTip('tt9')">uvm_sqr_if_base #(REQ,RSP)</a>, which defines the following methods:</td></tr>
   <!-- index=3 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_sequencer#(REQ,RSP).Methods" >Methods</a></td><td class=SDescription></td></tr>
@@ -79,13 +79,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_sequencer#(REQ,RSP).new" id=link10 onMouseOver="ShowTip(event, 'tt10', 'link10')" onMouseOut="HideTip('tt10')">new</a></td><td class=SDescription>Standard component constructor that creates an instance of this class using the given <i>name</i> and <i>parent</i>, if any.</td></tr>
   <!-- index=5 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_sequencer#(REQ,RSP).stop_sequences" id=link11 onMouseOver="ShowTip(event, 'tt11', 'link11')" onMouseOut="HideTip('tt11')">stop_sequences</a></td><td class=SDescription>Tells the sequencer to kill all sequences and child sequences currently operating on the sequencer, and remove all requests, locks and responses that are currently queued. </td></tr>
-  <!-- index=6 -->
-
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_sequencer#(REQ,RSP).new" id=link12 onMouseOver="ShowTip(event, 'tt10', 'link12')" onMouseOut="HideTip('tt10')">new</a></td><td class=SDescription>Standard component constructor that creates an instance of this class using the given <i>name</i> and <i>parent</i>, if any.</td></tr>
-  <!-- index=7 -->
-
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_sequencer#(REQ,RSP).stop_sequences" id=link13 onMouseOver="ShowTip(event, 'tt11', 'link13')" onMouseOut="HideTip('tt11')">stop_sequences</a></td><td class=SDescription>Tells the sequencer to kill all sequences and child sequences currently operating on the sequencer, and remove all requests, locks and responses that are currently queued. </td></tr></table></div></div><!--END_ND_SUMMARY-->
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_sequencer#(REQ,RSP).stop_sequences" id=link11 onMouseOver="ShowTip(event, 'tt11', 'link11')" onMouseOut="HideTip('tt11')">stop_sequences</a></td><td class=SDescription>Tells the sequencer to kill all sequences and child sequences currently operating on the sequencer, and remove all requests, locks and responses that are currently queued. </td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
 
 
@@ -107,7 +101,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>) seq_item_export</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>This export provides access to this sequencer&rsquo;s implementation of the sequencer interface, <a href="../tlm1/sqr_ifs-svh.html#uvm_sqr_if_base#(REQ,RSP)" class=LClass id=link14 onMouseOver="ShowTip(event, 'tt9', 'link14')" onMouseOut="HideTip('tt9')">uvm_sqr_if_base #(REQ,RSP)</a>, which defines the following methods:</p><blockquote><pre>Requests:
+<div class=CBody><p>This export provides access to this sequencer&rsquo;s implementation of the sequencer interface, <a href="../tlm1/uvm_sqr_ifs-svh.html#uvm_sqr_if_base#(REQ,RSP)" class=LClass id=link12 onMouseOver="ShowTip(event, 'tt9', 'link12')" onMouseOut="HideTip('tt9')">uvm_sqr_if_base #(REQ,RSP)</a>, which defines the following methods:</p><blockquote><pre>Requests:
  virtual task          get_next_item      (output REQ request);
  virtual task          try_next_item      (output REQ request);
  virtual task          get                (output REQ request);
@@ -117,7 +111,7 @@ Responses:
  virtual task          put                (input RSP response);
 Sync Control:
  virtual task          wait_for_sequences ();
- virtual function bit  has_do_available   ();</pre></blockquote><p>See <a href="../tlm1/sqr_ifs-svh.html#uvm_sqr_if_base#(REQ,RSP)" class=LClass id=link15 onMouseOver="ShowTip(event, 'tt9', 'link15')" onMouseOut="HideTip('tt9')">uvm_sqr_if_base #(REQ,RSP)</a> for information about this interface.</p></div></div></div>
+ virtual function bit  has_do_available   ();</pre></blockquote><p>See <a href="../tlm1/uvm_sqr_ifs-svh.html#uvm_sqr_if_base#(REQ,RSP)" class=LClass id=link13 onMouseOver="ShowTip(event, 'tt9', 'link13')" onMouseOut="HideTip('tt9')">uvm_sqr_if_base #(REQ,RSP)</a> for information about this interface.</p></div></div></div>
 
 
 
@@ -151,34 +145,6 @@ Sync Control:
  <!--CONTENT index=5 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequencer#(REQ,RSP).stop_sequences" href="../../../../src/seq/uvm_sequencer.svh">stop_sequences</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function void stop_sequences()
-  </td></tr></table></blockquote><div class=CBody><p>Tells the sequencer to kill all sequences and child sequences currently operating on the sequencer, and remove all requests, locks and responses that are currently queued.&nbsp;  This essentially resets the sequencer to an idle state.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequencer#(REQ,RSP).new" href="../../../../src/seq/uvm_sequencer.svh">new</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
-      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_sequencer::new (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
-      <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_component&nbsp;</td>
-      <td class=PParameter nowrap>parent</td>
-      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
-      <td class=PDefaultValue width=100%>null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
-      </table></td></tr>
-    </table></blockquote>
-<div class=CBody><p>Standard component constructor that creates an instance of this class using the given <i>name</i> and <i>parent</i>, if any.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=7 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequencer#(REQ,RSP).stop_sequences" href="../../../../src/seq/uvm_sequencer.svh">stop_sequences</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function void uvm_sequencer::stop_sequences()
   </td></tr></table></blockquote><div class=CBody><p>Tells the sequencer to kill all sequences and child sequences currently operating on the sequencer, and remove all requests, locks and responses that are currently queued.&nbsp;  This essentially resets the sequencer to an idle state.</p></div></div></div>
 
 </div><!--Content-->

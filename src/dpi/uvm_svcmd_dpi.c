@@ -65,7 +65,8 @@ extern const char *dpi_get_next_arg_c ()
     else
     {
       // check for -f indicating pointer to new array
-      if(0==strcmp(*argv_stack[argv_stack_ptr], "-f"))
+      if(0==strcmp(*argv_stack[argv_stack_ptr], "-f") ||
+         0==strcmp(*argv_stack[argv_stack_ptr], "-F") )
       {
 	char *r = *argv_stack[argv_stack_ptr];
 	// bump past -f at current level

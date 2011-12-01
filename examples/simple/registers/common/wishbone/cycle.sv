@@ -160,5 +160,10 @@ class reg2wsh_adapter extends uvm_reg_adapter;
     endcase
   endfunction
 
+
+  function new(string name="reg2wsh_adapter");
+     super.new(name);
+  endfunction
+
 endclass
 

@@ -52,11 +52,6 @@ endclass
 //------------------------------------------------------------------------------
 // Objections provide a facility for coordinating status information between
 // two or more participating components, objects, and even module-based IP.
-// In particular, the ~uvm_test_done~ built-in objection provides a means for
-// coordinating when to end a test, i.e. when to call <global_stop_request> to
-// end the <uvm_component::run> phase.  When all participating components have
-// dropped their raised objections with ~uvm_test_done~, an implicit call to
-// ~global_stop_request~ is issued.
 //
 // Tracing of objection activity can be turned on to follow the activity of
 // the objection mechanism. It may be turned on for a specific objection
@@ -66,11 +61,11 @@ endclass
 
 class uvm_objection extends uvm_report_object;
 
-  protected bit     m_trace_mode=0;
+  protected bit     m_trace_mode;
   protected int     m_source_count[uvm_object];
   protected int     m_total_count [uvm_object];
   protected time    m_drain_time  [uvm_object];
-  protected bit     m_draining    [uvm_object];
+  protected int     m_draining    [uvm_object];
   protected uvm_objection_events m_events [uvm_object];
   /*protected*/ bit     m_top_all_dropped;
   protected process m_background_proc;
@@ -87,14 +82,18 @@ class uvm_objection extends uvm_report_object;
   uvm_root top = uvm_root::get();
 
 
-  protected bit m_cleared = 0; /* for checking obj count<0 */
+  protected bit m_cleared; /* for checking obj count<0 */
 
 
-  // Fuction: clear
+  // Function: clear
   //
   // Immediately clears the objection state. All counts are cleared and the
-  // <all_dropped> callback for <uvm_top> is called. 
-  // Any drain_times set by the user are not effected.
+  // any processes waiting on a call to wait_for(UVM_ALL_DROPPED, uvm_top)
+  // are released.
+  //
+  // The caller, if a uvm_object-based object, should pass its 'this' handle
+  // to the ~obj~ argument to document who cleared the objection.
+  // Any drain_times set by the user are not effected. 
   //
   virtual function void clear(uvm_object obj=null);
     string name;
@@ -114,8 +113,8 @@ class uvm_objection extends uvm_report_object;
     m_draining.delete();
     m_top_all_dropped = 0;
     m_cleared = 1;
-    if (m_events.exists(obj))
-      ->m_events[obj].all_dropped;
+    if (m_events.exists(m_top))
+      ->m_events[m_top].all_dropped;
     m_background_proc.kill();
 
     fork
@@ -301,7 +300,7 @@ class uvm_objection extends uvm_report_object;
   // Raises the number of objections for the source ~object~ by ~count~, which
   // defaults to 1.  The ~object~ is usually the ~this~ handle of the caller.
   // If ~object~ is not specified or null, the implicit top-level component,
-  // ~uvm_top~, is chosen.
+  // <uvm_root>, is chosen.
   //
   // Rasing an objection causes the following.
   //
@@ -367,7 +366,7 @@ class uvm_objection extends uvm_report_object;
   // Drops the number of objections for the source ~object~ by ~count~, which
   // defaults to 1.  The ~object~ is usually the ~this~ handle of the caller.
   // If ~object~ is not specified or null, the implicit top-level component,
-  // ~uvm_top~, is chosen.
+  // <uvm_root>, is chosen.
   //
   // Dropping an objection causes the following.
   //
@@ -477,7 +476,9 @@ class uvm_objection extends uvm_report_object;
       // need to make sure we are safe from the dropping thread terminating
       // while the drain time is being honored. Can call immediatiately if
       // we are in the top thread, otherwise we have to schedule it.
-      m_draining[obj] = 1;
+      if(!m_draining.exists(obj)) m_draining[obj] = 1;
+      else m_draining[obj] = m_draining[obj]+1;
+
       if(in_top_thread) begin
         m_forked_drop(obj, source_obj, description, count, in_top_thread);
       end
@@ -569,6 +570,10 @@ class uvm_objection extends uvm_report_object;
       join_any
       disable fork;
 
+      m_draining[obj] = m_draining[obj] - 1;
+
+      if(m_draining[obj] == 0) begin
+
       m_draining.delete(obj);
 
       if(!m_total_count.exists(obj))
@@ -607,6 +612,7 @@ class uvm_objection extends uvm_report_object;
         end
       end
 
+      end //m_draining == 0
     end
     join_none
  
@@ -711,15 +717,12 @@ class uvm_objection extends uvm_report_object;
   //
   // Waits for the raised, dropped, or all_dropped ~event~ to occur in
   // the given ~obj~. The task returns after all corresponding callbacks
-  // have been executed.
+  // for that event have been executed.
   //
   task wait_for(uvm_objection_event objt_event, uvm_object obj=null);
 
      if (obj==null)
        obj = m_top;
-
-     if (obj == m_top && m_top_all_dropped)
-       return;
 
      if (!m_events.exists(obj)) begin
        m_events[obj] = new;
@@ -963,7 +966,7 @@ typedef class uvm_cmdline_processor;
 
 class uvm_test_done_objection extends m_uvm_test_done_objection_base;
 
-  protected static uvm_test_done_objection m_inst = get();
+   protected static uvm_test_done_objection m_inst;
   protected bit m_forced;
 
   // For communicating all objections dropped and end of phasing
@@ -1002,6 +1005,7 @@ class uvm_test_done_objection extends m_uvm_test_done_objection_base;
   endfunction
 
   
+`ifndef UVM_NO_DEPRECATED
   // m_do_stop_all
   // -------------
 
@@ -1063,7 +1067,7 @@ class uvm_test_done_objection extends m_uvm_test_done_objection_base;
   // simulations. 
 
   time stop_timeout = 0;
-
+   
 
   // Task- all_dropped DEPRECATED
   //
@@ -1181,6 +1185,7 @@ class uvm_test_done_objection extends m_uvm_test_done_objection_base;
     all_dropped(m_top,obj,"force_stop() called",1);
     clear(obj);
   endtask
+`endif
 
 
   // Below are basic data operations needed for all uvm_objects

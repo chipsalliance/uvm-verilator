@@ -39,6 +39,7 @@ the method *fifo.used* will be used here to display which fifo level is used.
 
 module test;
     import uvm_pkg::*;
+    `include "uvm_macros.svh"
 
   class packet;
     int i;

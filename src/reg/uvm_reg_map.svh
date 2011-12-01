@@ -62,6 +62,7 @@ class uvm_reg_map extends uvm_object;
    local uvm_reg_adapter    m_adapter;
    local uvm_sequencer_base m_sequencer;
    local bit                m_auto_predict;
+   local bit                m_check_on_read;
 
    local uvm_reg_block      m_parent;
 
@@ -84,6 +85,13 @@ class uvm_reg_map extends uvm_object;
    extern /*local*/ function void Xinit_address_mapX();
 
    static local uvm_reg_map   m_backdoor;
+
+   // Function: backdoor
+   // Return the backdoor pseudo-map singleton
+   //
+   // This pseudo-map is used to specify or configure the backdoor
+   // instead of a real address map.
+   //
    static function uvm_reg_map backdoor();
       if (m_backdoor == null)
         m_backdoor = new("Backdoor");
@@ -128,15 +136,23 @@ class uvm_reg_map extends uvm_object;
                                   uvm_reg_addr_t    base_addr,
                                   int unsigned      n_bytes,
                                   uvm_endianness_e  endian,
-                                  bit byte_addressing=1);
+                                  bit byte_addressing = 1);
 
    // Function: add_reg
    //
    // Add a register
    //
-   // Add the specified register instance to this address map.
-   // The register is located at the specified base address and has the
-   // specified access rights ("RW", "RO" or "WO").
+   // Add the specified register instance ~rg~ to this address map.
+   //
+   // The register is located at the specified address ~offset~ from
+   // this maps configured base address.
+   //
+   // The ~rights~ specify the register's accessibility via this map.
+   // Valid values are "RW", "RO", and "WO". Whether a register field
+   // can be read or written depends on both the field's configured access
+   // policy (see <uvm_reg_field::configure> and the register's rights in
+   // the map being used to access the field. 
+   //
    // The number of consecutive physical addresses occupied by the register
    // depends on the width of the register and the number of bytes in the
    // physical interface corresponding to this address map.
@@ -341,6 +357,15 @@ class uvm_reg_map extends uvm_object;
    extern virtual function int unsigned get_n_bytes (uvm_hier_e hier=UVM_HIER);
 
 
+   // Function: get_addr_unit_bytes
+   //
+   // Get the number of bytes in the smallest addressable unit in the map.
+   // Returns 1 if the address map was configured using byte-level addressing.
+   // Returns <get_n_bytes()> otherwise.
+   //
+   extern virtual function int unsigned get_addr_unit_bytes();
+
+
    // Function: get_base_addr
    //
    // Gets the endianness of the bus associated with this map. If ~hier~ is
@@ -533,6 +558,42 @@ class uvm_reg_map extends uvm_object;
    // 
    function bit  get_auto_predict(); return m_auto_predict; endfunction
 
+
+   // Function: set_check_on_read
+   // 
+   // Sets the check-on-read mode for his map
+   // and all of its submaps.
+   //
+   // When ~on~ is ~TRUE~, 
+   // the register model will automatically check any value read back from
+   // a register or field against the current value in its mirror
+   // and report any discrepancy.
+   // This effectively combines the functionality of the
+   // <uvm_reg::read()> and <uvm_reg::mirror(UVM_CHECK)> method.
+   // This mode is useful when the register model is used passively.
+   //
+   // When ~on~ is ~FALSE~, no check is made against the mirrored value.
+   //
+   // At the end of the read operation, the mirror value is updated based
+   // on the value that was read reguardless of this mode setting.
+   //
+   // By default, auto-prediction is turned off.
+   // 
+   function void set_check_on_read(bit on=1);
+      m_check_on_read = on;
+      foreach (m_submaps[submap]) begin
+         submap.set_check_on_read(on);
+      end
+   endfunction
+
+
+   // Function: get_check_on_read
+   //
+   // Gets the check-on-read mode setting for this map.
+   // 
+   function bit  get_check_on_read(); return m_check_on_read; endfunction
+
+
    
    // Task: do_bus_write
    //
@@ -579,7 +640,6 @@ class uvm_reg_map extends uvm_object;
    //extern virtual function void      do_pack (uvm_packer packer);
    //extern virtual function void      do_unpack (uvm_packer packer);
 
-
 endclass: uvm_reg_map
    
 
@@ -593,6 +653,7 @@ endclass: uvm_reg_map
 function uvm_reg_map::new(string name = "uvm_reg_map");
    super.new((name == "") ? "default_map" : name);
    m_auto_predict = 0;
+   m_check_on_read = 0;
 endfunction
 
 
@@ -972,7 +1033,7 @@ function void uvm_reg_map::add_parent_map(uvm_reg_map parent_map, uvm_reg_addr_t
 
    if (m_parent_map != null) begin
       `uvm_error("RegModel",
-          $psprintf("Map \"%s\" already a submap of map \"%s\" at offset 'h%h",
+          $sformatf("Map \"%s\" already a submap of map \"%s\" at offset 'h%h",
                     get_full_name(), m_parent_map.get_full_name(),
                     m_parent_map.get_submap_offset(this)));
       return;
@@ -1049,6 +1110,13 @@ function int unsigned uvm_reg_map::get_n_bytes(uvm_hier_e hier=UVM_HIER);
   if (hier == UVM_NO_HIER)
     return m_n_bytes;
   return m_system_n_bytes;
+endfunction
+
+
+// get_addr_unit_bytes
+
+function int unsigned uvm_reg_map::get_addr_unit_bytes();
+   return (m_byte_addressing) ? 1 : m_n_bytes;
 endfunction
 
 
@@ -1226,9 +1294,11 @@ function void uvm_reg_map::set_base_addr(uvm_reg_addr_t offset);
       m_parent_map.set_submap_offset(this, offset);
    end
    else begin
-      uvm_reg_map top_map = get_root_map();
       m_base_addr = offset;
-      top_map.Xinit_address_mapX();
+      if (m_parent.is_locked()) begin
+         uvm_reg_map top_map = get_root_map();
+         top_map.Xinit_address_mapX();
+      end
    end
 endfunction
 
@@ -1237,7 +1307,7 @@ endfunction
 
 function int unsigned uvm_reg_map::get_size();
 
-  int unsigned max_addr = 0;
+  int unsigned max_addr;
   int unsigned addr;
 
   // get max offset from registers
@@ -1310,7 +1380,7 @@ function int uvm_reg_map::get_physical_addresses(uvm_reg_addr_t     base_addr,
    addr = new [0];
    
    if (n_bytes <= 0) begin
-      `uvm_fatal("RegModel", $psprintf("Cannot access %0d bytes. Must be greater than 0",
+      `uvm_fatal("RegModel", $sformatf("Cannot access %0d bytes. Must be greater than 0",
                                      n_bytes));
       return 0;
    end
@@ -1364,6 +1434,9 @@ function int uvm_reg_map::get_physical_addresses(uvm_reg_addr_t     base_addr,
    if (up_map == null) begin
       // This is the top-most system/block!
       addr = new [local_addr.size()] (local_addr);
+      foreach (addr[i]) begin
+         addr[i] += m_base_addr;
+      end
    end else begin
       uvm_reg_addr_t  sys_addr[];
       uvm_reg_addr_t  base_addr;
@@ -1407,7 +1480,10 @@ endfunction: get_physical_addresses
 // set_submap_offset
 
 function void uvm_reg_map::set_submap_offset(uvm_reg_map submap, uvm_reg_addr_t offset);
-  assert(submap != null);
+  if (submap == null) begin
+    `uvm_error("REG/NULL","set_submap_offset: submap handle is null")
+    return;
+  end
   m_submaps[submap] = offset;
   if (m_parent.is_locked()) begin
     uvm_reg_map root_map = get_root_map();
@@ -1419,7 +1495,10 @@ endfunction
 // get_submap_offset
 
 function uvm_reg_addr_t uvm_reg_map::get_submap_offset(uvm_reg_map submap);
-  assert(submap != null);
+  if (submap == null) begin
+    `uvm_error("REG/NULL","set_submap_offset: submap handle is null")
+    return -1;
+  end
   if (!m_submaps.exists(submap)) begin
     `uvm_error("RegModel",{"Map '",submap.get_full_name(),
                       "' is not a submap of '",get_full_name(),"'"})
@@ -1434,7 +1513,7 @@ endfunction
 function uvm_reg uvm_reg_map::get_reg_by_offset(uvm_reg_addr_t offset,
                                                 bit            read = 1);
    if (!m_parent.is_locked()) begin
-      `uvm_error("RegModel", $psprintf("Cannot get register by offset: Block %s is not locked.", m_parent.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Cannot get register by offset: Block %s is not locked.", m_parent.get_full_name()));
       return null;
    end
 
@@ -1452,7 +1531,7 @@ endfunction
 
 function uvm_mem uvm_reg_map::get_mem_by_offset(uvm_reg_addr_t offset);
    if (!m_parent.is_locked()) begin
-      `uvm_error("RegModel", $psprintf("Cannot memory register by offset: Block %s is not locked.", m_parent.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Cannot memory register by offset: Block %s is not locked.", m_parent.get_full_name()));
       return null;
    end
 
@@ -1587,6 +1666,11 @@ function void uvm_reg_map::Xinit_address_mapX();
        end
      end
    end
+
+   // If the block has no registers or memories,
+   // bus_width won't be set
+   if (bus_width == 0) bus_width = m_n_bytes;
+
    m_system_n_bytes = bus_width;
 endfunction
 
@@ -1603,19 +1687,25 @@ function void uvm_reg_map::Xget_bus_infoX(uvm_reg_item rw,
 
   if (rw.element_kind == UVM_MEM) begin
     uvm_mem mem;
-    assert($cast(mem,rw.element));
+    if(rw.element == null || !$cast(mem,rw.element))
+      `uvm_fatal("REG/CAST", {"uvm_reg_item 'element_kind' is UVM_MEM, ",
+                 "but 'element' does not point to a memory: ",rw.get_name()})
     map_info = get_mem_map_info(mem);
     size = mem.get_n_bits();
   end
   else if (rw.element_kind == UVM_REG) begin
     uvm_reg rg;
-    assert($cast(rg,rw.element));
+    if(rw.element == null || !$cast(rg,rw.element))
+      `uvm_fatal("REG/CAST", {"uvm_reg_item 'element_kind' is UVM_REG, ",
+                 "but 'element' does not point to a register: ",rw.get_name()})
     map_info = get_reg_map_info(rg);
     size = rg.get_n_bits();
   end
   else if (rw.element_kind == UVM_FIELD) begin
     uvm_reg_field field;
-    assert($cast(field,rw.element));
+    if(rw.element == null || !$cast(field,rw.element))
+      `uvm_fatal("REG/CAST", {"uvm_reg_item 'element_kind' is UVM_FIELD, ",
+                 "but 'element' does not point to a field: ",rw.get_name()})
     map_info = get_reg_map_info(field.get_parent());
     size = field.get_n_bits();
     lsb = field.get_lsb_pos();
@@ -1634,8 +1724,16 @@ task uvm_reg_map::do_write(uvm_reg_item rw);
   uvm_reg_adapter adapter = system_map.get_adapter();
   uvm_sequencer_base sequencer = system_map.get_sequencer();
 
+  if (adapter != null && adapter.parent_sequence != null) begin
+    uvm_object o;
+    uvm_sequence_base seq;
+    o = adapter.parent_sequence.clone();
+    assert($cast(seq,o));
+    seq.set_parent_sequence(rw.parent);
+    rw.parent = seq;
+  end
   if (rw.parent == null)
-    rw.parent = new("default_parent_seq");
+     rw.parent = new("default_parent_seq");
 
   if (adapter == null) begin
     rw.set_sequencer(sequencer);
@@ -1658,6 +1756,14 @@ task uvm_reg_map::do_read(uvm_reg_item rw);
   uvm_reg_adapter adapter = system_map.get_adapter();
   uvm_sequencer_base sequencer = system_map.get_sequencer();
 
+  if (adapter != null && adapter.parent_sequence != null) begin
+    uvm_object o;
+    uvm_sequence_base seq;
+    o = adapter.parent_sequence.clone();
+    assert($cast(seq,o));
+    seq.set_parent_sequence(rw.parent);
+    rw.parent = seq;
+  end
   if (rw.parent == null)
     rw.parent = new("default_parent_seq");
 
@@ -1706,7 +1812,7 @@ task uvm_reg_map::do_bus_write (uvm_reg_item rw,
     /* calculate byte_enables */
     if (rw.element_kind == UVM_FIELD) begin
       int temp_be;
-      int idx=0;
+      int idx;
       n_access_extra = lsb%(bus_width*8);                
       n_access = n_access_extra + n_bits;
       temp_be = n_access_extra;
@@ -1723,6 +1829,8 @@ task uvm_reg_map::do_bus_write (uvm_reg_item rw,
       byte_en &= (1<<idx)-1;
       for (int i=0; i<skip; i++)
         void'(addrs.pop_front());
+      while (addrs.size() > (n_bits/(bus_width*8) + 1))
+        void'(addrs.pop_back());
     end
               
     foreach(addrs[i]) begin: foreach_addr
@@ -1731,10 +1839,11 @@ task uvm_reg_map::do_bus_write (uvm_reg_item rw,
       uvm_reg_bus_op rw_access;
       uvm_reg_data_t data;
 
+
       data = (value >> (curr_byte*8)) & ((1'b1 << (bus_width * 8))-1);
        
       `uvm_info(get_type_name(),
-         $psprintf("Writing 'h%0h at 'h%0h via map \"%s\"...",
+         $sformatf("Writing 'h%0h at 'h%0h via map \"%s\"...",
               data, addrs[i], rw.map.get_full_name()), UVM_FULL);
 
       if (rw.element_kind == UVM_FIELD) begin
@@ -1748,13 +1857,17 @@ task uvm_reg_map::do_bus_write (uvm_reg_item rw,
       rw_access.n_bits  = (n_bits > bus_width*8) ? bus_width*8 : n_bits;
       rw_access.byte_en = byte_en;
 
+      adapter.m_set_item(rw);
       bus_req = adapter.reg2bus(rw_access);
-      assert (bus_req!=null) else `uvm_fatal("RegMem",{"adapter [",adapter.get_name(),"] didnt return a bus transaction"});
+      adapter.m_set_item(null);
+      
+      if (bus_req == null)
+        `uvm_fatal("RegMem",{"adapter [",adapter.get_name(),"] didnt return a bus transaction"});
       
       bus_req.set_sequencer(sequencer);
       rw.parent.start_item(bus_req,rw.prior);
 
-      if (rw.parent != null && rw_access.addr == addrs[0])
+      if (rw.parent != null && i == 0)
         rw.parent.mid_do(rw);
 
       rw.parent.finish_item(bus_req);
@@ -1771,13 +1884,13 @@ task uvm_reg_map::do_bus_write (uvm_reg_item rw,
         adapter.bus2reg(bus_req,rw_access);
       end
 
-      if (rw.parent != null && rw_access.addr == addrs[addrs.size()-1])
+      if (rw.parent != null && i == addrs.size()-1)
         rw.parent.post_do(rw);
 
       rw.status = rw_access.status;
 
       `uvm_info(get_type_name(),
-         $psprintf("Wrote 'h%0h at 'h%0h via map \"%s\": %s...",
+         $sformatf("Wrote 'h%0h at 'h%0h via map \"%s\": %s...",
             data, addrs[i], rw.map.get_full_name(), rw.status.name()), UVM_FULL)
 
       if (rw.status == UVM_NOT_OK)
@@ -1827,7 +1940,7 @@ task uvm_reg_map::do_bus_read (uvm_reg_item rw,
     /* calculate byte_enables */
     if (rw.element_kind == UVM_FIELD) begin
       int temp_be;
-      int idx=0;
+      int idx;
       n_access_extra = lsb%(bus_width*8);                
       n_access = n_access_extra + n_bits;
       temp_be = n_access_extra;
@@ -1843,6 +1956,8 @@ task uvm_reg_map::do_bus_read (uvm_reg_item rw,
       byte_en &= (1<<idx)-1;
       for (int i=0; i<skip; i++)
         void'(addrs.pop_front());
+      while (addrs.size() > (n_bits/(bus_width*8) + 1))
+        void'(addrs.pop_back());
     end
     rw.value[val_idx] = 0;
               
@@ -1852,8 +1967,9 @@ task uvm_reg_map::do_bus_read (uvm_reg_item rw,
       uvm_reg_bus_op rw_access;
       uvm_reg_data_logic_t data;
        
+
       `uvm_info(get_type_name(),
-         $psprintf("Reading address 'h%0h via map \"%s\"...",
+         $sformatf("Reading address 'h%0h via map \"%s\"...",
                    addrs[i], get_full_name()), UVM_FULL);
                 
       if (rw.element_kind == UVM_FIELD)
@@ -1866,12 +1982,16 @@ task uvm_reg_map::do_bus_read (uvm_reg_item rw,
       rw_access.byte_en = byte_en;
       rw_access.n_bits = (n_bits > bus_width*8) ? bus_width*8 : n_bits;
                           
+      adapter.m_set_item(rw);
       bus_req = adapter.reg2bus(rw_access);
+      adapter.m_set_item(null);
+      if (bus_req == null)
+        `uvm_fatal("RegMem",{"adapter [",adapter.get_name(),"] didnt return a bus transaction"});
+
       bus_req.set_sequencer(sequencer);
       rw.parent.start_item(bus_req,rw.prior);
 
-      if (rw.parent != null && rw_access.addr == addrs[0]) begin
-        rw.parent.pre_do(1);
+      if (rw.parent != null && i == 0) begin
         rw.parent.mid_do(rw);
       end
 
@@ -1897,7 +2017,7 @@ task uvm_reg_map::do_bus_read (uvm_reg_item rw,
         rw.status = UVM_HAS_X;
          
       `uvm_info(get_type_name(),
-         $psprintf("Read 'h%0h at 'h%0h via map \"%s\": %s...", data,
+         $sformatf("Read 'h%0h at 'h%0h via map \"%s\": %s...", data,
                    addrs[i], get_full_name(), rw.status.name()), UVM_FULL);
 
       if (rw.status == UVM_NOT_OK)
@@ -1905,7 +2025,7 @@ task uvm_reg_map::do_bus_read (uvm_reg_item rw,
 
       rw.value[val_idx] |= data << curr_byte*8;
 
-      if (rw.parent != null && rw_access.addr == addrs[addrs.size()])
+      if (rw.parent != null && i == addrs.size()-1)
         rw.parent.post_do(rw);
 
       curr_byte += bus_width;
@@ -1932,7 +2052,7 @@ function void uvm_reg_map::do_print (uvm_printer printer);
    uvm_mem  mems[$];
    uvm_endianness_e endian;
    uvm_reg_map maps[$];
-   string prefix = "";
+   string prefix;
    uvm_sequencer_base sqr=get_sequencer();
   
    super.do_print(printer);
@@ -1948,16 +2068,16 @@ function void uvm_reg_map::do_print (uvm_printer printer);
              
    get_registers(regs,UVM_NO_HIER);
    foreach (regs[j]) 
-        printer.print_generic(regs[j].get_name(), regs[j].get_type_name(),-2,$psprintf("@%0d +'h%0x",regs[j].get_inst_id(),regs[j].get_address(this)));
+        printer.print_generic(regs[j].get_name(), regs[j].get_type_name(),-2,$sformatf("@%0d +'h%0x",regs[j].get_inst_id(),regs[j].get_address(this)));
    
    
    get_memories(mems);
    foreach (mems[j]) 
-        printer.print_generic(mems[j].get_name(), mems[j].get_type_name(),-2,$psprintf("@%0d +'h%0x",mems[j].get_inst_id(),mems[j].get_address(0,this)));
+        printer.print_generic(mems[j].get_name(), mems[j].get_type_name(),-2,$sformatf("@%0d +'h%0x",mems[j].get_inst_id(),mems[j].get_address(0,this)));
    
    get_virtual_registers(vregs);
    foreach (vregs[j]) 
-        printer.print_generic(vregs[j].get_name(), vregs[j].get_type_name(),-2,$psprintf("@%0d +'h%0x",vregs[j].get_inst_id(),vregs[j].get_address(0,this)));
+        printer.print_generic(vregs[j].get_name(), vregs[j].get_type_name(),-2,$sformatf("@%0d +'h%0x",vregs[j].get_inst_id(),vregs[j].get_address(0,this)));
     
    get_submaps(maps);
    foreach (maps[j]) 
@@ -1971,7 +2091,7 @@ function string uvm_reg_map::convert2string();
    uvm_vreg vregs[$];
    uvm_mem  mems[$];
    uvm_endianness_e endian;
-   string prefix = "";
+   string prefix;
 
    $sformat(convert2string, "%sMap %s", prefix, get_full_name());
    endian = get_endian(UVM_NO_HIER);

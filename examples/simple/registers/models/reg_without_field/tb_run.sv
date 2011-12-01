@@ -51,13 +51,13 @@ class tb_test extends uvm_test;
 
       env.regmodel.R.reset();
       env.regmodel.R.read(status, dat);
-      if (dat != 8'h00) `uvm_error("Test", $psprintf("R is not as expected after reset: 'h%0h instead of 'h00", dat));
+      if (dat != 8'h00) `uvm_error("Test", $sformatf("R is not as expected after reset: 'h%0h instead of 'h00", dat));
       env.regmodel.R.write(status, 8'hFF);
       env.regmodel.R.read(status, dat);
-      if (dat != 8'hFF) `uvm_error("Test", $psprintf("R is not as expected after write: 'h%0h instead of 'hFF", dat));
+      if (dat != 8'hFF) `uvm_error("Test", $sformatf("R is not as expected after write: 'h%0h instead of 'hFF", dat));
       void'(env.regmodel.randomize() with { R.value == 8'hA5; });
       dat = env.regmodel.R.get();
-      if (dat != 8'hA5) `uvm_error("Test", $psprintf("R is not as expected after randomize: 'h%0h instead of 'hA5", dat));
+      if (dat != 8'hA5) `uvm_error("Test", $sformatf("R is not as expected after randomize: 'h%0h instead of 'hA5", dat));
             
       phase.drop_objection(this);
    endtask

@@ -30,9 +30,9 @@
   `define UVM_NUM_LINES 120
 `endif
 
-`ifndef UVM_USE_FILE_LINE
-`define UVM_REPORT_DISABLE_FILE_LINE
-`endif
+//`ifndef UVM_USE_FILE_LINE
+//`define UVM_REPORT_DISABLE_FILE_LINE
+//`endif
 
 `ifdef UVM_REPORT_DISABLE_FILE_LINE
 `define UVM_REPORT_DISABLE_FILE
@@ -67,7 +67,7 @@
 // - The `__FILE__ and `__LINE__ information is automatically provided to the
 //   underlying uvm_report_* call. Having the file and line number from where
 //   a report was issued aides in debug. You can disable display of file and
-//   line information in reports by defining UVM_DISABLE_REPORT_FILE_LINE on
+//   line information in reports by defining UVM_REPORT_DISABLE_FILE_LINE on
 //   the command line.
 //
 // The macros also enforce a verbosity setting of UVM_NONE for warnings, errors
@@ -164,8 +164,8 @@
 //| `uvm_info_context(ID,MSG,VERBOSITY,CNTXT)
 //
 // Operates identically to `uvm_info but requires that the
-// context in which the message is printed be explicitly supplied as a
-// macro argument.
+// context, or <uvm_report_object>, in which the message is printed be 
+// explicitly supplied as a macro argument.
 
 `define uvm_info_context(ID, MSG, VERBOSITY, CNTXT) \
    begin \
@@ -178,8 +178,8 @@
 //| `uvm_warning_context(ID,MSG,CNTXT)
 //
 // Operates identically to `uvm_warning but requires that the
-// context in which the message is printed be explicitly supplied as a
-// macro argument.
+// context, or <uvm_report_object>, in which the message is printed be
+// explicitly supplied as a macro argument.
 
 `define uvm_warning_context(ID, MSG, CNTXT) \
    begin \
@@ -192,8 +192,8 @@
 //| `uvm_error_context(ID,MSG,CNTXT)
 //
 // Operates identically to `uvm_error but requires that the
-// context in which the message is printed be explicitly supplied as a
-// macro argument.
+// context, or <uvm_report_object> in which the message is printed be 
+// explicitly supplied as a macro argument.
 
 `define uvm_error_context(ID, MSG, CNTXT) \
    begin \
@@ -206,8 +206,8 @@
 //| `uvm_fatal_context(ID,MSG,CNTXT)
 //
 // Operates identically to `uvm_fatal but requires that the
-// context in which the message is printed be explicitly supplied as a
-// macro argument.
+// context, or <uvm_report_object>, in which the message is printed be 
+// explicitly supplied as a macro argument.
 
 `define uvm_fatal_context(ID, MSG, CNTXT) \
    begin \

@@ -52,7 +52,7 @@ module top;
     endfunction
 
     function packet get_packet();
-      `uvm_info("PKTGEN", $psprintf("Getting a packet from %s (%s)", get_full_name(), get_type_name()),UVM_MEDIUM)
+      `uvm_info("PKTGEN", $sformatf("Getting a packet from %s (%s)", get_full_name(), get_type_name()),UVM_MEDIUM)
       return super.get_packet();
     endfunction
 
@@ -69,6 +69,11 @@ module top;
     //Use the macro in a class to implement factory registration along with other
     //utilities (create, get_type_name).
     `uvm_object_utils(mypacket)
+
+  function new(string name="mypacket");
+     super.new(name);
+  endfunction
+
   endclass
 
   initial begin

@@ -292,7 +292,7 @@ function void uvm_reg_backdoor::start_update_thread(uvm_object element);
             this.read(r_item);
             val = r_item.value[0];
             if (r_item.status != UVM_IS_OK) begin
-               `uvm_error("RegModel", $psprintf("Backdoor read of register '%s' failed.",
+               `uvm_error("RegModel", $sformatf("Backdoor read of register '%s' failed.",
                           rg.get_name()));
             end
             foreach (fields[i]) begin

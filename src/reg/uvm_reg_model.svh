@@ -45,6 +45,7 @@ typedef class uvm_reg_map;
 typedef class uvm_reg_map_info;
 typedef class uvm_reg_sequence;
 typedef class uvm_reg_adapter;
+typedef class uvm_reg_indirect_data;
 
 
 //-------------
@@ -379,106 +380,6 @@ class uvm_hdl_path_concat;
 endclass
 
 
-//------------------------------------------------------------------------------
-// CLASS: uvm_utils
-//
-// This class contains useful template functions.
-//
-//------------------------------------------------------------------------------
-
-
-class uvm_utils #(type TYPE=int, string FIELD="config");
-
-  typedef TYPE types_t[$];
-
-  // Function: find_all
-  //
-  // Recursively finds all component instances of the parameter type ~TYPE~,
-  // starting with the component given by ~start~. Uses <uvm_root::find_all>.
-
-  static function types_t find_all(uvm_component start);
-    uvm_component list[$];
-    types_t types;
-    uvm_root top;
-    top = uvm_root::get();
-    top.find_all("*",list,start);
-    foreach (list[i]) begin
-      TYPE typ;
-      if ($cast(typ,list[i]))
-        types.push_back(typ);
-    end
-    if (types.size() == 0) begin
-      `uvm_warning("find_type-no match",{"Instance of type '",TYPE::type_name,
-         " not found in component hierarchy beginning at ",start.get_full_name()})
-    end
-    return types;
-  endfunction
-
-  static function TYPE find(uvm_component start);
-    types_t types = find_all(start);
-    if (types.size() == 0)
-      return null;
-    if (types.size() > 1) begin
-      `uvm_warning("find_type-multi match",{"More than one instance of type '",TYPE::type_name,
-         " found in component hierarchy beginning at ",start.get_full_name()})
-      return null;
-    end
-    return types[0];
-  endfunction
-
-  static function TYPE create_type_by_name(string type_name, string contxt);
-    uvm_object obj;
-    TYPE  typ;
-    obj = factory.create_object_by_name(type_name,contxt,type_name);
-       if (!$cast(typ,obj))
-         uvm_report_error("WRONG_TYPE",{"The type_name given '",type_name,
-                "' with context '",contxt,"' did not produce the expected type."});
-    return typ;
-  endfunction
-
-
-  // Function: get_config
-  //
-  // This method gets the object config of type ~TYPE~
-  // associated with component ~comp~.
-  // We check for the two kinds of error which may occur with this kind of 
-  // operation.
-
-  static function TYPE get_config(uvm_component comp, bit is_fatal);
-    uvm_object obj;
-    TYPE cfg;
-
-    if (!comp.get_config_object(FIELD, obj, 0)) begin
-      if (is_fatal)
-        comp.uvm_report_fatal("NO_SET_CFG", {"no set_config to field '", FIELD,
-                           "' for component '",comp.get_full_name(),"'"},
-                           UVM_MEDIUM, `uvm_file , `uvm_line  );
-      else
-        comp.uvm_report_warning("NO_SET_CFG", {"no set_config to field '", FIELD,
-                           "' for component '",comp.get_full_name(),"'"},
-                           UVM_MEDIUM, `uvm_file , `uvm_line  );
-      return null;
-    end
-
-    if (!$cast(cfg, obj)) begin
-      if (is_fatal)
-        comp.uvm_report_fatal( "GET_CFG_TYPE_FAIL",
-                          {"set_config_object with field name ",FIELD,
-                          " is not of type '",TYPE::type_name,"'"},
-                          UVM_NONE , `uvm_file , `uvm_line );
-      else
-        comp.uvm_report_warning( "GET_CFG_TYPE_FAIL",
-                          {"set_config_object with field name ",FIELD,
-                          " is not of type '",TYPE::type_name,"'"},
-                          UVM_NONE , `uvm_file , `uvm_line );
-    end
-
-    return cfg;
-  endfunction
-
-endclass
-
-
 
 
 // concat2string
@@ -496,7 +397,7 @@ function automatic string uvm_hdl_concat2string(uvm_hdl_path_concat concat);
 
       image = { image, (i == 0) ? "" : ", ", slice.path };
       if (slice.offset >= 0)
-         image = { image, "@", $psprintf("[%0d +: %0d]", slice.offset, slice.size) };
+         image = { image, "@", $sformatf("[%0d +: %0d]", slice.offset, slice.size) };
    end
 
    image = { image, "}" };
@@ -514,6 +415,7 @@ typedef struct packed {
 
 `include "reg/uvm_reg_item.svh"
 `include "reg/uvm_reg_adapter.svh"
+`include "reg/uvm_reg_predictor.svh"
 `include "reg/uvm_reg_sequence.svh"
 `include "reg/uvm_reg_cbs.svh"
 `include "reg/uvm_reg_backdoor.svh"

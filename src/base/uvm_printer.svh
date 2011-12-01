@@ -94,7 +94,7 @@ virtual class uvm_printer;
   // name  - The name of the field. 
   // value - The value of the field.
   // size  - The number of bits of the field (maximum is 4096). 
-  // radix - The radix to use for printingthe printer knob for radix is used
+  // radix - The radix to use for printing. The printer knob for radix is used
   //           if no radix is specified. 
   // scope_separator - is used to find the leaf name since many printers only
   //           print the leaf name of a field.  Typical values for the separator
@@ -260,7 +260,7 @@ virtual class uvm_printer;
 
   protected bit m_array_stack[$];
   uvm_scope_stack m_scope = new;
-  string m_string = "";
+  string m_string;
 
   // holds each cell entry
   protected uvm_printer_row_info m_rows[$];
@@ -714,7 +714,12 @@ function void uvm_printer::print_object_header (string name,
   m_scope.set_arg(name);
 
   row_info.level = m_scope.depth();
-  row_info.name = adjust_name(m_scope.get(),scope_separator);
+
+  if(row_info.level == 0 && knobs.show_root==1)
+	row_info.name = value.get_full_name();
+  else
+	row_info.name = adjust_name(m_scope.get(),scope_separator);
+
   row_info.type_name = (value != null) ?  value.get_type_name() : "object";
   row_info.size = "-";
   row_info.val = knobs.reference ? uvm_object_value_str(value) : "-";
@@ -968,7 +973,7 @@ endfunction
 
 function string uvm_table_printer::emit();
 
-  string s = "";
+  string s;
   string user_format;
   string dash = "---------------------------------------------------------------------------------------------------";
   string space= "                                                                                                   ";

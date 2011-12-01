@@ -123,18 +123,8 @@ virtual class uvm_sequence #(type REQ = uvm_sequence_item,
   endfunction
 
 
-  virtual function void put_base_response(input uvm_sequence_item response);
-    if ((response_queue_depth == -1) ||
-        (response_queue.size() < response_queue_depth)) begin
-      response_queue.push_back(response);
-      return;
-    end
-    if (response_queue_error_report_disabled == 0) begin
-      uvm_report_error(get_full_name(), "Response queue overflow, response was dropped", UVM_NONE);
-    end
-  endfunction
-
-
+  // Function- do_print
+  //
   function void do_print (uvm_printer printer);
     super.do_print(printer);
     printer.print_object("req", req);

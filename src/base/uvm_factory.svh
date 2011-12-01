@@ -2,7 +2,7 @@
 //------------------------------------------------------------------------------
 //   Copyright 2007-2011 Mentor Graphics Corporation
 //   Copyright 2007-2011 Cadence Design Systems, Inc.
-//   Copyright 2010 Synopsys, Inc.
+//   Copyright 2010-2011 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -70,6 +70,9 @@ class uvm_factory;
 
   extern `_protected function new ();
 
+  // Function: get()
+  // Get the factory singleton
+  //
   extern static function uvm_factory get();
 
   // Group: Registering Types
@@ -741,11 +744,7 @@ function void uvm_factory::register (uvm_object_wrapper obj);
   if (obj == null) begin
     uvm_report_fatal ("NULLWR", "Attempting to register a null object with the factory", UVM_NONE);
   end
-  if (obj.get_type_name() == "" || obj.get_type_name() == "<unknown>") begin
-    //uvm_report_warning("EMPTNM", {"Factory registration with ",
-    //  "unknown type name prevents name-based operations. "});
-  end
-  else begin
+  if (obj.get_type_name() != "" && obj.get_type_name() != "<unknown>") begin
     if (m_type_names.exists(obj.get_type_name()))
       uvm_report_warning("TPRGED", {"Type name '",obj.get_type_name(),
         "' already registered with factory. No string-based lookup ",
@@ -763,6 +762,8 @@ function void uvm_factory::register (uvm_object_wrapper obj);
     m_types[obj] = 1;
     // If a named override happens before the type is registered, need to copy
     // the override queue.
+    // Note:Registration occurs via static initialization, which occurs ahead of
+    // procedural (e.g. initial) blocks. There should not be any preexisting overrides.
     if(m_inst_override_name_queues.exists(obj.get_type_name())) begin
        m_inst_override_queues[obj] = new;
        m_inst_override_queues[obj].queue = m_inst_override_name_queues[obj.get_type_name()].queue;
@@ -772,7 +773,7 @@ function void uvm_factory::register (uvm_object_wrapper obj);
        if(! m_inst_override_queues.exists(obj)) 
             m_inst_override_queues[obj] = new;
        foreach (m_wildcard_inst_overrides[i]) begin
-         if(uvm_is_match(obj.get_type_name(), m_wildcard_inst_overrides[i].orig_type_name))
+         if(uvm_is_match( m_wildcard_inst_overrides[i].orig_type_name, obj.get_type_name()))
             m_inst_override_queues[obj].queue.push_back(m_wildcard_inst_overrides[i]);
        end
     end
@@ -858,8 +859,8 @@ function void uvm_factory::set_type_override_by_name (string original_type_name,
                                                       bit replace=1);
   bit replaced;
   
-  uvm_object_wrapper original_type=null;
-  uvm_object_wrapper override_type=null;
+  uvm_object_wrapper original_type;
+  uvm_object_wrapper override_type;
 
   if(m_type_names.exists(original_type_name))
     original_type = m_type_names[original_type_name];
@@ -987,8 +988,8 @@ function void uvm_factory::set_inst_override_by_name (string original_type_name,
                                                       string full_inst_path);
   
   uvm_factory_override override;
-  uvm_object_wrapper original_type=null;
-  uvm_object_wrapper override_type=null;
+  uvm_object_wrapper original_type;
+  uvm_object_wrapper override_type;
 
   if(m_type_names.exists(original_type_name))
     original_type = m_type_names[original_type_name];
@@ -1186,7 +1187,7 @@ endfunction
 
 function uvm_object_wrapper uvm_factory::find_override_by_name (string requested_type_name,
                                                                 string full_inst_path);
-  uvm_object_wrapper rtype = null;
+  uvm_object_wrapper rtype;
   uvm_factory_queue_class qc;
 
   uvm_object_wrapper override;
@@ -1366,7 +1367,7 @@ function void uvm_factory::print (int all_types=1);
   uvm_factory_queue_class sorted_override_queues[string];
 
   string tmp;
-  int id=0;
+  int id;
   uvm_object_wrapper obj;
 
   //sort the override queues
@@ -1434,10 +1435,15 @@ function void uvm_factory::print (int all_types=1);
     if (!m_type_overrides.size())
       $display("\nNo type overrides are registered with this factory");
     else begin
+      // Resize for type overrides
+      if (max1 < 14) max1 = 14;
+      if (max2 < 13) max2 = 13;
+      if (max3 < 13) max3 = 13;
+
       foreach (m_type_overrides[i]) begin
         if (m_type_overrides[i].orig_type_name.len() > max1)
           max1=m_type_overrides[i].orig_type_name.len();
-        if (m_type_overrides[i].ovrd_type_name.len() > max3)
+        if (m_type_overrides[i].ovrd_type_name.len() > max2)
           max2=m_type_overrides[i].ovrd_type_name.len();
       end
       if (max1 < 14) max1 = 14;

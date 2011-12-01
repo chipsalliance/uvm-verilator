@@ -106,8 +106,8 @@ class uvm_mem_mam;
    local uvm_mem_mam_cfg cfg;
    local uvm_mem_region in_use[$];
    local int for_each_idx = -1;
-   local string fname = "";
-   local int lineno = 0;
+   local string fname;
+   local int lineno;
 
 
    // Function: new
@@ -282,9 +282,9 @@ class uvm_mem_region;
 
    local int unsigned len;
    local int unsigned n_bytes;
-   local uvm_mem_mam      parent;
-   local string       fname = "";
-   local int          lineno = 0;
+   local uvm_mem_mam  parent;
+   local string       fname;
+   local int          lineno;
 
    /*local*/ uvm_vreg XvregX;
 
@@ -670,7 +670,7 @@ function uvm_mem_mam_cfg uvm_mem_mam::reconfigure(uvm_mem_mam_cfg cfg = null);
    // Cannot reconfigure n_bytes
    if (cfg.n_bytes !== this.cfg.n_bytes) begin
       top.uvm_report_error("uvm_mem_mam",
-                 $psprintf("Cannot reconfigure Memory Allocation Manager with a different number of bytes (%0d !== %0d)",
+                 $sformatf("Cannot reconfigure Memory Allocation Manager with a different number of bytes (%0d !== %0d)",
                            cfg.n_bytes, this.cfg.n_bytes), UVM_LOW);
       return this.cfg;
    end
@@ -680,7 +680,7 @@ function uvm_mem_mam_cfg uvm_mem_mam::reconfigure(uvm_mem_mam_cfg cfg = null);
       if (this.in_use[i].get_start_offset() < cfg.start_offset ||
           this.in_use[i].get_end_offset() > cfg.end_offset) begin
          top.uvm_report_error("uvm_mem_mam",
-                    $psprintf("Cannot reconfigure Memory Allocation Manager with a currently allocated region outside of the managed address range ([%0d:%0d] outside of [%0d:%0d])",
+                    $sformatf("Cannot reconfigure Memory Allocation Manager with a currently allocated region outside of the managed address range ([%0d:%0d] outside of [%0d:%0d])",
                               this.in_use[i].get_start_offset(),
                               this.in_use[i].get_end_offset(),
                               cfg.start_offset, cfg.end_offset), UVM_LOW);
@@ -706,7 +706,7 @@ function uvm_mem_region uvm_mem_mam::reserve_region(bit [63:0]   start_offset,
    end
 
    if (start_offset < this.cfg.start_offset) begin
-      `uvm_error("RegModel", $psprintf("Cannot reserve before start of memory space: 'h%h < 'h%h",
+      `uvm_error("RegModel", $sformatf("Cannot reserve before start of memory space: 'h%h < 'h%h",
                                      start_offset, this.cfg.start_offset));
       return null;
    end
@@ -715,12 +715,12 @@ function uvm_mem_region uvm_mem_mam::reserve_region(bit [63:0]   start_offset,
    n_bytes = (end_offset - start_offset + 1) * this.cfg.n_bytes;
 
    if (end_offset > this.cfg.end_offset) begin
-      `uvm_error("RegModel", $psprintf("Cannot reserve past end of memory space: 'h%h > 'h%h",
+      `uvm_error("RegModel", $sformatf("Cannot reserve past end of memory space: 'h%h > 'h%h",
                                      end_offset, this.cfg.end_offset));
       return null;
    end
     
-    `uvm_info("RegModel",$psprintf("Attempting to reserve ['h%h:'h%h]...",
+    `uvm_info("RegModel",$sformatf("Attempting to reserve ['h%h:'h%h]...",
           start_offset, end_offset),UVM_MEDIUM)
 
 
@@ -730,7 +730,7 @@ function uvm_mem_region uvm_mem_mam::reserve_region(bit [63:0]   start_offset,
       if (start_offset <= this.in_use[i].get_end_offset() &&
           end_offset >= this.in_use[i].get_start_offset()) begin
          // Overlap!
-         `uvm_error("RegModel", $psprintf("Cannot reserve ['h%h:'h%h] because it overlaps with %s",
+         `uvm_error("RegModel", $sformatf("Cannot reserve ['h%h:'h%h] because it overlaps with %s",
                                         start_offset, end_offset,
                                         this.in_use[i].convert2string()));
          return null;
@@ -843,7 +843,7 @@ task uvm_mem_region::write(output uvm_status_e       status,
 
    if (offset > this.len) begin
       `uvm_error("RegModel",
-                 $psprintf("Attempting to write to an offset outside of the allocated region (%0d > %0d)",
+                 $sformatf("Attempting to write to an offset outside of the allocated region (%0d > %0d)",
                            offset, this.len));
       status = UVM_NOT_OK;
       return;
@@ -876,7 +876,7 @@ task uvm_mem_region::read(output uvm_status_e       status,
 
    if (offset > this.len) begin
       `uvm_error("RegModel",
-                 $psprintf("Attempting to read from an offset outside of the allocated region (%0d > %0d)",
+                 $sformatf("Attempting to read from an offset outside of the allocated region (%0d > %0d)",
                            offset, this.len));
       status = UVM_NOT_OK;
       return;
@@ -909,7 +909,7 @@ task uvm_mem_region::burst_write(output uvm_status_e       status,
 
    if (offset + value.size() > this.len) begin
       `uvm_error("RegModel",
-                 $psprintf("Attempting to burst-write to an offset outside of the allocated region (burst to [%0d:%0d] > mem_size %0d)",
+                 $sformatf("Attempting to burst-write to an offset outside of the allocated region (burst to [%0d:%0d] > mem_size %0d)",
                            offset,offset+value.size(),this.len))
       status = UVM_NOT_OK;
       return;
@@ -943,7 +943,7 @@ task uvm_mem_region::burst_read(output uvm_status_e       status,
 
    if (offset + value.size() > this.len) begin
       `uvm_error("RegModel",
-                 $psprintf("Attempting to burst-read to an offset outside of the allocated region (burst to [%0d:%0d] > mem_size %0d)",
+                 $sformatf("Attempting to burst-read to an offset outside of the allocated region (burst to [%0d:%0d] > mem_size %0d)",
                            offset,offset+value.size(),this.len))
       status = UVM_NOT_OK;
       return;
@@ -974,7 +974,7 @@ task uvm_mem_region::poke(output uvm_status_e       status,
 
    if (offset > this.len) begin
       `uvm_error("RegModel",
-                 $psprintf("Attempting to poke to an offset outside of the allocated region (%0d > %0d)",
+                 $sformatf("Attempting to poke to an offset outside of the allocated region (%0d > %0d)",
                            offset, this.len));
       status = UVM_NOT_OK;
       return;
@@ -1003,7 +1003,7 @@ task uvm_mem_region::peek(output uvm_status_e       status,
 
    if (offset > this.len) begin
       `uvm_error("RegModel",
-                 $psprintf("Attempting to peek from an offset outside of the allocated region (%0d > %0d)",
+                 $sformatf("Attempting to peek from an offset outside of the allocated region (%0d > %0d)",
                            offset, this.len));
       status = UVM_NOT_OK;
       return;

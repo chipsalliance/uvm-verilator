@@ -80,7 +80,6 @@ endinterface
 
 import uvm_pkg::*;
 
-
 package top_pkg;
    typedef virtual pin_if pin_vif;
 endpackage
@@ -89,6 +88,7 @@ endpackage
 package user_pkg;
 import uvm_pkg::*;
 import top_pkg::*;
+`include "uvm_macros.svh"
 
 //---------------------------------------------------------------------
 // component driver

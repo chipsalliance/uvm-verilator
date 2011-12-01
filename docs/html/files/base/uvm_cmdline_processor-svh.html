@@ -125,8 +125,14 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_cmdline_processor.+UVM_OBJECTION_TRACE" >+UVM_OBJECTION_TRACE</a></td><td class=SDescription><i>+UVM_OBJECTION_TRACE</i> turns on tracing of objection activity. </td></tr>
   <!-- index=26 -->
 
-<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_cmdline_processor.+uvm_set_inst_override,+uvm_set_type_override" >+uvm_set_inst_override, +uvm_set_type_override</a></td><td class=SDescription><i>+uvm_set_inst_override=&lt;req_type&gt;,&lt;override_type&gt;,&lt;full_inst_path&gt;</i> and <i>+uvm_set_type_override=&lt;req_type&gt;,&lt;override_type&gt;[,&lt;replace&gt;]</i> work like the name based overrides in the factory--factory.set_inst_override_by_name() and factory.set_type_override_by_name(). </td></tr>
+<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_cmdline_processor.+UVM_RESOURCE_DB_TRACE" >+UVM_RESOURCE_DB_TRACE</a></td><td class=SDescription><i>+UVM_RESOURCE_DB_TRACE</i> turns on tracing of resource DB access. </td></tr>
   <!-- index=27 -->
+
+<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_cmdline_processor.+UVM_CONFIG_DB_TRACE" >+UVM_CONFIG_DB_TRACE</a></td><td class=SDescription><i>+UVM_CONFIG_DB_TRACE</i> turns on tracing of configuration DB access. </td></tr>
+  <!-- index=28 -->
+
+<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_cmdline_processor.+uvm_set_inst_override,+uvm_set_type_override" >+uvm_set_inst_override, +uvm_set_type_override</a></td><td class=SDescription><i>+uvm_set_inst_override=&lt;req_type&gt;,&lt;override_type&gt;,&lt;full_inst_path&gt;</i> and <i>+uvm_set_type_override=&lt;req_type&gt;,&lt;override_type&gt;[,&lt;replace&gt;]</i> work like the name based overrides in the factory--factory.set_inst_override_by_name() and factory.set_type_override_by_name(). </td></tr>
+  <!-- index=29 -->
 
 <tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_cmdline_processor.+uvm_set_config_int,+uvm_set_config_string" >+uvm_set_config_int, +uvm_set_config_string</a></td><td class=SDescription><i>+uvm_set_config_int=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> and <i>+uvm_set_config_string=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> work like their procedural counterparts: set_config_int() and set_config_string(). </td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
@@ -331,13 +337,13 @@ initial begin
 
 
  <!--CONTENT index=22 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_TIMEOUT" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_TIMEOUT</a></h3><div class=CBody><p><i>+UVM_TIMEOUT=&lt;timeout&gt;,&lt;overridable&gt;</i> allows users to change the global timeout of the UVM framework.&nbsp;  The &lt;overridable&gt; argument (&lsquo;YES&rsquo; or &lsquo;NO&rsquo;) specifies whether user code can subsequently change this value.&nbsp;  If set to &lsquo;NO&rsquo; and the user code tries to change the global timeout value, an warning message will be generated.</p><blockquote><pre>&lt;sim command&gt; +uvm_timeout=200000,NO</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_TIMEOUT" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_TIMEOUT</a></h3><div class=CBody><p><i>+UVM_TIMEOUT=&lt;timeout&gt;,&lt;overridable&gt;</i> allows users to change the global timeout of the UVM framework.&nbsp;  The &lt;overridable&gt; argument (&lsquo;YES&rsquo; or &lsquo;NO&rsquo;) specifies whether user code can subsequently change this value.&nbsp;  If set to &lsquo;NO&rsquo; and the user code tries to change the global timeout value, an warning message will be generated.</p><blockquote><pre>&lt;sim command&gt; +UVM_TIMEOUT=200000,NO</pre></blockquote></div></div></div>
 
 
 
 
  <!--CONTENT index=23 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_MAX_QUIT_COUNT" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_MAX_QUIT_COUNT</a></h3><div class=CBody><p><i>+UVM_MAX_QUIT_COUNT=&lt;count&gt;,&lt;overridable&gt;</i> allows users to change max quit count for the report server.&nbsp;  The &lt;overridable&gt; argument (&lsquo;0&rsquo; or &lsquo;1&rsquo;) specifies whether user code can subsequently change this value.&nbsp;  If set to &lsquo;0&rsquo; and the user code tries to change the max quit count value, an warning message will be generated.</p><blockquote><pre>&lt;sim command&gt; +UVM_MAX_QUIT_COUNT=5,0</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_MAX_QUIT_COUNT" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_MAX_QUIT_COUNT</a></h3><div class=CBody><p><i>+UVM_MAX_QUIT_COUNT=&lt;count&gt;,&lt;overridable&gt;</i> allows users to change max quit count for the report server.&nbsp;  The &lt;overridable&gt; argument (&lsquo;YES&rsquo; or &lsquo;NO&rsquo;) specifies whether user code can subsequently change this value.&nbsp;  If set to &lsquo;NO&rsquo; and the user code tries to change the max quit count value, an warning message will be generated.</p><blockquote><pre>&lt;sim command&gt; +UVM_MAX_QUIT_COUNT=5,NO</pre></blockquote></div></div></div>
 
 
 
@@ -355,12 +361,24 @@ initial begin
 
 
  <!--CONTENT index=26 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_inst_override,+uvm_set_type_override" href="../../../../src/base/uvm_cmdline_processor.svh">+uvm_set_inst_override, +uvm_set_type_override</a></h3><div class=CBody><p><i>+uvm_set_inst_override=&lt;req_type&gt;,&lt;override_type&gt;,&lt;full_inst_path&gt;</i> and <i>+uvm_set_type_override=&lt;req_type&gt;,&lt;override_type&gt;[,&lt;replace&gt;]</i> work like the name based overrides in the factory--factory.set_inst_override_by_name() and factory.set_type_override_by_name().&nbsp; For uvm_set_type_override, the third argument is 0 or 1 (the default is 1 if this argument is left off); this argument specifies whether previous type overrides for the type should be replaced.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_type_override=eth_packet,short_eth_packet</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_RESOURCE_DB_TRACE" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_RESOURCE_DB_TRACE</a></h3><div class=CBody><p><i>+UVM_RESOURCE_DB_TRACE</i> turns on tracing of resource DB access.&nbsp; Users simply need to put the argument on the command line.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=27 -->
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_CONFIG_DB_TRACE" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_CONFIG_DB_TRACE</a></h3><div class=CBody><p><i>+UVM_CONFIG_DB_TRACE</i> turns on tracing of configuration DB access.&nbsp; Users simply need to put the argument on the command line.</p></div></div></div>
+
+
+
+
+ <!--CONTENT index=28 -->
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_inst_override,+uvm_set_type_override" href="../../../../src/base/uvm_cmdline_processor.svh">+uvm_set_inst_override, +uvm_set_type_override</a></h3><div class=CBody><p><i>+uvm_set_inst_override=&lt;req_type&gt;,&lt;override_type&gt;,&lt;full_inst_path&gt;</i> and <i>+uvm_set_type_override=&lt;req_type&gt;,&lt;override_type&gt;[,&lt;replace&gt;]</i> work like the name based overrides in the factory--factory.set_inst_override_by_name() and factory.set_type_override_by_name().&nbsp; For uvm_set_type_override, the third argument is 0 or 1 (the default is 1 if this argument is left off); this argument specifies whether previous type overrides for the type should be replaced.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_type_override=eth_packet,short_eth_packet</pre></blockquote></div></div></div>
+
+
+
+
+ <!--CONTENT index=29 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_config_int,+uvm_set_config_string" href="../../../../src/base/uvm_cmdline_processor.svh">+uvm_set_config_int, +uvm_set_config_string</a></h3><div class=CBody><p><i>+uvm_set_config_int=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> and <i>+uvm_set_config_string=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> work like their procedural counterparts: set_config_int() and set_config_string().&nbsp; For the value of int config settings, &lsquo;b (0b), &lsquo;o, &lsquo;d, &lsquo;h (&lsquo;x or 0x) as the first two characters of the value are treated as base specifiers for interpreting the base of the number.&nbsp; Size specifiers are not used since SystemVerilog does not allow size specifiers in string to value conversions.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_config_int=uvm_test_top.soc_env,mode,5</pre></blockquote><p>No equivalent of set_config_object() exists since no way exists to pass an uvm_object into the simulation via the command line.</p></div></div></div>
 
 </div><!--Content-->

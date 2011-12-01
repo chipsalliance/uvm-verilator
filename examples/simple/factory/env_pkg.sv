@@ -48,7 +48,7 @@ package env_pkg;
       uvm_default_tree_printer.knobs.separator = "";
       repeat(5) begin
         #15 p = gen1.get_packet();
-        `uvm_info("PKTGEN", $psprintf("Got packet: %s", p.sprint(uvm_default_tree_printer)), UVM_NONE)
+        `uvm_info("PKTGEN", $sformatf("Got packet: %s", p.sprint(uvm_default_tree_printer)), UVM_NONE)
       end
       #15;
       phase.drop_objection(this);

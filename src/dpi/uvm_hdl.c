@@ -24,9 +24,8 @@
 #include "svdpi.h"
 #include <malloc.h>
 #include <string.h>
+#include <stdio.h>
 
-
-extern "C" {
 
 /* 
  * UVM HDL access C code.
@@ -98,13 +97,14 @@ static int uvm_hdl_set_vlog_partsel(char *path, p_vpi_vecval value, PLI_INT32 fl
   // extract range from path
   if (sscanf(path_ptr,"[%u:%u]",&lhs, &rhs)) {
     char index_str[20];
+    int i;
     path_ptr++;
     path_len = (path_len - (path_ptr - path));
     incr = (lhs>rhs) ? 1 : -1;
     width = (lhs>rhs) ? lhs-rhs+1 : rhs-lhs+1;
 
     // perform set for each individual bit
-    for (int i=0; i < width; i++) {
+    for (i=0; i < width; i++) {
       sprintf(index_str,"%u]",rhs);
       strncpy(path_ptr,index_str,path_len);
       svGetPartselLogic(&bit_value,value,i,1);
@@ -152,6 +152,7 @@ static int uvm_hdl_get_vlog_partsel(char *path, p_vpi_vecval value, PLI_INT32 fl
   // extract range from path
   if (sscanf(path_ptr,"[%u:%u]",&lhs, &rhs)) {
     char index_str[20];
+    int i;
     path_ptr++;
     path_len = (path_len - (path_ptr - path));
     incr = (lhs>rhs) ? 1 : -1;
@@ -159,7 +160,7 @@ static int uvm_hdl_get_vlog_partsel(char *path, p_vpi_vecval value, PLI_INT32 fl
     bit_value.aval = 0;
     bit_value.bval = 0;
     partsel = 1;
-    for (int i=0; i < width; i++) {
+    for (i=0; i < width; i++) {
       int result;
       svLogic logic_bit;
       sprintf(index_str,"%u]",rhs);
@@ -337,9 +338,6 @@ int uvm_hdl_check_path(char *path)
       return 0;
   else 
     return 1;
-#ifndef VCS
-  vpi_release_handle(r);
-#endif
 }
 
 
@@ -392,4 +390,3 @@ int uvm_hdl_release(char *path)
   return uvm_hdl_set_vlog(path, valuep, vpiReleaseFlag);
 }
 
-} // extern "C"

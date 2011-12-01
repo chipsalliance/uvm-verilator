@@ -54,13 +54,13 @@ typedef uvm_callbacks #(uvm_callbacks_objection,uvm_heartbeat_callback) uvm_hear
 typedef class uvm_objection_callback;
 class uvm_heartbeat extends uvm_object;
 
-  protected uvm_callbacks_objection m_objection = null;
-  protected uvm_heartbeat_callback m_cb = null;
+  protected uvm_callbacks_objection m_objection;
+  protected uvm_heartbeat_callback m_cb;
   protected uvm_component   m_cntxt;
   protected uvm_heartbeat_modes   m_mode;
   protected uvm_component   m_hblist[$];
-  protected uvm_event       m_event=null;
-  protected bit             m_started=0;
+  protected uvm_event       m_event;
+  protected bit             m_started;
   protected event           m_stop_event;
 
   // Function: new
@@ -202,7 +202,7 @@ class uvm_heartbeat extends uvm_object;
     join_none
   endfunction
 
-  protected bit m_added = 0;
+  protected bit m_added;
   function void m_enable_cb;
     void'(m_cb.callback_mode(1));
     if(m_objection == null) return;
@@ -217,7 +217,7 @@ class uvm_heartbeat extends uvm_object;
 
   task m_hb_process;
     uvm_object obj;
-    bit  triggered = 0;
+    bit  triggered;
     time last_trigger=0;
     fork
       begin

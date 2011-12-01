@@ -107,7 +107,6 @@
         endclass \
         //PREFIX``PHASE``_phase PREFIX``PHASE``_ph = PREFIX``PHASE``_phase::get();
 
-
 `define uvm_builtin_task_phase(PHASE) \
         `m_uvm_task_phase(PHASE,uvm_component,uvm_)
 

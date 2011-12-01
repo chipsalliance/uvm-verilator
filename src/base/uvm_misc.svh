@@ -50,7 +50,7 @@ typedef class uvm_object;
 //----------------------------------------------------------------------------
 
 class uvm_scope_stack;
-  local string m_arg = "";
+  local string m_arg;
   local string m_stack[$];
 
   // depth
@@ -137,7 +137,7 @@ class uvm_scope_stack;
   // --
   
   function void up (byte separator =".");
-    bit found=0;
+    bit found;
     string s;
     while(m_stack.size() && !found ) begin
       s = m_stack.pop_back();
@@ -197,17 +197,17 @@ class uvm_status_container;
   bit             clone = 1;
 
   //Information variables used by the macro functions for storage.
-  bit          warning    = 0;
-  bit          status     = 0;
-  uvm_bitstream_t  bitstream  = 0;
-  int          intv       = 0;
-  int          element    = 0;
-  string       stringv    = "";
-  string       scratch1   = "";
-  string       scratch2   = "";
-  string       key        = "";
-  uvm_object   object     = null;
-  bit          array_warning_done = 0;
+  bit          warning;
+  bit          status;
+  uvm_bitstream_t  bitstream;
+  int          intv;
+  int          element;
+  string       stringv;
+  string       scratch1;
+  string       scratch2;
+  string       key;
+  uvm_object   object;
+  bit          array_warning_done;
 
   static bit field_array[string];
 
@@ -216,7 +216,7 @@ class uvm_status_container;
   function void do_field_check(string field, uvm_object obj);
    `ifdef UVM_ENABLE_FIELD_CHECKS                                           
     if (field_array.exists(field))
-      uvm_report_error("MLTFLD", $psprintf("Field %s is defined multiple times in type '%s'",
+      uvm_report_error("MLTFLD", $sformatf("Field %s is defined multiple times in type '%s'",
          field, obj.get_type_name()), UVM_NONE);
     `endif
     field_array[field] = 1;
@@ -343,7 +343,7 @@ function string uvm_instance_scope();
   while(pos && (c != ".") && (c != ":")) 
     c = uvm_instance_scope[--pos];
   if(pos == 0)
-    uvm_report_error("SCPSTR", $psprintf("Illegal name %s in scope string",uvm_instance_scope));
+    uvm_report_error("SCPSTR", $sformatf("Illegal name %s in scope string",uvm_instance_scope));
   uvm_instance_scope = uvm_instance_scope.substr(0,pos);
 endfunction
 
@@ -555,7 +555,7 @@ endfunction
 // Function- uvm_has_wildcard
 //
 //
-function bit uvm_has_wildcard (string arg);
+function automatic bit uvm_has_wildcard (string arg);
   uvm_has_wildcard = 0;
 
   //if it is a regex then return true
@@ -569,3 +569,103 @@ function bit uvm_has_wildcard (string arg);
 
 endfunction
 
+//------------------------------------------------------------------------------
+// CLASS: uvm_utils
+//
+// This class contains useful template functions.
+//
+//------------------------------------------------------------------------------
+
+typedef class uvm_component;
+typedef class uvm_root;
+typedef class uvm_object;
+        
+class uvm_utils #(type TYPE=int, string FIELD="config");
+
+  typedef TYPE types_t[$];
+
+  // Function: find_all
+  //
+  // Recursively finds all component instances of the parameter type ~TYPE~,
+  // starting with the component given by ~start~. Uses <uvm_root::find_all>.
+
+  static function types_t find_all(uvm_component start);
+    uvm_component list[$];
+    types_t types;
+    uvm_root top;
+    top = uvm_root::get();
+    top.find_all("*",list,start);
+    foreach (list[i]) begin
+      TYPE typ;
+      if ($cast(typ,list[i]))
+        types.push_back(typ);
+    end
+    if (types.size() == 0) begin
+      `uvm_warning("find_type-no match",{"Instance of type '",TYPE::type_name,
+         " not found in component hierarchy beginning at ",start.get_full_name()})
+    end
+    return types;
+  endfunction
+
+  static function TYPE find(uvm_component start);
+    types_t types = find_all(start);
+    if (types.size() == 0)
+      return null;
+    if (types.size() > 1) begin
+      `uvm_warning("find_type-multi match",{"More than one instance of type '",TYPE::type_name,
+         " found in component hierarchy beginning at ",start.get_full_name()})
+      return null;
+    end
+    return types[0];
+  endfunction
+
+  static function TYPE create_type_by_name(string type_name, string contxt);
+    uvm_object obj;
+    TYPE  typ;
+    obj = factory.create_object_by_name(type_name,contxt,type_name);
+       if (!$cast(typ,obj))
+         uvm_report_error("WRONG_TYPE",{"The type_name given '",type_name,
+                "' with context '",contxt,"' did not produce the expected type."});
+    return typ;
+  endfunction
+
+
+  // Function: get_config
+  //
+  // This method gets the object config of type ~TYPE~
+  // associated with component ~comp~.
+  // We check for the two kinds of error which may occur with this kind of 
+  // operation.
+
+  static function TYPE get_config(uvm_component comp, bit is_fatal);
+    uvm_object obj;
+    TYPE cfg;
+
+    if (!comp.get_config_object(FIELD, obj, 0)) begin
+      if (is_fatal)
+        comp.uvm_report_fatal("NO_SET_CFG", {"no set_config to field '", FIELD,
+                           "' for component '",comp.get_full_name(),"'"},
+                           UVM_MEDIUM, `uvm_file , `uvm_line  );
+      else
+        comp.uvm_report_warning("NO_SET_CFG", {"no set_config to field '", FIELD,
+                           "' for component '",comp.get_full_name(),"'"},
+                           UVM_MEDIUM, `uvm_file , `uvm_line  );
+      return null;
+    end
+
+    if (!$cast(cfg, obj)) begin
+      if (is_fatal)
+        comp.uvm_report_fatal( "GET_CFG_TYPE_FAIL",
+                          {"set_config_object with field name ",FIELD,
+                          " is not of type '",TYPE::type_name,"'"},
+                          UVM_NONE , `uvm_file , `uvm_line );
+      else
+        comp.uvm_report_warning( "GET_CFG_TYPE_FAIL",
+                          {"set_config_object with field name ",FIELD,
+                          " is not of type '",TYPE::type_name,"'"},
+                          UVM_NONE , `uvm_file , `uvm_line );
+    end
+
+    return cfg;
+  endfunction
+endclass

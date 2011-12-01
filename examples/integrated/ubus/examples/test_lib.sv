@@ -39,7 +39,7 @@ class ubus_example_base_test extends uvm_test;
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     // Enable transaction recording for everything
-    set_config_int("*", "recording_detail", UVM_FULL);
+    uvm_config_db#(int)::set(this, "*", "recording_detail", UVM_FULL);
     // Create the tb
     ubus_example_tb0 = ubus_example_tb::type_id::create("ubus_example_tb0", this);
     // Create a specific depth printer for printing the created topology
@@ -52,7 +52,7 @@ class ubus_example_base_test extends uvm_test;
      if(ubus_example_tb0.ubus0.bus_monitor != null)
        ubus_example_tb0.ubus0.bus_monitor.set_report_verbosity_level(UVM_FULL);
     `uvm_info(get_type_name(),
-      $psprintf("Printing the test topology :\n%s", this.sprint(printer)), UVM_LOW)
+      $sformatf("Printing the test topology :\n%s", this.sprint(printer)), UVM_LOW)
   endfunction : end_of_elaboration_phase
 
   task run_phase(uvm_phase phase);
@@ -121,7 +121,7 @@ class test_r8_w8_r4_w4 extends ubus_example_base_test;
 			       "default_sequence",
 				r8_w8_r4_w4_seq::type_id::get());
     uvm_config_db#(uvm_object_wrapper)::set(this,
-		      ".ubus_example_tb0.ubus0.slaves[0].sequencer.run_phase", 
+		      "ubus_example_tb0.ubus0.slaves[0].sequencer.run_phase", 
 			       "default_sequence",
 				slave_memory_seq::type_id::get());
   end
@@ -151,8 +151,8 @@ class test_2m_4s extends ubus_example_base_test;
 			       "num_slaves", 4);
      
    // Control the number of RMW loops
-    uvm_config_db#(int)::set(this,"ubus_example_tb0.ubus0.masters[0].sequencer.loop_read_modify_write_seq", "itr", 3);
-    uvm_config_db#(int)::set(this,"ubus_example_tb0.ubus0.masters[1].sequencer.loop_read_modify_write_seq", "itr", 4);
+    uvm_config_db#(int)::set(this,"ubus_example_tb0.ubus0.masters[0].sequencer.loop_read_modify_write_seq", "itr", 6);
+    uvm_config_db#(int)::set(this,"ubus_example_tb0.ubus0.masters[1].sequencer.loop_read_modify_write_seq", "itr", 8);
 
      // Define the sequences to run in the run phase
     uvm_config_db#(uvm_object_wrapper)::set(this,"*.ubus0.masters[0].sequencer.main_phase", 

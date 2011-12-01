@@ -1,3 +1,406 @@
+General Overview
+
+  - This is release 1.1a of the Universal Verification Methodology (UVM)
+    reference implementation from Accellera.  This distribution includes a
+    SystemVerilog based class library, examples, User's Guide, and an
+    updated Refererence in HTML form. The UVM Standard Reference
+    PDF is not included in this release. It will not be updated until the 
+    next major release, i.e. UVM 1.2.
+
+    The class library is a reference implementation of the standard. It, the
+    examples, and User Guide provide guidance to users of the standard. For
+    additional information on the Accellera standard, see
+
+          http://www.accellera.org/activities/vip
+
+  - A good source for information, answers, and resources is
+    http://www.uvmworld.org.  It contains forums on methodology, tool specific
+    issues, and commercial announcements.  It also has links to additional
+    resources, Accellera sponsored events, and other UVM events.
+
+
+-----------------------------------------------------------------------------
+Release Notes for UVM-1.1a
+Nov 30, 2011
+
+** Release Overview
+
+  - Release 1.1a contains mostly fixes to errata with limited API changes. 
+    There were several backward-compatible API changes that were approved
+    on a case by case by basis. However, documentation updates were only
+    done to the HTML. There were no updates in the Standard Reference PDF
+    and User Guide PDF. These will be done in UVM 1.2.
+
+  - UVM 1.1a fixes the following issues reported under the Mantis bug-tracking
+    system.
+
+  - For detailed information on a specific issue, refer to the Mantis database
+    at http://www.eda.org/svdb/view.php?id=<id>, where <id> is the Mantis id.
+
+
+** uvm_object constructor
+
+  3770  Fixed issue where uvm_object instance name was not passed to the
+        constructor by the factory. The "name" argument of any uvm_object
+        constructor ALWAYS had the default value and could not be relied
+        upon within the constructor to have the actual object instance name.
+        Calling super.new(name) was thus pointless.
+
+        However, this now requires that every class uvm_object define a
+        constructor having a name argument with a default value. Because a
+        constructor for uvm_object was originally optional and thus constitutes
+        a non-backward-compatible change, the modifications for this Mantis
+        are turned off by default in UVM 1.1a. To turn on this fix, you must
+        define the `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR symbol at compile time.
+        You are encouraged to define this symbol as it will be the default
+        behavior in UVM 1.2 and subsequent releases.
+
+        See Mantis_3770.txt for more details.
+
+
+** Registers
+
+  3219  Fixed code that had a warning commented out for a check on the
+        correctness of a register type.
+
+  3492  Fixed issue where write() was not setting the written value in the
+        mirrored register model.
+
+  3540  Added support for explicit checking in uvm_reg by adding a compare
+        API that accepts a raw value and checks for correctness.
+
+  3558  Fixed issue where reference outside of queue bounds in file
+        uvm_reg_map.svh, was possible.
+
+  3587  Fixed issue where uvm_reg_block prints redundant message
+        during an update.
+
+  3617  Fixed issue where register package was not sensitive to 
+        verbosity changes. For example
+           +uvm_set_verbosity=*,RegModel,UVM_MEDIUM,build
+        didn't work.
+
+  3628  Fixed problems observed with explicit predictor and
+        pre_write. When updating the register with the front door write, the
+        post_predict callback was not called.
+
+  3631  Fixed issue where backdoor reads do not emulate side-effects.
+        Reading a *RC (read clear) or a *RS (read set) field via the backdoor
+        did not respectively clear/set it. The mirrored value was similarly
+        not cleared/set.
+
+  3641  Fixed issue where doing byte aligned writes with byte enables to
+        registers, did not work in all cases.
+
+  3685  Fixed issue where uvm_reg_cbs::post_write() description was wrong.
+        It erroneously stated that it is called only for user-defined backdoor
+        writes.
+
+  3688  Fixed issue where too many "Unable to locate block" messages in
+        uvm_reg_block::get_block_by_name() where produced, when recursively
+        navigating the register model hierarchy.
+
+  3712  Fixed error in uvm_reg_adaptor reg2bus documentation.
+
+  3734  Fixed issue where register blocks was put in the resource DB under
+        the wrong scope/name.
+
+  3743  Added documentation to HTML for uvm_reg_block::get_memories().
+
+  3748  Fixed incorrect type of 'value' variable in do_read() in uvm_regs.svh.
+        Type changed to uvm_reg_data_t instead of uvm_reg_addr_t.
+
+  3749  Fixed issue where uvm_reg::update() corrupted register write data
+        with W1C, W0S, W0T, W1CRS, W0SRC field access policies.
+
+  3860  Fixed issue with undesirable coupling of abstract register
+        sequences to VIP that uses sequence base class.
+
+  3762  Fixed issue where the NO_REG_TESTS register attribute was being set
+        using uvm_resource_db #(bit) but retrieved using uvm_resource_db #(int).
+        The mismatch in type meant that the NO_REG_TESTS resource setting was
+        effectively being ignored.
+
+  3768  Fixed issue where register read bus accesses were not calling
+        the parent sequence's pre_do() method.
+
+  3886  Fixed issue where uvm_reg::get_rights did not return the configured
+        rights for a given map, which affected certain built-in register test
+        sequences. The get_rights method returned "RW" if the register belonged
+        only to a single map, even if the register was configured to be "RO"
+        for that map. Now, a register's configured rights for a given map are
+        honored.
+
+** Resources
+
+  3416  Fixed issue where uvm_resource_db::dump() was always printing "?"
+        due to an issue where the method uvm_resource_base::convert2string()
+        was not overridden in the uvm_resource#(T) class,
+
+  3594  Fixed issue where UVM_CONFIG_DB_TRACE option had no effect. The
+        code was using the UVM_RESOURCE_DB_TRACE instead.
+
+  3613  Fixed issue where uvm_config_db::wait_modified didn't work if set
+        contained a glob expression.
+
+  3698  Fixed race condition between internal initialization of the resource db
+        and calls to set_config prior to simulation starting. Set_config calls
+        that had wildcards in the resource names would effectively be ignored.
+
+
+** Events
+
+  3476  Fixed issue where the callback queue was not being copied correctly.
+
+
+** Sequences
+
+  3490  Fixed issue where the sequence state check condition in
+        uvm_sequence_base::start method is always false at the beginning of
+        the method body of uvm_sequence_base::start().
+
+  3566  Fixed issue where uvm_sequencer_param_base:.connect_phase method was
+        not invoking super.*. This caused connect functionallity to be ignored.
+
+  3567  Fixed issue where sequence_library always needed explicit item
+        specialization, because using the default would result in compile error.
+        This was an issue for virtual sequences that needed the default type.
+
+  3574  Fixed issue where uvm_sequence_library_cfg documentation
+        had incorrect example code.
+
+  3598  Fixed issue where do_sequence_kind always led to SEQNOTITM
+        error. Replaced call to start_item with call to m_seq.start.
+
+  3620  Fixed issue in sequence library where sequences were not
+        being initialized properly.
+
+  3623  Fixed issue with UVM_SEQ_LIB_RAND(C) that could cause a constraint
+        failure. UVM_SEQ_LIB_RAND(C) is sensitive to constraints on members
+        other than uvm_sequence_library::select_rand(c). These modes operate
+        by calling randomize(select_rand) or randomize(select_randc).
+        This turns off the rand_mode of the other properties, but does not
+        turn off any constraint blocks on these other properties (see 18.11 of
+        SV-2009 LRM). Should they hold a value that violates those constraints,
+        a failure would occur.
+
+  3624  The uvm_sequence_base::is_randomized constraint was replaced with a
+        do_not_randomize property to prevent inadvertent randomization failures
+        in user sequences.
+
+  3626  Fixed issue where messages from within sequences started via the
+        sequence library did not report their names correctly.
+
+  3633  Fixed issue where uvm_send_pri, uvm_rand_send* did not honor the
+        sequencer set in the item and always execute on the current sequencer.
+        With the split of start_item into start_item() and seq.start() UVM-1.1
+        introduced an issue that the sequencer set in an item using
+        uvm_create_on() was not honored in the uvm_send_pri and
+        uvm_rand_send_pri* familiy of calls.
+
+  3702  Changed sequence_library::sequence_count default to 10, to be
+        consistent with constraints on min and max_random_count state variables.
+
+  3739  Fixed minor documentation issue for uvm_sequence_lib.
+
+  3897  Fixed issue with when starting a sequence without a 2nd argument.
+        Implemented so the item context would be fully set should it only be
+        partially set beforehand.
+
+
+** Phasing
+
+  3513  Implemented the uvm_phase::jump_all() that was in the standard.
+
+  3680  The name given the uvm_phase::phase_done objections was improved to
+        be "<phase_name>_objection" instead of just <phase_name>, which would
+        be confused with the name given the phase proper.
+
+  3690  Fixed issue where task phase threads broke random stability. The same
+        technique used to preserve random stability for uvm_objects was applied
+        to forked phase processes. The task process seed is now set according
+        to the phase type name and component hierarchical name.
+
+
+** Command Line
+
+  3516  Fixed typo in documentation for specifying timeouts on the command-line.
+
+
+** Printer
+
+  3550  Fixed issue with printer not honoring the show_root knob.
+
+
+** Messaging/Transaction Recording/Reporting
+
+  3597  Fixed issue where report catcher did not use default actions. This
+        caused a situation that when a message was demoted from FATAL to
+        WARNING, the consequence was that the simulation unexpectedly ended.
+
+  3630  Fixed Transaction Recording issue where strange attribute name
+        "ARG_size" was recorded. This happened when the attribute composite
+        type was empty.
+
+  3665  Fixed issue with bad scoping in uvm_transaction::m_begin_tr and
+        ::m_end_tr.
+
+  3666  Fixed issue where random stability was affected by the report
+        verbosity setting. Random seed generation would change between
+        simulations where only the report verbosity had changed.
+
+
+** Miscellaneous
+
+  3643  Fixed issue where uvm_string_to_actions was broken. The function
+        uvm_string_to_actions did not work for multiple actions.
+
+  3701  Fixed documentation issue with wrong prototype for `uvm_do_callbacks
+        macro.  Correct prototype is `uvm_do_callbacks(T, CB, METHOD).
+
+  3726  Removed all unnecessary initializations of variables at the point of
+        declaration. These caused race conditions that were very difficult to
+        debug.
+
+  3730  Removed the non-executable example at simple/tlm2/systemC. 
+
+  3732  Fixed incorrect documentation for +UVM_MAX_QUIT_COUNT. The overridable
+        arguments for +UVM_MAX_QUIT_COUNT actually are YES and NO, not 0 and 1
+        as documented. Specifying a 0 or a 1 resulted in the default value of
+        YES always being applied.
+
+  3733  Removed UVM_USE_FILE_LINE, a simulator-specific workaround that is no
+        longer needed. 
+
+  3735  Added Questa-specific workaround for UVM's usage of $typename.
+
+  3736  Added private accessor to interface mask in uvm_port_base,
+        m_get_if_mask().
+
+  3740  Enhanced deprecated use of non-phase "default_sequence" to help users
+        avoid common mistakes during transition to the new phase-based default 
+        sequence mechanism. The default sequence's starting_phase property is
+        now assigned the run phase handle for any sequence started via the
+        non-phase "default_sequence" configuration setting.
+
+  3755  Removed documentation for CFGSET and CFGOVR message code due to it
+        never actively being used.
+
+  3757  Fixed issue where uvm_component::check_config_usage did not use
+        uvm reporting facilities to report, but used $display.
+
+  3882  Removed the internal uvm_process class from the library. Its intended
+        use as a simulator-specific workaround was no longer needed.
+
+  3578  Fixed issuw where non-unique file names caused mis-compiles in user
+        code. The uvm_ prefix was prepended to the files base.svh, comps.svh,
+        seq.svh, and tlm2.svh to make them less likely to collide with
+        similarly named user files during compilation.
+
+
+-----------------------------------------------------------------------------
+Release Notes for UVM-1.1
+May 25, 2011
+
+** Release Overview
+
+  - The version 1.1 release of the Universal Verification Methodology (UVM)
+    addresses documentation errata and fixes errors in the reference
+    implementation. The complete set of fixes from the 1.0 release is
+    listed below along with the corresponding Mantis database id.
+
+** API Changes
+
+  3313  Added `ifndef UVM_NO_DEPRECATED around all deprecated to allow users 
+        to check for 1.0 compliance with command line +define.
+  3399  Change internal defines to include UVM prefix to avoid conflict with
+        user code.
+  3402  Fix auto-config when calling build directly on a component. Explicit
+        calling of build has been deprecated.
+  3449  Change uvm_reg_indirect_data fields index and data to be protected
+        instead of local to allow derived class access.
+  3453  Add plusargs +UVM_RESOURCE_DB_TRACE and +UVM_CONFIG_DB_TRACE for
+        turning configuration tracing on/off.
+  3457  Add pointer to uvm_reg_item info in uvm_reg_bus_op.
+  3458  Add pre_start/post_start callback to uvm_sequence which is called
+        for all sequences. The pre/post_body callback is only called for
+        root sequences.
+  3493  The default value of uvm_reg_block::create_map() has been changed to
+        1 for consistency with other APIs. ** NOTE ** model generators which
+        rely on the default value MUST be changed to explicity call create_map
+        with a value of 0 now, or they will get incorrect results.
+  3526  Added uvm_reg_map::get_n_bytes_in_lau() to return the addressing
+        width.
+  3536  Change uvm_config_db #(T)::get and uvm_resource_db#(T)::read_by_name
+        to use inout instead of ref to allow implicit type conversions.
+
+** Deprecated APIs
+
+  3500  The following methods in uvm_component are deprecated as they do not
+        work with the new phasing system: kill, status, suspend and resume.
+  3501  uvm_component::stop() and uvm_component::stop_phase() are deprecated.
+
+** Bug Fixes
+
+  3390  Fix reading of resources which have the same name but different type.
+  3391  Fix uvm_top.enable_print_topology, flag was being ignored.
+  3393  Allow components to be created during the connect phase.
+  3400  Fix uvm_objection.wait_for in all_dropped of uvm_top.
+  3412  Fix auto-config of queue elements for null elements.
+  3413  Fix uvm_resource#(T)::write() auditing to use correct name.
+  3422  Fix memory leak in uvm_regex.cc.
+  3424  Fix deep copy when sub-object is null.
+  3425  Change order of call to do_copy and macro copy automation to be
+        consistent with other methods (compare, print, etc.).
+  3426  Fix configuring a default sequence to null (i.e. no sequence).
+  3429  Fix incorrect order of uvm_is_match arguments in factory registration.
+  3431  Fix column sizing for the uvm_factory::print() method.
+  3436  Remove redundant static cast to class used in task 
+        uvm_phase::execute_phase.
+  3443  Only update registers when needed on an update.
+  3456  Base address of address map not used when calculating physical
+        addresses.
+  3460  Fix spurious warnings when registering more than one type of callback 
+        with a component.
+  3470  Fix copy and compare of queues and arrays of objects.
+  3480  Fix example /examples/simple/basic_examples/module.
+  3481  Fix auto config when wild cards are used in the field name
+  3488  Fix run() and post_shutdown() end to be syncronized.
+  3496  Fix instance path for uvm_test_top component creation in run_test so
+        that instance overrides can be applied to it.
+  3497  Fix auto-config precedence ordering to match manual configuration.
+  3498  Fix auto-config of string associative arrays.
+  3502  Fix resource tracing/auditing to capture failed lookups.
+  3506  Fix concurrent drop_objection propagations to not clobber each other.
+  3509  Fix static init race conditions in uvm_callbacks.
+  3510  Change end_of_elaboration errors to cause fatal.
+  3518  Objections raised after PHASE_READY_TO_END but before PHASE_ENDED are
+        ignored
+  3529  Fix broken response path for register sequences not providing parent
+        argument to read/write.
+  3532  Fix jump forward to not artificially mark phases as 'DONE'.
+  3533  Added error for phase jumps from non-active phases.
+  3535  Fix ASCII recording of uvm_recorder.
+  3572  Phase state should not be READY_TO_END until all ready_to_end()
+        callbacks return without having re-raised an objection
+
+** Documentation Fixes
+
+  3395  Refinements for User Guide.
+  3406  Update description of uvm_resource_pool::set().
+  3433  Fix description of report_*_hook invocation order in uvm_report_object.
+  3444  Fix documentation for uvm_object::copy.
+  3445  Fix documentation for uvm_report_object::die.
+  3467  Removed documentation of uvm_component::set_name as it is not 
+        intended to be called directly by the user.
+  3482  Remove reference to uvm_random_sequence and uvm_exhaustive sequences.
+  3499  Removed references to deprecated global_stop_request.
+  3507  Provide complete descripton of transaction begin_event and end_event.
+  3511  Fix documentation in UG around usage of  starting_phase in
+        sequences.
+
+
+-----------------------------------------------------------------------------
 Release Notes for UVM-1.0
 February 17, 2011
 
@@ -143,15 +546,15 @@ May 17, 2010
     new feature enhancements which are described in greater detail in the  
     "New Features" section below and any API changes described in the
     "API Changes" section.
-	- All ovm_* symbols converted to uvm_*.
-	- Enhancements to the OVM callback facility, including a new message 
-	catching facility. These enhancements introduce some minor backward 
+  - All ovm_* symbols converted to uvm_*.
+  - Enhancements to the OVM callback facility, including a new message 
+  catching facility. These enhancements introduce some minor backward 
         incompatibilities to the OVM callback facility.
-	- Enhancements to the OVM objection mechanism.  These enhancements 
+  - Enhancements to the OVM objection mechanism.  These enhancements 
         introduce some minor backward incompatibilities to the OVM objection
         mechanism.
-       	- These new feature enhancements have been fully tested but they are
-	  considered as "Early Adopter" in this first release of UVM.
+         - These new feature enhancements have been fully tested but they are
+    considered as "Early Adopter" in this first release of UVM.
 
 ** New Features - added since OVM 2.1.1
 
@@ -217,7 +620,7 @@ May 17, 2010
 
    - Reference manual and User Guide modified with UVM name changes, 
      callback facility enhancements, and Accellera organization changes.
-	
+  
 The OVM-2.1.1 release notes can be reviewed for additional information on 
 previous releases of the core functionality of UVM - please reference the
 file "release-notes.txt" available in the OVM-2.1.1 release which can be
@@ -232,109 +635,109 @@ downloaded at http://ovmworld.org/downloads.php.
   website above and in the box that has 'Issue #' in it, enter the number
   below and click on jump.
 
-Id	    Summary	
--------------------------------------------------------------------				
-3396    cmdline arguments are not honored when supplied via -F file and the DPI cmdline parsing is in effect
-3381    Not all macros have the prototype in the reference manual.
-3379    Default semantic for 'run_phase' and clean exit for all rt-phases
-3328    Various errata in $fdisplay calls
-3310	Please augment the ILLCRT fatal error with the component being created's name and also the parent specified.					
-3083	Callback trace messages don't always print					
-3096	uvm_objection_cb missing the objection argument in raise/drop/all_dropped					
-3097	invalid code with check_config_usage()					
-3128	In uvm_simple_sequence there are fields which are null when randomization is called					
-3138	Macro's that contain $uvm_report_warning/error should use `uvm_warning/error					
-3143	Documentation of `uvm_do[_obj]_callbacks_exit_on is misleading					
-3148	uvm_active_passive_enum is lacking documentation					
-3152	try_next_item() can actually block and consume time.					
-3153	Sequences should make use of the sequencer's (on which they operate) report handler--not the global report handler.					
-3159	uvm_report_server issue with simulators.					
-3167	is_active field not included in uvm_agent?					
-3170	Need better fatal message for an erroneous item_done() call.					
-3174	Need a hook() in sequences to action(s) when stop_sequences() or sequence.kill() is called.					
-3175	Need a means to control message emission that is based on more than purely 'verbosity'.					
-3186	display_objections Natural Docs output actually shows m_display_objections prototype					
-3187	Objection reporting code does not use messaging macros and is unsafe due to warnings and errors being sensitive to verbosity.
-3214	drop_objection is not safe when the drop is done in a fork and then followed by disable fork					
-3235	UVM TLM2 needs to address requirement to match simulation host endianness as per SC TLM2 LRM					
-3239	protected rand fileds in GP prevent use with inline constraints within sequences					
-3244	John Aynsley:  Naming this "SV implementation of TLM2" is misleading and confusing					
-3247	John Aynsley/Stuart Swan: Global Quantum and the Quantum keeper					
-3251	uvm_objection::m_forked_drop does not properly handle the case where obj is unknown					
-3271	Race condition in callbacks causes simulator failure					
-3294	Refactor code to avoid file.sv/.svh explosion					
-3302	Auto-config for container objects does not poke into containers					
-3308	New Phase Names Can Conflict with User Legacy Code					
-3309	Change Legacy Phase Names to be Consistent with New Phase Names					
-3330	Add Checks to Make Sure that We Are Still in Time Point 0 When entering start_of_simulation() & run()					
-3332	Components, like tlm_fifo, should be registered with the factory					
-3339	Need to decide and document semantics of phasing shutdown across domains.					
-3341	ovm run phase semantic inconsistent with new runtime phase semantics					
-3351	ensure test coverage for fixed mantis items POST-API-FREEZE					
-3367	Phasing semantics and reduction of complexity.					
-3329	The reference register data base is updated by default unlike discussed					
-3345	Cannot print addressMap / register					
-3348	Shared register (RO and WO register at same offset) doesnât work with explicit monitoring.					
-3358	uvm_transaction in the reference guide					
-3359	ref related issues					
-3372	the register user guide does not reflect the latest implimentation or recommend methodology					
-3301	phase_ended() not being called  when subcomponents have non-0-time phases					
-3303	Natural Docs for phasing refers to "task void exec_task"					
-3306	add_phase() does not check before_phase is after after_phase					
-3322	Need clear semantics for standard phases					
-3324	uvm_phase_schedule::sync() summary of usage does not match implementation					
-3333	uvm_thread_mode_t					
-3334	raise_objection description and argument					
-3350	add is(), is_after(), is_before() to uvm_phase_schedule					
-3356	uvm_component::stop(string ph_name) is only API using string					
-3363	uvm_sequence_base::starting_phase is undocumented					
-3365	phase termination conditions					
-3380	phase_ended() not called upon jump, making get_jump_target() useless					
-3292	Do not auto-start sequence if none specified by user					
-3315	Deprecate sequence library in sequencer in favor of new seq_library base class					
-3317	uvm_objection performance issue					
-3331	uvm_pair and uvm_algorithmic_comparator not UVM compliant					
-3337	Remove set_phase_seq in favor of config/resources; add ability to configure default sequence instance					
-3323	Name clashes with Methodology source code					
-3327	Check enhancement for set_config_object(0 method					
-3103	Enum name() method should be used to get enum name string.					
-3133	example set_object_local for is not compiling					
-3223	Race condition with uvm_top initialization					
-3226	Add ANSI coloring to severity					
-3234	%m.%s in error message					
-3288	bad virtual interface connection example					
-3319	Make uvm.sv the main, top-level file and delete uvm.svh					
-3344	Field macros do not operate properly when combining flags using BITWISE-OR operator					
-3354	null object handle de-referenced in uvm_field_object() macro					
-3361	UVM_NOPACK not honored by field macros					
-3364	Add error message if model is not locked					
-3368	Add a UVM_INFO message on phase transitions					
-3370	Suspending, resetting and turning off components then resuming them					
-3129	Killing a sequence does not remove it from the sequence queue					
-3132	Global report methods can cause null pointer derefernce/crash					
-3189	When error count is hit UVM dies instead of going to report phase					
-3218	Data field macros incur extra, unnecessary overhead					
-3220	UVM uses $time instead of $realtime so time information is lost					
-3227	Memory leak in objections when objections are raised/dropped in sequences					
-3228	uvm_pool::add issues warning if element exists					
-3252	uvm_recoder::record_real dosn't do bits to real conversion					
-3256	get_config difference at run time vs. build time					
-3257	Build precedence for wildcard resolution is not backward compatible at build time					
-3261	glob to re conversion is incorrect					
-3262	argument ordering is inconsistent between config and resources					
-3263	there is no concept of hiearchy associated with resources					
-3266	rename the uvm_resource_proxy class					
-3267	need a way to turn off auditing completely and/or remove accessor information					
-3273	Can not set override from uvm_resource_db					
-3277	fields generate MLTFLD errors					
-3282	phase callbacks need to happen before/after phase methods					
-3283	thread cleanup should not be done in the uvm_phase_imp::execute method					
-3284	phase processes are never removed from the phase process list					
-3285	robustness of uvm_component::get_current_phase()					
-3311	Pesistent and proactive thread semantics are not working					
-3312	domains are implicitly created					
-3314	add back the uvm_top_levels					
-3316	domains are being synchronized by default					
-3325	phase.kill does not seem to be properly killing the phase					
-3340	uvm_test_done objection causes immediate jump to extract					
-3375	ubus example incorrectly redefines is_active field					
+Id      Summary
+-------------------------------------------------------------------  
+3396  cmdline arguments are not honored when supplied via -F file and the DPI cmdline parsing is in effect
+3381  Not all macros have the prototype in the reference manual.
+3379  Default semantic for 'run_phase' and clean exit for all rt-phases
+3328  Various errata in $fdisplay calls
+3310  Please augment the ILLCRT fatal error with the component being created's name and also the parent specified.
+3083  Callback trace messages don't always print
+3096  uvm_objection_cb missing the objection argument in raise/drop/all_dropped
+3097  invalid code with check_config_usage()
+3128  In uvm_simple_sequence there are fields which are null when randomization is called
+3138  Macro's that contain $uvm_report_warning/error should use `uvm_warning/error
+3143  Documentation of `uvm_do[_obj]_callbacks_exit_on is misleading
+3148  uvm_active_passive_enum is lacking documentation
+3152  try_next_item() can actually block and consume time.
+3153  Sequences should make use of the sequencer's (on which they operate) report handler--not the global report handler.
+3159  uvm_report_server issue with simulators.
+3167  is_active field not included in uvm_agent?
+3170  Need better fatal message for an erroneous item_done() call.
+3174  Need a hook() in sequences to action(s) when stop_sequences() or sequence.kill() is called.
+3175  Need a means to control message emission that is based on more than purely 'verbosity'.
+3186  display_objections Natural Docs output actually shows m_display_objections prototype
+3187  Objection reporting code does not use messaging macros and is unsafe due to warnings and errors being sensitive to verbosity.
+3214  drop_objection is not safe when the drop is done in a fork and then followed by disable fork
+3235  UVM TLM2 needs to address requirement to match simulation host endianness as per SC TLM2 LRM
+3239  protected rand fileds in GP prevent use with inline constraints within sequences
+3244  John Aynsley:  Naming this "SV implementation of TLM2" is misleading and confusing
+3247  John Aynsley/Stuart Swan: Global Quantum and the Quantum keeper
+3251  uvm_objection::m_forked_drop does not properly handle the case where obj is unknown
+3271  Race condition in callbacks causes simulator failure
+3294  Refactor code to avoid file.sv/.svh explosion
+3302  Auto-config for container objects does not poke into containers
+3308  New Phase Names Can Conflict with User Legacy Code
+3309  Change Legacy Phase Names to be Consistent with New Phase Names
+3330  Add Checks to Make Sure that We Are Still in Time Point 0 When entering start_of_simulation() & run()
+3332  Components, like tlm_fifo, should be registered with the factory
+3339  Need to decide and document semantics of phasing shutdown across domains.
+3341  ovm run phase semantic inconsistent with new runtime phase semantics
+3351  ensure test coverage for fixed mantis items POST-API-FREEZE
+3367  Phasing semantics and reduction of complexity.
+3329  The reference register data base is updated by default unlike discussed
+3345  Cannot print addressMap / register
+3348  Shared register (RO and WO register at same offset) doesnât work with explicit monitoring.
+3358  uvm_transaction in the reference guide
+3359  ref related issues
+3372  the register user guide does not reflect the latest implimentation or recommend methodology
+3301  phase_ended() not being called  when subcomponents have non-0-time phases
+3303  Natural Docs for phasing refers to "task void exec_task"
+3306  add_phase() does not check before_phase is after after_phase
+3322  Need clear semantics for standard phases
+3324  uvm_phase_schedule::sync() summary of usage does not match implementation
+3333  uvm_thread_mode_t
+3334  raise_objection description and argument
+3350  add is(), is_after(), is_before() to uvm_phase_schedule
+3356  uvm_component::stop(string ph_name) is only API using string
+3363  uvm_sequence_base::starting_phase is undocumented
+3365  phase termination conditions
+3380  phase_ended() not called upon jump, making get_jump_target() useless
+3292  Do not auto-start sequence if none specified by user
+3315  Deprecate sequence library in sequencer in favor of new seq_library base class
+3317  uvm_objection performance issue
+3331  uvm_pair and uvm_algorithmic_comparator not UVM compliant
+3337  Remove set_phase_seq in favor of config/resources; add ability to configure default sequence instance
+3323  Name clashes with Methodology source code
+3327  Check enhancement for set_config_object(0 method
+3103  Enum name() method should be used to get enum name string.
+3133  example set_object_local for is not compiling
+3223  Race condition with uvm_top initialization
+3226  Add ANSI coloring to severity
+3234  %m.%s in error message
+3288  bad virtual interface connection example
+3319  Make uvm.sv the main, top-level file and delete uvm.svh
+3344  Field macros do not operate properly when combining flags using BITWISE-OR operator
+3354  null object handle de-referenced in uvm_field_object() macro
+3361  UVM_NOPACK not honored by field macros
+3364  Add error message if model is not locked
+3368  Add a UVM_INFO message on phase transitions
+3370  Suspending, resetting and turning off components then resuming them
+3129  Killing a sequence does not remove it from the sequence queue
+3132  Global report methods can cause null pointer derefernce/crash
+3189  When error count is hit UVM dies instead of going to report phase
+3218  Data field macros incur extra, unnecessary overhead
+3220  UVM uses $time instead of $realtime so time information is lost
+3227  Memory leak in objections when objections are raised/dropped in sequences
+3228  uvm_pool::add issues warning if element exists
+3252  uvm_recoder::record_real dosn't do bits to real conversion
+3256  get_config difference at run time vs. build time
+3257  Build precedence for wildcard resolution is not backward compatible at build time
+3261  glob to re conversion is incorrect
+3262  argument ordering is inconsistent between config and resources
+3263  there is no concept of hiearchy associated with resources
+3266  rename the uvm_resource_proxy class
+3267  need a way to turn off auditing completely and/or remove accessor information
+3273  Can not set override from uvm_resource_db
+3277  fields generate MLTFLD errors
+3282  phase callbacks need to happen before/after phase methods
+3283  thread cleanup should not be done in the uvm_phase_imp::execute method
+3284  phase processes are never removed from the phase process list
+3285  robustness of uvm_component::get_current_phase()
+3311  Pesistent and proactive thread semantics are not working
+3312  domains are implicitly created
+3314  add back the uvm_top_levels
+3316  domains are being synchronized by default
+3325  phase.kill does not seem to be properly killing the phase
+3340  uvm_test_done objection causes immediate jump to extract
+3375  ubus example incorrectly redefines is_active field

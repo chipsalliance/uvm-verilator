@@ -80,73 +80,73 @@
 class uvm_blocking_put_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_BLOCKING_PUT_MASK,"uvm_blocking_put_export")
-  `BLOCKING_PUT_IMP (this.m_if, T, t)
+  `UVM_BLOCKING_PUT_IMP (this.m_if, T, t)
 endclass 
 
 class uvm_nonblocking_put_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_NONBLOCKING_PUT_MASK,"uvm_nonblocking_put_export")
-  `NONBLOCKING_PUT_IMP (this.m_if, T, t)
+  `UVM_NONBLOCKING_PUT_IMP (this.m_if, T, t)
 endclass
 
 class uvm_put_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_PUT_MASK,"uvm_put_export")
-  `PUT_IMP (this.m_if, T, t)
+  `UVM_PUT_IMP (this.m_if, T, t)
 endclass
 
 class uvm_blocking_get_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_BLOCKING_GET_MASK,"uvm_blocking_get_export")
-  `BLOCKING_GET_IMP (this.m_if, T, t)
+  `UVM_BLOCKING_GET_IMP (this.m_if, T, t)
 endclass 
 
 class uvm_nonblocking_get_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_NONBLOCKING_GET_MASK,"uvm_nonblocking_get_export")
-  `NONBLOCKING_GET_IMP (this.m_if, T, t)
+  `UVM_NONBLOCKING_GET_IMP (this.m_if, T, t)
 endclass
 
 class uvm_get_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_GET_MASK,"uvm_get_export")
-  `GET_IMP (this.m_if, T, t)
+  `UVM_GET_IMP (this.m_if, T, t)
 endclass 
 
 class uvm_blocking_peek_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_BLOCKING_PEEK_MASK,"uvm_blocking_peek_export")
-  `BLOCKING_PEEK_IMP (this.m_if, T, t)
+  `UVM_BLOCKING_PEEK_IMP (this.m_if, T, t)
 endclass 
 
 class uvm_nonblocking_peek_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_NONBLOCKING_PEEK_MASK,"uvm_nonblocking_peek_export")
-  `NONBLOCKING_PEEK_IMP (this.m_if, T, t)
+  `UVM_NONBLOCKING_PEEK_IMP (this.m_if, T, t)
 endclass
 
 class uvm_peek_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_PEEK_MASK,"uvm_peek_export")
-  `PEEK_IMP (this.m_if, T, t)
+  `UVM_PEEK_IMP (this.m_if, T, t)
 endclass 
 
 class uvm_blocking_get_peek_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_BLOCKING_GET_PEEK_MASK,"uvm_blocking_get_peek_export")
-  `BLOCKING_GET_PEEK_IMP (this.m_if, T, t)
+  `UVM_BLOCKING_GET_PEEK_IMP (this.m_if, T, t)
 endclass 
 
 class uvm_nonblocking_get_peek_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_NONBLOCKING_GET_PEEK_MASK,"uvm_nonblocking_get_peek_export")
-  `NONBLOCKING_GET_PEEK_IMP (this.m_if, T, t)
+  `UVM_NONBLOCKING_GET_PEEK_IMP (this.m_if, T, t)
 endclass
 
 class uvm_get_peek_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
   `UVM_EXPORT_COMMON(`UVM_TLM_GET_PEEK_MASK,"uvm_get_peek_export")
-  `GET_PEEK_IMP (this.m_if, T, t)
+  `UVM_GET_PEEK_IMP (this.m_if, T, t)
 endclass 
 
 //------------------------------------------------------------------------------
@@ -200,60 +200,60 @@ endclass
 class uvm_blocking_master_export #(type REQ=int, type RSP=REQ)
   extends uvm_port_base #(uvm_tlm_if_base #(REQ, RSP));
   `UVM_EXPORT_COMMON(`UVM_TLM_BLOCKING_MASTER_MASK,"uvm_blocking_master_export")
-  `BLOCKING_PUT_IMP (this.m_if, REQ, t)
-  `BLOCKING_GET_PEEK_IMP (this.m_if, RSP, t)
+  `UVM_BLOCKING_PUT_IMP (this.m_if, REQ, t)
+  `UVM_BLOCKING_GET_PEEK_IMP (this.m_if, RSP, t)
 endclass 
 
 class uvm_nonblocking_master_export #(type REQ=int, type RSP=REQ)
   extends uvm_port_base #(uvm_tlm_if_base #(REQ, RSP));
   `UVM_EXPORT_COMMON(`UVM_TLM_NONBLOCKING_MASTER_MASK,"uvm_nonblocking_master_export")
-  `NONBLOCKING_PUT_IMP (this.m_if, REQ, t)
-  `NONBLOCKING_GET_PEEK_IMP (this.m_if, RSP, t)
+  `UVM_NONBLOCKING_PUT_IMP (this.m_if, REQ, t)
+  `UVM_NONBLOCKING_GET_PEEK_IMP (this.m_if, RSP, t)
 endclass 
 
 class uvm_master_export #(type REQ=int, type RSP=REQ)
   extends uvm_port_base #(uvm_tlm_if_base #(REQ, RSP));
   `UVM_EXPORT_COMMON(`UVM_TLM_MASTER_MASK,"uvm_master_export")
-  `PUT_IMP (this.m_if, REQ, t)
-  `GET_PEEK_IMP (this.m_if, RSP, t)
+  `UVM_PUT_IMP (this.m_if, REQ, t)
+  `UVM_GET_PEEK_IMP (this.m_if, RSP, t)
 endclass
 
 class uvm_blocking_slave_export #(type REQ=int, type RSP=REQ)
   extends uvm_port_base #(uvm_tlm_if_base #(RSP, REQ));
   `UVM_EXPORT_COMMON(`UVM_TLM_BLOCKING_SLAVE_MASK,"uvm_blocking_slave_export")
-  `BLOCKING_PUT_IMP (this.m_if, RSP, t)
-  `BLOCKING_GET_PEEK_IMP (this.m_if, REQ, t)
+  `UVM_BLOCKING_PUT_IMP (this.m_if, RSP, t)
+  `UVM_BLOCKING_GET_PEEK_IMP (this.m_if, REQ, t)
 endclass 
 
 class uvm_nonblocking_slave_export #(type REQ=int, type RSP=REQ)
   extends uvm_port_base #(uvm_tlm_if_base #(RSP, REQ));
   `UVM_EXPORT_COMMON(`UVM_TLM_NONBLOCKING_SLAVE_MASK,"uvm_nonblocking_slave_export")
-  `NONBLOCKING_PUT_IMP (this.m_if, RSP, t)
-  `NONBLOCKING_GET_PEEK_IMP (this.m_if, REQ, t)
+  `UVM_NONBLOCKING_PUT_IMP (this.m_if, RSP, t)
+  `UVM_NONBLOCKING_GET_PEEK_IMP (this.m_if, REQ, t)
 endclass 
 
 class uvm_slave_export #(type REQ=int, type RSP=REQ)
   extends uvm_port_base #(uvm_tlm_if_base #(RSP, REQ));
   `UVM_EXPORT_COMMON(`UVM_TLM_SLAVE_MASK,"uvm_slave_export")
-  `PUT_IMP (this.m_if, RSP, t)
-  `GET_PEEK_IMP (this.m_if, REQ, t)
+  `UVM_PUT_IMP (this.m_if, RSP, t)
+  `UVM_GET_PEEK_IMP (this.m_if, REQ, t)
 endclass
 
 class uvm_blocking_transport_export #(type REQ=int, type RSP=REQ)
   extends uvm_port_base #(uvm_tlm_if_base #(REQ, RSP));
   `UVM_EXPORT_COMMON(`UVM_TLM_BLOCKING_TRANSPORT_MASK,"uvm_blocking_transport_export")
-  `BLOCKING_TRANSPORT_IMP (this.m_if, REQ, RSP, req, rsp)
+  `UVM_BLOCKING_TRANSPORT_IMP (this.m_if, REQ, RSP, req, rsp)
 endclass
 
 class uvm_nonblocking_transport_export #(type REQ=int, type RSP=REQ)
   extends uvm_port_base #(uvm_tlm_if_base #(REQ, RSP));
   `UVM_EXPORT_COMMON(`UVM_TLM_NONBLOCKING_TRANSPORT_MASK,"uvm_nonblocking_transport_export")
-  `NONBLOCKING_TRANSPORT_IMP (this.m_if, REQ, RSP, req, rsp)
+  `UVM_NONBLOCKING_TRANSPORT_IMP (this.m_if, REQ, RSP, req, rsp)
 endclass
 
 class uvm_transport_export #(type REQ=int, type RSP=REQ)
   extends uvm_port_base #(uvm_tlm_if_base #(REQ, RSP));
   `UVM_EXPORT_COMMON(`UVM_TLM_TRANSPORT_MASK,"uvm_transport_export")
-  `TRANSPORT_IMP (this.m_if, REQ, RSP, req, rsp)
+  `UVM_TRANSPORT_IMP (this.m_if, REQ, RSP, req, rsp)
 endclass
 

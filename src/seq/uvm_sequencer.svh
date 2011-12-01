@@ -31,8 +31,8 @@ class uvm_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
 
   typedef uvm_sequencer #( REQ , RSP) this_type;
 
-  bit sequence_item_requested = 0;
-  bit get_next_item_called    = 0;
+  bit sequence_item_requested;
+  bit get_next_item_called;
 
   `uvm_component_param_utils(this_type)
 
@@ -111,18 +111,13 @@ typedef uvm_sequencer #(uvm_sequence_item) uvm_virtual_sequencer;
 // IMPLEMENTATION
 //------------------------------------------------------------------------------
 
-// Function: new
-//
-// Standard component constructor that creates an instance of this class
-// using the given ~name~ and ~parent~, if any.
-//
 function uvm_sequencer::new (string name, uvm_component parent=null);
   super.new(name, parent);
   seq_item_export = new ("seq_item_export", this);
 endfunction
 
 
-// Function: stop_sequences
+// Function- stop_sequences
 //
 // Tells the sequencer to kill all sequences and child sequences currently
 // operating on the sequencer, and remove all requests, locks and responses

@@ -19,7 +19,9 @@
 //    the License for the specific language governing
 //    permissions and limitations under the License.
 // -------------------------------------------------------------
-// 
+//
+
+`include "uvm_macros.svh"
 
 `timescale 1ns/1ns
 

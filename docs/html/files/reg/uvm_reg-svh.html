@@ -85,7 +85,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.get_maps" id=link12 onMouseOver="ShowTip(event, 'tt12', 'link12')" onMouseOut="HideTip('tt12')">get_maps</a></td><td class=SDescription>Returns all of the address <i>maps</i> where this register is mapped</td></tr>
   <!-- index=13 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get_rights" id=link13 onMouseOver="ShowTip(event, 'tt13', 'link13')" onMouseOut="HideTip('tt13')">get_rights</a></td><td class=SDescription>Returns the access rights of this register.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get_rights" id=link13 onMouseOver="ShowTip(event, 'tt13', 'link13')" onMouseOut="HideTip('tt13')">get_rights</a></td><td class=SDescription>Returns the accessibility (&ldquo;RW, &ldquo;RO&rdquo;, or &ldquo;WO&rdquo;) of this register in the given <i>map</i>.</td></tr>
   <!-- index=14 -->
 
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.get_n_bits" id=link14 onMouseOver="ShowTip(event, 'tt14', 'link14')" onMouseOut="HideTip('tt14')">get_n_bits</a></td><td class=SDescription>Returns the width, in bits, of this register.</td></tr>
@@ -121,136 +121,139 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get" id=link23 onMouseOver="ShowTip(event, 'tt23', 'link23')" onMouseOut="HideTip('tt23')">get</a></td><td class=SDescription>Return the desired value of the fields in the register.</td></tr>
   <!-- index=25 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.needs_update" id=link24 onMouseOver="ShowTip(event, 'tt24', 'link24')" onMouseOut="HideTip('tt24')">needs_update</a></td><td class=SDescription>Returns 1 if any of the fields need updating</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.get_mirrored_value" id=link24 onMouseOver="ShowTip(event, 'tt24', 'link24')" onMouseOut="HideTip('tt24')">get_mirrored_value</a></td><td class=SDescription>Return the mirrored value of the fields in the register.</td></tr>
   <!-- index=26 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.reset" id=link25 onMouseOver="ShowTip(event, 'tt25', 'link25')" onMouseOut="HideTip('tt25')">reset</a></td><td class=SDescription>Reset the desired/mirrored value for this register.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.needs_update" id=link25 onMouseOver="ShowTip(event, 'tt25', 'link25')" onMouseOut="HideTip('tt25')">needs_update</a></td><td class=SDescription>Returns 1 if any of the fields need updating</td></tr>
   <!-- index=27 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.get_reset" id=link26 onMouseOver="ShowTip(event, 'tt26', 'link26')" onMouseOut="HideTip('tt26')">get_reset</a></td><td class=SDescription>Get the specified reset value for this register</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.reset" id=link26 onMouseOver="ShowTip(event, 'tt26', 'link26')" onMouseOut="HideTip('tt26')">reset</a></td><td class=SDescription>Reset the desired/mirrored value for this register.</td></tr>
   <!-- index=28 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.has_reset" id=link27 onMouseOver="ShowTip(event, 'tt27', 'link27')" onMouseOut="HideTip('tt27')">has_reset</a></td><td class=SDescription>Check if any field in the register has a reset value specified for the specified reset <i>kind</i>. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get_reset" id=link27 onMouseOver="ShowTip(event, 'tt27', 'link27')" onMouseOut="HideTip('tt27')">get_reset</a></td><td class=SDescription>Get the specified reset value for this register</td></tr>
   <!-- index=29 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.set_reset" id=link28 onMouseOver="ShowTip(event, 'tt28', 'link28')" onMouseOut="HideTip('tt28')">set_reset</a></td><td class=SDescription>Specify or modify the reset value for this register</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.has_reset" id=link28 onMouseOver="ShowTip(event, 'tt28', 'link28')" onMouseOut="HideTip('tt28')">has_reset</a></td><td class=SDescription>Check if any field in the register has a reset value specified for the specified reset <i>kind</i>. </td></tr>
   <!-- index=30 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.write" id=link29 onMouseOver="ShowTip(event, 'tt29', 'link29')" onMouseOut="HideTip('tt29')">write</a></td><td class=SDescription>Write the specified value in this register</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.set_reset" id=link29 onMouseOver="ShowTip(event, 'tt29', 'link29')" onMouseOut="HideTip('tt29')">set_reset</a></td><td class=SDescription>Specify or modify the reset value for this register</td></tr>
   <!-- index=31 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.read" id=link30 onMouseOver="ShowTip(event, 'tt30', 'link30')" onMouseOut="HideTip('tt30')">read</a></td><td class=SDescription>Read the current value from this register</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.write" id=link30 onMouseOver="ShowTip(event, 'tt30', 'link30')" onMouseOut="HideTip('tt30')">write</a></td><td class=SDescription>Write the specified value in this register</td></tr>
   <!-- index=32 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.poke" id=link31 onMouseOver="ShowTip(event, 'tt31', 'link31')" onMouseOut="HideTip('tt31')">poke</a></td><td class=SDescription>Deposit the specified value in this register</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.read" id=link31 onMouseOver="ShowTip(event, 'tt31', 'link31')" onMouseOut="HideTip('tt31')">read</a></td><td class=SDescription>Read the current value from this register</td></tr>
   <!-- index=33 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.peek" id=link32 onMouseOver="ShowTip(event, 'tt32', 'link32')" onMouseOut="HideTip('tt32')">peek</a></td><td class=SDescription>Read the current value from this register</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.poke" id=link32 onMouseOver="ShowTip(event, 'tt32', 'link32')" onMouseOut="HideTip('tt32')">poke</a></td><td class=SDescription>Deposit the specified value in this register</td></tr>
   <!-- index=34 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.update" id=link33 onMouseOver="ShowTip(event, 'tt33', 'link33')" onMouseOut="HideTip('tt33')">update</a></td><td class=SDescription>Updates the content of the register in the design to match the desired value</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.peek" id=link33 onMouseOver="ShowTip(event, 'tt33', 'link33')" onMouseOut="HideTip('tt33')">peek</a></td><td class=SDescription>Read the current value from this register</td></tr>
   <!-- index=35 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.mirror" id=link34 onMouseOver="ShowTip(event, 'tt34', 'link34')" onMouseOut="HideTip('tt34')">mirror</a></td><td class=SDescription>Read the register and update/check its mirror value</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.update" id=link34 onMouseOver="ShowTip(event, 'tt34', 'link34')" onMouseOut="HideTip('tt34')">update</a></td><td class=SDescription>Updates the content of the register in the design to match the desired value</td></tr>
   <!-- index=36 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.predict" id=link35 onMouseOver="ShowTip(event, 'tt35', 'link35')" onMouseOut="HideTip('tt35')">predict</a></td><td class=SDescription>Update the mirrored value for this register.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.mirror" id=link35 onMouseOver="ShowTip(event, 'tt35', 'link35')" onMouseOut="HideTip('tt35')">mirror</a></td><td class=SDescription>Read the register and update/check its mirror value</td></tr>
   <!-- index=37 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.is_busy" id=link36 onMouseOver="ShowTip(event, 'tt36', 'link36')" onMouseOut="HideTip('tt36')">is_busy</a></td><td class=SDescription>Returns 1 if register is currently being read or written.</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.predict" id=link36 onMouseOver="ShowTip(event, 'tt36', 'link36')" onMouseOut="HideTip('tt36')">predict</a></td><td class=SDescription>Update the mirrored value for this register.</td></tr>
   <!-- index=38 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_reg.Frontdoor" >Frontdoor</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.is_busy" id=link37 onMouseOver="ShowTip(event, 'tt37', 'link37')" onMouseOut="HideTip('tt37')">is_busy</a></td><td class=SDescription>Returns 1 if register is currently being read or written.</td></tr>
   <!-- index=39 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.set_frontdoor" id=link37 onMouseOver="ShowTip(event, 'tt37', 'link37')" onMouseOut="HideTip('tt37')">set_frontdoor</a></td><td class=SDescription>Set a user-defined frontdoor for this register</td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_reg.Frontdoor" >Frontdoor</a></td><td class=SDescription></td></tr>
   <!-- index=40 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get_frontdoor" id=link38 onMouseOver="ShowTip(event, 'tt38', 'link38')" onMouseOut="HideTip('tt38')">get_frontdoor</a></td><td class=SDescription>Returns the user-defined frontdoor for this register</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.set_frontdoor" id=link38 onMouseOver="ShowTip(event, 'tt38', 'link38')" onMouseOut="HideTip('tt38')">set_frontdoor</a></td><td class=SDescription>Set a user-defined frontdoor for this register</td></tr>
   <!-- index=41 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_reg.Backdoor" >Backdoor</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get_frontdoor" id=link39 onMouseOver="ShowTip(event, 'tt39', 'link39')" onMouseOut="HideTip('tt39')">get_frontdoor</a></td><td class=SDescription>Returns the user-defined frontdoor for this register</td></tr>
   <!-- index=42 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.set_backdoor" id=link39 onMouseOver="ShowTip(event, 'tt39', 'link39')" onMouseOut="HideTip('tt39')">set_backdoor</a></td><td class=SDescription>Set a user-defined backdoor for this register</td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_reg.Backdoor" >Backdoor</a></td><td class=SDescription></td></tr>
   <!-- index=43 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get_backdoor" id=link40 onMouseOver="ShowTip(event, 'tt40', 'link40')" onMouseOut="HideTip('tt40')">get_backdoor</a></td><td class=SDescription>Returns the user-defined backdoor for this register</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.set_backdoor" id=link40 onMouseOver="ShowTip(event, 'tt40', 'link40')" onMouseOut="HideTip('tt40')">set_backdoor</a></td><td class=SDescription>Set a user-defined backdoor for this register</td></tr>
   <!-- index=44 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.clear_hdl_path" id=link41 onMouseOver="ShowTip(event, 'tt41', 'link41')" onMouseOut="HideTip('tt41')">clear_hdl_path</a></td><td class=SDescription>Delete HDL paths</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get_backdoor" id=link41 onMouseOver="ShowTip(event, 'tt41', 'link41')" onMouseOut="HideTip('tt41')">get_backdoor</a></td><td class=SDescription>Returns the user-defined backdoor for this register</td></tr>
   <!-- index=45 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.add_hdl_path" id=link42 onMouseOver="ShowTip(event, 'tt42', 'link42')" onMouseOut="HideTip('tt42')">add_hdl_path</a></td><td class=SDescription>Add an HDL path</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.clear_hdl_path" id=link42 onMouseOver="ShowTip(event, 'tt42', 'link42')" onMouseOut="HideTip('tt42')">clear_hdl_path</a></td><td class=SDescription>Delete HDL paths</td></tr>
   <!-- index=46 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.add_hdl_path_slice" id=link43 onMouseOver="ShowTip(event, 'tt43', 'link43')" onMouseOut="HideTip('tt43')">add_hdl_path_slice</a></td><td class=SDescription>Append the specified HDL slice to the HDL path of the register instance for the specified design abstraction. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.add_hdl_path" id=link43 onMouseOver="ShowTip(event, 'tt43', 'link43')" onMouseOut="HideTip('tt43')">add_hdl_path</a></td><td class=SDescription>Add an HDL path</td></tr>
   <!-- index=47 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.has_hdl_path" id=link44 onMouseOver="ShowTip(event, 'tt44', 'link44')" onMouseOut="HideTip('tt44')">has_hdl_path</a></td><td class=SDescription>Check if a HDL path is specified</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.add_hdl_path_slice" id=link44 onMouseOver="ShowTip(event, 'tt44', 'link44')" onMouseOut="HideTip('tt44')">add_hdl_path_slice</a></td><td class=SDescription>Append the specified HDL slice to the HDL path of the register instance for the specified design abstraction. </td></tr>
   <!-- index=48 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.get_hdl_path" id=link45 onMouseOver="ShowTip(event, 'tt45', 'link45')" onMouseOut="HideTip('tt45')">get_hdl_path</a></td><td class=SDescription>Get the incremental HDL path(s)</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.has_hdl_path" id=link45 onMouseOver="ShowTip(event, 'tt45', 'link45')" onMouseOut="HideTip('tt45')">has_hdl_path</a></td><td class=SDescription>Check if a HDL path is specified</td></tr>
   <!-- index=49 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get_hdl_path_kinds" id=link46 onMouseOver="ShowTip(event, 'tt46', 'link46')" onMouseOut="HideTip('tt46')">get_hdl_path_kinds</a></td><td class=SDescription>Get design abstractions for which HDL paths have been defined</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.get_hdl_path" id=link46 onMouseOver="ShowTip(event, 'tt46', 'link46')" onMouseOut="HideTip('tt46')">get_hdl_path</a></td><td class=SDescription>Get the incremental HDL path(s)</td></tr>
   <!-- index=50 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.get_full_hdl_path" id=link47 onMouseOver="ShowTip(event, 'tt47', 'link47')" onMouseOut="HideTip('tt47')">get_full_hdl_path</a></td><td class=SDescription>Get the full hierarchical HDL path(s)</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get_hdl_path_kinds" id=link47 onMouseOver="ShowTip(event, 'tt47', 'link47')" onMouseOut="HideTip('tt47')">get_hdl_path_kinds</a></td><td class=SDescription>Get design abstractions for which HDL paths have been defined</td></tr>
   <!-- index=51 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.backdoor_read" id=link48 onMouseOver="ShowTip(event, 'tt48', 'link48')" onMouseOut="HideTip('tt48')">backdoor_read</a></td><td class=SDescription>User-define backdoor read access</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.get_full_hdl_path" id=link48 onMouseOver="ShowTip(event, 'tt48', 'link48')" onMouseOut="HideTip('tt48')">get_full_hdl_path</a></td><td class=SDescription>Get the full hierarchical HDL path(s)</td></tr>
   <!-- index=52 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.backdoor_write" id=link49 onMouseOver="ShowTip(event, 'tt49', 'link49')" onMouseOut="HideTip('tt49')">backdoor_write</a></td><td class=SDescription>User-defined backdoor read access</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.backdoor_read" id=link49 onMouseOver="ShowTip(event, 'tt49', 'link49')" onMouseOut="HideTip('tt49')">backdoor_read</a></td><td class=SDescription>User-define backdoor read access</td></tr>
   <!-- index=53 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.backdoor_read_func" id=link50 onMouseOver="ShowTip(event, 'tt50', 'link50')" onMouseOut="HideTip('tt50')">backdoor_read_func</a></td><td class=SDescription>User-defined backdoor read access</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.backdoor_write" id=link50 onMouseOver="ShowTip(event, 'tt50', 'link50')" onMouseOut="HideTip('tt50')">backdoor_write</a></td><td class=SDescription>User-defined backdoor read access</td></tr>
   <!-- index=54 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.backdoor_watch" id=link51 onMouseOver="ShowTip(event, 'tt51', 'link51')" onMouseOut="HideTip('tt51')">backdoor_watch</a></td><td class=SDescription>User-defined DUT register change monitor</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.backdoor_read_func" id=link51 onMouseOver="ShowTip(event, 'tt51', 'link51')" onMouseOut="HideTip('tt51')">backdoor_read_func</a></td><td class=SDescription>User-defined backdoor read access</td></tr>
   <!-- index=55 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_reg.Coverage" >Coverage</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.backdoor_watch" id=link52 onMouseOver="ShowTip(event, 'tt52', 'link52')" onMouseOut="HideTip('tt52')">backdoor_watch</a></td><td class=SDescription>User-defined DUT register change monitor</td></tr>
   <!-- index=56 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.include_coverage" id=link52 onMouseOver="ShowTip(event, 'tt52', 'link52')" onMouseOut="HideTip('tt52')">include_coverage</a></td><td class=SDescription>Specify which coverage model that must be included in various block, register or memory abstraction class instances.</td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_reg.Coverage" >Coverage</a></td><td class=SDescription></td></tr>
   <!-- index=57 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.build_coverage" id=link53 onMouseOver="ShowTip(event, 'tt53', 'link53')" onMouseOut="HideTip('tt53')">build_coverage</a></td><td class=SDescription>Check if all of the specified coverage models must be built.</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.include_coverage" id=link53 onMouseOver="ShowTip(event, 'tt53', 'link53')" onMouseOut="HideTip('tt53')">include_coverage</a></td><td class=SDescription>Specify which coverage model that must be included in various block, register or memory abstraction class instances.</td></tr>
   <!-- index=58 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.add_coverage" id=link54 onMouseOver="ShowTip(event, 'tt54', 'link54')" onMouseOut="HideTip('tt54')">add_coverage</a></td><td class=SDescription>Specify that additional coverage models are available.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.build_coverage" id=link54 onMouseOver="ShowTip(event, 'tt54', 'link54')" onMouseOut="HideTip('tt54')">build_coverage</a></td><td class=SDescription>Check if all of the specified coverage models must be built.</td></tr>
   <!-- index=59 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.has_coverage" id=link55 onMouseOver="ShowTip(event, 'tt55', 'link55')" onMouseOut="HideTip('tt55')">has_coverage</a></td><td class=SDescription>Check if register has coverage model(s)</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.add_coverage" id=link55 onMouseOver="ShowTip(event, 'tt55', 'link55')" onMouseOut="HideTip('tt55')">add_coverage</a></td><td class=SDescription>Specify that additional coverage models are available.</td></tr>
   <!-- index=60 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.set_coverage" id=link56 onMouseOver="ShowTip(event, 'tt56', 'link56')" onMouseOut="HideTip('tt56')">set_coverage</a></td><td class=SDescription>Turns on coverage measurement.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.has_coverage" id=link56 onMouseOver="ShowTip(event, 'tt56', 'link56')" onMouseOut="HideTip('tt56')">has_coverage</a></td><td class=SDescription>Check if register has coverage model(s)</td></tr>
   <!-- index=61 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get_coverage" id=link57 onMouseOver="ShowTip(event, 'tt57', 'link57')" onMouseOut="HideTip('tt57')">get_coverage</a></td><td class=SDescription>Check if coverage measurement is on.</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.set_coverage" id=link57 onMouseOver="ShowTip(event, 'tt57', 'link57')" onMouseOut="HideTip('tt57')">set_coverage</a></td><td class=SDescription>Turns on coverage measurement.</td></tr>
   <!-- index=62 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.sample" id=link58 onMouseOver="ShowTip(event, 'tt58', 'link58')" onMouseOut="HideTip('tt58')">sample</a></td><td class=SDescription>Functional coverage measurement method</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.get_coverage" id=link58 onMouseOver="ShowTip(event, 'tt58', 'link58')" onMouseOut="HideTip('tt58')">get_coverage</a></td><td class=SDescription>Check if coverage measurement is on.</td></tr>
   <!-- index=63 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.sample_values" id=link59 onMouseOver="ShowTip(event, 'tt59', 'link59')" onMouseOut="HideTip('tt59')">sample_values</a></td><td class=SDescription>Functional coverage measurement method for field values</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.sample" id=link59 onMouseOver="ShowTip(event, 'tt59', 'link59')" onMouseOut="HideTip('tt59')">sample</a></td><td class=SDescription>Functional coverage measurement method</td></tr>
   <!-- index=64 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_reg.Callbacks" >Callbacks</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.sample_values" id=link60 onMouseOver="ShowTip(event, 'tt60', 'link60')" onMouseOut="HideTip('tt60')">sample_values</a></td><td class=SDescription>Functional coverage measurement method for field values</td></tr>
   <!-- index=65 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.pre_write" id=link60 onMouseOver="ShowTip(event, 'tt60', 'link60')" onMouseOut="HideTip('tt60')">pre_write</a></td><td class=SDescription>Called before register write.</td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_reg.Callbacks" >Callbacks</a></td><td class=SDescription></td></tr>
   <!-- index=66 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.post_write" id=link61 onMouseOver="ShowTip(event, 'tt61', 'link61')" onMouseOut="HideTip('tt61')">post_write</a></td><td class=SDescription>Called after register write.</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.pre_write" id=link61 onMouseOver="ShowTip(event, 'tt61', 'link61')" onMouseOut="HideTip('tt61')">pre_write</a></td><td class=SDescription>Called before register write.</td></tr>
   <!-- index=67 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.pre_read" id=link62 onMouseOver="ShowTip(event, 'tt62', 'link62')" onMouseOut="HideTip('tt62')">pre_read</a></td><td class=SDescription>Called before register read.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.post_write" id=link62 onMouseOver="ShowTip(event, 'tt62', 'link62')" onMouseOut="HideTip('tt62')">post_write</a></td><td class=SDescription>Called after register write.</td></tr>
   <!-- index=68 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.post_read" id=link63 onMouseOver="ShowTip(event, 'tt63', 'link63')" onMouseOut="HideTip('tt63')">post_read</a></td><td class=SDescription>Called after register read.</td></tr></table></div></div><!--END_ND_SUMMARY-->
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg.pre_read" id=link63 onMouseOver="ShowTip(event, 'tt63', 'link63')" onMouseOut="HideTip('tt63')">pre_read</a></td><td class=SDescription>Called before register read.</td></tr>
+  <!-- index=69 -->
+
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg.post_read" id=link64 onMouseOver="ShowTip(event, 'tt64', 'link64')" onMouseOut="HideTip('tt64')">post_read</a></td><td class=SDescription>Called after register read.</td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
 
 
@@ -284,7 +287,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Create a new instance and type-specific configuration</p><p>Creates an instance of a register abstraction class with the specified name.</p><p><i>n_bits</i> specifies the total number of bits in the register.&nbsp; Not all bits need to be implemented.&nbsp; This value is usually a multiple of 8.</p><p><i>has_coverage</i> specifies which functional coverage models are present in the extension of the register abstraction class.&nbsp; Multiple functional coverage models may be specified by adding their symbolic names, as defined by the <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link64 onMouseOver="ShowTip(event, 'tt64', 'link64')" onMouseOut="HideTip('tt64')">uvm_coverage_model_e</a> type.</p></div></div></div>
+<div class=CBody><p>Create a new instance and type-specific configuration</p><p>Creates an instance of a register abstraction class with the specified name.</p><p><i>n_bits</i> specifies the total number of bits in the register.&nbsp; Not all bits need to be implemented.&nbsp; This value is usually a multiple of 8.</p><p><i>has_coverage</i> specifies which functional coverage models are present in the extension of the register abstraction class.&nbsp; Multiple functional coverage models may be specified by adding their symbolic names, as defined by the <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link65 onMouseOver="ShowTip(event, 'tt65', 'link65')" onMouseOut="HideTip('tt65')">uvm_coverage_model_e</a> type.</p></div></div></div>
 
 
 
@@ -308,7 +311,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Instance-specific configuration</p><p>Specify the parent block of this register.&nbsp; May also set a parent register file for this register,</p><p>If the register is implemented in a single HDL variable, it&rsquo;s name is specified as the <i>hdl_path</i>.&nbsp; Otherwise, if the register is implemented as a concatenation of variables (usually one per field), then the HDL path must be specified using the <a href="#uvm_reg.add_hdl_path" class=LMethod id=link65 onMouseOver="ShowTip(event, 'tt42', 'link65')" onMouseOut="HideTip('tt42')">add_hdl_path()</a> or <a href="#uvm_reg.add_hdl_path_slice" class=LMethod id=link66 onMouseOver="ShowTip(event, 'tt43', 'link66')" onMouseOut="HideTip('tt43')">add_hdl_path_slice</a> method.</p></div></div></div>
+<div class=CBody><p>Instance-specific configuration</p><p>Specify the parent block of this register.&nbsp; May also set a parent register file for this register,</p><p>If the register is implemented in a single HDL variable, it&rsquo;s name is specified as the <i>hdl_path</i>.&nbsp; Otherwise, if the register is implemented as a concatenation of variables (usually one per field), then the HDL path must be specified using the <a href="#uvm_reg.add_hdl_path" class=LMethod id=link66 onMouseOver="ShowTip(event, 'tt43', 'link66')" onMouseOut="HideTip('tt43')">add_hdl_path()</a> or <a href="#uvm_reg.add_hdl_path_slice" class=LMethod id=link67 onMouseOver="ShowTip(event, 'tt44', 'link67')" onMouseOut="HideTip('tt44')">add_hdl_path_slice</a> method.</p></div></div></div>
 
 
 
@@ -332,7 +335,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Modify the offset of the register</p><p>The offset of a register within an address map is set using the <a href="uvm_reg_map-svh.html#uvm_reg_map.add_reg" class=LMethod id=link67 onMouseOver="ShowTip(event, 'tt65', 'link67')" onMouseOut="HideTip('tt65')">uvm_reg_map::add_reg()</a> method.&nbsp; This method is used to modify that offset dynamically.</p><p>Modifying the offset of a register will make the register model diverge from the specification that was used to create it.</p></div></div></div>
+<div class=CBody><p>Modify the offset of the register</p><p>The offset of a register within an address map is set using the <a href="uvm_reg_map-svh.html#uvm_reg_map.add_reg" class=LMethod id=link68 onMouseOver="ShowTip(event, 'tt66', 'link68')" onMouseOut="HideTip('tt66')">uvm_reg_map::add_reg()</a> method.&nbsp; This method is used to modify that offset dynamically.</p><p>Modifying the offset of a register will make the register model diverge from the specification that was used to create it.</p></div></div></div>
 
 
 
@@ -421,7 +424,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Returns the access rights of this register.</p><p>Returns &ldquo;RW&rdquo;, &ldquo;RO&rdquo; or &ldquo;WO&rdquo;.&nbsp; The access rights of a register is always &ldquo;RW&rdquo;, unless it is a shared register with access restriction in a particular address map.</p><p>If no address map is specified and the register is mapped in only one address map, that address map is used.&nbsp; If the register is mapped in more than one address map, the default address map of the parent block is used.</p><p>If an address map is specified and the register is not mapped in the specified address map, an error message is issued and &ldquo;RW&rdquo; is returned.</p></div></div></div>
+<div class=CBody><p>Returns the accessibility (&ldquo;RW, &ldquo;RO&rdquo;, or &ldquo;WO&rdquo;) of this register in the given <i>map</i>.</p><p>If no address map is specified and the register is mapped in only one address map, that address map is used.&nbsp; If the register is mapped in more than one address map, the default address map of the parent block is used.</p><p>Whether a register field can be read or written depends on both the field&rsquo;s configured access policy (see &lt;uvm_reg_field::configure&gt;) and the register&rsquo;s accessibility rights in the map being used to access the field.</p><p>If an address map is specified and the register is not mapped in the specified address map, an error message is issued and &ldquo;RW&rdquo; is returned.</p></div></div></div>
 
 
 
@@ -558,7 +561,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Set the desired value for this register</p><p>Sets the desired value of the fields in the register to the specified value.&nbsp; Does not actually set the value of the register in the design, only the desired value in its corresponding abstraction class in the RegModel model.&nbsp; Use the <a href="#uvm_reg.update" class=LMethod id=link68 onMouseOver="ShowTip(event, 'tt33', 'link68')" onMouseOut="HideTip('tt33')">uvm_reg::update()</a> method to update the actual register with the mirrored value or the <a href="#uvm_reg.write" class=LMethod id=link69 onMouseOver="ShowTip(event, 'tt29', 'link69')" onMouseOut="HideTip('tt29')">uvm_reg::write()</a> method to set the actual register and its mirrored value.</p><p>Unless this method is used, the desired value is equal to the mirrored value.</p><p>Refer <a href="uvm_reg_field-svh.html#uvm_reg_field.set" class=LMethod id=link70 onMouseOver="ShowTip(event, 'tt66', 'link70')" onMouseOut="HideTip('tt66')">uvm_reg_field::set()</a> for more details on the effect of setting mirror values on fields with different access policies.</p><p>To modify the mirrored field values to a specific value, and thus use the mirrored as a scoreboard for the register values in the DUT, use the <a href="#uvm_reg.predict" class=LMethod id=link71 onMouseOver="ShowTip(event, 'tt35', 'link71')" onMouseOut="HideTip('tt35')">uvm_reg::predict()</a> method.</p></div></div></div>
+<div class=CBody><p>Set the desired value for this register</p><p>Sets the desired value of the fields in the register to the specified value.&nbsp; Does not actually set the value of the register in the design, only the desired value in its corresponding abstraction class in the RegModel model.&nbsp; Use the <a href="#uvm_reg.update" class=LMethod id=link69 onMouseOver="ShowTip(event, 'tt34', 'link69')" onMouseOut="HideTip('tt34')">uvm_reg::update()</a> method to update the actual register with the mirrored value or the <a href="#uvm_reg.write" class=LMethod id=link70 onMouseOver="ShowTip(event, 'tt30', 'link70')" onMouseOut="HideTip('tt30')">uvm_reg::write()</a> method to set the actual register and its mirrored value.</p><p>Unless this method is used, the desired value is equal to the mirrored value.</p><p>Refer <a href="uvm_reg_field-svh.html#uvm_reg_field.set" class=LMethod id=link71 onMouseOver="ShowTip(event, 'tt67', 'link71')" onMouseOut="HideTip('tt67')">uvm_reg_field::set()</a> for more details on the effect of setting mirror values on fields with different access policies.</p><p>To modify the mirrored field values to a specific value, and thus use the mirrored as a scoreboard for the register values in the DUT, use the <a href="#uvm_reg.predict" class=LMethod id=link72 onMouseOver="ShowTip(event, 'tt36', 'link72')" onMouseOut="HideTip('tt36')">uvm_reg::predict()</a> method.</p></div></div></div>
 
 
 
@@ -578,20 +581,40 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Return the desired value of the fields in the register.</p><p>Does not actually read the value of the register in the design, only the desired value in the abstraction class.&nbsp; Unless set to a different value using the <a href="#uvm_reg.set" class=LMethod id=link72 onMouseOver="ShowTip(event, 'tt22', 'link72')" onMouseOut="HideTip('tt22')">uvm_reg::set()</a>, the desired value and the mirrored value are identical.</p><p>Use the <a href="#uvm_reg.read" class=LMethod id=link73 onMouseOver="ShowTip(event, 'tt30', 'link73')" onMouseOut="HideTip('tt30')">uvm_reg::read()</a> or <a href="#uvm_reg.peek" class=LMethod id=link74 onMouseOver="ShowTip(event, 'tt32', 'link74')" onMouseOut="HideTip('tt32')">uvm_reg::peek()</a> method to get the actual register value.</p><p>If the register contains write-only fields, the desired/mirrored value for those fields are the value last written and assumed to reside in the bits implementing these fields.&nbsp; Although a physical read operation would something different for these fields, the returned value is the actual content.</p></div></div></div>
+<div class=CBody><p>Return the desired value of the fields in the register.</p><p>Does not actually read the value of the register in the design, only the desired value in the abstraction class.&nbsp; Unless set to a different value using the <a href="#uvm_reg.set" class=LMethod id=link73 onMouseOver="ShowTip(event, 'tt22', 'link73')" onMouseOut="HideTip('tt22')">uvm_reg::set()</a>, the desired value and the mirrored value are identical.</p><p>Use the <a href="#uvm_reg.read" class=LMethod id=link74 onMouseOver="ShowTip(event, 'tt31', 'link74')" onMouseOut="HideTip('tt31')">uvm_reg::read()</a> or <a href="#uvm_reg.peek" class=LMethod id=link75 onMouseOver="ShowTip(event, 'tt33', 'link75')" onMouseOut="HideTip('tt33')">uvm_reg::peek()</a> method to get the actual register value.</p><p>If the register contains write-only fields, the desired/mirrored value for those fields are the value last written and assumed to reside in the bits implementing these fields.&nbsp; Although a physical read operation would something different for these fields, the returned value is the actual content.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=25 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.needs_update" href="../../../../src/reg/uvm_reg.svh">needs_update</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function bit needs_update()
-  </td></tr></table></blockquote><div class=CBody><p>Returns 1 if any of the fields need updating</p><p>See <a href="uvm_reg_field-svh.html#uvm_reg_field.needs_update" class=LMethod id=link75 onMouseOver="ShowTip(event, 'tt67', 'link75')" onMouseOut="HideTip('tt67')">uvm_reg_field::needs_update()</a> for details.&nbsp; Use the <a href="#uvm_reg.update" class=LMethod id=link76 onMouseOver="ShowTip(event, 'tt33', 'link76')" onMouseOut="HideTip('tt33')">uvm_reg::update()</a> to actually update the DUT register.</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.get_mirrored_value" href="../../../../src/reg/uvm_reg.svh">get_mirrored_value</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>virtual function uvm_reg_data_t get_mirrored_value(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>fname</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap>lineno</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+<div class=CBody><p>Return the mirrored value of the fields in the register.</p><p>Does not actually read the value of the register in the design</p><p>If the register contains write-only fields, the desired/mirrored value for those fields are the value last written and assumed to reside in the bits implementing these fields.&nbsp; Although a physical read operation would something different for these fields, the returned value is the actual content.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=26 -->
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.needs_update" href="../../../../src/reg/uvm_reg.svh">needs_update</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function bit needs_update()
+  </td></tr></table></blockquote><div class=CBody><p>Returns 1 if any of the fields need updating</p><p>See <a href="uvm_reg_field-svh.html#uvm_reg_field.needs_update" class=LMethod id=link76 onMouseOver="ShowTip(event, 'tt68', 'link76')" onMouseOut="HideTip('tt68')">uvm_reg_field::needs_update()</a> for details.&nbsp; Use the <a href="#uvm_reg.update" class=LMethod id=link77 onMouseOver="ShowTip(event, 'tt34', 'link77')" onMouseOut="HideTip('tt34')">uvm_reg::update()</a> to actually update the DUT register.</p></div></div></div>
+
+
+
+
+ <!--CONTENT index=27 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.reset" href="../../../../src/reg/uvm_reg.svh">reset</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -602,12 +625,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Reset the desired/mirrored value for this register.</p><p>Sets the desired and mirror value of the fields in this register to the reset value for the specified reset <i>kind</i>.&nbsp; See <a href="uvm_reg_field-svh.html#uvm_reg_field.reset" class=LMethod id=link77 onMouseOver="ShowTip(event, 'tt68', 'link77')" onMouseOut="HideTip('tt68')">uvm_reg_field.reset()</a> for more details.</p><p>Also resets the semaphore that prevents concurrent access to the register.&nbsp; This semaphore must be explicitly reset if a thread accessing this register array was killed in before the access was completed</p></div></div></div>
+<div class=CBody><p>Reset the desired/mirrored value for this register.</p><p>Sets the desired and mirror value of the fields in this register to the reset value for the specified reset <i>kind</i>.&nbsp; See <a href="uvm_reg_field-svh.html#uvm_reg_field.reset" class=LMethod id=link78 onMouseOver="ShowTip(event, 'tt69', 'link78')" onMouseOut="HideTip('tt69')">uvm_reg_field.reset()</a> for more details.</p><p>Also resets the semaphore that prevents concurrent access to the register.&nbsp; This semaphore must be explicitly reset if a thread accessing this register array was killed in before the access was completed</p></div></div></div>
 
 
 
 
- <!--CONTENT index=27 -->
+ <!--CONTENT index=28 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.get_reset" href="../../../../src/reg/uvm_reg.svh">get_reset</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -623,7 +646,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=28 -->
+ <!--CONTENT index=29 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.has_reset" href="../../../../src/reg/uvm_reg.svh">has_reset</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -643,7 +666,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=29 -->
+ <!--CONTENT index=30 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.set_reset" href="../../../../src/reg/uvm_reg.svh">set_reset</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -663,7 +686,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=30 -->
+ <!--CONTENT index=31 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.write" href="../../../../src/reg/uvm_reg.svh">write</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -715,12 +738,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Write the specified value in this register</p><p>Write <i>value</i> in the DUT register that corresponds to this abstraction class instance using the specified access <i>path</i>.&nbsp; If the register is mapped in more than one address map, an address <i>map</i> must be specified if a physical access is used (front-door access).&nbsp; If a back-door access path is used, the effect of writing the register through a physical access is mimicked.&nbsp; For example, read-only bits in the registers will not be written.</p><p>The mirrored value will be updated using the <a href="#uvm_reg.predict" class=LMethod id=link78 onMouseOver="ShowTip(event, 'tt35', 'link78')" onMouseOut="HideTip('tt35')">uvm_reg::predict()</a> method.</p></div></div></div>
+<div class=CBody><p>Write the specified value in this register</p><p>Write <i>value</i> in the DUT register that corresponds to this abstraction class instance using the specified access <i>path</i>.&nbsp; If the register is mapped in more than one address map, an address <i>map</i> must be specified if a physical access is used (front-door access).&nbsp; If a back-door access path is used, the effect of writing the register through a physical access is mimicked.&nbsp; For example, read-only bits in the registers will not be written.</p><p>The mirrored value will be updated using the <a href="#uvm_reg.predict" class=LMethod id=link79 onMouseOver="ShowTip(event, 'tt36', 'link79')" onMouseOut="HideTip('tt36')">uvm_reg::predict()</a> method.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=31 -->
+ <!--CONTENT index=32 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.read" href="../../../../src/reg/uvm_reg.svh">read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -772,12 +795,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Read the current value from this register</p><p>Read and return <i>value</i> from the DUT register that corresponds to this abstraction class instance using the specified access <i>path</i>.&nbsp; If the register is mapped in more than one address map, an address <i>map</i> must be specified if a physical access is used (front-door access).&nbsp; If a back-door access path is used, the effect of reading the register through a physical access is mimicked.&nbsp; For example, clear-on-read bits in the registers will be set to zero.</p><p>The mirrored value will be updated using the <a href="#uvm_reg.predict" class=LMethod id=link79 onMouseOver="ShowTip(event, 'tt35', 'link79')" onMouseOut="HideTip('tt35')">uvm_reg::predict()</a> method.</p></div></div></div>
+<div class=CBody><p>Read the current value from this register</p><p>Read and return <i>value</i> from the DUT register that corresponds to this abstraction class instance using the specified access <i>path</i>.&nbsp; If the register is mapped in more than one address map, an address <i>map</i> must be specified if a physical access is used (front-door access).&nbsp; If a back-door access path is used, the effect of reading the register through a physical access is mimicked.&nbsp; For example, clear-on-read bits in the registers will be set to zero.</p><p>The mirrored value will be updated using the <a href="#uvm_reg.predict" class=LMethod id=link80 onMouseOver="ShowTip(event, 'tt36', 'link80')" onMouseOut="HideTip('tt36')">uvm_reg::predict()</a> method.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=32 -->
+ <!--CONTENT index=33 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.poke" href="../../../../src/reg/uvm_reg.svh">poke</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -819,12 +842,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Deposit the specified value in this register</p><p>Deposit the value in the DUT register corresponding to this abstraction class instance, as-is, using a back-door access.</p><p>Uses the HDL path for the design abstraction specified by <i>kind</i>.</p><p>The mirrored value will be updated using the <a href="#uvm_reg.predict" class=LMethod id=link80 onMouseOver="ShowTip(event, 'tt35', 'link80')" onMouseOut="HideTip('tt35')">uvm_reg::predict()</a> method.</p></div></div></div>
+<div class=CBody><p>Deposit the specified value in this register</p><p>Deposit the value in the DUT register corresponding to this abstraction class instance, as-is, using a back-door access.</p><p>Uses the HDL path for the design abstraction specified by <i>kind</i>.</p><p>The mirrored value will be updated using the <a href="#uvm_reg.predict" class=LMethod id=link81 onMouseOver="ShowTip(event, 'tt36', 'link81')" onMouseOut="HideTip('tt36')">uvm_reg::predict()</a> method.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=33 -->
+ <!--CONTENT index=34 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.peek" href="../../../../src/reg/uvm_reg.svh">peek</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -866,12 +889,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Read the current value from this register</p><p>Sample the value in the DUT register corresponding to this absraction class instance using a back-door access.&nbsp; The register value is sampled, not modified.</p><p>Uses the HDL path for the design abstraction specified by <i>kind</i>.</p><p>The mirrored value will be updated using the <a href="#uvm_reg.predict" class=LMethod id=link81 onMouseOver="ShowTip(event, 'tt35', 'link81')" onMouseOut="HideTip('tt35')">uvm_reg::predict()</a> method.</p></div></div></div>
+<div class=CBody><p>Read the current value from this register</p><p>Sample the value in the DUT register corresponding to this absraction class instance using a back-door access.&nbsp; The register value is sampled, not modified.</p><p>Uses the HDL path for the design abstraction specified by <i>kind</i>.</p><p>The mirrored value will be updated using the <a href="#uvm_reg.predict" class=LMethod id=link82 onMouseOver="ShowTip(event, 'tt36', 'link82')" onMouseOut="HideTip('tt36')">uvm_reg::predict()</a> method.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=34 -->
+ <!--CONTENT index=35 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.update" href="../../../../src/reg/uvm_reg.svh">update</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -918,12 +941,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Updates the content of the register in the design to match the desired value</p><p>This method performs the reverse operation of <a href="#uvm_reg.mirror" class=LMethod id=link82 onMouseOver="ShowTip(event, 'tt34', 'link82')" onMouseOut="HideTip('tt34')">uvm_reg::mirror()</a>.&nbsp; Write this register if the DUT register is out-of-date with the desired/mirrored value in the abstraction class, as determined by the <a href="#uvm_reg.needs_update" class=LMethod id=link83 onMouseOver="ShowTip(event, 'tt24', 'link83')" onMouseOut="HideTip('tt24')">uvm_reg::needs_update()</a> method.</p><p>The update can be performed using the using the physical interfaces (frontdoor) or <a href="#uvm_reg.poke" class=LMethod id=link84 onMouseOver="ShowTip(event, 'tt31', 'link84')" onMouseOut="HideTip('tt31')">uvm_reg::poke()</a> (backdoor) access.&nbsp; If the register is mapped in multiple address maps and physical access is used (front-door), an address <i>map</i> must be specified.</p></div></div></div>
+<div class=CBody><p>Updates the content of the register in the design to match the desired value</p><p>This method performs the reverse operation of <a href="#uvm_reg.mirror" class=LMethod id=link83 onMouseOver="ShowTip(event, 'tt35', 'link83')" onMouseOut="HideTip('tt35')">uvm_reg::mirror()</a>.&nbsp; Write this register if the DUT register is out-of-date with the desired/mirrored value in the abstraction class, as determined by the <a href="#uvm_reg.needs_update" class=LMethod id=link84 onMouseOver="ShowTip(event, 'tt25', 'link84')" onMouseOut="HideTip('tt25')">uvm_reg::needs_update()</a> method.</p><p>The update can be performed using the using the physical interfaces (frontdoor) or <a href="#uvm_reg.poke" class=LMethod id=link85 onMouseOver="ShowTip(event, 'tt32', 'link85')" onMouseOut="HideTip('tt32')">uvm_reg::poke()</a> (backdoor) access.&nbsp; If the register is mapped in multiple address maps and physical access is used (front-door), an address <i>map</i> must be specified.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=35 -->
+ <!--CONTENT index=36 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.mirror" href="../../../../src/reg/uvm_reg.svh">mirror</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -975,12 +998,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Read the register and update/check its mirror value</p><p>Read the register and optionally compared the readback value with the current mirrored value if <i>check</i> is <a href="uvm_reg_model-svh.html#UVM_CHECK" class=LConstant id=link85 onMouseOver="ShowTip(event, 'tt69', 'link85')" onMouseOut="HideTip('tt69')">UVM_CHECK</a>.&nbsp; The mirrored value will be updated using the <a href="#uvm_reg.predict" class=LMethod id=link86 onMouseOver="ShowTip(event, 'tt35', 'link86')" onMouseOut="HideTip('tt35')">uvm_reg::predict()</a> method based on the readback value.</p><p>The mirroring can be performed using the physical interfaces (frontdoor) or <a href="#uvm_reg.peek" class=LMethod id=link87 onMouseOver="ShowTip(event, 'tt32', 'link87')" onMouseOut="HideTip('tt32')">uvm_reg::peek()</a> (backdoor).</p><p>If <i>check</i> is specified as UVM_CHECK, an error message is issued if the current mirrored value does not match the readback value.&nbsp; Any field whose check has been disabled with <a href="uvm_reg_field-svh.html#uvm_reg_field.set_compare" class=LMethod id=link88 onMouseOver="ShowTip(event, 'tt70', 'link88')" onMouseOut="HideTip('tt70')">uvm_reg_field::set_compare()</a> will not be considered in the comparison.</p><p>If the register is mapped in multiple address maps and physical access is used (front-door access), an address <i>map</i> must be specified.&nbsp; If the register contains write-only fields, their content is mirrored and optionally checked only if a UVM_BACKDOOR access path is used to read the register.</p></div></div></div>
+<div class=CBody><p>Read the register and update/check its mirror value</p><p>Read the register and optionally compared the readback value with the current mirrored value if <i>check</i> is <a href="uvm_reg_model-svh.html#UVM_CHECK" class=LConstant id=link86 onMouseOver="ShowTip(event, 'tt70', 'link86')" onMouseOut="HideTip('tt70')">UVM_CHECK</a>.&nbsp; The mirrored value will be updated using the <a href="#uvm_reg.predict" class=LMethod id=link87 onMouseOver="ShowTip(event, 'tt36', 'link87')" onMouseOut="HideTip('tt36')">uvm_reg::predict()</a> method based on the readback value.</p><p>The mirroring can be performed using the physical interfaces (frontdoor) or <a href="#uvm_reg.peek" class=LMethod id=link88 onMouseOver="ShowTip(event, 'tt33', 'link88')" onMouseOut="HideTip('tt33')">uvm_reg::peek()</a> (backdoor).</p><p>If <i>check</i> is specified as UVM_CHECK, an error message is issued if the current mirrored value does not match the readback value.&nbsp; Any field whose check has been disabled with <a href="uvm_reg_field-svh.html#uvm_reg_field.set_compare" class=LMethod id=link89 onMouseOver="ShowTip(event, 'tt71', 'link89')" onMouseOut="HideTip('tt71')">uvm_reg_field::set_compare()</a> will not be considered in the comparison.</p><p>If the register is mapped in multiple address maps and physical access is used (front-door access), an address <i>map</i> must be specified.&nbsp; If the register contains write-only fields, their content is mirrored and optionally checked only if a UVM_BACKDOOR access path is used to read the register.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=36 -->
+ <!--CONTENT index=37 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.predict" href="../../../../src/reg/uvm_reg.svh">predict</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1015,12 +1038,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Update the mirrored value for this register.</p><p>Predict the mirror value of the fields in the register based on the specified observed <i>value</i> on a specified adress <i>map</i>, or based on a calculated value.&nbsp; See <a href="uvm_reg_field-svh.html#uvm_reg_field.predict" class=LMethod id=link89 onMouseOver="ShowTip(event, 'tt71', 'link89')" onMouseOut="HideTip('tt71')">uvm_reg_field::predict()</a> for more details.</p><p>Returns TRUE if the prediction was succesful for each field in the register.</p></div></div></div>
+<div class=CBody><p>Update the mirrored value for this register.</p><p>Predict the mirror value of the fields in the register based on the specified observed <i>value</i> on a specified adress <i>map</i>, or based on a calculated value.&nbsp; See <a href="uvm_reg_field-svh.html#uvm_reg_field.predict" class=LMethod id=link90 onMouseOver="ShowTip(event, 'tt72', 'link90')" onMouseOut="HideTip('tt72')">uvm_reg_field::predict()</a> for more details.</p><p>Returns TRUE if the prediction was succesful for each field in the register.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=37 -->
+ <!--CONTENT index=38 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.is_busy" href="../../../../src/reg/uvm_reg.svh">is_busy</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit is_busy()
   </td></tr></table></blockquote><div class=CBody><p>Returns 1 if register is currently being read or written.</p></div></div></div>
@@ -1028,13 +1051,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=38 -->
+ <!--CONTENT index=39 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.Frontdoor" href="../../../../src/reg/uvm_reg.svh">Frontdoor</a></h3></div></div>
 
 
 
 
- <!--CONTENT index=39 -->
+ <!--CONTENT index=40 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.set_frontdoor" href="../../../../src/reg/uvm_reg.svh">set_frontdoor</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1062,7 +1085,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=40 -->
+ <!--CONTENT index=41 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.get_frontdoor" href="../../../../src/reg/uvm_reg.svh">get_frontdoor</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1073,18 +1096,18 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Returns the user-defined frontdoor for this register</p><p>If null, no user-defined frontdoor has been defined.&nbsp; A user-defined frontdoor is defined by using the <a href="#uvm_reg.set_frontdoor" class=LMethod id=link90 onMouseOver="ShowTip(event, 'tt37', 'link90')" onMouseOut="HideTip('tt37')">uvm_reg::set_frontdoor()</a> method.</p><p>If the register is mapped in multiple address maps, an address <i>map</i> must be specified.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=41 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.Backdoor" href="../../../../src/reg/uvm_reg.svh">Backdoor</a></h3></div></div>
+<div class=CBody><p>Returns the user-defined frontdoor for this register</p><p>If null, no user-defined frontdoor has been defined.&nbsp; A user-defined frontdoor is defined by using the <a href="#uvm_reg.set_frontdoor" class=LMethod id=link91 onMouseOver="ShowTip(event, 'tt38', 'link91')" onMouseOut="HideTip('tt38')">uvm_reg::set_frontdoor()</a> method.</p><p>If the register is mapped in multiple address maps, an address <i>map</i> must be specified.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=42 -->
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.Backdoor" href="../../../../src/reg/uvm_reg.svh">Backdoor</a></h3></div></div>
+
+
+
+
+ <!--CONTENT index=43 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.set_backdoor" href="../../../../src/reg/uvm_reg.svh">set_backdoor</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1103,12 +1126,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Set a user-defined backdoor for this register</p><p>By default, registers are accessed via the built-in string-based DPI routines if an HDL path has been specified using the <a href="#uvm_reg.configure" class=LMethod id=link91 onMouseOver="ShowTip(event, 'tt5', 'link91')" onMouseOut="HideTip('tt5')">uvm_reg::configure()</a> or <a href="#uvm_reg.add_hdl_path" class=LMethod id=link92 onMouseOver="ShowTip(event, 'tt42', 'link92')" onMouseOut="HideTip('tt42')">uvm_reg::add_hdl_path()</a> method.</p><p>If this default mechanism is not suitable (e.g. because the register is not implemented in pure SystemVerilog) a user-defined access mechanism must be defined and associated with the corresponding register abstraction class</p><p>A user-defined backdoor is required if active update of the mirror of this register abstraction class, based on observed changes of the corresponding DUT register, is used.</p></div></div></div>
+<div class=CBody><p>Set a user-defined backdoor for this register</p><p>By default, registers are accessed via the built-in string-based DPI routines if an HDL path has been specified using the <a href="#uvm_reg.configure" class=LMethod id=link92 onMouseOver="ShowTip(event, 'tt5', 'link92')" onMouseOut="HideTip('tt5')">uvm_reg::configure()</a> or <a href="#uvm_reg.add_hdl_path" class=LMethod id=link93 onMouseOver="ShowTip(event, 'tt43', 'link93')" onMouseOut="HideTip('tt43')">uvm_reg::add_hdl_path()</a> method.</p><p>If this default mechanism is not suitable (e.g. because the register is not implemented in pure SystemVerilog) a user-defined access mechanism must be defined and associated with the corresponding register abstraction class</p><p>A user-defined backdoor is required if active update of the mirror of this register abstraction class, based on observed changes of the corresponding DUT register, is used.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=43 -->
+ <!--CONTENT index=44 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.get_backdoor" href="../../../../src/reg/uvm_reg.svh">get_backdoor</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1119,12 +1142,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Returns the user-defined backdoor for this register</p><p>If null, no user-defined backdoor has been defined.&nbsp; A user-defined backdoor is defined by using the <a href="#uvm_reg.set_backdoor" class=LMethod id=link93 onMouseOver="ShowTip(event, 'tt39', 'link93')" onMouseOut="HideTip('tt39')">uvm_reg::set_backdoor()</a> method.</p><p>If <i>inherited</i> is TRUE, returns the backdoor of the parent block if none have been specified for this register.</p></div></div></div>
+<div class=CBody><p>Returns the user-defined backdoor for this register</p><p>If null, no user-defined backdoor has been defined.&nbsp; A user-defined backdoor is defined by using the <a href="#uvm_reg.set_backdoor" class=LMethod id=link94 onMouseOver="ShowTip(event, 'tt40', 'link94')" onMouseOut="HideTip('tt40')">uvm_reg::set_backdoor()</a> method.</p><p>If <i>inherited</i> is TRUE, returns the backdoor of the parent block if none have been specified for this register.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=44 -->
+ <!--CONTENT index=45 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.clear_hdl_path" href="../../../../src/reg/uvm_reg.svh">clear_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1140,7 +1163,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=45 -->
+ <!--CONTENT index=46 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.add_hdl_path" href="../../../../src/reg/uvm_reg.svh">add_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1166,7 +1189,7 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
 
 
 
- <!--CONTENT index=46 -->
+ <!--CONTENT index=47 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.add_hdl_path_slice" href="../../../../src/reg/uvm_reg.svh">add_hdl_path_slice</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1198,7 +1221,7 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
 
 
 
- <!--CONTENT index=47 -->
+ <!--CONTENT index=48 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.has_hdl_path" href="../../../../src/reg/uvm_reg.svh">has_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1214,7 +1237,7 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
 
 
 
- <!--CONTENT index=48 -->
+ <!--CONTENT index=49 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.get_hdl_path" href="../../../../src/reg/uvm_reg.svh">get_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1236,7 +1259,7 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
 
 
 
- <!--CONTENT index=49 -->
+ <!--CONTENT index=50 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.get_hdl_path_kinds" href="../../../../src/reg/uvm_reg.svh">get_hdl_path_kinds</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1251,7 +1274,7 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
 
 
 
- <!--CONTENT index=50 -->
+ <!--CONTENT index=51 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.get_full_hdl_path" href="../../../../src/reg/uvm_reg.svh">get_full_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1278,7 +1301,7 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
 
 
 
- <!--CONTENT index=51 -->
+ <!--CONTENT index=52 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.backdoor_read" href="../../../../src/reg/uvm_reg.svh">backdoor_read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1287,12 +1310,12 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>User-define backdoor read access</p><p>Override the default string-based DPI backdoor access read for this register type.&nbsp; By default calls <a href="#uvm_reg.backdoor_read_func" class=LMethod id=link94 onMouseOver="ShowTip(event, 'tt50', 'link94')" onMouseOut="HideTip('tt50')">uvm_reg::backdoor_read_func()</a>.</p></div></div></div>
+<div class=CBody><p>User-define backdoor read access</p><p>Override the default string-based DPI backdoor access read for this register type.&nbsp; By default calls <a href="#uvm_reg.backdoor_read_func" class=LMethod id=link95 onMouseOver="ShowTip(event, 'tt51', 'link95')" onMouseOut="HideTip('tt51')">uvm_reg::backdoor_read_func()</a>.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=52 -->
+ <!--CONTENT index=53 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.backdoor_write" href="../../../../src/reg/uvm_reg.svh">backdoor_write</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1306,7 +1329,7 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
 
 
 
- <!--CONTENT index=53 -->
+ <!--CONTENT index=54 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.backdoor_read_func" href="../../../../src/reg/uvm_reg.svh">backdoor_read_func</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1320,7 +1343,7 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
 
 
 
- <!--CONTENT index=54 -->
+ <!--CONTENT index=55 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.backdoor_watch" href="../../../../src/reg/uvm_reg.svh">backdoor_watch</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual task backdoor_watch()
   </td></tr></table></blockquote><div class=CBody><p>User-defined DUT register change monitor</p><p>Watch the DUT register corresponding to this abstraction class instance for any change in value and return when a value-change occurs.&nbsp; This may be implemented a string-based DPI access if the simulation tool provide a value-change callback facility.&nbsp; Such a facility does not exists in the standard SystemVerilog DPI and thus no default implementation for this method can be provided.</p></div></div></div>
@@ -1328,13 +1351,13 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
 
 
 
- <!--CONTENT index=55 -->
+ <!--CONTENT index=56 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.Coverage" href="../../../../src/reg/uvm_reg.svh">Coverage</a></h3></div></div>
 
 
 
 
- <!--CONTENT index=56 -->
+ <!--CONTENT index=57 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.include_coverage" href="../../../../src/reg/uvm_reg.svh">include_coverage</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1353,12 +1376,12 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Specify which coverage model that must be included in various block, register or memory abstraction class instances.</p><p>The coverage models are specified by or&rsquo;ing or adding the <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link95 onMouseOver="ShowTip(event, 'tt64', 'link95')" onMouseOut="HideTip('tt64')">uvm_coverage_model_e</a> coverage model identifiers corresponding to the coverage model to be included.</p><p>The scope specifies a hierarchical name or pattern identifying a block, memory or register abstraction class instances.&nbsp; Any block, memory or register whose full hierarchical name matches the specified scope will have the specified functional coverage models included in them.</p><p>The scope can be specified as a POSIX regular expression or simple pattern.&nbsp; See <a href="../base/uvm_resource-svh.html#uvm_resource_base.Scope_Interface" class=LGroup id=link96 onMouseOver="ShowTip(event, 'tt72', 'link96')" onMouseOut="HideTip('tt72')">uvm_resource_base::Scope Interface</a> for more details.</p><blockquote><pre>uvm_reg::include_coverage(&quot;*&quot;, UVM_CVR_ALL);</pre></blockquote><p>The specification of which coverage model to include in which abstraction class is stored in a <a href="uvm_reg_model-svh.html#uvm_reg_cvr_t" class=LType id=link97 onMouseOver="ShowTip(event, 'tt73', 'link97')" onMouseOut="HideTip('tt73')">uvm_reg_cvr_t</a> resource in the <a href="../base/uvm_resource_db-svh.html#uvm_resource_db" class=LClass id=link98 onMouseOver="ShowTip(event, 'tt74', 'link98')" onMouseOut="HideTip('tt74')">uvm_resource_db</a> resource database, in the &ldquo;uvm_reg::&rdquo; scope namespace.</p></div></div></div>
+<div class=CBody><p>Specify which coverage model that must be included in various block, register or memory abstraction class instances.</p><p>The coverage models are specified by or&rsquo;ing or adding the <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link96 onMouseOver="ShowTip(event, 'tt65', 'link96')" onMouseOut="HideTip('tt65')">uvm_coverage_model_e</a> coverage model identifiers corresponding to the coverage model to be included.</p><p>The scope specifies a hierarchical name or pattern identifying a block, memory or register abstraction class instances.&nbsp; Any block, memory or register whose full hierarchical name matches the specified scope will have the specified functional coverage models included in them.</p><p>The scope can be specified as a POSIX regular expression or simple pattern.&nbsp; See <a href="../base/uvm_resource-svh.html#uvm_resource_base.Scope_Interface" class=LGroup id=link97 onMouseOver="ShowTip(event, 'tt73', 'link97')" onMouseOut="HideTip('tt73')">uvm_resource_base::Scope Interface</a> for more details.</p><blockquote><pre>uvm_reg::include_coverage(&quot;*&quot;, UVM_CVR_ALL);</pre></blockquote><p>The specification of which coverage model to include in which abstraction class is stored in a <a href="uvm_reg_model-svh.html#uvm_reg_cvr_t" class=LType id=link98 onMouseOver="ShowTip(event, 'tt74', 'link98')" onMouseOut="HideTip('tt74')">uvm_reg_cvr_t</a> resource in the <a href="../base/uvm_resource_db-svh.html#uvm_resource_db" class=LClass id=link99 onMouseOver="ShowTip(event, 'tt75', 'link99')" onMouseOut="HideTip('tt75')">uvm_resource_db</a> resource database, in the &ldquo;uvm_reg::&rdquo; scope namespace.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=57 -->
+ <!--CONTENT index=58 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.build_coverage" href="../../../../src/reg/uvm_reg.svh">build_coverage</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1367,12 +1390,12 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Check if all of the specified coverage models must be built.</p><p>Check which of the specified coverage model must be built in this instance of the register abstraction class, as specified by calls to <a href="#uvm_reg.include_coverage" class=LMethod id=link99 onMouseOver="ShowTip(event, 'tt52', 'link99')" onMouseOut="HideTip('tt52')">uvm_reg::include_coverage()</a>.</p><p>Models are specified by adding the symbolic value of individual coverage model as defined in <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link100 onMouseOver="ShowTip(event, 'tt64', 'link100')" onMouseOut="HideTip('tt64')">uvm_coverage_model_e</a>.&nbsp; Returns the sum of all coverage models to be built in the register model.</p></div></div></div>
+<div class=CBody><p>Check if all of the specified coverage models must be built.</p><p>Check which of the specified coverage model must be built in this instance of the register abstraction class, as specified by calls to <a href="#uvm_reg.include_coverage" class=LMethod id=link100 onMouseOver="ShowTip(event, 'tt53', 'link100')" onMouseOut="HideTip('tt53')">uvm_reg::include_coverage()</a>.</p><p>Models are specified by adding the symbolic value of individual coverage model as defined in <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link101 onMouseOver="ShowTip(event, 'tt65', 'link101')" onMouseOut="HideTip('tt65')">uvm_coverage_model_e</a>.&nbsp; Returns the sum of all coverage models to be built in the register model.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=58 -->
+ <!--CONTENT index=59 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.add_coverage" href="../../../../src/reg/uvm_reg.svh">add_coverage</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1381,12 +1404,12 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Specify that additional coverage models are available.</p><p>Add the specified coverage model to the coverage models available in this class.&nbsp; Models are specified by adding the symbolic value of individual coverage model as defined in <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link101 onMouseOver="ShowTip(event, 'tt64', 'link101')" onMouseOut="HideTip('tt64')">uvm_coverage_model_e</a>.</p><p>This method shall be called only in the constructor of subsequently derived classes.</p></div></div></div>
+<div class=CBody><p>Specify that additional coverage models are available.</p><p>Add the specified coverage model to the coverage models available in this class.&nbsp; Models are specified by adding the symbolic value of individual coverage model as defined in <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link102 onMouseOver="ShowTip(event, 'tt65', 'link102')" onMouseOut="HideTip('tt65')">uvm_coverage_model_e</a>.</p><p>This method shall be called only in the constructor of subsequently derived classes.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=59 -->
+ <!--CONTENT index=60 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.has_coverage" href="../../../../src/reg/uvm_reg.svh">has_coverage</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1395,12 +1418,12 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Check if register has coverage model(s)</p><p>Returns TRUE if the register abstraction class contains a coverage model for all of the models specified.&nbsp; Models are specified by adding the symbolic value of individual coverage model as defined in <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link102 onMouseOver="ShowTip(event, 'tt64', 'link102')" onMouseOut="HideTip('tt64')">uvm_coverage_model_e</a>.</p></div></div></div>
+<div class=CBody><p>Check if register has coverage model(s)</p><p>Returns TRUE if the register abstraction class contains a coverage model for all of the models specified.&nbsp; Models are specified by adding the symbolic value of individual coverage model as defined in <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link103 onMouseOver="ShowTip(event, 'tt65', 'link103')" onMouseOut="HideTip('tt65')">uvm_coverage_model_e</a>.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=60 -->
+ <!--CONTENT index=61 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.set_coverage" href="../../../../src/reg/uvm_reg.svh">set_coverage</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1409,12 +1432,12 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Turns on coverage measurement.</p><p>Turns the collection of functional coverage measurements on or off for this register.&nbsp; The functional coverage measurement is turned on for every coverage model specified using <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link103 onMouseOver="ShowTip(event, 'tt64', 'link103')" onMouseOut="HideTip('tt64')">uvm_coverage_model_e</a> symbolic identifers.&nbsp; Multiple functional coverage models can be specified by adding the functional coverage model identifiers.&nbsp; All other functional coverage models are turned off.&nbsp; Returns the sum of all functional coverage models whose measurements were previously on.</p><p>This method can only control the measurement of functional coverage models that are present in the register abstraction classes, then enabled during construction.&nbsp; See the <a href="#uvm_reg.has_coverage" class=LMethod id=link104 onMouseOver="ShowTip(event, 'tt55', 'link104')" onMouseOut="HideTip('tt55')">uvm_reg::has_coverage()</a> method to identify the available functional coverage models.</p></div></div></div>
+<div class=CBody><p>Turns on coverage measurement.</p><p>Turns the collection of functional coverage measurements on or off for this register.&nbsp; The functional coverage measurement is turned on for every coverage model specified using <a href="uvm_reg_model-svh.html#uvm_coverage_model_e" class=LType id=link104 onMouseOver="ShowTip(event, 'tt65', 'link104')" onMouseOut="HideTip('tt65')">uvm_coverage_model_e</a> symbolic identifers.&nbsp; Multiple functional coverage models can be specified by adding the functional coverage model identifiers.&nbsp; All other functional coverage models are turned off.&nbsp; Returns the sum of all functional coverage models whose measurements were previously on.</p><p>This method can only control the measurement of functional coverage models that are present in the register abstraction classes, then enabled during construction.&nbsp; See the <a href="#uvm_reg.has_coverage" class=LMethod id=link105 onMouseOver="ShowTip(event, 'tt56', 'link105')" onMouseOut="HideTip('tt56')">uvm_reg::has_coverage()</a> method to identify the available functional coverage models.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=61 -->
+ <!--CONTENT index=62 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.get_coverage" href="../../../../src/reg/uvm_reg.svh">get_coverage</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1423,12 +1446,12 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Check if coverage measurement is on.</p><p>Returns TRUE if measurement for all of the specified functional coverage models are currently on.&nbsp; Multiple functional coverage models can be specified by adding the functional coverage model identifiers.</p><p>See <a href="#uvm_reg.set_coverage" class=LMethod id=link105 onMouseOver="ShowTip(event, 'tt56', 'link105')" onMouseOut="HideTip('tt56')">uvm_reg::set_coverage()</a> for more details.</p></div></div></div>
+<div class=CBody><p>Check if coverage measurement is on.</p><p>Returns TRUE if measurement for all of the specified functional coverage models are currently on.&nbsp; Multiple functional coverage models can be specified by adding the functional coverage model identifiers.</p><p>See <a href="#uvm_reg.set_coverage" class=LMethod id=link106 onMouseOver="ShowTip(event, 'tt57', 'link106')" onMouseOut="HideTip('tt57')">uvm_reg::set_coverage()</a> for more details.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=62 -->
+ <!--CONTENT index=63 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.sample" href="../../../../src/reg/uvm_reg.svh">sample</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1448,21 +1471,21 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
 
 
 
- <!--CONTENT index=63 -->
+ <!--CONTENT index=64 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.sample_values" href="../../../../src/reg/uvm_reg.svh">sample_values</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function void sample_values()
-  </td></tr></table></blockquote><div class=CBody><p>Functional coverage measurement method for field values</p><p>This method is invoked by the user or by the <a href="uvm_reg_block-svh.html#uvm_reg_block.sample_values" class=LMethod id=link106 onMouseOver="ShowTip(event, 'tt75', 'link106')" onMouseOut="HideTip('tt75')">uvm_reg_block::sample_values()</a> method of the parent block to trigger the sampling of the current field values in the register-level functional coverage model.</p><p>This method may be extended by the abstraction class generator to perform the required sampling in any provided field-value functional coverage model.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=64 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.Callbacks" href="../../../../src/reg/uvm_reg.svh">Callbacks</a></h3></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Functional coverage measurement method for field values</p><p>This method is invoked by the user or by the <a href="uvm_reg_block-svh.html#uvm_reg_block.sample_values" class=LMethod id=link107 onMouseOver="ShowTip(event, 'tt76', 'link107')" onMouseOut="HideTip('tt76')">uvm_reg_block::sample_values()</a> method of the parent block to trigger the sampling of the current field values in the register-level functional coverage model.</p><p>This method may be extended by the abstraction class generator to perform the required sampling in any provided field-value functional coverage model.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=65 -->
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.Callbacks" href="../../../../src/reg/uvm_reg.svh">Callbacks</a></h3></div></div>
+
+
+
+
+ <!--CONTENT index=66 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.pre_write" href="../../../../src/reg/uvm_reg.svh">pre_write</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1471,12 +1494,12 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Called before register write.</p><p>If the specified data value, access <i>path</i> or address <i>map</i> are modified, the updated data value, access path or address map will be used to perform the register operation.&nbsp; If the <i>status</i> is modified to anything other than <a href="uvm_reg_model-svh.html#UVM_IS_OK" class=LConstant id=link107 onMouseOver="ShowTip(event, 'tt76', 'link107')" onMouseOut="HideTip('tt76')">UVM_IS_OK</a>, the operation is aborted.</p><p>The registered callback methods are invoked after the invocation of this method.&nbsp; All register callbacks are executed before the corresponding field callbacks</p></div></div></div>
+<div class=CBody><p>Called before register write.</p><p>If the specified data value, access <i>path</i> or address <i>map</i> are modified, the updated data value, access path or address map will be used to perform the register operation.&nbsp; If the <i>status</i> is modified to anything other than <a href="uvm_reg_model-svh.html#UVM_IS_OK" class=LConstant id=link108 onMouseOver="ShowTip(event, 'tt77', 'link108')" onMouseOut="HideTip('tt77')">UVM_IS_OK</a>, the operation is aborted.</p><p>The registered callback methods are invoked after the invocation of this method.&nbsp; All register callbacks are executed before the corresponding field callbacks</p></div></div></div>
 
 
 
 
- <!--CONTENT index=66 -->
+ <!--CONTENT index=67 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.post_write" href="../../../../src/reg/uvm_reg.svh">post_write</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1490,7 +1513,7 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
 
 
 
- <!--CONTENT index=67 -->
+ <!--CONTENT index=68 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.pre_read" href="../../../../src/reg/uvm_reg.svh">pre_read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1499,12 +1522,12 @@ Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Called before register read.</p><p>If the specified access <i>path</i> or address <i>map</i> are modified, the updated access path or address map will be used to perform the register operation.&nbsp; If the <i>status</i> is modified to anything other than <a href="uvm_reg_model-svh.html#UVM_IS_OK" class=LConstant id=link108 onMouseOver="ShowTip(event, 'tt76', 'link108')" onMouseOut="HideTip('tt76')">UVM_IS_OK</a>, the operation is aborted.</p><p>The registered callback methods are invoked after the invocation of this method.&nbsp; All register callbacks are executed before the corresponding field callbacks</p></div></div></div>
+<div class=CBody><p>Called before register read.</p><p>If the specified access <i>path</i> or address <i>map</i> are modified, the updated access path or address map will be used to perform the register operation.&nbsp; If the <i>status</i> is modified to anything other than <a href="uvm_reg_model-svh.html#UVM_IS_OK" class=LConstant id=link109 onMouseOver="ShowTip(event, 'tt77', 'link109')" onMouseOut="HideTip('tt77')">UVM_IS_OK</a>, the operation is aborted.</p><p>The registered callback methods are invoked after the invocation of this method.&nbsp; All register callbacks are executed before the corresponding field callbacks</p></div></div></div>
 
 
 
 
- <!--CONTENT index=68 -->
+ <!--CONTENT index=69 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg.post_read" href="../../../../src/reg/uvm_reg.svh">post_read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1616,7 +1639,7 @@ Returns all of the address <i>maps</i> where this register is mapped</div></div>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Returns the access rights of this register.</div></div><div class=CToolTip id="tt14"><div class=CMethod>
+Returns the accessibility (&ldquo;RW, &ldquo;RO&rdquo;, or &ldquo;WO&rdquo;) of this register in the given <i>map</i>.</div></div><div class=CToolTip id="tt14"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function int unsigned get_n_bits ()
   </td></tr></table></blockquote>Returns the width, in bits, of this register.</div></div><div class=CToolTip id="tt15"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function int unsigned get_n_bytes()
@@ -1708,8 +1731,22 @@ Set the desired value for this register</div></div><div class=CToolTip id="tt23"
       </table></td></tr>
     </table></blockquote>
 Return the desired value of the fields in the register.</div></div><div class=CToolTip id="tt24"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>virtual function uvm_reg_data_t get_mirrored_value(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>fname</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap>lineno</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+Return the mirrored value of the fields in the register.</div></div><div class=CToolTip id="tt25"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function bit needs_update()
-  </td></tr></table></blockquote>Returns 1 if any of the fields need updating</div></div><div class=CToolTip id="tt25"><div class=CMethod>
+  </td></tr></table></blockquote>Returns 1 if any of the fields need updating</div></div><div class=CToolTip id="tt26"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void reset(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -1719,7 +1756,7 @@ Return the desired value of the fields in the register.</div></div><div class=CT
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Reset the desired/mirrored value for this register.</div></div><div class=CToolTip id="tt26"><div class=CMethod>
+Reset the desired/mirrored value for this register.</div></div><div class=CToolTip id="tt27"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function uvm_reg_data_t get_reset(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -1729,7 +1766,7 @@ Reset the desired/mirrored value for this register.</div></div><div class=CToolT
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Get the specified reset value for this register</div></div><div class=CToolTip id="tt27"><div class=CMethod>
+Get the specified reset value for this register</div></div><div class=CToolTip id="tt28"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function bit has_reset(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -1743,7 +1780,7 @@ Get the specified reset value for this register</div></div><div class=CToolTip i
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Check if any field in the register has a reset value specified for the specified reset <i>kind</i>. </div></div><div class=CToolTip id="tt28"><div class=CMethod>
+Check if any field in the register has a reset value specified for the specified reset <i>kind</i>. </div></div><div class=CToolTip id="tt29"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void set_reset(</td>      <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
@@ -1757,7 +1794,7 @@ Check if any field in the register has a reset value specified for the specified
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Specify or modify the reset value for this register</div></div><div class=CToolTip id="tt29"><div class=CMethod>
+Specify or modify the reset value for this register</div></div><div class=CToolTip id="tt30"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task write(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
@@ -1808,7 +1845,7 @@ Specify or modify the reset value for this register</div></div><div class=CToolT
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Write the specified value in this register</div></div><div class=CToolTip id="tt30"><div class=CMethod>
+Write the specified value in this register</div></div><div class=CToolTip id="tt31"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task read(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
@@ -1859,7 +1896,7 @@ Write the specified value in this register</div></div><div class=CToolTip id="tt
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Read the current value from this register</div></div><div class=CToolTip id="tt31"><div class=CMethod>
+Read the current value from this register</div></div><div class=CToolTip id="tt32"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task poke(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
@@ -1900,7 +1937,7 @@ Read the current value from this register</div></div><div class=CToolTip id="tt3
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Deposit the specified value in this register</div></div><div class=CToolTip id="tt32"><div class=CMethod>
+Deposit the specified value in this register</div></div><div class=CToolTip id="tt33"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task peek(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
@@ -1941,7 +1978,7 @@ Deposit the specified value in this register</div></div><div class=CToolTip id="
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Read the current value from this register</div></div><div class=CToolTip id="tt33"><div class=CMethod>
+Read the current value from this register</div></div><div class=CToolTip id="tt34"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task update(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
@@ -1987,7 +2024,7 @@ Read the current value from this register</div></div><div class=CToolTip id="tt3
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Updates the content of the register in the design to match the desired value</div></div><div class=CToolTip id="tt34"><div class=CMethod>
+Updates the content of the register in the design to match the desired value</div></div><div class=CToolTip id="tt35"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task mirror(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
@@ -2038,7 +2075,7 @@ Updates the content of the register in the design to match the desired value</di
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Read the register and update/check its mirror value</div></div><div class=CToolTip id="tt35"><div class=CMethod>
+Read the register and update/check its mirror value</div></div><div class=CToolTip id="tt36"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function bit predict (</td>      <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
@@ -2072,9 +2109,9 @@ Read the register and update/check its mirror value</div></div><div class=CToolT
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Update the mirrored value for this register.</div></div><div class=CToolTip id="tt36"><div class=CMethod>
+Update the mirrored value for this register.</div></div><div class=CToolTip id="tt37"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit is_busy()
-  </td></tr></table></blockquote>Returns 1 if register is currently being read or written.</div></div><div class=CToolTip id="tt37"><div class=CMethod>
+  </td></tr></table></blockquote>Returns 1 if register is currently being read or written.</div></div><div class=CToolTip id="tt38"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_frontdoor(</td>      <td class=PType nowrap>uvm_reg_frontdoor&nbsp;</td>
@@ -2096,7 +2133,7 @@ Update the mirrored value for this register.</div></div><div class=CToolTip id="
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Set a user-defined frontdoor for this register</div></div><div class=CToolTip id="tt38"><div class=CMethod>
+Set a user-defined frontdoor for this register</div></div><div class=CToolTip id="tt39"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_reg_frontdoor get_frontdoor(</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
@@ -2106,7 +2143,7 @@ Set a user-defined frontdoor for this register</div></div><div class=CToolTip id
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Returns the user-defined frontdoor for this register</div></div><div class=CToolTip id="tt39"><div class=CMethod>
+Returns the user-defined frontdoor for this register</div></div><div class=CToolTip id="tt40"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_backdoor(</td>      <td class=PType nowrap>uvm_reg_backdoor&nbsp;</td>
@@ -2124,7 +2161,7 @@ Returns the user-defined frontdoor for this register</div></div><div class=CTool
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Set a user-defined backdoor for this register</div></div><div class=CToolTip id="tt40"><div class=CMethod>
+Set a user-defined backdoor for this register</div></div><div class=CToolTip id="tt41"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_reg_backdoor get_backdoor(</td>      <td class=PType nowrap>bit&nbsp;</td>
@@ -2134,7 +2171,7 @@ Set a user-defined backdoor for this register</div></div><div class=CToolTip id=
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Returns the user-defined backdoor for this register</div></div><div class=CToolTip id="tt41"><div class=CMethod>
+Returns the user-defined backdoor for this register</div></div><div class=CToolTip id="tt42"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void clear_hdl_path (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -2144,7 +2181,7 @@ Returns the user-defined backdoor for this register</div></div><div class=CToolT
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Delete HDL paths</div></div><div class=CToolTip id="tt42"><div class=CMethod>
+Delete HDL paths</div></div><div class=CToolTip id="tt43"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void add_hdl_path (</td>      <td class=PType nowrap>uvm_hdl_path_slice&nbsp;</td>
@@ -2158,7 +2195,7 @@ Delete HDL paths</div></div><div class=CToolTip id="tt42"><div class=CMethod>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Add an HDL path</div></div><div class=CToolTip id="tt43"><div class=CMethod>
+Add an HDL path</div></div><div class=CToolTip id="tt44"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void add_hdl_path_slice(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -2184,7 +2221,7 @@ Add an HDL path</div></div><div class=CToolTip id="tt43"><div class=CMethod>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Append the specified HDL slice to the HDL path of the register instance for the specified design abstraction. </div></div><div class=CToolTip id="tt44"><div class=CMethod>
+Append the specified HDL slice to the HDL path of the register instance for the specified design abstraction. </div></div><div class=CToolTip id="tt45"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function bit has_hdl_path (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -2194,7 +2231,7 @@ Append the specified HDL slice to the HDL path of the register instance for the 
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Check if a HDL path is specified</div></div><div class=CToolTip id="tt45"><div class=CMethod>
+Check if a HDL path is specified</div></div><div class=CToolTip id="tt46"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void get_hdl_path (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
@@ -2210,7 +2247,7 @@ Check if a HDL path is specified</div></div><div class=CToolTip id="tt45"><div c
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Get the incremental HDL path(s)</div></div><div class=CToolTip id="tt46"><div class=CMethod>
+Get the incremental HDL path(s)</div></div><div class=CToolTip id="tt47"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void get_hdl_path_kinds (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
@@ -2219,7 +2256,7 @@ Get the incremental HDL path(s)</div></div><div class=CToolTip id="tt46"><div cl
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Get design abstractions for which HDL paths have been defined</div></div><div class=CToolTip id="tt47"><div class=CMethod>
+Get design abstractions for which HDL paths have been defined</div></div><div class=CToolTip id="tt48"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void get_full_hdl_path (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
@@ -2240,7 +2277,7 @@ Get design abstractions for which HDL paths have been defined</div></div><div cl
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Get the full hierarchical HDL path(s)</div></div><div class=CToolTip id="tt48"><div class=CMethod>
+Get the full hierarchical HDL path(s)</div></div><div class=CToolTip id="tt49"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task backdoor_read(</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
@@ -2248,7 +2285,7 @@ Get the full hierarchical HDL path(s)</div></div><div class=CToolTip id="tt48"><
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-User-define backdoor read access</div></div><div class=CToolTip id="tt49"><div class=CMethod>
+User-define backdoor read access</div></div><div class=CToolTip id="tt50"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task backdoor_write(</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
@@ -2256,7 +2293,7 @@ User-define backdoor read access</div></div><div class=CToolTip id="tt49"><div c
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-User-defined backdoor read access</div></div><div class=CToolTip id="tt50"><div class=CMethod>
+User-defined backdoor read access</div></div><div class=CToolTip id="tt51"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function uvm_status_e backdoor_read_func(</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
@@ -2264,9 +2301,9 @@ User-defined backdoor read access</div></div><div class=CToolTip id="tt50"><div 
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-User-defined backdoor read access</div></div><div class=CToolTip id="tt51"><div class=CMethod>
+User-defined backdoor read access</div></div><div class=CToolTip id="tt52"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual task backdoor_watch()
-  </td></tr></table></blockquote>User-defined DUT register change monitor</div></div><div class=CToolTip id="tt52"><div class=CMethod>
+  </td></tr></table></blockquote>User-defined DUT register change monitor</div></div><div class=CToolTip id="tt53"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void include_coverage(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -2284,7 +2321,7 @@ User-defined backdoor read access</div></div><div class=CToolTip id="tt51"><div 
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Specify which coverage model that must be included in various block, register or memory abstraction class instances.</div></div><div class=CToolTip id="tt53"><div class=CMethod>
+Specify which coverage model that must be included in various block, register or memory abstraction class instances.</div></div><div class=CToolTip id="tt54"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>protected function uvm_reg_cvr_t build_coverage(</td>      <td class=PType nowrap>uvm_reg_cvr_t&nbsp;</td>
@@ -2292,7 +2329,7 @@ Specify which coverage model that must be included in various block, register or
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Check if all of the specified coverage models must be built.</div></div><div class=CToolTip id="tt54"><div class=CMethod>
+Check if all of the specified coverage models must be built.</div></div><div class=CToolTip id="tt55"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual protected function void add_coverage(</td>      <td class=PType nowrap>uvm_reg_cvr_t&nbsp;</td>
@@ -2300,7 +2337,7 @@ Check if all of the specified coverage models must be built.</div></div><div cla
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Specify that additional coverage models are available.</div></div><div class=CToolTip id="tt55"><div class=CMethod>
+Specify that additional coverage models are available.</div></div><div class=CToolTip id="tt56"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function bit has_coverage(</td>      <td class=PType nowrap>uvm_reg_cvr_t&nbsp;</td>
@@ -2308,7 +2345,7 @@ Specify that additional coverage models are available.</div></div><div class=CTo
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Check if register has coverage model(s)</div></div><div class=CToolTip id="tt56"><div class=CMethod>
+Check if register has coverage model(s)</div></div><div class=CToolTip id="tt57"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function uvm_reg_cvr_t set_coverage(</td>      <td class=PType nowrap>uvm_reg_cvr_t&nbsp;</td>
@@ -2316,7 +2353,7 @@ Check if register has coverage model(s)</div></div><div class=CToolTip id="tt56"
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Turns on coverage measurement.</div></div><div class=CToolTip id="tt57"><div class=CMethod>
+Turns on coverage measurement.</div></div><div class=CToolTip id="tt58"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function bit get_coverage(</td>      <td class=PType nowrap>uvm_reg_cvr_t&nbsp;</td>
@@ -2324,7 +2361,7 @@ Turns on coverage measurement.</div></div><div class=CToolTip id="tt57"><div cla
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Check if coverage measurement is on.</div></div><div class=CToolTip id="tt58"><div class=CMethod>
+Check if coverage measurement is on.</div></div><div class=CToolTip id="tt59"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>protected virtual function void sample(</td>      <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
@@ -2338,9 +2375,9 @@ Check if coverage measurement is on.</div></div><div class=CToolTip id="tt58"><d
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Functional coverage measurement method</div></div><div class=CToolTip id="tt59"><div class=CMethod>
+Functional coverage measurement method</div></div><div class=CToolTip id="tt60"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function void sample_values()
-  </td></tr></table></blockquote>Functional coverage measurement method for field values</div></div><div class=CToolTip id="tt60"><div class=CMethod>
+  </td></tr></table></blockquote>Functional coverage measurement method for field values</div></div><div class=CToolTip id="tt61"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task pre_write(</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
@@ -2348,7 +2385,7 @@ Functional coverage measurement method</div></div><div class=CToolTip id="tt59">
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Called before register write.</div></div><div class=CToolTip id="tt61"><div class=CMethod>
+Called before register write.</div></div><div class=CToolTip id="tt62"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task post_write(</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
@@ -2356,7 +2393,7 @@ Called before register write.</div></div><div class=CToolTip id="tt61"><div clas
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Called after register write.</div></div><div class=CToolTip id="tt62"><div class=CMethod>
+Called after register write.</div></div><div class=CToolTip id="tt63"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task pre_read(</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
@@ -2364,7 +2401,7 @@ Called after register write.</div></div><div class=CToolTip id="tt62"><div class
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Called before register read.</div></div><div class=CToolTip id="tt63"><div class=CMethod>
+Called before register read.</div></div><div class=CToolTip id="tt64"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task post_read(</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
@@ -2372,7 +2409,7 @@ Called before register read.</div></div><div class=CToolTip id="tt63"><div class
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Called after register read.</div></div><div class=CToolTip id="tt64"><div class=CType>Coverage models available or desired. </div></div><div class=CToolTip id="tt65"><div class=CMethod>
+Called after register read.</div></div><div class=CToolTip id="tt65"><div class=CType>Coverage models available or desired. </div></div><div class=CToolTip id="tt66"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void add_reg (</td>      <td class=PType nowrap>uvm_reg&nbsp;</td>
@@ -2398,7 +2435,7 @@ Called after register read.</div></div><div class=CToolTip id="tt64"><div class=
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Add a register</div></div><div class=CToolTip id="tt66"><div class=CMethod>
+Add a register</div></div><div class=CToolTip id="tt67"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void set(</td>      <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
@@ -2416,9 +2453,9 @@ Add a register</div></div><div class=CToolTip id="tt66"><div class=CMethod>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Set the desired value for this field</div></div><div class=CToolTip id="tt67"><div class=CMethod>
+Set the desired value for this field</div></div><div class=CToolTip id="tt68"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function bit needs_update()
-  </td></tr></table></blockquote>Check if the abstract model contains different desired and mirrored values.</div></div><div class=CToolTip id="tt68"><div class=CMethod>
+  </td></tr></table></blockquote>Check if the abstract model contains different desired and mirrored values.</div></div><div class=CToolTip id="tt69"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void reset(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -2428,7 +2465,7 @@ Set the desired value for this field</div></div><div class=CToolTip id="tt67"><d
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Reset the desired/mirrored value for this field.</div></div><div class=CToolTip id="tt69"><div class=CConstant>Read and check</div></div><div class=CToolTip id="tt70"><div class=CMethod>
+Reset the desired/mirrored value for this field.</div></div><div class=CToolTip id="tt70"><div class=CConstant>Read and check</div></div><div class=CToolTip id="tt71"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_compare(</td>      <td class=PType nowrap>uvm_check_e&nbsp;</td>
@@ -2438,7 +2475,7 @@ Reset the desired/mirrored value for this field.</div></div><div class=CToolTip 
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Sets the compare policy during a mirror update. </div></div><div class=CToolTip id="tt71"><div class=CMethod>
+Sets the compare policy during a mirror update. </div></div><div class=CToolTip id="tt72"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function bit predict (</td>      <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
@@ -2472,7 +2509,7 @@ Sets the compare policy during a mirror update. </div></div><div class=CToolTip 
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Update the mirrored value for this field.</div></div><div class=CToolTip id="tt72"><div class=CGroup>Each resource has a name, a value and a set of scopes over which it is visible. </div></div><div class=CToolTip id="tt73"><div class=CType>Coverage model value set with `UVM_REG_CVR_WIDTH bits.</div></div><div class=CToolTip id="tt74"><div class=CClass>
+Update the mirrored value for this field.</div></div><div class=CToolTip id="tt73"><div class=CGroup>Each resource has a name, a value and a set of scopes over which it is visible. </div></div><div class=CToolTip id="tt74"><div class=CType>Coverage model value set with `UVM_REG_CVR_WIDTH bits.</div></div><div class=CToolTip id="tt75"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>class uvm_resource_db #(</td>      <td class=PType nowrap>type&nbsp;</td>
@@ -2482,9 +2519,9 @@ Update the mirrored value for this field.</div></div><div class=CToolTip id="tt7
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The uvm_resource_db#(T) class provides a convenience interface for the resources facility. </div></div><div class=CToolTip id="tt75"><div class=CMethod>
+All of the functions in uvm_resource_db#(T) are static, so they must be called using the :: operator. </div></div><div class=CToolTip id="tt76"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function void sample_values()
-  </td></tr></table></blockquote>Functional coverage measurement method for field values</div></div><div class=CToolTip id="tt76"><div class=CConstant>Operation completed successfully</div></div><!--END_ND_TOOLTIPS-->
+  </td></tr></table></blockquote>Functional coverage measurement method for field values</div></div><div class=CToolTip id="tt77"><div class=CConstant>Operation completed successfully</div></div><!--END_ND_TOOLTIPS-->
 
 <script language=JavaScript><!--
 if (browserType) {if (browserVer) {document.write("</div>"); }document.write("</div>");}// --></script></body></html>

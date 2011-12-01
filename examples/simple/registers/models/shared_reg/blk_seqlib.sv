@@ -61,7 +61,7 @@ class blk_AXW_test_seq extends uvm_reg_sequence;
 
       // W should now be equal to A
       if (model.W.get() !== data) begin
-         `uvm_error("test", $psprintf("W == 'h%h != 'h%h", model.X.get(), data));
+         `uvm_error("test", $sformatf("W == 'h%h != 'h%h", model.X.get(), data));
       end
    endtask
    

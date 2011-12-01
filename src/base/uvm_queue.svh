@@ -87,7 +87,7 @@ class uvm_queue #(type T=int) extends uvm_object;
     T default_value;
     if (index >= size() || index < 0) begin
       uvm_report_warning("QUEUEGET",
-        $psprintf("get: given index out of range for queue of size %0d. Ignoring get request",size()));
+        $sformatf("get: given index out of range for queue of size %0d. Ignoring get request",size()));
       return default_value;
     end
     return queue[index];
@@ -110,7 +110,7 @@ class uvm_queue #(type T=int) extends uvm_object;
   virtual function void insert (int index, T item);
     if (index >= size() || index < 0) begin
       uvm_report_warning("QUEUEINS",
-        $psprintf("insert: given index out of range for queue of size %0d. Ignoring insert request",size()));
+        $sformatf("insert: given index out of range for queue of size %0d. Ignoring insert request",size()));
       return;
     end
     queue.insert(index,item);
@@ -125,7 +125,7 @@ class uvm_queue #(type T=int) extends uvm_object;
   virtual function void delete (int index=-1);
     if (index >= size() || index < -1) begin
       uvm_report_warning("QUEUEDEL",
-        $psprintf("delete: given index out of range for queue of size %0d. Ignoring delete request",size()));
+        $sformatf("delete: given index out of range for queue of size %0d. Ignoring delete request",size()));
       return;
     end
     if (index == -1)

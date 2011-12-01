@@ -219,7 +219,7 @@ class ubus_bus_monitor extends uvm_monitor;
       collect_arbitration_phase();
       collect_address_phase();
       collect_data_phase();
-      `uvm_info(get_type_name(),$psprintf("Transfer collected :\n%s", 
+      `uvm_info(get_type_name(),$sformatf("Transfer collected :\n%s", 
         trans_collected.sprint()), UVM_HIGH)
       if (checks_enable)
         perform_transfer_checks();
@@ -319,7 +319,7 @@ class ubus_bus_monitor extends uvm_monitor;
     while (slave_addr_map.next(slave_name));
       assert(slave_found) else begin
         `uvm_error(get_type_name(),
-          $psprintf("Master attempted a transfer at illegal address 16'h%0h", 
+          $sformatf("Master attempted a transfer at illegal address 16'h%0h", 
           trans_collected.addr))
       end
   endfunction : check_which_slave

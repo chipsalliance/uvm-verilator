@@ -37,7 +37,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_reg_item" href="../../../../src/reg/uvm_reg_item.svh">uvm_reg_item</a></h2><div class=CBody><p>Defines an abstract register transaction item.&nbsp; No bus-specific information is present, although a handle a <a href="uvm_reg_map-svh.html#uvm_reg_map" class=LClass id=link29 onMouseOver="ShowTip(event, 'tt28', 'link29')" onMouseOut="HideTip('tt28')">uvm_reg_map</a> is provided in case the user wishes to implement a custom address translation algorithm.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_reg_item" href="../../../../src/reg/uvm_reg_item.svh">uvm_reg_item</a></h2><div class=CBody><p>Defines an abstract register transaction item.&nbsp; No bus-specific information is present, although a handle to a <a href="uvm_reg_map-svh.html#uvm_reg_map" class=LClass id=link29 onMouseOver="ShowTip(event, 'tt28', 'link29')" onMouseOut="HideTip('tt28')">uvm_reg_map</a> is provided in case a user wishes to implement a custom address translation algorithm.</p>
 
 <!--START_ND_SUMMARY index=1-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -106,7 +106,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_reg_item.prior" id=link20 onMouseOver="ShowTip(event, 'tt19', 'link20')" onMouseOut="HideTip('tt19')">prior</a></td><td class=SDescription>The priority requested of this transfer, as defined by <a href="../seq/uvm_sequence_base-svh.html#uvm_sequence_base.start_item" class=LMethod id=link21 onMouseOver="ShowTip(event, 'tt20', 'link21')" onMouseOut="HideTip('tt20')">uvm_sequence_base::start_item</a>.</td></tr>
   <!-- index=14 -->
 
-<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg_item.extension" id=link22 onMouseOver="ShowTip(event, 'tt21', 'link22')" onMouseOut="HideTip('tt21')">extension</a></td><td class=SDescription>Handle to optional user data, as conveyed in the call to write, read, mirror, or update call. </td></tr>
+<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg_item.extension" id=link22 onMouseOver="ShowTip(event, 'tt21', 'link22')" onMouseOut="HideTip('tt21')">extension</a></td><td class=SDescription>Handle to optional user data, as conveyed in the call to write(), read(), mirror(), or update() used to trigger the operation.</td></tr>
   <!-- index=15 -->
 
 <tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_reg_item.bd_kind" id=link23 onMouseOver="ShowTip(event, 'tt22', 'link23')" onMouseOut="HideTip('tt22')">bd_kind</a></td><td class=SDescription>If path is UVM_BACKDOOR, this member specifies the abstraction kind for the backdoor access, e.g. </td></tr>
@@ -230,14 +230,14 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=14 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_item.extension" href="../../../../src/reg/uvm_reg_item.svh">extension</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>rand uvm_object extension
-  </td></tr></table></blockquote><div class=CBody><p>Handle to optional user data, as conveyed in the call to write, read, mirror, or update call.&nbsp; Must derive from uvm_object.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Handle to optional user data, as conveyed in the call to write(), read(), mirror(), or update() used to trigger the operation.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=15 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_item.bd_kind" href="../../../../src/reg/uvm_reg_item.svh">bd_kind</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>string bd_kind = &quot;&quot;
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>string bd_kind
   </td></tr></table></blockquote><div class=CBody><p>If path is UVM_BACKDOOR, this member specifies the abstraction kind for the backdoor access, e.g.&nbsp; &ldquo;RTL&rdquo; or &ldquo;GATES&rdquo;.</p></div></div></div>
 
 
@@ -245,7 +245,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
  <!--CONTENT index=16 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_item.fname" href="../../../../src/reg/uvm_reg_item.svh">fname</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>string fname = &quot;&quot;
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>string fname
   </td></tr></table></blockquote><div class=CBody><p>The file name from where this transaction originated, if provided at the call site.</p></div></div></div>
 
 
@@ -253,7 +253,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
  <!--CONTENT index=17 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_item.lineno" href="../../../../src/reg/uvm_reg_item.svh">lineno</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>int lineno = 0
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>int lineno
   </td></tr></table></blockquote><div class=CBody><p>The file name from where this transaction originated, if provided at the call site.</p></div></div></div>
 
 
@@ -317,25 +317,22 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_reg_bus_op.Variables" >Variables</a></td><td class=SDescription></td></tr>
   <!-- index=24 -->
 
-<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_reg_bus_op.info" >info</a></td><td class=SDescription>The bus-independent read/write information. </td></tr>
+<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_reg_bus_op.kind" id=link44 onMouseOver="ShowTip(event, 'tt36', 'link44')" onMouseOut="HideTip('tt36')">kind</a></td><td class=SDescription>Kind of access: READ or WRITE.</td></tr>
   <!-- index=25 -->
 
-<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg_bus_op.kind" id=link44 onMouseOver="ShowTip(event, 'tt36', 'link44')" onMouseOut="HideTip('tt36')">kind</a></td><td class=SDescription>Kind of access: READ or WRITE.</td></tr>
+<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg_bus_op.addr" id=link45 onMouseOver="ShowTip(event, 'tt37', 'link45')" onMouseOut="HideTip('tt37')">addr</a></td><td class=SDescription>The bus address.</td></tr>
   <!-- index=26 -->
 
-<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_reg_bus_op.addr" id=link45 onMouseOver="ShowTip(event, 'tt37', 'link45')" onMouseOut="HideTip('tt37')">addr</a></td><td class=SDescription>The bus address.</td></tr>
+<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_reg_bus_op.data" id=link46 onMouseOver="ShowTip(event, 'tt38', 'link46')" onMouseOut="HideTip('tt38')">data</a></td><td class=SDescription>The data to write. </td></tr>
   <!-- index=27 -->
 
-<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg_bus_op.data" id=link46 onMouseOver="ShowTip(event, 'tt38', 'link46')" onMouseOut="HideTip('tt38')">data</a></td><td class=SDescription>The data to write. </td></tr>
+<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg_bus_op.n_bits" id=link47 onMouseOver="ShowTip(event, 'tt39', 'link47')" onMouseOut="HideTip('tt39')">n_bits</a></td><td class=SDescription>The number of bits of <a href="#uvm_reg_item.value" class=LVariable id=link48 onMouseOver="ShowTip(event, 'tt10', 'link48')" onMouseOut="HideTip('tt10')">uvm_reg_item::value</a> being transferred by this transaction.</td></tr>
   <!-- index=28 -->
 
-<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_reg_bus_op.n_bits" id=link47 onMouseOver="ShowTip(event, 'tt39', 'link47')" onMouseOut="HideTip('tt39')">n_bits</a></td><td class=SDescription>The number of bits of <a href="#uvm_reg_item.value" class=LVariable id=link48 onMouseOver="ShowTip(event, 'tt10', 'link48')" onMouseOut="HideTip('tt10')">uvm_reg_item::value</a> being transferred by this transaction.</td></tr>
+<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_reg_bus_op.byte_en" id=link49 onMouseOver="ShowTip(event, 'tt40', 'link49')" onMouseOut="HideTip('tt40')">byte_en</a></td><td class=SDescription>Enables for the byte lanes on the bus. </td></tr>
   <!-- index=29 -->
 
-<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg_bus_op.byte_en" id=link49 onMouseOver="ShowTip(event, 'tt40', 'link49')" onMouseOut="HideTip('tt40')">byte_en</a></td><td class=SDescription>Enables for the byte lanes on the bus. </td></tr>
-  <!-- index=30 -->
-
-<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_reg_bus_op.status" id=link50 onMouseOver="ShowTip(event, 'tt41', 'link50')" onMouseOut="HideTip('tt41')">status</a></td><td class=SDescription>The result of the transaction: UVM_IS_OK, UVM_HAS_X, UVM_NOT_OK. </td></tr></table></div></div><!--END_ND_SUMMARY-->
+<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg_bus_op.status" id=link50 onMouseOver="ShowTip(event, 'tt41', 'link50')" onMouseOut="HideTip('tt41')">status</a></td><td class=SDescription>The result of the transaction: UVM_IS_OK, UVM_HAS_X, UVM_NOT_OK. </td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
 
 
@@ -348,12 +345,6 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=24 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_bus_op.info" href="../../../../src/reg/uvm_reg_item.svh">info</a></h3><div class=CBody><p>The bus-independent read/write information.&nbsp; See <a href="#uvm_reg_item" class=LClass id=link54 onMouseOver="ShowTip(event, 'tt1', 'link54')" onMouseOut="HideTip('tt1')">uvm_reg_item</a>.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=25 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_bus_op.kind" href="../../../../src/reg/uvm_reg_item.svh">kind</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_access_e kind
   </td></tr></table></blockquote><div class=CBody><p>Kind of access: READ or WRITE.</p></div></div></div>
@@ -361,7 +352,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=26 -->
+ <!--CONTENT index=25 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_bus_op.addr" href="../../../../src/reg/uvm_reg_item.svh">addr</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_reg_addr_t addr
   </td></tr></table></blockquote><div class=CBody><p>The bus address.</p></div></div></div>
@@ -369,7 +360,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=27 -->
+ <!--CONTENT index=26 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_bus_op.data" href="../../../../src/reg/uvm_reg_item.svh">data</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_reg_data_t data
   </td></tr></table></blockquote><div class=CBody><p>The data to write.&nbsp; If the bus width is smaller than the register or memory width, <i>data</i> represents only the portion of <i>value</i> that is being transferred this bus cycle.</p></div></div></div>
@@ -377,15 +368,15 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=28 -->
+ <!--CONTENT index=27 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_bus_op.n_bits" href="../../../../src/reg/uvm_reg_item.svh">n_bits</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>int n_bits
-  </td></tr></table></blockquote><div class=CBody><p>The number of bits of <a href="#uvm_reg_item.value" class=LVariable id=link55 onMouseOver="ShowTip(event, 'tt10', 'link55')" onMouseOut="HideTip('tt10')">uvm_reg_item::value</a> being transferred by this transaction.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>The number of bits of <a href="#uvm_reg_item.value" class=LVariable id=link54 onMouseOver="ShowTip(event, 'tt10', 'link54')" onMouseOut="HideTip('tt10')">uvm_reg_item::value</a> being transferred by this transaction.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=29 -->
+ <!--CONTENT index=28 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_bus_op.byte_en" href="../../../../src/reg/uvm_reg_item.svh">byte_en</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_reg_byte_en_t byte_en
   </td></tr></table></blockquote><div class=CBody><p>Enables for the byte lanes on the bus.&nbsp; Meaningful only when the bus supports byte enables and the operation originates from a field write/read.</p></div></div></div>
@@ -393,10 +384,10 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=30 -->
+ <!--CONTENT index=29 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_bus_op.status" href="../../../../src/reg/uvm_reg_item.svh">status</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_status_e status
-  </td></tr></table></blockquote><div class=CBody><p>The result of the transaction: UVM_IS_OK, UVM_HAS_X, UVM_NOT_OK.&nbsp; See <a href="uvm_reg_model-svh.html#uvm_status_e" class=LType id=link56 onMouseOver="ShowTip(event, 'tt33', 'link56')" onMouseOut="HideTip('tt33')">uvm_status_e</a>.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>The result of the transaction: UVM_IS_OK, UVM_HAS_X, UVM_NOT_OK.&nbsp; See <a href="uvm_reg_model-svh.html#uvm_status_e" class=LType id=link55 onMouseOver="ShowTip(event, 'tt33', 'link55')" onMouseOut="HideTip('tt33')">uvm_status_e</a>.</p></div></div></div>
 
 </div><!--Content-->
 
@@ -435,14 +426,32 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>rand uvm_sequence_base parent
   </td></tr></table></blockquote>The sequence from which the operation originated.</div></div><div class=CToolTip id="tt19"><div class=CVariable>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>int prior = -1
-  </td></tr></table></blockquote>The priority requested of this transfer, as defined by uvm_sequence_base::start_item.</div></div><div class=CToolTip id="tt20"><div class=CMethod><i>start_item</i> and finish_item together will initiate operation of either a sequence item or sequence. </div></div><div class=CToolTip id="tt21"><div class=CVariable>
+  </td></tr></table></blockquote>The priority requested of this transfer, as defined by uvm_sequence_base::start_item.</div></div><div class=CToolTip id="tt20"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>virtual task start_item (</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
+      <td class=PParameter nowrap>item,</td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap>set_priority</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> -1,</td>
+</tr><tr><td></td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      <td class=PParameter nowrap>sequencer</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%>null</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+<i>start_item</i> and finish_item together will initiate operation of a sequence item. </div></div><div class=CToolTip id="tt21"><div class=CVariable>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>rand uvm_object extension
-  </td></tr></table></blockquote>Handle to optional user data, as conveyed in the call to write, read, mirror, or update call. </div></div><div class=CToolTip id="tt22"><div class=CVariable>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>string bd_kind = &quot;&quot;
+  </td></tr></table></blockquote>Handle to optional user data, as conveyed in the call to write(), read(), mirror(), or update() used to trigger the operation.</div></div><div class=CToolTip id="tt22"><div class=CVariable>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>string bd_kind
   </td></tr></table></blockquote>If path is UVM_BACKDOOR, this member specifies the abstraction kind for the backdoor access, e.g. </div></div><div class=CToolTip id="tt23"><div class=CVariable>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>string fname = &quot;&quot;
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>string fname
   </td></tr></table></blockquote>The file name from where this transaction originated, if provided at the call site.</div></div><div class=CToolTip id="tt24"><div class=CVariable>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>int lineno = 0
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>int lineno
   </td></tr></table></blockquote>The file name from where this transaction originated, if provided at the call site.</div></div><div class=CToolTip id="tt25"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>

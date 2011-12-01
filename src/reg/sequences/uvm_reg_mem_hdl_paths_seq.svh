@@ -137,11 +137,11 @@ class uvm_reg_mem_hdl_paths_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
                 uvm_reg_data_t d;
                 if (!uvm_hdl_read(p_,d))
                     `uvm_error("uvm_reg_mem_hdl_paths_seq",
-                               $psprintf("HDL path \"%s\" for register \"%s\" is not readable",
+                               $sformatf("HDL path \"%s\" for register \"%s\" is not readable",
                                          p_, r.get_full_name()));
                 if (!uvm_hdl_check_path(p_))
                     `uvm_error("uvm_reg_mem_hdl_paths_seq",
-                               $psprintf("HDL path \"%s\" for register \"%s\" is not accessible",
+                               $sformatf("HDL path \"%s\" for register \"%s\" is not accessible",
                                          p_, r.get_full_name()));
             end
         end
@@ -166,7 +166,7 @@ class uvm_reg_mem_hdl_paths_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
                 string p_ = path.slices[j].path;
                 if(!uvm_hdl_check_path(p_))
                     `uvm_error("uvm_reg_mem_hdl_paths_seq",
-                               $psprintf("HDL path \"%s\" for memory \"%s\" is not accessible",
+                               $sformatf("HDL path \"%s\" for memory \"%s\" is not accessible",
                                          p_, m.get_full_name()));
             end
         end

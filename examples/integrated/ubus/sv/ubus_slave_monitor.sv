@@ -61,7 +61,7 @@ class ubus_slave_monitor extends uvm_monitor;
   protected int unsigned wait_state;
 
   // Transfer collected covergroup
-  covergroup cov_trans @cov_transaction;
+  covergroup cov_trans;
     option.per_instance = 1;
     trans_start_addr : coverpoint trans_collected.addr {
       option.auto_bin_max = 16; }
@@ -74,7 +74,7 @@ class ubus_slave_monitor extends uvm_monitor;
   endgroup : cov_trans
 
   // Transfer collected data covergroup
-  covergroup cov_trans_beat @cov_transaction_beat;
+  covergroup cov_trans_beat;
     option.per_instance = 1;
     beat_addr : coverpoint addr {
       option.auto_bin_max = 16; }
@@ -148,7 +148,7 @@ class ubus_slave_monitor extends uvm_monitor;
         void'(this.begin_tr(trans_collected));
         -> address_phase_grabbed;
         collect_data_phase();
-        `uvm_info(get_type_name(), $psprintf("Transfer collected :\n%s",
+        `uvm_info(get_type_name(), $sformatf("Transfer collected :\n%s",
           trans_collected.sprint()), UVM_FULL)
         if (checks_enable)
           perform_transfer_checks();
@@ -223,13 +223,13 @@ class ubus_slave_monitor extends uvm_monitor;
 
   // perform_transfer_coverage
   protected function void perform_transfer_coverage();
-    -> cov_transaction;
+    cov_trans.sample();
     for (int unsigned i = 0; i < trans_collected.size; i++) begin
       addr = trans_collected.addr + i;
       data = trans_collected.data[i];
 //Wait state inforamtion is not currently monitored.
 //      wait_state = trans_collected.wait_state[i];
-      -> cov_transaction_beat;
+      cov_trans_beat.sample();
     end
   endfunction : perform_transfer_coverage
 
@@ -237,6 +237,11 @@ class ubus_slave_monitor extends uvm_monitor;
     @address_phase_grabbed;
     trans = trans_collected;
   endtask : peek
+
+  virtual function void report_phase(uvm_phase phase);
+    `uvm_info(get_full_name(),$sformatf("Covergroup 'cov_trans' coverage: %2f",
+					cov_trans.get_inst_coverage()),UVM_LOW)
+  endfunction
 
 endclass : ubus_slave_monitor
 

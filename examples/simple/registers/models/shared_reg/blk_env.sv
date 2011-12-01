@@ -86,6 +86,11 @@ class reg2apb_adapter extends uvm_reg_adapter;
     rw.data = apb.data;
   endfunction
 
+
+  function new(string name="reg2apb_adapter");
+     super.new(name);
+  endfunction
+
 endclass
 
 class reg2wsh_adapter extends uvm_reg_adapter;
@@ -110,6 +115,11 @@ class reg2wsh_adapter extends uvm_reg_adapter;
     rw.kind = wsh.read ? UVM_READ : UVM_WRITE;
     rw.addr = wsh.addr;
     rw.data = wsh.data;
+  endfunction
+
+
+  function new(string name="reg2wsh_adapter");
+     super.new(name);
   endfunction
 
 endclass

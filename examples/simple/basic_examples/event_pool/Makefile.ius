@@ -29,3 +29,5 @@ all: run
 
 run:
 	$(IUS) -incdir . test.sv
+	$(CHECK)
+

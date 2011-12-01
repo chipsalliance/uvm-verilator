@@ -124,36 +124,36 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
 
   function int uvm_hdl_check_path(string path);
     uvm_report_fatal("UVM_HDL_CHECK_PATH", 
-      $psprintf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
+      $sformatf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
     return 0;
   endfunction
 
   function int uvm_hdl_deposit(string path, uvm_hdl_data_t value);
     uvm_report_fatal("UVM_HDL_DEPOSIT", 
-      $psprintf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
+      $sformatf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
     return 0;
   endfunction
 
   function int uvm_hdl_force(string path, uvm_hdl_data_t value);
     uvm_report_fatal("UVM_HDL_FORCE", 
-      $psprintf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
+      $sformatf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
     return 0;
   endfunction
 
   task uvm_hdl_force_time(string path, uvm_hdl_data_t value, time force_time=0);
     uvm_report_fatal("UVM_HDL_FORCE_TIME", 
-      $psprintf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
+      $sformatf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
   endtask
 
   function int uvm_hdl_release(string path, output uvm_hdl_data_t value);
     uvm_report_fatal("UVM_HDL_RELEASE", 
-      $psprintf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
+      $sformatf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
     return 0;
   endfunction
 
   function int uvm_hdl_read(string path, output uvm_hdl_data_t value);
     uvm_report_fatal("UVM_HDL_READ", 
-      $psprintf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
+      $sformatf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
     return 0;
   endfunction
 

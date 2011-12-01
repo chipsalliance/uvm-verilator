@@ -176,7 +176,7 @@ class block_B extends uvm_reg_block;
    
    virtual function void build();
 
-      default_map = create_map("", 0, 4, UVM_BIG_ENDIAN);
+      default_map = create_map("", 0, 4, UVM_BIG_ENDIAN, 0);
 
       Ra = reg_R::type_id::create("Ra",,get_full_name());
       Ra.configure(this, null);

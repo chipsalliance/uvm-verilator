@@ -1,4 +1,5 @@
 //----------------------------------------------------------------------
+//   Copyright 2011 Cypress Semiconductor
 //   Copyright 2010-2011 Mentor Graphics Corporation
 //   All Rights Reserved Worldwide
 //
@@ -17,6 +18,21 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
+typedef class uvm_phase;
+
+//----------------------------------------------------------------------
+// Title: UVM Configuration Database
+//
+// Topic: Intro
+//
+// The <uvm_config_db> class provides a convenience interface 
+// on top of the <uvm_resource_db> to simplify the basic interface
+// that is used for configuring <uvm_component> instances.
+//
+// If the run-time ~+UVM_CONFIG_DB_TRACE~ command line option is specified,
+// all configuration DB accesses (read and write) are displayed.
+//----------------------------------------------------------------------
+
 //Internal class for config waiters
 class m_uvm_waiter;
   string inst_name;
@@ -28,12 +44,10 @@ class m_uvm_waiter;
   endfunction
 endclass
 
+typedef class uvm_config_db_options;
+
 //----------------------------------------------------------------------
-// class: uvm_config_db#(T)
-//
-// The uvm_config_db#(T) class provides a convenience interface 
-// on top of the <uvm_resource_db> to simplify the basic interface
-// that is used for reading and writing into the resource database.
+// class: uvm_config_db
 //
 // All of the functions in uvm_config_db#(T) are static, so they
 // must be called using the :: operator.  For example:
@@ -57,7 +71,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
 
   // function: get
   //
-  // Get the value ~field_name~ in ~inst_name~, using component ~cntxt~ as 
+  // Get the value for ~field_name~ in ~inst_name~, using component ~cntxt~ as 
   // the starting search point. ~inst_name~ is an explicit instance name 
   // relative to ~cntxt~ and may be an empty string if the ~cntxt~ is the
   // instance that the configuration object applies to. ~field_name~
@@ -70,10 +84,12 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   //| get_config_string(...) => uvm_config_db#(string)::get(cntxt,...)
   //| get_config_object(...) => uvm_config_db#(uvm_object)::get(cntxt,...)
 
-  static function bit get(uvm_component cntxt, string inst_name,
-      string field_name, ref T value);
+  static function bit get(uvm_component cntxt,
+                          string inst_name,
+                          string field_name,
+                          inout T value);
 //TBD: add file/line
-    int unsigned p=0;
+    int unsigned p;
     uvm_resource#(T) r, rt;
     uvm_resource_pool rp = uvm_resource_pool::get();
     uvm_resource_types::rsrc_q_t rq;
@@ -85,9 +101,12 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
     else if(cntxt.get_full_name() != "") 
       inst_name = {cntxt.get_full_name(), ".", inst_name};
  
-    rq = rp.lookup_regex_names(inst_name, field_name);
+    rq = rp.lookup_regex_names(inst_name, field_name, uvm_resource#(T)::get_type());
     r = uvm_resource#(T)::get_highest_precedence(rq);
     
+    if(uvm_config_db_options::is_tracing())
+      m_show_msg("CFGDB/GET", "Configuration","read", inst_name, field_name, cntxt, r);
+
     if(r == null)
       return 0;
 
@@ -135,7 +154,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
     uvm_root top;
     uvm_phase curr_phase;
     uvm_resource#(T) r;
-    bit exists = 0;
+    bit exists;
     
     //take care of random stability during allocation
     process p = process::self();
@@ -182,12 +201,15 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
       m_uvm_waiter w;
       for(int i=0; i<m_waiters[field_name].size(); ++i) begin
         w = m_waiters[field_name].get(i);
-        if(uvm_re_match(inst_name,w.inst_name) == 0)
+        if(uvm_re_match(uvm_glob_to_re(inst_name),w.inst_name) == 0)
            ->w.trigger;  
       end
     end
 
     p.set_randstate(rstate);
+
+    if(uvm_config_db_options::is_tracing())
+      m_show_msg("CFGDB/SET", "Configuration","set", inst_name, field_name, cntxt, r);
   endfunction
 
 
@@ -279,3 +301,72 @@ endclass
 
 typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;
 
+
+//----------------------------------------------------------------------
+// Class: uvm_config_db_options
+//
+// Provides a namespace for managing options for the
+// configuration DB facility.  The only thing allowed in this class is static
+// local data members and static functions for manipulating and
+// retrieving the value of the data members.  The static local data
+// members represent options and settings that control the behavior of
+// the configuration DB facility.
+
+// Options include:
+//
+//  * tracing:  on/off
+//
+//    The default for tracing is off.
+//
+//----------------------------------------------------------------------
+class uvm_config_db_options;
+   
+  static local bit ready;
+  static local bit tracing;
+
+  // Function: turn_on_tracing
+  //
+  // Turn tracing on for the configuration database. This causes all
+  // reads and writes to the database to display information about
+  // the accesses. Tracing is off by default.
+  //
+  // This method is implicitly called by the ~+UVM_CONFIG_DB_TRACE~.
+
+  static function void turn_on_tracing();
+     if (!ready) init();
+    tracing = 1;
+  endfunction
+
+  // Function: turn_off_tracing
+  //
+  // Turn tracing off for the configuration database.
+
+  static function void turn_off_tracing();
+     if (!ready) init();
+    tracing = 0;
+  endfunction
+
+  // Function: is_tracing
+  //
+  // Returns 1 if the tracing facility is on and 0 if it is off.
+
+  static function bit is_tracing();
+    if (!ready) init();
+    return tracing;
+  endfunction
+
+
+  static local function void init();
+     uvm_cmdline_processor clp;
+     string trace_args[$];
+     
+     clp = uvm_cmdline_processor::get_inst();
+
+     if (clp.get_arg_matches("+UVM_CONFIG_DB_TRACE", trace_args)) begin
+        tracing = 1;
+     end
+
+     ready = 1;
+  endfunction
+
+endclass

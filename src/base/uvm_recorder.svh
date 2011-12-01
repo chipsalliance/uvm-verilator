@@ -20,7 +20,6 @@
 //   permissions and limitations under the License.
 //-----------------------------------------------------------------------------
 
-typedef class uvm_object_registry; 
 
 //------------------------------------------------------------------------------
 //
@@ -38,7 +37,7 @@ class uvm_recorder extends uvm_object;
 
   `uvm_object_utils(uvm_recorder)
 
-  int recording_depth = 0; 
+  int recording_depth;
   UVM_FILE file;
   string filename = "tr_db.log";
 
@@ -102,6 +101,11 @@ class uvm_recorder extends uvm_object;
   // The default policy is deep (which means to recurse an object).
 
   uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
+
+
+  function new(string name = "uvm_recorder");
+    super.new(name);
+  endfunction
 
 
   // Function: get_type_name
@@ -238,19 +242,28 @@ class uvm_recorder extends uvm_object;
   // Opens the file in the <filename> property and assigns to the
   // file descriptor <file>.
   //
-  function bit open_file();
+  virtual function bit open_file();
     if (file == 0)
       file = $fopen(filename);
     return (file > 0);
   endfunction
 
 
+  static bit m_handles[int];
+  static int handle;
+
+
   // Function- create_stream
   //
   //
-  function integer create_stream (string name,
-                                 string t,
-                                 string scope);
+  virtual function integer create_stream (string name,
+                                          string t,
+                                          string scope);
+    if (open_file()) begin
+      m_handles[++handle] = 1;
+      $fdisplay(file,"  CREATE_STREAM @%0t {NAME:%s T:%s SCOPE:%s STREAM:%0d}",$time,name,t,scope,handle);
+      return handle;
+    end
     return 0;
   endfunction
 
@@ -258,52 +271,51 @@ class uvm_recorder extends uvm_object;
   // Function- m_set_attribute
   //
   //
-  function void m_set_attribute (integer txh,
+  virtual function void m_set_attribute (integer txh,
                                  string nm,
                                  string value);
     if (open_file())
-      $fdisplay(file,"  SET_ATTR: {TXH:%-5d NAME:%s VALUE:%s}", txh,nm,value);
+      $fdisplay(file,"  SET_ATTR @%0t {TXH:%0d NAME:%s VALUE:%s}", $time,txh,nm,value);
   endfunction
   
   
   // Function- set_attribute
   //
   //
-  function void set_attribute (integer txh,
+  virtual function void set_attribute (integer txh,
                                string nm,
                                logic [1023:0] value,
                                uvm_radix_enum radix,
                                integer numbits=1024);
     string rdx=uvm_radix_to_string(radix);
     if (open_file())
-      $fdisplay(file,"  SET_ATTR: {TXH:%-5d NAME:%s VALUE:%0d RADIX:%s BITS=%-5d}",
-                 txh, nm, (value & ((1<<numbits)-1)),radix.name(),numbits);
+      $fdisplay(file,"  SET_ATTR @%0t {TXH:%0d NAME:%s VALUE:%0d   RADIX:%s BITS=%0d}",
+                 $time,txh, nm, (value & ((1<<numbits)-1)),radix.name(),numbits);
   endfunction
   
   
   // Function- check_handle_kind
   //
   //
-  function integer check_handle_kind (string htype, integer handle);
-    return 1;
+  virtual function integer check_handle_kind (string htype, integer handle);
+    check_handle_kind = m_handles.exists(handle);
   endfunction
   
   
   // Function- begin_tr
   //
   //
-  function integer begin_tr(string txtype,
+  virtual function integer begin_tr(string txtype,
                                      integer stream,
                                      string nm,
                                      string label="",
                                      string desc="",
                                      time begin_time=0);
-    static int h = 1;
     if (open_file()) begin
-      h++;
-      $fdisplay(file,"BEGIN: {TXH:%-5d TYPE:\"%0s\" STREAM:%-5d NAME:%s TIME=%0t LABEL:\"%0s\" DESC=\"%0s\"",
-        h,txtype,stream,nm,begin_time,label,desc);
-      return h;
+      m_handles[++handle] = 1;
+      $fdisplay(file,"BEGIN @%0t {TXH:%0d STREAM:%0d NAME:%s TIME=%0t  TYPE=\"%0s\" LABEL:\"%0s\" DESC=\"%0s\"",
+        $time,handle,stream,nm,begin_time,txtype,label,desc);
+      return handle;
     end
     return -1;
   endfunction
@@ -312,20 +324,20 @@ class uvm_recorder extends uvm_object;
   // Function- end_tr
   //
   //
-  function void end_tr (integer handle, time end_time=0);
+  virtual function void end_tr (integer handle, time end_time=0);
     if (open_file())
-      $fdisplay(file,"END: {TXH:%-5d TIME=%0t}",handle,end_time);
+      $fdisplay(file,"END @%0t {TXH:%0d TIME=%0t}",$time,handle,end_time);
   endfunction
   
   
   // Function- link_tr
   //
   //
-  function void link_tr(integer h1,
+  virtual function void link_tr(integer h1,
                                  integer h2,
                                  string relation="");
     if (open_file())
-      $fdisplay(file,"  LINK: {TXH1:%-5d TXH2:%-5d RELATION=%0s}", h1,h2,relation);
+      $fdisplay(file,"  LINK @%0t {TXH1:%0d TXH2:%0d RELATION=%0s}", $time,h1,h2,relation);
   endfunction
   
   
@@ -333,9 +345,12 @@ class uvm_recorder extends uvm_object;
   // Function- free_tr
   //
   //
-  function void free_tr(integer handle);
-    if (open_file())
-      $fdisplay(file,"  FREE: {TXH:%-5d}", handle);
+  virtual function void free_tr(integer handle);
+    if (open_file()) begin
+      $fdisplay(file,"FREE @%0t {TXH:%0d}", $time,handle);
+      if (m_handles.exists(handle))
+        m_handles.delete(handle);
+    end
   endfunction
   
 

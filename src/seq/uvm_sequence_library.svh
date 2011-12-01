@@ -51,7 +51,7 @@ typedef class uvm_sequence_library_cfg;
 // classes.
 //
 //| class my_seq_lib extends uvm_sequence_library #(my_item);
-//|   `uvm_object_utils(my_item)
+//|   `uvm_object_utils(my_seq_lib)
 //|   `uvm_sequence_library_utils(my_seq_lib)
 //|    function new(string name="");
 //|      super.new(name);
@@ -62,7 +62,7 @@ typedef class uvm_sequence_library_cfg;
 //
 //------------------------------------------------------------------------------
 
-class uvm_sequence_library #(type REQ=int,RSP=REQ) extends uvm_sequence #(REQ,RSP);
+class uvm_sequence_library #(type REQ=uvm_sequence_item,RSP=REQ) extends uvm_sequence #(REQ,RSP);
 
    // Function- new
    //
@@ -162,7 +162,7 @@ class uvm_sequence_library #(type REQ=int,RSP=REQ) extends uvm_sequence #(REQ,RS
    // library is started. If in <UVM_SEQ_LIB_ITEM> mode, specifies the
    // number of sequence items that will be generated.
    //
-   rand  int unsigned sequence_count;
+   rand  int unsigned sequence_count = 10;
 
 
    // Variable- select_rand
@@ -212,8 +212,7 @@ class uvm_sequence_library #(type REQ=int,RSP=REQ) extends uvm_sequence #(REQ,RS
    // Constrains <select_rand> to be a valid index into the ~sequences~ array
    //
    constraint valid_rand_selection {
-      if (sequences.size() > 0)
-        select_rand < sequences.size();
+         select_rand inside {[0:sequences.size()-1]};
    }
 
 
@@ -223,8 +222,7 @@ class uvm_sequence_library #(type REQ=int,RSP=REQ) extends uvm_sequence #(REQ,RS
    // Constrains <select_randc> to be a valid index into the ~sequences~ array
    //
    constraint valid_randc_selection {
-      if (sequences.size() > 0)
-        select_randc < sequences.size();
+         select_randc inside {[0:sequences.size()-1]};
    }
 
 
@@ -320,7 +318,7 @@ class uvm_sequence_library #(type REQ=int,RSP=REQ) extends uvm_sequence #(REQ,RS
    // macro.
    //
    //| class my_seq_lib extends uvm_sequence_library #(my_item);
-   //|   `uvm_object_utils(my_item)
+   //|   `uvm_object_utils(my_seq_lib)
    //|   `uvm_sequence_library_utils(my_seq_lib)
    //|    function new(string name="");
    //|      super.new(name);
@@ -365,7 +363,7 @@ endclass
 //| uvm_sequence_library_cfg cfg;
 //| cfg = new("seqlib_cfg", UVM_SEQ_LIB_RANDC, 1000, 2000);
 //|
-//| uvm_config_db #(uvm_sequence_base)::set(null,
+//| uvm_config_db #(uvm_sequence_library_cfg)::set(null,
 //|                                    "env.agent.sequencer.main_ph",
 //|                                    "default_sequence.config",
 //|                                    cfg);
@@ -676,12 +674,19 @@ task uvm_sequence_library::body();
      return;
   end
 
-  if (!is_randomized)
+  if (sequences.size() == 0) begin
+    `uvm_error("SEQLIB/NOSEQS", "Sequence library does not contain any sequences. Did you forget to call init_sequence_library() in the constructor?")
+    return;
+  end
+
+  if (do_not_randomize)
     m_get_config();
 
   if (starting_phase != null)
     starting_phase.raise_objection(this,
        {"starting sequence library ",get_full_name()," (", get_type_name(),")"});
+
+
 
   `uvm_info("SEQLIB/START",
      $sformatf("Starting sequence library %s in %s phase: %0d iterations in mode %s",
@@ -695,6 +700,7 @@ task uvm_sequence_library::body();
 
       UVM_SEQ_LIB_RAND: begin
         valid_rand_selection.constraint_mode(1);
+        valid_sequence_count.constraint_mode(0);
         for (int i=1; i<=sequence_count; i++) begin
           if (!randomize(select_rand)) begin
             `uvm_error("SEQLIB/RAND_FAIL", "Random sequence selection failed")
@@ -705,11 +711,14 @@ task uvm_sequence_library::body();
           end
           execute(wrap);
         end
+        valid_rand_selection.constraint_mode(0);
+        valid_sequence_count.constraint_mode(1);
       end
 
       UVM_SEQ_LIB_RANDC: begin
         uvm_object_wrapper q[$];
         valid_randc_selection.constraint_mode(1);
+        valid_sequence_count.constraint_mode(0);
         for (int i=1; i<=sequence_count; i++) begin
           if (!randomize(select_randc)) begin
             `uvm_error("SEQLIB/RANDC_FAIL", "Random sequence selection failed")
@@ -720,8 +729,12 @@ task uvm_sequence_library::body();
           end
           q.push_back(wrap);
         end
+        valid_randc_selection.constraint_mode(0);
+        valid_sequence_count.constraint_mode(1);
         foreach(q[i])
           execute(q[i]);
+        valid_randc_selection.constraint_mode(0);
+        valid_sequence_count.constraint_mode(1);
       end
 
       UVM_SEQ_LIB_ITEM: begin
@@ -754,7 +767,13 @@ task uvm_sequence_library::body();
 
   `uvm_info("SEQLIB/END",{"Ending sequence library in phase ",
             (starting_phase != null ? starting_phase.get_name() : "unknown")},UVM_LOW)
+
+`ifdef UVM_USE_P_FORMAT            
   `uvm_info("SEQLIB/DSTRB",$sformatf("%p",seqs_distrib),UVM_HIGH)
+`else
+    foreach(seqs_distrib[idx])
+        `uvm_info("SEQLIB/DSTRB",$sformatf("%s -> %d",idx,seqs_distrib[idx]),UVM_HIGH)  
+`endif
 
   if (starting_phase != null)
     starting_phase.drop_objection(this,
@@ -775,16 +794,13 @@ task uvm_sequence_library::execute(uvm_object_wrapper wrap);
   factory = uvm_factory::get();
 
   obj = factory.create_object_by_type(wrap,get_full_name(),
-           $sformatf("%0d",sequences_executed+1));
+           $sformatf("%s:%0d",wrap.get_type_name(),sequences_executed+1));
   void'($cast(seq_or_item,obj)); // already qualified, 
 
   `uvm_info("SEQLIB/EXEC",{"Executing ",(seq_or_item.is_item() ? "item " : "sequence "),seq_or_item.get_name(),
                            " (",seq_or_item.get_type_name(),")"},UVM_FULL)
   seq_or_item.print_sequence_info = 1;
-  start_item(seq_or_item);
-  if (!seq_or_item.randomize())
-     `uvm_error("SEQLIB/SEQ_RAND_FAIL", "Failed to randomize sequence")
-  finish_item(seq_or_item);
+  `uvm_rand_send(seq_or_item)
   seqs_distrib[seq_or_item.get_type_name()] = seqs_distrib[seq_or_item.get_type_name()]+1;
 
   sequences_executed++;
@@ -813,8 +829,9 @@ function void uvm_sequence_library::do_print(uvm_printer printer);
    printer.print_array_footer();
 
    printer.print_array_header("seqs_distrib",seqs_distrib.num(),"as_int_string");
-   foreach (seqs_distrib[typ])
-     printer.print_int({"[",typ,"]"},seqs_distrib[typ],UVM_DEC,,"int unsigned");
+   foreach (seqs_distrib[typ]) begin
+     printer.print_int({"[",typ,"]"},seqs_distrib[typ],32,,UVM_DEC,"int unsigned");
+   end
    printer.print_array_footer();
 endfunction
 

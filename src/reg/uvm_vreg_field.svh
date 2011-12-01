@@ -54,8 +54,8 @@ class uvm_vreg_field extends uvm_object;
    local uvm_vreg parent;
    local int unsigned lsb;
    local int unsigned size;
-   local string fname = "";
-   local int lineno = 0;
+   local string fname;
+   local int lineno;
    local bit read_in_progress;
    local bit write_in_progress;
 
@@ -376,8 +376,8 @@ endclass: uvm_vreg_field
 //------------------------------------------------------------------------------
 
 class uvm_vreg_field_cbs extends uvm_callback;
-   string fname = "";
-   int    lineno = 0;
+   string fname;
+   int    lineno;
 
    function new(string name = "uvm_vreg_field_cbs");
       super.new(name);
@@ -494,11 +494,11 @@ function void uvm_vreg_field::configure(uvm_vreg  parent,
                                    int unsigned  lsb_pos);
    this.parent = parent;
    if (size == 0) begin
-      `uvm_error("RegModel", $psprintf("Virtual field \"%s\" cannot have 0 bits", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Virtual field \"%s\" cannot have 0 bits", this.get_full_name()));
       size = 1;
    end
    if (size > `UVM_REG_DATA_WIDTH) begin
-      `uvm_error("RegModel", $psprintf("Virtual field \"%s\" cannot have more than %0d bits",
+      `uvm_error("RegModel", $sformatf("Virtual field \"%s\" cannot have more than %0d bits",
                                      this.get_full_name(),
                                      `UVM_REG_DATA_WIDTH));
       size = `UVM_REG_DATA_WIDTH;
@@ -540,7 +540,7 @@ endfunction: get_n_bits
 
 function string uvm_vreg_field::get_access(uvm_reg_map map = null);
    if (this.parent.get_memory() == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg_field::get_rights() on unimplemented virtual field \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg_field::get_rights() on unimplemented virtual field \"%s\"",
                                      this.get_full_name()));
       return "RW";
    end
@@ -576,7 +576,7 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
    write_in_progress = 1'b1;
    mem = this.parent.get_memory();
    if (mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg_field::write() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg_field::write() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       status = UVM_NOT_OK;
       return;
@@ -592,7 +592,7 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
    this.parent.XatomicX(1);
 
    if (value >> this.size) begin
-      `uvm_warning("RegModel", $psprintf("Writing value 'h%h that is greater than field \"%s\" size (%0d bits)", value, this.get_full_name(), this.get_n_bits()));
+      `uvm_warning("RegModel", $sformatf("Writing value 'h%h that is greater than field \"%s\" size (%0d bits)", value, this.get_full_name(), this.get_n_bits()));
       value &= value & ((1<<this.size)-1);
    end
    tmp = 0;
@@ -625,7 +625,7 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
       mem.read(st, segoff, tmp, rm_path, map, parent, , extension, fname, lineno);
       if (st != UVM_IS_OK && st != UVM_HAS_X) begin
          `uvm_error("RegModel",
-                    $psprintf("Unable to read LSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
+                    $sformatf("Unable to read LSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
                               mem.get_full_name(), segoff, this.get_full_name()));
          status = UVM_NOT_OK;
          this.parent.XatomicX(0);
@@ -643,7 +643,7 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
          mem.read(st, segoff + segn - 1, tmp, rm_path, map, parent,, extension, fname, lineno);
          if (st != UVM_IS_OK && st != UVM_HAS_X) begin
             `uvm_error("RegModel",
-                       $psprintf("Unable to read MSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
+                       $sformatf("Unable to read MSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
                                  mem.get_full_name(), segoff+segn-1,
                                  this.get_full_name()));
             status = UVM_NOT_OK;
@@ -675,7 +675,7 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
    this.parent.XatomicX(0);
 
 
-   `uvm_info("RegModel", $psprintf("Wrote virtual field \"%s\"[%0d] via %s with: 'h%h",
+   `uvm_info("RegModel", $sformatf("Wrote virtual field \"%s\"[%0d] via %s with: 'h%h",
                               this.get_full_name(), idx,
                               (path == UVM_FRONTDOOR) ? "frontdoor" : "backdoor",
                               value),UVM_MEDIUM); 
@@ -712,7 +712,7 @@ task uvm_vreg_field::read(input longint unsigned     idx,
    read_in_progress = 1'b1;
    mem = this.parent.get_memory();
    if (mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg_field::read() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg_field::read() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       status = UVM_NOT_OK;
       return;
@@ -773,7 +773,7 @@ task uvm_vreg_field::read(input longint unsigned     idx,
 
    this.parent.XatomicX(0);
 
-   `uvm_info("RegModel", $psprintf("Read virtual field \"%s\"[%0d] via %s: 'h%h",
+   `uvm_info("RegModel", $sformatf("Read virtual field \"%s\"[%0d] via %s: 'h%h",
                               this.get_full_name(), idx,
                               (path == UVM_FRONTDOOR) ? "frontdoor" : "backdoor",
                               value),UVM_MEDIUM);
@@ -806,7 +806,7 @@ task uvm_vreg_field::poke(input  longint unsigned  idx,
 
    mem = this.parent.get_memory();
    if (mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg_field::poke() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg_field::poke() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       status = UVM_NOT_OK;
       return;
@@ -817,7 +817,7 @@ task uvm_vreg_field::poke(input  longint unsigned  idx,
    this.parent.XatomicX(1);
 
    if (value >> this.size) begin
-      `uvm_warning("RegModel", $psprintf("Writing value 'h%h that is greater than field \"%s\" size (%0d bits)", value, this.get_full_name(), this.get_n_bits()));
+      `uvm_warning("RegModel", $sformatf("Writing value 'h%h that is greater than field \"%s\" size (%0d bits)", value, this.get_full_name(), this.get_n_bits()));
       value &= value & ((1<<this.size)-1);
    end
    tmp = 0;
@@ -838,7 +838,7 @@ task uvm_vreg_field::poke(input  longint unsigned  idx,
       mem.peek(st, segoff, tmp, "", parent, extension, fname, lineno);
       if (st != UVM_IS_OK && st != UVM_HAS_X) begin
          `uvm_error("RegModel",
-                    $psprintf("Unable to read LSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
+                    $sformatf("Unable to read LSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
                               mem.get_full_name(), segoff, this.get_full_name()));
          status = UVM_NOT_OK;
          this.parent.XatomicX(0);
@@ -856,7 +856,7 @@ task uvm_vreg_field::poke(input  longint unsigned  idx,
          mem.peek(st, segoff + segn - 1, tmp, "", parent, extension, fname, lineno);
          if (st != UVM_IS_OK && st != UVM_HAS_X) begin
             `uvm_error("RegModel",
-                       $psprintf("Unable to read MSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
+                       $sformatf("Unable to read MSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
                                  mem.get_full_name(), segoff+segn-1,
                                  this.get_full_name()));
             status = UVM_NOT_OK;
@@ -879,7 +879,7 @@ task uvm_vreg_field::poke(input  longint unsigned  idx,
 
    this.parent.XatomicX(0);
 
-   `uvm_info("RegModel", $psprintf("Wrote virtual field \"%s\"[%0d] with: 'h%h",
+   `uvm_info("RegModel", $sformatf("Wrote virtual field \"%s\"[%0d] with: 'h%h",
                               this.get_full_name(), idx, value),UVM_MEDIUM);
 
    this.fname = "";
@@ -907,7 +907,7 @@ task uvm_vreg_field::peek(input  longint unsigned  idx,
 
    mem = this.parent.get_memory();
    if (mem == null) begin
-      `uvm_error("RegModel", $psprintf("Cannot call uvm_vreg_field::peek() on unimplemented virtual register \"%s\"",
+      `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg_field::peek() on unimplemented virtual register \"%s\"",
                                      this.get_full_name()));
       status = UVM_NOT_OK;
       return;
@@ -948,7 +948,7 @@ task uvm_vreg_field::peek(input  longint unsigned  idx,
 
    this.parent.XatomicX(0);
 
-   `uvm_info("RegModel", $psprintf("Peeked virtual field \"%s\"[%0d]: 'h%h", this.get_full_name(), idx, value),UVM_MEDIUM);
+   `uvm_info("RegModel", $sformatf("Peeked virtual field \"%s\"[%0d]: 'h%h", this.get_full_name(), idx, value),UVM_MEDIUM);
 
    this.fname = "";
    this.lineno = 0;
@@ -961,8 +961,8 @@ function void uvm_vreg_field::do_print (uvm_printer printer);
 endfunction
 
 function string uvm_vreg_field::convert2string();
-   string res_str = "";
-   string t_str = "";
+   string res_str;
+   string t_str;
    bit with_debug_info = 1'b0;
    $sformat(convert2string, {"%s[%0d-%0d]"},
             this.get_name(),

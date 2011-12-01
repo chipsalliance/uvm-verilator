@@ -32,5 +32,10 @@ class packet extends uvm_transaction;
 
   constraint c { addr >= 0 && addr < 'h100; }
 
+
+  function new(string name="packet");
+     super.new(name);
+  endfunction
+
 endclass
 

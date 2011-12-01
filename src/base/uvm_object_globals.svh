@@ -377,27 +377,38 @@ typedef uvm_sequencer_arb_mode SEQ_ARB_TYPE; // backward compat
 // Defines current sequence state
 //
 // CREATED            - The sequence has been allocated.
-// PRE_BODY           - The sequence is started and the pre_body task is
+// PRE_START          - The sequence is started and the
+//                      <uvm_sequence_base::pre_start()> task is
 //                      being executed.
-// BODY               - The sequence is started and the body task is being
-//                      executed.
-// POST_BODY          - The sequence is started and the post_body task is
+// PRE_BODY           - The sequence is started and the
+//                      <uvm_sequence_base::pre_body()> task is
 //                      being executed.
-// ENDED              - The sequence has ended by the completion of the body
-//                      task.
+// BODY               - The sequence is started and the
+//                      <uvm_sequence_base::body()> task is
+//                      being executed.
+// ENDED              - The sequence has completed the execution of the 
+//                      <uvm_sequence_base::body()> task.
+// POST_BODY          - The sequence is started and the
+//                      <uvm_sequence_base::post_body()> task is
+//                      being executed.
+// POST_START         - The sequence is started and the
+//                      <uvm_sequence_base::post_start()> task is
+//                      being executed.
 // STOPPED            - The sequence has been forcibly ended by issuing a
-//                      kill() on the sequence.
+//                      <uvm_sequence_base::kill()> on the sequence.
 // FINISHED           - The sequence is completely finished executing.
 
 typedef enum
 {
   CREATED   = 1,
-  PRE_BODY  = 2,
-  BODY      = 4,
-  POST_BODY = 8,
-  ENDED     = 16,
-  STOPPED   = 32,
-  FINISHED  = 64
+  PRE_START = 2,
+  PRE_BODY  = 4,
+  BODY      = 8,
+  POST_BODY = 16,
+  POST_START= 32,
+  ENDED     = 64,
+  STOPPED   = 128,
+  FINISHED  = 256
 } uvm_sequence_state;
 
 typedef uvm_sequence_state uvm_sequence_state_enum; // backward compat

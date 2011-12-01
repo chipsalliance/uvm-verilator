@@ -34,7 +34,7 @@
 // CLASS: uvm_reg_item
 //
 // Defines an abstract register transaction item. No bus-specific information
-// is present, although a handle a <uvm_reg_map> is provided in case the user
+// is present, although a handle to a <uvm_reg_map> is provided in case a user
 // wishes to implement a custom address translation algorithm.
 //------------------------------------------------------------------------------
 
@@ -136,8 +136,8 @@ class uvm_reg_item extends uvm_sequence_item;
 
   // Variable: extension
   //
-  // Handle to optional user data, as conveyed in the call to write, read,
-  // mirror, or update call. Must derive from uvm_object. 
+  // Handle to optional user data, as conveyed in the call to
+  // write(), read(), mirror(), or update() used to trigger the operation.
   //
   rand uvm_object extension;
 
@@ -147,7 +147,7 @@ class uvm_reg_item extends uvm_sequence_item;
   // If path is UVM_BACKDOOR, this member specifies the abstraction 
   // kind for the backdoor access, e.g. "RTL" or "GATES".
   //
-  string bd_kind = "";
+  string bd_kind;
 
 
   // Variable: fname
@@ -155,7 +155,7 @@ class uvm_reg_item extends uvm_sequence_item;
   // The file name from where this transaction originated, if provided
   // at the call site.
   //
-  string fname = "";
+  string fname;
 
 
   // Variable: lineno
@@ -163,7 +163,7 @@ class uvm_reg_item extends uvm_sequence_item;
   // The file name from where this transaction originated, if provided 
   // at the call site.
   //
-  int lineno = 0;
+  int lineno;
 
 
   // Function: new
@@ -186,7 +186,7 @@ class uvm_reg_item extends uvm_sequence_item;
          " ele_kind=",element_kind.name(),
          " ele_name=",element==null?"null":element.get_full_name() };
 
-    if (value.size() > 1 && uvm_report_enabled(UVM_HIGH)) begin
+    if (value.size() > 1 && uvm_report_enabled(UVM_HIGH, UVM_INFO, "RegModel")) begin
       value_s = "'{";
       foreach (value[i])
          value_s = {value_s,$sformatf("%0h,",value[i])};
@@ -211,7 +211,9 @@ class uvm_reg_item extends uvm_sequence_item;
   //
   virtual function void do_copy(uvm_object rhs);
     uvm_reg_item rhs_;
-    assert(rhs != null);
+    if (rhs == null)
+     `uvm_fatal("REG/NULL","do_copy: rhs argument is null") 
+
     if (!$cast(rhs_,rhs)) begin
       `uvm_error("WRONG_TYPE","Provided rhs is not of type uvm_reg_item")
       return;
@@ -253,12 +255,6 @@ endclass
 //------------------------------------------------------------------------------
 
 typedef struct {
-
-  // Variable: info
-  //
-  // The bus-independent read/write information. See <uvm_reg_item>.
-
-  //uvm_reg_item info;
 
   // Variable: kind
   //

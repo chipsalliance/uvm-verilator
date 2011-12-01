@@ -41,6 +41,7 @@ task run_test (string test_name="");
 endtask
 
 
+`ifndef UVM_NO_DEPRECATED
 // Variable- uvm_test_done - DEPRECATED
 //
 // An instance of the <uvm_test_done_objection> class, this object is
@@ -88,6 +89,7 @@ function void set_global_stop_timeout(time timeout);
   tdo = uvm_test_done_objection::get();
   tdo.stop_timeout = timeout;
 endfunction
+`endif
 
 
 //----------------------------------------------------------------------------
@@ -190,13 +192,13 @@ function bit uvm_string_to_severity (string sev_str, output uvm_severity sev);
   return 1;
 endfunction
 
-function bit uvm_string_to_action (string action_str, output uvm_action action);
+ function automatic bit uvm_string_to_action (string action_str, output uvm_action action);
   string actions[$];
   uvm_split_string(action_str,"|",actions);
   uvm_string_to_action = 1;
   action = 0;
   foreach(actions[i]) begin
-    case (action_str)
+    case (actions[i])
       "UVM_NO_ACTION": action |= UVM_NO_ACTION;
       "UVM_DISPLAY":   action |= UVM_DISPLAY;
       "UVM_LOG":       action |= UVM_LOG;

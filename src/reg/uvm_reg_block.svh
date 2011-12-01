@@ -59,10 +59,10 @@ virtual class uvm_reg_block extends uvm_object;
 
    local int            has_cover;
    local int            cover_on;
-   local string         fname = "";
-   local int            lineno = 0;
+   local string         fname;
+   local int            lineno;
 
-   local static int id = 0;
+   local static int id;
 
    //----------------------
    // Group: Initialization
@@ -104,20 +104,28 @@ virtual class uvm_reg_block extends uvm_object;
    //
    // Create an address map in this block
    //
-   // Create an address map with the specified ~name~.
-   // The base address is usually 0.
-   // ~n_bytes~ specifies the number of bytes in the datapath that accesses
-   // this address map.
-   // ~endian~ specifies the endianness, should a register or sub-map with
-   // a greater number of bytes be accessed.
+   // Create an address map with the specified ~name~, then
+   // configures it with the following properties.
    //
-   //| APB = create_map("APB", 0, 1, UVM_LITTLE_ENDIAN);
+   // base_addr - the base address for the map. All registers, memories,
+   //             and sub-blocks within the map will be at offsets to this
+   //             address
+   //
+   // n_bytes   - the byte-width of the bus on which this map is used 
+   //
+   // endian    - the endian format. See <uvm_endianness_e> for possible
+   //             values
+   //
+   // byte_addressing - specifies whether consecutive addresses refer are 1 byte
+   //             apart (TRUE) or ~n_bytes~ apart (FALSE). Default is TRUE. 
+   //
+   //| APB = create_map("APB", 0, 1, UVM_LITTLE_ENDIAN, 1);
    //
    extern virtual function uvm_reg_map create_map(string name,
                                                   uvm_reg_addr_t base_addr,
                                                   int unsigned n_bytes,
                                                   uvm_endianness_e endian,
-                                                  bit byte_addressing=0);
+                                                  bit byte_addressing = 1);
 
 
    // Function: check_data_width
@@ -314,7 +322,7 @@ virtual class uvm_reg_block extends uvm_object;
                                             input uvm_hier_e hier=UVM_HIER);
 
 
-   // Function get_memories
+   // Function: get_memories
    //
    // Get the memories
    //
@@ -935,7 +943,7 @@ endclass: uvm_reg_block
 function bit uvm_reg_block::check_data_width(int unsigned width);
    if (width <= $bits(uvm_reg_data_t)) return 1;
 
-   `uvm_fatal("RegModel", $psprintf("Register model requires that UVM_REG_DATA_WIDTH be defined as %0d or greater. Currently defined as %0d", width, `UVM_REG_DATA_WIDTH))
+   `uvm_fatal("RegModel", $sformatf("Register model requires that UVM_REG_DATA_WIDTH be defined as %0d or greater. Currently defined as %0d", width, `UVM_REG_DATA_WIDTH))
 
    return 0;
 endfunction
@@ -960,8 +968,7 @@ function void uvm_reg_block::configure(uvm_reg_block parent=null, string hdl_pat
     this.parent.add_block(this);
   add_hdl_path(hdl_path);
 
-  uvm_resource_db#(uvm_reg_block)::set(get_full_name(),
-                                       "uvm_reg::*", this);
+  uvm_resource_db#(uvm_reg_block)::set("uvm_reg::*", get_full_name(), this);
 endfunction
 
 
@@ -1083,7 +1090,7 @@ function void uvm_reg_block::lock_model();
          max_size = uvm_mem::get_max_size();
 
       if (max_size > `UVM_REG_DATA_WIDTH) begin
-         `uvm_fatal("RegModel", $psprintf("Register model requires that UVM_REG_DATA_WIDTH be defined as %0d or greater. Currently defined as %0d", max_size, `UVM_REG_DATA_WIDTH))
+         `uvm_fatal("RegModel", $sformatf("Register model requires that UVM_REG_DATA_WIDTH be defined as %0d or greater. Currently defined as %0d", max_size, `UVM_REG_DATA_WIDTH))
       end
 
       Xinit_address_mapsX();
@@ -1092,7 +1099,7 @@ function void uvm_reg_block::lock_model();
 
       // Has this name has been checked before?
       if (m_roots[this] != 1) begin
-         int n = 0;
+         int n;
 
          foreach (m_roots[_blk]) begin
             uvm_reg_block blk = _blk;
@@ -1317,13 +1324,19 @@ function uvm_reg_block uvm_reg_block::get_block_by_name(string name);
 
    foreach (blks[blk_]) begin
      uvm_reg_block blk = blk_;
-     uvm_reg_block tmp_blk;
 
      if (blk.get_name() == name)
        return blk;
-     tmp_blk = blk.get_block_by_name(name);
-     if (tmp_blk != null)
-       return tmp_blk;
+   end
+
+   foreach (blks[blk_]) begin
+      uvm_reg_block blk = blk_;
+      uvm_reg_block subblks[$];
+      blk_.get_blocks(subblks, UVM_HIER);
+
+      foreach (subblks[j])
+         if (subblks[j].get_name() == name)
+            return subblks[j];
    end
 
    `uvm_warning("RegModel", {"Unable to locate block '",name,
@@ -1342,13 +1355,15 @@ function uvm_reg uvm_reg_block::get_reg_by_name(string name);
      if (rg.get_name() == name)
        return rg;
    end
-   foreach (blks[blk_]) begin
-     uvm_reg_block blk = blk_;
-     uvm_reg rg;
 
-     rg = blk.get_reg_by_name(name);
-     if (rg != null)
-       return rg;
+   foreach (blks[blk_]) begin
+      uvm_reg_block blk = blk_;
+      uvm_reg subregs[$];
+      blk_.get_registers(subregs, UVM_HIER);
+
+      foreach (subregs[j])
+         if (subregs[j].get_name() == name)
+            return subregs[j];
    end
 
    `uvm_warning("RegModel", {"Unable to locate register '",name,
@@ -1369,12 +1384,13 @@ function uvm_vreg uvm_reg_block::get_vreg_by_name(string name);
    end
 
    foreach (blks[blk_]) begin
-     uvm_reg_block blk=blk_;
-     uvm_vreg rg;
+      uvm_reg_block blk = blk_;
+      uvm_vreg subvregs[$];
+      blk_.get_virtual_registers(subvregs, UVM_HIER);
 
-     rg = blk.get_vreg_by_name(name);
-     if (rg != null)
-       return rg;
+      foreach (subvregs[j])
+         if (subvregs[j].get_name() == name)
+            return subvregs[j];
    end
 
    `uvm_warning("RegModel", {"Unable to locate virtual register '",name,
@@ -1395,11 +1411,13 @@ function uvm_mem uvm_reg_block::get_mem_by_name(string name);
    end
 
    foreach (blks[blk_]) begin
-     uvm_reg_block blk=blk_;
-     uvm_mem mem;
-     mem = blk.get_mem_by_name(name);
-     if (mem != null)
-       return mem;
+      uvm_reg_block blk = blk_;
+      uvm_mem submems[$];
+      blk_.get_memories(submems, UVM_HIER);
+
+      foreach (submems[j])
+         if (submems[j].get_name() == name)
+            return submems[j];
    end
 
    `uvm_warning("RegModel", {"Unable to locate memory '",name,
@@ -1424,11 +1442,17 @@ function uvm_reg_field uvm_reg_block::get_field_by_name(string name);
    end
 
    foreach (blks[blk_]) begin
-     uvm_reg_block blk = blk_;
-     uvm_reg_field field = blk.get_field_by_name(name);
+      uvm_reg_block blk = blk_;
+      uvm_reg subregs[$];
+      blk_.get_registers(subregs, UVM_HIER);
 
-     if (field != null)
-       return field;
+      foreach (subregs[j]) begin
+         uvm_reg_field fields[$];
+         subregs[j].get_fields(fields);
+         foreach (fields[i])
+            if (fields[i].get_name() == name)
+               return fields[i];
+      end
    end
 
    `uvm_warning("RegModel", {"Unable to locate field '",name,
@@ -1454,10 +1478,17 @@ function uvm_vreg_field uvm_reg_block::get_vfield_by_name(string name);
    end
 
    foreach (blks[blk_]) begin
-     uvm_reg_block blk = blk_;
-     uvm_vreg_field field = blk.get_vfield_by_name(name);
-     if (field != null)
-       return field;
+      uvm_reg_block blk = blk_;
+      uvm_vreg subvregs[$];
+      blk_.get_virtual_registers(subvregs, UVM_HIER);
+
+      foreach (subvregs[j]) begin
+         uvm_vreg_field fields[$];
+         subvregs[j].get_fields(fields);
+         foreach (fields[i])
+            if (fields[i].get_name() == name)
+               return fields[i];
+      end
    end
 
    `uvm_warning("RegModel", {"Unable to locate virtual field '",name,
@@ -1609,7 +1640,7 @@ task uvm_reg_block::update(output uvm_status_e  status,
    if (!needs_update()) begin
      `uvm_info("RegModel", $sformatf("%s:%0d - RegModel block %s does not need updating",
                     fname, lineno, this.get_name()), UVM_HIGH);
-
+      return;
    end
    
    `uvm_info("RegModel", $sformatf("%s:%0d - Updating model block %s with %s path",
@@ -1786,7 +1817,7 @@ function uvm_reg_map uvm_reg_block::create_map(string name,
                                                uvm_reg_addr_t base_addr,
                                                int unsigned n_bytes,
                                                uvm_endianness_e endian,
-                                               bit byte_addressing=0);
+                                               bit byte_addressing=1);
 
    uvm_reg_map  map;
 

@@ -33,7 +33,7 @@
 // Macros for implementations of UVM ports and exports
 
 /*
-`define BLOCKING_PUT_IMP(imp, TYPE, arg) \
+`define UVM_BLOCKING_PUT_IMP(imp, TYPE, arg) \
   task put (TYPE arg); \
     if (m_imp_list.size()) == 0) begin \
       uvm_report_error("Port Not Bound","Blocking put to unbound port will wait forever.", UVM_NONE);
@@ -59,7 +59,7 @@
         imp.put(arg); \
   endtask \
 
-`define NONBLOCKING_PUT_IMP(imp, TYPE, arg) \
+`define UVM_NONBLOCKING_PUT_IMP(imp, TYPE, arg) \
   function bit try_put(input TYPE arg); \
     if (bcast_mode) begin \
       if (!can_put()) \
@@ -94,12 +94,12 @@
 //-----------------------------------------------------------------------
 // TLM imp implementations
 
-`define BLOCKING_PUT_IMP(imp, TYPE, arg) \
+`define UVM_BLOCKING_PUT_IMP(imp, TYPE, arg) \
   task put (TYPE arg); \
     imp.put(arg); \
   endtask
 
-`define NONBLOCKING_PUT_IMP(imp, TYPE, arg) \
+`define UVM_NONBLOCKING_PUT_IMP(imp, TYPE, arg) \
   function bit try_put (TYPE arg); \
     return imp.try_put(arg); \
   endfunction \
@@ -107,12 +107,12 @@
     return imp.can_put(); \
   endfunction
 
-`define BLOCKING_GET_IMP(imp, TYPE, arg) \
+`define UVM_BLOCKING_GET_IMP(imp, TYPE, arg) \
   task get (output TYPE arg); \
     imp.get(arg); \
   endtask
 
-`define NONBLOCKING_GET_IMP(imp, TYPE, arg) \
+`define UVM_NONBLOCKING_GET_IMP(imp, TYPE, arg) \
   function bit try_get (output TYPE arg); \
     return imp.try_get(arg); \
   endfunction \
@@ -120,12 +120,12 @@
     return imp.can_get(); \
   endfunction
 
-`define BLOCKING_PEEK_IMP(imp, TYPE, arg) \
+`define UVM_BLOCKING_PEEK_IMP(imp, TYPE, arg) \
   task peek (output TYPE arg); \
     imp.peek(arg); \
   endtask
 
-`define NONBLOCKING_PEEK_IMP(imp, TYPE, arg) \
+`define UVM_NONBLOCKING_PEEK_IMP(imp, TYPE, arg) \
   function bit try_peek (output TYPE arg); \
     return imp.try_peek(arg); \
   endfunction \
@@ -133,43 +133,43 @@
     return imp.can_peek(); \
   endfunction
 
-`define BLOCKING_TRANSPORT_IMP(imp, REQ, RSP, req_arg, rsp_arg) \
+`define UVM_BLOCKING_TRANSPORT_IMP(imp, REQ, RSP, req_arg, rsp_arg) \
   task transport (REQ req_arg, output RSP rsp_arg); \
     imp.transport(req_arg, rsp_arg); \
   endtask
 
-`define NONBLOCKING_TRANSPORT_IMP(imp, REQ, RSP, req_arg, rsp_arg) \
+`define UVM_NONBLOCKING_TRANSPORT_IMP(imp, REQ, RSP, req_arg, rsp_arg) \
   function bit nb_transport (REQ req_arg, output RSP rsp_arg); \
     return imp.nb_transport(req_arg, rsp_arg); \
   endfunction
 
-`define PUT_IMP(imp, TYPE, arg) \
-  `BLOCKING_PUT_IMP(imp, TYPE, arg) \
-  `NONBLOCKING_PUT_IMP(imp, TYPE, arg)
+`define UVM_PUT_IMP(imp, TYPE, arg) \
+  `UVM_BLOCKING_PUT_IMP(imp, TYPE, arg) \
+  `UVM_NONBLOCKING_PUT_IMP(imp, TYPE, arg)
 
-`define GET_IMP(imp, TYPE, arg) \
-  `BLOCKING_GET_IMP(imp, TYPE, arg) \
-  `NONBLOCKING_GET_IMP(imp, TYPE, arg)
+`define UVM_GET_IMP(imp, TYPE, arg) \
+  `UVM_BLOCKING_GET_IMP(imp, TYPE, arg) \
+  `UVM_NONBLOCKING_GET_IMP(imp, TYPE, arg)
 
-`define PEEK_IMP(imp, TYPE, arg) \
-  `BLOCKING_PEEK_IMP(imp, TYPE, arg) \
-  `NONBLOCKING_PEEK_IMP(imp, TYPE, arg)
+`define UVM_PEEK_IMP(imp, TYPE, arg) \
+  `UVM_BLOCKING_PEEK_IMP(imp, TYPE, arg) \
+  `UVM_NONBLOCKING_PEEK_IMP(imp, TYPE, arg)
 
-`define BLOCKING_GET_PEEK_IMP(imp, TYPE, arg) \
-  `BLOCKING_GET_IMP(imp, TYPE, arg) \
-  `BLOCKING_PEEK_IMP(imp, TYPE, arg)
+`define UVM_BLOCKING_GET_PEEK_IMP(imp, TYPE, arg) \
+  `UVM_BLOCKING_GET_IMP(imp, TYPE, arg) \
+  `UVM_BLOCKING_PEEK_IMP(imp, TYPE, arg)
 
-`define NONBLOCKING_GET_PEEK_IMP(imp, TYPE, arg) \
-  `NONBLOCKING_GET_IMP(imp, TYPE, arg) \
-  `NONBLOCKING_PEEK_IMP(imp, TYPE, arg)
+`define UVM_NONBLOCKING_GET_PEEK_IMP(imp, TYPE, arg) \
+  `UVM_NONBLOCKING_GET_IMP(imp, TYPE, arg) \
+  `UVM_NONBLOCKING_PEEK_IMP(imp, TYPE, arg)
 
-`define GET_PEEK_IMP(imp, TYPE, arg) \
-  `BLOCKING_GET_PEEK_IMP(imp, TYPE, arg) \
-  `NONBLOCKING_GET_PEEK_IMP(imp, TYPE, arg)
+`define UVM_GET_PEEK_IMP(imp, TYPE, arg) \
+  `UVM_BLOCKING_GET_PEEK_IMP(imp, TYPE, arg) \
+  `UVM_NONBLOCKING_GET_PEEK_IMP(imp, TYPE, arg)
 
-`define TRANSPORT_IMP(imp, REQ, RSP, req_arg, rsp_arg) \
-  `BLOCKING_TRANSPORT_IMP(imp, REQ, RSP, req_arg, rsp_arg) \
-  `NONBLOCKING_TRANSPORT_IMP(imp, REQ, RSP, req_arg, rsp_arg)
+`define UVM_TRANSPORT_IMP(imp, REQ, RSP, req_arg, rsp_arg) \
+  `UVM_BLOCKING_TRANSPORT_IMP(imp, REQ, RSP, req_arg, rsp_arg) \
+  `UVM_NONBLOCKING_TRANSPORT_IMP(imp, REQ, RSP, req_arg, rsp_arg)
 
 
 

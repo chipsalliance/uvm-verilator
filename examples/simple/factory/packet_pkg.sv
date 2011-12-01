@@ -58,5 +58,10 @@ package packet_pkg;
       addr = rhs_.addr;
       data = rhs_.data;
     endfunction
+
+  function new(string name="packet");
+     super.new(name);
+  endfunction
+
   endclass
 endpackage

@@ -22,9 +22,10 @@
 `ifndef UVM_VERSION_SVH
 `define UVM_VERSION_SVH
 
-parameter string uvm_mgc_copyright = "(C) 2007-2011 Mentor Graphics Corporation";
-parameter string uvm_cdn_copyright = "(C) 2007-2011 Cadence Design Systems, Inc.";
+parameter string uvm_mgc_copyright  = "(C) 2007-2011 Mentor Graphics Corporation";
+parameter string uvm_cdn_copyright  = "(C) 2007-2011 Cadence Design Systems, Inc.";
 parameter string uvm_snps_copyright = "(C) 2006-2011 Synopsys, Inc.";
+parameter string uvm_cy_copyright   = "(C) 2011      Cypress Semiconductor Corp.";
 parameter string uvm_revision = `UVM_VERSION_STRING;
 
 function string uvm_revision_string();

@@ -39,7 +39,7 @@ class reg_sys_S extends uvm_reg_block;
     default_map = create_map("default_map", 'h0, 1, UVM_LITTLE_ENDIAN);
 
     foreach (B[i]) begin
-      B[i] = reg_block_B::type_id::create($psprintf("B[%0d]", i));
+      B[i] = reg_block_B::type_id::create($sformatf("B[%0d]", i));
       B[i].configure(this);
       B[i].build();
       default_map.add_submap(this.B[i].default_map, 'h100 + i*'h100);

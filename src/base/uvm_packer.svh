@@ -216,7 +216,7 @@ class uvm_packer;
   // <uvm_object::do_pack> and <uvm_object::do_unpack> routines, to test the
   // setting of this field if you want to use it as a filter.
 
-  bit abstract = 0;
+  bit abstract;
 
 
   // Variable: use_metadata
@@ -235,7 +235,7 @@ class uvm_packer;
   // - For queues, dynamic arrays, and associative arrays, pack 32 bits
   //   indicating the size of the array prior to to packing individual elements.
 
-  bit use_metadata = 0;
+  bit use_metadata;
 
 
   // Variable: big_endian
@@ -278,18 +278,18 @@ class uvm_packer;
 
   static bit bitstream[];   // local bits for (un)pack_bytes
   static bit fabitstream[]; // field automation bits for (un)pack_bytes
-  int count = 0;            // used to count the number of packed bits
+  int count;                // used to count the number of packed bits
   uvm_scope_stack scope= new;
 
-  bit   reverse_order = 0;  //flip the bit order around
+  bit   reverse_order;      //flip the bit order around
   byte  byte_size     = 8;  //set up bytesize for endianess
   int   word_size     = 16; //set up worksize for endianess
-  bit   nopack        = 0;  //only count packable bits
+  bit   nopack;             //only count packable bits
 
   uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
 
-  uvm_pack_bitstream_t m_bits = 0;
-  int m_packed_size  = 0;
+  uvm_pack_bitstream_t m_bits;
+  int m_packed_size;
 
   extern virtual function void unpack_object_ext  (inout uvm_object value);
 
@@ -329,7 +329,7 @@ endclass
 
 function void uvm_packer::index_error(int index, string id, int sz);
     uvm_report_error("PCKIDX", 
-        $psprintf("index %0d for get_%0s too large; valid index range is 0-%0d.",
+        $sformatf("index %0d for get_%0s too large; valid index range is 0-%0d.",
                   index,id,((m_packed_size+sz-1)/sz)-1), UVM_NONE);
 endfunction
 
@@ -340,7 +340,7 @@ endfunction
 function bit uvm_packer::enough_bits(int needed, string id);
   if ((m_packed_size - count) < needed) begin
     uvm_report_error("PCKSZ",
-        $psprintf("%0d bits needed to unpack %0s, yet only %0d available.",
+        $sformatf("%0d bits needed to unpack %0s, yet only %0d available.",
                   needed, id, (m_packed_size - count)), UVM_NONE);
     return 0;
   end
@@ -552,7 +552,7 @@ endfunction
 function void uvm_packer::pack_object(uvm_object value);
 
   if(value.__m_uvm_status_container.cycle_check.exists(value)) begin
-    uvm_report_warning("CYCFND", $psprintf("Cycle detected for object @%0d during pack", value.get_inst_id()), UVM_NONE);
+    uvm_report_warning("CYCFND", $sformatf("Cycle detected for object @%0d during pack", value.get_inst_id()), UVM_NONE);
     return;
   end
   value.__m_uvm_status_container.cycle_check[value] = 1;
@@ -662,7 +662,7 @@ function void uvm_packer::unpack_object(uvm_object value);
   byte is_non_null; is_non_null = 1;
 
   if(value.__m_uvm_status_container.cycle_check.exists(value)) begin
-    uvm_report_warning("CYCFND", $psprintf("Cycle detected for object @%0d during unpack", value.get_inst_id()), UVM_NONE);
+    uvm_report_warning("CYCFND", $sformatf("Cycle detected for object @%0d during unpack", value.get_inst_id()), UVM_NONE);
     return;
   end
   value.__m_uvm_status_container.cycle_check[value] = 1;

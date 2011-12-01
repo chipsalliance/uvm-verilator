@@ -21,7 +21,7 @@
 //----------------------------------------------------------------------
 
 `include "tlm1/uvm_tlm_ifs.svh"
-`include "tlm1/sqr_ifs.svh"
+`include "tlm1/uvm_sqr_ifs.svh"
 `include "base/uvm_port_base.svh"
 
 `include "tlm1/uvm_tlm_imps.svh"
@@ -35,5 +35,5 @@
 `include "tlm1/uvm_tlm_fifos.svh"
 `include "tlm1/uvm_tlm_req_rsp.svh"
 
-`include "tlm1/sqr_connections.svh"
+`include "tlm1/uvm_sqr_connections.svh"
 

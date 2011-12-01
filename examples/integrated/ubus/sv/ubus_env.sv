@@ -77,10 +77,12 @@ class ubus_env extends uvm_env;
     for(int i = 0; i < num_masters; i++) begin
       $sformat(inst_name, "masters[%0d]", i);
       masters[i] = ubus_master_agent::type_id::create(inst_name, this);
-      void'(uvm_config_db#(int)::set(this,{inst_name,"*"}, 
+      void'(uvm_config_db#(int)::set(this,{inst_name,".monitor"}, 
+				 "master_id", i));
+      void'(uvm_config_db#(int)::set(this,{inst_name,".driver"}, 
 				 "master_id", i));
     end
-    
+
     void'(uvm_config_db#(int)::get(this, "", "num_slaves", num_slaves));
     
     slaves = new[num_slaves];

@@ -123,7 +123,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_object.Copying" >Copying</a></td><td class=SDescription></td></tr>
   <!-- index=26 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_object.copy" id=link29 onMouseOver="ShowTip(event, 'tt23', 'link29')" onMouseOut="HideTip('tt23')">copy</a></td><td class=SDescription>The copy method returns a deep copy of this object.</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_object.copy" id=link29 onMouseOver="ShowTip(event, 'tt23', 'link29')" onMouseOut="HideTip('tt23')">copy</a></td><td class=SDescription>The copy makes this object a copy of the specified object.</td></tr>
   <!-- index=27 -->
 
 <tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_object.do_copy" id=link30 onMouseOver="ShowTip(event, 'tt24', 'link30')" onMouseOut="HideTip('tt24')">do_copy</a></td><td class=SDescription>The do_copy method is the user-definable hook called by the copy method. </td></tr>
@@ -436,7 +436,7 @@ class obj extends base;
   obj2 child = new;
   virtual function string convert2string();
      convert2string = {super.convert2string(),
-       $psprintf(&quot; write=%0d addr=%8h data=%8h &quot;,write,addr,data),
+       $sformatf(&quot; write=%0d addr=%8h data=%8h &quot;,write,addr,data),
        child.convert2string()};
   endfunction
 endclass</pre></blockquote><h4 class=CHeading>Then, to display an object, you could write</h4><blockquote><pre>obj o = new;
@@ -503,7 +503,7 @@ uvm_report_info(&quot;BusMaster&quot;,{&quot;Sending:\n &quot;,o.convert2string(
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>The copy method returns a deep copy of this object.</p><p>The copy method is not virtual and should not be overloaded in derived classes.&nbsp; To copy the fields of a derived class, that class should override the <a href="#uvm_object.do_copy" class=LMethod id=link95 onMouseOver="ShowTip(event, 'tt24', 'link95')" onMouseOut="HideTip('tt24')">do_copy</a> method.</p></div></div></div>
+<div class=CBody><p>The copy makes this object a copy of the specified object.</p><p>The copy method is not virtual and should not be overloaded in derived classes.&nbsp; To copy the fields of a derived class, that class should override the <a href="#uvm_object.do_copy" class=LMethod id=link95 onMouseOver="ShowTip(event, 'tt24', 'link95')" onMouseOut="HideTip('tt24')">do_copy</a> method.</p></div></div></div>
 
 
 
@@ -1008,7 +1008,7 @@ The do_record method is the user-definable hook called by the record method. </d
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The copy method returns a deep copy of this object.</div></div><div class=CToolTip id="tt24"><div class=CMethod>
+The copy makes this object a copy of the specified object.</div></div><div class=CToolTip id="tt24"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void do_copy (</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
@@ -1265,7 +1265,7 @@ The uvm_sequence class provides the interfaces necessary in order to create stre
   </td></tr></table></blockquote>The uvm_comparer class provides a policy object for doing comparisons. </div></div><div class=CToolTip id="tt51"><div class=CVariable>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_packer uvm_default_packer = new()
   </td></tr></table></blockquote>The default packer policy. </div></div><div class=CToolTip id="tt52"><div class=CClass>The uvm_packer class provides a policy object for packing and unpacking uvm_objects. </div></div><div class=CToolTip id="tt53"><div class=CVariable>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>bit use_metadata = 0
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>bit use_metadata
   </td></tr></table></blockquote>This flag indicates whether to encode metadata when packing dynamic data, or to decode metadata when unpacking. </div></div><div class=CToolTip id="tt54"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>

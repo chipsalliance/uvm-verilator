@@ -33,7 +33,10 @@ use File::Path;
 use File::Copy;
 use Data::Dumper;
 use File::stat;
-
+# Tar module may not be available
+if (eval {require Archive::Tar; 1;}) {
+  $Tar_Pm = 1;
+}
 
 my @all_files=();
 my %content=();
@@ -42,12 +45,13 @@ local $opt_help;
 local $opt_backup;
 local $opt_write;
 local $opt_all_text_files;
+local $opt_tar_exec="tar";
 
 # regexp to match sv files (can be overriden using --sv_ext)
 local $opt_sv_ext="\.(s?vh?|inc)\$";
 
 # regexp of mime types for files considered for a change with the --all option
-local $text_file_mime_regexp="(text\/|application\/x-shellscript)";
+local $text_file_mime_regexp="(text\/|application\/x-shellscript|regular file)";
 
 # ignore pattern
 local $file_ignore_pattern="(/(.hg|.git|INCA_libs|.daidir|.vdb|simv|csrc|DVEfiles)\/|[#~]\$|\.(zip|gz|bz2|orig|diff|patch)\$)";
@@ -60,7 +64,8 @@ my @Options=(
 	  ["write","really write the changed files back to disk (by default it runs in dry mode)"],
 	  ["marker=s", "use the marker supplied instead of the default marker [$opt_marker]"],
 	  ["sv_ext=s","a regexp matching all sv files default:[$opt_sv_ext]"],
-	  ["all_text_files","apply the simple \"o2u\" transformation to all files where the MIME-type of matches [$text_file_mime_regexp]"]
+	  ["all_text_files","apply the simple \"o2u\" transformation to all files where the MIME-type of matches [$text_file_mime_regexp]"],
+	  ["tar_exec=s","the script assume a gtar compatible tar, if your gtar compatible tar is not avail point to it via --tar_exec"]
 	  );	  
  
 
@@ -78,6 +83,7 @@ NoteMessage("$DUMMY");
 NoteMessage("$VerID");
 
 NoteMessage("traversing directory [$opt_top_dir] to find files");
+NoteMessage("-*- this script requires a gtar compatible tar to make backups -*-");
 
 search_all_relevant_files($opt_top_dir);
 
@@ -136,9 +142,15 @@ sub write_back_files {
     if($opt_backup) {
 	NoteMessage("making backup of current files before writing back in [ovm2uvm_back_$$.tar.gz]");
 
-        my($fh,$fname) = tempfile();
-	print $fh join("\n",keys(%content));
-	system "tar cz --files-from $fname --file ovm2uvm_back_$$.tar.gz";
+	if ($Tar_Pm) {
+	  my $tar=Archive::Tar->new;
+	  $tar->add_files(keys(%content));
+	  $tar->write("ovm2uvm_back_$$.tar.gz",COMPRESS_GZIP);
+	} else {
+	  my($fh,$fname) = tempfile();
+	  print $fh join("\n",keys(%content));
+	  system "$opt_tar_exec cf - -T $fname | gzip -9v > ovm2uvm_back_$$.tar.gz";
+	}
     }
 
     if($opt_write) {
@@ -209,12 +221,19 @@ sub replace_trivial{
     $t =~ s/include\s+\"ovm_(?!macros).*?\.svh\".*/$& \/\/ $opt_marker FIXME include of ovm file other than ovm_macros.svh detected, you should move to an import based methodology/g;
 
     # FIX  `message(sev,(...)) -> uvm_info("FIXME","...",sev)
-    $t =~ s|(?s)\`message\(([^,]+),\s*\(\s*\$psprintf\((.*?)\)\s*\)\s*\)|\`uvm_info("FIXME",\$psprintf($2),$1)|g;
-    $t =~ s|(?s)\`message\(([^,]+),\s*\((.*?)\)\s*\)|\`uvm_info("FIXME",\$psprintf($2),$1)|g;
-    $t =~ s|(?s)\`message\(([^,]+),\s*(.*?)\)|\`uvm_info("FIXME",\$psprintf($2),$1)|g;
+    $t =~ s|(?s)\`message\(([^,]+),\s*\(\s*\$psprintf\((.*?)\)\s*\)\s*\)|\`uvm_info("FIXME",\$sformatf($2),$1)|g;
+    $t =~ s|(?s)\`message\(([^,]+),\s*\(\s*\$sformatf\((.*?)\)\s*\)\s*\)|\`uvm_info("FIXME",\$sformatf($2),$1)|g;
+    $t =~ s|(?s)\`message\(([^,]+),\s*\((.*?)\)\s*\)|\`uvm_info("FIXME",\$sformatf($2),$1)|g;
+    $t =~ s|(?s)\`message\(([^,]+),\s*(.*?)\)|\`uvm_info("FIXME",\$sformatf($2),$1)|g;
 
     # FIX ovm_factory::print() -> factory.print
     $t =~ s/ovm_factory::print\(\)/factory.print()/g;
+
+    # FIX ovm_factory:: set_type_override  -> factory. set_type_override_by_name ()
+    $t =~ s/ovm_factory::set_type_override_by_name/factory.set_type_override_by_name/g;
+    $t =~ s/ovm_factory::set_type_override_by_type/factory.set_type_override_by_type/g;
+    $t =~ s/ovm_factory::set_type_override\(/factory.set_type_override_by_name(/g;
+      
 
     # FIX `dut_error(MSG) -> uvm_error
     $t =~ s/(?s)\`dut_error\(\((.*?)\)\s*\)/\`uvm_error(\"DUT\",\$psprintf($1))/g;

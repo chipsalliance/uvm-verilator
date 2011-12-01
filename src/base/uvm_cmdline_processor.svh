@@ -335,7 +335,7 @@ class uvm_cmdline_processor extends uvm_report_object;
     // change this value.  If set to 'NO' and the user code tries to change the global timeout value, an
     // warning message will be generated.
     //
-    //| <sim command> +uvm_timeout=200000,NO
+    //| <sim command> +UVM_TIMEOUT=200000,NO
     //
 
     // The implementation of this is in uvm_root.
@@ -343,11 +343,11 @@ class uvm_cmdline_processor extends uvm_report_object;
     // Variable: +UVM_MAX_QUIT_COUNT
     //
     // ~+UVM_MAX_QUIT_COUNT=<count>,<overridable>~ allows users to change max quit count for the report
-    // server.  The <overridable> argument ('0' or '1') specifies whether user code can subsequently
-    // change this value.  If set to '0' and the user code tries to change the max quit count value, an
+    // server.  The <overridable> argument ('YES' or 'NO') specifies whether user code can subsequently
+    // change this value.  If set to 'NO' and the user code tries to change the max quit count value, an
     // warning message will be generated.
     //
-    //| <sim command> +UVM_MAX_QUIT_COUNT=5,0
+    //| <sim command> +UVM_MAX_QUIT_COUNT=5,NO
     //
 
 
@@ -360,6 +360,16 @@ class uvm_cmdline_processor extends uvm_report_object;
     //
     // ~+UVM_OBJECTION_TRACE~ turns on tracing of objection activity.  Users simply need to put the
     // argument on the command line.
+
+    // Variable: +UVM_RESOURCE_DB_TRACE
+    //
+    // ~+UVM_RESOURCE_DB_TRACE~ turns on tracing of resource DB access.
+    // Users simply need to put the argument on the command line.
+
+    // Variable: +UVM_CONFIG_DB_TRACE
+    //
+    // ~+UVM_CONFIG_DB_TRACE~ turns on tracing of configuration DB access.
+    // Users simply need to put the argument on the command line.
 
     // Variable: +uvm_set_inst_override, +uvm_set_type_override
     //

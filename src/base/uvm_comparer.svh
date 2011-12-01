@@ -369,15 +369,15 @@ class uvm_comparer;
 
         case (sev)
           UVM_WARNING: begin 
-                     uvm_report_warning("MISCMP", $psprintf("%s%s@%0d vs. %s@%0d", msg,
+                     uvm_report_warning("MISCMP", $sformatf("%s%s@%0d vs. %s@%0d", msg,
                         lhs.get_name(), lhs.get_inst_id(), rhs.get_name(), rhs.get_inst_id()), UVM_NONE);
                    end
           UVM_ERROR: begin 
-                     uvm_report_error("MISCMP", $psprintf("%s%s@%0d vs. %s@%0d", msg,
+                     uvm_report_error("MISCMP", $sformatf("%s%s@%0d vs. %s@%0d", msg,
                         lhs.get_name(), lhs.get_inst_id(), rhs.get_name(), rhs.get_inst_id()), UVM_NONE);
                    end
           default: begin 
-                     uvm_report_info("MISCMP", $psprintf("%s%s@%0d vs. %s@%0d", msg,
+                     uvm_report_info("MISCMP", $sformatf("%s%s@%0d vs. %s@%0d", msg,
                         lhs.get_name(), lhs.get_inst_id(), rhs.get_name(), rhs.get_inst_id()), UVM_LOW);
                    end
         endcase
@@ -393,7 +393,7 @@ class uvm_comparer;
     result++;
     if(result <= show_max) begin
       uvm_report_info("MISCMP", 
-        $psprintf("Miscompare for %0s: lhs = @%0d : rhs = @%0d", 
+        $sformatf("Miscompare for %0s: lhs = @%0d : rhs = @%0d", 
         uvm_object::__m_uvm_status_container.scope.get(), (lhs!=null ? lhs.get_inst_id() : 0), (rhs != null ? rhs.get_inst_id() : 0)), verbosity);
     end
     $swrite(miscompares, "%s%s: lhs = @%0d : rhs = @%0d",
@@ -410,7 +410,7 @@ class uvm_comparer;
   endfunction
 
  
-  int depth                = 0;   //current depth of objects
+  int depth;                      //current depth of objects
   uvm_copy_map compare_map = new; //mapping of rhs to lhs objects
   uvm_scope_stack scope    = new;
 

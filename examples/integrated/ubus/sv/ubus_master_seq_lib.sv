@@ -40,7 +40,7 @@ virtual class ubus_base_sequence extends uvm_sequence #(ubus_transfer);
   virtual task pre_body();
     if (starting_phase!=null) begin
        `uvm_info(get_type_name(),
-		 $psprintf("%s pre_body() raising %s objection", 
+		 $sformatf("%s pre_body() raising %s objection", 
 			   get_sequence_path(),
 			   starting_phase.get_name()), UVM_MEDIUM);
        starting_phase.raise_objection(this);
@@ -52,7 +52,7 @@ virtual class ubus_base_sequence extends uvm_sequence #(ubus_transfer);
   virtual task post_body();
     if (starting_phase!=null) begin
        `uvm_info(get_type_name(),
-		 $psprintf("%s post_body() dropping %s objection", 
+		 $sformatf("%s post_body() dropping %s objection", 
 			   get_sequence_path(),
 			   starting_phase.get_name()), UVM_MEDIUM);
     starting_phase.drop_objection(this);
@@ -88,7 +88,7 @@ class read_byte_seq extends ubus_base_sequence;
         req.transmit_delay == transmit_del; } )
     get_response(rsp);
     `uvm_info(get_type_name(),
-      $psprintf("%s read : addr = `x%0h, data[0] = `x%0h",
+      $sformatf("%s read : addr = `x%0h, data[0] = `x%0h",
       get_sequence_path(), rsp.addr, rsp.data[0]), 
       UVM_HIGH);
   endtask
@@ -123,7 +123,7 @@ class read_half_word_seq extends ubus_base_sequence;
         req.transmit_delay == transmit_del; } )
     get_response(rsp);
     `uvm_info(get_type_name(),
-      $psprintf("%s read : addr = `x%0h, data[0] = `x%0h, data[1] = `x%0h", 
+      $sformatf("%s read : addr = `x%0h, data[0] = `x%0h, data[1] = `x%0h", 
       get_sequence_path(), rsp.addr, rsp.data[0], rsp.data[1]), UVM_HIGH);
   endtask
 
@@ -157,7 +157,7 @@ class read_word_seq extends ubus_base_sequence;
         req.transmit_delay == transmit_del; } )
     get_response(rsp);
     `uvm_info(get_type_name(),
-      $psprintf("%s read : addr = `x%0h, data[0] = `x%0h, \
+      $sformatf("%s read : addr = `x%0h, data[0] = `x%0h, \
       data[1] = `x%0h, data[2] = `x%0h, data[3] = `x%0h",
       get_sequence_path(), rsp.addr, rsp.data[0], rsp.data[1], 
       rsp.data[2], rsp.data[3]), UVM_HIGH);
@@ -193,7 +193,7 @@ class read_double_word_seq extends ubus_base_sequence;
         req.transmit_delay == transmit_del; } )
     get_response(rsp);
     `uvm_info(get_type_name(),
-      $psprintf("%s read : addr = `x%0h, data[0] = `x%0h, \
+      $sformatf("%s read : addr = `x%0h, data[0] = `x%0h, \
       data[1] = `x%0h, data[2] = `x%0h, data[3] = `x%0h, data[4] = `x%0h, \
       data[5] = `x%0h, data[6] = `x%0h, data[7] = `x%0h",
       get_sequence_path(), rsp.addr, rsp.data[0], rsp.data[1], rsp.data[2],
@@ -232,7 +232,7 @@ class write_byte_seq extends ubus_base_sequence;
         req.error_pos == 1000;
         req.transmit_delay == transmit_del; } )
     `uvm_info(get_type_name(),
-      $psprintf("%s wrote : addr = `x%0h, data[0] = `x%0h",
+      $sformatf("%s wrote : addr = `x%0h, data[0] = `x%0h",
       get_sequence_path(), req.addr, req.data[0]),
       UVM_HIGH);
   endtask
@@ -269,7 +269,7 @@ class write_half_word_seq extends ubus_base_sequence;
         req.error_pos == 1000; 
         req.transmit_delay == transmit_del; } )
     `uvm_info(get_type_name(),
-      $psprintf("%s wrote : addr = `x%0h, data[0] = `x%0h, data[1] = `x%0h",
+      $sformatf("%s wrote : addr = `x%0h, data[0] = `x%0h, data[1] = `x%0h",
       get_sequence_path(), req.addr, req.data[0], req.data[1]), UVM_HIGH);
   endtask
 
@@ -306,7 +306,7 @@ class write_word_seq extends ubus_base_sequence;
         req.error_pos == 1000;
         req.transmit_delay == transmit_del; } )
     `uvm_info(get_type_name(),
-      $psprintf("%s wrote : addr = `x%0h, data[0] = `x%0h, \
+      $sformatf("%s wrote : addr = `x%0h, data[0] = `x%0h, \
       data[1] = `x%0h, data[2] = `x%0h, data[3] = `x%0h", 
       get_sequence_path(), req.addr, req.data[0],
       req.data[1], req.data[2], req.data[3]),
@@ -350,7 +350,7 @@ class write_double_word_seq extends ubus_base_sequence;
         req.error_pos == 1000;
         req.transmit_delay == transmit_del; } )
     `uvm_info(get_type_name(),
-      $psprintf("Writing  %s : addr = `x%0h, data[0] = `x%0h, \
+      $sformatf("Writing  %s : addr = `x%0h, data[0] = `x%0h, \
       data[1] = `x%0h, data[2] = `x%0h, data[3] = `x%0h, data[4] = `x%0h, \
       data[5] = `x%0h, data[6] = `x%0h, data[7] = `x%0h",
       get_sequence_path(), req.addr, req.data[0], req.data[1], req.data[2], 

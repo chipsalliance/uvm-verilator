@@ -27,11 +27,11 @@
 package uvm_pkg;
 
   `include "dpi/uvm_dpi.svh"
-  `include "base/base.svh"
+  `include "base/uvm_base.svh"
   `include "tlm1/uvm_tlm.svh"
-  `include "comps/comps.svh"
-  `include "seq/seq.svh"
-  `include "tlm2/tlm2.svh"
+  `include "comps/uvm_comps.svh"
+  `include "seq/uvm_seq.svh"
+  `include "tlm2/uvm_tlm2.svh"
   `include "reg/uvm_reg_model.svh"
 
 endpackage

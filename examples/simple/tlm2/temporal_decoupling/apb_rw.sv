@@ -24,6 +24,7 @@
 package apb_pkg;
 
 import uvm_pkg::*;
+`include "uvm_macros.svh"
 
 class apb_rw extends uvm_sequence_item;
   

@@ -107,7 +107,21 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=3 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_do" href="../../../../src/macros/uvm_sequence_defines.svh">`uvm_do</a></h3><div class=CBody><blockquote><pre>`uvm_do(SEQ_OR_ITEM)</pre></blockquote><p>This macro takes as an argument a uvm_sequence_item variable or object. uvm_sequence_item&rsquo;s are randomized <i>at the time</i> the sequencer grants the do request.&nbsp; This is called late-randomization or late-generation.&nbsp; In the case of a sequence a sub-sequence is spawned.&nbsp; In the case of an item, the item is sent to the driver through the associated sequencer.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_do" href="../../../../src/macros/uvm_sequence_defines.svh">`uvm_do</a></h3><div class=CBody><blockquote><pre>`uvm_do(SEQ_OR_ITEM)</pre></blockquote><p>This macro takes as an argument a uvm_sequence_item variable or object.&nbsp; The argument is created using <a href="#`uvm_create" class=LMacro >`uvm_create</a> if necessary, then randomized.&nbsp; In the case of an item, it is randomized after the call to <a href="../seq/uvm_sequence_base-svh.html#uvm_sequence_base.start_item" class=LMethod id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">uvm_sequence_base::start_item()</a> returns.&nbsp; This is called late-randomization.&nbsp; In the case of a sequence, the sub-sequence is started using <a href="../seq/uvm_sequence_base-svh.html#uvm_sequence_base.start" class=LMethod id=link4 onMouseOver="ShowTip(event, 'tt1', 'link4')" onMouseOut="HideTip('tt1')">uvm_sequence_base::start()</a> with <i>call_pre_post</i> set to 0.&nbsp; In the case of an item, the item is sent to the driver through the associated sequencer.</p><p>For a sequence item, the following are called, in order</p><blockquote><pre>`uvm_create(item)
+sequencer.wait_for_grant(prior) (task)
+this.pre_do(1)                  (task)
+item.randomize()
+this.mid_do(item)               (func)
+sequencer.send_request(item)    (func)
+sequencer.wait_for_item_done()  (task)
+this.post_do(item)              (func)</pre></blockquote><p>For a sequence, the following are called, in order</p><blockquote><pre>`uvm_create(sub_seq)
+sub_seq.randomize()
+sub_seq.pre_start()         (task)
+this.pre_do(0)              (task)
+this.mid_do(sub_seq)        (func)
+sub_seq.body()              (task)
+this.post_do(sub_seq)       (func)
+sub_seq.post_start()        (task)</pre></blockquote></div></div></div>
 
 
 
@@ -242,10 +256,10 @@ endclass</pre></blockquote></div></div></div>
       <td class=PParameter nowrap>parent_sequence</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PType nowrap>integer&nbsp;</td>
+</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>this_priority</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
-      <td class=PDefaultValue width=100%> 100,</td>
+      <td class=PDefaultValue width=100%> -1,</td>
 </tr><tr><td></td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>call_pre_post</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
@@ -261,7 +275,25 @@ Executes this sequence, returning when the sequence has completed.</div></div><d
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Sets the default sequencer for the sequence to sequencer. </div></div><!--END_ND_TOOLTIPS-->
+Sets the default sequencer for the sequence to sequencer. </div></div><div class=CToolTip id="tt3"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>virtual task start_item (</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
+      <td class=PParameter nowrap>item,</td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap>set_priority</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> -1,</td>
+</tr><tr><td></td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      <td class=PParameter nowrap>sequencer</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%>null</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+<i>start_item</i> and finish_item together will initiate operation of a sequence item. </div></div><!--END_ND_TOOLTIPS-->
 
 <script language=JavaScript><!--
 if (browserType) {if (browserVer) {document.write("</div>"); }document.write("</div>");}// --></script></body></html>

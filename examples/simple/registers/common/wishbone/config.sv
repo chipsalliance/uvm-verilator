@@ -53,4 +53,9 @@ class wb_cfg extends uvm_object;
       m_cycles      == CLASSIC;
    }
 
+
+  function new(string name="wb_cfg");
+     super.new(name);
+  endfunction
+
 endclass: wb_cfg

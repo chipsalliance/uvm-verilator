@@ -60,7 +60,7 @@ class bus_tr extends uvm_transaction;
   rand int addr;
   rand int data;
   virtual function string convert2string();
-    convert2string = $psprintf("addr=%0h data=%0h",addr,data);
+    convert2string = $sformatf("addr=%0h data=%0h",addr,data);
   endfunction
 endclass
 

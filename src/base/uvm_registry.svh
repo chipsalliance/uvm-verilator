@@ -26,6 +26,8 @@
 //------------------------------------------------------------------------------
 // Title: Factory Component and Object Wrappers
 //
+// Topic: Intro
+//
 // This section defines the proxy component and object classes used by the
 // factory. To avoid the overhead of creating an instance of every component
 // and object that get registered, the factory holds lightweight wrappers,
@@ -190,9 +192,14 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
 
   virtual function uvm_object create_object(string name="");
     T obj;
+`ifdef UVM_OBJECT_MUST_HAVE_CONSTRUCTOR
+    if (name=="") obj = new();
+    else obj = new(name);
+`else
     obj = new();
     if (name!="")
       obj.set_name(name);
+`endif
     return obj;
   endfunction
 

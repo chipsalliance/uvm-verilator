@@ -94,7 +94,7 @@ virtual class uvm_reg_cbs extends uvm_callback;
 
    // Task: post_write
    //
-   // Called after user-defined backdoor register write.
+   // Called after a write operation.
    //
    // All registered ~post_write~ callback methods are invoked before the
    // invocation of the ~post_write~ method of the associated object (<uvm_reg>,
@@ -399,7 +399,7 @@ class uvm_reg_read_only_cbs extends uvm_reg_cbs;
       rw.status = UVM_NOT_OK;
    endtask
 
-   local static uvm_reg_read_only_cbs m_me = null;
+   local static uvm_reg_read_only_cbs m_me;
    local static function uvm_reg_read_only_cbs get();
       if (m_me == null) m_me = new;
       return m_me;
@@ -484,7 +484,7 @@ class uvm_reg_write_only_cbs extends uvm_reg_cbs;
       rw.status = UVM_NOT_OK;
    endtask
 
-   local static uvm_reg_write_only_cbs m_me = null;
+   local static uvm_reg_write_only_cbs m_me;
    local static function uvm_reg_write_only_cbs get();
       if (m_me == null) m_me = new;
       return m_me;

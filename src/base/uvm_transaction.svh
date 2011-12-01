@@ -32,9 +32,90 @@ typedef class uvm_component;
 // Inheriting all the methods of uvm_object, uvm_transaction adds a timing and
 // recording interface.
 //
-// Use of the class ~uvm_transaction~ as a base for user-defined transactions
+// This class provides timestamp properties, notification events, and transaction
+// recording support. 
+//
+// Use of this class as a base for user-defined transactions
 // is deprecated. Its subtype, <uvm_sequence_item>, shall be used as the
 // base class for all user-defined transaction types. 
+// 
+// The intended use of this API is via a <uvm_driver> to call <uvm_component::accept_tr>,
+// <uvm_component::begin_tr>, and <uvm_component::end_tr> during the course of
+// sequence item execution. These methods in the component base class will
+// call into the corresponding methods in this class to set the corresponding
+// timestamps (accept_time, begin_time, and end_tr), trigger the
+// corresponding event (<begin_event> and <end_event>, and, if enabled,
+// record the transaction contents to a vendor-specific transaction database.
+//
+// Note that start_item/finish_item (or `uvm_do* macro) executed from a
+// <uvm_sequence #(REQ,RSP)> will automatically trigger
+// the begin_event and end_events via calls to begin_tr and end_tr. While
+// convenient, it is generally the responsibility of drivers to mark a
+// transaction's progress during execution.  To allow the driver to control
+// sequence item timestamps, events, and recording, you must add
+// +define+UVM_DISABLE_AUTO_ITEM_RECORDING when compiling the UVM package. 
+// Alternatively, users may use the transaction's event pool, <events>,
+// to define custom events for the driver to trigger and the sequences to wait on. Any
+// in-between events such as marking the begining of the address and data
+// phases of transaction execution could be implemented via the
+// <events> pool.
+// 
+// In pipelined protocols, the driver may release a sequence (return from
+// finish_item() or it's `uvm_do macro) before the item has been completed.
+// If the driver uses the begin_tr/end_tr API in uvm_component, the sequence can
+// wait on the item's <end_event> to block until the item was fully executed,
+// as in the following example.
+//
+//| task uvm_execute(item, ...);
+//|     // can use the `uvm_do macros as well
+//|     start_item(item);
+//|     item.randomize();
+//|     finish_item(item);
+//|     item.end_event.wait_on();
+//|     // get_response(rsp, item.get_transaction_id()); //if needed
+//| endtask
+//|
+//
+// A simple two-stage pipeline driver that can execute address and
+// data phases concurrently might be implemented as follows: 
+//
+//| task run();
+//|     // this driver supports a two-deep pipeline
+//|     fork
+//|       do_item();
+//|       do_item();
+//|     join
+//| endtask
+//| 
+//| 
+//| task do_item();
+//|     
+//|   forever begin
+//|     mbus_item req;
+//|
+//|     lock.get();
+//|
+//|     seq_item_port.get(req); // Completes the sequencer-driver handshake
+//|
+//|     accept_tr(req);
+//|
+//|       // request bus, wait for grant, etc.
+//| 
+//|     begin_tr(req);
+//|
+//|       // execute address phase
+//|
+//|     // allows next transaction to begin address phase
+//|     lock.put();
+//| 
+//|       // execute data phase
+//|       // (may trigger custom "data_phase" event here)
+//| 
+//|     end_tr(req);
+//| 
+//|   end
+//| 
+//| endtask: do_item
 //
 //------------------------------------------------------------------------------
     
@@ -50,11 +131,16 @@ virtual class uvm_transaction extends uvm_object;
 
   // Function: accept_tr
   //
-  // Calling ~accept_tr~ indicates that the transaction has been accepted for
-  // processing by a consumer component, such as an uvm_driver. With some
-  // protocols, the transaction may not be started immediately after it is
-  // accepted. For example, a bus driver may have to wait for a bus grant
-  // before starting the transaction.
+  // Calling ~accept_tr~ indicates that the transaction item has been received by
+  // a consumer component. Typically a <uvm_driver> would call <uvm_component::accept_tr>,
+  // which calls this method-- upon return from a get_next_item(), get(), or peek()
+  // call on its sequencer port, <uvm_driver::seq_item_port>.
+  //
+  // With some
+  // protocols, the received item may not be started immediately after it is
+  // accepted. For example, a bus driver, having accepted a request transaction,
+  // may still have to wait for a bus grant before begining to execute
+  // the request.
   //
   // This function performs the following actions:
   //
@@ -84,7 +170,15 @@ virtual class uvm_transaction extends uvm_object;
   //
   // This function indicates that the transaction has been started and is not
   // the child of another transaction. Generally, a consumer component begins
-  // execution of the transactions it receives. 
+  // execution of a transactions it receives. 
+  //
+  // Typically a <uvm_driver> would call <uvm_component::begin_tr>, which
+  // calls this method, before actual execution of a sequence item transaction.
+  // Sequence items received by a driver are always a child of a parent sequence.
+  // In this case, begin_tr obtains the parent handle and delegates to <begin_child_tr>.
+  //
+  // See <accept_tr> for more information on how the
+  // begin-time might differ from when the transaction item was received.
   //
   // This function performs the following actions:
   //
@@ -111,8 +205,9 @@ virtual class uvm_transaction extends uvm_object;
   // Function: begin_child_tr
   //
   // This function indicates that the transaction has been started as a child of
-  // a parent transaction given by parent_handle. Generally, a consumer
-  // component begins execution of the transactions it receives.
+  // a parent transaction given by ~parent_handle~. Generally, a consumer
+  // component calls this method via <uvm_component::begin_child_tr> to indicate
+  // the actual start of execution of this transaction.
   //
   // The parent handle is obtained by a previous call to begin_tr or
   // begin_child_tr. If the parent_handle is invalid (=0), then this function
@@ -157,6 +252,14 @@ virtual class uvm_transaction extends uvm_object;
   // This function indicates that the transaction execution has ended.
   // Generally, a consumer component ends execution of the transactions it
   // receives. 
+  //
+  // You must have previously called <begin_tr> or <begin_child_tr> for this
+  // call to be successful.
+  //
+  // Typically a <uvm_driver> would call <uvm_component::end_tr>, which
+  // calls this method, upon completion of a sequence item transaction.
+  // Sequence items received by a driver are always a child of a parent sequence.
+  // In this case, begin_tr obtain the parent handle and delegate to <begin_child_tr>.
   //
   // This function performs the following actions:
   //
@@ -303,22 +406,43 @@ virtual class uvm_transaction extends uvm_object;
        
   // Variable: events
   //
-  // The event pool instance for this transaction.
+  // The event pool instance for this transaction. This pool is used to track
+  // various The <begin_event>
 
   const uvm_event_pool events = new;
 
+
   // Variable: begin_event
   //
-  // The event that is triggered when transaction recording for this transaction
-  // begins.
-
+  // A <uvm_event> that is triggered when this transaction's actual execution on the
+  // bus begins, typically as a result of a driver calling <uvm_component::begin_tr>. 
+  // Processes that wait on this event will block until the transaction has
+  // begun. 
+  //
+  // For more information, see the general discussion for <uvm_transaction>.
+  // See <uvm_event> for details on the event API.
+  //
   uvm_event begin_event;
 
   // Variable: end_event
   //
-  // The event that is triggered when transaction recording for this transaction
-  // ends.
-  
+  // A <uvm_event> that is triggered when this transaction's actual execution on
+  // the bus ends, typically as a result of a driver calling <uvm_component::end_tr>. 
+  // Processes that wait on this event will block until the transaction has
+  // ended. 
+  //
+  // For more information, see the general discussion for <uvm_transaction>.
+  // See <uvm_event> for details on the event API.
+  //
+  //| virtual task my_sequence::body();
+  //|  ...
+  //|  start_item(item);    \ 
+  //|  item.randomize();     } `uvm_do(item)
+  //|  finish_item(item);   /
+  //|  // return from finish item does not always mean item is completed
+  //|  item.end_event.wait_on();
+  //|  ...
+  // 
   uvm_event end_event;
 
   //----------------------------------------------------------------------------
@@ -344,9 +468,9 @@ virtual class uvm_transaction extends uvm_object;
   local time    accept_time=-1;
 
   local uvm_component initiator;
-  local integer       stream_handle;
-  local integer       tr_handle;      
-  local bit           record_enable = 0;
+  local integer       stream_handle=0;
+  local integer       tr_handle=0;
+  local bit           record_enable;
   local uvm_recorder  m_recorder;
 
 endclass
@@ -611,10 +735,10 @@ function integer uvm_transaction::m_begin_tr (time begin_time=0,
 
     if(!has_parent)
       tr_handle = m_recorder.begin_tr("Begin_No_Parent, Link", 
-                    stream_handle, get_type_name(),"","",begin_time);
+                    stream_handle, get_type_name(),"","",this.begin_time);
     else begin
       tr_handle = m_recorder.begin_tr("Begin_End, Link", 
-                    stream_handle, get_type_name(),"","",begin_time);
+                    stream_handle, get_type_name(),"","",this.begin_time);
       if(parent_handle)
         m_recorder.link_tr(parent_handle, tr_handle, "child");
     end
@@ -652,10 +776,11 @@ function void uvm_transaction::end_tr (time end_time=0, bit free_handle=1);
     m_recorder.tr_handle = tr_handle;
     record(m_recorder);
   
-    m_recorder.end_tr(tr_handle,end_time);
+  m_recorder.end_tr(tr_handle,this.end_time);
 
     if(free_handle && m_recorder.check_handle_kind("Transaction", tr_handle)==1) 
     begin  
+      // once freed, can no longer link to
       m_recorder.free_tr(tr_handle);
     end
     tr_handle = 0;

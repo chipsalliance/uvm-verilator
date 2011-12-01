@@ -30,7 +30,7 @@ class vip_driver extends uvm_driver#(vip_tr);
 
    local bit m_suspend;
    local bit m_suspended;
-   local uvm_process m_proc[$];
+   local process m_proc;
    local bit m_interrupted;
 
    `uvm_component_utils(vip_driver)
@@ -78,13 +78,11 @@ class vip_driver extends uvm_driver#(vip_tr);
    //
    local task m_interrupt();
       m_suspend = 1;
-
-      if (m_proc.size() > 0) begin
-         foreach (m_proc[i])
-           m_proc[i].kill();
-         m_proc.delete();
-         m_interrupted = 1;
-         wait (m_suspended);
+      if (m_proc != null) begin
+        m_proc.kill();
+        m_proc = null;
+        m_interrupted = 1;
+        wait (m_suspended);
       end
    endtask
 
@@ -121,9 +119,7 @@ class vip_driver extends uvm_driver#(vip_tr);
 
          fork
             begin
-               uvm_process p;
-               p = new(process::self());
-               m_proc.push_back(p);
+               m_proc = process::self();
 
                forever begin
 

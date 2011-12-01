@@ -18,23 +18,26 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Resources" href="../../../../src/base/uvm_resource.svh">Resources</a></h1><div class=CBody><p>A resource is a parameterized container that holds arbitrary data.&nbsp; Resources can be used to configure components, supply data to sequences, or enable sharing of information across disparate parts of a testbench.&nbsp;  They are stored using scoping information so their visibility can be constrained to certain parts of the testbench.&nbsp; Resource containers can hold any type of data, constrained only by the data types available in SystemVerilog.&nbsp;  Resources can contain scalar objects, class handles, queues, lists, or even virtual interfaces.</p><p>Resources are stored in a resource database so that each resource can be retrieved by name or by type.&nbsp; The databse has both a name table and a type table and each resource is entered into both.&nbsp; The database is globally accessible.</p><p>Each resource has a set of scopes over which it is visible.&nbsp;  The set of scopes is represented as a regular expression.&nbsp;  When a resource is looked up the scope of the entity doing the looking up is supplied to the lookup function.&nbsp;  This is called the <i>current scope</i>.&nbsp;  If the current scope is in the set of scopes over which a resource is visible then the resource can be retuned in the lookup.</p><p>Resources can be looked up by name or by type.&nbsp; To support type lookup each resource has a static type handle that uniquely identifies the type of each specialized resource container.</p><p>Mutliple resources that have the same name are stored in a queue.&nbsp; Each resource is pushed into a queue with the first one at the front of the queue and each subsequent one behind it.&nbsp;  The same happens for multiple resources that have the same type.&nbsp;  The resource queues are searched front to back, so those placed earlier in the queue have precedence over those placed later.</p><p>The precedence of resources with the same name or same type can be altered.&nbsp;  One way is to set the <i>precedence</i> member of the resource container to any arbitrary value.&nbsp;  The search algorithm will return the resource with the highest precedence.&nbsp;  In the case where there are multiple resources that match the search criteria and have the same (highest) precedence, the earliest one located in the queue will be one returned.&nbsp;  Another way to change the precedence is to use the set_priority function to move a resource to either the front or back of the queue.</p><p>The classes defined here form the low level layer of the resource database.&nbsp;  The classes include the resource container and the database that holds the containers.&nbsp;  The following set of classes are defined here:</p><p><a href="#uvm_resource_types" class=LClass id=link5 onMouseOver="ShowTip(event, 'tt1', 'link5')" onMouseOut="HideTip('tt1')">uvm_resource_types</a>: A class without methods or members, only typedefs and enums.&nbsp; These types and enums are used throughout the resources facility.&nbsp;  Putting the types in a class keeps them confined to a specific name space.</p><p><a href="#uvm_resource_options" class=LClass id=link6 onMouseOver="ShowTip(event, 'tt5', 'link6')" onMouseOut="HideTip('tt5')">uvm_resource_options</a>: policy class for setting options, such as auditing, which effect resources.</p><p><a href="#uvm_resource_base" class=LClass id=link7 onMouseOver="ShowTip(event, 'tt2', 'link7')" onMouseOut="HideTip('tt2')">uvm_resource_base</a>: the base (untyped) resource class living in the resource database.&nbsp;  This class includes the interface for locking, setting a resource as read-only, notification, scope management, altering search priority, and managing auditing.</p><p><a href="#uvm_resource#(T)" class=LClass id=link8 onMouseOver="ShowTip(event, 'tt4', 'link8')" onMouseOut="HideTip('tt4')">uvm_resource#(T)</a>: parameterized resource container.&nbsp;  This class includes the interfaces for reading and writing each resource.&nbsp; Because the class is parameterized, all the access functions are type sace.</p><p><a href="#uvm_resource_pool" class=LClass id=link9 onMouseOver="ShowTip(event, 'tt3', 'link9')" onMouseOut="HideTip('tt3')">uvm_resource_pool</a>: the resource database.&nbsp; This is a singleton class object.</p>
+<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Resources" href="../../../../src/base/uvm_resource.svh">Resources</a></h1><div class=CBody>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Contents</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
   <!-- index=0 -->
 
-<tr class="SMain"><td class=SEntry><a href="#Resources" >Resources</a></td><td class=SDescription>A resource is a parameterized container that holds arbitrary data. </td></tr>
+<tr class="SMain"><td class=SEntry><a href="#Resources" >Resources</a></td><td class=SDescription></td></tr>
   <!-- index=1 -->
 
-<tr class="SSMethod SMarked"><td class=SEntry><a href="#uvm_resource_types" id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_resource_types</a></td><td class=SDescription>Provides typedefs and enums used throughout the resources facility. </td></tr>
+<tr class="SGeneric"><td class=SEntry><a href="#Intro" >Intro</a></td><td class=SDescription>A resource is a parameterized container that holds arbitrary data. </td></tr>
   <!-- index=2 -->
 
+<tr class="SSMethod SMarked"><td class=SEntry><a href="#uvm_resource_types" id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_resource_types</a></td><td class=SDescription>Provides typedefs and enums used throughout the resources facility. </td></tr>
+  <!-- index=3 -->
+
 <tr class="SSMethod"><td class=SEntry><a href="#uvm_resource_options" >uvm_resource_options</a></td><td class=SDescription>Provides a namespace for managing options for the resources facility. </td></tr>
-  <!-- index=7 -->
+  <!-- index=8 -->
 
 <tr class="SSMethod SMarked"><td class=SEntry><a href="#uvm_resource_base" id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">uvm_resource_base</a></td><td class=SDescription>Non-parameterized base class for resources. </td></tr>
-  <!-- index=32 -->
+  <!-- index=31 -->
 
 <tr class="SSMethod"><td class=SEntry><a href="#uvm_resource_pool" id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">uvm_resource_pool</a></td><td class=SDescription>The global (singleton) resource database.</td></tr>
   <!-- index=57 -->
@@ -46,11 +49,17 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
+<div class="CGeneric"><div class=CTopic><h3 class=CTitle><a name="Intro" href="../../../../src/base/uvm_resource.svh">Intro</a></h3><div class=CBody><p>A resource is a parameterized container that holds arbitrary data.&nbsp; Resources can be used to configure components, supply data to sequences, or enable sharing of information across disparate parts of a testbench.&nbsp;  They are stored using scoping information so their visibility can be constrained to certain parts of the testbench.&nbsp; Resource containers can hold any type of data, constrained only by the data types available in SystemVerilog.&nbsp;  Resources can contain scalar objects, class handles, queues, lists, or even virtual interfaces.</p><p>Resources are stored in a resource database so that each resource can be retrieved by name or by type.&nbsp; The databse has both a name table and a type table and each resource is entered into both.&nbsp; The database is globally accessible.</p><p>Each resource has a set of scopes over which it is visible.&nbsp;  The set of scopes is represented as a regular expression.&nbsp;  When a resource is looked up the scope of the entity doing the looking up is supplied to the lookup function.&nbsp;  This is called the <i>current scope</i>.&nbsp;  If the current scope is in the set of scopes over which a resource is visible then the resource can be retuned in the lookup.</p><p>Resources can be looked up by name or by type.&nbsp; To support type lookup each resource has a static type handle that uniquely identifies the type of each specialized resource container.</p><p>Mutliple resources that have the same name are stored in a queue.&nbsp; Each resource is pushed into a queue with the first one at the front of the queue and each subsequent one behind it.&nbsp;  The same happens for multiple resources that have the same type.&nbsp;  The resource queues are searched front to back, so those placed earlier in the queue have precedence over those placed later.</p><p>The precedence of resources with the same name or same type can be altered.&nbsp;  One way is to set the <i>precedence</i> member of the resource container to any arbitrary value.&nbsp;  The search algorithm will return the resource with the highest precedence.&nbsp;  In the case where there are multiple resources that match the search criteria and have the same (highest) precedence, the earliest one located in the queue will be one returned.&nbsp;  Another way to change the precedence is to use the set_priority function to move a resource to either the front or back of the queue.</p><p>The classes defined here form the low level layer of the resource database.&nbsp;  The classes include the resource container and the database that holds the containers.&nbsp;  The following set of classes are defined here:</p><p><a href="#uvm_resource_types" class=LClass id=link5 onMouseOver="ShowTip(event, 'tt1', 'link5')" onMouseOut="HideTip('tt1')">uvm_resource_types</a>: A class without methods or members, only typedefs and enums.&nbsp; These types and enums are used throughout the resources facility.&nbsp;  Putting the types in a class keeps them confined to a specific name space.</p><p><a href="#uvm_resource_options" class=LClass id=link6 onMouseOver="ShowTip(event, 'tt5', 'link6')" onMouseOut="HideTip('tt5')">uvm_resource_options</a>: policy class for setting options, such as auditing, which effect resources.</p><p><a href="#uvm_resource_base" class=LClass id=link7 onMouseOver="ShowTip(event, 'tt2', 'link7')" onMouseOut="HideTip('tt2')">uvm_resource_base</a>: the base (untyped) resource class living in the resource database.&nbsp;  This class includes the interface for setting a resource as read-only, notification, scope management, altering search priority, and managing auditing.</p><p><a href="#uvm_resource#(T)" class=LClass id=link8 onMouseOver="ShowTip(event, 'tt4', 'link8')" onMouseOut="HideTip('tt4')">uvm_resource#(T)</a>: parameterized resource container.&nbsp;  This class includes the interfaces for reading and writing each resource.&nbsp; Because the class is parameterized, all the access functions are type sace.</p><p><a href="#uvm_resource_pool" class=LClass id=link9 onMouseOver="ShowTip(event, 'tt3', 'link9')" onMouseOut="HideTip('tt3')">uvm_resource_pool</a>: the resource database.&nbsp; This is a singleton class object.</p></div></div></div>
+
+
+
+
+ <!--CONTENT index=2 -->
 <div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_resource_types" href="../../../../src/base/uvm_resource.svh">uvm_resource_types</a></h2><div class=CBody><p>Provides typedefs and enums used throughout the resources facility.&nbsp; This class has no members or methods, only typedefs.&nbsp;  It&rsquo;s used in lieu of package-scope types.&nbsp;  When needed, other classes can use these types by prefixing their usage with uvm_resource_types::.&nbsp;  E.g.</p><blockquote><pre>uvm_resource_types::rsrc_q_t queue;</pre></blockquote>
 
-<!--START_ND_SUMMARY index=1-->
+<!--START_ND_SUMMARY index=2-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
-  <!-- index=1 -->
+  <!-- index=2 -->
 
 <tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_resource_types" id=link10 onMouseOver="ShowTip(event, 'tt1', 'link10')" onMouseOut="HideTip('tt1')">uvm_resource_types</a></td></tr>
 <tr class=SMain><td colspan=2 class=SWideDescription>Provides typedefs and enums used throughout the resources facility. </td></tr>
@@ -65,25 +74,25 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=2 -->
+ <!--CONTENT index=3 -->
 <div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_resource_options" href="../../../../src/base/uvm_resource.svh">uvm_resource_options</a></h2><div class=CBody><p>Provides a namespace for managing options for the resources facility.&nbsp;  The only thing allowed in this class is static local data members and static functions for manipulating and retrieving the value of the data members.&nbsp;  The static local data members represent options and settings that control the behavior of the resources facility.</p>
 
-<!--START_ND_SUMMARY index=2-->
+<!--START_ND_SUMMARY index=3-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
-  <!-- index=2 -->
+  <!-- index=3 -->
 
 <tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_resource_options" >uvm_resource_options</a></td></tr>
 <tr class=SMain><td colspan=2 class=SWideDescription>Provides a namespace for managing options for the resources facility. </td></tr>
-  <!-- index=3 -->
-
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_options.Methods" >Methods</a></td><td class=SDescription></td></tr>
   <!-- index=4 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_options.turn_on_auditing" id=link11 onMouseOver="ShowTip(event, 'tt6', 'link11')" onMouseOut="HideTip('tt6')">turn_on_auditing</a></td><td class=SDescription>Turn auditing on for the resource database. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_options.Methods" >Methods</a></td><td class=SDescription></td></tr>
   <!-- index=5 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_options.turn_off_auditing" id=link12 onMouseOver="ShowTip(event, 'tt7', 'link12')" onMouseOut="HideTip('tt7')">turn_off_auditing</a></td><td class=SDescription>Turn auditing off for the resource database. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_options.turn_on_auditing" id=link11 onMouseOver="ShowTip(event, 'tt6', 'link11')" onMouseOut="HideTip('tt6')">turn_on_auditing</a></td><td class=SDescription>Turn auditing on for the resource database. </td></tr>
   <!-- index=6 -->
+
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_options.turn_off_auditing" id=link12 onMouseOver="ShowTip(event, 'tt7', 'link12')" onMouseOut="HideTip('tt7')">turn_off_auditing</a></td><td class=SDescription>Turn auditing off for the resource database. </td></tr>
+  <!-- index=7 -->
 
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_options.is_auditing" id=link13 onMouseOver="ShowTip(event, 'tt8', 'link13')" onMouseOut="HideTip('tt8')">is_auditing</a></td><td class=SDescription>Returns 1 if the auditing facility is on and 0 if it is off.</td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
@@ -91,29 +100,29 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=3 -->
+ <!--CONTENT index=4 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_options.Methods" href="../../../../src/base/uvm_resource.svh">Methods</a></h3></div></div>
 
 
 
 
- <!--CONTENT index=4 -->
+ <!--CONTENT index=5 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_options.turn_on_auditing" href="../../../../src/base/uvm_resource.svh">turn_on_auditing</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function void turn_on_auditing()
-  </td></tr></table></blockquote><div class=CBody><p>Turn auditing on for the resource database.&nbsp; This causes all reads and writes to the database to store information about the accesses.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=5 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_options.turn_off_auditing" href="../../../../src/base/uvm_resource.svh">turn_off_auditing</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function void turn_off_auditing()
-  </td></tr></table></blockquote><div class=CBody><p>Turn auditing off for the resource database.&nbsp; If auditing is it is not possible to get extra information about resource database accesses.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Turn auditing on for the resource database.&nbsp; This causes all reads and writes to the database to store information about the accesses.&nbsp; Auditing is turned on by default.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=6 -->
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_options.turn_off_auditing" href="../../../../src/base/uvm_resource.svh">turn_off_auditing</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function void turn_off_auditing()
+  </td></tr></table></blockquote><div class=CBody><p>Turn auditing off for the resource database.&nbsp; If auditing is turned off, it is not possible to get extra information about resource database accesses.</p></div></div></div>
+
+
+
+
+ <!--CONTENT index=7 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_options.is_auditing" href="../../../../src/base/uvm_resource.svh">is_auditing</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function bit is_auditing()
   </td></tr></table></blockquote><div class=CBody><p>Returns 1 if the auditing facility is on and 0 if it is off.</p></div></div></div>
@@ -121,12 +130,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=7 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_resource_base" href="../../../../src/base/uvm_resource.svh">uvm_resource_base</a></h2><div class=CBody><p>Non-parameterized base class for resources.&nbsp;  Supports interfaces for locking/unlocking, scope matching, and virtual functions for printing the resource and for printing the accessor list</p>
+ <!--CONTENT index=8 -->
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_resource_base" href="../../../../src/base/uvm_resource.svh">uvm_resource_base</a></h2><div class=CBody><p>Non-parameterized base class for resources.&nbsp;  Supports interfaces for scope matching, and virtual functions for printing the resource and for printing the accessor list</p>
 
-<!--START_ND_SUMMARY index=7-->
+<!--START_ND_SUMMARY index=8-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
-  <!-- index=7 -->
+  <!-- index=8 -->
 
 <tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_resource_base" id=link16 onMouseOver="ShowTip(event, 'tt2', 'link16')" onMouseOut="HideTip('tt2')">uvm_resource_base</a></td></tr>
 <tr class=SMain><td colspan=2 class=SWideDescription>Non-parameterized base class for resources. </td></tr>
@@ -151,92 +160,86 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_resource_base extends uvm_object
   </td></tr></table></blockquote></td></tr>
 
-  <!-- index=8 -->
-
-<tr class="SVariable SIndent1 SMarked"><td class=SEntry><a href="#uvm_resource_base.precedence" id=link17 onMouseOver="ShowTip(event, 'tt11', 'link17')" onMouseOut="HideTip('tt11')">precedence</a></td><td class=SDescription>This variable is used to associate a precedence that a resource has with respect to other resources which match the same scope and name. </td></tr>
   <!-- index=9 -->
 
-<tr class="SVariable SIndent1"><td class=SEntry><a href="#uvm_resource_base.default_precedence" id=link18 onMouseOver="ShowTip(event, 'tt12', 'link18')" onMouseOut="HideTip('tt12')">default_precedence</a></td><td class=SDescription>The default precedence for an resource that has been created. </td></tr>
+<tr class="SVariable SIndent1 SMarked"><td class=SEntry><a href="#uvm_resource_base.precedence" id=link17 onMouseOver="ShowTip(event, 'tt11', 'link17')" onMouseOut="HideTip('tt11')">precedence</a></td><td class=SDescription>This variable is used to associate a precedence that a resource has with respect to other resources which match the same scope and name. </td></tr>
   <!-- index=10 -->
 
-<tr class="SMethod SIndent1 SMarked"><td class=SEntry><a href="#uvm_resource_base.new" id=link19 onMouseOver="ShowTip(event, 'tt13', 'link19')" onMouseOut="HideTip('tt13')">new</a></td><td class=SDescription>constructor for uvm_resource_base. </td></tr>
+<tr class="SVariable SIndent1"><td class=SEntry><a href="#uvm_resource_base.default_precedence" id=link18 onMouseOver="ShowTip(event, 'tt12', 'link18')" onMouseOut="HideTip('tt12')">default_precedence</a></td><td class=SDescription>The default precedence for an resource that has been created. </td></tr>
   <!-- index=11 -->
 
-<tr class="SMethod SIndent1"><td class=SEntry><a href="#uvm_resource_base.get_type_handle" id=link20 onMouseOver="ShowTip(event, 'tt14', 'link20')" onMouseOut="HideTip('tt14')">get_type_handle</a></td><td class=SDescription>Pure virtual function that returns the type handle of the resource container.</td></tr>
+<tr class="SMethod SIndent1 SMarked"><td class=SEntry><a href="#uvm_resource_base.new" id=link19 onMouseOver="ShowTip(event, 'tt13', 'link19')" onMouseOut="HideTip('tt13')">new</a></td><td class=SDescription>constructor for uvm_resource_base. </td></tr>
   <!-- index=12 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Locking_Interface" >Locking Interface</a></td><td class=SDescription>The task <a href="#uvm_resource_base.lock" class=LMethod id=link21 onMouseOver="ShowTip(event, 'tt15', 'link21')" onMouseOut="HideTip('tt15')">lock</a> and the functions <a href="#uvm_resource_base.try_lock" class=LMethod id=link22 onMouseOver="ShowTip(event, 'tt16', 'link22')" onMouseOut="HideTip('tt16')">try_lock</a> and <a href="#uvm_resource_base.unlock" class=LMethod id=link23 onMouseOver="ShowTip(event, 'tt17', 'link23')" onMouseOut="HideTip('tt17')">unlock</a> form a locking interface for resources. </td></tr>
+<tr class="SMethod SIndent1"><td class=SEntry><a href="#uvm_resource_base.get_type_handle" id=link20 onMouseOver="ShowTip(event, 'tt14', 'link20')" onMouseOut="HideTip('tt14')">get_type_handle</a></td><td class=SDescription>Pure virtual function that returns the type handle of the resource container.</td></tr>
   <!-- index=13 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.lock" id=link24 onMouseOver="ShowTip(event, 'tt15', 'link24')" onMouseOut="HideTip('tt15')">lock</a></td><td class=SDescription>Retrieves a lock for this resource. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Read-only_Interface" >Read-only Interface</a></td><td class=SDescription></td></tr>
   <!-- index=14 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_base.try_lock" id=link25 onMouseOver="ShowTip(event, 'tt16', 'link25')" onMouseOut="HideTip('tt16')">try_lock</a></td><td class=SDescription>Retrives the lock for this resource. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_base.set_read_only" id=link21 onMouseOver="ShowTip(event, 'tt15', 'link21')" onMouseOut="HideTip('tt15')">set_read_only</a></td><td class=SDescription>Establishes this resource as a read-only resource. </td></tr>
   <!-- index=15 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.unlock" id=link26 onMouseOver="ShowTip(event, 'tt17', 'link26')" onMouseOut="HideTip('tt17')">unlock</a></td><td class=SDescription>Releases the lock held by this semaphore.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.is_read_only" id=link22 onMouseOver="ShowTip(event, 'tt16', 'link22')" onMouseOut="HideTip('tt16')">is_read_only</a></td><td class=SDescription>Retruns one if this resource has been set to read-only, zero otherwise</td></tr>
   <!-- index=16 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Read-only_Interface" >Read-only Interface</a></td><td class=SDescription></td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Notification" >Notification</a></td><td class=SDescription></td></tr>
   <!-- index=17 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_base.set_read_only" id=link27 onMouseOver="ShowTip(event, 'tt18', 'link27')" onMouseOut="HideTip('tt18')">set_read_only</a></td><td class=SDescription>Establishes this resource as a read-only resource. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_base.wait_modified" id=link23 onMouseOver="ShowTip(event, 'tt17', 'link23')" onMouseOut="HideTip('tt17')">wait_modified</a></td><td class=SDescription>This task blocks until the resource has been modified -- that is, a <a href="#uvm_resource#(T).write" class=LMethod id=link24 onMouseOver="ShowTip(event, 'tt18', 'link24')" onMouseOut="HideTip('tt18')">uvm_resource#(T)::write</a> operation has been performed. </td></tr>
   <!-- index=18 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.is_read_only" id=link28 onMouseOver="ShowTip(event, 'tt19', 'link28')" onMouseOut="HideTip('tt19')">is_read_only</a></td><td class=SDescription>Retruns one if this resource has been set to read-only, zero otherwise</td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Scope_Interface" >Scope Interface</a></td><td class=SDescription>Each resource has a name, a value and a set of scopes over which it is visible. </td></tr>
   <!-- index=19 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Notification" >Notification</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.set_scope" id=link25 onMouseOver="ShowTip(event, 'tt19', 'link25')" onMouseOut="HideTip('tt19')">set_scope</a></td><td class=SDescription>Set the value of the regular expression that identifies the set of scopes over which this resource is visible. </td></tr>
   <!-- index=20 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_base.wait_modified" id=link29 onMouseOver="ShowTip(event, 'tt20', 'link29')" onMouseOut="HideTip('tt20')">wait_modified</a></td><td class=SDescription>This task blocks until the resource has been modified -- that is, a <a href="#uvm_resource#(T).write" class=LMethod id=link30 onMouseOver="ShowTip(event, 'tt21', 'link30')" onMouseOut="HideTip('tt21')">uvm_resource#(T)::write</a> operation has been performed. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_base.get_scope" id=link26 onMouseOver="ShowTip(event, 'tt20', 'link26')" onMouseOut="HideTip('tt20')">get_scope</a></td><td class=SDescription>Retrieve the regular expression string that identifies the set of scopes over which this resource is visible.</td></tr>
   <!-- index=21 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Scope_Interface" >Scope Interface</a></td><td class=SDescription>Each resource has a name, a value and a set of scopes over which it is visible. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.match_scope" id=link27 onMouseOver="ShowTip(event, 'tt21', 'link27')" onMouseOut="HideTip('tt21')">match_scope</a></td><td class=SDescription>Using the regular expression facility, determine if this resource is visible in a scope. </td></tr>
   <!-- index=22 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.set_scope" id=link31 onMouseOver="ShowTip(event, 'tt22', 'link31')" onMouseOut="HideTip('tt22')">set_scope</a></td><td class=SDescription>Set the value of the regular expression that identifies the set of scopes over which this resource is visible. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Priority" >Priority</a></td><td class=SDescription>Functions for manipulating the search priority of resources. </td></tr>
   <!-- index=23 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_base.get_scope" id=link32 onMouseOver="ShowTip(event, 'tt23', 'link32')" onMouseOut="HideTip('tt23')">get_scope</a></td><td class=SDescription>Retrieve the regular expression string that identifies the set of scopes over which this resource is visible.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.set_priority" >set priority</a></td><td class=SDescription>Change the search priority of the resource based on the value of the priority enum argument.</td></tr>
   <!-- index=24 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.match_scope" id=link33 onMouseOver="ShowTip(event, 'tt24', 'link33')" onMouseOut="HideTip('tt24')">match_scope</a></td><td class=SDescription>Using the regular expression facility, determine if this resource is visible in a scope. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Utility_Functions" >Utility Functions</a></td><td class=SDescription></td></tr>
   <!-- index=25 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Priority" >Priority</a></td><td class=SDescription>Functions for manipulating the search priority of resources. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_base.do_print" id=link28 onMouseOver="ShowTip(event, 'tt22', 'link28')" onMouseOut="HideTip('tt22')">do_print</a></td><td class=SDescription>Implementation of do_print which is called by print().</td></tr>
   <!-- index=26 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.set_priority" >set priority</a></td><td class=SDescription>Change the search priority of the resource based on the value of the priority enum argument.</td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Audit_Trail" >Audit Trail</a></td><td class=SDescription>To find out what is happening as the simulation proceeds, an audit trail of each read and write is kept. </td></tr>
   <!-- index=27 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Utility_Functions" >Utility Functions</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.record_read_access" id=link29 onMouseOver="ShowTip(event, 'tt23', 'link29')" onMouseOut="HideTip('tt23')">record_read_access</a></td><td class=SDescription></td></tr>
   <!-- index=28 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_base.do_print" id=link34 onMouseOver="ShowTip(event, 'tt25', 'link34')" onMouseOut="HideTip('tt25')">do_print</a></td><td class=SDescription>Implementation of do_print which is called by print().</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.record_write_access" id=link30 onMouseOver="ShowTip(event, 'tt24', 'link30')" onMouseOut="HideTip('tt24')">record_write_access</a></td><td class=SDescription></td></tr>
   <!-- index=29 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_base.Audit_Trail" >Audit Trail</a></td><td class=SDescription>To find out what is happening as the simulation proceeds, an audit trail of each read and write is kept. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.print_accessors" id=link31 onMouseOver="ShowTip(event, 'tt25', 'link31')" onMouseOut="HideTip('tt25')">print_accessors</a></td><td class=SDescription>Dump the access records for this resource</td></tr>
   <!-- index=30 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_base.print_accessors" id=link35 onMouseOver="ShowTip(event, 'tt26', 'link35')" onMouseOut="HideTip('tt26')">print_accessors</a></td><td class=SDescription>Dump the access records for this resource</td></tr>
-  <!-- index=31 -->
-
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_base.init_access_record" id=link36 onMouseOver="ShowTip(event, 'tt27', 'link36')" onMouseOut="HideTip('tt27')">init_access_record</a></td><td class=SDescription>Initalize a new access record</td></tr></table></div></div><!--END_ND_SUMMARY-->
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_base.init_access_record" id=link32 onMouseOver="ShowTip(event, 'tt26', 'link32')" onMouseOut="HideTip('tt26')">init_access_record</a></td><td class=SDescription>Initalize a new access record</td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
 
 
 
 
- <!--CONTENT index=8 -->
+ <!--CONTENT index=9 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.precedence" href="../../../../src/base/uvm_resource.svh">precedence</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>int unsigned precedence
-  </td></tr></table></blockquote><div class=CBody><p>This variable is used to associate a precedence that a resource has with respect to other resources which match the same scope and name.&nbsp; Resources are set to the <a href="#uvm_resource_base.default_precedence" class=LVariable id=link37 onMouseOver="ShowTip(event, 'tt12', 'link37')" onMouseOut="HideTip('tt12')">default_precedence</a> initially, and may be set to a higher or lower precedence as desired.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>This variable is used to associate a precedence that a resource has with respect to other resources which match the same scope and name.&nbsp; Resources are set to the <a href="#uvm_resource_base.default_precedence" class=LVariable id=link33 onMouseOver="ShowTip(event, 'tt12', 'link33')" onMouseOut="HideTip('tt12')">default_precedence</a> initially, and may be set to a higher or lower precedence as desired.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=9 -->
+ <!--CONTENT index=10 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.default_precedence" href="../../../../src/base/uvm_resource.svh">default_precedence</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static int unsigned default_precedence = 1000
   </td></tr></table></blockquote><div class=CBody><p>The default precedence for an resource that has been created.&nbsp; When two resources have the same precedence, the first resource found has precedence.</p></div></div></div>
@@ -244,7 +247,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=10 -->
+ <!--CONTENT index=11 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.new" href="../../../../src/base/uvm_resource.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -264,7 +267,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=11 -->
+ <!--CONTENT index=12 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.get_type_handle" href="../../../../src/base/uvm_resource.svh">get_type_handle</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>pure virtual function uvm_resource_base get_type_handle()
   </td></tr></table></blockquote><div class=CBody><p>Pure virtual function that returns the type handle of the resource container.</p></div></div></div>
@@ -272,51 +275,21 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=12 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.Locking_Interface" href="../../../../src/base/uvm_resource.svh">Locking Interface</a></h3><div class=CBody><p>The task <a href="#uvm_resource_base.lock" class=LMethod id=link38 onMouseOver="ShowTip(event, 'tt15', 'link38')" onMouseOut="HideTip('tt15')">lock</a> and the functions <a href="#uvm_resource_base.try_lock" class=LMethod id=link39 onMouseOver="ShowTip(event, 'tt16', 'link39')" onMouseOut="HideTip('tt16')">try_lock</a> and <a href="#uvm_resource_base.unlock" class=LMethod id=link40 onMouseOver="ShowTip(event, 'tt17', 'link40')" onMouseOut="HideTip('tt17')">unlock</a> form a locking interface for resources.&nbsp;  These can be used for thread-safe reads and writes.&nbsp;  The interface methods write_with_lock and read_with_lock and their nonblocking counterparts in <a href="#uvm_resource#(T)" class=LClass id=link41 onMouseOver="ShowTip(event, 'tt4', 'link41')" onMouseOut="HideTip('tt4')">uvm_resource#(T)</a> (a family of resource subclasses) obey the lock when reading and writing.&nbsp;  See documentation in <a href="#uvm_resource#(T)" class=LClass id=link42 onMouseOver="ShowTip(event, 'tt4', 'link42')" onMouseOut="HideTip('tt4')">uvm_resource#(T)</a> for more information on put/get.&nbsp;  The lock interface is a wrapper around a local semaphore.</p></div></div></div>
-
-
-
-
  <!--CONTENT index=13 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.lock" href="../../../../src/base/uvm_resource.svh">lock</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>task lock()
-  </td></tr></table></blockquote><div class=CBody><p>Retrieves a lock for this resource.&nbsp;  The task blocks until the lock is obtained.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=14 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.try_lock" href="../../../../src/base/uvm_resource.svh">try_lock</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit try_lock()
-  </td></tr></table></blockquote><div class=CBody><p>Retrives the lock for this resource.&nbsp;  The function is nonblocking, so it will return immediately.&nbsp;  If it was successfull in retrieving the lock then a one is returned, otherwise a zero is returned.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=15 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.unlock" href="../../../../src/base/uvm_resource.svh">unlock</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function void unlock()
-  </td></tr></table></blockquote><div class=CBody><p>Releases the lock held by this semaphore.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=16 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.Read-only_Interface" href="../../../../src/base/uvm_resource.svh">Read-only Interface</a></h3></div></div>
 
 
 
 
- <!--CONTENT index=17 -->
+ <!--CONTENT index=14 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.set_read_only" href="../../../../src/base/uvm_resource.svh">set_read_only</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function void set_read_only()
-  </td></tr></table></blockquote><div class=CBody><p>Establishes this resource as a read-only resource.&nbsp;  An attempt to call <a href="#uvm_resource#(T).write" class=LMethod id=link43 onMouseOver="ShowTip(event, 'tt21', 'link43')" onMouseOut="HideTip('tt21')">uvm_resource#(T)::write</a> on the resource will cause an error.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Establishes this resource as a read-only resource.&nbsp;  An attempt to call <a href="#uvm_resource#(T).write" class=LMethod id=link34 onMouseOver="ShowTip(event, 'tt18', 'link34')" onMouseOut="HideTip('tt18')">uvm_resource#(T)::write</a> on the resource will cause an error.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=18 -->
+ <!--CONTENT index=15 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.is_read_only" href="../../../../src/base/uvm_resource.svh">is_read_only</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit is_read_only()
   </td></tr></table></blockquote><div class=CBody><p>Retruns one if this resource has been set to read-only, zero otherwise</p></div></div></div>
@@ -324,21 +297,21 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 
- <!--CONTENT index=19 -->
+ <!--CONTENT index=16 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.Notification" href="../../../../src/base/uvm_resource.svh">Notification</a></h3></div></div>
 
 
 
 
- <!--CONTENT index=20 -->
+ <!--CONTENT index=17 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.wait_modified" href="../../../../src/base/uvm_resource.svh">wait_modified</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>task wait_modified()
-  </td></tr></table></blockquote><div class=CBody><p>This task blocks until the resource has been modified -- that is, a <a href="#uvm_resource#(T).write" class=LMethod id=link44 onMouseOver="ShowTip(event, 'tt21', 'link44')" onMouseOut="HideTip('tt21')">uvm_resource#(T)::write</a> operation has been performed.&nbsp;  When a <a href="#uvm_resource#(T).write" class=LMethod id=link45 onMouseOver="ShowTip(event, 'tt21', 'link45')" onMouseOut="HideTip('tt21')">uvm_resource#(T)::write</a> is performed the modified bit is set which releases the block.&nbsp;  Wait_modified() then clears the modified bit so it can be called repeatedly.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>This task blocks until the resource has been modified -- that is, a <a href="#uvm_resource#(T).write" class=LMethod id=link35 onMouseOver="ShowTip(event, 'tt18', 'link35')" onMouseOut="HideTip('tt18')">uvm_resource#(T)::write</a> operation has been performed.&nbsp;  When a <a href="#uvm_resource#(T).write" class=LMethod id=link36 onMouseOver="ShowTip(event, 'tt18', 'link36')" onMouseOut="HideTip('tt18')">uvm_resource#(T)::write</a> is performed the modified bit is set which releases the block.&nbsp;  Wait_modified() then clears the modified bit so it can be called repeatedly.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=21 -->
+ <!--CONTENT index=18 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.Scope_Interface" href="../../../../src/base/uvm_resource.svh">Scope Interface</a></h3><div class=CBody><p>Each resource has a name, a value and a set of scopes over which it is visible.&nbsp; A scope is a hierarchical entity or a context.&nbsp;  A scope name is a multi-element string that identifies a scope.&nbsp;  Each element refers to a scope context and the elements are separated by dots (.).</p><blockquote><pre>top.env.agent.monitor</pre></blockquote><p>Consider the example above of a scope name.&nbsp;  It consists of four elements: &ldquo;top&rdquo;, &ldquo;env&rdquo;, &ldquo;agent&rdquo;, and &ldquo;monitor&rdquo;.&nbsp;  The elements are strung together with a dot separating each element.&nbsp;  <i>top.env.agent</i> is the parent of <i>top.env.agent.monitor</i>, <i>top.env</i> is the parent of <i>top.env.agent</i>, and so on.&nbsp;  A set of scopes can be represented by a set of scope name strings.&nbsp;  A very straightforward way to represent a set of strings is to use regular expressions.&nbsp;  A regular expression is a special string that contains placeholders which can be substituted in various ways to generate or recognize a particular set of strings.&nbsp;  Here are a few simple examples:</p><blockquote><pre> top\..*                   all of the scopes whose top-level component
                         is top
 top\.env\..*\.monitor  all of the scopes in env that end in monitor;
@@ -355,13 +328,12 @@ top\.u[1-5]\.*         all of the scopes rooted and named u1, u2, u3,</pre></blo
 top\..*                top.*
 top\.env\..*\.monitor      top.env.*.monitor
 .*\.monitor                *.monitor</pre></blockquote><p>The resource facility supports both regular expression and glob syntax.&nbsp;  Regular expressions are identified as such when they surrounded by &lsquo;/&rsquo; characters.&nbsp; For example, <i>/^top\.*/</i> is interpreted as the regular expression <i>^top\.*</i>, where the surrounding &lsquo;/&rsquo; characters have been removed.&nbsp; All other expressions are treated as glob expressions.&nbsp; They are converted from glob notation to regular expression notation internally.&nbsp;  Regular expression compilation and matching as well as glob-to-regular expression conversion are handled by three DPI functions:</p><blockquote><pre>function int uvm_re_match(string re, string str);
-function void uvm_dump_re_cache();
-function string uvm_glob_to_re(string glob);</pre></blockquote><p>uvm_re_match both compiles and matches the regular expression.&nbsp;  It uses internal caching of compiled information so that each match does not necessarily require a new compilation of the regular expression string.&nbsp;  All of the matching is done using regular expressions, so globs are converted to regular expressions and then processed.</p></div></div></div>
+function string uvm_glob_to_re(string glob);</pre></blockquote><p>uvm_re_match both compiles and matches the regular expression. of the matching is done using regular expressions, so globs are converted to regular expressions and then processed.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=22 -->
+ <!--CONTENT index=19 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.set_scope" href="../../../../src/base/uvm_resource.svh">set_scope</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -375,7 +347,7 @@ function string uvm_glob_to_re(string glob);</pre></blockquote><p>uvm_re_match b
 
 
 
- <!--CONTENT index=23 -->
+ <!--CONTENT index=20 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.get_scope" href="../../../../src/base/uvm_resource.svh">get_scope</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_scope()
   </td></tr></table></blockquote><div class=CBody><p>Retrieve the regular expression string that identifies the set of scopes over which this resource is visible.</p></div></div></div>
@@ -383,7 +355,7 @@ function string uvm_glob_to_re(string glob);</pre></blockquote><p>uvm_re_match b
 
 
 
- <!--CONTENT index=24 -->
+ <!--CONTENT index=21 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.match_scope" href="../../../../src/base/uvm_resource.svh">match_scope</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -397,25 +369,25 @@ function string uvm_glob_to_re(string glob);</pre></blockquote><p>uvm_re_match b
 
 
 
- <!--CONTENT index=25 -->
+ <!--CONTENT index=22 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.Priority" href="../../../../src/base/uvm_resource.svh">Priority</a></h3><div class=CBody><p>Functions for manipulating the search priority of resources.&nbsp;  The function definitions here are pure virtual and are implemented in derived classes.&nbsp;  The definitons serve as a priority management interface.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=26 -->
+ <!--CONTENT index=23 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.set_priority" href="../../../../src/base/uvm_resource.svh">set priority</a></h3><div class=CBody><p>Change the search priority of the resource based on the value of the priority enum argument.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=27 -->
+ <!--CONTENT index=24 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.Utility_Functions" href="../../../../src/base/uvm_resource.svh">Utility Functions</a></h3></div></div>
 
 
 
 
- <!--CONTENT index=28 -->
+ <!--CONTENT index=25 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.do_print" href="../../../../src/base/uvm_resource.svh">do_print</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -429,18 +401,50 @@ function string uvm_glob_to_re(string glob);</pre></blockquote><p>uvm_re_match b
 
 
 
- <!--CONTENT index=29 -->
+ <!--CONTENT index=26 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.Audit_Trail" href="../../../../src/base/uvm_resource.svh">Audit Trail</a></h3><div class=CBody><p>To find out what is happening as the simulation proceeds, an audit trail of each read and write is kept.&nbsp; The read and write methods in uvm_resource#(T) each take an accessor argument.&nbsp;  This is a handle to the object that performed that resource access.</p><blockquote><pre>function T read(uvm_object accessor = null);
 function void write(T t, uvm_object accessor = null);</pre></blockquote><p>The accessor can by anything as long as it is derived from uvm_object.&nbsp;  The accessor object can be a component or a sequence or whatever object from which a read or write was invoked.&nbsp; Typically the <i>this</i> handle is used as the accessor.&nbsp;  For example:</p><blockquote><pre>uvm_resource#(int) rint;
 int i;
 ...
 rint.write(7, this);
-i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name()</i> is stored as part of the audit trail.&nbsp; This way you can find out what object performed each resource access.&nbsp; Each audit record also includes the time of the access (simulation time) and the particular operation performed (read or write).</p><p>Auditting is controlled through the <a href="#uvm_resource_options" class=LClass id=link46 onMouseOver="ShowTip(event, 'tt5', 'link46')" onMouseOut="HideTip('tt5')">uvm_resource_options</a> class.</p></div></div></div>
+i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name()</i> is stored as part of the audit trail.&nbsp; This way you can find out what object performed each resource access.&nbsp; Each audit record also includes the time of the access (simulation time) and the particular operation performed (read or write).</p><p>Auditting is controlled through the <a href="#uvm_resource_options" class=LClass id=link37 onMouseOver="ShowTip(event, 'tt5', 'link37')" onMouseOut="HideTip('tt5')">uvm_resource_options</a> class.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=30 -->
+ <!--CONTENT index=27 -->
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.record_read_access" href="../../../../src/base/uvm_resource.svh">record_read_access</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>function void record_read_access(</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PParameter nowrap>accessor</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> null</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+<div class=CBody></div></div></div>
+
+
+
+
+ <!--CONTENT index=28 -->
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.record_write_access" href="../../../../src/base/uvm_resource.svh">record_write_access</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>function void record_write_access(</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PParameter nowrap>accessor</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> null</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+<div class=CBody></div></div></div>
+
+
+
+
+ <!--CONTENT index=29 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.print_accessors" href="../../../../src/base/uvm_resource.svh">print_accessors</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function void print_accessors()
   </td></tr></table></blockquote><div class=CBody><p>Dump the access records for this resource</p></div></div></div>
@@ -448,7 +452,7 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 
 
 
- <!--CONTENT index=31 -->
+ <!--CONTENT index=30 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_base.init_access_record" href="../../../../src/base/uvm_resource.svh">init_access_record</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -465,7 +469,7 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 
 
 
- <!--CONTENT index=32 -->
+ <!--CONTENT index=31 -->
 <div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_resource_pool" href="../../../../src/base/uvm_resource.svh">uvm_resource_pool</a></h2><div class=CBody><p>The global (singleton) resource database.</p><p>Each resource is stored both by primary name and by type handle.&nbsp;  The resource pool contains two associative arrays, one with name as the key and one with the type handle as the key.&nbsp;  Each associative array contains a queue of resources.&nbsp;  Each resource has a regular expression that represents the set of scopes over with it is visible.</p><blockquote><pre>+------+------------+                          +------------+------+
 | name | rsrc queue |                          | rsrc queue | type |
 +------+------------+                          +------------+------+
@@ -482,13 +486,13 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 |      |            |              V  V        |            |      |
 +------+------------+            +------+      +------------+------+
 |      |            |            | rsrc |      |            |      |
-+------+------------+            +------+      +------------+------+</pre></blockquote><p>The above diagrams illustrates how a resource whose name is A and type is T is stored in the pool.&nbsp;  The pool contains an entry in the type map for type T and an entry in the name map for name A.&nbsp;  The queues in each of the arrays each contain an entry for the resource A whose type is T.&nbsp;  The name map can contain in its queue other resources whose name is A which may or may not have the same type as our resource A.&nbsp;  Similarly, the type map can contain in its queue other resources whose type is T and whose name may or may not be A.</p><p>Resources are added to the pool by calling <a href="#uvm_resource_pool.set" class=LMethod id=link68 onMouseOver="ShowTip(event, 'tt30', 'link68')" onMouseOut="HideTip('tt30')">set</a>; they are retrieved from the pool by calling <a href="#uvm_resource_pool.get_by_name" class=LMethod id=link69 onMouseOver="ShowTip(event, 'tt36', 'link69')" onMouseOut="HideTip('tt36')">get_by_name</a> or <a href="#uvm_resource_pool.get_by_type" class=LMethod id=link70 onMouseOver="ShowTip(event, 'tt38', 'link70')" onMouseOut="HideTip('tt38')">get_by_type</a>.&nbsp;  When an object creates a new resource and calls <a href="#uvm_resource_pool.set" class=LMethod id=link71 onMouseOver="ShowTip(event, 'tt30', 'link71')" onMouseOut="HideTip('tt30')">set</a> the resource is made available to be retrieved by other objects outside of itsef; an object gets a resource when it wants to access a resource not currently available in its scope.</p><p>The scope is stored in the resource itself (not in the pool) so whether you get by name or by type the resource&rsquo;s visibility is the same.</p><p>As an auditing capability, the pool contains a history of gets.&nbsp;  A record of each get, whether by <a href="#uvm_resource_pool.get_by_type" class=LMethod id=link72 onMouseOver="ShowTip(event, 'tt38', 'link72')" onMouseOut="HideTip('tt38')">get_by_type</a> or <a href="#uvm_resource_pool.get_by_name" class=LMethod id=link73 onMouseOver="ShowTip(event, 'tt36', 'link73')" onMouseOut="HideTip('tt36')">get_by_name</a>, is stored in the audit record.&nbsp;  Both successful and failed gets are recorded.&nbsp; At the end of simulation, or any time for that matter, you can dump the history list.&nbsp;  This will tell which resources were successfully located and which were not.&nbsp;  You can use this information to determine if there is some error in name, type, or scope that has caused a resource to not be located or to be incorrrectly located (i.e. the wrong resource is located).</p>
++------+------------+            +------+      +------------+------+</pre></blockquote><p>The above diagrams illustrates how a resource whose name is A and type is T is stored in the pool.&nbsp;  The pool contains an entry in the type map for type T and an entry in the name map for name A.&nbsp;  The queues in each of the arrays each contain an entry for the resource A whose type is T.&nbsp;  The name map can contain in its queue other resources whose name is A which may or may not have the same type as our resource A.&nbsp;  Similarly, the type map can contain in its queue other resources whose type is T and whose name may or may not be A.</p><p>Resources are added to the pool by calling <a href="#uvm_resource_pool.set" class=LMethod id=link61 onMouseOver="ShowTip(event, 'tt29', 'link61')" onMouseOut="HideTip('tt29')">set</a>; they are retrieved from the pool by calling <a href="#uvm_resource_pool.get_by_name" class=LMethod id=link62 onMouseOver="ShowTip(event, 'tt37', 'link62')" onMouseOut="HideTip('tt37')">get_by_name</a> or <a href="#uvm_resource_pool.get_by_type" class=LMethod id=link63 onMouseOver="ShowTip(event, 'tt39', 'link63')" onMouseOut="HideTip('tt39')">get_by_type</a>.&nbsp;  When an object creates a new resource and calls <a href="#uvm_resource_pool.set" class=LMethod id=link64 onMouseOver="ShowTip(event, 'tt29', 'link64')" onMouseOut="HideTip('tt29')">set</a> the resource is made available to be retrieved by other objects outside of itsef; an object gets a resource when it wants to access a resource not currently available in its scope.</p><p>The scope is stored in the resource itself (not in the pool) so whether you get by name or by type the resource&rsquo;s visibility is the same.</p><p>As an auditing capability, the pool contains a history of gets.&nbsp;  A record of each get, whether by <a href="#uvm_resource_pool.get_by_type" class=LMethod id=link65 onMouseOver="ShowTip(event, 'tt39', 'link65')" onMouseOut="HideTip('tt39')">get_by_type</a> or <a href="#uvm_resource_pool.get_by_name" class=LMethod id=link66 onMouseOver="ShowTip(event, 'tt37', 'link66')" onMouseOut="HideTip('tt37')">get_by_name</a>, is stored in the audit record.&nbsp;  Both successful and failed gets are recorded.&nbsp; At the end of simulation, or any time for that matter, you can dump the history list.&nbsp;  This will tell which resources were successfully located and which were not.&nbsp;  You can use this information to determine if there is some error in name, type, or scope that has caused a resource to not be located or to be incorrrectly located (i.e. the wrong resource is located).</p>
 
-<!--START_ND_SUMMARY index=32-->
+<!--START_ND_SUMMARY index=31-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
-  <!-- index=32 -->
+  <!-- index=31 -->
 
-<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_resource_pool" id=link47 onMouseOver="ShowTip(event, 'tt3', 'link47')" onMouseOut="HideTip('tt3')">uvm_resource_pool</a></td></tr>
+<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_resource_pool" id=link38 onMouseOver="ShowTip(event, 'tt3', 'link38')" onMouseOut="HideTip('tt3')">uvm_resource_pool</a></td></tr>
 <tr class=SMain><td colspan=2 class=SWideDescription>The global (singleton) resource database.</td></tr>
   <!-- PROTOTYPE -->
   <tr class="SPrototype SIndent1"><td colspan=2 class="SEntry SIndent1">Class Declaration</td></tr>
@@ -496,84 +500,87 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_resource_pool
   </td></tr></table></blockquote></td></tr>
 
+  <!-- index=32 -->
+
+<tr class="SMethod SIndent1 SMarked"><td class=SEntry><a href="#uvm_resource_pool.get" id=link39 onMouseOver="ShowTip(event, 'tt27', 'link39')" onMouseOut="HideTip('tt27')">get</a></td><td class=SDescription>Returns the singleton handle to the resource pool</td></tr>
   <!-- index=33 -->
 
-<tr class="SMethod SIndent1 SMarked"><td class=SEntry><a href="#uvm_resource_pool.get" id=link48 onMouseOver="ShowTip(event, 'tt28', 'link48')" onMouseOut="HideTip('tt28')">get</a></td><td class=SDescription>Returns the singleton handle to the resource pool</td></tr>
+<tr class="SMethod SIndent1"><td class=SEntry><a href="#uvm_resource_pool.spell_check" id=link40 onMouseOver="ShowTip(event, 'tt28', 'link40')" onMouseOut="HideTip('tt28')">spell_check</a></td><td class=SDescription>Invokes the spell checker for a string s. </td></tr>
   <!-- index=34 -->
 
-<tr class="SMethod SIndent1"><td class=SEntry><a href="#uvm_resource_pool.spell_check" id=link49 onMouseOver="ShowTip(event, 'tt29', 'link49')" onMouseOut="HideTip('tt29')">spell_check</a></td><td class=SDescription>Invokes the spell checker for a string s. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_pool.Set" >Set</a></td><td class=SDescription></td></tr>
   <!-- index=35 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_pool.Set" >Set</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.set" id=link41 onMouseOver="ShowTip(event, 'tt29', 'link41')" onMouseOut="HideTip('tt29')">set</a></td><td class=SDescription>Add a new resource to the resource pool. </td></tr>
   <!-- index=36 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.set" id=link50 onMouseOver="ShowTip(event, 'tt30', 'link50')" onMouseOut="HideTip('tt30')">set</a></td><td class=SDescription>Add a new resource to the resource pool. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.set_override" id=link42 onMouseOver="ShowTip(event, 'tt30', 'link42')" onMouseOut="HideTip('tt30')">set_override</a></td><td class=SDescription>The resource provided as an argument will be entered into the pool and will override both by name and type.</td></tr>
   <!-- index=37 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.set_override" id=link51 onMouseOver="ShowTip(event, 'tt31', 'link51')" onMouseOut="HideTip('tt31')">set_override</a></td><td class=SDescription>The resource provided as an argument will be entered into the pool and will override both by name and type.</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.set_name_override" id=link43 onMouseOver="ShowTip(event, 'tt31', 'link43')" onMouseOut="HideTip('tt31')">set_name_override</a></td><td class=SDescription>The resource provided as an argument will entered into the pool using normal precedence in the type map and will override the name.</td></tr>
   <!-- index=38 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.set_name_override" id=link52 onMouseOver="ShowTip(event, 'tt32', 'link52')" onMouseOut="HideTip('tt32')">set_name_override</a></td><td class=SDescription>The resource provided as an argument will entered into the pool using normal precedence in the type map and will override the name.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.set_type_override" id=link44 onMouseOver="ShowTip(event, 'tt32', 'link44')" onMouseOut="HideTip('tt32')">set_type_override</a></td><td class=SDescription>The resource provided as an argument will be entered into the pool using noraml precedence in the name map and will override the type.</td></tr>
   <!-- index=39 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.set_type_override" id=link53 onMouseOver="ShowTip(event, 'tt33', 'link53')" onMouseOut="HideTip('tt33')">set_type_override</a></td><td class=SDescription>The resource provided as an argument will be entered into the pool using noraml precedence in the name map and will override the type.</td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_pool.Lookup" >Lookup</a></td><td class=SDescription>This group of functions is for finding resources in the resource database.</td></tr>
   <!-- index=40 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_pool.Lookup" >Lookup</a></td><td class=SDescription>This group of functions is for finding resources in the resource database.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.lookup_name" id=link45 onMouseOver="ShowTip(event, 'tt33', 'link45')" onMouseOut="HideTip('tt33')">lookup_name</a></td><td class=SDescription>Lookup resources by <i>name</i>. </td></tr>
   <!-- index=41 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.lookup_name" id=link54 onMouseOver="ShowTip(event, 'tt34', 'link54')" onMouseOut="HideTip('tt34')">lookup_name</a></td><td class=SDescription>Lookup resources by <i>name</i>. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.get_highest_precedence" id=link46 onMouseOver="ShowTip(event, 'tt34', 'link46')" onMouseOut="HideTip('tt34')">get_highest_precedence</a></td><td class=SDescription>Traverse a queue, <i>q</i>, of resources and return the one with the highest precedence. </td></tr>
   <!-- index=42 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.get_highest_precedence" id=link55 onMouseOver="ShowTip(event, 'tt35', 'link55')" onMouseOut="HideTip('tt35')">get_highest_precedence</a></td><td class=SDescription>Traverse a queue, <i>q</i>, of resources and return the one with the highest precedence. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.sort_by_precedence" id=link47 onMouseOver="ShowTip(event, 'tt35', 'link47')" onMouseOut="HideTip('tt35')">sort_by_precedence</a></td><td class=SDescription>Given a list of resources, obtained for example from <a href="#uvm_resource_pool.lookup_scope" class=LMethod id=link48 onMouseOver="ShowTip(event, 'tt36', 'link48')" onMouseOut="HideTip('tt36')">lookup_scope</a>, sort the resources in  precedence order. </td></tr>
   <!-- index=43 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.get_by_name" id=link56 onMouseOver="ShowTip(event, 'tt36', 'link56')" onMouseOut="HideTip('tt36')">get_by_name</a></td><td class=SDescription>Lookup a resource by <i>name</i> and <i>scope</i>. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.get_by_name" id=link49 onMouseOver="ShowTip(event, 'tt37', 'link49')" onMouseOut="HideTip('tt37')">get_by_name</a></td><td class=SDescription>Lookup a resource by <i>name</i>, <i>scope</i>, and <i>type_handle</i>. </td></tr>
   <!-- index=44 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.lookup_type" id=link57 onMouseOver="ShowTip(event, 'tt37', 'link57')" onMouseOut="HideTip('tt37')">lookup_type</a></td><td class=SDescription>Lookup resources by type. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.lookup_type" id=link50 onMouseOver="ShowTip(event, 'tt38', 'link50')" onMouseOut="HideTip('tt38')">lookup_type</a></td><td class=SDescription>Lookup resources by type. </td></tr>
   <!-- index=45 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.get_by_type" id=link58 onMouseOver="ShowTip(event, 'tt38', 'link58')" onMouseOut="HideTip('tt38')">get_by_type</a></td><td class=SDescription>Lookup a resource by <i>type_handle</i> and <i>scope</i>. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.get_by_type" id=link51 onMouseOver="ShowTip(event, 'tt39', 'link51')" onMouseOut="HideTip('tt39')">get_by_type</a></td><td class=SDescription>Lookup a resource by <i>type_handle</i> and <i>scope</i>. </td></tr>
   <!-- index=46 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.lookup_regex_names" id=link59 onMouseOver="ShowTip(event, 'tt39', 'link59')" onMouseOut="HideTip('tt39')">lookup_regex_names</a></td><td class=SDescription>This utility function answers the question, for a given <i>name</i> and <i>scope</i>, what are all of the resources with a matching name (where the resource name may be a regular expression) and a matching scope (where the resoucre scope may be a regular expression). </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.lookup_regex_names" id=link52 onMouseOver="ShowTip(event, 'tt40', 'link52')" onMouseOut="HideTip('tt40')">lookup_regex_names</a></td><td class=SDescription>This utility function answers the question, for a given <i>name</i>, <i>scope</i>,and <i>type_handle</i>, what are all of the resources with a matching name (where the resource name may be a regular expression), a matching scope (where the resoucre scope may be a regular expression), and a matching type?&nbsp; </td></tr>
   <!-- index=47 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.lookup_regex" id=link60 onMouseOver="ShowTip(event, 'tt40', 'link60')" onMouseOut="HideTip('tt40')">lookup_regex</a></td><td class=SDescription>Looks for all the resources whose name matches the regular expression argument and whose scope matches the current scope.</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.lookup_regex" id=link53 onMouseOver="ShowTip(event, 'tt41', 'link53')" onMouseOut="HideTip('tt41')">lookup_regex</a></td><td class=SDescription>Looks for all the resources whose name matches the regular expression argument and whose scope matches the current scope.</td></tr>
   <!-- index=48 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.lookup_scope" id=link61 onMouseOver="ShowTip(event, 'tt41', 'link61')" onMouseOut="HideTip('tt41')">lookup_scope</a></td><td class=SDescription>This is a utility function that answers the question: For a given <i>scope</i>, what resources are visible to it?&nbsp; </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.lookup_scope" id=link54 onMouseOver="ShowTip(event, 'tt36', 'link54')" onMouseOut="HideTip('tt36')">lookup_scope</a></td><td class=SDescription>This is a utility function that answers the question: For a given <i>scope</i>, what resources are visible to it?&nbsp; </td></tr>
   <!-- index=49 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_pool.Set_Priority" >Set Priority</a></td><td class=SDescription>Functions for altering the search priority of resources. </td></tr>
   <!-- index=50 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.set_priority_type" id=link62 onMouseOver="ShowTip(event, 'tt42', 'link62')" onMouseOut="HideTip('tt42')">set_priority_type</a></td><td class=SDescription>Change the priority of the <i>rsrc</i> based on the value of <i>pri</i>, the priority enum argument. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.set_priority_type" id=link55 onMouseOver="ShowTip(event, 'tt42', 'link55')" onMouseOut="HideTip('tt42')">set_priority_type</a></td><td class=SDescription>Change the priority of the <i>rsrc</i> based on the value of <i>pri</i>, the priority enum argument. </td></tr>
   <!-- index=51 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.set_priority_name" id=link63 onMouseOver="ShowTip(event, 'tt43', 'link63')" onMouseOut="HideTip('tt43')">set_priority_name</a></td><td class=SDescription>Change the priority of the <i>rsrc</i> based on the value of <i>pri</i>, the priority enum argument. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.set_priority_name" id=link56 onMouseOver="ShowTip(event, 'tt43', 'link56')" onMouseOut="HideTip('tt43')">set_priority_name</a></td><td class=SDescription>Change the priority of the <i>rsrc</i> based on the value of <i>pri</i>, the priority enum argument. </td></tr>
   <!-- index=52 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.set_priority" id=link64 onMouseOver="ShowTip(event, 'tt44', 'link64')" onMouseOut="HideTip('tt44')">set_priority</a></td><td class=SDescription>Change the search priority of the <i>rsrc</i> based on the value of <i>pri</i>, the priority enum argument. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.set_priority" id=link57 onMouseOver="ShowTip(event, 'tt44', 'link57')" onMouseOut="HideTip('tt44')">set_priority</a></td><td class=SDescription>Change the search priority of the <i>rsrc</i> based on the value of <i>pri</i>, the priority enum argument. </td></tr>
   <!-- index=53 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource_pool.Debug" >Debug</a></td><td class=SDescription></td></tr>
   <!-- index=54 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.find_unused_resources" id=link65 onMouseOver="ShowTip(event, 'tt45', 'link65')" onMouseOut="HideTip('tt45')">find_unused_resources</a></td><td class=SDescription>Locate all the resources that have at least one write and no reads</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.find_unused_resources" id=link58 onMouseOver="ShowTip(event, 'tt45', 'link58')" onMouseOut="HideTip('tt45')">find_unused_resources</a></td><td class=SDescription>Locate all the resources that have at least one write and no reads</td></tr>
   <!-- index=55 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.print_resources" id=link66 onMouseOver="ShowTip(event, 'tt46', 'link66')" onMouseOut="HideTip('tt46')">print_resources</a></td><td class=SDescription>Print the resources that are in a single queue, <i>rq</i>. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource_pool.print_resources" id=link59 onMouseOver="ShowTip(event, 'tt46', 'link59')" onMouseOut="HideTip('tt46')">print_resources</a></td><td class=SDescription>Print the resources that are in a single queue, <i>rq</i>. </td></tr>
   <!-- index=56 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.dump" id=link67 onMouseOver="ShowTip(event, 'tt47', 'link67')" onMouseOut="HideTip('tt47')">dump</a></td><td class=SDescription>dump the entire resource pool. </td></tr></table></div></div><!--END_ND_SUMMARY-->
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource_pool.dump" id=link60 onMouseOver="ShowTip(event, 'tt47', 'link60')" onMouseOut="HideTip('tt47')">dump</a></td><td class=SDescription>dump the entire resource pool. </td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
 
 
 
 
- <!--CONTENT index=33 -->
+ <!--CONTENT index=32 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.get" href="../../../../src/base/uvm_resource.svh">get</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function uvm_resource_pool get()
   </td></tr></table></blockquote><div class=CBody><p>Returns the singleton handle to the resource pool</p></div></div></div>
@@ -581,7 +588,7 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 
 
 
- <!--CONTENT index=34 -->
+ <!--CONTENT index=33 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.spell_check" href="../../../../src/base/uvm_resource.svh">spell_check</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -595,27 +602,35 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 
 
 
- <!--CONTENT index=35 -->
+ <!--CONTENT index=34 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.Set" href="../../../../src/base/uvm_resource.svh">Set</a></h3></div></div>
 
 
 
 
- <!--CONTENT index=36 -->
+ <!--CONTENT index=35 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.set" href="../../../../src/base/uvm_resource.svh">set</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set (</td>      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
+      <td class=PBeforeParameters nowrap>function void set (</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
       <td class=PParameter nowrap>rsrc,</td>
-      <td class=PAfterParameters nowrap></td></tr>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+</tr><tr><td></td>      <td class=PTypePrefix nowrap>uvm_resource_types::</td>
+      <td class=PType nowrap>override_t&nbsp;</td>
+      <td class=PParameter nowrap>override</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Add a new resource to the resource pool.&nbsp;  The resource is inserted into both the name map and type map so it can be located by either.</p><p>An object creates a resources and <i>sets</i> it into the resource pool.&nbsp; Later, other objects that want to access the resource must <i>get</i> it from the pool</p><p>Overrides can be specified using this interface.&nbsp;  Either a name override, a type override or both can be specified.&nbsp;  If an override is specified then the resource is entered at the front of the queue instead of at the back.&nbsp;  It is not recommended that users specify the override paramterer directly, rather they use the <a href="#uvm_resource_pool.set_override" class=LMethod id=link74 onMouseOver="ShowTip(event, 'tt31', 'link74')" onMouseOut="HideTip('tt31')">set_override</a>, <a href="#uvm_resource_pool.set_name_override" class=LMethod id=link75 onMouseOver="ShowTip(event, 'tt32', 'link75')" onMouseOut="HideTip('tt32')">set_name_override</a>, or <a href="#uvm_resource_pool.set_type_override" class=LMethod id=link76 onMouseOver="ShowTip(event, 'tt33', 'link76')" onMouseOut="HideTip('tt33')">set_type_override</a> functions.</p></div></div></div>
+<div class=CBody><p>Add a new resource to the resource pool.&nbsp;  The resource is inserted into both the name map and type map so it can be located by either.</p><p>An object creates a resources and <i>sets</i> it into the resource pool.&nbsp; Later, other objects that want to access the resource must <i>get</i> it from the pool</p><p>Overrides can be specified using this interface.&nbsp;  Either a name override, a type override or both can be specified.&nbsp;  If an override is specified then the resource is entered at the front of the queue instead of at the back.&nbsp;  It is not recommended that users specify the override paramterer directly, rather they use the <a href="#uvm_resource_pool.set_override" class=LMethod id=link67 onMouseOver="ShowTip(event, 'tt30', 'link67')" onMouseOut="HideTip('tt30')">set_override</a>, <a href="#uvm_resource_pool.set_name_override" class=LMethod id=link68 onMouseOver="ShowTip(event, 'tt31', 'link68')" onMouseOut="HideTip('tt31')">set_name_override</a>, or <a href="#uvm_resource_pool.set_type_override" class=LMethod id=link69 onMouseOver="ShowTip(event, 'tt32', 'link69')" onMouseOut="HideTip('tt32')">set_type_override</a> functions.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=37 -->
+ <!--CONTENT index=36 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.set_override" href="../../../../src/base/uvm_resource.svh">set_override</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -629,7 +644,7 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 
 
 
- <!--CONTENT index=38 -->
+ <!--CONTENT index=37 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.set_name_override" href="../../../../src/base/uvm_resource.svh">set_name_override</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -643,7 +658,7 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 
 
 
- <!--CONTENT index=39 -->
+ <!--CONTENT index=38 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.set_type_override" href="../../../../src/base/uvm_resource.svh">set_type_override</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -657,37 +672,43 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 
 
 
+ <!--CONTENT index=39 -->
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.Lookup" href="../../../../src/base/uvm_resource.svh">Lookup</a></h3><div class=CBody><p>This group of functions is for finding resources in the resource database.</p><p><a href="#uvm_resource_pool.lookup_name" class=LMethod id=link70 onMouseOver="ShowTip(event, 'tt33', 'link70')" onMouseOut="HideTip('tt33')">lookup_name</a> and <a href="#uvm_resource_pool.lookup_type" class=LMethod id=link71 onMouseOver="ShowTip(event, 'tt38', 'link71')" onMouseOut="HideTip('tt38')">lookup_type</a> locate the set of resources that matches the name or type (respectively) and is visible in the current scope.&nbsp;  These functions return a queue of resources.</p><p><a href="#uvm_resource_pool.get_highest_precedence" class=LMethod id=link72 onMouseOver="ShowTip(event, 'tt34', 'link72')" onMouseOut="HideTip('tt34')">get_highest_precedence</a> traverese a queue of resources and returns the one with the highest precedence -- i.e. the one whose precedence member has the highest value.</p><p><a href="#uvm_resource_pool.get_by_name" class=LMethod id=link73 onMouseOver="ShowTip(event, 'tt37', 'link73')" onMouseOut="HideTip('tt37')">get_by_name</a> and <a href="#uvm_resource_pool.get_by_type" class=LMethod id=link74 onMouseOver="ShowTip(event, 'tt39', 'link74')" onMouseOut="HideTip('tt39')">get_by_type</a> use <a href="#uvm_resource_pool.lookup_name" class=LMethod id=link75 onMouseOver="ShowTip(event, 'tt33', 'link75')" onMouseOut="HideTip('tt33')">lookup_name</a> and <a href="#uvm_resource_pool.lookup_type" class=LMethod id=link76 onMouseOver="ShowTip(event, 'tt38', 'link76')" onMouseOut="HideTip('tt38')">lookup_type</a> (respectively) and <a href="#uvm_resource_pool.get_highest_precedence" class=LMethod id=link77 onMouseOver="ShowTip(event, 'tt34', 'link77')" onMouseOut="HideTip('tt34')">get_highest_precedence</a> to find the resource with the highest priority that matches the other search criteria.</p></div></div></div>
+
+
+
+
  <!--CONTENT index=40 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.Lookup" href="../../../../src/base/uvm_resource.svh">Lookup</a></h3><div class=CBody><p>This group of functions is for finding resources in the resource database.</p><p><a href="#uvm_resource_pool.lookup_name" class=LMethod id=link77 onMouseOver="ShowTip(event, 'tt34', 'link77')" onMouseOut="HideTip('tt34')">lookup_name</a> and <a href="#uvm_resource_pool.lookup_type" class=LMethod id=link78 onMouseOver="ShowTip(event, 'tt37', 'link78')" onMouseOut="HideTip('tt37')">lookup_type</a> locate the set of resources that matches the name or type (respectively) and is visible in the current scope.&nbsp;  These functions return a queue of resources.</p><p><a href="#uvm_resource_pool.get_highest_precedence" class=LMethod id=link79 onMouseOver="ShowTip(event, 'tt35', 'link79')" onMouseOut="HideTip('tt35')">get_highest_precedence</a> traverese a queue of resources and returns the one with the highest precedence -- i.e. the one whose precedence member has the highest value.</p><p><a href="#uvm_resource_pool.get_by_name" class=LMethod id=link80 onMouseOver="ShowTip(event, 'tt36', 'link80')" onMouseOut="HideTip('tt36')">get_by_name</a> and <a href="#uvm_resource_pool.get_by_type" class=LMethod id=link81 onMouseOver="ShowTip(event, 'tt38', 'link81')" onMouseOut="HideTip('tt38')">get_by_type</a> use <a href="#uvm_resource_pool.lookup_name" class=LMethod id=link82 onMouseOver="ShowTip(event, 'tt34', 'link82')" onMouseOut="HideTip('tt34')">lookup_name</a> and <a href="#uvm_resource_pool.lookup_type" class=LMethod id=link83 onMouseOver="ShowTip(event, 'tt37', 'link83')" onMouseOut="HideTip('tt37')">lookup_type</a> (respectively) and <a href="#uvm_resource_pool.get_highest_precedence" class=LMethod id=link84 onMouseOver="ShowTip(event, 'tt35', 'link84')" onMouseOut="HideTip('tt35')">get_highest_precedence</a> to find the resource with the highest priority that matches the other search criteria.</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.lookup_name" href="../../../../src/base/uvm_resource.svh">lookup_name</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters colspan=5>function uvm_resource_types::rsrc_q_t lookup_name(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>scope</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>name,</td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
+      <td class=PParameter nowrap>type_handle</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> null,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>rpterr</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 1</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+<div class=CBody><p>Lookup resources by <i>name</i>.&nbsp;  Returns a queue of resources that match the <i>name</i>, <i>scope</i>, and <i>type_handle</i>.&nbsp;  If no resources match the queue is returned empty.&nbsp; If <i>rpterr</i> is set then a warning is issued if no matches are found, and the spell checker is invoked on <i>name</i>.&nbsp;  If <i>type_handle</i> is null then a type check is not made and resources are returned that match only <i>name</i> and <i>scope</i>.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=41 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.lookup_name" href="../../../../src/base/uvm_resource.svh">lookup_name</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
-      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_resource_types::rsrc_q_t lookup_name(</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>scope</td>
-      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
-      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
-      <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>bit&nbsp;</td>
-      <td class=PParameter nowrap>rpterr</td>
-      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
-      <td class=PDefaultValue width=100%> 1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
-      </table></td></tr>
-    </table></blockquote>
-<div class=CBody><p>Lookup resources by <i>name</i>.&nbsp;  Returns a queue of resources that match the <i>name</i> and <i>scope</i>.&nbsp;  If no resources match the queue is returned empty.&nbsp; If <i>rpterr</i> is set then a warning is issued if no matches are found, and the spell checker is invoked on <i>name</i>.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=42 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.get_highest_precedence" href="../../../../src/base/uvm_resource.svh">get_highest_precedence</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -704,6 +725,21 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 
 
 
+ <!--CONTENT index=42 -->
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.sort_by_precedence" href="../../../../src/base/uvm_resource.svh">sort_by_precedence</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>static function void sort_by_precedence(</td>      <td class=PTypePrefix nowrap>ref uvm_resource_types::</td>
+      <td class=PType nowrap>rsrc_q_t&nbsp;</td>
+      <td class=PParameter nowrap>q</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+<div class=CBody><p>Given a list of resources, obtained for example from <a href="#uvm_resource_pool.lookup_scope" class=LMethod id=link78 onMouseOver="ShowTip(event, 'tt36', 'link78')" onMouseOut="HideTip('tt36')">lookup_scope</a>, sort the resources in  precedence order.&nbsp; The highest precedence resource will be first in the list and the lowest precedence will be last.&nbsp; Resources that have the same precedence and the same name will be ordered by most recently set first.</p></div></div></div>
+
+
+
+
  <!--CONTENT index=43 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.get_by_name" href="../../../../src/base/uvm_resource.svh">get_by_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
@@ -716,6 +752,10 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
       <td class=PParameter nowrap>name,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
+</tr><tr><td></td>      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
+      <td class=PParameter nowrap>type_handle,</td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
 </tr><tr><td></td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>rpterr</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
@@ -723,7 +763,7 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Lookup a resource by <i>name</i> and <i>scope</i>.&nbsp;  Whether the get succeeds or fails, save a record of the get attempt.&nbsp;  The <i>rpterr</i> flag indicates whether to report errors or not.&nbsp;  Essentially, it serves as a verbose flag.&nbsp;  If set then the spell checker will be invoked and warnings about multiple resources will be produced.</p></div></div></div>
+<div class=CBody><p>Lookup a resource by <i>name</i>, <i>scope</i>, and <i>type_handle</i>.&nbsp;  Whether the get succeeds or fails, save a record of the get attempt.&nbsp;  The <i>rpterr</i> flag indicates whether to report errors or not.&nbsp; Essentially, it serves as a verbose flag.&nbsp;  If set then the spell checker will be invoked and warnings about multiple resources will be produced.</p></div></div></div>
 
 
 
@@ -772,14 +812,24 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource_pool.lookup_regex_names" href="../../../../src/base/uvm_resource.svh">lookup_regex_names</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_resource_types::rsrc_q_t lookup_regex_names(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function uvm_resource_types::rsrc_q_t lookup_regex_names(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>scope,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>name,</td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
+      <td class=PParameter nowrap>type_handle</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> null</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>This utility function answers the question, for a given <i>name</i> and <i>scope</i>, what are all of the resources with a matching name (where the resource name may be a regular expression) and a matching scope (where the resoucre scope may be a regular expression).&nbsp; <i>name</i> and <i>scope</i> are explicit values.</p></div></div></div>
+<div class=CBody><p>This utility function answers the question, for a given <i>name</i>, <i>scope</i>,and <i>type_handle</i>, what are all of the resources with a matching name (where the resource name may be a regular expression), a matching scope (where the resoucre scope may be a regular expression), and a matching type?&nbsp; <i>name</i> and <i>scope</i> are explicit values.</p></div></div></div>
 
 
 
@@ -927,13 +977,13 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 
 
  <!--CONTENT index=57 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_resource#(T)" href="../../../../src/base/uvm_resource.svh">uvm_resource #(T)</a></h2><div class=CBody><p>Parameterized resource.&nbsp;  Provides essential access methods to read from and write to the resource database.&nbsp;  Also provides locking access methods including.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_resource#(T)" href="../../../../src/base/uvm_resource.svh">uvm_resource #(T)</a></h2><div class=CBody><p>Parameterized resource.&nbsp;  Provides essential access methods to read from and write to the resource database.</p>
 
 <!--START_ND_SUMMARY index=57-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
   <!-- index=57 -->
 
-<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_resource#(T)" id=link88 onMouseOver="ShowTip(event, 'tt4', 'link88')" onMouseOut="HideTip('tt4')">uvm_resource #(T)</a></td></tr>
+<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_resource#(T)" id=link82 onMouseOver="ShowTip(event, 'tt4', 'link82')" onMouseOut="HideTip('tt4')">uvm_resource #(T)</a></td></tr>
 <tr class=SMain><td colspan=2 class=SWideDescription>Parameterized resource. </td></tr>
 
   <!-- HIERARCHY -->
@@ -941,9 +991,9 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link85 onMouseOver="ShowTip(event, 'tt9', 'link85')" onMouseOut="HideTip('tt9')">uvm_void</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link86 onMouseOver="ShowTip(event, 'tt10', 'link86')" onMouseOut="HideTip('tt10')">uvm_object</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="#uvm_resource_base" class=LClass id=link87 onMouseOver="ShowTip(event, 'tt2', 'link87')" onMouseOut="HideTip('tt2')">uvm_resource_base</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link79 onMouseOver="ShowTip(event, 'tt9', 'link79')" onMouseOut="HideTip('tt9')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link80 onMouseOver="ShowTip(event, 'tt10', 'link80')" onMouseOut="HideTip('tt10')">uvm_object</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="#uvm_resource_base" class=LClass id=link81 onMouseOver="ShowTip(event, 'tt2', 'link81')" onMouseOut="HideTip('tt2')">uvm_resource_base</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_resource#(T)</div></div></td></tr>
         </table>
       </div>
@@ -972,34 +1022,34 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource#(T).Type_Interface" >Type Interface</a></td><td class=SDescription>Resources can be identified by type using a static type handle. </td></tr>
   <!-- index=59 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).get_type" id=link89 onMouseOver="ShowTip(event, 'tt48', 'link89')" onMouseOut="HideTip('tt48')">get_type</a></td><td class=SDescription>Static function that returns the static type handle. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).get_type" id=link83 onMouseOver="ShowTip(event, 'tt48', 'link83')" onMouseOut="HideTip('tt48')">get_type</a></td><td class=SDescription>Static function that returns the static type handle. </td></tr>
   <!-- index=60 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource#(T).get_type_handle" id=link90 onMouseOver="ShowTip(event, 'tt49', 'link90')" onMouseOut="HideTip('tt49')">get_type_handle</a></td><td class=SDescription>Returns the static type handle of this resource in a polymorphic fashion. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource#(T).get_type_handle" id=link84 onMouseOver="ShowTip(event, 'tt49', 'link84')" onMouseOut="HideTip('tt49')">get_type_handle</a></td><td class=SDescription>Returns the static type handle of this resource in a polymorphic fashion. </td></tr>
   <!-- index=61 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource#(T).Set/Get_Interface" >Set/<span class=HB> </span>Get Interface</a></td><td class=SDescription>uvm_resource#(T) provides an interface for setting and getting a resources. </td></tr>
   <!-- index=62 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).set" id=link91 onMouseOver="ShowTip(event, 'tt50', 'link91')" onMouseOut="HideTip('tt50')">set</a></td><td class=SDescription>Simply put this resource into the global resource pool</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).set" id=link85 onMouseOver="ShowTip(event, 'tt50', 'link85')" onMouseOut="HideTip('tt50')">set</a></td><td class=SDescription>Simply put this resource into the global resource pool</td></tr>
   <!-- index=63 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource#(T).set_override" id=link92 onMouseOver="ShowTip(event, 'tt51', 'link92')" onMouseOut="HideTip('tt51')">set_override</a></td><td class=SDescription>Put a resource into the global resource pool as an override. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource#(T).set_override" id=link86 onMouseOver="ShowTip(event, 'tt51', 'link86')" onMouseOut="HideTip('tt51')">set_override</a></td><td class=SDescription>Put a resource into the global resource pool as an override. </td></tr>
   <!-- index=64 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).get_by_name" id=link93 onMouseOver="ShowTip(event, 'tt52', 'link93')" onMouseOut="HideTip('tt52')">get_by_name</a></td><td class=SDescription>looks up a resource by <i>name</i> in the name map. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).get_by_name" id=link87 onMouseOver="ShowTip(event, 'tt52', 'link87')" onMouseOut="HideTip('tt52')">get_by_name</a></td><td class=SDescription>looks up a resource by <i>name</i> in the name map. </td></tr>
   <!-- index=65 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource#(T).get_by_type" id=link94 onMouseOver="ShowTip(event, 'tt53', 'link94')" onMouseOut="HideTip('tt53')">get_by_type</a></td><td class=SDescription>looks up a resource by <i>type_handle</i> in the type map. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource#(T).get_by_type" id=link88 onMouseOver="ShowTip(event, 'tt53', 'link88')" onMouseOut="HideTip('tt53')">get_by_type</a></td><td class=SDescription>looks up a resource by <i>type_handle</i> in the type map. </td></tr>
   <!-- index=66 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource#(T).Read/Write_Interface" >Read/<span class=HB> </span>Write Interface</a></td><td class=SDescription><a href="#uvm_resource#(T).read" class=LMethod id=link95 onMouseOver="ShowTip(event, 'tt54', 'link95')" onMouseOut="HideTip('tt54')">read</a> and <a href="#uvm_resource#(T).write" class=LMethod id=link96 onMouseOver="ShowTip(event, 'tt21', 'link96')" onMouseOut="HideTip('tt21')">write</a> provide a type-safe interface for getting and setting the object in the resource container. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource#(T).Read/Write_Interface" >Read/<span class=HB> </span>Write Interface</a></td><td class=SDescription><a href="#uvm_resource#(T).read" class=LMethod id=link89 onMouseOver="ShowTip(event, 'tt54', 'link89')" onMouseOut="HideTip('tt54')">read</a> and <a href="#uvm_resource#(T).write" class=LMethod id=link90 onMouseOver="ShowTip(event, 'tt18', 'link90')" onMouseOut="HideTip('tt18')">write</a> provide a type-safe interface for getting and setting the object in the resource container. </td></tr>
   <!-- index=67 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).read" id=link97 onMouseOver="ShowTip(event, 'tt54', 'link97')" onMouseOut="HideTip('tt54')">read</a></td><td class=SDescription>Return the object stored in the resource container. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).read" id=link91 onMouseOver="ShowTip(event, 'tt54', 'link91')" onMouseOut="HideTip('tt54')">read</a></td><td class=SDescription>Return the object stored in the resource container. </td></tr>
   <!-- index=68 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource#(T).write" id=link98 onMouseOver="ShowTip(event, 'tt21', 'link98')" onMouseOut="HideTip('tt21')">write</a></td><td class=SDescription>Modify the object stored in this resource container. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource#(T).write" id=link92 onMouseOver="ShowTip(event, 'tt18', 'link92')" onMouseOut="HideTip('tt18')">write</a></td><td class=SDescription>Modify the object stored in this resource container. </td></tr>
   <!-- index=69 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource#(T).Priority" >Priority</a></td><td class=SDescription>Functions for manipulating the search priority of resources. </td></tr>
@@ -1008,29 +1058,14 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 <tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).set_priority" >set priority</a></td><td class=SDescription>Change the search priority of the resource based on the value of the priority enum argument, <i>pri</i>.</td></tr>
   <!-- index=71 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_resource#(T).Locking_Interface" >Locking Interface</a></td><td class=SDescription>This interface is optional, you can choose to lock a resource or not. </td></tr>
-  <!-- index=72 -->
-
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).read_with_loc;" >read_with_loc;</a></td><td class=SDescription>Locking version of read(). </td></tr>
-  <!-- index=73 -->
-
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource#(T).try_read_with_lock" id=link99 onMouseOver="ShowTip(event, 'tt55', 'link99')" onMouseOut="HideTip('tt55')">try_read_with_lock</a></td><td class=SDescription>Nonblocking form of read_with_lock(). </td></tr>
-  <!-- index=74 -->
-
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).write_with_lock" id=link100 onMouseOver="ShowTip(event, 'tt56', 'link100')" onMouseOut="HideTip('tt56')">write_with_lock</a></td><td class=SDescription>Locking form of write(). </td></tr>
-  <!-- index=75 -->
-
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource#(T).try_write_with_lock" id=link101 onMouseOver="ShowTip(event, 'tt57', 'link101')" onMouseOut="HideTip('tt57')">try_write_with_lock</a></td><td class=SDescription>Nonblocking form of write_with_lock(). </td></tr>
-  <!-- index=76 -->
-
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_resource#(T).get_highest_precedence" id=link102 onMouseOver="ShowTip(event, 'tt58', 'link102')" onMouseOut="HideTip('tt58')">get_highest_precedence</a></td><td class=SDescription>In a queue of resources, locate the first one with the highest precedence whose type is T. </td></tr></table></div></div><!--END_ND_SUMMARY-->
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_resource#(T).get_highest_precedence" id=link93 onMouseOver="ShowTip(event, 'tt55', 'link93')" onMouseOut="HideTip('tt55')">get_highest_precedence</a></td><td class=SDescription>In a queue of resources, locate the first one with the highest precedence whose type is T. </td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
 
 
 
 
  <!--CONTENT index=58 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource#(T).Type_Interface" href="../../../../src/base/uvm_resource.svh">Type Interface</a></h3><div class=CBody><p>Resources can be identified by type using a static type handle.&nbsp; The parent class provides the virtual function interface <a href="#uvm_resource#(T).get_type_handle" class=LMethod id=link103 onMouseOver="ShowTip(event, 'tt49', 'link103')" onMouseOut="HideTip('tt49')">get_type_handle</a>.&nbsp;  Here we implement it by returning the static type handle.</p></div></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource#(T).Type_Interface" href="../../../../src/base/uvm_resource.svh">Type Interface</a></h3><div class=CBody><p>Resources can be identified by type using a static type handle.&nbsp; The parent class provides the virtual function interface <a href="#uvm_resource#(T).get_type_handle" class=LMethod id=link94 onMouseOver="ShowTip(event, 'tt49', 'link94')" onMouseOut="HideTip('tt49')">get_type_handle</a>.&nbsp;  Here we implement it by returning the static type handle.</p></div></div></div>
 
 
 
@@ -1092,7 +1127,7 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>looks up a resource by <i>name</i> in the name map.&nbsp; The first resource with the specified name that is visible in the specified <i>scope</i> is returned, if one exists.&nbsp;  The <i>rpterr</i> flag indicates whether or not an error should be reported if the search fails.&nbsp;  If <i>rpterr</i> is set to one then a failure message is issued, including suggested spelling alternatives, based on resource names that exist in the database, gathered by the spell checker.</p></div></div></div>
+<div class=CBody><p>looks up a resource by <i>name</i> in the name map.&nbsp; The first resource with the specified nam, whose type is the current type, and is visible in the specified <i>scope</i> is returned, if one exists.&nbsp;  The <i>rpterr</i> flag indicates whether or not an error should be reported if the search fails.&nbsp;  If <i>rpterr</i> is set to one then a failure message is issued, including suggested spelling alternatives, based on resource names that exist in the database, gathered by the spell checker.</p></div></div></div>
 
 
 
@@ -1118,7 +1153,7 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 
 
  <!--CONTENT index=66 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource#(T).Read/Write_Interface" href="../../../../src/base/uvm_resource.svh">Read/<span class=HB> </span>Write Interface</a></h3><div class=CBody><p><a href="#uvm_resource#(T).read" class=LMethod id=link104 onMouseOver="ShowTip(event, 'tt54', 'link104')" onMouseOut="HideTip('tt54')">read</a> and <a href="#uvm_resource#(T).write" class=LMethod id=link105 onMouseOver="ShowTip(event, 'tt21', 'link105')" onMouseOut="HideTip('tt21')">write</a> provide a type-safe interface for getting and setting the object in the resource container.&nbsp;  The interface is type safe because the value argument for <a href="#uvm_resource#(T).write" class=LMethod id=link106 onMouseOver="ShowTip(event, 'tt21', 'link106')" onMouseOut="HideTip('tt21')">write</a> and the return value of <a href="#uvm_resource#(T).read" class=LMethod id=link107 onMouseOver="ShowTip(event, 'tt54', 'link107')" onMouseOut="HideTip('tt54')">read</a> are T, the type supplied in the class parameter.&nbsp; If either of these functions is used in an incorrect type context the compiler will complain.</p></div></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource#(T).Read/Write_Interface" href="../../../../src/base/uvm_resource.svh">Read/<span class=HB> </span>Write Interface</a></h3><div class=CBody><p><a href="#uvm_resource#(T).read" class=LMethod id=link95 onMouseOver="ShowTip(event, 'tt54', 'link95')" onMouseOut="HideTip('tt54')">read</a> and <a href="#uvm_resource#(T).write" class=LMethod id=link96 onMouseOver="ShowTip(event, 'tt18', 'link96')" onMouseOut="HideTip('tt18')">write</a> provide a type-safe interface for getting and setting the object in the resource container.&nbsp;  The interface is type safe because the value argument for <a href="#uvm_resource#(T).write" class=LMethod id=link97 onMouseOver="ShowTip(event, 'tt18', 'link97')" onMouseOut="HideTip('tt18')">write</a> and the return value of <a href="#uvm_resource#(T).read" class=LMethod id=link98 onMouseOver="ShowTip(event, 'tt54', 'link98')" onMouseOut="HideTip('tt54')">read</a> are T, the type supplied in the class parameter.&nbsp; If either of these functions is used in an incorrect type context the compiler will complain.</p></div></div></div>
 
 
 
@@ -1154,7 +1189,7 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Modify the object stored in this resource container.&nbsp;  If the resource is read-only then issue an error message and return without modifying the object in the container.&nbsp;  If the resource is not read-only and an <i>accessor</i> object has been supplied then also update the accessor record.&nbsp;  Lastly, replace the object value in the container with the value supplied as the  argument, <i>t</i>, and release any processes blocked on <a href="#uvm_resource_base.wait_modified" class=LMethod id=link108 onMouseOver="ShowTip(event, 'tt20', 'link108')" onMouseOut="HideTip('tt20')">uvm_resource_base::wait_modified</a>.</p></div></div></div>
+<div class=CBody><p>Modify the object stored in this resource container.&nbsp;  If the resource is read-only then issue an error message and return without modifying the object in the container.&nbsp;  If the resource is not read-only and an <i>accessor</i> object has been supplied then also update the accessor record.&nbsp;  Lastly, replace the object value in the container with the value supplied as the  argument, <i>t</i>, and release any processes blocked on <a href="#uvm_resource_base.wait_modified" class=LMethod id=link99 onMouseOver="ShowTip(event, 'tt17', 'link99')" onMouseOut="HideTip('tt17')">uvm_resource_base::wait_modified</a>.</p></div></div></div>
 
 
 
@@ -1172,84 +1207,6 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
 
 
  <!--CONTENT index=71 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_resource#(T).Locking_Interface" href="../../../../src/base/uvm_resource.svh">Locking Interface</a></h3><div class=CBody><p>This interface is optional, you can choose to lock a resource or not.&nbsp; These methods are wrappers around the read/write interface.&nbsp; The difference between read/write interface and the locking interface is the use of a semaphore to guarantee exclusive access.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=72 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource#(T).read_with_loc;" href="../../../../src/base/uvm_resource.svh">read_with_loc;</a></h3><div class=CBody><p>Locking version of read().&nbsp;  Like read(), this returns the contents of the resource container.&nbsp;  In addtion it obeys the lock.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=73 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource#(T).try_read_with_lock" href="../../../../src/base/uvm_resource.svh">try_read_with_lock</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
-      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function bit try_read_with_lock(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
-      <td class=PType nowrap>T&nbsp;</td>
-      <td class=PParameter nowrap>t,</td>
-      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
-      <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
-      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>accessor</td>
-      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
-      <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
-      </table></td></tr>
-    </table></blockquote>
-<div class=CBody><p>Nonblocking form of read_with_lock().&nbsp;  If the lock is availble it grabs the lock and returns one.&nbsp;  If the lock is not available then it returns a 0.&nbsp;  In either case the return is immediate with no blocking.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=74 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource#(T).write_with_lock" href="../../../../src/base/uvm_resource.svh">write_with_lock</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
-      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task write_with_lock (</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
-      <td class=PType nowrap>T&nbsp;</td>
-      <td class=PParameter nowrap>t,</td>
-      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
-      <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
-      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>accessor</td>
-      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
-      <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
-      </table></td></tr>
-    </table></blockquote>
-<div class=CBody><p>Locking form of write().&nbsp;  Like write(), write_with_lock() sets the contents of the resource container.&nbsp;  In addition it locks the resource before doing the write and unlocks it when the write is complete.&nbsp;  If the lock is currently not available write_with_lock() will block until it is.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=75 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource#(T).try_write_with_lock" href="../../../../src/base/uvm_resource.svh">try_write_with_lock</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
-      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function bit try_write_with_lock(</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
-      <td class=PType nowrap>T&nbsp;</td>
-      <td class=PParameter nowrap>t,</td>
-      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
-      <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
-      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>accessor</td>
-      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
-      <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
-      </table></td></tr>
-    </table></blockquote>
-<div class=CBody><p>Nonblocking form of write_with_lock().&nbsp; If the lock is available then the write() occurs immediately and a one is returned.&nbsp;  If the lock is not available then the write does not occur and a zero is returned.&nbsp;  IN either case try_write_with_lock() returns immediately with no blocking.</p></div></div></div>
-
-
-
-
- <!--CONTENT index=76 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_resource#(T).get_highest_precedence" href="../../../../src/base/uvm_resource.svh">get_highest_precedence</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -1313,18 +1270,12 @@ Parameterized resource. </div></div><div class=CToolTip id="tt5"><div class=CCla
 constructor for uvm_resource_base. </div></div><div class=CToolTip id="tt14"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>pure virtual function uvm_resource_base get_type_handle()
   </td></tr></table></blockquote>Pure virtual function that returns the type handle of the resource container.</div></div><div class=CToolTip id="tt15"><div class=CMethod>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>task lock()
-  </td></tr></table></blockquote>Retrieves a lock for this resource. </div></div><div class=CToolTip id="tt16"><div class=CMethod>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit try_lock()
-  </td></tr></table></blockquote>Retrives the lock for this resource. </div></div><div class=CToolTip id="tt17"><div class=CMethod>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function void unlock()
-  </td></tr></table></blockquote>Releases the lock held by this semaphore.</div></div><div class=CToolTip id="tt18"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function void set_read_only()
-  </td></tr></table></blockquote>Establishes this resource as a read-only resource. </div></div><div class=CToolTip id="tt19"><div class=CMethod>
+  </td></tr></table></blockquote>Establishes this resource as a read-only resource. </div></div><div class=CToolTip id="tt16"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit is_read_only()
-  </td></tr></table></blockquote>Retruns one if this resource has been set to read-only, zero otherwise</div></div><div class=CToolTip id="tt20"><div class=CMethod>
+  </td></tr></table></blockquote>Retruns one if this resource has been set to read-only, zero otherwise</div></div><div class=CToolTip id="tt17"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>task wait_modified()
-  </td></tr></table></blockquote>This task blocks until the resource has been modified -- that is, a uvm_resource#(T)::write operation has been performed. </div></div><div class=CToolTip id="tt21"><div class=CMethod>
+  </td></tr></table></blockquote>This task blocks until the resource has been modified -- that is, a uvm_resource#(T)::write operation has been performed. </div></div><div class=CToolTip id="tt18"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void write(</td>      <td class=PType nowrap>T&nbsp;</td>
@@ -1338,7 +1289,7 @@ constructor for uvm_resource_base. </div></div><div class=CToolTip id="tt14"><di
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Modify the object stored in this resource container. </div></div><div class=CToolTip id="tt22"><div class=CMethod>
+Modify the object stored in this resource container. </div></div><div class=CToolTip id="tt19"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_scope(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -1346,9 +1297,9 @@ Modify the object stored in this resource container. </div></div><div class=CToo
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Set the value of the regular expression that identifies the set of scopes over which this resource is visible. </div></div><div class=CToolTip id="tt23"><div class=CMethod>
+Set the value of the regular expression that identifies the set of scopes over which this resource is visible. </div></div><div class=CToolTip id="tt20"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_scope()
-  </td></tr></table></blockquote>Retrieve the regular expression string that identifies the set of scopes over which this resource is visible.</div></div><div class=CToolTip id="tt24"><div class=CMethod>
+  </td></tr></table></blockquote>Retrieve the regular expression string that identifies the set of scopes over which this resource is visible.</div></div><div class=CToolTip id="tt21"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function bit match_scope(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -1356,7 +1307,7 @@ Set the value of the regular expression that identifies the set of scopes over w
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Using the regular expression facility, determine if this resource is visible in a scope. </div></div><div class=CToolTip id="tt25"><div class=CMethod>
+Using the regular expression facility, determine if this resource is visible in a scope. </div></div><div class=CToolTip id="tt22"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void do_print (</td>      <td class=PType nowrap>uvm_printer&nbsp;</td>
@@ -1364,9 +1315,29 @@ Using the regular expression facility, determine if this resource is visible in 
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Implementation of do_print which is called by print().</div></div><div class=CToolTip id="tt26"><div class=CMethod>
+Implementation of do_print which is called by print().</div></div><div class=CToolTip id="tt23"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>function void record_read_access(</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PParameter nowrap>accessor</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> null</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+</div></div><div class=CToolTip id="tt24"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>function void record_write_access(</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PParameter nowrap>accessor</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> null</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+</div></div><div class=CToolTip id="tt25"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function void print_accessors()
-  </td></tr></table></blockquote>Dump the access records for this resource</div></div><div class=CToolTip id="tt27"><div class=CMethod>
+  </td></tr></table></blockquote>Dump the access records for this resource</div></div><div class=CToolTip id="tt26"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters colspan=4>function void init_access_record (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>inout uvm_resource_types::</td>
@@ -1377,9 +1348,9 @@ Implementation of do_print which is called by print().</div></div><div class=CTo
       <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Initalize a new access record</div></div><div class=CToolTip id="tt28"><div class=CMethod>
+Initalize a new access record</div></div><div class=CToolTip id="tt27"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function uvm_resource_pool get()
-  </td></tr></table></blockquote>Returns the singleton handle to the resource pool</div></div><div class=CToolTip id="tt29"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the singleton handle to the resource pool</div></div><div class=CToolTip id="tt28"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function bit spell_check(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -1387,15 +1358,23 @@ Initalize a new access record</div></div><div class=CToolTip id="tt28"><div clas
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Invokes the spell checker for a string s. </div></div><div class=CToolTip id="tt30"><div class=CMethod>
+Invokes the spell checker for a string s. </div></div><div class=CToolTip id="tt29"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set (</td>      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
+      <td class=PBeforeParameters nowrap>function void set (</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
       <td class=PParameter nowrap>rsrc,</td>
-      <td class=PAfterParameters nowrap></td></tr>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+</tr><tr><td></td>      <td class=PTypePrefix nowrap>uvm_resource_types::</td>
+      <td class=PType nowrap>override_t&nbsp;</td>
+      <td class=PParameter nowrap>override</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Add a new resource to the resource pool. </div></div><div class=CToolTip id="tt31"><div class=CMethod>
+Add a new resource to the resource pool. </div></div><div class=CToolTip id="tt30"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_override(</td>      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
@@ -1403,7 +1382,7 @@ Add a new resource to the resource pool. </div></div><div class=CToolTip id="tt3
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The resource provided as an argument will be entered into the pool and will override both by name and type.</div></div><div class=CToolTip id="tt32"><div class=CMethod>
+The resource provided as an argument will be entered into the pool and will override both by name and type.</div></div><div class=CToolTip id="tt31"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_name_override(</td>      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
@@ -1411,7 +1390,7 @@ The resource provided as an argument will be entered into the pool and will over
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The resource provided as an argument will entered into the pool using normal precedence in the type map and will override the name.</div></div><div class=CToolTip id="tt33"><div class=CMethod>
+The resource provided as an argument will entered into the pool using normal precedence in the type map and will override the name.</div></div><div class=CToolTip id="tt32"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_type_override(</td>      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
@@ -1419,25 +1398,31 @@ The resource provided as an argument will entered into the pool using normal pre
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The resource provided as an argument will be entered into the pool using noraml precedence in the name map and will override the type.</div></div><div class=CToolTip id="tt34"><div class=CMethod>
+The resource provided as an argument will be entered into the pool using noraml precedence in the name map and will override the type.</div></div><div class=CToolTip id="tt33"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_resource_types::rsrc_q_t lookup_name(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function uvm_resource_types::rsrc_q_t lookup_name(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>scope</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>bit&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
+      <td class=PParameter nowrap>type_handle</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> null,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>rpterr</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Lookup resources by <i>name</i>. </div></div><div class=CToolTip id="tt35"><div class=CMethod>
+Lookup resources by <i>name</i>. </div></div><div class=CToolTip id="tt34"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters colspan=4>function uvm_resource_base get_highest_precedence(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref uvm_resource_types::</td>
@@ -1448,7 +1433,24 @@ Lookup resources by <i>name</i>. </div></div><div class=CToolTip id="tt35"><div 
       <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Traverse a queue, <i>q</i>, of resources and return the one with the highest precedence. </div></div><div class=CToolTip id="tt36"><div class=CMethod>
+Traverse a queue, <i>q</i>, of resources and return the one with the highest precedence. </div></div><div class=CToolTip id="tt35"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>static function void sort_by_precedence(</td>      <td class=PTypePrefix nowrap>ref uvm_resource_types::</td>
+      <td class=PType nowrap>rsrc_q_t&nbsp;</td>
+      <td class=PParameter nowrap>q</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+Given a list of resources, obtained for example from lookup_scope, sort the resources in  precedence order. </div></div><div class=CToolTip id="tt36"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>function uvm_resource_types::rsrc_q_t lookup_scope(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>scope</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+This is a utility function that answers the question: For a given <i>scope</i>, what resources are visible to it?&nbsp; </div></div><div class=CToolTip id="tt37"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_resource_base get_by_name(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -1459,6 +1461,10 @@ Traverse a queue, <i>q</i>, of resources and return the one with the highest pre
       <td class=PParameter nowrap>name,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
+</tr><tr><td></td>      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
+      <td class=PParameter nowrap>type_handle,</td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
 </tr><tr><td></td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>rpterr</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
@@ -1466,7 +1472,7 @@ Traverse a queue, <i>q</i>, of resources and return the one with the highest pre
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Lookup a resource by <i>name</i> and <i>scope</i>. </div></div><div class=CToolTip id="tt37"><div class=CMethod>
+Lookup a resource by <i>name</i>, <i>scope</i>, and <i>type_handle</i>. </div></div><div class=CToolTip id="tt38"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_resource_types::rsrc_q_t lookup_type(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -1480,7 +1486,7 @@ Lookup a resource by <i>name</i> and <i>scope</i>. </div></div><div class=CToolT
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Lookup resources by type. </div></div><div class=CToolTip id="tt38"><div class=CMethod>
+Lookup resources by type. </div></div><div class=CToolTip id="tt39"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_resource_base get_by_type(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -1494,17 +1500,27 @@ Lookup resources by type. </div></div><div class=CToolTip id="tt38"><div class=C
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Lookup a resource by <i>type_handle</i> and <i>scope</i>. </div></div><div class=CToolTip id="tt39"><div class=CMethod>
+Lookup a resource by <i>type_handle</i> and <i>scope</i>. </div></div><div class=CToolTip id="tt40"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_resource_types::rsrc_q_t lookup_regex_names(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function uvm_resource_types::rsrc_q_t lookup_regex_names(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>scope,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>name,</td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_resource_base&nbsp;</td>
+      <td class=PParameter nowrap>type_handle</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> null</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-This utility function answers the question, for a given <i>name</i> and <i>scope</i>, what are all of the resources with a matching name (where the resource name may be a regular expression) and a matching scope (where the resoucre scope may be a regular expression). </div></div><div class=CToolTip id="tt40"><div class=CMethod>
+This utility function answers the question, for a given <i>name</i>, <i>scope</i>,and <i>type_handle</i>, what are all of the resources with a matching name (where the resource name may be a regular expression), a matching scope (where the resoucre scope may be a regular expression), and a matching type?&nbsp; </div></div><div class=CToolTip id="tt41"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_resource_types::rsrc_q_t lookup_regex(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -1514,15 +1530,7 @@ This utility function answers the question, for a given <i>name</i> and <i>scope
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Looks for all the resources whose name matches the regular expression argument and whose scope matches the current scope.</div></div><div class=CToolTip id="tt41"><div class=CMethod>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
-      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_resource_types::rsrc_q_t lookup_scope(</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>scope</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
-      </table></td></tr>
-    </table></blockquote>
-This is a utility function that answers the question: For a given <i>scope</i>, what resources are visible to it?&nbsp; </div></div><div class=CToolTip id="tt42"><div class=CMethod>
+Looks for all the resources whose name matches the regular expression argument and whose scope matches the current scope.</div></div><div class=CToolTip id="tt42"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_priority_type(</td>      <td class=PTypePrefix nowrap></td>
@@ -1637,54 +1645,6 @@ looks up a resource by <i>type_handle</i> in the type map. </div></div><div clas
       </table></td></tr>
     </table></blockquote>
 Return the object stored in the resource container. </div></div><div class=CToolTip id="tt55"><div class=CMethod>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
-      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function bit try_read_with_lock(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
-      <td class=PType nowrap>T&nbsp;</td>
-      <td class=PParameter nowrap>t,</td>
-      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
-      <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
-      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>accessor</td>
-      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
-      <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
-      </table></td></tr>
-    </table></blockquote>
-Nonblocking form of read_with_lock(). </div></div><div class=CToolTip id="tt56"><div class=CMethod>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
-      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task write_with_lock (</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
-      <td class=PType nowrap>T&nbsp;</td>
-      <td class=PParameter nowrap>t,</td>
-      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
-      <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
-      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>accessor</td>
-      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
-      <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
-      </table></td></tr>
-    </table></blockquote>
-Locking form of write(). </div></div><div class=CToolTip id="tt57"><div class=CMethod>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
-      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function bit try_write_with_lock(</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
-      <td class=PType nowrap>T&nbsp;</td>
-      <td class=PParameter nowrap>t,</td>
-      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
-      <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
-      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>accessor</td>
-      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
-      <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
-      </table></td></tr>
-    </table></blockquote>
-Nonblocking form of write_with_lock(). </div></div><div class=CToolTip id="tt58"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters colspan=4>static function this_type get_highest_precedence(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref uvm_resource_types::</td>

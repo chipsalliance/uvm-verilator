@@ -50,11 +50,42 @@
 //
 //| `uvm_do(SEQ_OR_ITEM)
 //
-// This macro takes as an argument a uvm_sequence_item variable or object.  
-// uvm_sequence_item's are randomized ~at the time~ the sequencer grants the
-// do request. This is called late-randomization or late-generation. 
-// In the case of a sequence a sub-sequence is spawned. In the case of an item,
+// This macro takes as an argument a uvm_sequence_item variable or object.
+// The argument is created using <`uvm_create> if necessary,
+// then randomized.
+// In the case of an item, it is randomized after the call to
+// <uvm_sequence_base::start_item()> returns.
+// This is called late-randomization. 
+// In the case of a sequence, the sub-sequence is started using
+// <uvm_sequence_base::start()> with ~call_pre_post~ set to 0.
+// In the case of an item,
 // the item is sent to the driver through the associated sequencer.
+//
+// For a sequence item, the following are called, in order
+//
+//|
+//|   `uvm_create(item)
+//|   sequencer.wait_for_grant(prior) (task)
+//|   this.pre_do(1)                  (task)
+//|   item.randomize()
+//|   this.mid_do(item)               (func)
+//|   sequencer.send_request(item)    (func)
+//|   sequencer.wait_for_item_done()  (task)
+//|   this.post_do(item)              (func)
+//|
+//
+// For a sequence, the following are called, in order
+//
+//|
+//|   `uvm_create(sub_seq)
+//|   sub_seq.randomize()
+//|   sub_seq.pre_start()         (task)
+//|   this.pre_do(0)              (task)
+//|   this.mid_do(sub_seq)        (func)
+//|   sub_seq.body()              (task)
+//|   this.post_do(sub_seq)       (func)
+//|   sub_seq.post_start()        (task)
+//|
 
 `define uvm_do(SEQ_OR_ITEM) \
   `uvm_do_on_pri_with(SEQ_OR_ITEM, m_sequencer, -1, {})
@@ -167,12 +198,14 @@
 
 `define uvm_do_on_pri_with(SEQ_OR_ITEM, SEQR, PRIORITY, CONSTRAINTS) \
   begin \
+  uvm_sequence_base __seq; \
   `uvm_create_on(SEQ_OR_ITEM, SEQR) \
-  start_item(SEQ_OR_ITEM, PRIORITY);\
-  if (!SEQ_OR_ITEM.randomize() with CONSTRAINTS ) begin \
+  if (!$cast(__seq,SEQ_OR_ITEM)) start_item(SEQ_OR_ITEM, PRIORITY);\
+  if ((__seq == null || !__seq.do_not_randomize) && !SEQ_OR_ITEM.randomize() with CONSTRAINTS ) begin \
     `uvm_warning("RNDFLD", "Randomization failed in uvm_do_with action") \
   end\
-  finish_item(SEQ_OR_ITEM, PRIORITY);\
+  if (!$cast(__seq,SEQ_OR_ITEM)) finish_item(SEQ_OR_ITEM, PRIORITY); \
+  else __seq.start(SEQR, this, PRIORITY, 0); \
   end
 
 
@@ -206,9 +239,13 @@
 
 `define uvm_send_pri(SEQ_OR_ITEM, PRIORITY) \
   begin \
-  start_item(SEQ_OR_ITEM, PRIORITY); \
-  finish_item(SEQ_OR_ITEM, PRIORITY);\
-  end\
+  uvm_sequence_base __seq; \
+  if (!$cast(__seq,SEQ_OR_ITEM)) begin \
+     start_item(SEQ_OR_ITEM, PRIORITY);\
+     finish_item(SEQ_OR_ITEM, PRIORITY);\
+  end \
+  else __seq.start(__seq.get_sequencer(), this, PRIORITY, 0);\
+  end
   
 
 // MACRO: `uvm_rand_send
@@ -256,12 +293,15 @@
 
 `define uvm_rand_send_pri_with(SEQ_OR_ITEM, PRIORITY, CONSTRAINTS) \
   begin \
-  start_item(SEQ_OR_ITEM, PRIORITY); \
-  if (!SEQ_OR_ITEM.randomize() with CONSTRAINTS ) begin \
+  uvm_sequence_base __seq; \
+  if (!$cast(__seq,SEQ_OR_ITEM)) start_item(SEQ_OR_ITEM, PRIORITY);\
+  else __seq.set_item_context(this); \
+  if ((__seq == null || !__seq.do_not_randomize) && !SEQ_OR_ITEM.randomize() with CONSTRAINTS ) begin \
     `uvm_warning("RNDFLD", "Randomization failed in uvm_rand_send_with action") \
-  end \
-  finish_item(SEQ_OR_ITEM, PRIORITY);\
   end\
+  if (!$cast(__seq,SEQ_OR_ITEM)) finish_item(SEQ_OR_ITEM, PRIORITY);\
+  else __seq.start(__seq.get_sequencer(), this, PRIORITY, 0);\
+  end
 
 
 `define uvm_create_seq(UVM_SEQ, SEQR_CONS_IF) \
@@ -333,7 +373,7 @@
 //|
 //| class simple_seq_lib_RST extends simple_seq_lib;
 //|
-//|   `uvm_object_utils(this_type)
+//|   `uvm_object_utils(simple_seq_lib_RST)
 //|
 //|   `uvm_sequence_library_utils(simple_seq_lib_RST)
 //|
@@ -410,6 +450,6 @@
     super.m_set_p_sequencer(); \
     if( !$cast(p_sequencer, m_sequencer)) \
         `uvm_fatal("DCLPSQ", \
-        $psprintf("%m %s Error casting p_sequencer, please verify that this sequence/sequence item is intended to execute on this type of sequencer", get_full_name())) \
+        $sformatf("%m %s Error casting p_sequencer, please verify that this sequence/sequence item is intended to execute on this type of sequencer", get_full_name())) \
   endfunction  
 

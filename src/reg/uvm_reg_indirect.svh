@@ -38,8 +38,8 @@ typedef class uvm_reg_indirect_ftdr_seq;
 
 class uvm_reg_indirect_data extends uvm_reg;
 
-   local uvm_reg m_idx;
-   local uvm_reg m_tbl[];
+   protected uvm_reg m_idx;
+   protected uvm_reg m_tbl[];
 
    // Function: new
    // Create an instance of this class
@@ -79,7 +79,7 @@ class uvm_reg_indirect_data extends uvm_reg;
       m_tbl = reg_a;
 
       // Not testable using pre-defined sequences
-      uvm_resource_db#(int)::set({"REG::", get_full_name()},
+      uvm_resource_db#(bit)::set({"REG::", get_full_name()},
                                  "NO_REG_TESTS", 1);
 
       // Add a frontdoor to each indirectly-accessed register
@@ -100,7 +100,7 @@ class uvm_reg_indirect_data extends uvm_reg;
          uvm_reg_indirect_ftdr_seq fd;
          if (m_tbl[i] == null) begin
             `uvm_error(get_full_name(),
-                       $psprintf("Indirect register #%0d is NULL", i));
+                       $sformatf("Indirect register #%0d is NULL", i));
             continue;
          end
          fd = new(m_idx, i, this);
@@ -115,7 +115,7 @@ class uvm_reg_indirect_data extends uvm_reg;
                                      uvm_predict_e     kind = UVM_PREDICT_DIRECT,
                                      uvm_reg_byte_en_t be = -1);
       if (m_idx.get() >= m_tbl.size()) begin
-         `uvm_error(get_full_name(), $psprintf("Address register %s has a value (%0d) greater than the maximum indirect register array size (%0d)", m_idx.get_full_name(), m_idx.get(), m_tbl.size()));
+         `uvm_error(get_full_name(), $sformatf("Address register %s has a value (%0d) greater than the maximum indirect register array size (%0d)", m_idx.get_full_name(), m_idx.get(), m_tbl.size()));
          rw.status = UVM_NOT_OK;
          return;
       end
@@ -149,6 +149,12 @@ class uvm_reg_indirect_data extends uvm_reg;
                                         int     lineno = 0);
       `uvm_error(get_full_name(), "Cannot get() an indirect data access register");
       return 0;
+   endfunction
+   
+   virtual function uvm_reg get_indirect_reg(string  fname = "",
+                                        int     lineno = 0);
+      int unsigned idx = m_idx.get_mirrored_value();
+      return(m_tbl[idx]);
    endfunction
 
    virtual function bit needs_update();

@@ -354,7 +354,7 @@ virtual class uvm_object extends uvm_void;
   //|   obj2 child = new;
   //|   virtual function string convert2string();
   //|      convert2string = {super.convert2string(),
-  //|        $psprintf(" write=%0d addr=%8h data=%8h ",write,addr,data),
+  //|        $sformatf(" write=%0d addr=%8h data=%8h ",write,addr,data),
   //|        child.convert2string()};
   //|   endfunction
   //| endclass
@@ -423,7 +423,7 @@ virtual class uvm_object extends uvm_void;
 
   // Function: copy
   //
-  // The copy method returns a deep copy of this object.
+  // The copy makes this object a copy of the specified object.
   //
   // The copy method is not virtual and should not be overloaded in derived
   // classes. To copy the fields of a derived class, that class should override
@@ -773,7 +773,7 @@ virtual class uvm_object extends uvm_void;
   local string m_leaf_name;
 
   local int m_inst_id;
-  static protected int m_inst_count = 0;
+  static protected int m_inst_count;
 
   static /*protected*/ uvm_status_container __m_uvm_status_container = new;
 
@@ -932,7 +932,7 @@ function void  uvm_object::set_int_local (string      field_name,
   __m_uvm_field_automation(null, UVM_SETINT, field_name);
 
   if(__m_uvm_status_container.warning && !this.__m_uvm_status_container.status) begin
-    uvm_report_error("NOMTC", $psprintf("did not find a match for field %s", field_name),UVM_NONE);
+    uvm_report_error("NOMTC", $sformatf("did not find a match for field %s", field_name),UVM_NONE);
   end
   __m_uvm_status_container.cycle_check.delete(this);
 
@@ -963,7 +963,7 @@ function void  uvm_object::set_object_local (string     field_name,
   __m_uvm_field_automation(null, UVM_SETOBJ, field_name);
 
   if(__m_uvm_status_container.warning && !this.__m_uvm_status_container.status) begin
-    uvm_report_error("NOMTC", $psprintf("did not find a match for field %s", field_name), UVM_NONE);
+    uvm_report_error("NOMTC", $sformatf("did not find a match for field %s", field_name), UVM_NONE);
   end
 
   __m_uvm_status_container.cycle_check.delete(this);
@@ -984,7 +984,7 @@ function void  uvm_object::set_string_local (string field_name,
   __m_uvm_field_automation(null, UVM_SETSTR, field_name);
 
   if(__m_uvm_status_container.warning && !this.__m_uvm_status_container.status) begin
-    uvm_report_error("NOMTC", $psprintf("did not find a match for field %s (@%0d)", field_name, this.get_inst_id()), UVM_NONE);
+    uvm_report_error("NOMTC", $sformatf("did not find a match for field %s (@%0d)", field_name, this.get_inst_id()), UVM_NONE);
   end
   __m_uvm_status_container.cycle_check.delete(this);
 endfunction
@@ -997,7 +997,7 @@ function uvm_object uvm_object::clone();
   uvm_object tmp;
   tmp = this.create(get_name());
   if(tmp == null)
-    uvm_report_warning("CRFLD", $psprintf("The create method failed for %s,  object cannot be cloned", get_name()), UVM_NONE);
+    uvm_report_warning("CRFLD", $sformatf("The create method failed for %s,  object cannot be cloned", get_name()), UVM_NONE);
   else
     tmp.copy(this);
   return(tmp);
@@ -1022,8 +1022,8 @@ function void uvm_object::copy (uvm_object rhs);
   uvm_global_copy_map.set(rhs, this); 
   ++depth;
 
-  do_copy(rhs);
   __m_uvm_field_automation(rhs, UVM_COPY, "");
+  do_copy(rhs);
 
   --depth;
   if(depth==0) begin
@@ -1072,8 +1072,11 @@ function bit  uvm_object::compare (uvm_object rhs,
     else begin
       comparer.print_msg_object(this, rhs);
       uvm_report_info("MISCMP",
-           $psprintf("%0d Miscompare(s) for object %s@%0d vs. %s@%0d", 
-           comparer.result, __m_uvm_status_container.scope.get(), this.get_inst_id(), __m_uvm_status_container.scope.get_arg(), rhs.get_inst_id()), __m_uvm_status_container.comparer.verbosity);
+           $sformatf("%0d Miscompare(s) for object %s@%0d vs. null", 
+           comparer.result, 
+           __m_uvm_status_container.scope.get(),
+            this.get_inst_id()),
+            __m_uvm_status_container.comparer.verbosity);
       done = 1;
     end
   end
@@ -1085,7 +1088,7 @@ function bit  uvm_object::compare (uvm_object rhs,
     done = 1;  //don't do any more work after this case, but do cleanup
   end
 
-  if(!done && comparer.check_type && get_type_name() != rhs.get_type_name()) begin
+  if(!done && comparer.check_type && (rhs != null) && (get_type_name() != rhs.get_type_name())) begin
     __m_uvm_status_container.stringv = { "lhs type = \"", get_type_name(), 
                      "\" : rhs type = \"", rhs.get_type_name(), "\""};
     comparer.print_msg(__m_uvm_status_container.stringv);
@@ -1101,7 +1104,8 @@ function bit  uvm_object::compare (uvm_object rhs,
     __m_uvm_status_container.scope.up();
   end
 
-  comparer.print_rollup(this, rhs);
+  if(rhs != null)
+    comparer.print_rollup(this, rhs);
   return (comparer.result == 0 && dc == 1);
 endfunction
 
@@ -1231,7 +1235,7 @@ function void uvm_object::m_unpack_post (uvm_packer packer);
   packer.scope.up();
 
   if(packer.get_packed_size() != provided_size) begin
-    uvm_report_warning("BDUNPK", $psprintf("Unpack operation unsuccessful: unpacked %0d bits from a total of %0d bits", packer.get_packed_size(), provided_size), UVM_NONE);
+    uvm_report_warning("BDUNPK", $sformatf("Unpack operation unsuccessful: unpacked %0d bits from a total of %0d bits", packer.get_packed_size(), provided_size), UVM_NONE);
   end
 
 endfunction

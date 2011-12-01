@@ -23,7 +23,7 @@
 program test;
 
 import uvm_pkg::*;
-
+`include "uvm_macros.svh"
 `include "tb_timer.svh"
 `include "tb_env.svh"
 

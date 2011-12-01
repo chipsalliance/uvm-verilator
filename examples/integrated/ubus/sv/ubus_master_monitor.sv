@@ -45,17 +45,13 @@ class ubus_master_monitor extends uvm_monitor;
   // begin captured (by the collect_address_phase and data_phase methods). 
   protected ubus_transfer trans_collected;
 
-  // Events needed to trigger covergroups
-  protected event cov_transaction;
-  protected event cov_transaction_beat;
-
   // Fields to hold trans addr, data and wait_state.
   protected bit [15:0] addr;
   protected bit [7:0] data;
   protected int unsigned wait_state;
 
   // Transfer collected covergroup
-  covergroup cov_trans @cov_transaction;
+  covergroup cov_trans;
     option.per_instance = 1;
     trans_start_addr : coverpoint trans_collected.addr {
       option.auto_bin_max = 16; }
@@ -68,7 +64,7 @@ class ubus_master_monitor extends uvm_monitor;
   endgroup : cov_trans
 
   // Transfer collected beat covergroup
-  covergroup cov_trans_beat @cov_transaction_beat;
+  covergroup cov_trans_beat;
     option.per_instance = 1;
     beat_addr : coverpoint addr {
       option.auto_bin_max = 16; }
@@ -101,12 +97,14 @@ class ubus_master_monitor extends uvm_monitor;
   endfunction : new
 
   function void build_phase(uvm_phase phase);
+    super.build_phase(phase);
     if(!uvm_config_db#(virtual ubus_if)::get(this, "", "vif", vif))
        `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".vif"});
   endfunction: build_phase
 
   // run phase
   virtual task run_phase(uvm_phase phase);
+    `uvm_info({get_full_name()," MASTER ID"},$sformatf(" = %0d",master_id),UVM_MEDIUM)
     fork
       collect_transactions();
     join
@@ -121,8 +119,8 @@ class ubus_master_monitor extends uvm_monitor;
       collect_arbitration_phase();
       collect_address_phase();
       collect_data_phase();
-      `uvm_info(get_type_name(), $psprintf("Transfer collected :\n%s",
-        trans_collected.sprint()), UVM_FULL)
+      `uvm_info(get_full_name(), $sformatf("Transfer collected :\n%s",
+        trans_collected.sprint()), UVM_MEDIUM)
       if (checks_enable)
         perform_transfer_checks();
       if (coverage_enable)
@@ -192,15 +190,20 @@ class ubus_master_monitor extends uvm_monitor;
 
   // perform_transfer_coverage
   virtual protected function void perform_transfer_coverage();
-    -> cov_transaction;
+    cov_trans.sample();
     for (int unsigned i = 0; i < trans_collected.size; i++) begin
       addr = trans_collected.addr + i;
       data = trans_collected.data[i];
 //Wait state is not currently monitored
 //      wait_state = trans_collected.wait_state[i];
-      -> cov_transaction_beat;
+      cov_trans_beat.sample();
     end
   endfunction : perform_transfer_coverage
+
+  virtual function void report_phase(uvm_phase phase);
+    `uvm_info(get_full_name(),$sformatf("Covergroup 'cov_trans' coverage: %2f",
+					cov_trans.get_inst_coverage()),UVM_LOW)
+  endfunction
 
 endclass : ubus_master_monitor
 
