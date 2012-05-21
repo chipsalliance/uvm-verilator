@@ -51,25 +51,22 @@
 
 class uvm_build_phase extends uvm_topdown_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
-      uvm_component comp_;
-      if ($cast(comp_,comp)) 
-        comp_.build_phase(phase); 
-   endfunction : exec_func
+      comp.build_phase(phase); 
+   endfunction
    local static uvm_build_phase m_inst;
    static const string type_name = "uvm_build_phase";
    static function uvm_build_phase get();
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new();
-      end
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="build");
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name();
       return type_name;
-   endfunction : get_type_name
-endclass : uvm_build_phase
+   endfunction
+endclass
 
 // Class: uvm_connect_phase
 //
@@ -96,25 +93,22 @@ endclass : uvm_build_phase
 
 class uvm_connect_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
-      uvm_component comp_;
-      if ($cast(comp_,comp)) 
-        comp_.connect_phase(phase); 
-   endfunction : exec_func
+      comp.connect_phase(phase); 
+   endfunction
    local static uvm_connect_phase m_inst;
    static const string type_name = "uvm_connect_phase";
    static function uvm_connect_phase get();
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new();
-      end
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="connect");
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name();
       return type_name;
-   endfunction : get_type_name
-endclass : uvm_connect_phase
+   endfunction
+endclass
 
 // Class: uvm_end_of_elaboration_phase
 //
@@ -138,10 +132,8 @@ endclass : uvm_connect_phase
 
 class uvm_end_of_elaboration_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
-      uvm_component comp_;
-      if ($cast(comp_,comp)) 
-        comp_.end_of_elaboration_phase(phase); 
-   endfunction : exec_func
+      comp.end_of_elaboration_phase(phase); 
+   endfunction
    local static uvm_end_of_elaboration_phase m_inst;
    static const string type_name = "uvm_end_of_elaboration_phase";
    static function uvm_end_of_elaboration_phase get();
@@ -149,14 +141,14 @@ class uvm_end_of_elaboration_phase extends uvm_bottomup_phase;
          m_inst = new();
       end
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="end_of_elaboration");
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name();
       return type_name;
-   endfunction : get_type_name
-endclass : uvm_end_of_elaboration_phase
+   endfunction
+endclass
 
 // Class: uvm_start_of_simulation_phase
 //
@@ -184,25 +176,22 @@ endclass : uvm_end_of_elaboration_phase
 
 class uvm_start_of_simulation_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
-      uvm_component comp_;
-      if ($cast(comp_,comp)) 
-        comp_.start_of_simulation_phase(phase); 
-   endfunction : exec_func
+      comp.start_of_simulation_phase(phase); 
+   endfunction
    local static uvm_start_of_simulation_phase m_inst;
    static const string type_name = "uvm_start_of_simulation_phase";
    static function uvm_start_of_simulation_phase get();
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new();
-      end
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="start_of_simulation");
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name();
       return type_name;
-   endfunction : get_type_name
-endclass : uvm_start_of_simulation_phase
+   endfunction
+endclass
 
 // Class: uvm_run_phase
 //
@@ -253,25 +242,22 @@ endclass : uvm_start_of_simulation_phase
 //
 class uvm_run_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.run_phase(phase); 
-   endtask : exec_task
+      comp.run_phase(phase); 
+   endtask
    local static uvm_run_phase m_inst; 
    static const string type_name = "uvm_run_phase"; 
    static function uvm_run_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="run"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_run_phase
+   endfunction
+endclass
 
 
 // Class: uvm_extract_phase
@@ -299,25 +285,22 @@ endclass : uvm_run_phase
 //
 class uvm_extract_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
-      uvm_component comp_;
-      if ($cast(comp_,comp)) 
-        comp_.extract_phase(phase); 
-   endfunction : exec_func
+      comp.extract_phase(phase); 
+   endfunction
    local static uvm_extract_phase m_inst;
    static const string type_name = "uvm_extract_phase";
    static function uvm_extract_phase get();
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new();
-      end
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="extract");
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name();
       return type_name;
-   endfunction : get_type_name
-endclass : uvm_extract_phase
+   endfunction
+endclass
 
 // Class: uvm_check_phase
 //
@@ -337,25 +320,22 @@ endclass : uvm_extract_phase
 //
 class uvm_check_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
-      uvm_component comp_;
-      if ($cast(comp_,comp)) 
-        comp_.check_phase(phase); 
-   endfunction : exec_func
+      comp.check_phase(phase); 
+   endfunction
    local static uvm_check_phase m_inst;
    static const string type_name = "uvm_check_phase";
    static function uvm_check_phase get();
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new();
-      end
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="check");
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name();
       return type_name;
-   endfunction : get_type_name
-endclass : uvm_check_phase
+   endfunction
+endclass
 
 // Class: uvm_report_phase
 //
@@ -376,25 +356,22 @@ endclass : uvm_check_phase
 //
 class uvm_report_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
-      uvm_component comp_;
-      if ($cast(comp_,comp)) 
-        comp_.report_phase(phase); 
-   endfunction : exec_func
+      comp.report_phase(phase); 
+   endfunction
    local static uvm_report_phase m_inst;
    static const string type_name = "uvm_report_phase";
    static function uvm_report_phase get();
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new();
-      end
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="report");
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name();
       return type_name;
-   endfunction : get_type_name
-endclass : uvm_report_phase
+   endfunction
+endclass
 
 
 // Class: uvm_final_phase
@@ -417,22 +394,19 @@ endclass : uvm_report_phase
 
 class uvm_final_phase extends uvm_topdown_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
-      uvm_component comp_;
-      if ($cast(comp_,comp)) 
-        comp_.final_phase(phase); 
-   endfunction : exec_func
+      comp.final_phase(phase); 
+   endfunction
    local static uvm_final_phase m_inst;
    static const string type_name = "uvm_final_phase";
    static function uvm_final_phase get();
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new();
-      end
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="final");
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name();
       return type_name;
-   endfunction : get_type_name
-endclass : uvm_final_phase
+   endfunction
+endclass

@@ -460,7 +460,7 @@ endclass
 // places. For example:
 //
 //| `uvm_analysis_imp_decl(_ingress)
-//| `uvm_analysis_imp_port(_egress)
+//| `uvm_analysis_imp_decl(_egress)
 //|
 //| class myscoreboard extends uvm_component;
 //|   uvm_analysis_imp_ingress#(mydata, myscoreboard) ingress;

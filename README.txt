@@ -1,10 +1,10 @@
 Accellera Universal Verification Methodology
-version 1.1a
+version 1.1b
 
-(C) Copyright 2007-2011 Mentor Graphics Corporation
-(C) Copyright 2007-2011 Cadence Design Systems, Incorporated
-(C) Copyright 2006-2011 Synopsys Inc.
-(C) Copyright 2011 Cypress Semiconductor Corp.
+(C) Copyright 2007-2012 Mentor Graphics Corporation
+(C) Copyright 2007-2012 Cadence Design Systems, Incorporated
+(C) Copyright 2006-2012 Synopsys Inc.
+(C) Copyright 2012 Cypress Semiconductor Corp.
 All Rights Reserved Worldwide
 
 The UVM kit is licensed under the Apache-2.0 license.  The full text of

@@ -56,7 +56,7 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   //
   // Checks that the given HDL ~path~ exists. Returns 0 if NOT found, 1 otherwise.
   //
-  import "DPI-C" function int uvm_hdl_check_path(string path);
+  import "DPI-C" context function int uvm_hdl_check_path(string path);
 
 
   // Function: uvm_hdl_deposit
@@ -64,14 +64,14 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   // Sets the given HDL ~path~ to the specified ~value~.
   // Returns 1 if the call succeeded, 0 otherwise.
   //
-  import "DPI-C" function int uvm_hdl_deposit(string path, uvm_hdl_data_t value);
+  import "DPI-C" context function int uvm_hdl_deposit(string path, uvm_hdl_data_t value);
 
 
   // Function: uvm_hdl_force
   //
   // Forces the ~value~ on the given ~path~. Returns 1 if the call succeeded, 0 otherwise.
   //
-  import "DPI-C" function int uvm_hdl_force(string path, uvm_hdl_data_t value);
+  import "DPI-C" context function int uvm_hdl_force(string path, uvm_hdl_data_t value);
 
 
   // Function: uvm_hdl_force_time
@@ -102,7 +102,7 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   // continuous drivers, if any. If none, its value remains as forced until
   // the next direct assignment.
   //
-  import "DPI-C" function int uvm_hdl_release_and_read(string path, inout uvm_hdl_data_t value);
+  import "DPI-C" context function int uvm_hdl_release_and_read(string path, inout uvm_hdl_data_t value);
 
 
   // Function: uvm_hdl_release
@@ -110,7 +110,7 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   // Releases a value previously set with <uvm_hdl_force>.
   // Returns 1 if the call succeeded, 0 otherwise.
   //
-  import "DPI-C" function int uvm_hdl_release(string path);
+  import "DPI-C" context function int uvm_hdl_release(string path);
 
 
   // Function: uvm_hdl_read()
@@ -118,7 +118,7 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   // Gets the value at the given ~path~.
   // Returns 1 if the call succeeded, 0 otherwise.
   //
-  import "DPI-C" function int uvm_hdl_read(string path, output uvm_hdl_data_t value);
+  import "DPI-C" context function int uvm_hdl_read(string path, output uvm_hdl_data_t value);
 
 `else
 

@@ -224,9 +224,14 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
                   rg.get_full_name(),"'"})
      end
      else begin
+`ifdef UVM_USE_P_FORMAT
        `uvm_info("REG_PREDICT_NOT_FOR_ME",
           {"Observed transaction does not target a register: ",
             $sformatf("%p",tr)},UVM_FULL)
+`else 
+       `uvm_info("REG_PREDICT_NOT_FOR_ME",
+          "Observed transaction does not target a register: ",UVM_FULL)
+`endif
      end
   endfunction
 

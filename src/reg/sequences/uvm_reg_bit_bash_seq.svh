@@ -159,14 +159,14 @@ class uvm_reg_single_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_
          rg.write(status, val, UVM_FRONTDOOR, map, this);
          if (status != UVM_IS_OK) begin
             `uvm_error("uvm_reg_bit_bash_seq", $sformatf("Status was %s when writing to register \"%s\" through map \"%s\".",
-                                        status, rg.get_full_name(), map.get_full_name()));
+                                        status.name(), rg.get_full_name(), map.get_full_name()));
          end
          
          exp = rg.get() & ~dc_mask;
          rg.read(status, val, UVM_FRONTDOOR, map, this);
          if (status != UVM_IS_OK) begin
             `uvm_error("uvm_reg_bit_bash_seq", $sformatf("Status was %s when reading register \"%s\" through map \"%s\".",
-                                        status, rg.get_full_name(), map.get_full_name()));
+                                        status.name(), rg.get_full_name(), map.get_full_name()));
          end
 
          val &= ~dc_mask;

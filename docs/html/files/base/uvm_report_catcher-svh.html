@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_report_catcher" href="../../../../src/base/uvm_report_catcher.svh">uvm_report_catcher</a></h1><div class=CBody><p>The uvm_report_catcher is used to catch messages issued by the uvm report server.&nbsp; Catchers are uvm_callbacks#(<a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link29 onMouseOver="ShowTip(event, 'tt4', 'link29')" onMouseOut="HideTip('tt4')">uvm_report_object</a>,uvm_report_catcher) objects, so all factilities in the <a href="uvm_callback-svh.html#uvm_callback" class=LClass id=link30 onMouseOver="ShowTip(event, 'tt29', 'link30')" onMouseOut="HideTip('tt29')">uvm_callback</a> and <a href="uvm_callback-svh.html#uvm_callbacks#(T,CB)" class=LClass id=link31 onMouseOver="ShowTip(event, 'tt30', 'link31')" onMouseOut="HideTip('tt30')">uvm_callbacks#(T,CB)</a> classes are available for registering catchers and controlling catcher state.&nbsp; The uvm_callbacks#(<a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link32 onMouseOver="ShowTip(event, 'tt4', 'link32')" onMouseOut="HideTip('tt4')">uvm_report_object</a>,uvm_report_catcher) class is aliased to <i>uvm_report_cb</i> to make it easier to use.&nbsp; Multiple report catchers can be registered with a report object.&nbsp; The catchers can be registered as default catchers which catch all reports on all <a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link33 onMouseOver="ShowTip(event, 'tt4', 'link33')" onMouseOut="HideTip('tt4')">uvm_report_object</a> reporters, or catchers can be attached to specific report objects (i.e. components).</p><p>User extensions of <a href="#uvm_report_catcher" class=LClass id=link34 onMouseOver="ShowTip(event, 'tt1', 'link34')" onMouseOut="HideTip('tt1')">uvm_report_catcher</a> must implement the <a href="#uvm_report_catcher.catch" class=LMethod id=link35 onMouseOver="ShowTip(event, 'tt21', 'link35')" onMouseOut="HideTip('tt21')">catch</a> method in which the action to be taken on catching the report is specified.&nbsp; The catch method can return <i>CAUGHT</i>, in which case further processing of the report is immediately stopped, or return <i>THROW</i> in which case the (possibly modified) report is passed on to other registered catchers.&nbsp; The catchers are processed in the order in which they are registered.</p><p>On catching a report, the <a href="#uvm_report_catcher.catch" class=LMethod id=link36 onMouseOver="ShowTip(event, 'tt21', 'link36')" onMouseOut="HideTip('tt21')">catch</a> method can modify the severity, id, action, verbosity or the report string itself before the report is finally issued by the report server.&nbsp; The report can be immediately issued from within the catcher class by calling the <a href="#uvm_report_catcher.issue" class=LMethod id=link37 onMouseOver="ShowTip(event, 'tt26', 'link37')" onMouseOut="HideTip('tt26')">issue</a> method.</p><p>The catcher maintains a count of all reports with FATAL,ERROR or WARNING severity and a count of all reports with FATAL, ERROR or WARNING severity whose severity was lowered.&nbsp; These statistics are reported in the summary of the <a href="uvm_report_server-svh.html#uvm_report_server" class=LClass id=link38 onMouseOver="ShowTip(event, 'tt31', 'link38')" onMouseOut="HideTip('tt31')">uvm_report_server</a>.</p><p>This example shows the basic concept of creating a report catching callback and attaching it to all messages that get emitted:</p><blockquote><pre>class my_error_demoter extends uvm_report_catcher;
+<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_report_catcher" href="../../../../src/base/uvm_report_catcher.svh">uvm_report_catcher</a></h1><div class=CBody><p>The uvm_report_catcher is used to catch messages issued by the uvm report server.&nbsp; Catchers are uvm_callbacks#(<a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link33 onMouseOver="ShowTip(event, 'tt7', 'link33')" onMouseOut="HideTip('tt7')">uvm_report_object</a>,uvm_report_catcher) objects, so all factilities in the <a href="uvm_callback-svh.html#uvm_callback" class=LClass id=link34 onMouseOver="ShowTip(event, 'tt3', 'link34')" onMouseOut="HideTip('tt3')">uvm_callback</a> and <a href="uvm_callback-svh.html#uvm_callbacks#(T,CB)" class=LClass id=link35 onMouseOver="ShowTip(event, 'tt33', 'link35')" onMouseOut="HideTip('tt33')">uvm_callbacks#(T,CB)</a> classes are available for registering catchers and controlling catcher state.&nbsp; The uvm_callbacks#(<a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link36 onMouseOver="ShowTip(event, 'tt7', 'link36')" onMouseOut="HideTip('tt7')">uvm_report_object</a>,uvm_report_catcher) class is aliased to <i>uvm_report_cb</i> to make it easier to use.&nbsp; Multiple report catchers can be registered with a report object.&nbsp; The catchers can be registered as default catchers which catch all reports on all <a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link37 onMouseOver="ShowTip(event, 'tt7', 'link37')" onMouseOut="HideTip('tt7')">uvm_report_object</a> reporters, or catchers can be attached to specific report objects (i.e. components).</p><p>User extensions of <a href="#uvm_report_catcher" class=LClass id=link38 onMouseOver="ShowTip(event, 'tt4', 'link38')" onMouseOut="HideTip('tt4')">uvm_report_catcher</a> must implement the <a href="#uvm_report_catcher.catch" class=LMethod id=link39 onMouseOver="ShowTip(event, 'tt25', 'link39')" onMouseOut="HideTip('tt25')">catch</a> method in which the action to be taken on catching the report is specified.&nbsp; The catch method can return <i>CAUGHT</i>, in which case further processing of the report is immediately stopped, or return <i>THROW</i> in which case the (possibly modified) report is passed on to other registered catchers.&nbsp; The catchers are processed in the order in which they are registered.</p><p>On catching a report, the <a href="#uvm_report_catcher.catch" class=LMethod id=link40 onMouseOver="ShowTip(event, 'tt25', 'link40')" onMouseOut="HideTip('tt25')">catch</a> method can modify the severity, id, action, verbosity or the report string itself before the report is finally issued by the report server.&nbsp; The report can be immediately issued from within the catcher class by calling the <a href="#uvm_report_catcher.issue" class=LMethod id=link41 onMouseOver="ShowTip(event, 'tt30', 'link41')" onMouseOut="HideTip('tt30')">issue</a> method.</p><p>The catcher maintains a count of all reports with FATAL,ERROR or WARNING severity and a count of all reports with FATAL, ERROR or WARNING severity whose severity was lowered.&nbsp; These statistics are reported in the summary of the <a href="uvm_report_server-svh.html#uvm_report_server" class=LClass id=link42 onMouseOver="ShowTip(event, 'tt34', 'link42')" onMouseOut="HideTip('tt34')">uvm_report_server</a>.</p><p>This example shows the basic concept of creating a report catching callback and attaching it to all messages that get emitted:</p><blockquote><pre>class my_error_demoter extends uvm_report_catcher;
   function new(string name=&quot;my_error_demoter&quot;);
     super.new(name);
   endfunction
@@ -49,98 +49,117 @@ end</pre></blockquote>
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
   <!-- index=0 -->
 
-<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_report_catcher" id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_report_catcher</a></td></tr>
+<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_report_catcher" id=link4 onMouseOver="ShowTip(event, 'tt4', 'link4')" onMouseOut="HideTip('tt4')">uvm_report_catcher</a></td></tr>
 <tr class=SMain><td colspan=2 class=SWideDescription>The uvm_report_catcher is used to catch messages issued by the uvm report server. </td></tr>
+
+  <!-- HIERARCHY -->
+  <tr class="SHierarchy SIndent1 "><td colspan=2 class="SEntry SIndent1">Class Hierarchy</td></tr>
+  <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
+      <div class=ClassHierarchy>
+        <table border=0 cellspacing=0 cellpadding=0>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">uvm_object</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_callback-svh.html#uvm_callback" class=LClass id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">uvm_callback</a></div></div></td></tr>
+          <tr><td><div class=CHCurrent><div class=CHEntry>uvm_report_catcher</div></div></td></tr>
+        </table>
+      </div>
+  </td></tr>
+
+
+
   <!-- PROTOTYPE -->
   <tr class="SPrototype SIndent1"><td colspan=2 class="SEntry SIndent1">Class Declaration</td></tr>
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>typedef class uvm_report_catcher
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_report_catcher extends uvm_callback
   </td></tr></table></blockquote></td></tr>
 
   <!-- index=1 -->
 
-<tr class="SMethod SIndent1 SMarked"><td class=SEntry><a href="#uvm_report_catcher.new" id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">new</a></td><td class=SDescription>Create a new report object. </td></tr>
+<tr class="SMethod SIndent1 SMarked"><td class=SEntry><a href="#uvm_report_catcher.new" id=link5 onMouseOver="ShowTip(event, 'tt5', 'link5')" onMouseOut="HideTip('tt5')">new</a></td><td class=SDescription>Create a new report catcher. </td></tr>
   <!-- index=2 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_report_catcher.Current_Message_State" >Current Message State</a></td><td class=SDescription></td></tr>
   <!-- index=3 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.get_client" id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">get_client</a></td><td class=SDescription>Returns the <a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link4 onMouseOver="ShowTip(event, 'tt4', 'link4')" onMouseOut="HideTip('tt4')">uvm_report_object</a> that has generated the message that is currently being processes.</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.get_client" id=link6 onMouseOver="ShowTip(event, 'tt6', 'link6')" onMouseOut="HideTip('tt6')">get_client</a></td><td class=SDescription>Returns the <a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link7 onMouseOver="ShowTip(event, 'tt7', 'link7')" onMouseOut="HideTip('tt7')">uvm_report_object</a> that has generated the message that is currently being processes.</td></tr>
   <!-- index=4 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.get_severity" id=link5 onMouseOver="ShowTip(event, 'tt5', 'link5')" onMouseOut="HideTip('tt5')">get_severity</a></td><td class=SDescription>Returns the <a href="uvm_object_globals-svh.html#uvm_severity" class=LType id=link6 onMouseOver="ShowTip(event, 'tt6', 'link6')" onMouseOut="HideTip('tt6')">uvm_severity</a> of the message that is currently being processed. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.get_severity" id=link8 onMouseOver="ShowTip(event, 'tt8', 'link8')" onMouseOut="HideTip('tt8')">get_severity</a></td><td class=SDescription>Returns the <a href="uvm_object_globals-svh.html#uvm_severity" class=LType id=link9 onMouseOver="ShowTip(event, 'tt9', 'link9')" onMouseOut="HideTip('tt9')">uvm_severity</a> of the message that is currently being processed. </td></tr>
   <!-- index=5 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.get_verbosity" id=link7 onMouseOver="ShowTip(event, 'tt7', 'link7')" onMouseOut="HideTip('tt7')">get_verbosity</a></td><td class=SDescription>Returns the verbosity of the message that is currently being processed. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.get_context" id=link10 onMouseOver="ShowTip(event, 'tt10', 'link10')" onMouseOut="HideTip('tt10')">get_context</a></td><td class=SDescription>Returns the context (source) of the message that is currently being processed. </td></tr>
   <!-- index=6 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.get_id" id=link8 onMouseOver="ShowTip(event, 'tt8', 'link8')" onMouseOut="HideTip('tt8')">get_id</a></td><td class=SDescription>Returns the string id of the message that is currently being processed. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.get_verbosity" id=link11 onMouseOver="ShowTip(event, 'tt11', 'link11')" onMouseOut="HideTip('tt11')">get_verbosity</a></td><td class=SDescription>Returns the verbosity of the message that is currently being processed. </td></tr>
   <!-- index=7 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.get_message" id=link9 onMouseOver="ShowTip(event, 'tt9', 'link9')" onMouseOut="HideTip('tt9')">get_message</a></td><td class=SDescription>Returns the string message of the message that is currently being processed. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.get_id" id=link12 onMouseOver="ShowTip(event, 'tt12', 'link12')" onMouseOut="HideTip('tt12')">get_id</a></td><td class=SDescription>Returns the string id of the message that is currently being processed. </td></tr>
   <!-- index=8 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.get_action" id=link10 onMouseOver="ShowTip(event, 'tt10', 'link10')" onMouseOut="HideTip('tt10')">get_action</a></td><td class=SDescription>Returns the <a href="uvm_object_globals-svh.html#uvm_action" class=LType id=link11 onMouseOver="ShowTip(event, 'tt11', 'link11')" onMouseOut="HideTip('tt11')">uvm_action</a> of the message that is currently being processed. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.get_message" id=link13 onMouseOver="ShowTip(event, 'tt13', 'link13')" onMouseOut="HideTip('tt13')">get_message</a></td><td class=SDescription>Returns the string message of the message that is currently being processed. </td></tr>
   <!-- index=9 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.get_fname" id=link12 onMouseOver="ShowTip(event, 'tt12', 'link12')" onMouseOut="HideTip('tt12')">get_fname</a></td><td class=SDescription>Returns the file name of the message.</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.get_action" id=link14 onMouseOver="ShowTip(event, 'tt14', 'link14')" onMouseOut="HideTip('tt14')">get_action</a></td><td class=SDescription>Returns the <a href="uvm_object_globals-svh.html#uvm_action" class=LType id=link15 onMouseOver="ShowTip(event, 'tt15', 'link15')" onMouseOut="HideTip('tt15')">uvm_action</a> of the message that is currently being processed. </td></tr>
   <!-- index=10 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.get_line" id=link13 onMouseOver="ShowTip(event, 'tt13', 'link13')" onMouseOut="HideTip('tt13')">get_line</a></td><td class=SDescription>Returns the line number of the message.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.get_fname" id=link16 onMouseOver="ShowTip(event, 'tt16', 'link16')" onMouseOut="HideTip('tt16')">get_fname</a></td><td class=SDescription>Returns the file name of the message.</td></tr>
   <!-- index=11 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_report_catcher.Change_Message_State" >Change Message State</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.get_line" id=link17 onMouseOver="ShowTip(event, 'tt17', 'link17')" onMouseOut="HideTip('tt17')">get_line</a></td><td class=SDescription>Returns the line number of the message.</td></tr>
   <!-- index=12 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.set_severity" id=link14 onMouseOver="ShowTip(event, 'tt14', 'link14')" onMouseOut="HideTip('tt14')">set_severity</a></td><td class=SDescription>Change the severity of the message to <i>severity</i>. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_report_catcher.Change_Message_State" >Change Message State</a></td><td class=SDescription></td></tr>
   <!-- index=13 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.set_verbosity" id=link15 onMouseOver="ShowTip(event, 'tt15', 'link15')" onMouseOut="HideTip('tt15')">set_verbosity</a></td><td class=SDescription>Change the verbosity of the message to <i>verbosity</i>. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.set_severity" id=link18 onMouseOver="ShowTip(event, 'tt18', 'link18')" onMouseOut="HideTip('tt18')">set_severity</a></td><td class=SDescription>Change the severity of the message to <i>severity</i>. </td></tr>
   <!-- index=14 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.set_id" id=link16 onMouseOver="ShowTip(event, 'tt16', 'link16')" onMouseOut="HideTip('tt16')">set_id</a></td><td class=SDescription>Change the id of the message to <i>id</i>. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.set_verbosity" id=link19 onMouseOver="ShowTip(event, 'tt19', 'link19')" onMouseOut="HideTip('tt19')">set_verbosity</a></td><td class=SDescription>Change the verbosity of the message to <i>verbosity</i>. </td></tr>
   <!-- index=15 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.set_message" id=link17 onMouseOver="ShowTip(event, 'tt17', 'link17')" onMouseOut="HideTip('tt17')">set_message</a></td><td class=SDescription>Change the text of the message to <i>message</i>. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.set_id" id=link20 onMouseOver="ShowTip(event, 'tt20', 'link20')" onMouseOut="HideTip('tt20')">set_id</a></td><td class=SDescription>Change the id of the message to <i>id</i>. </td></tr>
   <!-- index=16 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.set_action" id=link18 onMouseOver="ShowTip(event, 'tt18', 'link18')" onMouseOut="HideTip('tt18')">set_action</a></td><td class=SDescription>Change the action of the message to <i>action</i>. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.set_message" id=link21 onMouseOver="ShowTip(event, 'tt21', 'link21')" onMouseOut="HideTip('tt21')">set_message</a></td><td class=SDescription>Change the text of the message to <i>message</i>. </td></tr>
   <!-- index=17 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_report_catcher.Debug" >Debug</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.set_action" id=link22 onMouseOver="ShowTip(event, 'tt22', 'link22')" onMouseOut="HideTip('tt22')">set_action</a></td><td class=SDescription>Change the action of the message to <i>action</i>. </td></tr>
   <!-- index=18 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.get_report_catcher" id=link19 onMouseOver="ShowTip(event, 'tt19', 'link19')" onMouseOut="HideTip('tt19')">get_report_catcher</a></td><td class=SDescription>Returns the first report catcher that has <i>name</i>.</td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_report_catcher.Debug" >Debug</a></td><td class=SDescription></td></tr>
   <!-- index=19 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.print_catcher" id=link20 onMouseOver="ShowTip(event, 'tt20', 'link20')" onMouseOut="HideTip('tt20')">print_catcher</a></td><td class=SDescription>Prints information about all of the report catchers that are registered. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.get_report_catcher" id=link23 onMouseOver="ShowTip(event, 'tt23', 'link23')" onMouseOut="HideTip('tt23')">get_report_catcher</a></td><td class=SDescription>Returns the first report catcher that has <i>name</i>.</td></tr>
   <!-- index=20 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_report_catcher.Callback_Interface" >Callback Interface</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.print_catcher" id=link24 onMouseOver="ShowTip(event, 'tt24', 'link24')" onMouseOut="HideTip('tt24')">print_catcher</a></td><td class=SDescription>Prints information about all of the report catchers that are registered. </td></tr>
   <!-- index=21 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.catch" id=link21 onMouseOver="ShowTip(event, 'tt21', 'link21')" onMouseOut="HideTip('tt21')">catch</a></td><td class=SDescription>This is the method that is called for each registered report catcher. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_report_catcher.Callback_Interface" >Callback Interface</a></td><td class=SDescription></td></tr>
   <!-- index=22 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_report_catcher.Reporting" >Reporting</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.catch" id=link25 onMouseOver="ShowTip(event, 'tt25', 'link25')" onMouseOut="HideTip('tt25')">catch</a></td><td class=SDescription>This is the method that is called for each registered report catcher. </td></tr>
   <!-- index=23 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.uvm_report_fatal" id=link22 onMouseOver="ShowTip(event, 'tt22', 'link22')" onMouseOut="HideTip('tt22')">uvm_report_fatal</a></td><td class=SDescription>Issues a fatal message using the current messages report object. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_report_catcher.Reporting" >Reporting</a></td><td class=SDescription></td></tr>
   <!-- index=24 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.uvm_report_error" id=link23 onMouseOver="ShowTip(event, 'tt23', 'link23')" onMouseOut="HideTip('tt23')">uvm_report_error</a></td><td class=SDescription>Issues a error message using the current messages report object. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.uvm_report_fatal" id=link26 onMouseOver="ShowTip(event, 'tt26', 'link26')" onMouseOut="HideTip('tt26')">uvm_report_fatal</a></td><td class=SDescription>Issues a fatal message using the current message&rsquo;s report object. </td></tr>
   <!-- index=25 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.uvm_report_warning" id=link24 onMouseOver="ShowTip(event, 'tt24', 'link24')" onMouseOut="HideTip('tt24')">uvm_report_warning</a></td><td class=SDescription>Issues a warning message using the current messages report object. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.uvm_report_error" id=link27 onMouseOver="ShowTip(event, 'tt27', 'link27')" onMouseOut="HideTip('tt27')">uvm_report_error</a></td><td class=SDescription>Issues a error message using the current message&rsquo;s report object. </td></tr>
   <!-- index=26 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.uvm_report_info" id=link25 onMouseOver="ShowTip(event, 'tt25', 'link25')" onMouseOut="HideTip('tt25')">uvm_report_info</a></td><td class=SDescription>Issues a info message using the current messages report object. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.uvm_report_warning" id=link28 onMouseOver="ShowTip(event, 'tt28', 'link28')" onMouseOut="HideTip('tt28')">uvm_report_warning</a></td><td class=SDescription>Issues a warning message using the current message&rsquo;s report object. </td></tr>
   <!-- index=27 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.issue" id=link26 onMouseOver="ShowTip(event, 'tt26', 'link26')" onMouseOut="HideTip('tt26')">issue</a></td><td class=SDescription>Immediately issues the message which is currently being processed. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.uvm_report_info" id=link29 onMouseOver="ShowTip(event, 'tt29', 'link29')" onMouseOut="HideTip('tt29')">uvm_report_info</a></td><td class=SDescription>Issues a info message using the current message&rsquo;s report object. </td></tr>
   <!-- index=28 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.summarize_report_catcher" id=link27 onMouseOver="ShowTip(event, 'tt27', 'link27')" onMouseOut="HideTip('tt27')">summarize_report_catcher</a></td><td class=SDescription>This function is called automatically by <a href="uvm_report_server-svh.html#uvm_report_server.summarize" class=LMethod id=link28 onMouseOver="ShowTip(event, 'tt28', 'link28')" onMouseOut="HideTip('tt28')">uvm_report_server::summarize()</a>. </td></tr></table></div></div><!--END_ND_SUMMARY-->
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_report_catcher.issue" id=link30 onMouseOver="ShowTip(event, 'tt30', 'link30')" onMouseOut="HideTip('tt30')">issue</a></td><td class=SDescription>Immediately issues the message which is currently being processed. </td></tr>
+  <!-- index=29 -->
+
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_report_catcher.summarize_report_catcher" id=link31 onMouseOver="ShowTip(event, 'tt31', 'link31')" onMouseOut="HideTip('tt31')">summarize_report_catcher</a></td><td class=SDescription>This function is called automatically by <a href="uvm_report_server-svh.html#uvm_report_server.summarize" class=LMethod id=link32 onMouseOver="ShowTip(event, 'tt32', 'link32')" onMouseOut="HideTip('tt32')">uvm_report_server::summarize()</a>. </td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
 
 
@@ -157,7 +176,7 @@ end</pre></blockquote>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Create a new report object.&nbsp; The name argument is optional, but should generally be provided to aid in debugging.</p></div></div></div>
+<div class=CBody><p>Create a new report catcher.&nbsp; The name argument is optional, but should generally be provided to aid in debugging.</p></div></div></div>
 
 
 
@@ -171,7 +190,7 @@ end</pre></blockquote>
  <!--CONTENT index=3 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_client" href="../../../../src/base/uvm_report_catcher.svh">get_client</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_report_object get_client()
-  </td></tr></table></blockquote><div class=CBody><p>Returns the <a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link39 onMouseOver="ShowTip(event, 'tt4', 'link39')" onMouseOut="HideTip('tt4')">uvm_report_object</a> that has generated the message that is currently being processes.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Returns the <a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link43 onMouseOver="ShowTip(event, 'tt7', 'link43')" onMouseOut="HideTip('tt7')">uvm_report_object</a> that has generated the message that is currently being processes.</p></div></div></div>
 
 
 
@@ -179,44 +198,52 @@ end</pre></blockquote>
  <!--CONTENT index=4 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_severity" href="../../../../src/base/uvm_report_catcher.svh">get_severity</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_severity get_severity()
-  </td></tr></table></blockquote><div class=CBody><p>Returns the <a href="uvm_object_globals-svh.html#uvm_severity" class=LType id=link40 onMouseOver="ShowTip(event, 'tt6', 'link40')" onMouseOut="HideTip('tt6')">uvm_severity</a> of the message that is currently being processed.&nbsp; If the severity was modified by a previously executed report object (which re-threw the message), then the returned severity is the modified value.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Returns the <a href="uvm_object_globals-svh.html#uvm_severity" class=LType id=link44 onMouseOver="ShowTip(event, 'tt9', 'link44')" onMouseOut="HideTip('tt9')">uvm_severity</a> of the message that is currently being processed.&nbsp; If the severity was modified by a previously executed catcher object (which re-threw the message), then the returned severity is the modified value.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=5 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_verbosity" href="../../../../src/base/uvm_report_catcher.svh">get_verbosity</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function int get_verbosity()
-  </td></tr></table></blockquote><div class=CBody><p>Returns the verbosity of the message that is currently being processed.&nbsp; If the verbosity was modified by a previously executed report object (which re-threw the message), then the returned verbosity is the modified value.</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_context" href="../../../../src/base/uvm_report_catcher.svh">get_context</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_context()
+  </td></tr></table></blockquote><div class=CBody><p>Returns the context (source) of the message that is currently being processed.&nbsp; This is typically the full hierarchical name of the component that issued the message.&nbsp; However, when the message comes via a report handler that is not associated with a component, the context is user-defined.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_id" href="../../../../src/base/uvm_report_catcher.svh">get_id</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_id()
-  </td></tr></table></blockquote><div class=CBody><p>Returns the string id of the message that is currently being processed.&nbsp; If the id was modified by a previously executed report object (which re-threw the message), then the returned id is the modified value.</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_verbosity" href="../../../../src/base/uvm_report_catcher.svh">get_verbosity</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function int get_verbosity()
+  </td></tr></table></blockquote><div class=CBody><p>Returns the verbosity of the message that is currently being processed.&nbsp; If the verbosity was modified by a previously executed catcher (which re-threw the message), then the returned verbosity is the modified value.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=7 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_message" href="../../../../src/base/uvm_report_catcher.svh">get_message</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_message()
-  </td></tr></table></blockquote><div class=CBody><p>Returns the string message of the message that is currently being processed.&nbsp; If the message was modified by a previously executed report object (which re-threw the message), then the returned message is the modified value.</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_id" href="../../../../src/base/uvm_report_catcher.svh">get_id</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_id()
+  </td></tr></table></blockquote><div class=CBody><p>Returns the string id of the message that is currently being processed.&nbsp; If the id was modified by a previously executed catcher (which re-threw the message), then the returned id is the modified value.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=8 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_action" href="../../../../src/base/uvm_report_catcher.svh">get_action</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_action get_action()
-  </td></tr></table></blockquote><div class=CBody><p>Returns the <a href="uvm_object_globals-svh.html#uvm_action" class=LType id=link41 onMouseOver="ShowTip(event, 'tt11', 'link41')" onMouseOut="HideTip('tt11')">uvm_action</a> of the message that is currently being processed.&nbsp; If the action was modified by a previously executed report object (which re-threw the message), then the returned action is the modified value.</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_message" href="../../../../src/base/uvm_report_catcher.svh">get_message</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_message()
+  </td></tr></table></blockquote><div class=CBody><p>Returns the string message of the message that is currently being processed.&nbsp; If the message was modified by a previously executed catcher (which re-threw the message), then the returned message is the modified value.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=9 -->
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_action" href="../../../../src/base/uvm_report_catcher.svh">get_action</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_action get_action()
+  </td></tr></table></blockquote><div class=CBody><p>Returns the <a href="uvm_object_globals-svh.html#uvm_action" class=LType id=link45 onMouseOver="ShowTip(event, 'tt15', 'link45')" onMouseOut="HideTip('tt15')">uvm_action</a> of the message that is currently being processed.&nbsp; If the action was modified by a previously executed catcher (which re-threw the message), then the returned action is the modified value.</p></div></div></div>
+
+
+
+
+ <!--CONTENT index=10 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_fname" href="../../../../src/base/uvm_report_catcher.svh">get_fname</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_fname()
   </td></tr></table></blockquote><div class=CBody><p>Returns the file name of the message.</p></div></div></div>
@@ -224,7 +251,7 @@ end</pre></blockquote>
 
 
 
- <!--CONTENT index=10 -->
+ <!--CONTENT index=11 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_line" href="../../../../src/base/uvm_report_catcher.svh">get_line</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function int get_line()
   </td></tr></table></blockquote><div class=CBody><p>Returns the line number of the message.</p></div></div></div>
@@ -232,13 +259,13 @@ end</pre></blockquote>
 
 
 
- <!--CONTENT index=11 -->
+ <!--CONTENT index=12 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.Change_Message_State" href="../../../../src/base/uvm_report_catcher.svh">Change Message State</a></h3></div></div>
 
 
 
 
- <!--CONTENT index=12 -->
+ <!--CONTENT index=13 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.set_severity" href="../../../../src/base/uvm_report_catcher.svh">set_severity</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -252,7 +279,7 @@ end</pre></blockquote>
 
 
 
- <!--CONTENT index=13 -->
+ <!--CONTENT index=14 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.set_verbosity" href="../../../../src/base/uvm_report_catcher.svh">set_verbosity</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -266,7 +293,7 @@ end</pre></blockquote>
 
 
 
- <!--CONTENT index=14 -->
+ <!--CONTENT index=15 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.set_id" href="../../../../src/base/uvm_report_catcher.svh">set_id</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -280,7 +307,7 @@ end</pre></blockquote>
 
 
 
- <!--CONTENT index=15 -->
+ <!--CONTENT index=16 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.set_message" href="../../../../src/base/uvm_report_catcher.svh">set_message</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -294,7 +321,7 @@ end</pre></blockquote>
 
 
 
- <!--CONTENT index=16 -->
+ <!--CONTENT index=17 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.set_action" href="../../../../src/base/uvm_report_catcher.svh">set_action</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -308,13 +335,13 @@ end</pre></blockquote>
 
 
 
- <!--CONTENT index=17 -->
+ <!--CONTENT index=18 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.Debug" href="../../../../src/base/uvm_report_catcher.svh">Debug</a></h3></div></div>
 
 
 
 
- <!--CONTENT index=18 -->
+ <!--CONTENT index=19 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.get_report_catcher" href="../../../../src/base/uvm_report_catcher.svh">get_report_catcher</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -328,7 +355,7 @@ end</pre></blockquote>
 
 
 
- <!--CONTENT index=19 -->
+ <!--CONTENT index=20 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.print_catcher" href="../../../../src/base/uvm_report_catcher.svh">print_catcher</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -338,18 +365,18 @@ end</pre></blockquote>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Prints information about all of the report catchers that are registered.&nbsp; For finer grained detail, the <a href="uvm_callback-svh.html#uvm_callbacks#(T,CB).display" class=LMethod id=link42 onMouseOver="ShowTip(event, 'tt32', 'link42')" onMouseOut="HideTip('tt32')">uvm_callbacks #(T,CB)::display</a> method can be used by calling uvm_report_cb::display(<a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link43 onMouseOver="ShowTip(event, 'tt4', 'link43')" onMouseOut="HideTip('tt4')">uvm_report_object</a>).</p></div></div></div>
-
-
-
-
- <!--CONTENT index=20 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.Callback_Interface" href="../../../../src/base/uvm_report_catcher.svh">Callback Interface</a></h3></div></div>
+<div class=CBody><p>Prints information about all of the report catchers that are registered.&nbsp; For finer grained detail, the <a href="uvm_callback-svh.html#uvm_callbacks#(T,CB).display" class=LMethod id=link46 onMouseOver="ShowTip(event, 'tt35', 'link46')" onMouseOut="HideTip('tt35')">uvm_callbacks #(T,CB)::display</a> method can be used by calling uvm_report_cb::display(<a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link47 onMouseOver="ShowTip(event, 'tt7', 'link47')" onMouseOut="HideTip('tt7')">uvm_report_object</a>).</p></div></div></div>
 
 
 
 
  <!--CONTENT index=21 -->
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.Callback_Interface" href="../../../../src/base/uvm_report_catcher.svh">Callback Interface</a></h3></div></div>
+
+
+
+
+ <!--CONTENT index=22 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.catch" href="../../../../src/base/uvm_report_catcher.svh">catch</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>pure virtual function action_e catch()
   </td></tr></table></blockquote><div class=CBody><p>This is the method that is called for each registered report catcher.&nbsp; There are no arguments to this function.&nbsp; The <a href="#uvm_report_catcher.Current_Message_State" class=LGroup >Current Message State</a> interface methods can be used to access information about the current message being processed.</p></div></div></div>
@@ -357,13 +384,13 @@ end</pre></blockquote>
 
 
 
- <!--CONTENT index=22 -->
+ <!--CONTENT index=23 -->
 <div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.Reporting" href="../../../../src/base/uvm_report_catcher.svh">Reporting</a></h3></div></div>
 
 
 
 
- <!--CONTENT index=23 -->
+ <!--CONTENT index=24 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.uvm_report_fatal" href="../../../../src/base/uvm_report_catcher.svh">uvm_report_fatal</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -390,12 +417,12 @@ end</pre></blockquote>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Issues a fatal message using the current messages report object.&nbsp; This message will bypass any message catching callbacks.</p></div></div></div>
+<div class=CBody><p>Issues a fatal message using the current message&rsquo;s report object.&nbsp; This message will bypass any message catching callbacks.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=24 -->
+ <!--CONTENT index=25 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.uvm_report_error" href="../../../../src/base/uvm_report_catcher.svh">uvm_report_error</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -422,12 +449,12 @@ end</pre></blockquote>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Issues a error message using the current messages report object.&nbsp; This message will bypass any message catching callbacks.</p></div></div></div>
+<div class=CBody><p>Issues a error message using the current message&rsquo;s report object.&nbsp; This message will bypass any message catching callbacks.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=25 -->
+ <!--CONTENT index=26 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.uvm_report_warning" href="../../../../src/base/uvm_report_catcher.svh">uvm_report_warning</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -454,12 +481,12 @@ end</pre></blockquote>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Issues a warning message using the current messages report object.&nbsp; This message will bypass any message catching callbacks.</p></div></div></div>
+<div class=CBody><p>Issues a warning message using the current message&rsquo;s report object.&nbsp; This message will bypass any message catching callbacks.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=26 -->
+ <!--CONTENT index=27 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.uvm_report_info" href="../../../../src/base/uvm_report_catcher.svh">uvm_report_info</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -486,12 +513,12 @@ end</pre></blockquote>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Issues a info message using the current messages report object.&nbsp; This message will bypass any message catching callbacks.</p></div></div></div>
+<div class=CBody><p>Issues a info message using the current message&rsquo;s report object.&nbsp; This message will bypass any message catching callbacks.</p></div></div></div>
 
 
 
 
- <!--CONTENT index=27 -->
+ <!--CONTENT index=28 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.issue" href="../../../../src/base/uvm_report_catcher.svh">issue</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>protected function void issue()
   </td></tr></table></blockquote><div class=CBody><p>Immediately issues the message which is currently being processed.&nbsp; This is useful if the message is being <i>CAUGHT</i> but should still be emitted.</p><p>Issuing a message will update the report_server stats, possibly multiple times if the message is not <i>CAUGHT</i>.</p></div></div></div>
@@ -499,7 +526,7 @@ end</pre></blockquote>
 
 
 
- <!--CONTENT index=28 -->
+ <!--CONTENT index=29 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_report_catcher.summarize_report_catcher" href="../../../../src/base/uvm_report_catcher.svh">summarize_report_catcher</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -508,16 +535,20 @@ end</pre></blockquote>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>This function is called automatically by <a href="uvm_report_server-svh.html#uvm_report_server.summarize" class=LMethod id=link44 onMouseOver="ShowTip(event, 'tt28', 'link44')" onMouseOut="HideTip('tt28')">uvm_report_server::summarize()</a>.&nbsp; It prints the statistics for the active catchers.</p></div></div></div>
+<div class=CBody><p>This function is called automatically by <a href="uvm_report_server-svh.html#uvm_report_server.summarize" class=LMethod id=link48 onMouseOver="ShowTip(event, 'tt32', 'link48')" onMouseOut="HideTip('tt32')">uvm_report_server::summarize()</a>.&nbsp; It prints the statistics for the active catchers.</p></div></div></div>
 
 </div><!--Content-->
 
 
 
 <!--START_ND_TOOLTIPS-->
-<div class=CToolTip id="tt1"><div class=CClass>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>typedef class uvm_report_catcher
-  </td></tr></table></blockquote>The uvm_report_catcher is used to catch messages issued by the uvm report server. </div></div><div class=CToolTip id="tt2"><div class=CMethod>
+<div class=CToolTip id="tt1"><div class=CGeneric>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt2"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
+  </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt3"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_callback extends uvm_object
+  </td></tr></table></blockquote>The <i>uvm_callback</i> class is the base class for user-defined callback classes. </div></div><div class=CToolTip id="tt4"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_report_catcher extends uvm_callback
+  </td></tr></table></blockquote>The uvm_report_catcher is used to catch messages issued by the uvm report server. </div></div><div class=CToolTip id="tt5"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function new(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -527,25 +558,27 @@ end</pre></blockquote>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Create a new report object. </div></div><div class=CToolTip id="tt3"><div class=CMethod>
+Create a new report catcher. </div></div><div class=CToolTip id="tt6"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_report_object get_client()
-  </td></tr></table></blockquote>Returns the uvm_report_object that has generated the message that is currently being processes.</div></div><div class=CToolTip id="tt4"><div class=CClass>
+  </td></tr></table></blockquote>Returns the uvm_report_object that has generated the message that is currently being processes.</div></div><div class=CToolTip id="tt7"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_report_object extends uvm_object
-  </td></tr></table></blockquote>The uvm_report_object provides an interface to the UVM reporting facility. </div></div><div class=CToolTip id="tt5"><div class=CMethod>
+  </td></tr></table></blockquote>The uvm_report_object provides an interface to the UVM reporting facility. </div></div><div class=CToolTip id="tt8"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_severity get_severity()
-  </td></tr></table></blockquote>Returns the uvm_severity of the message that is currently being processed. </div></div><div class=CToolTip id="tt6"><div class=CType>Defines all possible values for report severity.</div></div><div class=CToolTip id="tt7"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the uvm_severity of the message that is currently being processed. </div></div><div class=CToolTip id="tt9"><div class=CType>Defines all possible values for report severity.</div></div><div class=CToolTip id="tt10"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_context()
+  </td></tr></table></blockquote>Returns the context (source) of the message that is currently being processed. </div></div><div class=CToolTip id="tt11"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function int get_verbosity()
-  </td></tr></table></blockquote>Returns the verbosity of the message that is currently being processed. </div></div><div class=CToolTip id="tt8"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the verbosity of the message that is currently being processed. </div></div><div class=CToolTip id="tt12"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_id()
-  </td></tr></table></blockquote>Returns the string id of the message that is currently being processed. </div></div><div class=CToolTip id="tt9"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the string id of the message that is currently being processed. </div></div><div class=CToolTip id="tt13"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_message()
-  </td></tr></table></blockquote>Returns the string message of the message that is currently being processed. </div></div><div class=CToolTip id="tt10"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the string message of the message that is currently being processed. </div></div><div class=CToolTip id="tt14"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_action get_action()
-  </td></tr></table></blockquote>Returns the uvm_action of the message that is currently being processed. </div></div><div class=CToolTip id="tt11"><div class=CType>Defines all possible values for report actions. </div></div><div class=CToolTip id="tt12"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the uvm_action of the message that is currently being processed. </div></div><div class=CToolTip id="tt15"><div class=CType>Defines all possible values for report actions. </div></div><div class=CToolTip id="tt16"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_fname()
-  </td></tr></table></blockquote>Returns the file name of the message.</div></div><div class=CToolTip id="tt13"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the file name of the message.</div></div><div class=CToolTip id="tt17"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function int get_line()
-  </td></tr></table></blockquote>Returns the line number of the message.</div></div><div class=CToolTip id="tt14"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the line number of the message.</div></div><div class=CToolTip id="tt18"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>protected function void set_severity(</td>      <td class=PType nowrap>uvm_severity&nbsp;</td>
@@ -553,7 +586,7 @@ Create a new report object. </div></div><div class=CToolTip id="tt3"><div class=
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Change the severity of the message to <i>severity</i>. </div></div><div class=CToolTip id="tt15"><div class=CMethod>
+Change the severity of the message to <i>severity</i>. </div></div><div class=CToolTip id="tt19"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>protected function void set_verbosity(</td>      <td class=PType nowrap>int&nbsp;</td>
@@ -561,7 +594,7 @@ Change the severity of the message to <i>severity</i>. </div></div><div class=CT
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Change the verbosity of the message to <i>verbosity</i>. </div></div><div class=CToolTip id="tt16"><div class=CMethod>
+Change the verbosity of the message to <i>verbosity</i>. </div></div><div class=CToolTip id="tt20"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>protected function void set_id(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -569,7 +602,7 @@ Change the verbosity of the message to <i>verbosity</i>. </div></div><div class=
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Change the id of the message to <i>id</i>. </div></div><div class=CToolTip id="tt17"><div class=CMethod>
+Change the id of the message to <i>id</i>. </div></div><div class=CToolTip id="tt21"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>protected function void set_message(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -577,7 +610,7 @@ Change the id of the message to <i>id</i>. </div></div><div class=CToolTip id="t
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Change the text of the message to <i>message</i>. </div></div><div class=CToolTip id="tt18"><div class=CMethod>
+Change the text of the message to <i>message</i>. </div></div><div class=CToolTip id="tt22"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>protected function void set_action(</td>      <td class=PType nowrap>uvm_action&nbsp;</td>
@@ -585,7 +618,7 @@ Change the text of the message to <i>message</i>. </div></div><div class=CToolTi
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Change the action of the message to <i>action</i>. </div></div><div class=CToolTip id="tt19"><div class=CMethod>
+Change the action of the message to <i>action</i>. </div></div><div class=CToolTip id="tt23"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function uvm_report_catcher get_report_catcher(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -593,7 +626,7 @@ Change the action of the message to <i>action</i>. </div></div><div class=CToolT
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Returns the first report catcher that has <i>name</i>.</div></div><div class=CToolTip id="tt20"><div class=CMethod>
+Returns the first report catcher that has <i>name</i>.</div></div><div class=CToolTip id="tt24"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void print_catcher(</td>      <td class=PType nowrap>UVM_FILE&nbsp;</td>
@@ -602,9 +635,9 @@ Returns the first report catcher that has <i>name</i>.</div></div><div class=CTo
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Prints information about all of the report catchers that are registered. </div></div><div class=CToolTip id="tt21"><div class=CMethod>
+Prints information about all of the report catchers that are registered. </div></div><div class=CToolTip id="tt25"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>pure virtual function action_e catch()
-  </td></tr></table></blockquote>This is the method that is called for each registered report catcher. </div></div><div class=CToolTip id="tt22"><div class=CMethod>
+  </td></tr></table></blockquote>This is the method that is called for each registered report catcher. </div></div><div class=CToolTip id="tt26"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>protected function void uvm_report_fatal(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -630,7 +663,7 @@ Prints information about all of the report catchers that are registered. </div><
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Issues a fatal message using the current messages report object. </div></div><div class=CToolTip id="tt23"><div class=CMethod>
+Issues a fatal message using the current message&rsquo;s report object. </div></div><div class=CToolTip id="tt27"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>protected function void uvm_report_error(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -656,7 +689,7 @@ Issues a fatal message using the current messages report object. </div></div><di
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Issues a error message using the current messages report object. </div></div><div class=CToolTip id="tt24"><div class=CMethod>
+Issues a error message using the current message&rsquo;s report object. </div></div><div class=CToolTip id="tt28"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>protected function void uvm_report_warning(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -682,7 +715,7 @@ Issues a error message using the current messages report object. </div></div><di
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Issues a warning message using the current messages report object. </div></div><div class=CToolTip id="tt25"><div class=CMethod>
+Issues a warning message using the current message&rsquo;s report object. </div></div><div class=CToolTip id="tt29"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>protected function void uvm_report_info(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -708,9 +741,9 @@ Issues a warning message using the current messages report object. </div></div><
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Issues a info message using the current messages report object. </div></div><div class=CToolTip id="tt26"><div class=CMethod>
+Issues a info message using the current message&rsquo;s report object. </div></div><div class=CToolTip id="tt30"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>protected function void issue()
-  </td></tr></table></blockquote>Immediately issues the message which is currently being processed. </div></div><div class=CToolTip id="tt27"><div class=CMethod>
+  </td></tr></table></blockquote>Immediately issues the message which is currently being processed. </div></div><div class=CToolTip id="tt31"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void summarize_report_catcher(</td>      <td class=PType nowrap>UVM_FILE&nbsp;</td>
@@ -718,7 +751,7 @@ Issues a info message using the current messages report object. </div></div><div
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-This function is called automatically by uvm_report_server::summarize(). </div></div><div class=CToolTip id="tt28"><div class=CMethod>
+This function is called automatically by uvm_report_server::summarize(). </div></div><div class=CToolTip id="tt32"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void summarize(</td>      <td class=PType nowrap>UVM_FILE&nbsp;</td>
@@ -727,9 +760,7 @@ This function is called automatically by uvm_report_server::summarize(). </div><
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-See uvm_report_object::report_summarize method.</div></div><div class=CToolTip id="tt29"><div class=CClass>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_callback extends uvm_object
-  </td></tr></table></blockquote>The <i>uvm_callback</i> class is the base class for user-defined callback classes. </div></div><div class=CToolTip id="tt30"><div class=CClass>
+See uvm_report_object::report_summarize method.</div></div><div class=CToolTip id="tt33"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>class uvm_callbacks #(</td>      <td class=PType nowrap>type&nbsp;</td>
@@ -743,7 +774,7 @@ See uvm_report_object::report_summarize method.</div></div><div class=CToolTip i
       <td class=PAfterParameters nowrap>) extends uvm_typed_callbacks#(T)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The <i>uvm_callbacks</i> class provides a base class for implementing callbacks, which are typically used to modify or augment component behavior without changing the component class. </div></div><div class=CToolTip id="tt31"><div class=CClass>uvm_report_server is a global server that processes all of the reports generated by an uvm_report_handler. </div></div><div class=CToolTip id="tt32"><div class=CMethod>
+The <i>uvm_callbacks</i> class provides a base class for implementing callbacks, which are typically used to modify or augment component behavior without changing the component class. </div></div><div class=CToolTip id="tt34"><div class=CClass>uvm_report_server is a global server that processes all of the reports generated by an uvm_report_handler. </div></div><div class=CToolTip id="tt35"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void display(</td>      <td class=PType nowrap>T&nbsp;</td>

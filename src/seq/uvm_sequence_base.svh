@@ -250,7 +250,7 @@ class uvm_sequence_base extends uvm_sequence_item;
     end
 
     if (this_priority < -1) begin
-      uvm_report_fatal("SEQPRI", $psprintf("Sequence %s start has illegal priority: %0d",
+      uvm_report_fatal("SEQPRI", $sformatf("Sequence %s start has illegal priority: %0d",
                                            get_full_name(),
                                            this_priority), UVM_NONE);
     end
@@ -746,13 +746,6 @@ class uvm_sequence_base extends uvm_sequence_item;
     if(sequencer == null) begin
         uvm_report_fatal("SEQ",{"neither the item's sequencer nor dedicated sequencer has been supplied to start item in ",get_full_name()},UVM_NONE);
        return;
-    end
-      
-    if (sequencer == null)
-      sequencer = item.get_sequencer();
-    
-    if (sequencer == null) begin
-        uvm_report_fatal("STRITM", "sequence_item has null sequencer", UVM_NONE);
     end
 
     item.set_item_context(this, sequencer);

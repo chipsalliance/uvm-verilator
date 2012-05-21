@@ -247,10 +247,10 @@ class uvm_root_report_handler extends uvm_report_handler;
                                string name,
                                string id,
                                string message,
-                               int verbosity_level,
-                               string filename,
-                               int line,
-                               uvm_report_object client);
+                               int verbosity_level=UVM_MEDIUM,
+                               string filename="",
+                               int line=0,
+                               uvm_report_object client=null);
     if(name == "")
       name = "reporter";
     super.report(severity, name, id, message, verbosity_level, filename, line, client);
@@ -804,7 +804,7 @@ function void uvm_root::m_do_dump_args();
   string all_args[$];
   string out_string;
   if(clp.get_arg_matches("+UVM_DUMP_CMDLINE_ARGS", dump_args)) begin
-    void'(clp.get_args(all_args));
+    clp.get_args(all_args);
     for (int i = 0; i < all_args.size(); i++) begin
       if (all_args[i] == "__-f__")
         continue;

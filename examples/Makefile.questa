@@ -35,7 +35,7 @@ LIBDIR  = $(UVM_HOME)/lib
 #GCC     = $(MTI_HOME)/gcc-4.1.2-linux/bin/g++
 GCC     = gcc
 TEST    = /usr/bin/test
-BITS    = 32
+BITS    ?= 32
 LIBNAME = uvm_dpi
 DPI_SRC = $(UVM_HOME)/src/dpi/uvm_dpi.cc
 

@@ -63,7 +63,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_sequencer_base.user_priority_arbitration" id=link8 onMouseOver="ShowTip(event, 'tt8', 'link8')" onMouseOut="HideTip('tt8')">user_priority_arbitration</a></td><td class=SDescription>When the sequencer arbitration mode is set to SEQ_ARB_USER (via the <a href="#uvm_sequencer_base.set_arbitration" class=LMethod id=link9 onMouseOver="ShowTip(event, 'tt9', 'link9')" onMouseOut="HideTip('tt9')">set_arbitration</a> method), the sequencer will call this function each time that it needs to arbitrate among sequences.</td></tr>
   <!-- index=5 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_sequencer_base.execute_item" id=link10 onMouseOver="ShowTip(event, 'tt10', 'link10')" onMouseOut="HideTip('tt10')">execute_item</a></td><td class=SDescription>This task allows the user to supply an item or sequence to the sequencer and have it be executed procedurally. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_sequencer_base.execute_item" id=link10 onMouseOver="ShowTip(event, 'tt10', 'link10')" onMouseOut="HideTip('tt10')">execute_item</a></td><td class=SDescription>Executes the given transaction <i>item</i> directly on this sequencer. </td></tr>
   <!-- index=6 -->
 
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_sequencer_base.start_phase_sequence" id=link11 onMouseOver="ShowTip(event, 'tt11', 'link11')" onMouseOut="HideTip('tt11')">start_phase_sequence</a></td><td class=SDescription>Start the default sequence for this phase, if any. </td></tr>
@@ -181,7 +181,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>This task allows the user to supply an item or sequence to the sequencer and have it be executed procedurally.&nbsp; The parent sequence for the item or sequence is a temporary sequence that is automatically created.&nbsp;  There is no capability to retrieve responses.&nbsp;  The sequencer will drop responses to items done using this interface.</p></div></div></div>
+<div class=CBody><p>Executes the given transaction <i>item</i> directly on this sequencer.&nbsp; A temporary parent sequence is automatically created for the <i>item</i>.&nbsp;  There is no capability to retrieve responses.&nbsp; If the driver returns responses, they will accumulate in the sequencer, eventually causing response overflow unless &lt;set_response_queue_error_report_disabled&gt; is called.</p></div></div></div>
 
 
 
@@ -477,7 +477,7 @@ Specifies the arbitration mode for the sequencer. </div></div><div class=CToolTi
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-This task allows the user to supply an item or sequence to the sequencer and have it be executed procedurally. </div></div><div class=CToolTip id="tt11"><div class=CMethod>
+Executes the given transaction <i>item</i> directly on this sequencer. </div></div><div class=CToolTip id="tt11"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void start_phase_sequence(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>

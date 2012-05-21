@@ -24,6 +24,7 @@
 `define APB__SV
 
 `include "apb_if.sv"
+`include "uvm_macros.svh"
 
 package apb_pkg; 
 

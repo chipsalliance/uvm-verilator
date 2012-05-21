@@ -63,25 +63,22 @@
 //
 class uvm_pre_reset_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.pre_reset_phase(phase); 
-   endtask : exec_task
+      comp.pre_reset_phase(phase); 
+   endtask
    local static uvm_pre_reset_phase m_inst; 
    static const string type_name = "uvm_pre_reset_phase"; 
    static function uvm_pre_reset_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="pre_reset"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_pre_reset_phase
+   endfunction
+endclass
 
 //
 // Class: uvm_reset_phase
@@ -111,25 +108,22 @@ endclass : uvm_pre_reset_phase
 //
 class uvm_reset_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.reset_phase(phase); 
-   endtask : exec_task
+      comp.reset_phase(phase); 
+   endtask
    local static uvm_reset_phase m_inst; 
    static const string type_name = "uvm_reset_phase"; 
    static function uvm_reset_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="reset"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_reset_phase
+   endfunction
+endclass
 
 // Class: uvm_post_reset_phase
 //
@@ -152,25 +146,22 @@ endclass : uvm_reset_phase
 //
 class uvm_post_reset_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.post_reset_phase(phase); 
-   endtask : exec_task
+      comp.post_reset_phase(phase); 
+   endtask
    local static uvm_post_reset_phase m_inst; 
    static const string type_name = "uvm_post_reset_phase"; 
    static function uvm_post_reset_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="post_reset"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_post_reset_phase
+   endfunction
+endclass
 
 
 // Class: uvm_pre_configure_phase
@@ -195,25 +186,22 @@ endclass : uvm_post_reset_phase
 //
 class uvm_pre_configure_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.pre_configure_phase(phase); 
-   endtask : exec_task
+      comp.pre_configure_phase(phase); 
+   endtask
    local static uvm_pre_configure_phase m_inst; 
    static const string type_name = "uvm_pre_configure_phase"; 
    static function uvm_pre_configure_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="pre_configure"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_pre_configure_phase
+   endfunction
+endclass
 
 
 // Class: uvm_configure_phase
@@ -237,25 +225,22 @@ endclass : uvm_pre_configure_phase
 //
 class uvm_configure_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.configure_phase(phase); 
-   endtask : exec_task
+      comp.configure_phase(phase); 
+   endtask
    local static uvm_configure_phase m_inst; 
    static const string type_name = "uvm_configure_phase"; 
    static function uvm_configure_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="configure"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_configure_phase
+   endfunction
+endclass
 
 // Class: uvm_post_configure_phase
 //
@@ -279,25 +264,22 @@ endclass : uvm_configure_phase
 //
 class uvm_post_configure_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.post_configure_phase(phase); 
-   endtask : exec_task
+      comp.post_configure_phase(phase); 
+   endtask
    local static uvm_post_configure_phase m_inst; 
    static const string type_name = "uvm_post_configure_phase"; 
    static function uvm_post_configure_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="post_configure"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_post_configure_phase
+   endfunction
+endclass
 
 // Class: uvm_pre_main_phase
 //
@@ -318,25 +300,22 @@ endclass : uvm_post_configure_phase
 //
 class uvm_pre_main_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.pre_main_phase(phase); 
-   endtask : exec_task
+      comp.pre_main_phase(phase); 
+   endtask
    local static uvm_pre_main_phase m_inst; 
    static const string type_name = "uvm_pre_main_phase"; 
    static function uvm_pre_main_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="pre_main"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_pre_main_phase
+   endfunction
+endclass
 
 
 // Class: uvm_main_phase
@@ -361,25 +340,22 @@ endclass : uvm_pre_main_phase
 //
 class uvm_main_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.main_phase(phase); 
-   endtask : exec_task
+      comp.main_phase(phase); 
+   endtask
    local static uvm_main_phase m_inst; 
    static const string type_name = "uvm_main_phase"; 
    static function uvm_main_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="main"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_main_phase
+   endfunction
+endclass
 
 
 // Class: uvm_post_main_phase
@@ -400,25 +376,22 @@ endclass : uvm_main_phase
 //
 class uvm_post_main_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.post_main_phase(phase); 
-   endtask : exec_task
+      comp.post_main_phase(phase); 
+   endtask
    local static uvm_post_main_phase m_inst; 
    static const string type_name = "uvm_post_main_phase"; 
    static function uvm_post_main_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="post_main"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_post_main_phase
+   endfunction
+endclass
 
 
 // Class: uvm_pre_shutdown_phase
@@ -439,25 +412,22 @@ endclass : uvm_post_main_phase
 //
 class uvm_pre_shutdown_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.pre_shutdown_phase(phase); 
-   endtask : exec_task
+      comp.pre_shutdown_phase(phase); 
+   endtask
    local static uvm_pre_shutdown_phase m_inst; 
    static const string type_name = "uvm_pre_shutdown_phase"; 
    static function uvm_pre_shutdown_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="pre_shutdown"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_pre_shutdown_phase
+   endfunction
+endclass
 
 
 // Class: uvm_shutdown_phase
@@ -481,25 +451,22 @@ endclass : uvm_pre_shutdown_phase
 //
 class uvm_shutdown_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.shutdown_phase(phase); 
-   endtask : exec_task
+      comp.shutdown_phase(phase); 
+   endtask
    local static uvm_shutdown_phase m_inst; 
    static const string type_name = "uvm_shutdown_phase"; 
    static function uvm_shutdown_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="shutdown"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_shutdown_phase
+   endfunction
+endclass
 
 
 // Class: uvm_post_shutdown_phase
@@ -524,22 +491,19 @@ endclass : uvm_shutdown_phase
 //
 class uvm_post_shutdown_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
-      uvm_component comp_; 
-      if ($cast(comp_,comp)) 
-        comp_.post_shutdown_phase(phase); 
-   endtask : exec_task
+      comp.post_shutdown_phase(phase); 
+   endtask
    local static uvm_post_shutdown_phase m_inst; 
    static const string type_name = "uvm_post_shutdown_phase"; 
    static function uvm_post_shutdown_phase get(); 
-      if(m_inst == null) begin 
+      if(m_inst == null)
          m_inst = new; 
-            end 
       return m_inst; 
-   endfunction : get
+   endfunction
    `_protected function new(string name="post_shutdown"); 
       super.new(name); 
-   endfunction : new
+   endfunction
    virtual function string get_type_name(); 
       return type_name; 
-   endfunction : get_type_name
-endclass : uvm_post_shutdown_phase
+   endfunction
+endclass

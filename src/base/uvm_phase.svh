@@ -928,6 +928,9 @@ endfunction
 function uvm_phase uvm_phase::m_find_predecessor(uvm_phase phase, bit stay_in_scope=1, uvm_phase orig_phase=null);
   uvm_phase found;
   //$display("  FIND PRED node '",phase.get_name(),"' (id=",$sformatf("%0d",phase.get_inst_id()),") - checking against ",get_name()," (",m_phase_type.name()," id=",$sformatf("%0d",get_inst_id()),(m_imp==null)?"":{"/",$sformatf("%0d",m_imp.get_inst_id())},")");
+  if (phase == null) begin
+    return null ;
+  end
   if (phase == m_imp || phase == this)
     return this;
   foreach (m_predecessors[pred]) begin
@@ -974,6 +977,9 @@ endfunction
 function uvm_phase uvm_phase::m_find_successor(uvm_phase phase, bit stay_in_scope=1, uvm_phase orig_phase=null);
   uvm_phase found;
   //$display("  FIND SUCC node '",phase.get_name(),"' (id=",$sformatf("%0d",phase.get_inst_id()),") - checking against ",get_name()," (",m_phase_type.name()," id=",$sformatf("%0d",get_inst_id()),(m_imp==null)?"":{"/",$sformatf("%0d",m_imp.get_inst_id())},")");
+  if (phase == null) begin
+    return null ;
+  end
   if (phase == m_imp || phase == this) begin
     return this;
     end
@@ -1131,6 +1137,7 @@ task uvm_phase::execute_phase();
     //---------
     m_state = UVM_PHASE_STARTED;
     m_imp.traverse(top,this,UVM_PHASE_STARTED);
+    m_ready_to_end_count = 0 ; // reset the ready_to_end count when phase starts
     #0; // LET ANY WAITERS WAKE UP
 
 

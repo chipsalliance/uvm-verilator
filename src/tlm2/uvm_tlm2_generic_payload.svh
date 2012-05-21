@@ -120,8 +120,9 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
    // the given address attribute (because the address is out-of-range,
    // for example) it shall generate a standard error response. The
    // recommended response status is ~UVM_TLM_ADDRESS_ERROR_RESPONSE~.
-
+   //
    rand bit [63:0]             m_address;
+
  
    // Variable: m_command
    //
@@ -142,8 +143,9 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
    //
    // The command attribute shall be set by the initiator, and shall
    // not be overwritten by any interconnect
-
+   //
    rand uvm_tlm_command_e          m_command;
+
    
    // Variable: m_data
    //
@@ -178,8 +180,8 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
    // to use/be interpreted using the host endianness.
    // However, this process is currently outside the scope of this standard.
    //
-
    rand byte unsigned             m_data[];
+
 
    // Variable: m_length
    //
@@ -192,9 +194,10 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
    // The data length attribute shall not be set to 0.
    // In order to transfer zero bytes, the <m_command> attribute
    // should be set to <UVM_TLM_IGNORE_COMMAND>.
-   
+   //
    rand int unsigned           m_length;
    
+
    // Variable: m_response_status
    //
    // Status of the bus operation.
@@ -238,16 +241,19 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
    // UVM_TLM_OK_RESPONSE, but in general this will not be the case. In
    // other words, the initiator ignores the
    // response status at its own risk.
-
+   //
    rand uvm_tlm_response_status_e  m_response_status;
+
 
    // Variable: m_dmi
    //
    // DMI mode is not yet supported in the UVM TLM2 subset.
    // This variable is provided for completeness and interoperability
    // with SystemC.
-   rand bit                    m_dmi;
+   //
+   bit m_dmi;
    
+
    // Variable: m_byte_enable
    //
    // Indicates valid <m_data> array elements.
@@ -285,16 +291,19 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
    // <m_data> array. In the case of a read command, any interconnect
    // component or target should not modify the values of disabled
    // bytes in the <m_data> array.
-   
+   //
    rand byte unsigned          m_byte_enable[];
 
+
    // Variable: m_byte_enable_length
+   //
    // The number of elements in the <m_byte_enable> array.
    //
    // It shall be set by the initiator, and shall not be overwritten
    // by any interconnect component or target.
-   
-   rand int unsigned           m_byte_enable_length;
+   //
+   rand int unsigned m_byte_enable_length;
+
 
    // Variable: m_streaming_width
    //    
@@ -345,22 +354,15 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
    // given streaming width, it shall generate a standard error
    // response. The recommended response status is
    // TLM_BURST_ERROR_RESPONSE.
-               
-   rand int unsigned           m_streaming_width;
+   //
+   rand int unsigned m_streaming_width;
+
+   protected uvm_tlm_extension_base m_extensions [uvm_tlm_extension_base];
+   local rand uvm_tlm_extension_base m_rand_exts[];
 
 
-   local uvm_tlm_extension_base m_extensions [uvm_tlm_extension_base];
+   `uvm_object_utils(uvm_tlm_generic_payload)
 
-   `uvm_object_utils_begin(uvm_tlm_generic_payload)
-      `uvm_field_int(m_address, UVM_ALL_ON);
-      `uvm_field_enum(uvm_tlm_command_e, m_command, UVM_ALL_ON);
-      `uvm_field_array_int(m_data, UVM_ALL_ON);
-      `uvm_field_int(m_length, UVM_ALL_ON);
-      `uvm_field_enum(uvm_tlm_response_status_e, m_response_status, UVM_ALL_ON);
-      `uvm_field_array_int(m_byte_enable, UVM_ALL_ON);
-      `uvm_field_int(m_streaming_width, UVM_ALL_ON);
-   `uvm_object_utils_end
-   
 
   // Function: new
   //
@@ -379,71 +381,229 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
   endfunction
 
 
-   function void do_print(uvm_printer printer);
-      foreach (m_extensions[ext_]) begin
-      	 uvm_tlm_extension_base ext = ext_;
-         printer.print_object(ext.get_type_handle_name(), m_extensions[ext]);
-      end
-   endfunction
-
-
-   function void do_copy(uvm_object rhs);
-      uvm_tlm_generic_payload gp;
-      super.do_copy(rhs);
-      $cast(gp, rhs);
-      m_extensions.delete();
-      foreach (gp.m_extensions[ext]) begin
-         $cast(m_extensions[ext], gp.m_extensions[ext].clone());
-      end
-   endfunction
-   
-
-   function bit do_compare(uvm_object rhs, uvm_comparer comparer);
-      uvm_tlm_generic_payload gp;
-      do_compare = super.do_compare(rhs, comparer);
-      $cast(gp, rhs);
-      foreach (m_extensions[ext_]) begin
-      	 uvm_tlm_extension_base ext = ext_;
-         if (!gp.m_extensions.exists(ext)) 
-            do_compare &= comparer.compare_object(ext.get_type_handle_name(), m_extensions[ext], null);
-         else do_compare &= comparer.compare_object(ext.get_type_handle_name(), m_extensions[ext], gp.m_extensions[ext]);
-      end
-      foreach (gp.m_extensions[ext_]) begin
-      	 uvm_tlm_extension_base ext = ext_;
-         if (!m_extensions.exists(ext)) 
-            do_compare &= comparer.compare_object(ext.get_type_handle_name(), null, gp.m_extensions[ext]);
-      end
-   endfunction
-   
-
-  // Function: convert2string
+  // Function- do_print
   //
-  // Convert the contents of the class to a string suitable for
-  // printing.
+  function void do_print(uvm_printer printer);
+    byte unsigned be;
+    super.do_print(printer);
+    printer.print_int     ("address", m_address, 64, UVM_HEX);
+    printer.print_generic ("command", "uvm_tlm_command_e", 32, m_command.name());
+    printer.print_generic ("response_status", "uvm_tlm_response_status_e",
+                             32, m_response_status.name());
+    printer.print_int     ("streaming_width", m_streaming_width, 32, UVM_HEX);
 
+    printer.print_array_header("data", m_length, "darray(byte)");
+    for (int i=0; i < m_length && i < m_data.size(); i++) begin
+      if (m_byte_enable_length) begin
+        be = m_byte_enable[i % m_byte_enable_length];
+        printer.print_generic ($sformatf("[%0d]",i), "byte", 8,
+            $sformatf("'h%h%s",m_data[i],((be=='hFF) ? "" : " x")));
+      end
+      else 
+        printer.print_generic ($sformatf("[%0d]",i), "byte", 8,
+                               $sformatf("'h%h",m_data[i]));
+    end
+    printer.print_array_footer();
+
+    foreach (m_extensions[ext_]) begin
+      uvm_tlm_extension_base ext = ext_;
+      printer.print_object(ext.get_name(), m_extensions[ext]);
+    end
+  endfunction
+
+
+  // Function- do_copy
+  //
+  function void do_copy(uvm_object rhs);
+    uvm_tlm_generic_payload gp;
+    super.do_copy(rhs);
+    $cast(gp, rhs);
+    m_address            = gp.m_address;
+    m_command            = gp.m_command;
+    m_data               = gp.m_data;
+    m_dmi                = gp.m_dmi;
+    m_length             = gp.m_length;
+    m_response_status    = gp.m_response_status;
+    m_byte_enable        = gp.m_byte_enable;
+    m_streaming_width    = gp.m_streaming_width;
+    m_byte_enable_length = gp.m_byte_enable_length;
+
+    m_extensions.delete();
+    foreach (gp.m_extensions[ext])
+       $cast(m_extensions[ext], gp.m_extensions[ext].clone());
+    
+  endfunction
+   
+
+  // Function- do_compare
+  //
+  function bit do_compare(uvm_object rhs, uvm_comparer comparer);
+    uvm_tlm_generic_payload gp;
+    do_compare = super.do_compare(rhs, comparer);
+    $cast(gp, rhs);
+
+    do_compare = (m_address == gp.m_address &&
+                  m_command == gp.m_command &&
+                  m_length  == gp.m_length  &&
+                  m_dmi     == gp.m_dmi &&
+                  m_byte_enable_length == gp.m_byte_enable_length  &&
+                  m_response_status    == gp.m_response_status &&
+                  m_streaming_width    == gp.m_streaming_width );
+    
+    if (do_compare && m_length == gp.m_length) begin
+        byte unsigned lhs_be, rhs_be;
+        for (int i=0; do_compare && i < m_length && i < m_data.size(); i++) begin
+          if (m_byte_enable_length) begin
+            lhs_be = m_byte_enable[i % m_byte_enable_length];
+            rhs_be = gp.m_byte_enable[i % gp.m_byte_enable_length];
+            do_compare = ((m_data[i] & lhs_be) == (gp.m_data[i] & rhs_be));
+          end
+          else begin
+            do_compare = (m_data[i] == gp.m_data[i]);
+          end
+        end
+     end
+
+    if (do_compare)
+      foreach (m_extensions[ext_]) begin
+         uvm_tlm_extension_base ext = ext_;
+         uvm_tlm_extension_base rhs_ext = gp.m_extensions.exists(ext) ?
+                                          gp.m_extensions[ext] : null;
+         do_compare = comparer.compare_object(ext.get_name(),
+                                               m_extensions[ext], rhs_ext);
+         if (!do_compare) break;
+      end
+
+    if (do_compare)
+      foreach (gp.m_extensions[ext_]) begin
+        uvm_tlm_extension_base ext = ext_;
+        if (!m_extensions.exists(ext)) begin
+              do_compare = comparer.compare_object(ext.get_name(),
+                            null, gp.m_extensions[ext]);
+          if (!do_compare) break;
+        end
+      end
+
+    if (!do_compare && comparer.show_max > 0) begin
+      string msg = $sformatf("GP miscompare between '%s' and '%s':\nlhs = %s\nrhs = %s",
+            get_full_name(), gp.get_full_name(), this.convert2string(), gp.convert2string());
+      case (comparer.sev)
+        UVM_WARNING: `uvm_warning("MISCMP", msg)
+        UVM_ERROR:   `uvm_error("MISCMP", msg)
+        default:     `uvm_info("MISCMP", msg, UVM_LOW)
+      endcase
+    end
+
+  endfunction
+   
+
+  // Function- do_pack
+  //
+  // We only pack m_length bytes of the m_data array, even if m_data is larger
+  // than m_length. Same treatment for the byte-enable array.
+  function void do_pack(uvm_packer packer);
+    super.do_pack(packer);
+    if (m_length > m_data.size())
+       `uvm_fatal("PACK_DATA_ARR",
+         $sformatf("Data array m_length property (%0d) greater than m_data.size (%0d)",
+         m_length,m_data.size()))
+    if (m_byte_enable_length > m_byte_enable.size())
+       `uvm_fatal("PACK_DATA_ARR",
+         $sformatf("Data array m_byte_enable_length property (%0d) greater than m_byte_enable.size (%0d)",
+         m_byte_enable_length,m_byte_enable.size()))
+    `uvm_pack_intN  (m_address,64)
+    `uvm_pack_enumN (m_command,32)
+    `uvm_pack_intN  (m_length,32)
+    for (int i=0; i<m_length; i++)
+      `uvm_pack_intN(m_data[i],8)
+    `uvm_pack_enumN (m_response_status,32)
+    `uvm_pack_intN  (m_byte_enable_length,32)
+    for (int i=0; i<m_byte_enable_length; i++)
+      `uvm_pack_intN(m_byte_enable[i],8)
+    `uvm_pack_intN  (m_streaming_width,32)
+
+    foreach (m_extensions[ext])
+      m_extensions[ext].do_pack(packer);
+  endfunction
+
+
+  // Function- do_unpack
+  //
+  // We only reallocate m_data/m_byte_enable if the new size
+  // is greater than their current size
+  function void do_unpack(uvm_packer packer);
+    super.do_unpack(packer);
+    `uvm_unpack_intN  (m_address,64)
+    `uvm_unpack_enumN (m_command, 32, uvm_tlm_command_e)
+    `uvm_unpack_intN  (m_length,32)
+    if (m_data.size() < m_length)
+      m_data = new[m_length];
+    foreach (m_data[i])
+      `uvm_unpack_intN(m_data[i],8)
+    `uvm_unpack_enumN (m_response_status, 32, uvm_tlm_response_status_e)
+    `uvm_unpack_intN  (m_byte_enable_length,32)
+    if (m_byte_enable.size() < m_byte_enable_length)
+      m_byte_enable = new[m_byte_enable_length];
+    foreach (m_byte_enable[i])
+      `uvm_unpack_intN(m_byte_enable[i],8)
+    `uvm_unpack_intN  (m_streaming_width,32)
+
+    foreach (m_extensions[ext])
+      m_extensions[ext].do_unpack(packer);
+  endfunction
+
+
+  // Function- do_record
+  //
+  function void do_record(uvm_recorder recorder);
+    if (!is_recording_enabled())
+      return;
+    super.do_record(recorder);
+    `uvm_record_field("address",m_address)
+    `uvm_record_field("command",m_command.name())
+    `uvm_record_field("data_length",m_length)
+    `uvm_record_field("byte_enable_length",m_length)
+    `uvm_record_field("response_status",m_response_status.name())
+    `uvm_record_field("streaming_width",m_streaming_width)
+
+    for (int i=0; i < m_length; i++)
+      `uvm_record_field($sformatf("\\data[%0d] ", i), m_data[i])
+
+    for (int i=0; i < m_byte_enable_length; i++)
+      `uvm_record_field($sformatf("\\byte_en[%0d] ", i), m_byte_enable[i])
+
+    foreach (m_extensions[ext])
+      m_extensions[ext].record(recorder);
+  endfunction
+
+
+  // Function- convert2string
+  //
   function string convert2string();
 
     string msg;
-    string addr_fmt;
     string s;
-     int unsigned addr_chars = 16;
 
-    $sformat(msg, "%s [0x%16x] =", m_command.name(), m_address);
+    $sformat(msg, "%s %s [0x%16x] =", super.convert2string(),
+             m_command.name(), m_address);
 
-    for(int unsigned i = 0; i < m_data.size(); i++) begin
-      $sformat(s, " %02x", m_data[i]);
+    for(int unsigned i = 0; i < m_length; i++) begin
+      if (!m_byte_enable_length || (m_byte_enable[i % m_byte_enable_length] == 'hFF))
+        $sformat(s, " %02x", m_data[i]);
+      else
+        $sformat(s, " --");
       msg = { msg , s };
     end
 
-    if(m_response_status != UVM_TLM_INCOMPLETE_RESPONSE)
-      msg = { msg, " <-- ", get_response_string() };
+    msg = { msg, " (status=", get_response_string(), ")" };
 
     return msg;
 
   endfunction
 
+
   //--------------------------------------------------------------------
-  // Group: accessors
+  // Group: Accessors
   //
   // The accessor functions let you set and get each of the members of the 
   // generic payload. All of the accessor methods are virtual. This implies 
@@ -680,15 +840,20 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
 
   // Function: set_extension
   //
-  // Add an instance-specific extension.
-  // The specified extension is bound to the generic payload by ts type
-  // handle.
+  // Add an instance-specific extension. Only one instance of any given
+  // extension type is allowed. If there is an existing extension
+  // instance of the type of ~ext~, ~ext~ replaces it and its handle
+  // is returned. Otherwise, null is returned.
    
   function uvm_tlm_extension_base set_extension(uvm_tlm_extension_base ext);
     uvm_tlm_extension_base ext_handle = ext.get_type_handle();
-    set_extension = m_extensions[ext_handle];
+    if(!m_extensions.exists(ext_handle))
+      set_extension = null;
+    else
+      set_extension = m_extensions[ext_handle];
     m_extensions[ext_handle] = ext;
   endfunction
+
 
   // Function: get_num_extensions
   //
@@ -698,6 +863,7 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
     return m_extensions.num();
   endfunction: get_num_extensions
    
+
   // Function: get_extension
   //
   // Return the instance specific extension bound under the specified key.
@@ -709,6 +875,7 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
     return m_extensions[ext_handle];
   endfunction
    
+
   // Function: clear_extension
   //
   // Remove the instance-specific extension bound under the specified key.
@@ -718,8 +885,8 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
       m_extensions.delete(ext_handle);
     else
       `uvm_info("GP_EXT", $sformatf("Unable to find extension to clear"), UVM_MEDIUM);
+  endfunction
 
-  endfunction: clear_extension
 
   // Function: clear_extensions
   //
@@ -728,7 +895,26 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
   function void clear_extensions();
     m_extensions.delete();
   endfunction
-    
+
+
+  // Function: pre_randomize()
+  // Prepare this class instance for randomization
+  //
+  function void pre_randomize();
+    int i;
+    m_rand_exts = new [m_extensions.num()];
+    foreach (m_extensions[ext_]) begin
+      uvm_tlm_extension_base ext = ext_;
+      m_rand_exts[i++] = m_extensions[ext];
+    end
+  endfunction
+
+  // Function: post_randomize()
+  // Clean-up this class instance after randomization
+  //
+  function void post_randomize();
+     m_rand_exts.delete();
+  endfunction
 endclass
 
 //----------------------------------------------------------------------
@@ -747,7 +933,7 @@ typedef uvm_tlm_generic_payload uvm_tlm_gp;
 // The class uvm_tlm_extension_base is the non-parameterized base class for
 // all generic payload extensions.  It includes the utility do_copy()
 // and create().  The pure virtual function get_type_handle() allows you
-// to get a unique handles that represents the derived type.  This is
+// to get a unique handle that represents the derived type.  This is
 // implemented in derived classes.
 //
 // This class is never used directly by users.

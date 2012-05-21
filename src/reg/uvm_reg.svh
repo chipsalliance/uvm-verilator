@@ -3015,10 +3015,13 @@ function string uvm_reg::convert2string();
        offset = parent_map == null ? this_map.get_base_addr(UVM_NO_HIER) :
                                      parent_map.get_submap_offset(this_map);
        prefix = {prefix, "  "};
-       $sformat(convert2string, 
-          "%sMapped in '%s' -- %s bytes, %s, offset 'h%0h\n",
-          prefix, this_map.get_full_name(), this_map.get_n_bytes(),
-          this_map.get_endian(), offset);
+       begin
+            uvm_endianness_e e = this_map.get_endian();
+            $sformat(convert2string, 
+                "%sMapped in '%s' -- %d bytes, %s, offset 'h%0h\n",
+                prefix, this_map.get_full_name(), this_map.get_n_bytes(),
+                e.name(), offset);
+       end
      end
    end
    prefix = "  ";

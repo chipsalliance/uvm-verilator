@@ -1189,7 +1189,7 @@ i = rint.read(this);</pre></blockquote><p>The accessor&rsquo;s <i>get_full_name(
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Modify the object stored in this resource container.&nbsp;  If the resource is read-only then issue an error message and return without modifying the object in the container.&nbsp;  If the resource is not read-only and an <i>accessor</i> object has been supplied then also update the accessor record.&nbsp;  Lastly, replace the object value in the container with the value supplied as the  argument, <i>t</i>, and release any processes blocked on <a href="#uvm_resource_base.wait_modified" class=LMethod id=link99 onMouseOver="ShowTip(event, 'tt17', 'link99')" onMouseOut="HideTip('tt17')">uvm_resource_base::wait_modified</a>.</p></div></div></div>
+<div class=CBody><p>Modify the object stored in this resource container.&nbsp;  If the resource is read-only then issue an error message and return without modifying the object in the container.&nbsp;  If the resource is not read-only and an <i>accessor</i> object has been supplied then also update the accessor record.&nbsp;  Lastly, replace the object value in the container with the value supplied as the argument, <i>t</i>, and release any processes blocked on <a href="#uvm_resource_base.wait_modified" class=LMethod id=link99 onMouseOver="ShowTip(event, 'tt17', 'link99')" onMouseOut="HideTip('tt17')">uvm_resource_base::wait_modified</a>.&nbsp;  If the value to be written is the same as the value already present in the resource then the write is not done.&nbsp;  That also means that the accessor record is not updated and the modified bit is not set.</p></div></div></div>
 
 
 

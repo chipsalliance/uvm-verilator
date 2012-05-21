@@ -485,25 +485,35 @@ virtual class uvm_resource_base extends uvm_object;
   function void record_read_access(uvm_object accessor = null);
 
     string str;
+    uvm_resource_types::access_t access_record;
 
     // If an accessor object is supplied then get the accessor record.
     // Otherwise create a new access record.  In either case populate
     // the access record with information about this access.  Check
     // first to make sure that auditing is turned on.
 
-    if(uvm_resource_options::is_auditing()) begin
-      if(accessor != null) begin
-        uvm_resource_types::access_t access_record;
-        str = accessor.get_full_name();
-        if(access.exists(str))
-          access_record = access[str];
-        else
-          init_access_record(access_record);
-        access_record.read_count++;
-        access_record.read_time = $realtime;
-        access[str] = access_record;
-      end
-    end
+    if(!uvm_resource_options::is_auditing())
+      return;
+
+    // If an accessor is supplied, then use its name
+	// as the database entry for the accessor record.
+	// Otherwise, use "<empty>" as the database entry.
+    if(accessor != null)
+      str = accessor.get_full_name();
+    else
+      str = "<empty>";
+
+    // Create a new accessor record if one does not exist
+    if(access.exists(str))
+      access_record = access[str];
+    else
+      init_access_record(access_record);
+
+    // Update the accessor record
+    access_record.read_count++;
+    access_record.read_time = $realtime;
+    access[str] = access_record;
+
   endfunction
 
   // function: record_write_access
@@ -897,10 +907,9 @@ class uvm_resource_pool;
     rq = rtab[name];
     for(int i=0; i<rq.size(); ++i) begin 
       r = rq.get(i);
-      // does the scope match?
-      if(r.match_scope(scope) &&
-         // does the type match?
-         ((type_handle == null) || (r.get_type_handle() == type_handle)))
+      // does the type and scope match?
+      if(((type_handle == null) || (r.get_type_handle() == type_handle)) &&
+          r.match_scope(scope))
         q.push_back(r);
     end
 
@@ -1085,10 +1094,9 @@ class uvm_resource_pool;
       for(i = 0; i < rq.size(); i++) begin
         r = rq.get(i);
         if(uvm_re_match(uvm_glob_to_re(re),name) == 0)
-          // does the scope match?
-          if(r.match_scope(scope) &&
-            // does the type match?
-            ((type_handle == null) || (r.get_type_handle() == type_handle)))
+          // does the type and scope match?
+          if(((type_handle == null) || (r.get_type_handle() == type_handle)) &&
+             r.match_scope(scope))
             result_q.push_back(r);
       end
     end
@@ -1344,7 +1352,7 @@ class uvm_resource_pool;
     printer.knobs.type_name=0;
     printer.knobs.reference=0;
 
-    if(rq == null && rq.size() == 0) begin
+    if(rq == null || rq.size() == 0) begin
       $display("<none>");
       return;
     end
@@ -1595,14 +1603,17 @@ class uvm_resource #(type T=int) extends uvm_resource_base;
   endfunction
 
   // Function: write
-  //
   // Modify the object stored in this resource container.  If the
   // resource is read-only then issue an error message and return
   // without modifying the object in the container.  If the resource is
   // not read-only and an ~accessor~ object has been supplied then also
-  // update the accessor record.  Lastly, replace the object value in the
-  // container with the value supplied as the  argument, ~t~, and 
-  // release any processes blocked on <uvm_resource_base::wait_modified>.
+  // update the accessor record.  Lastly, replace the object value in
+  // the container with the value supplied as the argument, ~t~, and
+  // release any processes blocked on
+  // <uvm_resource_base::wait_modified>.  If the value to be written is
+  // the same as the value already present in the resource then the
+  // write is not done.  That also means that the accessor record is not
+  // updated and the modified bit is not set.
 
   function void write(T t, uvm_object accessor = null);
 
@@ -1610,6 +1621,11 @@ class uvm_resource #(type T=int) extends uvm_resource_base;
       uvm_report_error("resource", $sformatf("resource %s is read only -- cannot modify", get_name()));
       return;
     end
+
+    // Set the modified bit and record the transaction only if the value
+    // has actually changed.
+    if(val == t)
+      return;
 
     record_write_access(accessor);
 

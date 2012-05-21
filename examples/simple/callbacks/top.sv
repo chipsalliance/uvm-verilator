@@ -274,7 +274,8 @@ module top;
       driver.in.put(tr);
     end
     begin
-       uvm_report_server svr = uvm_report_server::get_server();
+       uvm_report_server svr;
+       svr = uvm_report_server::get_server();
        svr.summarize();
     end
   end

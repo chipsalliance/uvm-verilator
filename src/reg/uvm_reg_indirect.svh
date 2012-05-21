@@ -180,8 +180,32 @@ class uvm_reg_indirect_data extends uvm_reg;
          `uvm_warning(get_full_name(), "Cannot backdoor-write an indirect data access register. Switching to frontdoor.");
          path = UVM_FRONTDOOR;
       end
-      
-      write(status, value, path, map, parent, prior, extension, fname, lineno);
+
+      // Can't simply call super.write() because it'll call set()
+      begin
+         uvm_reg_item rw;
+
+         XatomicX(1);
+
+         rw = uvm_reg_item::type_id::create("write_item",,get_full_name());
+         rw.element      = this;
+         rw.element_kind = UVM_REG;
+         rw.kind         = UVM_WRITE;
+         rw.value[0]     = value;
+         rw.path         = path;
+         rw.map          = map;
+         rw.parent       = parent;
+         rw.prior        = prior;
+         rw.extension    = extension;
+         rw.fname        = fname;
+         rw.lineno       = lineno;
+         
+         do_write(rw);
+
+         status = rw.status;
+
+         XatomicX(0);
+      end
    endtask
 
    virtual task read(output uvm_status_e      status,
@@ -204,7 +228,7 @@ class uvm_reg_indirect_data extends uvm_reg;
          path = UVM_FRONTDOOR;
       end
       
-      read(status, value, path, map, parent, prior, extension, fname, lineno);
+      super.read(status, value, path, map, parent, prior, extension, fname, lineno);
    endtask
 
    virtual task poke(output uvm_status_e      status,
@@ -278,6 +302,9 @@ class uvm_reg_indirect_ftdr_seq extends uvm_reg_frontdoor;
       rw.kind    = UVM_WRITE;
       rw.value[0]= m_idx;
 
+      m_addr_reg.XatomicX(1);
+      m_data_reg.XatomicX(1);
+      
       m_addr_reg.do_write(rw);
 
       if (rw.status == UVM_NOT_OK)
@@ -293,6 +320,9 @@ class uvm_reg_indirect_ftdr_seq extends uvm_reg_frontdoor;
         rw_info.value[0] = rw.value[0];
       end
 
+      m_addr_reg.XatomicX(0);
+      m_data_reg.XatomicX(0);
+      
       rw_info.status = rw.status;
    endtask
 

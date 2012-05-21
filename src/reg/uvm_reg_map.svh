@@ -1535,9 +1535,12 @@ function uvm_mem uvm_reg_map::get_mem_by_offset(uvm_reg_addr_t offset);
       return null;
    end
 
-   if (m_mems_by_offset.exists(offset))
-     return m_mems_by_offset[offset];
-
+   foreach (m_mems_by_offset[range]) begin
+      if (range.min <= offset && offset <= range.max) begin
+         return m_mems_by_offset[range];
+      end
+   end
+   
    return null;
 endfunction
 
@@ -1720,6 +1723,7 @@ endfunction
 
 task uvm_reg_map::do_write(uvm_reg_item rw);
 
+  uvm_sequence_base tmp_parent_seq;
   uvm_reg_map system_map = get_root_map();
   uvm_reg_adapter adapter = system_map.get_adapter();
   uvm_sequencer_base sequencer = system_map.get_sequencer();
@@ -1731,9 +1735,13 @@ task uvm_reg_map::do_write(uvm_reg_item rw);
     assert($cast(seq,o));
     seq.set_parent_sequence(rw.parent);
     rw.parent = seq;
+    tmp_parent_seq = seq;
   end
-  if (rw.parent == null)
+
+  if (rw.parent == null) begin
      rw.parent = new("default_parent_seq");
+     tmp_parent_seq = rw.parent;
+  end
 
   if (adapter == null) begin
     rw.set_sequencer(sequencer);
@@ -1745,6 +1753,9 @@ task uvm_reg_map::do_write(uvm_reg_item rw);
     do_bus_write(rw, sequencer, adapter);
   end
 
+  if (tmp_parent_seq != null)
+    sequencer.m_sequence_exiting(tmp_parent_seq);
+
 endtask
 
 
@@ -1752,6 +1763,7 @@ endtask
 
 task uvm_reg_map::do_read(uvm_reg_item rw);
 
+  uvm_sequence_base tmp_parent_seq;
   uvm_reg_map system_map = get_root_map();
   uvm_reg_adapter adapter = system_map.get_adapter();
   uvm_sequencer_base sequencer = system_map.get_sequencer();
@@ -1763,9 +1775,13 @@ task uvm_reg_map::do_read(uvm_reg_item rw);
     assert($cast(seq,o));
     seq.set_parent_sequence(rw.parent);
     rw.parent = seq;
+    tmp_parent_seq = seq;
   end
-  if (rw.parent == null)
+
+  if (rw.parent == null) begin
     rw.parent = new("default_parent_seq");
+    tmp_parent_seq = rw.parent;
+  end
 
   if (adapter == null) begin
     rw.set_sequencer(sequencer);
@@ -1776,6 +1792,9 @@ task uvm_reg_map::do_read(uvm_reg_item rw);
   else begin
     do_bus_read(rw, sequencer, adapter);
   end
+
+  if (tmp_parent_seq != null)
+    sequencer.m_sequence_exiting(tmp_parent_seq);
 
 endtask
 
@@ -1796,8 +1815,9 @@ task uvm_reg_map::do_bus_write (uvm_reg_item rw,
   int                skip;
   int unsigned       curr_byte;
   int                n_access_extra, n_access;
+  int               n_bits_init;
 
-  Xget_bus_infoX(rw, map_info, n_bits, lsb, skip);
+  Xget_bus_infoX(rw, map_info, n_bits_init, lsb, skip);
   `UVM_DA_TO_QUEUE(addrs,map_info.addr)
 
   // if a memory, adjust addresses based on offset
@@ -1814,14 +1834,14 @@ task uvm_reg_map::do_bus_write (uvm_reg_item rw,
       int temp_be;
       int idx;
       n_access_extra = lsb%(bus_width*8);                
-      n_access = n_access_extra + n_bits;
+      n_access = n_access_extra + n_bits_init;
       temp_be = n_access_extra;
       value = value << n_access_extra;
       while(temp_be >= 8) begin
          byte_en[idx++] = 0;
          temp_be -= 8;
       end                        
-      temp_be += n_bits;
+      temp_be += n_bits_init;
       while(temp_be > 0) begin
          byte_en[idx++] = 1;
          temp_be -= 8;
@@ -1829,9 +1849,11 @@ task uvm_reg_map::do_bus_write (uvm_reg_item rw,
       byte_en &= (1<<idx)-1;
       for (int i=0; i<skip; i++)
         void'(addrs.pop_front());
-      while (addrs.size() > (n_bits/(bus_width*8) + 1))
+      while (addrs.size() > (n_bits_init/(bus_width*8) + 1))
         void'(addrs.pop_back());
     end
+    curr_byte=0;
+    n_bits= n_bits_init;     
               
     foreach(addrs[i]) begin: foreach_addr
 

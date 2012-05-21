@@ -261,6 +261,36 @@ class uvm_status_container;
   uvm_packer      packer;
   uvm_recorder    recorder;
   uvm_printer     printer;
+  
+  // utility function used to perform a cycle check when config setting are pushed
+  // to uvm_objects. the function has to look at the current object stack representing 
+  // the call stack of all __m_uvm_field_automation() invocations.
+  // it is a only a cycle if the previous __m_uvm_field_automation call scope
+  // is not identical with the current scope AND the scope is already present in the 
+  // object stack
+  uvm_object m_uvm_cycle_scopes[$];
+  function bit m_do_cycle_check(uvm_object scope);
+    uvm_object l = m_uvm_cycle_scopes[$];
+
+    // we have been in this scope before (but actually right before so assuming a super/derived context of the same object)
+    if(l == scope) 
+    begin
+       m_uvm_cycle_scopes.push_back(scope);
+       return 0;
+    end
+    else
+    begin
+        // now check if we have already been in this scope before
+        uvm_object m[$] = m_uvm_cycle_scopes.find_first(item) with (item == scope);
+        if(m.size()!=0) begin
+             return 1;   //   detected a cycle 
+        end
+        else begin
+            m_uvm_cycle_scopes.push_back(scope);
+            return 0;            
+        end
+    end
+  endfunction
 endclass
 
 

@@ -26,6 +26,18 @@
 typedef class uvm_report_object;
 typedef class uvm_report_handler;
 typedef class uvm_report_server;
+typedef class uvm_report_catcher;
+
+typedef uvm_callbacks    #(uvm_report_object, uvm_report_catcher) uvm_report_cb;
+typedef uvm_callback_iter#(uvm_report_object, uvm_report_catcher) uvm_report_cb_iter;
+
+class sev_id_struct;
+  bit sev_specified ;
+  bit id_specified ;
+  uvm_severity sev ;
+  string  id ;
+  bit is_on ;
+endclass
 
 //------------------------------------------------------------------------------
 //
@@ -93,20 +105,8 @@ typedef class uvm_report_server;
 //
 //------------------------------------------------------------------------------
 
-typedef class uvm_report_catcher;
-
-class sev_id_struct;
-  bit sev_specified ;
-  bit id_specified ;
-  uvm_severity sev ;
-  string  id ;
-  bit is_on ;
-endclass
-
-typedef uvm_callbacks#(uvm_report_object,uvm_report_catcher) uvm_report_cb;
-typedef uvm_callback_iter#(uvm_report_object, uvm_report_catcher) uvm_report_cb_iter;
-
 virtual class uvm_report_catcher extends uvm_callback;
+
   `uvm_register_cb(uvm_report_object,uvm_report_catcher)
 
   typedef enum { UNKNOWN_ACTION, THROW, CAUGHT} action_e;
@@ -144,12 +144,11 @@ virtual class uvm_report_catcher extends uvm_callback;
   
   // Function: new
   //
-  // Create a new report object. The name argument is optional, but
+  // Create a new report catcher. The name argument is optional, but
   // should generally be provided to aid in debugging.
 
   function new(string name = "uvm_report_catcher");
     super.new(name);
-
     do_report = 1;
   endfunction    
 
@@ -168,18 +167,30 @@ virtual class uvm_report_catcher extends uvm_callback;
   //
   // Returns the <uvm_severity> of the message that is currently being
   // processed. If the severity was modified by a previously executed
-  // report object (which re-threw the message), then the returned 
+  // catcher object (which re-threw the message), then the returned 
   // severity is the modified value.
 
   function uvm_severity get_severity();
     return this.m_modified_severity;
   endfunction
   
+  // Function: get_context
+  //
+  // Returns the context (source) of the message that is currently being
+  // processed. This is typically the full hierarchical name of the component
+  // that issued the message. However, when the message comes via a report
+  // handler that is not associated with a component, the context is
+  // user-defined.
+
+  function string get_context();
+    return this.m_name;
+  endfunction
+  
   // Function: get_verbosity
   //
   // Returns the verbosity of the message that is currently being
   // processed. If the verbosity was modified by a previously executed
-  // report object (which re-threw the message), then the returned 
+  // catcher (which re-threw the message), then the returned 
   // verbosity is the modified value.
   
   function int get_verbosity();
@@ -190,7 +201,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   //
   // Returns the string id of the message that is currently being
   // processed. If the id was modified by a previously executed
-  // report object (which re-threw the message), then the returned 
+  // catcher (which re-threw the message), then the returned 
   // id is the modified value.
   
   function string get_id();
@@ -201,7 +212,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   //
   // Returns the string message of the message that is currently being
   // processed. If the message was modified by a previously executed
-  // report object (which re-threw the message), then the returned 
+  // catcher (which re-threw the message), then the returned 
   // message is the modified value.
   
   function string get_message();
@@ -212,7 +223,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   //
   // Returns the <uvm_action> of the message that is currently being
   // processed. If the action was modified by a previously executed
-  // report object (which re-threw the message), then the returned 
+  // catcher (which re-threw the message), then the returned 
   // action is the modified value.
   
   function uvm_action get_action();
@@ -357,7 +368,7 @@ virtual class uvm_report_catcher extends uvm_callback;
 
    // Function: uvm_report_fatal
    //
-   // Issues a fatal message using the current messages report object.
+   // Issues a fatal message using the current message's report object.
    // This message will bypass any message catching callbacks.
    
    protected function void uvm_report_fatal(string id, string message, int verbosity, string fname = "", int line = 0 );
@@ -378,7 +389,7 @@ virtual class uvm_report_catcher extends uvm_callback;
 
    // Function: uvm_report_error
    //
-   // Issues a error message using the current messages report object.
+   // Issues a error message using the current message's report object.
    // This message will bypass any message catching callbacks.
    
    
@@ -400,7 +411,7 @@ virtual class uvm_report_catcher extends uvm_callback;
 
    // Function: uvm_report_warning
    //
-   // Issues a warning message using the current messages report object.
+   // Issues a warning message using the current message's report object.
    // This message will bypass any message catching callbacks.
    
    protected function void uvm_report_warning(string id, string message, int verbosity, string fname = "", int line = 0 );
@@ -421,7 +432,7 @@ virtual class uvm_report_catcher extends uvm_callback;
 
    // Function: uvm_report_info
    //
-   // Issues a info message using the current messages report object.
+   // Issues a info message using the current message's report object.
    // This message will bypass any message catching callbacks.
    
    protected function void uvm_report_info(string id, string message, int verbosity, string fname = "", int line = 0 );

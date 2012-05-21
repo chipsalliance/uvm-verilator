@@ -258,7 +258,7 @@ endclass</pre></blockquote><p>The important thing to note is that each `uvm_&lt;
 
  <!--CONTENT index=23 -->
 <div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_analysis_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_analysis_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_analysis_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_analysis_impSFX for providing an analysis implementation.&nbsp; <i>SFX</i> is the suffix for the new class type.&nbsp; The analysis implemenation is the write function.&nbsp; The `uvm_analysis_imp_decl allows for a scoreboard (or other analysis component) to support input from many places.&nbsp; For example:</p><blockquote><pre>`uvm_analysis_imp_decl(_ingress)
-`uvm_analysis_imp_port(_egress)
+`uvm_analysis_imp_decl(_egress)
 
 class myscoreboard extends uvm_component;
   uvm_analysis_imp_ingress#(mydata, myscoreboard) ingress;

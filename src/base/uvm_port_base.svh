@@ -443,6 +443,18 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
                        "Cannot connect to null port handle", UVM_NONE);
       return;
     end
+    
+    if (provider == this) begin
+      m_comp.uvm_report_error(s_connection_error_id,
+                       "Cannot connect a port instance to itself", UVM_NONE);
+      return;
+    end
+
+    if (provider == this) begin
+      m_comp.uvm_report_error(s_connection_error_id,
+                       "Cannot connect a port instance to itself", UVM_NONE);
+      return;
+    end
 
     if ((provider.m_if_mask & m_if_mask) != m_if_mask) begin
       m_comp.uvm_report_error(s_connection_error_id, 

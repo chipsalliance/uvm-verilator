@@ -23,7 +23,7 @@ class uvm_type_utils #(type TYPE=int);
   static function string typename(TYPE val);
     `ifdef UVM_USE_TYPENAME
        `ifdef UVM_EXTRA_TYPENAME_ARG
-          return $typename(TYPE,39);
+          return $typename(val,39);
        `else
           return $typename(val);
        `endif

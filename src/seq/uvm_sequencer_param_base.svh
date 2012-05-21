@@ -296,7 +296,7 @@ function void uvm_sequencer_param_base::send_request(uvm_sequence_base sequence_
   t.set_sequencer(this);
   if (m_req_fifo.try_put(param_t) != 1) begin
     uvm_report_fatal(get_full_name(), 
-                     $sformatf("Sequencer send_request not able to put to fifo, depth; %0d", m_req_fifo.size()), UVM_NONE);
+                     $sformatf("Concurrent calls to send_request() not supported. Check your driver for concurrent calls to get_next_item()"), UVM_NONE);
   end
 
   m_num_reqs_sent++;

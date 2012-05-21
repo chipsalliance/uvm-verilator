@@ -172,14 +172,14 @@ class uvm_report_handler;
        report_relnotes_banner(file);
        srvr.f_display(file, "\n  You are using a version of the UVM library that has been compiled");
        srvr.f_display(file, "  with `UVM_NO_DEPRECATED undefined.");
-       srvr.f_display(file, "  See http://www.accellera.org/activities/vip/release_notes_11a for more details.");
+       srvr.f_display(file, "  See http://www.eda.org/svdb/view.php?id=3313 for more details.");
 `endif
 
 `ifndef UVM_OBJECT_MUST_HAVE_CONSTRUCTOR
        report_relnotes_banner(file);
        srvr.f_display(file, "\n  You are using a version of the UVM library that has been compiled");
        srvr.f_display(file, "  with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.");
-       srvr.f_display(file, "  See http://www.accellera.org/activities/vip/mantis3770 for more details.");
+       srvr.f_display(file, "  See http://www.eda.org/svdb/view.php?id=3770 for more details.");
 `endif
 
        if (m_relnotes_done)
@@ -366,14 +366,17 @@ class uvm_report_handler;
       string name,
       string id,
       string message,
-      int verbosity_level,
-      string filename,
-      int line,
-      uvm_report_object client
+      int verbosity_level=UVM_MEDIUM,
+      string filename="",
+      int line=0,
+      uvm_report_object client=null
       );
 
     uvm_report_server srvr;
     srvr = uvm_report_server::get_server();
+
+    if (client==null)
+      client = uvm_root::get();
 
     // Check for severity overrides and apply them before calling the server.
     // An id specific override has precedence over a generic severity override.

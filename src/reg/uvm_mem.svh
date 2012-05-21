@@ -1617,7 +1617,7 @@ task uvm_mem::do_write(uvm_reg_item rw);
       end
 
       if (rw.status != UVM_NOT_OK)
-         for (int idx = rw.offset;
+         for (uvm_reg_addr_t idx = rw.offset;
               idx <= rw.offset + rw.value.size();
               idx++) begin
             XsampleX(map_info.mem_range.stride * idx, 0, rw.map);
@@ -1724,7 +1724,7 @@ task uvm_mem::do_read(uvm_reg_item rw);
       end
 
       if (rw.status != UVM_NOT_OK)
-         for (int idx = rw.offset;
+         for (uvm_reg_addr_t idx = rw.offset;
               idx <= rw.offset + rw.value.size();
               idx++) begin
             XsampleX(map_info.mem_range.stride * idx, 1, rw.map);

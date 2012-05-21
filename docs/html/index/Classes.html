@@ -672,7 +672,7 @@ Verify the implementation of a single register by attempting to write 1&rsquo;s 
   </td></tr></table></blockquote>For converting between uvm_reg_bus_op and uvm_tlm_gp items.</div></div><div class=CToolTip id="tt118"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_reg_write_only_cbs extends uvm_reg_cbs
   </td></tr></table></blockquote>Pre-defined register callback method for write-only registers that will issue an error if a read() operation is attempted.</div></div><div class=CToolTip id="tt119"><div class=CClass>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>typedef class uvm_report_catcher
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_report_catcher extends uvm_callback
   </td></tr></table></blockquote>The uvm_report_catcher is used to catch messages issued by the uvm report server. </div></div><div class=CToolTip id="tt120"><div class=CClass>The uvm_report_handler is the class to which most methods in uvm_report_object delegate. </div></div><div class=CToolTip id="tt121"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_report_object extends uvm_object
   </td></tr></table></blockquote>The uvm_report_object provides an interface to the UVM reporting facility. </div></div><div class=CToolTip id="tt122"><div class=CClass>

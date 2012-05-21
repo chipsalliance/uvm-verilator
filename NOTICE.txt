@@ -11,7 +11,7 @@
 Portions of the UVM Reference Library were developed by
 Mentor Graphics Corporation.
 
-Copyright (c) 2007-2011, Mentor Graphics Corporation
+Copyright (c) 2007-2012, Mentor Graphics Corporation
 All rights reserved.
 
 
@@ -22,7 +22,7 @@ All rights reserved.
 Portions of the UVM Reference Library were developed by
 Cadence Design Systems, Inc.
 
-Copyright (c) 2007-2011, Cadence Design Systems, Inc.
+Copyright (c) 2007-2012, Cadence Design Systems, Inc.
 All rights reserved.
 
 
@@ -33,7 +33,7 @@ All rights reserved.
 Portions of the UVM Reference Library were developed by
 Synopsys, Inc.
 
-Copyright (c) 2006-2011, Synopsys, Inc.
+Copyright (c) 2006-2012, Synopsys, Inc.
 All rights reserved.
 
 
@@ -44,5 +44,5 @@ All rights reserved.
 Portions of the UVM Reference Library were developed by
 Cypress Semiconductor Corp.
 
-Copyright (c) 2011, Cypress Semiconductor Corp.
+Copyright (c) 2012, Cypress Semiconductor Corp.
 All rights reserved.
