@@ -319,6 +319,7 @@ class uvm_objection extends uvm_report_object;
     if(obj == null)
       obj = m_top;
     m_cleared = 0;
+    m_top_all_dropped = 0;
     m_raise (obj, obj, description, count);
   endfunction
 

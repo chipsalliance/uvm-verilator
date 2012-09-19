@@ -27,17 +27,17 @@
 `define UVM_NAME UVM
 `define UVM_MAJOR_REV 1
 `define UVM_MINOR_REV 1
-`define UVM_FIX_REV b
+`define UVM_FIX_REV c
 
 
 // Whole version identifiers that can be used in `ifdefs and `ifndefs
 // to do conditional compilation
 `define UVM_VERSION_1_1
 `define UVM_MAJOR_VERSION_1_1
-`define UVM_FIX_VERSION_1_1_b
+`define UVM_FIX_VERSION_1_1_c
 `define UVM_MAJOR_REV_1
 `define UVM_MINOR_REV_1
-`define UVM_FIX_REV_b
+`define UVM_FIX_REV_c
 
 // When there is a FIX_REV, print as "M.mf"
 // When there is NO FIX_REV, print as "M.m".

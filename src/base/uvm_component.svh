@@ -560,19 +560,25 @@ virtual class uvm_component extends uvm_report_object;
 
   // Function: phase_ready_to_end
   //
-  // Invoked when all objections to ending the given ~phase~ have been
-  // dropped, thus indicating that ~phase~ is ready to end. All this
-  // component's processes forked for the given phase will be killed
-  // upon return from this method. Components needing to consume delta
+  // Invoked when all objections to ending the given ~phase~ and all
+  // sibling phases have been dropped, thus indicating that ~phase~ is 
+  // ready to begin a clean exit. Sibling phases are any phases that 
+  // have a common successor phase in the schedule plus any phases that
+  // sync'd to the current phase. Components needing to consume delta
   // cycles or advance time to perform a clean exit from the phase
   // may raise the phase's objection. 
   //
   // |phase.raise_objection(this,"Reason");
   //
-  // This effectively resets the
-  // wait-for-all-objections-dropped loop for ~phase~. It is the
-  // responsibility of this component to drop the objection once
-  // it is ready for this phase to end (and processes killed).
+  // It is the responsibility of this component to drop the objection 
+  // once it is ready for this phase to end (and processes killed).
+  // If no objection to the given ~phase~ or sibling phases are raised,
+  // then phase_ended() is called after a delta cycle.  If any objection
+  // is raised, then when all objections to ending the given ~phase~
+  // and siblings are dropped, another iteration of phase_ready_to_end
+  // is called.  To prevent endless iterations due to coding error,
+  // after 20 iterations, phase_ended() is called regardless of whether
+  // previous iteration had any objections raised.
   
   extern virtual function void phase_ready_to_end (uvm_phase phase);
 
@@ -2027,7 +2033,7 @@ endfunction
 // ------
 
 function uvm_object  uvm_component::clone ();
-  `uvm_error("ILLCLN","clone cannot be called on a uvm_component. ")
+  `uvm_error("ILLCLN", $sformatf("Attempting to clone '%s'.  Clone cannot be called on a uvm_component.  The clone target variable will be set to null.", get_full_name()))
   return null;
 endfunction
 

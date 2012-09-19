@@ -145,15 +145,27 @@ class uvm_root extends uvm_component;
 
   // Variable- phase_timeout
   //
-  // Specifies the timeout for task-based phases. Default is 0, or no timeout.
+  // Specifies the timeout for the run phase. Default is `UVM_DEFAULT_TIMEOUT
+
 
   time phase_timeout = `UVM_DEFAULT_TIMEOUT;
 
 
   // Function: set_timeout
   //
-  // Specifies the timeout for task-based phases. Default is 0, i.e. no timeout.
-
+  // Specifies the timeout for the simulation. Default is <`UVM_DEFAULT_TIMEOUT>
+  //
+  // The timeout is simply the maximum absolute simulation time allowed before a
+  // ~FATAL~ occurs.  If the timeout is set to 20ns, then the simulation must end
+  // before 20ns, or a ~FATAL~ timeout will occur.
+  //
+  // This is provided so that the user can prevent the simulation from potentially 
+  // consuming too many resources (Disk, Memory, CPU, etc) when the testbench is
+  // essentially hung.
+  //
+  //
+   
+   
   extern function void set_timeout(time timeout, bit overridable=1);
 
 
@@ -386,8 +398,15 @@ task uvm_root::run_test(string test_name="");
     return;
   end
 
-  uvm_report_info("RNTST", {"Running test ",test_name, "..."}, UVM_LOW);
-
+  begin
+  	if(test_name=="") 
+  		uvm_report_info("RNTST", "Running test ...", UVM_LOW); 
+  	else if (test_name == uvm_test_top.get_type_name())
+  		uvm_report_info("RNTST", {"Running test ",test_name,"..."}, UVM_LOW); 
+  	else
+  		uvm_report_info("RNTST", {"Running test ",uvm_test_top.get_type_name()," (via factory override for test \"",test_name,"\")..."}, UVM_LOW);
+  end
+  
   // phase runner, isolated from calling process
   fork begin
     // spawn the phase runner task

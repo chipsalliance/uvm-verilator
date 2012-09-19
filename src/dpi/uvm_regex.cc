@@ -84,6 +84,7 @@ int uvm_re_match(const char * re, const char *str)
   if (err != 0) {
     vpi_printf((PLI_BYTE8*)  "UVM_ERROR: uvm_re_match: invalid glob or regular expression: |%s|\n",re);
     regfree(rexp);
+    free(rexp);
     return err;
   }
 
@@ -92,6 +93,7 @@ int uvm_re_match(const char * re, const char *str)
   //vpi_printf((PLI_BYTE8*)  "UVM_INFO: uvm_re_match: re=%s str=%s ERR=%0d\n",rex,str,err);
 
   regfree(rexp);
+  free(rexp);
 
   return err;
 }

@@ -405,9 +405,15 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
     end
     printer.print_array_footer();
 
+    begin
+    string name;
+    printer.print_array_header("extensions", m_extensions.num(), "aa(obj,obj)");
     foreach (m_extensions[ext_]) begin
-      uvm_tlm_extension_base ext = ext_;
-      printer.print_object(ext.get_name(), m_extensions[ext]);
+      uvm_tlm_extension_base ext = m_extensions[ext_];
+      name = {"[",ext.get_name(),"]"};
+      printer.print_object(name, ext, "[");
+    end
+    printer.print_array_footer();
     end
   endfunction
 
@@ -500,7 +506,8 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
   // Function- do_pack
   //
   // We only pack m_length bytes of the m_data array, even if m_data is larger
-  // than m_length. Same treatment for the byte-enable array.
+  // than m_length. Same treatment for the byte-enable array. We do not pack
+  // the extensions, if any, as we will be unable to unpack them.
   function void do_pack(uvm_packer packer);
     super.do_pack(packer);
     if (m_length > m_data.size())
@@ -522,15 +529,15 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
       `uvm_pack_intN(m_byte_enable[i],8)
     `uvm_pack_intN  (m_streaming_width,32)
 
-    foreach (m_extensions[ext])
-      m_extensions[ext].do_pack(packer);
   endfunction
 
 
   // Function- do_unpack
   //
   // We only reallocate m_data/m_byte_enable if the new size
-  // is greater than their current size
+  // is greater than their current size. We do not unpack extensions
+  // because we do not know what object types to allocate before we
+  // unpack into them. Extensions must be handled by user code.
   function void do_unpack(uvm_packer packer);
     super.do_unpack(packer);
     `uvm_unpack_intN  (m_address,64)
@@ -544,12 +551,10 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
     `uvm_unpack_intN  (m_byte_enable_length,32)
     if (m_byte_enable.size() < m_byte_enable_length)
       m_byte_enable = new[m_byte_enable_length];
-    foreach (m_byte_enable[i])
+    for (int i=0; i<m_byte_enable_length; i++)
       `uvm_unpack_intN(m_byte_enable[i],8)
     `uvm_unpack_intN  (m_streaming_width,32)
 
-    foreach (m_extensions[ext])
-      m_extensions[ext].do_unpack(packer);
   endfunction
 
 
@@ -573,7 +578,7 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
       `uvm_record_field($sformatf("\\byte_en[%0d] ", i), m_byte_enable[i])
 
     foreach (m_extensions[ext])
-      m_extensions[ext].record(recorder);
+      recorder.record_object(ext.get_name(),m_extensions[ext]);
   endfunction
 
 

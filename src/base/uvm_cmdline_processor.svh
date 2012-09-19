@@ -132,7 +132,7 @@ class uvm_cmdline_processor extends uvm_report_object;
     args.delete();
     if((match.len() > 2) && (match[0] == "/") && (match[match.len()-1] == "/")) begin
        match = match.substr(1,match.len()-2);
-       exp_h = dpi_regcomp(match);
+       exp_h = uvm_dpi_regcomp(match);
        if(exp_h == null) begin
          uvm_report_error("UVM_CMDLINE_PROC", {"Unable to compile the regular expression: ", match}, UVM_NONE);
          return 0;
@@ -140,7 +140,7 @@ class uvm_cmdline_processor extends uvm_report_object;
     end
     foreach (m_argv[i]) begin
       if(exp_h != null) begin
-        if(!dpi_regexec(exp_h, m_argv[i]))
+        if(!uvm_dpi_regexec(exp_h, m_argv[i]))
            args.push_back(m_argv[i]);
       end
       else if((m_argv[i].len() >= len) && (m_argv[i].substr(0,len - 1) == match))
@@ -148,7 +148,7 @@ class uvm_cmdline_processor extends uvm_report_object;
     end
 
     if(exp_h != null)
-      dpi_regfree(exp_h);
+      uvm_dpi_regfree(exp_h);
     `endif
 
     return args.size();
@@ -223,7 +223,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   // This is a vendor specific string.
 
   function string get_tool_name ();
-    return dpi_get_tool_name();
+    return uvm_dpi_get_tool_name();
   endfunction
 
   // Function: get_tool_version
@@ -232,7 +232,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   // This is a vendor specific string.
 
   function string  get_tool_version ();
-    return dpi_get_tool_version();
+    return uvm_dpi_get_tool_version();
   endfunction
 
   // constructor
@@ -242,7 +242,7 @@ class uvm_cmdline_processor extends uvm_report_object;
     string sub;
     super.new(name);
     do begin
-      s = dpi_get_next_arg();
+      s = uvm_dpi_get_next_arg();
       if(s!="") begin
         m_argv.push_back(s);
         if(s[0] == "+") begin

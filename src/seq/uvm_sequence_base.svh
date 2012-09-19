@@ -143,6 +143,8 @@ class uvm_sequence_base extends uvm_sequence_item;
   // sequencers, each sequence_id is managed seperately
   protected int m_sqr_seq_ids[int];
 
+  protected bit children_array[uvm_sequence_base];
+   
   protected uvm_sequence_item response_queue[$];
   protected int               response_queue_depth = 8;
   protected bit               response_queue_error_report_disabled;
@@ -249,6 +251,10 @@ class uvm_sequence_base extends uvm_sequence_item;
          {"Sequence ", get_full_name(), " already started"},UVM_NONE);
     end
 
+    if (m_parent_sequence != null) begin
+       m_parent_sequence.children_array[this] = 1;
+    end
+
     if (this_priority < -1) begin
       uvm_report_fatal("SEQPRI", $sformatf("Sequence %s start has illegal priority: %0d",
                                            get_full_name(),
@@ -282,12 +288,15 @@ class uvm_sequence_base extends uvm_sequence_item;
     if (m_sequencer != null) begin
       void'(m_sequencer.m_register_sequence(this));
     end
-    
+
+    // Change the state to PRE_START, do this before the fork so that
+    // the "if (!(m_sequence_state inside {...}" works
+    m_sequence_state = PRE_START;
     fork
       begin
         m_sequence_process = process::self();
 
-        m_sequence_state = PRE_START;
+        // absorb delta to ensure PRE_START was seen
         #0;
         pre_start();
 
@@ -342,6 +351,9 @@ class uvm_sequence_base extends uvm_sequence_item;
 
     #0; // allow stopped and finish waiters to resume
 
+    if ((m_parent_sequence != null) && (m_parent_sequence.children_array.exists(this))) begin
+       m_parent_sequence.children_array.delete(this);
+    end
   endtask
 
 
@@ -681,11 +693,16 @@ class uvm_sequence_base extends uvm_sequence_item;
 
   function void m_kill();
     do_kill();
+    foreach(children_array[i]) begin
+       i.kill();
+    end
     if (m_sequence_process != null) begin
       m_sequence_process.kill;
       m_sequence_process = null;
     end
     m_sequence_state = STOPPED;
+    if ((m_parent_sequence != null) && (m_parent_sequence.children_array.exists(this)))
+      m_parent_sequence.children_array.delete(this);
   endfunction
 
 
@@ -1153,22 +1170,6 @@ class uvm_sequence_base extends uvm_sequence_item;
     m_sqr_seq_ids[sequencer_id] = sequence_id;
     set_sequence_id(sequence_id);
   endfunction
-
-
-  // Function- create_request
-  //
-  // Returns an instance of teh ~REQ~ type in a <uvm_sequence_item> base handle
-  virtual function uvm_sequence_item create_request ();
-    return null;
-  endfunction
-
-  // Function- create_response
-  //
-  // Returns an instance of teh ~RSP~ type in a <uvm_sequence_item> base handle
-  virtual function uvm_sequence_item create_response ();
-    return null;
-  endfunction
-
 
 endclass                
 

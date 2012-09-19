@@ -64,7 +64,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_root.Methods" >Methods</a></td><td class=SDescription></td></tr>
   <!-- index=13 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_root.set_timeout" id=link8 onMouseOver="ShowTip(event, 'tt8', 'link8')" onMouseOut="HideTip('tt8')">set_timeout</a></td><td class=SDescription>Specifies the timeout for task-based phases. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_root.set_timeout" id=link8 onMouseOver="ShowTip(event, 'tt8', 'link8')" onMouseOut="HideTip('tt8')">set_timeout</a></td><td class=SDescription>Specifies the timeout for the simulation. </td></tr>
   <!-- index=14 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_root.Variables" >Variables</a></td><td class=SDescription></td></tr>
@@ -218,7 +218,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Specifies the timeout for task-based phases.&nbsp; Default is 0, i.e. no timeout.</p></div></div></div>
+<div class=CBody><p>Specifies the timeout for the simulation.&nbsp; Default is <a href="uvm_object_globals-svh.html#`UVM_DEFAULT_TIMEOUT" class=LMacro id=link17 onMouseOver="ShowTip(event, 'tt14', 'link17')" onMouseOut="HideTip('tt14')">`UVM_DEFAULT_TIMEOUT</a></p><p>The timeout is simply the maximum absolute simulation time allowed before a <i>FATAL</i> occurs.&nbsp;  If the timeout is set to 20ns, then the simulation must end before 20ns, or a <i>FATAL</i> timeout will occur.</p><p>This is provided so that the user can prevent the simulation from potentially consuming too many resources (Disk, Memory, CPU, etc) when the testbench is essentially hung.</p></div></div></div>
 
 
 
@@ -232,7 +232,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=15 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_root.uvm_top" href="../../../../src/base/uvm_root.svh">uvm_top</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>const uvm_root uvm_top = uvm_root::get()
-  </td></tr></table></blockquote><div class=CBody><p>This is the top-level that governs phase execution and provides component search interface.&nbsp; See <a href="#uvm_root" class=LClass id=link17 onMouseOver="ShowTip(event, 'tt10', 'link17')" onMouseOut="HideTip('tt10')">uvm_root</a> for more information.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>This is the top-level that governs phase execution and provides component search interface.&nbsp; See <a href="#uvm_root" class=LClass id=link18 onMouseOver="ShowTip(event, 'tt10', 'link18')" onMouseOut="HideTip('tt10')">uvm_root</a> for more information.</p></div></div></div>
 
 </div><!--Content-->
 
@@ -308,7 +308,7 @@ Print the verification environment&rsquo;s component topology. </div></div><div 
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Specifies the timeout for task-based phases. </div></div><div class=CToolTip id="tt9"><div class=CVariable>
+Specifies the timeout for the simulation. </div></div><div class=CToolTip id="tt9"><div class=CVariable>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>const uvm_root uvm_top = uvm_root::get()
   </td></tr></table></blockquote>This is the top-level that governs phase execution and provides component search interface. </div></div><div class=CToolTip id="tt10"><div class=CClass>The <i>uvm_root</i> class serves as the implicit top-level and phase controller for all UVM components. </div></div><div class=CToolTip id="tt11"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
@@ -364,7 +364,7 @@ Specifies the timeout for task-based phases. </div></div><div class=CToolTip id=
     </table></blockquote>
 </div></div><div class=CToolTip id="tt13"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_printer
-  </td></tr></table></blockquote>The uvm_printer class provides an interface for printing uvm_objects in various formats. </div></div><!--END_ND_TOOLTIPS-->
+  </td></tr></table></blockquote>The uvm_printer class provides an interface for printing uvm_objects in various formats. </div></div><div class=CToolTip id="tt14"><div class=CMacro>The default timeout for simulation, if not overridden by uvm_root::set_timeout or +UVM_TIMEOUT</div></div><!--END_ND_TOOLTIPS-->
 
 <script language=JavaScript><!--
 if (browserType) {if (browserVer) {document.write("</div>"); }document.write("</div>");}// --></script></body></html>

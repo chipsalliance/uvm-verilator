@@ -986,7 +986,7 @@ The uvm_component_registry serves as a lightweight proxy for a component of type
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_component extends uvm_report_object
   </td></tr></table></blockquote>The uvm_component class is the root base class for UVM components. </div></div><div class=CToolTip id="tt22"><div class=CGroup>Using the factory involves three basic operations</div></div><div class=CToolTip id="tt23"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function string get_full_name ()
-  </td></tr></table></blockquote>Returns the full hierarchical name of this object. </div></div><div class=CToolTip id="tt24"><div class=CGroup>The utility macros provide implementations of the uvm_object::create method, which is needed for cloning, and the uvm_object::get_type_name method, which is needed for a number of debugging features. </div></div><div class=CToolTip id="tt25"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the full hierarchical name of this object. </div></div><div class=CToolTip id="tt24"><div class=CGroup>The <i>utils</i> macros define the infrastructure needed to enable the object/component for correct factory operation. </div></div><div class=CToolTip id="tt25"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function string get_type_name ()
   </td></tr></table></blockquote>This function returns the type name of the object, which is typically the type identifier enclosed in quotes. </div></div><div class=CToolTip id="tt26"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>

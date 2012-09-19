@@ -101,7 +101,7 @@ virtual class uvm_topdown_phase extends uvm_phase;
   //
   // Executes the top-down phase ~phase~ for the component ~comp~. 
   //
-  protected virtual function void execute(uvm_component comp,
+  virtual function void execute(uvm_component comp,
                                           uvm_phase phase);
     // reseed this process for random stability
     process proc = process::self();

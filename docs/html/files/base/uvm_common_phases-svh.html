@@ -206,7 +206,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=5 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_run_phase" href="../../../../src/base/uvm_common_phases.svh">uvm_run_phase</a></h2><div class=CBody><p>Stimulate the DUT.</p><p>This <a href="uvm_task_phase-svh.html#uvm_task_phase" class=LClass id=link48 onMouseOver="ShowTip(event, 'tt21', 'link48')" onMouseOut="HideTip('tt21')">uvm_task_phase</a> calls the <a href="uvm_component-svh.html#uvm_component.run_phase" class=LMethod id=link49 onMouseOver="ShowTip(event, 'tt22', 'link49')" onMouseOut="HideTip('tt22')">uvm_component::run_phase</a> virtual method.&nbsp; This phase runs in parallel to the runtime phases, <a href="uvm_runtime_phases-svh.html#uvm_pre_reset_phase" class=LClass id=link50 onMouseOver="ShowTip(event, 'tt23', 'link50')" onMouseOut="HideTip('tt23')">uvm_pre_reset_phase</a> through <a href="uvm_runtime_phases-svh.html#uvm_post_shutdown_phase" class=LClass id=link51 onMouseOver="ShowTip(event, 'tt24', 'link51')" onMouseOut="HideTip('tt24')">uvm_post_shutdown_phase</a>.&nbsp; All components in the testbench are synchronized with respect to the run phase regardles of the phase domain they belong to.</p><h4 class=CHeading>Upon Entry</h4><ul><li>Indicates that power has been applied.</li><li>There should not have been any active clock edges before entry into this phase (e.g. x-&gt;1 transitions via initial blocks).</li><li>Current simulation time is still equal to 0 but some &ldquo;delta cycles&rdquo; may have occurred.</li></ul><h4 class=CHeading>Typical Uses</h4><ul><li>Components implement behavior that is exhibited for the entire run-time, across the various run-time phases.</li><li>Backward compatibility with OVM.</li></ul><h4 class=CHeading>Exit Criteria</h4><ul><li>The DUT no longer needs to be simulated, and</li><li>The &lt;uvm_post_shutdown_ph&gt; is ready to end</li></ul><p>The run phase terminates in one of two ways.</p><h4 class=CHeading>1.&nbsp; All run_phase objections are dropped</h4><p>When all objections on the run_phase objection have been dropped, the phase ends and all of its threads are killed.&nbsp; If no component raises a run_phase objection immediately upon entering the phase, the phase ends immediately.</p><h4 class=CHeading>2.&nbsp; Timeout</h4><p>The phase ends if the timeout expires before all objections are dropped.&nbsp; By default, the timeout is set to 9200 seconds.&nbsp; You may override this via &lt;set_global_timeout&gt;.</p><p>If a timeout occurs in your simulation, or if simulation never ends despite completion of your test stimulus, then it usually indicates that a component continues to object to the end of a phase.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_run_phase" href="../../../../src/base/uvm_common_phases.svh">uvm_run_phase</a></h2><div class=CBody><p>Stimulate the DUT.</p><p>This <a href="uvm_task_phase-svh.html#uvm_task_phase" class=LClass id=link48 onMouseOver="ShowTip(event, 'tt21', 'link48')" onMouseOut="HideTip('tt21')">uvm_task_phase</a> calls the <a href="uvm_component-svh.html#uvm_component.run_phase" class=LMethod id=link49 onMouseOver="ShowTip(event, 'tt22', 'link49')" onMouseOut="HideTip('tt22')">uvm_component::run_phase</a> virtual method.&nbsp; This phase runs in parallel to the runtime phases, <a href="uvm_runtime_phases-svh.html#uvm_pre_reset_phase" class=LClass id=link50 onMouseOver="ShowTip(event, 'tt23', 'link50')" onMouseOut="HideTip('tt23')">uvm_pre_reset_phase</a> through <a href="uvm_runtime_phases-svh.html#uvm_post_shutdown_phase" class=LClass id=link51 onMouseOver="ShowTip(event, 'tt24', 'link51')" onMouseOut="HideTip('tt24')">uvm_post_shutdown_phase</a>.&nbsp; All components in the testbench are synchronized with respect to the run phase regardles of the phase domain they belong to.</p><h4 class=CHeading>Upon Entry</h4><ul><li>Indicates that power has been applied.</li><li>There should not have been any active clock edges before entry into this phase (e.g. x-&gt;1 transitions via initial blocks).</li><li>Current simulation time is still equal to 0 but some &ldquo;delta cycles&rdquo; may have occurred.</li></ul><h4 class=CHeading>Typical Uses</h4><ul><li>Components implement behavior that is exhibited for the entire run-time, across the various run-time phases.</li><li>Backward compatibility with OVM.</li></ul><h4 class=CHeading>Exit Criteria</h4><ul><li>The DUT no longer needs to be simulated, and</li><li>The &lt;uvm_post_shutdown_ph&gt; is ready to end</li></ul><p>The run phase terminates in one of two ways.</p><h4 class=CHeading>1.&nbsp; All run_phase objections are dropped</h4><p>When all objections on the run_phase objection have been dropped, the phase ends and all of its threads are killed.&nbsp; If no component raises a run_phase objection immediately upon entering the phase, the phase ends immediately.</p><h4 class=CHeading>2.&nbsp; Timeout</h4><p>The phase ends if the timeout expires before all objections are dropped.&nbsp; By default, the timeout is set to 9200 seconds.&nbsp; You may override this via <a href="uvm_root-svh.html#uvm_root.set_timeout" class=LMethod id=link52 onMouseOver="ShowTip(event, 'tt25', 'link52')" onMouseOut="HideTip('tt25')">uvm_root::set_timeout</a>.</p><p>If a timeout occurs in your simulation, or if simulation never ends despite completion of your test stimulus, then it usually indicates that a component continues to object to the end of a phase.</p>
 
 <!--START_ND_SUMMARY index=5-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -243,13 +243,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=6 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_extract_phase" href="../../../../src/base/uvm_common_phases.svh">uvm_extract_phase</a></h2><div class=CBody><p>Extract data from different points of the verficiation environment.</p><p><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link57 onMouseOver="ShowTip(event, 'tt17', 'link57')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a> that calls the <a href="uvm_component-svh.html#uvm_component.extract_phase" class=LMethod id=link58 onMouseOver="ShowTip(event, 'tt25', 'link58')" onMouseOut="HideTip('tt25')">uvm_component::extract_phase</a> method.</p><h4 class=CHeading>Upon Entry</h4><ul><li>The DUT no longer needs to be simulated.</li><li>Simulation time will no longer advance.</li></ul><h4 class=CHeading>Typical Uses</h4><ul><li>Extract any remaining data and final state information from scoreboard and testbench components</li><li>Probe the DUT (via zero-time hierarchical references and/or backdoor accesses) for final state information.</li><li>Compute statistics and summaries.</li><li>Display final state information</li><li>Close files.</li></ul><h4 class=CHeading>Exit Criteria</h4><ul><li>All data has been collected and summarized.</li></ul>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_extract_phase" href="../../../../src/base/uvm_common_phases.svh">uvm_extract_phase</a></h2><div class=CBody><p>Extract data from different points of the verficiation environment.</p><p><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link58 onMouseOver="ShowTip(event, 'tt17', 'link58')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a> that calls the <a href="uvm_component-svh.html#uvm_component.extract_phase" class=LMethod id=link59 onMouseOver="ShowTip(event, 'tt26', 'link59')" onMouseOut="HideTip('tt26')">uvm_component::extract_phase</a> method.</p><h4 class=CHeading>Upon Entry</h4><ul><li>The DUT no longer needs to be simulated.</li><li>Simulation time will no longer advance.</li></ul><h4 class=CHeading>Typical Uses</h4><ul><li>Extract any remaining data and final state information from scoreboard and testbench components</li><li>Probe the DUT (via zero-time hierarchical references and/or backdoor accesses) for final state information.</li><li>Compute statistics and summaries.</li><li>Display final state information</li><li>Close files.</li></ul><h4 class=CHeading>Exit Criteria</h4><ul><li>All data has been collected and summarized.</li></ul>
 
 <!--START_ND_SUMMARY index=6-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
   <!-- index=6 -->
 
-<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_extract_phase" id=link56 onMouseOver="ShowTip(event, 'tt7', 'link56')" onMouseOut="HideTip('tt7')">uvm_extract_phase</a></td></tr>
+<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_extract_phase" id=link57 onMouseOver="ShowTip(event, 'tt7', 'link57')" onMouseOut="HideTip('tt7')">uvm_extract_phase</a></td></tr>
 <tr class=SMain><td colspan=2 class=SWideDescription>Extract data from different points of the verficiation environment.</td></tr>
 
   <!-- HIERARCHY -->
@@ -257,10 +257,10 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link52 onMouseOver="ShowTip(event, 'tt11', 'link52')" onMouseOut="HideTip('tt11')">uvm_void</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link53 onMouseOver="ShowTip(event, 'tt12', 'link53')" onMouseOut="HideTip('tt12')">uvm_object</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_phase-svh.html#uvm_phase" class=LClass id=link54 onMouseOver="ShowTip(event, 'tt13', 'link54')" onMouseOut="HideTip('tt13')">uvm_phase</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link55 onMouseOver="ShowTip(event, 'tt17', 'link55')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link53 onMouseOver="ShowTip(event, 'tt11', 'link53')" onMouseOut="HideTip('tt11')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link54 onMouseOver="ShowTip(event, 'tt12', 'link54')" onMouseOut="HideTip('tt12')">uvm_object</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_phase-svh.html#uvm_phase" class=LClass id=link55 onMouseOver="ShowTip(event, 'tt13', 'link55')" onMouseOut="HideTip('tt13')">uvm_phase</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link56 onMouseOver="ShowTip(event, 'tt17', 'link56')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_extract_phase</div></div></td></tr>
         </table>
       </div>
@@ -280,13 +280,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=7 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_check_phase" href="../../../../src/base/uvm_common_phases.svh">uvm_check_phase</a></h2><div class=CBody><p>Check for any unexpected conditions in the verification environment.</p><p><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link64 onMouseOver="ShowTip(event, 'tt17', 'link64')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a> that calls the <a href="uvm_component-svh.html#uvm_component.check_phase" class=LMethod id=link65 onMouseOver="ShowTip(event, 'tt26', 'link65')" onMouseOut="HideTip('tt26')">uvm_component::check_phase</a> method.</p><h4 class=CHeading>Upon Entry</h4><ul><li>All data has been collected.</li></ul><h4 class=CHeading>Typical Uses</h4><ul><li>Check that no unaccounted-for data remain.</li></ul><h4 class=CHeading>Exit Criteria</h4><ul><li>Test is known to have passed or failed.</li></ul>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_check_phase" href="../../../../src/base/uvm_common_phases.svh">uvm_check_phase</a></h2><div class=CBody><p>Check for any unexpected conditions in the verification environment.</p><p><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link65 onMouseOver="ShowTip(event, 'tt17', 'link65')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a> that calls the <a href="uvm_component-svh.html#uvm_component.check_phase" class=LMethod id=link66 onMouseOver="ShowTip(event, 'tt27', 'link66')" onMouseOut="HideTip('tt27')">uvm_component::check_phase</a> method.</p><h4 class=CHeading>Upon Entry</h4><ul><li>All data has been collected.</li></ul><h4 class=CHeading>Typical Uses</h4><ul><li>Check that no unaccounted-for data remain.</li></ul><h4 class=CHeading>Exit Criteria</h4><ul><li>Test is known to have passed or failed.</li></ul>
 
 <!--START_ND_SUMMARY index=7-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
   <!-- index=7 -->
 
-<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_check_phase" id=link63 onMouseOver="ShowTip(event, 'tt8', 'link63')" onMouseOut="HideTip('tt8')">uvm_check_phase</a></td></tr>
+<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_check_phase" id=link64 onMouseOver="ShowTip(event, 'tt8', 'link64')" onMouseOut="HideTip('tt8')">uvm_check_phase</a></td></tr>
 <tr class=SMain><td colspan=2 class=SWideDescription>Check for any unexpected conditions in the verification environment.</td></tr>
 
   <!-- HIERARCHY -->
@@ -294,10 +294,10 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link59 onMouseOver="ShowTip(event, 'tt11', 'link59')" onMouseOut="HideTip('tt11')">uvm_void</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link60 onMouseOver="ShowTip(event, 'tt12', 'link60')" onMouseOut="HideTip('tt12')">uvm_object</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_phase-svh.html#uvm_phase" class=LClass id=link61 onMouseOver="ShowTip(event, 'tt13', 'link61')" onMouseOut="HideTip('tt13')">uvm_phase</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link62 onMouseOver="ShowTip(event, 'tt17', 'link62')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link60 onMouseOver="ShowTip(event, 'tt11', 'link60')" onMouseOut="HideTip('tt11')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link61 onMouseOver="ShowTip(event, 'tt12', 'link61')" onMouseOut="HideTip('tt12')">uvm_object</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_phase-svh.html#uvm_phase" class=LClass id=link62 onMouseOver="ShowTip(event, 'tt13', 'link62')" onMouseOut="HideTip('tt13')">uvm_phase</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link63 onMouseOver="ShowTip(event, 'tt17', 'link63')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_check_phase</div></div></td></tr>
         </table>
       </div>
@@ -317,13 +317,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=8 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_report_phase" href="../../../../src/base/uvm_common_phases.svh">uvm_report_phase</a></h2><div class=CBody><p>Report results of the test.</p><p><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link71 onMouseOver="ShowTip(event, 'tt17', 'link71')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a> that calls the <a href="uvm_component-svh.html#uvm_component.report_phase" class=LMethod id=link72 onMouseOver="ShowTip(event, 'tt27', 'link72')" onMouseOut="HideTip('tt27')">uvm_component::report_phase</a> method.</p><h4 class=CHeading>Upon Entry</h4><ul><li>Test is known to have passed or failed.</li></ul><h4 class=CHeading>Typical Uses</h4><ul><li>Report test results.</li><li>Write results to file.</li></ul><h4 class=CHeading>Exit Criteria</h4><ul><li>End of test.</li></ul>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_report_phase" href="../../../../src/base/uvm_common_phases.svh">uvm_report_phase</a></h2><div class=CBody><p>Report results of the test.</p><p><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link72 onMouseOver="ShowTip(event, 'tt17', 'link72')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a> that calls the <a href="uvm_component-svh.html#uvm_component.report_phase" class=LMethod id=link73 onMouseOver="ShowTip(event, 'tt28', 'link73')" onMouseOut="HideTip('tt28')">uvm_component::report_phase</a> method.</p><h4 class=CHeading>Upon Entry</h4><ul><li>Test is known to have passed or failed.</li></ul><h4 class=CHeading>Typical Uses</h4><ul><li>Report test results.</li><li>Write results to file.</li></ul><h4 class=CHeading>Exit Criteria</h4><ul><li>End of test.</li></ul>
 
 <!--START_ND_SUMMARY index=8-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
   <!-- index=8 -->
 
-<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_report_phase" id=link70 onMouseOver="ShowTip(event, 'tt9', 'link70')" onMouseOut="HideTip('tt9')">uvm_report_phase</a></td></tr>
+<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_report_phase" id=link71 onMouseOver="ShowTip(event, 'tt9', 'link71')" onMouseOut="HideTip('tt9')">uvm_report_phase</a></td></tr>
 <tr class=SMain><td colspan=2 class=SWideDescription>Report results of the test.</td></tr>
 
   <!-- HIERARCHY -->
@@ -331,10 +331,10 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link66 onMouseOver="ShowTip(event, 'tt11', 'link66')" onMouseOut="HideTip('tt11')">uvm_void</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link67 onMouseOver="ShowTip(event, 'tt12', 'link67')" onMouseOut="HideTip('tt12')">uvm_object</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_phase-svh.html#uvm_phase" class=LClass id=link68 onMouseOver="ShowTip(event, 'tt13', 'link68')" onMouseOut="HideTip('tt13')">uvm_phase</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link69 onMouseOver="ShowTip(event, 'tt17', 'link69')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link67 onMouseOver="ShowTip(event, 'tt11', 'link67')" onMouseOut="HideTip('tt11')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link68 onMouseOver="ShowTip(event, 'tt12', 'link68')" onMouseOut="HideTip('tt12')">uvm_object</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_phase-svh.html#uvm_phase" class=LClass id=link69 onMouseOver="ShowTip(event, 'tt13', 'link69')" onMouseOut="HideTip('tt13')">uvm_phase</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_bottomup_phase-svh.html#uvm_bottomup_phase" class=LClass id=link70 onMouseOver="ShowTip(event, 'tt17', 'link70')" onMouseOut="HideTip('tt17')">uvm_bottomup_phase</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_report_phase</div></div></td></tr>
         </table>
       </div>
@@ -354,13 +354,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=9 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_final_phase" href="../../../../src/base/uvm_common_phases.svh">uvm_final_phase</a></h2><div class=CBody><p>Tie up loose ends.</p><p><a href="uvm_topdown_phase-svh.html#uvm_topdown_phase" class=LClass id=link78 onMouseOver="ShowTip(event, 'tt14', 'link78')" onMouseOut="HideTip('tt14')">uvm_topdown_phase</a> that calls the <a href="uvm_component-svh.html#uvm_component.final_phase" class=LMethod id=link79 onMouseOver="ShowTip(event, 'tt28', 'link79')" onMouseOut="HideTip('tt28')">uvm_component::final_phase</a> method.</p><h4 class=CHeading>Upon Entry</h4><ul><li>All test-related activity has completed.</li></ul><h4 class=CHeading>Typical Uses</h4><ul><li>Close files.</li><li>Terminate co-simulation engines.</li></ul><h4 class=CHeading>Exit Criteria</h4><ul><li>Ready to exit simulator.</li></ul>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_final_phase" href="../../../../src/base/uvm_common_phases.svh">uvm_final_phase</a></h2><div class=CBody><p>Tie up loose ends.</p><p><a href="uvm_topdown_phase-svh.html#uvm_topdown_phase" class=LClass id=link79 onMouseOver="ShowTip(event, 'tt14', 'link79')" onMouseOut="HideTip('tt14')">uvm_topdown_phase</a> that calls the <a href="uvm_component-svh.html#uvm_component.final_phase" class=LMethod id=link80 onMouseOver="ShowTip(event, 'tt29', 'link80')" onMouseOut="HideTip('tt29')">uvm_component::final_phase</a> method.</p><h4 class=CHeading>Upon Entry</h4><ul><li>All test-related activity has completed.</li></ul><h4 class=CHeading>Typical Uses</h4><ul><li>Close files.</li><li>Terminate co-simulation engines.</li></ul><h4 class=CHeading>Exit Criteria</h4><ul><li>Ready to exit simulator.</li></ul>
 
 <!--START_ND_SUMMARY index=9-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
   <!-- index=9 -->
 
-<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_final_phase" id=link77 onMouseOver="ShowTip(event, 'tt10', 'link77')" onMouseOut="HideTip('tt10')">uvm_final_phase</a></td></tr>
+<tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_final_phase" id=link78 onMouseOver="ShowTip(event, 'tt10', 'link78')" onMouseOut="HideTip('tt10')">uvm_final_phase</a></td></tr>
 <tr class=SMain><td colspan=2 class=SWideDescription>Tie up loose ends.</td></tr>
 
   <!-- HIERARCHY -->
@@ -368,10 +368,10 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link73 onMouseOver="ShowTip(event, 'tt11', 'link73')" onMouseOut="HideTip('tt11')">uvm_void</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link74 onMouseOver="ShowTip(event, 'tt12', 'link74')" onMouseOut="HideTip('tt12')">uvm_object</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_phase-svh.html#uvm_phase" class=LClass id=link75 onMouseOver="ShowTip(event, 'tt13', 'link75')" onMouseOut="HideTip('tt13')">uvm_phase</a></div></div></td></tr>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_topdown_phase-svh.html#uvm_topdown_phase" class=LClass id=link76 onMouseOver="ShowTip(event, 'tt14', 'link76')" onMouseOut="HideTip('tt14')">uvm_topdown_phase</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link74 onMouseOver="ShowTip(event, 'tt11', 'link74')" onMouseOut="HideTip('tt11')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link75 onMouseOver="ShowTip(event, 'tt12', 'link75')" onMouseOut="HideTip('tt12')">uvm_object</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_phase-svh.html#uvm_phase" class=LClass id=link76 onMouseOver="ShowTip(event, 'tt13', 'link76')" onMouseOut="HideTip('tt13')">uvm_phase</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_topdown_phase-svh.html#uvm_topdown_phase" class=LClass id=link77 onMouseOver="ShowTip(event, 'tt14', 'link77')" onMouseOut="HideTip('tt14')">uvm_topdown_phase</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_final_phase</div></div></td></tr>
         </table>
       </div>
@@ -469,12 +469,26 @@ The uvm_run_phase phase implementation method.</div></div><div class=CToolTip id
   </td></tr></table></blockquote>After things have settled down.</div></div><div class=CToolTip id="tt25"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters nowrap>function void set_timeout(</td>      <td class=PType nowrap>time&nbsp;</td>
+      <td class=PParameter nowrap>timeout,</td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+</tr><tr><td></td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>overridable</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%>1</td>
+      <td class=PAfterParameters nowrap>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+Specifies the timeout for the simulation. </div></div><div class=CToolTip id="tt26"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void extract_phase(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
       <td class=PParameter nowrap>phase</td>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The uvm_extract_phase phase implementation method.</div></div><div class=CToolTip id="tt26"><div class=CMethod>
+The uvm_extract_phase phase implementation method.</div></div><div class=CToolTip id="tt27"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void check_phase(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
@@ -482,7 +496,7 @@ The uvm_extract_phase phase implementation method.</div></div><div class=CToolTi
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The uvm_check_phase phase implementation method.</div></div><div class=CToolTip id="tt27"><div class=CMethod>
+The uvm_check_phase phase implementation method.</div></div><div class=CToolTip id="tt28"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void report_phase(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
@@ -490,7 +504,7 @@ The uvm_check_phase phase implementation method.</div></div><div class=CToolTip 
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The uvm_report_phase phase implementation method.</div></div><div class=CToolTip id="tt28"><div class=CMethod>
+The uvm_report_phase phase implementation method.</div></div><div class=CToolTip id="tt29"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void final_phase(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>

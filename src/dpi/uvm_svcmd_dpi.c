@@ -29,7 +29,7 @@
 
 #define ARGV_STACK_PTR_SIZE 32
 
-extern const char *dpi_get_next_arg_c ()
+extern const char *uvm_dpi_get_next_arg_c ()
 {
   s_vpi_vlog_info info;
   static char*** argv_stack = NULL;
@@ -92,21 +92,21 @@ extern const char *dpi_get_next_arg_c ()
 
 }
 
-extern char* dpi_get_tool_name_c ()
+extern char* uvm_dpi_get_tool_name_c ()
 {
   s_vpi_vlog_info info;
   vpi_get_vlog_info(&info);
   return info.product;
 }
 
-extern char* dpi_get_tool_version_c ()
+extern char* uvm_dpi_get_tool_version_c ()
 {
   s_vpi_vlog_info info;
   vpi_get_vlog_info(&info);
   return info.version;
 }
 
-extern regex_t* dpi_regcomp (char* pattern)
+extern regex_t* uvm_dpi_regcomp (char* pattern)
 {
   regex_t* re = (regex_t*) malloc (sizeof(regex_t));
   int status = regcomp(re, pattern, REG_NOSUB|REG_EXTENDED);
@@ -119,7 +119,7 @@ extern regex_t* dpi_regcomp (char* pattern)
   return re;
 }
 
-extern int dpi_regexec (regex_t* re, char* str)
+extern int uvm_dpi_regexec (regex_t* re, char* str)
 {
   if(!re )
   {
@@ -128,7 +128,7 @@ extern int dpi_regexec (regex_t* re, char* str)
   return regexec(re, str, (size_t)0, NULL, 0);
 }
 
-extern void dpi_regfree (regex_t* re)
+extern void uvm_dpi_regfree (regex_t* re)
 {
   if(!re) return;
   regfree(re);

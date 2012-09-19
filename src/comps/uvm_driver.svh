@@ -73,7 +73,7 @@ class uvm_driver #(type REQ=uvm_sequence_item,
 
   function new (string name, uvm_component parent);
     super.new(name, parent);
-    seq_item_port    = new("sqr_pull_port", this);
+    seq_item_port    = new("seq_item_port", this);
     rsp_port         = new("rsp_port", this);
     seq_item_prod_if = seq_item_port;
   endfunction // new

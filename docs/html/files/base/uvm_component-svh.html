@@ -155,7 +155,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_component.phase_started" id=link58 onMouseOver="ShowTip(event, 'tt58', 'link58')" onMouseOut="HideTip('tt58')">phase_started</a></td><td class=SDescription>Invoked at the start of each phase. </td></tr>
   <!-- index=36 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_component.phase_ready_to_end" id=link59 onMouseOver="ShowTip(event, 'tt59', 'link59')" onMouseOut="HideTip('tt59')">phase_ready_to_end</a></td><td class=SDescription>Invoked when all objections to ending the given <i>phase</i> have been dropped, thus indicating that <i>phase</i> is ready to end. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_component.phase_ready_to_end" id=link59 onMouseOver="ShowTip(event, 'tt59', 'link59')" onMouseOut="HideTip('tt59')">phase_ready_to_end</a></td><td class=SDescription>Invoked when all objections to ending the given <i>phase</i> and all sibling phases have been dropped, thus indicating that <i>phase</i> is ready to begin a clean exit. </td></tr>
   <!-- index=37 -->
 
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_component.phase_ended" id=link60 onMouseOver="ShowTip(event, 'tt60', 'link60')" onMouseOut="HideTip('tt60')">phase_ended</a></td><td class=SDescription>Invoked at the end of each phase. </td></tr>
@@ -808,7 +808,7 @@ if (comp.get_first_child(name))
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Invoked when all objections to ending the given <i>phase</i> have been dropped, thus indicating that <i>phase</i> is ready to end.&nbsp; All this component&rsquo;s processes forked for the given phase will be killed upon return from this method.&nbsp; Components needing to consume delta cycles or advance time to perform a clean exit from the phase may raise the phase&rsquo;s objection.</p><blockquote><pre>phase.raise_objection(this,&quot;Reason&quot;);</pre></blockquote><p>This effectively resets the wait-for-all-objections-dropped loop for <i>phase</i>.&nbsp; It is the responsibility of this component to drop the objection once it is ready for this phase to end (and processes killed).</p></div></div></div>
+<div class=CBody><p>Invoked when all objections to ending the given <i>phase</i> and all sibling phases have been dropped, thus indicating that <i>phase</i> is ready to begin a clean exit.&nbsp; Sibling phases are any phases that have a common successor phase in the schedule plus any phases that sync&rsquo;d to the current phase.&nbsp; Components needing to consume delta cycles or advance time to perform a clean exit from the phase may raise the phase&rsquo;s objection.</p><blockquote><pre>phase.raise_objection(this,&quot;Reason&quot;);</pre></blockquote><p>It is the responsibility of this component to drop the objection once it is ready for this phase to end (and processes killed).&nbsp; If no objection to the given <i>phase</i> or sibling phases are raised, then phase_ended() is called after a delta cycle.&nbsp;  If any objection is raised, then when all objections to ending the given <i>phase</i> and siblings are dropped, another iteration of phase_ready_to_end is called.&nbsp;  To prevent endless iterations due to coding error, after 20 iterations, phase_ended() is called regardless of whether previous iteration had any objections raised.</p></div></div></div>
 
 
 
@@ -2146,7 +2146,7 @@ Invoked at the start of each phase. </div></div><div class=CToolTip id="tt59"><d
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Invoked when all objections to ending the given <i>phase</i> have been dropped, thus indicating that <i>phase</i> is ready to end. </div></div><div class=CToolTip id="tt60"><div class=CMethod>
+Invoked when all objections to ending the given <i>phase</i> and all sibling phases have been dropped, thus indicating that <i>phase</i> is ready to begin a clean exit. </div></div><div class=CToolTip id="tt60"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void phase_ended (</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>

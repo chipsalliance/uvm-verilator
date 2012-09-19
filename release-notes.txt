@@ -1,67 +1,88 @@
-Accellera UVM 1.1b Release Notes
+Accellera UVM 1.1c Release Notes
 ================================
-================================
- 
- 
+
+September 24, 2012
+
+
 General Overview
- 
-This is release 1.1b of the Universal Verification Methodology (UVM) reference implementation from Accellera.  This distribution includes a SystemVerilog based class library, examples, User's Guide, and an updated Reference in HTML form. The UVM Standard Reference  PDF is not included in this release. It will not be updated until the next major release, i.e. UVM 1.2.
- 
+----------------
+
+This is release 1.1c of the Universal Verification Methodology (UVM) reference implementation from Accellera.  This distribution includes a SystemVerilog based class library, examples, User's Guide, and an updated Reference in HTML form. The UVM Standard Reference  PDF is not included in this release. It will not be updated until the next major release, i.e. UVM 1.2.
+
 The class library is a reference implementation of the standard. It, the examples, and User Guide provide guidance to users of the standard. For additional information on the Accellera standard, see
- 
+
           http://www.accellera.org/activities/vip
- 
+
 A good source for information, answers, and resources is http://www.uvmworld.org.  It contains forums on methodology, tool specific issues, and commercial announcements.  It also has links to additional resources, Accellera sponsored events, and other UVM events.
- 
-Release Notes for UVM-1.1b
-May 2, 2012
- 
- Release 1.1b contains mostly fixes to errata with limited API changes. There are several API changes that were approved case by case by the VIP TSC. These API changes will be highlighted in bold below and do not impact backward compatibility. Documentation updates were only done to the HTML. There were no updates in the PDF reference guide and user guide. These will be done in UVM 1.2.
- 
-UVM 1.1b fixes the following issues reported under the Mantis bug-tracking system.
- 
+
+
+What's Changed
+--------------
+
+Release 1.1c contains fixes to errata. Some errata involve changes to the UVM reference documentation in cases where the stated behavior was unclear or did not comply with intended behavior. Such changes will only be reflected in the HTML documentation included with the distribution. Changes to the actual standard PDF document will not occur until the next numbered release, i.e. UVM 1.2.
+
+UVM 1.1c fixes the following issues reported under the Mantis bug-tracking system. Issues affecting the reference documentation (API changes or semantic changes) are preceded with an asterisk (*).
+
 For detailed information on a specific issue, refer to the Mantis database at http://www.eda.org/svdb/view.php?id=<id>, where <id> is the Mantis id.
-Mantis 3606, fixed issue with configuring "recording_detail".
-Mantis 3609, fixed dpi functions which use VPI/PLI to be imported as "context" functions.
-Mantis 3622, fixed sequencer hangs issue that occurred when there is a delay between get_next_item and item_done with no objection from the sequencer to end the current phase.
-Mantis 3627, fixed wait_modified so it will not wake up if value did not change when a write occurred.
-Mantis 3731, the auto-configuration method, apply_config_settings(), has been fixed to honor the clone bit provided with the set_config_object() method per the Accellera standard specification.  The get_config_object() has intentionally been left as implemented (not following the Accellera standard specification) in order to preserve current library implementation semantics.
+
+(*) Mantis 3894, a phase will no longer enter the UVM_READY_TO_END state until there are no objections to the local phase, any sibling phases (phases with a common successor to the local phase), and any phases synced to the local phase. Prior to this change, a phase went to the UVM_READY_TO_END state as soon as allits own objections were dropped, regardless of the state of any synced phases or phases that shared a common successor.  This behavior could lead to the phase reaching the UVM_READY_TO_END state prematurely.
+ 
+Mantis 3900, fixed issue with uvm_phase:jump() that cleared  objections before terminating running thread and before calling phase_ended, causing the objection count to be below zero.
+
+Mantis 3930, fixed issue with uvm_reg_hw_reset_seq. When sharing registers between multiple interfaces the sequence would not reset the reg_array of accesses when moving from interface to interface.
+
+Mantis 4033, fixed issue with raising an objection followed by dropping the objection for a future phase. This would cause the raising of the objection in the future phase to be ignored.
+
+Mantis 4079, fixed issue where a factory override for a test does not get printed correctly in the log file.
+
+Mantis 4088, fixed issue where UVM_NO_CHECK was used incorrectly in uvm_reg for deciding what not to check.
+
+Mantis 4089, fixed issue where uvm_reg::update() was called simultaneously for the same register from two different parallel threads, causing one of the updates not to happen.
+
+Mantis 4090, fixed issue where volatile a field (updated by functional logic) was being check by default. The default should be that it is not being checked with the register write/read tests.
+
+Mantis 4097, fixed issue where sequence library implementation did not allow sequences to be parameterized with virtual types.
+
+Mantis 4098, fixed a memory leak issue in the DPI regexp library.
+
+Mantis 4100, fixed coding issue where the new SV standard requires matching qualifiers for virtual methods in both base and extended classes.
+
+Mantis 4101, fixed issue in uvm_driver.svh where the seq_item_port was instantiated with the incorrect name.
+
+Mantis 4105, removed uvm_field_utils macro that served no purpose.
+
+Mantis 4123, fixed coding guideline issue where dpi routines where not prefixed with uvm_.
+
+(*) Mantis 4135, fixed documentation for uvm_resource_db::write_by_name() that stated incorrectly that a resource is added if it did not exist.
+
+Mantis 4158, fixed compilation issue when UVM_REG_NO_INDIVIDUAL_FIELD_ACCCESS is defined. The code was missing a semicolon.
+
+Mantis 4166, augmented the error message when illegally cloning a component to identify the component being cloned.
+
+Mantis 4169, fixed issue where simulation was being terminated too early when raising the objection.
+
+Mantis 4172, fixed uvm_config_db::set functionality.
+
+(*) Mantis 4178, fixed documentation where references to set_global_timeout were deprecated.
+
+Mantis 4191, fixed issue due to uvm_reg_predictor class not overriding the get_type_name method. When printing the hierarchy, "<unknown>" was provided for the predictor.
+
+Mantis 4194, fixed issue with spawned children sequences being killed hanged the sequencers.
+
+Mantis 4196, removed usage of deprecated code in uvm_object.
+
+Mantis 4197, fixed issue, where simultaneous starting of the same sequence twice on a sequencer causes an infinite loop in stop_sequences()
+
+(*) Mantis 4295, changed the timeout to be a FATAL event and applicable only to the run phase. For debug, a list of phases still executing will be displayed before exiting simulation. The documentation for UVM_TIMEOUT and uvm_root::set_timeout() have been updated to reflect the simplified timeout behavior: the timeout value sets the maximum absolute simulation time allowed before a FATAL error occurs.
+
+Mantis 4303, fixed TLM GP to not pack extensions, fixed unpack byte_enable and fixed GP do_print/do_record for extensions.
+
+Mantis 4304, fixed documentation to specify implicit print handling of all child components and the need to use UVM_REFERENCE if including components in field macros.
 
 
-Mantis 3764, fixed documentation for uvm_sequencer_base::execute_item.
-Mantis 3777, fixed issue with inconsistent recorder output, added a "}" to the "BEGIN" lines.
-Mantis 3805, fixed issue with wrong "format specifier" used in sfrormatf - %s for printing  a bit type variable, in the apply_config_setting function.
-Mantis 3806, fixed an issue with usage of non-standard "enum printing" with a "%s" modifier.
-Mantis 3807, removed redundant casting from void to void function.
-Mantis 3811, fixed issue where uvm_report_catcher::add does not check names and the same name can be used more than once, causing registered callbacks with the same name not be called.
-Mantis 3819, fixed issue where calling read()/write() on the data register for an indirect register array causes infinite recursion and crashes.
-Mantis 3883, removed unnecessary $cast from all built-in uvm_<phase>_phase classes.
-Mantis 3899, fixed issue where infinite recursion occurred, when UVM_SETINT is used upon an uvm_field_object().
-Mantis 3905, fixed issue where using macro uvm_field_array_object caused auto configuration of array items to fail.
-Mantis 3906, fixed typo in uvm_tlm_defines.svh affecting NaturalDocs output for uvm_analysis_imp_decl.
-Mantis 3908, fixed issue where variable ARG was used incorrectly in the m_uvm_record_qda_int macro. 
-Mantis 3912, fixed issue where the function find_unused_resources prints wrong resources if while calling read_by_name accessor argument was not set.
-Mantis 3927, fixed documentation for set_inst_override that says it is a convenience function for uvm_factory::set_inst_override_by_type, but it calls _by_name.
-Mantis 3932, fixed issue where uvm_field_aa default properties were inconsistent then other macros.
-Mantis 3936, fixed a couple of LINT warnings.
-Mantis 3946, documentation fix, uvm_reg_field::set description was wrong.
-Mantis 3962, fixed issue where the "more details" URL links in the UVM banner where broken.
-Mantis 3963, fixed Infinite loop when using memory in upper half of a 64-bit address memory in register accesses.
-Mantis 3967, provided better fatal error message when multiple threads invoke get_next_item() simultaneously in a pipelined driver.
-Mantis 3981, added a set/get accessor in the report catcher to access the m_name local variable in the report catcher.
-Mantis 3983, fixed several issues with uvm_tlm_generic_payload, field macros where removed, for data and byte_enable array fixed copy/compare, added byte_enable_len field, added user extensions to the implementation of do_pack/do_unpack/do_record  and extended convert2string function to include additional fields.  
-Mantis 3985, fixed issue where get_mem_by_offset didn't work because address ranges was not checked for all ranges.
-Mantis 4004, provided macros to distinguish bug fix versions.
-Mantis 4030, fixed issue where uvm_*pack_* macros lack begin/end.
-Mantis 4039, fixed issue where phase.is_after(phase.find_by_name("reset")) returned TRUE in run phase.
-Mantis 4040, replaced usages of $psprintf which is not a standard SystemVerilog construct with $sformatf.
-Mantis 4046, fixed issue where memory bursts and request for user-control of burst size were not working.
-Mantis 4052, fixed issue where phase.get_ready_to_end_count() was not reset when a phase jump occurred.
-Mantis 4065, fixed performance issue where apply_config_settings was being called even when there are no fields to apply config settings to.
-Mantis 4075, fixed issue where port bound to itself results in infinite loop (not caught error).
-Mantis 4078, removed unnecessary call to uvm_radix_to_string in uvm_recorder:.set_attribute.
-Mantis 4087, fixed issue with unconditional usage of %p format, added an `ifdef qualifier.
-Mantis 4092, removed redundant code in uvm_sequence_base:.start_item.
-Mantis 4093, fixed bad comparison in uvm_resource_pool::print_resources().
-Mantis 4113, fixed memory leak issue for register accesses that omit the "parent" sequence argument.
+(*) Mantis 4317, Changed the timeout to apply to the entire duration of the phase (only the run phase due to Mantis 4295, see Mantis 3894 for entire duration). Prior to this change, the timeout would not include the time waiting for sibling phases to reach their UVM_READY_TO_END state, and it would be restarted if the phase returned to the UVM_PHASE_EXECUTING state (via a reraise of an objection in a component's phase_ready_to_end() callback). 
+
+With Mantis 4295, 4317, and 3894, the global timeout is simply the maximum absolute simulation time allowed before a FATAL error occurs (provided the FATAL is not caught). For example, if the timeout is set to 20ns, then simulation must finish before 20ns else a FATAL timeout will occur.
+
+
 

@@ -130,7 +130,7 @@ virtual class uvm_task_phase extends uvm_phase;
   //
   // Fork the task-based phase ~phase~ for the component ~comp~. 
   //
-  protected virtual function void execute(uvm_component comp,
+  virtual function void execute(uvm_component comp,
                                           uvm_phase phase);
 
     fork

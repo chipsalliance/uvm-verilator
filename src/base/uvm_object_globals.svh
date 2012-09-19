@@ -57,8 +57,9 @@ parameter UVM_STREAMBITS = `UVM_MAX_STREAMBITS;
 
 // Macro: `UVM_DEFAULT_TIMEOUT
 //
-// The default timeout for all phases, if not overridden by
+// The default timeout for simulation, if not overridden by
 // <uvm_root::set_timeout> or <+UVM_TIMEOUT>
+//
 
 `define UVM_DEFAULT_TIMEOUT 9200s
 
@@ -498,11 +499,16 @@ typedef enum { UVM_PHASE_IMP,
 //   UVM_PHASE_EXECUTING - An executing phase is one where the phase callbacks are
 //              being executed. It's process is tracked by the phaser.
 //
-//   UVM_PHASE_READY_TO_END - no objections remain, awaiting completion of
-//              predecessors of its successors. For example, when phase 'run'
-//              is ready to end, its successor will be 'extract', whose
-//              predecessors are 'run' and 'post_shutdown'. Therefore, 'run'
-//              will be waiting for 'post_shutdown' to be ready to end.
+//   UVM_PHASE_READY_TO_END - no objections remain in this phase or in any
+//              predecessors of its successors or in any sync'd phases. This 
+//              state indicates an opportunity for any phase that needs extra  
+//              time for a clean exit to raise an objection, thereby causing a 
+//              return to UVM_PHASE_EXECUTING.  If no objection is raised, state
+//              will transition to UVM_PHASE_ENDED after a delta cycle.
+//              (An example of predecessors of successors: The successor to
+//              phase 'run' is 'extract', whose predecessors are 'run' and 
+//              'post_shutdown'. Therefore, 'run' will go to this state when
+//              both its objections and those of 'post_shutdown' are all dropped.
 //
 //   UVM_PHASE_ENDED - phase completed execution, now running phase_ended() callback
 //

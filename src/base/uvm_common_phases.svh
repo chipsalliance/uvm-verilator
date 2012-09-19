@@ -234,7 +234,7 @@ endclass
 //
 //   The phase ends if the timeout expires before all objections are dropped.
 //   By default, the timeout is set to 9200 seconds.
-//   You may override this via <set_global_timeout>.
+//   You may override this via <uvm_root::set_timeout>.
 //
 //   If a timeout occurs in your simulation, or if simulation never
 //   ends despite completion of your test stimulus, then it usually indicates

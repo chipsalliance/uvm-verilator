@@ -552,34 +552,6 @@ function bit uvm_sequence_library::m_check(uvm_object_wrapper seq_type, this_typ
         "'"},top)
      return 0;
   end
-  begin
-    uvm_sequence_item req_to_add;
-    REQ req;
-    req = new("req");
-    req_to_add = seq.create_request();
-    if (!( $cast(req, req_to_add))) begin
-      `uvm_error_context("SEQLIB/BAD_REQ_TYPE",
-        {"Can not add sequence '",seq.get_type_name(),"' ",
-        "to sequence library of type '",typ,"' (instance ",name,") ",
-        "as the request type '", req_to_add.get_type_name(), "' is not type-compatible with ",
-        "the request type of the sequence library '",req.get_type_name(),"'"},top)
-       return 0;
-    end 
-  end
-  begin
-    uvm_sequence_item rsp_to_add;
-    RSP rsp;
-    rsp = new("rsp");
-    rsp_to_add = seq.create_response();
-    if (!( $cast(rsp, rsp_to_add))) begin
-      `uvm_error_context("SEQLIB/BAD_RSP_TYPE",
-        {"Can not add sequence '",seq.get_type_name(),"' ",
-        "to sequence library of type '",typ,"' (instance ",name,") ",
-        "as the response type '", rsp_to_add.get_type_name(), "' is not type-compatible with ",
-        "the response type of the sequence library '",rsp.get_type_name(),"'"},top)
-       return 0;
-    end 
-  end
   return 1;
 endfunction
 
@@ -644,8 +616,9 @@ function void uvm_sequence_library::m_get_config();
   else begin
     if (selection_mode == UVM_SEQ_LIB_ITEM) begin
       uvm_sequencer #(REQ,RSP) seqr;
-      REQ req = new();
-      if (req.get_type_name() == "uvm_sequence_item") begin
+      uvm_object_wrapper lhs = REQ::get_type();
+      uvm_object_wrapper rhs = uvm_sequence_item::get_type();
+      if (lhs == rhs) begin
         `uvm_error("SEQLIB/BASE_ITEM", {"selection_mode cannot be UVM_SEQ_LIB_ITEM when ",
           "the REQ type is the base uvm_sequence_item. Using UVM_SEQ_LIB_RAND mode"})
         selection_mode = UVM_SEQ_LIB_RAND;
@@ -790,13 +763,26 @@ task uvm_sequence_library::execute(uvm_object_wrapper wrap);
   uvm_object obj;
   uvm_factory factory;
   uvm_sequence_item seq_or_item;
-
+  uvm_sequence_base seq_base;
+  REQ req_item;
+  
   factory = uvm_factory::get();
 
   obj = factory.create_object_by_type(wrap,get_full_name(),
            $sformatf("%s:%0d",wrap.get_type_name(),sequences_executed+1));
-  void'($cast(seq_or_item,obj)); // already qualified, 
 
+  if (!$cast(seq_base, obj)) begin
+     // If we're executing an item (not a sequence)
+     if (!$cast(req_item, obj)) begin
+        // But it's not our item type (This can happen if we were parameterized with
+        // a pure virtual type, because we're getting get_type() from the base class)
+        `uvm_error("SEQLIB/WRONG_ITEM_TYPE", {"The item created by '", get_full_name(), "' when in 'UVM_SEQ_LIB_ITEM' mode doesn't match the REQ type which  was passed in to the uvm_sequence_library#(REQ[,RSP]), this can happen if the REQ type which was passed in was a pure-virtual type.  Either configure the factory overrides to properly generate items for this sequence library, or do not execute this sequence library in UVM_SEQ_LIB_ITEM mode."})
+         return;
+     end
+  end
+   
+  void'($cast(seq_or_item,obj)); // already qualified, 
+   
   `uvm_info("SEQLIB/EXEC",{"Executing ",(seq_or_item.is_item() ? "item " : "sequence "),seq_or_item.get_name(),
                            " (",seq_or_item.get_type_name(),")"},UVM_FULL)
   seq_or_item.print_sequence_info = 1;

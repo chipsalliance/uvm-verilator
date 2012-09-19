@@ -28,7 +28,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class=SMain><td colspan=2 class=SWideDescription></td></tr>
   <!-- index=1 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#Utility_Macros" >Utility Macros</a></td><td class=SDescription>The utility macros provide implementations of the <a href="../base/uvm_object-svh.html#uvm_object.create" class=LMethod id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_object::create</a> method, which is needed for cloning, and the <a href="../base/uvm_object-svh.html#uvm_object.get_type_name" class=LMethod id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">uvm_object::get_type_name</a> method, which is needed for a number of debugging features. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#Utility_Macros" >Utility Macros</a></td><td class=SDescription>The <i>utils</i> macros define the infrastructure needed to enable the object/component for correct factory operation. </td></tr>
   <!-- index=2 -->
 
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_utils_begin" >`uvm_field_utils_begin</a></td><td class=SDescription></td></tr>
@@ -49,7 +49,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_object_param_utils_begin" >`uvm_object_param_utils_begin</a></td><td class=SDescription></td></tr>
   <!-- index=8 -->
 
-<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_object_utils_end" >`uvm_object_utils_end</a></td><td class=SDescription><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">uvm_object</a>-based class declarations may contain one of the above forms of utility macros.</td></tr>
+<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_object_utils_end" >`uvm_object_utils_end</a></td><td class=SDescription><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_object</a>-based class declarations may contain one of the above forms of utility macros.</td></tr>
   <!-- index=9 -->
 
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_component_utils" >`uvm_component_utils</a></td><td class=SDescription></td></tr>
@@ -73,7 +73,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_component_registry" >`uvm_component_registry</a></td><td class=SDescription>Registers a uvm_component-based class with the factory</td></tr>
   <!-- index=16 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#Field_Macros" >Field Macros</a></td><td class=SDescription>The `uvm_field_*  macros are invoked inside of the `uvm_*_utils_begin and `uvm_*_utils_end macro blocks to form &ldquo;automatic&rdquo; implementations of the core data methods: copy, compare, pack, unpack, record, print, and sprint. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#Field_Macros" >Field Macros</a></td><td class=SDescription>The `uvm_field_*  macros are invoked inside of the `uvm_*_utils_begin and `uvm_*_utils_end macro blocks to form &ldquo;automatic&rdquo; implementations of the core data methods: copy, compare, pack, unpack, record, print, and sprint.</td></tr>
   <!-- index=17 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#`uvm_field_*macros" >`uvm_field_* macros</a></td><td class=SDescription>Macros that implement data operations for scalar properties.</td></tr>
@@ -82,7 +82,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_int" >`uvm_field_int</a></td><td class=SDescription>Implements the data operations for any packed integral property.</td></tr>
   <!-- index=19 -->
 
-<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_field_object" >`uvm_field_object</a></td><td class=SDescription>Implements the data operations for an <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link4 onMouseOver="ShowTip(event, 'tt3', 'link4')" onMouseOut="HideTip('tt3')">uvm_object</a>-based property.</td></tr>
+<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_field_object" >`uvm_field_object</a></td><td class=SDescription>Implements the data operations for an <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link2 onMouseOver="ShowTip(event, 'tt1', 'link2')" onMouseOut="HideTip('tt1')">uvm_object</a>-based property.</td></tr>
   <!-- index=20 -->
 
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_string" >`uvm_field_string</a></td><td class=SDescription>Implements the data operations for a string property.</td></tr>
@@ -103,7 +103,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_sarray_int" >`uvm_field_sarray_int</a></td><td class=SDescription>Implements the data operations for a one-dimensional static array of integrals.</td></tr>
   <!-- index=26 -->
 
-<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_field_sarray_object" >`uvm_field_sarray_object</a></td><td class=SDescription>Implements the data operations for a one-dimensional static array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link5 onMouseOver="ShowTip(event, 'tt3', 'link5')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects.</td></tr>
+<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_field_sarray_object" >`uvm_field_sarray_object</a></td><td class=SDescription>Implements the data operations for a one-dimensional static array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link3 onMouseOver="ShowTip(event, 'tt1', 'link3')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects.</td></tr>
   <!-- index=27 -->
 
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_sarray_string" >`uvm_field_sarray_string</a></td><td class=SDescription>Implements the data operations for a one-dimensional static array of strings.</td></tr>
@@ -118,7 +118,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_array_int" >`uvm_field_array_int</a></td><td class=SDescription>Implements the data operations for a one-dimensional dynamic array of integrals.</td></tr>
   <!-- index=31 -->
 
-<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_field_array_object" >`uvm_field_array_object</a></td><td class=SDescription>Implements the data operations for a one-dimensional dynamic array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link6 onMouseOver="ShowTip(event, 'tt3', 'link6')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects.</td></tr>
+<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_field_array_object" >`uvm_field_array_object</a></td><td class=SDescription>Implements the data operations for a one-dimensional dynamic array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link4 onMouseOver="ShowTip(event, 'tt1', 'link4')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects.</td></tr>
   <!-- index=32 -->
 
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_array_string" >`uvm_field_array_string</a></td><td class=SDescription>Implements the data operations for a one-dimensional dynamic array of strings.</td></tr>
@@ -133,7 +133,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_queue_int" >`uvm_field_queue_int</a></td><td class=SDescription>Implements the data operations for a queue of integrals.</td></tr>
   <!-- index=36 -->
 
-<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_field_queue_object" >`uvm_field_queue_object</a></td><td class=SDescription>Implements the data operations for a queue of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link7 onMouseOver="ShowTip(event, 'tt3', 'link7')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects.</td></tr>
+<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_field_queue_object" >`uvm_field_queue_object</a></td><td class=SDescription>Implements the data operations for a queue of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link5 onMouseOver="ShowTip(event, 'tt1', 'link5')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects.</td></tr>
   <!-- index=37 -->
 
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_queue_string" >`uvm_field_queue_string</a></td><td class=SDescription>Implements the data operations for a queue of strings.</td></tr>
@@ -148,7 +148,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_aa_int_string" >`uvm_field_aa_int_string</a></td><td class=SDescription>Implements the data operations for an associative array of integrals indexed by <i>string</i>.</td></tr>
   <!-- index=41 -->
 
-<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_field_aa_object_string" >`uvm_field_aa_object_string</a></td><td class=SDescription>Implements the data operations for an associative array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link8 onMouseOver="ShowTip(event, 'tt3', 'link8')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects indexed by <i>string</i>.</td></tr>
+<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_field_aa_object_string" >`uvm_field_aa_object_string</a></td><td class=SDescription>Implements the data operations for an associative array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link6 onMouseOver="ShowTip(event, 'tt1', 'link6')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects indexed by <i>string</i>.</td></tr>
   <!-- index=42 -->
 
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_aa_string_string" >`uvm_field_aa_string_string</a></td><td class=SDescription>Implements the data operations for an associative array of strings indexed by <i>string</i>.</td></tr>
@@ -157,7 +157,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#`uvm_field_aa_*_int_macros" >`uvm_field_aa_*_int macros</a></td><td class=SDescription>Macros that implement data operations for associative arrays indexed by an integral type.</td></tr>
   <!-- index=44 -->
 
-<tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_aa_object_int" >`uvm_field_aa_object_int</a></td><td class=SDescription>Implements the data operations for an associative array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link9 onMouseOver="ShowTip(event, 'tt3', 'link9')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects indexed by the <i>int</i> data type.</td></tr>
+<tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_aa_object_int" >`uvm_field_aa_object_int</a></td><td class=SDescription>Implements the data operations for an associative array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link7 onMouseOver="ShowTip(event, 'tt1', 'link7')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects indexed by the <i>int</i> data type.</td></tr>
   <!-- index=45 -->
 
 <tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_field_aa_int_int" >`uvm_field_aa_int_int</a></td><td class=SDescription>Implements the data operations for an associative array of integral types indexed by the <i>int</i> data type.</td></tr>
@@ -196,7 +196,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_field_aa_int_enumkey" >`uvm_field_aa_int_enumkey</a></td><td class=SDescription>Implements the data operations for an associative array of integral types indexed by any enumeration key data type.</td></tr>
   <!-- index=57 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#Recording_Macros" >Recording Macros</a></td><td class=SDescription>The recording macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_record" class=LMethod id=link10 onMouseOver="ShowTip(event, 'tt4', 'link10')" onMouseOut="HideTip('tt4')">uvm_object::do_record</a> method. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#Recording_Macros" >Recording Macros</a></td><td class=SDescription>The recording macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_record" class=LMethod id=link8 onMouseOver="ShowTip(event, 'tt2', 'link8')" onMouseOut="HideTip('tt2')">uvm_object::do_record</a> method. </td></tr>
   <!-- index=58 -->
 
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_record_attribute" >`uvm_record_attribute</a></td><td class=SDescription>Vendor-independent macro for recording attributes (fields) to a vendor-specific transaction database.</td></tr>
@@ -205,7 +205,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_record_field" >`uvm_record_field</a></td><td class=SDescription>Macro for recording name-value pairs into a transaction recording database. </td></tr>
   <!-- index=60 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#Packing_Macros" >Packing Macros</a></td><td class=SDescription>The packing macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_pack" class=LMethod id=link11 onMouseOver="ShowTip(event, 'tt5', 'link11')" onMouseOut="HideTip('tt5')">uvm_object::do_pack</a> method. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#Packing_Macros" >Packing Macros</a></td><td class=SDescription>The packing macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_pack" class=LMethod id=link9 onMouseOver="ShowTip(event, 'tt3', 'link9')" onMouseOut="HideTip('tt3')">uvm_object::do_pack</a> method. </td></tr>
   <!-- index=61 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#Packing-With_Size_Info" >Packing - With Size Info</a></td><td class=SDescription></td></tr>
@@ -250,7 +250,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_pack_queue" >`uvm_pack_queue</a></td><td class=SDescription>Pack a queue without having to also specify the bit size of its elements. </td></tr>
   <!-- index=75 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#Unpacking_Macros" >Unpacking Macros</a></td><td class=SDescription>The unpacking macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_unpack" class=LMethod id=link12 onMouseOver="ShowTip(event, 'tt6', 'link12')" onMouseOut="HideTip('tt6')">uvm_object::do_unpack</a> method. </td></tr>
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#Unpacking_Macros" >Unpacking Macros</a></td><td class=SDescription>The unpacking macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_unpack" class=LMethod id=link10 onMouseOver="ShowTip(event, 'tt4', 'link10')" onMouseOut="HideTip('tt4')">uvm_object::do_unpack</a> method. </td></tr>
   <!-- index=76 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#Unpacking-With_Size_Info" >Unpacking - With Size Info</a></td><td class=SDescription></td></tr>
@@ -299,21 +299,25 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Utility_Macros" href="../../../../src/macros/uvm_object_defines.svh">Utility Macros</a></h3><div class=CBody><p>The utility macros provide implementations of the <a href="../base/uvm_object-svh.html#uvm_object.create" class=LMethod id=link13 onMouseOver="ShowTip(event, 'tt1', 'link13')" onMouseOut="HideTip('tt1')">uvm_object::create</a> method, which is needed for cloning, and the <a href="../base/uvm_object-svh.html#uvm_object.get_type_name" class=LMethod id=link14 onMouseOver="ShowTip(event, 'tt2', 'link14')" onMouseOut="HideTip('tt2')">uvm_object::get_type_name</a> method, which is needed for a number of debugging features.&nbsp; They also register the type with the <a href="../base/uvm_factory-svh.html#uvm_factory" class=LClass id=link15 onMouseOver="ShowTip(event, 'tt7', 'link15')" onMouseOut="HideTip('tt7')">uvm_factory</a>, and they implement a <i>get_type</i> method, which is used when configuring the factory.&nbsp; And they implement the virtual <a href="../base/uvm_object-svh.html#uvm_object.get_object_type" class=LMethod id=link16 onMouseOver="ShowTip(event, 'tt8', 'link16')" onMouseOut="HideTip('tt8')">uvm_object::get_object_type</a> method for accessing the factory proxy of an allocated object.</p><p>Below is an example usage of the utility and field macros.&nbsp; By using the macros, you do not have to implement any of the data methods to get all of the capabilities of an <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link17 onMouseOver="ShowTip(event, 'tt3', 'link17')" onMouseOut="HideTip('tt3')">uvm_object</a>.</p><blockquote><pre>class mydata extends uvm_object;
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Utility_Macros" href="../../../../src/macros/uvm_object_defines.svh">Utility Macros</a></h3><div class=CBody><p>The <i>utils</i> macros define the infrastructure needed to enable the object/component for correct factory operation.&nbsp; See <a href="#`uvm_object_utils" class=LMacro >`uvm_object_utils</a> and <a href="#`uvm_component_utils" class=LMacro >`uvm_component_utils</a> for details.</p><p>A <i>utils</i> macro should be used inside <i>every</i> user-defined class that extends <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link11 onMouseOver="ShowTip(event, 'tt1', 'link11')" onMouseOut="HideTip('tt1')">uvm_object</a> directly or indirectly, including <a href="../seq/uvm_sequence_item-svh.html#uvm_sequence_item" class=LClass id=link12 onMouseOver="ShowTip(event, 'tt5', 'link12')" onMouseOut="HideTip('tt5')">uvm_sequence_item</a> and <a href="../base/uvm_component-svh.html#uvm_component" class=LClass id=link13 onMouseOver="ShowTip(event, 'tt6', 'link13')" onMouseOut="HideTip('tt6')">uvm_component</a>.</p><p>Below is an example usage of the <i>utils</i> macro for a user-defined object.</p><blockquote><pre>class mydata extends uvm_object;
 
-  string str;
-  mydata subdata;
-  int field;
-  myenum e1;
-  int queue[$];
+   `uvm_object_utils(mydata)
 
-  `uvm_object_utils_begin(mydata) //requires ctor with default args
-    `uvm_field_string(str, UVM_DEFAULT)
-    `uvm_field_object(subdata, UVM_DEFAULT)
-    `uvm_field_int(field, UVM_DEC) //use decimal radix
-    `uvm_field_enum(myenum, e1, UVM_DEFAULT)
-    `uvm_field_queue_int(queue, UVM_DEFAULT)
-  `uvm_object_utils_end
+   // declare data properties
+
+  function new(string name=&quot;mydata_inst&quot;);
+    super.new(name);
+  endfunction
+
+endclass</pre></blockquote><p>Below is an example usage of a <i>utils</i> macro for a user-defined component.</p><blockquote><pre>class my_comp extends uvm_component;
+
+   `uvm_component_utils(my_comp)
+
+   // declare data properties
+
+  function new(string name, uvm_component parent=null);
+    super.new(name,parent);
+  endfunction
 
 endclass</pre></blockquote></div></div></div>
 
@@ -329,7 +333,7 @@ endclass</pre></blockquote></div></div></div>
  <!--CONTENT index=3 -->
 <div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_utils_end" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_utils_end</a></h3><div class=CBody><p>These macros form a block in which `uvm_field_* macros can be placed.&nbsp; Used as</p><blockquote><pre>`uvm_field_utils_begin(TYPE)
   `uvm_field_* macros here
-`uvm_field_utils_end</pre></blockquote><p>These macros do NOT perform factory registration, implement get_type_name, nor implement the create method.&nbsp; Use this form when you need custom implementations of these two methods, or when you are setting up field macros for an abstract class (i.e. virtual class).</p></div></div></div>
+`uvm_field_utils_end</pre></blockquote><p>These macros do <i>not</i> perform factory registration nor implement the <i>get_type_name</i> and <i>create</i> methods.&nbsp; Use this form when you need custom implementations of these two methods, or when you are setting up field macros for an abstract class (i.e. virtual class).</p></div></div></div>
 
 
 
@@ -359,7 +363,7 @@ endclass</pre></blockquote></div></div></div>
 
 
  <!--CONTENT index=8 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_object_utils_end" href="../../../../src/macros/uvm_object_defines.svh">`uvm_object_utils_end</a></h3><div class=CBody><p><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link18 onMouseOver="ShowTip(event, 'tt3', 'link18')" onMouseOut="HideTip('tt3')">uvm_object</a>-based class declarations may contain one of the above forms of utility macros.</p><p>For simple objects with no field macros, use</p><blockquote><pre>`uvm_object_utils(TYPE)</pre></blockquote><p>For simple objects with field macros, use</p><blockquote><pre>`uvm_object_utils_begin(TYPE)
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_object_utils_end" href="../../../../src/macros/uvm_object_defines.svh">`uvm_object_utils_end</a></h3><div class=CBody><p><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link14 onMouseOver="ShowTip(event, 'tt1', 'link14')" onMouseOut="HideTip('tt1')">uvm_object</a>-based class declarations may contain one of the above forms of utility macros.</p><p>For simple objects with no field macros, use</p><blockquote><pre>`uvm_object_utils(TYPE)</pre></blockquote><p>For simple objects with field macros, use</p><blockquote><pre>`uvm_object_utils_begin(TYPE)
   `uvm_field_* macro invocations here
 `uvm_object_utils_end</pre></blockquote><p>For parameterized objects with no field macros, use</p><blockquote><pre>`uvm_object_param_utils(TYPE)</pre></blockquote><p>For parameterized objects, with field macros, use</p><blockquote><pre>`uvm_object_param_utils_begin(TYPE)
   `uvm_field_* macro invocations here
@@ -415,12 +419,39 @@ endclass</pre></blockquote></div></div></div>
 
 
  <!--CONTENT index=16 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Field_Macros" href="../../../../src/macros/uvm_object_defines.svh">Field Macros</a></h3><div class=CBody><p>The `uvm_field_*  macros are invoked inside of the `uvm_*_utils_begin and `uvm_*_utils_end macro blocks to form &ldquo;automatic&rdquo; implementations of the core data methods: copy, compare, pack, unpack, record, print, and sprint.&nbsp; For example:</p><blockquote><pre>class my_trans extends uvm_transaction;
-  string my_string;
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Field_Macros" href="../../../../src/macros/uvm_object_defines.svh">Field Macros</a></h3><div class=CBody><p>The `uvm_field_*  macros are invoked inside of the `uvm_*_utils_begin and `uvm_*_utils_end macro blocks to form &ldquo;automatic&rdquo; implementations of the core data methods: copy, compare, pack, unpack, record, print, and sprint.</p><p>By using the macros, you do not have to implement any of the do_* methods inherited from <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link15 onMouseOver="ShowTip(event, 'tt1', 'link15')" onMouseOut="HideTip('tt1')">uvm_object</a>.&nbsp; However, be aware that the field macros expand into general inline code that is not as run-time efficient nor as flexible as direct implementions of the do_* methods.</p><p>Below is an example usage of the field macros for a sequence item.</p><blockquote><pre>class my_trans extends uvm_sequence_item;
+
+  cmd_t  cmd;
+  int    addr;
+  int    data[$];
+  my_ext ext;
+  string str;
+
   `uvm_object_utils_begin(my_trans)
-    `uvm_field_string(my_string, UVM_ALL_ON)
+    `uvm_field_enum     (cmd_t, cmd, UVM_ALL_ON)
+    `uvm_field_int      (addr, UVM_ALL_ON)
+    `uvm_field_queue_int(data, UVM_ALL_ON)
+    `uvm_field_object   (ext,  UVM_ALL_ON)
+    `uvm_field_string   (str,  UVM_ALL_ON)
   `uvm_object_utils_end
-endclass</pre></blockquote><p>Each `uvm_field_* macro is named to correspond to a particular data type: integrals, strings, objects, queues, etc., and each has at least two arguments: <i>ARG</i> and <i>FLAG</i>.</p><p><i>ARG</i> is the instance name of the variable, whose type must be compatible with the macro being invoked.&nbsp; In the example, class variable my_string is of type string, so we use the `uvm_field_string macro.</p><p>If <i>FLAG</i> is set to <i>UVM_ALL_ON</i>, as in the example, the ARG variable will be included in all data methods.&nbsp; The FLAG, if set to something other than <i>UVM_ALL_ON</i> or <i>UVM_DEFAULT</i>, specifies which data method implementations will NOT include the given variable.&nbsp; Thus, if <i>FLAG</i> is specified as <i>NO_COMPARE</i>, the ARG variable will not affect comparison operations, but it will be included in everything else.</p><p>All possible values for <i>FLAG</i> are listed and described below.&nbsp; Multiple flag values can be bitwise ORed together (in most cases they may be added together as well, but care must be taken when using the + operator to ensure that the same bit is not added more than once).</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>UVM_ALL_ON</td><td class=CDLDescription>Set all operations on (default).</td></tr><tr><td class=CDLEntry>UVM_DEFAULT</td><td class=CDLDescription>Use the default flag settings.</td></tr><tr><td class=CDLEntry>UVM_NOCOPY</td><td class=CDLDescription>Do not copy this field.</td></tr><tr><td class=CDLEntry>UVM_NOCOMPARE</td><td class=CDLDescription>Do not compare this field.</td></tr><tr><td class=CDLEntry>UVM_NOPRINT</td><td class=CDLDescription>Do not print this field.</td></tr><tr><td class=CDLEntry>UVM_NODEFPRINT</td><td class=CDLDescription>Do not print the field if it is the same as its</td></tr><tr><td class=CDLEntry>UVM_NOPACK</td><td class=CDLDescription>Do not pack or unpack this field.</td></tr><tr><td class=CDLEntry>UVM_PHYSICAL</td><td class=CDLDescription>Treat as a physical field.&nbsp; Use physical setting in policy class for this field.</td></tr><tr><td class=CDLEntry>UVM_ABSTRACT</td><td class=CDLDescription>Treat as an abstract field.&nbsp; Use the abstract setting in the policy class for this field.</td></tr><tr><td class=CDLEntry>UVM_READONLY</td><td class=CDLDescription>Do not allow setting of this field from the set_*_local methods.</td></tr></table><p>A radix for printing and recording can be specified by OR&rsquo;ing one of the following constants in the <i>FLAG</i> argument</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>UVM_BIN</td><td class=CDLDescription>Print / record the field in binary (base-2).</td></tr><tr><td class=CDLEntry>UVM_DEC</td><td class=CDLDescription>Print / record the field in decimal (base-10).</td></tr><tr><td class=CDLEntry>UVM_UNSIGNED</td><td class=CDLDescription>Print / record the field in unsigned decimal (base-10).</td></tr><tr><td class=CDLEntry>UVM_OCT</td><td class=CDLDescription>Print / record the field in octal (base-8).</td></tr><tr><td class=CDLEntry>UVM_HEX</td><td class=CDLDescription>Print / record the field in hexidecimal (base-16).</td></tr><tr><td class=CDLEntry>UVM_STRING</td><td class=CDLDescription>Print / record the field in string format.</td></tr><tr><td class=CDLEntry>UVM_TIME</td><td class=CDLDescription>Print / record the field in time format.</td></tr></table><p>Radix settings for integral types.&nbsp; Hex is the default radix if none is specified.</p></div></div></div>
+
+  function new(string name=&quot;mydata_inst&quot;);
+    super.new(name);
+  endfunction
+
+endclass</pre></blockquote><p>Below is an example usage of the field macros for a component.</p><blockquote><pre>class my_comp extends uvm_component;
+
+  my_comp_cfg  cfg;
+
+  `uvm_component_utils_begin(my_comp)
+    `uvm_field_object   (cfg,  UVM_ALL_ON)
+  `uvm_object_utils_end
+
+  function new(string name=&quot;my_comp_inst&quot;, uvm_component parent=null);
+    super.new(name);
+  endfunction
+
+endclass</pre></blockquote><p>Each `uvm_field_* macro is named according to the particular data type it handles: integrals, strings, objects, queues, etc., and each has at least two arguments: <i>ARG</i> and <i>FLAG</i>.</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>ARG</td><td class=CDLDescription>is the instance name of the variable, whose type must be compatible with the macro being invoked.&nbsp; In the example, class variable <i>addr</i> is an integral type, so we use the <i>`uvm_field_int</i> macro.</td></tr><tr><td class=CDLEntry>FLAG</td><td class=CDLDescription>if set to <i>UVM_ALL_ON</i>, as in the example, the ARG variable will be included in all data methods.&nbsp; If FLAG is set to something other than <i>UVM_ALL_ON</i> or <i>UVM_DEFAULT</i>, it specifies which data method implementations will <i>not</i> include the given variable.&nbsp; Thus, if <i>FLAG</i> is specified as <i>NO_COMPARE</i>, the ARG variable will not affect comparison operations, but it will be included in everything else.</td></tr></table><p>All possible values for <i>FLAG</i> are listed and described below.&nbsp; Multiple flag values can be bitwise ORed together (in most cases they may be added together as well, but care must be taken when using the + operator to ensure that the same bit is not added more than once).</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>UVM_ALL_ON</td><td class=CDLDescription>Set all operations on (default).</td></tr><tr><td class=CDLEntry>UVM_DEFAULT</td><td class=CDLDescription>Use the default flag settings.</td></tr><tr><td class=CDLEntry>UVM_NOCOPY</td><td class=CDLDescription>Do not copy this field.</td></tr><tr><td class=CDLEntry>UVM_NOCOMPARE</td><td class=CDLDescription>Do not compare this field.</td></tr><tr><td class=CDLEntry>UVM_NOPRINT</td><td class=CDLDescription>Do not print this field.</td></tr><tr><td class=CDLEntry>UVM_NOPACK</td><td class=CDLDescription>Do not pack or unpack this field.</td></tr><tr><td class=CDLEntry>UVM_REFERENCE</td><td class=CDLDescription>For object types, operate only on the handle (e.g. no deep copy)</td></tr><tr><td class=CDLEntry>UVM_PHYSICAL</td><td class=CDLDescription>Treat as a physical field.&nbsp; Use physical setting in policy class for this field.</td></tr><tr><td class=CDLEntry>UVM_ABSTRACT</td><td class=CDLDescription>Treat as an abstract field.&nbsp; Use the abstract setting in the policy class for this field.</td></tr><tr><td class=CDLEntry>UVM_READONLY</td><td class=CDLDescription>Do not allow setting of this field from the set_*_local methods or during &lt;apply_config_settings&gt; operation.</td></tr></table><p>A radix for printing and recording can be specified by OR&rsquo;ing one of the following constants in the <i>FLAG</i> argument</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>UVM_BIN</td><td class=CDLDescription>Print / record the field in binary (base-2).</td></tr><tr><td class=CDLEntry>UVM_DEC</td><td class=CDLDescription>Print / record the field in decimal (base-10).</td></tr><tr><td class=CDLEntry>UVM_UNSIGNED</td><td class=CDLDescription>Print / record the field in unsigned decimal (base-10).</td></tr><tr><td class=CDLEntry>UVM_OCT</td><td class=CDLDescription>Print / record the field in octal (base-8).</td></tr><tr><td class=CDLEntry>UVM_HEX</td><td class=CDLDescription>Print / record the field in hexidecimal (base-16).</td></tr><tr><td class=CDLEntry>UVM_STRING</td><td class=CDLDescription>Print / record the field in string format.</td></tr><tr><td class=CDLEntry>UVM_TIME</td><td class=CDLDescription>Print / record the field in time format.</td></tr></table><p>Radix settings for integral types.&nbsp; Hex is the default radix if none is specified.</p><p>A UVM component should <i>not</i> be specified using the `uvm_field_object macro unless its flag includes UVM_REFERENCE.&nbsp;  Otherwise, the field macro will implement deep copy, which is an illegal operation for uvm_components.&nbsp; You will get a FATAL error if you tried to copy or clone an object containing a component handle that was registered with a field macro without the UVM_REFERENCE flag.&nbsp; You will also get duplicate entries when printing component topology, as this functionality is already provided by UVM.</p></div></div></div>
 
 
 
@@ -432,37 +463,37 @@ endclass</pre></blockquote><p>Each `uvm_field_* macro is named to correspond to 
 
 
  <!--CONTENT index=18 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_int</a></h3><div class=CBody><p>Implements the data operations for any packed integral property.</p><blockquote><pre>`uvm_field_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is an integral property of the class, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link19 onMouseOver="ShowTip(event, 'tt9', 'link19')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_int</a></h3><div class=CBody><p>Implements the data operations for any packed integral property.</p><blockquote><pre>`uvm_field_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is an integral property of the class, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link16 onMouseOver="ShowTip(event, 'tt7', 'link16')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=19 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_object" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_object</a></h3><div class=CBody><p>Implements the data operations for an <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link20 onMouseOver="ShowTip(event, 'tt3', 'link20')" onMouseOut="HideTip('tt3')">uvm_object</a>-based property.</p><blockquote><pre>`uvm_field_object(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is an object property of the class, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link21 onMouseOver="ShowTip(event, 'tt9', 'link21')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_object" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_object</a></h3><div class=CBody><p>Implements the data operations for an <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link17 onMouseOver="ShowTip(event, 'tt1', 'link17')" onMouseOut="HideTip('tt1')">uvm_object</a>-based property.</p><blockquote><pre>`uvm_field_object(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is an object property of the class, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link18 onMouseOver="ShowTip(event, 'tt7', 'link18')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=20 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_string</a></h3><div class=CBody><p>Implements the data operations for a string property.</p><blockquote><pre>`uvm_field_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a string property of the class, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link22 onMouseOver="ShowTip(event, 'tt9', 'link22')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_string</a></h3><div class=CBody><p>Implements the data operations for a string property.</p><blockquote><pre>`uvm_field_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a string property of the class, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link19 onMouseOver="ShowTip(event, 'tt7', 'link19')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=21 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_enum" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_enum</a></h3><div class=CBody><p>Implements the data operations for an enumerated property.</p><blockquote><pre>`uvm_field_enum(T,ARG,FLAG)</pre></blockquote><p><i>T</i> is an enumerated <u>type</u>, <i>ARG</i> is an instance of that type, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link23 onMouseOver="ShowTip(event, 'tt9', 'link23')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_enum" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_enum</a></h3><div class=CBody><p>Implements the data operations for an enumerated property.</p><blockquote><pre>`uvm_field_enum(T,ARG,FLAG)</pre></blockquote><p><i>T</i> is an enumerated <u>type</u>, <i>ARG</i> is an instance of that type, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link20 onMouseOver="ShowTip(event, 'tt7', 'link20')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=22 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_real" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_real</a></h3><div class=CBody><p>Implements the data operations for any real property.</p><blockquote><pre>`uvm_field_real(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is an real property of the class, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link24 onMouseOver="ShowTip(event, 'tt9', 'link24')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_real" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_real</a></h3><div class=CBody><p>Implements the data operations for any real property.</p><blockquote><pre>`uvm_field_real(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is an real property of the class, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link21 onMouseOver="ShowTip(event, 'tt7', 'link21')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=23 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_event" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_event</a></h3><div class=CBody><p>Implements the data operations for an event property.</p><blockquote><pre>`uvm_field_event(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is an event property of the class, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link25 onMouseOver="ShowTip(event, 'tt9', 'link25')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_event" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_event</a></h3><div class=CBody><p>Implements the data operations for an event property.</p><blockquote><pre>`uvm_field_event(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is an event property of the class, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link22 onMouseOver="ShowTip(event, 'tt7', 'link22')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
@@ -474,25 +505,25 @@ endclass</pre></blockquote><p>Each `uvm_field_* macro is named to correspond to 
 
 
  <!--CONTENT index=25 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_sarray_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_sarray_int</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional static array of integrals.</p><blockquote><pre>`uvm_field_sarray_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional static array of integrals, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link26 onMouseOver="ShowTip(event, 'tt9', 'link26')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_sarray_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_sarray_int</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional static array of integrals.</p><blockquote><pre>`uvm_field_sarray_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional static array of integrals, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link23 onMouseOver="ShowTip(event, 'tt7', 'link23')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=26 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_sarray_object" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_sarray_object</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional static array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link27 onMouseOver="ShowTip(event, 'tt3', 'link27')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects.</p><blockquote><pre>`uvm_field_sarray_object(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional static array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link28 onMouseOver="ShowTip(event, 'tt3', 'link28')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link29 onMouseOver="ShowTip(event, 'tt9', 'link29')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_sarray_object" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_sarray_object</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional static array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link24 onMouseOver="ShowTip(event, 'tt1', 'link24')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects.</p><blockquote><pre>`uvm_field_sarray_object(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional static array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link25 onMouseOver="ShowTip(event, 'tt1', 'link25')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link26 onMouseOver="ShowTip(event, 'tt7', 'link26')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=27 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_sarray_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_sarray_string</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional static array of strings.</p><blockquote><pre>`uvm_field_sarray_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional static array of strings, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link30 onMouseOver="ShowTip(event, 'tt9', 'link30')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_sarray_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_sarray_string</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional static array of strings.</p><blockquote><pre>`uvm_field_sarray_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional static array of strings, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link27 onMouseOver="ShowTip(event, 'tt7', 'link27')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=28 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_sarray_enum" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_sarray_enum</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional static array of enums.</p><blockquote><pre>`uvm_field_sarray_enum(T,ARG,FLAG)</pre></blockquote><p><i>T</i> is a one-dimensional dynamic array of enums <u>type</u>, <i>ARG</i> is an instance of that type, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link31 onMouseOver="ShowTip(event, 'tt9', 'link31')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_sarray_enum" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_sarray_enum</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional static array of enums.</p><blockquote><pre>`uvm_field_sarray_enum(T,ARG,FLAG)</pre></blockquote><p><i>T</i> is a one-dimensional dynamic array of enums <u>type</u>, <i>ARG</i> is an instance of that type, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link28 onMouseOver="ShowTip(event, 'tt7', 'link28')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
@@ -504,25 +535,25 @@ endclass</pre></blockquote><p>Each `uvm_field_* macro is named to correspond to 
 
 
  <!--CONTENT index=30 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_array_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_array_int</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional dynamic array of integrals.</p><blockquote><pre>`uvm_field_array_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional dynamic array of integrals, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link32 onMouseOver="ShowTip(event, 'tt9', 'link32')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_array_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_array_int</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional dynamic array of integrals.</p><blockquote><pre>`uvm_field_array_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional dynamic array of integrals, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link29 onMouseOver="ShowTip(event, 'tt7', 'link29')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=31 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_array_object" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_array_object</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional dynamic array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link33 onMouseOver="ShowTip(event, 'tt3', 'link33')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects.</p><blockquote><pre>`uvm_field_array_object(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional dynamic array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link34 onMouseOver="ShowTip(event, 'tt3', 'link34')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link35 onMouseOver="ShowTip(event, 'tt9', 'link35')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_array_object" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_array_object</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional dynamic array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link30 onMouseOver="ShowTip(event, 'tt1', 'link30')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects.</p><blockquote><pre>`uvm_field_array_object(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional dynamic array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link31 onMouseOver="ShowTip(event, 'tt1', 'link31')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link32 onMouseOver="ShowTip(event, 'tt7', 'link32')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=32 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_array_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_array_string</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional dynamic array of strings.</p><blockquote><pre>`uvm_field_array_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional dynamic array of strings, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link36 onMouseOver="ShowTip(event, 'tt9', 'link36')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_array_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_array_string</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional dynamic array of strings.</p><blockquote><pre>`uvm_field_array_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional dynamic array of strings, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link33 onMouseOver="ShowTip(event, 'tt7', 'link33')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=33 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_array_enum" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_array_enum</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional dynamic array of enums.</p><blockquote><pre>`uvm_field_array_enum(T,ARG,FLAG)</pre></blockquote><p><i>T</i> is a one-dimensional dynamic array of enums <u>type</u>, <i>ARG</i> is an instance of that type, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link37 onMouseOver="ShowTip(event, 'tt9', 'link37')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_array_enum" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_array_enum</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional dynamic array of enums.</p><blockquote><pre>`uvm_field_array_enum(T,ARG,FLAG)</pre></blockquote><p><i>T</i> is a one-dimensional dynamic array of enums <u>type</u>, <i>ARG</i> is an instance of that type, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link34 onMouseOver="ShowTip(event, 'tt7', 'link34')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
@@ -534,25 +565,25 @@ endclass</pre></blockquote><p>Each `uvm_field_* macro is named to correspond to 
 
 
  <!--CONTENT index=35 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_queue_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_queue_int</a></h3><div class=CBody><p>Implements the data operations for a queue of integrals.</p><blockquote><pre>`uvm_field_queue_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional queue of integrals, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link38 onMouseOver="ShowTip(event, 'tt9', 'link38')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_queue_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_queue_int</a></h3><div class=CBody><p>Implements the data operations for a queue of integrals.</p><blockquote><pre>`uvm_field_queue_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional queue of integrals, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link35 onMouseOver="ShowTip(event, 'tt7', 'link35')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=36 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_queue_object" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_queue_object</a></h3><div class=CBody><p>Implements the data operations for a queue of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link39 onMouseOver="ShowTip(event, 'tt3', 'link39')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects.</p><blockquote><pre>`uvm_field_queue_object(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional queue of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link40 onMouseOver="ShowTip(event, 'tt3', 'link40')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link41 onMouseOver="ShowTip(event, 'tt9', 'link41')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_queue_object" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_queue_object</a></h3><div class=CBody><p>Implements the data operations for a queue of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link36 onMouseOver="ShowTip(event, 'tt1', 'link36')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects.</p><blockquote><pre>`uvm_field_queue_object(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional queue of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link37 onMouseOver="ShowTip(event, 'tt1', 'link37')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link38 onMouseOver="ShowTip(event, 'tt7', 'link38')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=37 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_queue_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_queue_string</a></h3><div class=CBody><p>Implements the data operations for a queue of strings.</p><blockquote><pre>`uvm_field_queue_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional queue of strings, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link42 onMouseOver="ShowTip(event, 'tt9', 'link42')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_queue_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_queue_string</a></h3><div class=CBody><p>Implements the data operations for a queue of strings.</p><blockquote><pre>`uvm_field_queue_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is a one-dimensional queue of strings, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link39 onMouseOver="ShowTip(event, 'tt7', 'link39')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=38 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_queue_enum" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_queue_enum</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional queue of enums.</p><blockquote><pre>`uvm_field_queue_enum(T,ARG,FLAG)</pre></blockquote><p><i>T</i> is a queue of enums <u>type</u>, <i>ARG</i> is an instance of that type, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link43 onMouseOver="ShowTip(event, 'tt9', 'link43')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_queue_enum" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_queue_enum</a></h3><div class=CBody><p>Implements the data operations for a one-dimensional queue of enums.</p><blockquote><pre>`uvm_field_queue_enum(T,ARG,FLAG)</pre></blockquote><p><i>T</i> is a queue of enums <u>type</u>, <i>ARG</i> is an instance of that type, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link40 onMouseOver="ShowTip(event, 'tt7', 'link40')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
@@ -564,19 +595,19 @@ endclass</pre></blockquote><p>Each `uvm_field_* macro is named to correspond to 
 
 
  <!--CONTENT index=40 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_string</a></h3><div class=CBody><p>Implements the data operations for an associative array of integrals indexed by <i>string</i>.</p><blockquote><pre>`uvm_field_aa_int_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with string key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link44 onMouseOver="ShowTip(event, 'tt9', 'link44')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_string</a></h3><div class=CBody><p>Implements the data operations for an associative array of integrals indexed by <i>string</i>.</p><blockquote><pre>`uvm_field_aa_int_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with string key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link41 onMouseOver="ShowTip(event, 'tt7', 'link41')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=41 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_object_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_object_string</a></h3><div class=CBody><p>Implements the data operations for an associative array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link45 onMouseOver="ShowTip(event, 'tt3', 'link45')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects indexed by <i>string</i>.</p><blockquote><pre>`uvm_field_aa_object_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of objects with string key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link46 onMouseOver="ShowTip(event, 'tt9', 'link46')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_object_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_object_string</a></h3><div class=CBody><p>Implements the data operations for an associative array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link42 onMouseOver="ShowTip(event, 'tt1', 'link42')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects indexed by <i>string</i>.</p><blockquote><pre>`uvm_field_aa_object_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of objects with string key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link43 onMouseOver="ShowTip(event, 'tt7', 'link43')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=42 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_string_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_string_string</a></h3><div class=CBody><p>Implements the data operations for an associative array of strings indexed by <i>string</i>.</p><blockquote><pre>`uvm_field_aa_string_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of strings with string key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link47 onMouseOver="ShowTip(event, 'tt9', 'link47')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_string_string" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_string_string</a></h3><div class=CBody><p>Implements the data operations for an associative array of strings indexed by <i>string</i>.</p><blockquote><pre>`uvm_field_aa_string_string(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of strings with string key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link44 onMouseOver="ShowTip(event, 'tt7', 'link44')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
@@ -588,85 +619,85 @@ endclass</pre></blockquote><p>Each `uvm_field_* macro is named to correspond to 
 
 
  <!--CONTENT index=44 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_object_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_object_int</a></h3><div class=CBody><p>Implements the data operations for an associative array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link48 onMouseOver="ShowTip(event, 'tt3', 'link48')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects indexed by the <i>int</i> data type.</p><blockquote><pre>`uvm_field_aa_object_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of objects with <i>int</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link49 onMouseOver="ShowTip(event, 'tt9', 'link49')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_object_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_object_int</a></h3><div class=CBody><p>Implements the data operations for an associative array of <a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link45 onMouseOver="ShowTip(event, 'tt1', 'link45')" onMouseOut="HideTip('tt1')">uvm_object</a>-based objects indexed by the <i>int</i> data type.</p><blockquote><pre>`uvm_field_aa_object_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of objects with <i>int</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link46 onMouseOver="ShowTip(event, 'tt7', 'link46')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=45 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_int</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>int</i> data type.</p><blockquote><pre>`uvm_field_aa_int_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>int</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link50 onMouseOver="ShowTip(event, 'tt9', 'link50')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_int" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_int</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>int</i> data type.</p><blockquote><pre>`uvm_field_aa_int_int(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>int</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link47 onMouseOver="ShowTip(event, 'tt7', 'link47')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=46 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_int_unsigned" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_int_unsigned</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>int unsigned</i> data type.</p><blockquote><pre>`uvm_field_aa_int_int_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>int unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link51 onMouseOver="ShowTip(event, 'tt9', 'link51')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_int_unsigned" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_int_unsigned</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>int unsigned</i> data type.</p><blockquote><pre>`uvm_field_aa_int_int_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>int unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link48 onMouseOver="ShowTip(event, 'tt7', 'link48')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=47 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_integer" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_integer</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>integer</i> data type.</p><blockquote><pre>`uvm_field_aa_int_integer(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>integer</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link52 onMouseOver="ShowTip(event, 'tt9', 'link52')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_integer" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_integer</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>integer</i> data type.</p><blockquote><pre>`uvm_field_aa_int_integer(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>integer</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link49 onMouseOver="ShowTip(event, 'tt7', 'link49')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=48 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_integer_unsigned" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_integer_unsigned</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>integer unsigned</i> data type.</p><blockquote><pre>`uvm_field_aa_int_integer_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>integer unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link53 onMouseOver="ShowTip(event, 'tt9', 'link53')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_integer_unsigned" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_integer_unsigned</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>integer unsigned</i> data type.</p><blockquote><pre>`uvm_field_aa_int_integer_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>integer unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link50 onMouseOver="ShowTip(event, 'tt7', 'link50')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=49 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_byte" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_byte</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>byte</i> data type.</p><blockquote><pre>`uvm_field_aa_int_byte(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>byte</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link54 onMouseOver="ShowTip(event, 'tt9', 'link54')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_byte" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_byte</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>byte</i> data type.</p><blockquote><pre>`uvm_field_aa_int_byte(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>byte</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link51 onMouseOver="ShowTip(event, 'tt7', 'link51')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=50 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_byte_unsigned" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_byte_unsigned</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>byte unsigned</i> data type.</p><blockquote><pre>`uvm_field_aa_int_byte_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>byte unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link55 onMouseOver="ShowTip(event, 'tt9', 'link55')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_byte_unsigned" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_byte_unsigned</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>byte unsigned</i> data type.</p><blockquote><pre>`uvm_field_aa_int_byte_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>byte unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link52 onMouseOver="ShowTip(event, 'tt7', 'link52')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=51 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_shortint" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_shortint</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>shortint</i> data type.</p><blockquote><pre>`uvm_field_aa_int_shortint(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>shortint</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link56 onMouseOver="ShowTip(event, 'tt9', 'link56')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_shortint" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_shortint</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>shortint</i> data type.</p><blockquote><pre>`uvm_field_aa_int_shortint(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>shortint</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link53 onMouseOver="ShowTip(event, 'tt7', 'link53')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=52 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_shortint_unsigned" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_shortint_unsigned</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>shortint unsigned</i> data type.</p><blockquote><pre>`uvm_field_aa_int_shortint_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>shortint unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link57 onMouseOver="ShowTip(event, 'tt9', 'link57')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_shortint_unsigned" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_shortint_unsigned</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>shortint unsigned</i> data type.</p><blockquote><pre>`uvm_field_aa_int_shortint_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>shortint unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link54 onMouseOver="ShowTip(event, 'tt7', 'link54')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=53 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_longint" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_longint</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>longint</i> data type.</p><blockquote><pre>`uvm_field_aa_int_longint(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>longint</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link58 onMouseOver="ShowTip(event, 'tt9', 'link58')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_longint" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_longint</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>longint</i> data type.</p><blockquote><pre>`uvm_field_aa_int_longint(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>longint</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link55 onMouseOver="ShowTip(event, 'tt7', 'link55')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=54 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_longint_unsigned" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_longint_unsigned</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>longint unsigned</i> data type.</p><blockquote><pre>`uvm_field_aa_int_longint_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>longint unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link59 onMouseOver="ShowTip(event, 'tt9', 'link59')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_longint_unsigned" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_longint_unsigned</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by the <i>longint unsigned</i> data type.</p><blockquote><pre>`uvm_field_aa_int_longint_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>longint unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link56 onMouseOver="ShowTip(event, 'tt7', 'link56')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=55 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_key" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_key</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by any integral key data type.</p><blockquote><pre>`uvm_field_aa_int_key(long unsigned,ARG,FLAG)</pre></blockquote><p><i>KEY</i> is the data type of the integral key, <i>ARG</i> is the name of a property that is an associative array of integrals, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link60 onMouseOver="ShowTip(event, 'tt9', 'link60')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_key" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_key</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by any integral key data type.</p><blockquote><pre>`uvm_field_aa_int_key(long unsigned,ARG,FLAG)</pre></blockquote><p><i>KEY</i> is the data type of the integral key, <i>ARG</i> is the name of a property that is an associative array of integrals, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link57 onMouseOver="ShowTip(event, 'tt7', 'link57')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=56 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_enumkey" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_enumkey</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by any enumeration key data type.</p><blockquote><pre>`uvm_field_aa_int_longint_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>longint unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link61 onMouseOver="ShowTip(event, 'tt9', 'link61')" onMouseOut="HideTip('tt9')">Field Macros</a> above.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_field_aa_int_enumkey" href="../../../../src/macros/uvm_object_defines.svh">`uvm_field_aa_int_enumkey</a></h3><div class=CBody><p>Implements the data operations for an associative array of integral types indexed by any enumeration key data type.</p><blockquote><pre>`uvm_field_aa_int_longint_unsigned(ARG,FLAG)</pre></blockquote><p><i>ARG</i> is the name of a property that is an associative array of integrals with <i>longint unsigned</i> key, and <i>FLAG</i> is a bitwise OR of one or more flag settings as described in <a href="#Field_Macros" class=LGroup id=link58 onMouseOver="ShowTip(event, 'tt7', 'link58')" onMouseOut="HideTip('tt7')">Field Macros</a> above.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=57 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Recording_Macros" href="../../../../src/macros/uvm_object_defines.svh">Recording Macros</a></h3><div class=CBody><p>The recording macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_record" class=LMethod id=link62 onMouseOver="ShowTip(event, 'tt4', 'link62')" onMouseOut="HideTip('tt4')">uvm_object::do_record</a> method.&nbsp; They help ensure that the fields are recorded using a vendor- independent API.&nbsp; Unlike the <a href="../base/uvm_recorder-svh.html#uvm_recorder" class=LClass id=link63 onMouseOver="ShowTip(event, 'tt10', 'link63')" onMouseOut="HideTip('tt10')">uvm_recorder</a> policy, fields recorded using the <a href="#`uvm_record_field" class=LMacro id=link64 onMouseOver="ShowTip(event, 'tt11', 'link64')" onMouseOut="HideTip('tt11')">`uvm_record_field</a> macro do not lose type information--they are passed directly to the vendor-specific API.&nbsp; This results in more efficient recording and no artificial limit on bit-widths.&nbsp; See your simulator vendor&rsquo;s documentation for more information on its transaction recording capabilities.</p></div></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Recording_Macros" href="../../../../src/macros/uvm_object_defines.svh">Recording Macros</a></h3><div class=CBody><p>The recording macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_record" class=LMethod id=link59 onMouseOver="ShowTip(event, 'tt2', 'link59')" onMouseOut="HideTip('tt2')">uvm_object::do_record</a> method.&nbsp; They help ensure that the fields are recorded using a vendor- independent API.&nbsp; Unlike the <a href="../base/uvm_recorder-svh.html#uvm_recorder" class=LClass id=link60 onMouseOver="ShowTip(event, 'tt8', 'link60')" onMouseOut="HideTip('tt8')">uvm_recorder</a> policy, fields recorded using the <a href="#`uvm_record_field" class=LMacro id=link61 onMouseOver="ShowTip(event, 'tt9', 'link61')" onMouseOut="HideTip('tt9')">`uvm_record_field</a> macro do not lose type information--they are passed directly to the vendor-specific API.&nbsp; This results in more efficient recording and no artificial limit on bit-widths.&nbsp; See your simulator vendor&rsquo;s documentation for more information on its transaction recording capabilities.</p></div></div></div>
 
 
 
@@ -678,13 +709,13 @@ endclass</pre></blockquote><p>Each `uvm_field_* macro is named to correspond to 
 
 
  <!--CONTENT index=59 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_record_field" href="../../../../src/macros/uvm_object_defines.svh">`uvm_record_field</a></h3><div class=CBody><p>Macro for recording name-value pairs into a transaction recording database.&nbsp; Requires a valid transaction handle, as provided by the <a href="../base/uvm_transaction-svh.html#uvm_transaction.begin_tr" class=LMethod id=link65 onMouseOver="ShowTip(event, 'tt12', 'link65')" onMouseOut="HideTip('tt12')">uvm_transaction::begin_tr</a> and <a href="../base/uvm_component-svh.html#uvm_component.begin_tr" class=LMethod id=link66 onMouseOver="ShowTip(event, 'tt13', 'link66')" onMouseOut="HideTip('tt13')">uvm_component::begin_tr</a> methods.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_record_field" href="../../../../src/macros/uvm_object_defines.svh">`uvm_record_field</a></h3><div class=CBody><p>Macro for recording name-value pairs into a transaction recording database.&nbsp; Requires a valid transaction handle, as provided by the <a href="../base/uvm_transaction-svh.html#uvm_transaction.begin_tr" class=LMethod id=link62 onMouseOver="ShowTip(event, 'tt10', 'link62')" onMouseOut="HideTip('tt10')">uvm_transaction::begin_tr</a> and <a href="../base/uvm_component-svh.html#uvm_component.begin_tr" class=LMethod id=link63 onMouseOver="ShowTip(event, 'tt11', 'link63')" onMouseOut="HideTip('tt11')">uvm_component::begin_tr</a> methods.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=60 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Packing_Macros" href="../../../../src/macros/uvm_object_defines.svh">Packing Macros</a></h3><div class=CBody><p>The packing macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_pack" class=LMethod id=link67 onMouseOver="ShowTip(event, 'tt5', 'link67')" onMouseOut="HideTip('tt5')">uvm_object::do_pack</a> method.&nbsp; They help ensure that the pack operation is the exact inverse of the unpack operation.&nbsp; See also <a href="#Unpacking_Macros" class=LGroup id=link68 onMouseOver="ShowTip(event, 'tt14', 'link68')" onMouseOut="HideTip('tt14')">Unpacking Macros</a>.</p><blockquote><pre>virtual function void do_pack(uvm_packer packer);
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Packing_Macros" href="../../../../src/macros/uvm_object_defines.svh">Packing Macros</a></h3><div class=CBody><p>The packing macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_pack" class=LMethod id=link64 onMouseOver="ShowTip(event, 'tt3', 'link64')" onMouseOut="HideTip('tt3')">uvm_object::do_pack</a> method.&nbsp; They help ensure that the pack operation is the exact inverse of the unpack operation.&nbsp; See also <a href="#Unpacking_Macros" class=LGroup id=link65 onMouseOver="ShowTip(event, 'tt12', 'link65')" onMouseOut="HideTip('tt12')">Unpacking Macros</a>.</p><blockquote><pre>virtual function void do_pack(uvm_packer packer);
   `uvm_pack_int(cmd)
   `uvm_pack_int(addr)
   `uvm_pack_array(data)
@@ -778,7 +809,7 @@ endfunction</pre></blockquote><p>The &lsquo;N&rsquo; versions of these macros ta
 
 
  <!--CONTENT index=75 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Unpacking_Macros" href="../../../../src/macros/uvm_object_defines.svh">Unpacking Macros</a></h3><div class=CBody><p>The unpacking macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_unpack" class=LMethod id=link69 onMouseOver="ShowTip(event, 'tt6', 'link69')" onMouseOut="HideTip('tt6')">uvm_object::do_unpack</a> method.&nbsp; They help ensure that the unpack operation is the exact inverse of the pack operation.&nbsp; See also <a href="#Packing_Macros" class=LGroup id=link70 onMouseOver="ShowTip(event, 'tt15', 'link70')" onMouseOut="HideTip('tt15')">Packing Macros</a>.</p><blockquote><pre>virtual function void do_unpack(uvm_packer packer);
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Unpacking_Macros" href="../../../../src/macros/uvm_object_defines.svh">Unpacking Macros</a></h3><div class=CBody><p>The unpacking macros assist users who implement the <a href="../base/uvm_object-svh.html#uvm_object.do_unpack" class=LMethod id=link66 onMouseOver="ShowTip(event, 'tt4', 'link66')" onMouseOut="HideTip('tt4')">uvm_object::do_unpack</a> method.&nbsp; They help ensure that the unpack operation is the exact inverse of the pack operation.&nbsp; See also <a href="#Packing_Macros" class=LGroup id=link67 onMouseOver="ShowTip(event, 'tt13', 'link67')" onMouseOut="HideTip('tt13')">Packing Macros</a>.</p><blockquote><pre>virtual function void do_unpack(uvm_packer packer);
   `uvm_unpack_enum(cmd,cmd_t)
   `uvm_unpack_int(addr)
   `uvm_unpack_array(data)
@@ -873,21 +904,9 @@ endfunction</pre></blockquote><p>The &lsquo;N&rsquo; versions of these macros ta
 
 
 <!--START_ND_TOOLTIPS-->
-<div class=CToolTip id="tt1"><div class=CMethod>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
-      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_object create (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name</td>
-      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
-      <td class=PDefaultValue width=100%>&quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
-      </table></td></tr>
-    </table></blockquote>
-The create method allocates a new object of the same type as this object and returns it via a base uvm_object handle. </div></div><div class=CToolTip id="tt2"><div class=CMethod>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function string get_type_name ()
-  </td></tr></table></blockquote>This function returns the type name of the object, which is typically the type identifier enclosed in quotes. </div></div><div class=CToolTip id="tt3"><div class=CClass>
+<div class=CToolTip id="tt1"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
-  </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt4"><div class=CMethod>
+  </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt2"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void do_record (</td>      <td class=PType nowrap>uvm_recorder&nbsp;</td>
@@ -895,7 +914,7 @@ The create method allocates a new object of the same type as this object and ret
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The do_record method is the user-definable hook called by the record method. </div></div><div class=CToolTip id="tt5"><div class=CMethod>
+The do_record method is the user-definable hook called by the record method. </div></div><div class=CToolTip id="tt3"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void do_pack (</td>      <td class=PType nowrap>uvm_packer&nbsp;</td>
@@ -903,7 +922,7 @@ The do_record method is the user-definable hook called by the record method. </d
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The do_pack method is the user-definable hook called by the pack methods. </div></div><div class=CToolTip id="tt6"><div class=CMethod>
+The do_pack method is the user-definable hook called by the pack methods. </div></div><div class=CToolTip id="tt4"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void do_unpack (</td>      <td class=PType nowrap>uvm_packer&nbsp;</td>
@@ -911,13 +930,13 @@ The do_pack method is the user-definable hook called by the pack methods. </div>
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The do_unpack method is the user-definable hook called by the unpack method. </div></div><div class=CToolTip id="tt7"><div class=CClass>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_factory
-  </td></tr></table></blockquote>As the name implies, uvm_factory is used to manufacture (create) UVM objects and components. </div></div><div class=CToolTip id="tt8"><div class=CMethod>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_object_wrapper get_object_type ()
-  </td></tr></table></blockquote>Returns the type-proxy (wrapper) for this object. </div></div><div class=CToolTip id="tt9"><div class=CGroup>The `uvm_field_*  macros are invoked inside of the `uvm_*_utils_begin and `uvm_*_utils_end macro blocks to form &ldquo;automatic&rdquo; implementations of the core data methods: copy, compare, pack, unpack, record, print, and sprint. </div></div><div class=CToolTip id="tt10"><div class=CClass>
+The do_unpack method is the user-definable hook called by the unpack method. </div></div><div class=CToolTip id="tt5"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_sequence_item extends uvm_transaction
+  </td></tr></table></blockquote>The base class for user-defined sequence items and also the base class for the uvm_sequence class. </div></div><div class=CToolTip id="tt6"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_component extends uvm_report_object
+  </td></tr></table></blockquote>The uvm_component class is the root base class for UVM components. </div></div><div class=CToolTip id="tt7"><div class=CGroup>The `uvm_field_*  macros are invoked inside of the `uvm_*_utils_begin and `uvm_*_utils_end macro blocks to form &ldquo;automatic&rdquo; implementations of the core data methods: copy, compare, pack, unpack, record, print, and sprint.</div></div><div class=CToolTip id="tt8"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_recorder extends uvm_object
-  </td></tr></table></blockquote>The uvm_recorder class provides a policy object for recording uvm_objects. </div></div><div class=CToolTip id="tt11"><div class=CMacro>Macro for recording name-value pairs into a transaction recording database. </div></div><div class=CToolTip id="tt12"><div class=CMethod>
+  </td></tr></table></blockquote>The uvm_recorder class provides a policy object for recording uvm_objects. </div></div><div class=CToolTip id="tt9"><div class=CMacro>Macro for recording name-value pairs into a transaction recording database. </div></div><div class=CToolTip id="tt10"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function integer begin_tr (</td>      <td class=PType nowrap>time&nbsp;</td>
@@ -926,7 +945,7 @@ The do_unpack method is the user-definable hook called by the unpack method. </d
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-This function indicates that the transaction has been started and is not the child of another transaction. </div></div><div class=CToolTip id="tt13"><div class=CMethod>
+This function indicates that the transaction has been started and is not the child of another transaction. </div></div><div class=CToolTip id="tt11"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function integer begin_tr (</td>      <td class=PType nowrap>uvm_transaction&nbsp;</td>
@@ -956,7 +975,7 @@ This function indicates that the transaction has been started and is not the chi
       <td class=PAfterParameters nowrap>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-This function marks the start of a transaction, <i>tr</i>, by this component. </div></div><div class=CToolTip id="tt14"><div class=CGroup>The unpacking macros assist users who implement the uvm_object::do_unpack method. </div></div><div class=CToolTip id="tt15"><div class=CGroup>The packing macros assist users who implement the uvm_object::do_pack method. </div></div><!--END_ND_TOOLTIPS-->
+This function marks the start of a transaction, <i>tr</i>, by this component. </div></div><div class=CToolTip id="tt12"><div class=CGroup>The unpacking macros assist users who implement the uvm_object::do_unpack method. </div></div><div class=CToolTip id="tt13"><div class=CGroup>The packing macros assist users who implement the uvm_object::do_pack method. </div></div><!--END_ND_TOOLTIPS-->
 
 <script language=JavaScript><!--
 if (browserType) {if (browserVer) {document.write("</div>"); }document.write("</div>");}// --></script></body></html>

@@ -131,34 +131,4 @@ virtual class uvm_sequence #(type REQ = uvm_sequence_item,
     printer.print_object("rsp", rsp);
   endfunction
 
-  
-  
-
-  // Function- create_request
-  //
-  // Returns an instance of the ~REQ~ type in a <uvm_sequence_item> base handle.
-  // Used for type-compatibility checking. Unrelated (inheritance-wise) sequence
-  // A #(R1,S1) can run on sequencer #(R,S) as long as R1 and S1 are by themselves
-  // type-compatible with R and S, respectively.
-  virtual function uvm_sequence_item create_request ();
-    REQ req;
-    req = new();
-    return req;
-  endfunction
-
-  // Function- create_response
-  //
-  // Returns an instance of the ~RSP~ type in a <uvm_sequence_item> base handle.
-  // Used for type-compatibility checking. Unrelated (inheritance-wise) sequence
-  // A #(R1,S1) can run on sequencer #(R,S) as long as R1 and S1 are by themselves
-  // type-compatible with R and S, respectively.
-  virtual function uvm_sequence_item create_response ();
-    RSP rsp;
-    rsp = new();
-    return rsp;
-  endfunction
-
-
-
-
 endclass
