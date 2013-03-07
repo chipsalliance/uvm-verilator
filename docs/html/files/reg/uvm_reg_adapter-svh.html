@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Classes_for_Adapting_Between_Register_and_Bus_Operations" href="../../../../src/reg/uvm_reg_adapter.svh">Classes for Adapting Between Register and Bus Operations</a></h1><div class=CBody><p>This section defines classes used to convert transaction streams between generic register address/data reads and writes and physical bus accesses.</p>
+<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Classes_for_Adapting_Between_Register_and_Bus_Operations" href="../../src/reg/uvm_reg_adapter.svh">Classes for Adapting Between Register and Bus Operations</a></h1><div class=CBody><p>This section defines classes used to convert transaction streams between generic register address/data reads and writes and physical bus accesses.</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Contents</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -37,7 +37,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_reg_adapter" href="../../../../src/reg/uvm_reg_adapter.svh">uvm_reg_adapter</a></h2><div class=CBody><p>This class defines an interface for converting between <a href="uvm_reg_item-svh.html#uvm_reg_bus_op" class=LClass id=link19 onMouseOver="ShowTip(event, 'tt2', 'link19')" onMouseOut="HideTip('tt2')">uvm_reg_bus_op</a> and a specific bus transaction.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_reg_adapter" href="../../src/reg/uvm_reg_adapter.svh">uvm_reg_adapter</a></h2><div class=CBody><p>This class defines an interface for converting between <a href="uvm_reg_item-svh.html#uvm_reg_bus_op" class=LClass id=link19 onMouseOver="ShowTip(event, 'tt2', 'link19')" onMouseOut="HideTip('tt2')">uvm_reg_bus_op</a> and a specific bus transaction.</p>
 
 <!--START_ND_SUMMARY index=1-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -96,7 +96,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=2 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.new" href="../../../../src/reg/uvm_reg_adapter.svh">new</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.new" href="../../src/reg/uvm_reg_adapter.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function new(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -112,7 +112,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=3 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.supports_byte_enable" href="../../../../src/reg/uvm_reg_adapter.svh">supports_byte_enable</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.supports_byte_enable" href="../../src/reg/uvm_reg_adapter.svh">supports_byte_enable</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>bit supports_byte_enable
   </td></tr></table></blockquote><div class=CBody><p>Set this bit in extensions of this class if the bus protocol supports byte enables.</p></div></div></div>
 
@@ -120,7 +120,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=4 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.provides_responses" href="../../../../src/reg/uvm_reg_adapter.svh">provides_responses</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.provides_responses" href="../../src/reg/uvm_reg_adapter.svh">provides_responses</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>bit provides_responses
   </td></tr></table></blockquote><div class=CBody><p>Set this bit in extensions of this class if the bus driver provides separate response items.</p></div></div></div>
 
@@ -128,7 +128,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=5 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.parent_sequence" href="../../../../src/reg/uvm_reg_adapter.svh">parent_sequence</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.parent_sequence" href="../../src/reg/uvm_reg_adapter.svh">parent_sequence</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_sequence_base parent_sequence
   </td></tr></table></blockquote><div class=CBody><p>Set this member in extensions of this class if the bus driver requires bus items be executed via a particular sequence base type.&nbsp; The sequence assigned to this member must implement do_clone().</p></div></div></div>
 
@@ -136,7 +136,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.reg2bus" href="../../../../src/reg/uvm_reg_adapter.svh">reg2bus</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.reg2bus" href="../../src/reg/uvm_reg_adapter.svh">reg2bus</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>pure virtual function uvm_sequence_item reg2bus(</td>      <td class=PTypePrefix nowrap>const ref&nbsp;</td>
@@ -151,7 +151,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=7 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.bus2reg" href="../../../../src/reg/uvm_reg_adapter.svh">bus2reg</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.bus2reg" href="../../src/reg/uvm_reg_adapter.svh">bus2reg</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>pure virtual function void bus2reg(</td>      <td class=PTypePrefix nowrap></td>
@@ -169,7 +169,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=8 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.get_item" href="../../../../src/reg/uvm_reg_adapter.svh">get_item</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.get_item" href="../../src/reg/uvm_reg_adapter.svh">get_item</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_reg_item get_item()
   </td></tr></table></blockquote><div class=CBody><p>Returns the bus-independent read/write information that corresponds to the generic bus transaction currently translated to a bus-specific transaction.&nbsp; This function returns a value reference only when called in the <a href="#uvm_reg_adapter.reg2bus" class=LMethod id=link24 onMouseOver="ShowTip(event, 'tt11', 'link24')" onMouseOut="HideTip('tt11')">uvm_reg_adapter::reg2bus()</a> method.&nbsp; It returns null at all other times.&nbsp; The content of the return <a href="uvm_reg_item-svh.html#uvm_reg_item" class=LClass id=link25 onMouseOver="ShowTip(event, 'tt15', 'link25')" onMouseOut="HideTip('tt15')">uvm_reg_item</a> instance must not be modified and used strictly to obtain additional information about the operation.</p></div></div></div>
 
@@ -177,7 +177,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=9 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.Example" href="../../../../src/reg/uvm_reg_adapter.svh">Example</a></h3><div class=CBody><p>The following example illustrates how to implement a RegModel-BUS adapter class for the APB bus protocol.</p><blockquote><pre>class rreg2apb_adapter extends uvm_reg_adapter;
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.Example" href="../../src/reg/uvm_reg_adapter.svh">Example</a></h3><div class=CBody><p>The following example illustrates how to implement a RegModel-BUS adapter class for the APB bus protocol.</p><blockquote><pre>class rreg2apb_adapter extends uvm_reg_adapter;
   `uvm_object_utils(reg2apb_adapter)
 
   function new(string name=&quot;reg2apb_adapter&quot;);
@@ -211,7 +211,7 @@ endclass</pre></blockquote></div></div></div>
 
 
  <!--CONTENT index=10 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_reg_tlm_adapter" href="../../../../src/reg/uvm_reg_adapter.svh">uvm_reg_tlm_adapter</a></h2><div class=CBody><p>For converting between <a href="uvm_reg_item-svh.html#uvm_reg_bus_op" class=LClass id=link38 onMouseOver="ShowTip(event, 'tt2', 'link38')" onMouseOut="HideTip('tt2')">uvm_reg_bus_op</a> and <a href="../tlm2/uvm_tlm2_generic_payload-svh.html#uvm_tlm_gp" class=LClass id=link39 onMouseOver="ShowTip(event, 'tt4', 'link39')" onMouseOut="HideTip('tt4')">uvm_tlm_gp</a> items.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_reg_tlm_adapter" href="../../src/reg/uvm_reg_adapter.svh">uvm_reg_tlm_adapter</a></h2><div class=CBody><p>For converting between <a href="uvm_reg_item-svh.html#uvm_reg_bus_op" class=LClass id=link38 onMouseOver="ShowTip(event, 'tt2', 'link38')" onMouseOut="HideTip('tt2')">uvm_reg_bus_op</a> and <a href="../tlm2/uvm_tlm2_generic_payload-svh.html#uvm_tlm_gp" class=LClass id=link39 onMouseOver="ShowTip(event, 'tt4', 'link39')" onMouseOut="HideTip('tt4')">uvm_tlm_gp</a> items.</p>
 
 <!--START_ND_SUMMARY index=10-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -256,13 +256,13 @@ endclass</pre></blockquote></div></div></div>
 
 
  <!--CONTENT index=11 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_tlm_adapter.Methods" href="../../../../src/reg/uvm_reg_adapter.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_tlm_adapter.Methods" href="../../src/reg/uvm_reg_adapter.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=12 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_tlm_adapter.reg2bus" href="../../../../src/reg/uvm_reg_adapter.svh">reg2bus</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_tlm_adapter.reg2bus" href="../../src/reg/uvm_reg_adapter.svh">reg2bus</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function uvm_sequence_item reg2bus(</td>      <td class=PTypePrefix nowrap>const ref&nbsp;</td>
@@ -277,7 +277,7 @@ endclass</pre></blockquote></div></div></div>
 
 
  <!--CONTENT index=13 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_tlm_adapter.bus2reg" href="../../../../src/reg/uvm_reg_adapter.svh">bus2reg</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_tlm_adapter.bus2reg" href="../../src/reg/uvm_reg_adapter.svh">bus2reg</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void bus2reg(</td>      <td class=PTypePrefix nowrap></td>

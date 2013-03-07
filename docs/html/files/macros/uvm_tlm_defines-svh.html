@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="TLM_Implementation_Port_Declaration_Macros" href="../../../../src/macros/uvm_tlm_defines.svh">TLM Implementation Port Declaration Macros</a></h1><div class=CBody><p>The TLM implemenation declaration macros provide a way for components to provide multiple implemenation ports of the same implementation interface.&nbsp; When an implementation port is defined using the built-in set of imps, there must be exactly one implementation of the interface.</p><p>For example, if a component needs to provide a put implemenation then it would have an implementation port defined like:</p><blockquote><pre>class mycomp extends uvm_component;
+<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="TLM_Implementation_Port_Declaration_Macros" href="../../src/macros/uvm_tlm_defines.svh">TLM Implementation Port Declaration Macros</a></h1><div class=CBody><p>The TLM implemenation declaration macros provide a way for components to provide multiple implemenation ports of the same implementation interface.&nbsp; When an implementation port is defined using the built-in set of imps, there must be exactly one implementation of the interface.</p><p>For example, if a component needs to provide a put implemenation then it would have an implementation port defined like:</p><blockquote><pre>class mycomp extends uvm_component;
   uvm_put_imp#(data_type, mycomp) put_imp;
   ...
   virtual task put (data_type t);
@@ -125,139 +125,139 @@ endclass</pre></blockquote><p>The important thing to note is that each `uvm_&lt;
 
 
  <!--CONTENT index=1 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Macros" href="../../../../src/macros/uvm_tlm_defines.svh">Macros</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Macros" href="../../src/macros/uvm_tlm_defines.svh">Macros</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=2 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_put_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_put_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_put_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_put_impSFX for providing blocking put implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_put_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_put_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_put_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_put_impSFX for providing blocking put implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=3 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_put_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_put_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_put_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_put_impSFX for providing non-blocking put implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_put_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_put_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_put_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_put_impSFX for providing non-blocking put implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=4 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_put_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_put_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_put_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_put_impSFX for providing both blocking and non-blocking put implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_put_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_put_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_put_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_put_impSFX for providing both blocking and non-blocking put implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=5 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_get_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_get_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_get_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_get_impSFX for providing blocking get implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_get_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_get_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_get_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_get_impSFX for providing blocking get implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=6 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_get_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_get_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_get_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_get_impSFX for providing non-blocking get implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_get_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_get_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_get_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_get_impSFX for providing non-blocking get implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=7 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_get_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_get_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_get_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_get_impSFX for providing both blocking and non-blocking get implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_get_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_get_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_get_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_get_impSFX for providing both blocking and non-blocking get implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=8 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_peek_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_peek_impSFX for providing blocking peek implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_peek_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_peek_impSFX for providing blocking peek implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=9 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_peek_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_peek_impSFX for providing non-blocking peek implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_peek_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_peek_impSFX for providing non-blocking peek implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=10 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_peek_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_peek_impSFX for providing both blocking and non-blocking peek implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_peek_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_peek_impSFX for providing both blocking and non-blocking peek implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=11 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_get_peek_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_get_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_get_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_get_peek_impSFX for providing the blocking get_peek implemenation.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_get_peek_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_get_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_get_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_get_peek_impSFX for providing the blocking get_peek implemenation.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=12 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_get_peek_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_get_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_get_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_get_peek_impSFX for providing non-blocking get_peek implemenation.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_get_peek_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_get_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_get_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_get_peek_impSFX for providing non-blocking get_peek implemenation.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=13 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_get_peek_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_get_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_get_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_get_peek_impSFX for providing both blocking and non-blocking get_peek implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_get_peek_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_get_peek_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_get_peek_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_get_peek_impSFX for providing both blocking and non-blocking get_peek implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=14 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_master_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_master_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_master_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_master_impSFX for providing the blocking master implemenation.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_master_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_master_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_master_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_master_impSFX for providing the blocking master implemenation.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=15 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_master_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_master_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_master_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_master_impSFX for providing the non-blocking master implemenation.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_master_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_master_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_master_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_master_impSFX for providing the non-blocking master implemenation.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=16 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_master_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_master_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_master_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_master_impSFX for providing both blocking and non-blocking master implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_master_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_master_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_master_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_master_impSFX for providing both blocking and non-blocking master implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=17 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_slave_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_slave_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_slave_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_slave_impSFX for providing the blocking slave implemenation.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_slave_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_slave_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_slave_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_slave_impSFX for providing the blocking slave implemenation.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=18 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_slave_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_slave_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_slave_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_slave_impSFX for providing the non-blocking slave implemenation.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_slave_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_slave_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_slave_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_slave_impSFX for providing the non-blocking slave implemenation.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=19 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_slave_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_slave_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_slave_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_slave_impSFX for providing both blocking and non-blocking slave implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_slave_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_slave_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_slave_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_slave_impSFX for providing both blocking and non-blocking slave implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=20 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_transport_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_transport_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_transport_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_transport_impSFX for providing the blocking transport implemenation.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_blocking_transport_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_blocking_transport_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_blocking_transport_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_blocking_transport_impSFX for providing the blocking transport implemenation.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=21 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_transport_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_transport_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_transport_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_transport_impSFX for providing the non-blocking transport implemenation.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_nonblocking_transport_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_nonblocking_transport_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_nonblocking_transport_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_nonblocking_transport_impSFX for providing the non-blocking transport implemenation.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=22 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_transport_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_transport_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_transport_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_transport_impSFX for providing both blocking and non-blocking transport implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_transport_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_transport_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_transport_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_transport_impSFX for providing both blocking and non-blocking transport implementations.&nbsp;  <i>SFX</i> is the suffix for the new class type.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=23 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_analysis_imp_decl" href="../../../../src/macros/uvm_tlm_defines.svh">`uvm_analysis_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_analysis_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_analysis_impSFX for providing an analysis implementation.&nbsp; <i>SFX</i> is the suffix for the new class type.&nbsp; The analysis implemenation is the write function.&nbsp; The `uvm_analysis_imp_decl allows for a scoreboard (or other analysis component) to support input from many places.&nbsp; For example:</p><blockquote><pre>`uvm_analysis_imp_decl(_ingress)
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_analysis_imp_decl" href="../../src/macros/uvm_tlm_defines.svh">`uvm_analysis_imp_decl</a></h3><div class=CBody><blockquote><pre>`uvm_analysis_imp_decl(SFX)</pre></blockquote><p>Define the class uvm_analysis_impSFX for providing an analysis implementation.&nbsp; <i>SFX</i> is the suffix for the new class type.&nbsp; The analysis implemenation is the write function.&nbsp; The `uvm_analysis_imp_decl allows for a scoreboard (or other analysis component) to support input from many places.&nbsp; For example:</p><blockquote><pre>`uvm_analysis_imp_decl(_ingress)
 `uvm_analysis_imp_decl(_egress)
 
 class myscoreboard extends uvm_component;

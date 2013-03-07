@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Factory_Component_and_Object_Wrappers" href="../../../../src/base/uvm_registry.svh">Factory Component and Object Wrappers</a></h1><div class=CBody>
+<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Factory_Component_and_Object_Wrappers" href="../../src/base/uvm_registry.svh">Factory Component and Object Wrappers</a></h1><div class=CBody>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Contents</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -40,13 +40,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CGeneric"><div class=CTopic><h3 class=CTitle><a name="Intro" href="../../../../src/base/uvm_registry.svh">Intro</a></h3><div class=CBody><p>This section defines the proxy component and object classes used by the factory.&nbsp; To avoid the overhead of creating an instance of every component and object that get registered, the factory holds lightweight wrappers, or proxies.&nbsp; When a request for a new object is made, the factory calls upon the proxy to create the object it represents.</p></div></div></div>
+<div class="CGeneric"><div class=CTopic><h3 class=CTitle><a name="Intro" href="../../src/base/uvm_registry.svh">Intro</a></h3><div class=CBody><p>This section defines the proxy component and object classes used by the factory.&nbsp; To avoid the overhead of creating an instance of every component and object that get registered, the factory holds lightweight wrappers, or proxies.&nbsp; When a request for a new object is made, the factory calls upon the proxy to create the object it represents.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=2 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_component_registry#(T,Tname)" href="../../../../src/base/uvm_registry.svh">uvm_component_registry #(T,Tname)</a></h2><div class=CBody><p>The uvm_component_registry serves as a lightweight proxy for a component of type <i>T</i> and type name <i>Tname</i>, a string.&nbsp; The proxy enables efficient registration with the <a href="uvm_factory-svh.html#uvm_factory" class=LClass id=link12 onMouseOver="ShowTip(event, 'tt11', 'link12')" onMouseOut="HideTip('tt11')">uvm_factory</a>.&nbsp; Without it, registration would require an instance of the component itself.</p><p>See <a href="../../files2/tlm1-txt.html#Usage" class=LGroup id=link13 onMouseOver="ShowTip(event, 'tt12', 'link13')" onMouseOut="HideTip('tt12')">Usage</a> section below for information on using uvm_component_registry.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_component_registry#(T,Tname)" href="../../src/base/uvm_registry.svh">uvm_component_registry #(T,Tname)</a></h2><div class=CBody><p>The uvm_component_registry serves as a lightweight proxy for a component of type <i>T</i> and type name <i>Tname</i>, a string.&nbsp; The proxy enables efficient registration with the <a href="uvm_factory-svh.html#uvm_factory" class=LClass id=link12 onMouseOver="ShowTip(event, 'tt11', 'link12')" onMouseOut="HideTip('tt11')">uvm_factory</a>.&nbsp; Without it, registration would require an instance of the component itself.</p><p>See <a href="../overviews/tlm1-txt.html#Usage" class=LGroup id=link13 onMouseOver="ShowTip(event, 'tt12', 'link13')" onMouseOut="HideTip('tt12')">Usage</a> section below for information on using uvm_component_registry.</p>
 
 <!--START_ND_SUMMARY index=2-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -115,13 +115,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=3 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).Methods" href="../../../../src/base/uvm_registry.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).Methods" href="../../src/base/uvm_registry.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=4 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).create_component" href="../../../../src/base/uvm_registry.svh">create_component</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).create_component" href="../../src/base/uvm_registry.svh">create_component</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function uvm_component create_component (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -137,7 +137,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=5 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).get_type_name" href="../../../../src/base/uvm_registry.svh">get_type_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).get_type_name" href="../../src/base/uvm_registry.svh">get_type_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function string get_type_name()
   </td></tr></table></blockquote><div class=CBody><p>Returns the value given by the string parameter, <i>Tname</i>.&nbsp; This method overrides the method in <a href="uvm_factory-svh.html#uvm_object_wrapper" class=LClass id=link16 onMouseOver="ShowTip(event, 'tt4', 'link16')" onMouseOut="HideTip('tt4')">uvm_object_wrapper</a>.</p></div></div></div>
 
@@ -145,7 +145,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).get" href="../../../../src/base/uvm_registry.svh">get</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).get" href="../../src/base/uvm_registry.svh">get</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function this_type get()
   </td></tr></table></blockquote><div class=CBody><p>Returns the singleton instance of this type.&nbsp; Type-based factory operation depends on there being a single proxy instance for each registered type.</p></div></div></div>
 
@@ -153,7 +153,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=7 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).create" href="../../../../src/base/uvm_registry.svh">create</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).create" href="../../src/base/uvm_registry.svh">create</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function T create(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -177,7 +177,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=8 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).set_type_override" href="../../../../src/base/uvm_registry.svh">set_type_override</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).set_type_override" href="../../src/base/uvm_registry.svh">set_type_override</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void set_type_override (</td>      <td class=PType nowrap>uvm_object_wrapper&nbsp;</td>
@@ -197,7 +197,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=9 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).set_inst_override" href="../../../../src/base/uvm_registry.svh">set_inst_override</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component_registry#(T,Tname).set_inst_override" href="../../src/base/uvm_registry.svh">set_inst_override</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void set_inst_override(</td>      <td class=PType nowrap>uvm_object_wrapper&nbsp;</td>
@@ -221,7 +221,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=10 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_object_registry#(T,Tname)" href="../../../../src/base/uvm_registry.svh">uvm_object_registry #(T,Tname)</a></h2><div class=CBody><p>The uvm_object_registry serves as a lightweight proxy for an <a href="uvm_object-svh.html#uvm_object" class=LClass id=link27 onMouseOver="ShowTip(event, 'tt3', 'link27')" onMouseOut="HideTip('tt3')">uvm_object</a> of type <i>T</i> and type name <i>Tname</i>, a string.&nbsp; The proxy enables efficient registration with the <a href="uvm_factory-svh.html#uvm_factory" class=LClass id=link28 onMouseOver="ShowTip(event, 'tt11', 'link28')" onMouseOut="HideTip('tt11')">uvm_factory</a>.&nbsp; Without it, registration would require an instance of the object itself.</p><p>See <a href="#uvm_object_registry#(T,Tname).Usage" class=LGroup id=link29 onMouseOver="ShowTip(event, 'tt19', 'link29')" onMouseOut="HideTip('tt19')">Usage</a> section below for information on using uvm_component_registry.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_object_registry#(T,Tname)" href="../../src/base/uvm_registry.svh">uvm_object_registry #(T,Tname)</a></h2><div class=CBody><p>The uvm_object_registry serves as a lightweight proxy for an <a href="uvm_object-svh.html#uvm_object" class=LClass id=link27 onMouseOver="ShowTip(event, 'tt3', 'link27')" onMouseOut="HideTip('tt3')">uvm_object</a> of type <i>T</i> and type name <i>Tname</i>, a string.&nbsp; The proxy enables efficient registration with the <a href="uvm_factory-svh.html#uvm_factory" class=LClass id=link28 onMouseOver="ShowTip(event, 'tt11', 'link28')" onMouseOut="HideTip('tt11')">uvm_factory</a>.&nbsp; Without it, registration would require an instance of the object itself.</p><p>See <a href="#uvm_object_registry#(T,Tname).Usage" class=LGroup id=link29 onMouseOver="ShowTip(event, 'tt19', 'link29')" onMouseOut="HideTip('tt19')">Usage</a> section below for information on using uvm_component_registry.</p>
 
 <!--START_ND_SUMMARY index=10-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -290,7 +290,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=11 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).create_object" href="../../../../src/base/uvm_registry.svh">create_object</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).create_object" href="../../src/base/uvm_registry.svh">create_object</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function uvm_object create_object(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -306,7 +306,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=12 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).get_type_name" href="../../../../src/base/uvm_registry.svh">get_type_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).get_type_name" href="../../src/base/uvm_registry.svh">get_type_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function string get_type_name()
   </td></tr></table></blockquote><div class=CBody><p>Returns the value given by the string parameter, <i>Tname</i>.&nbsp; This method overrides the method in <a href="uvm_factory-svh.html#uvm_object_wrapper" class=LClass id=link33 onMouseOver="ShowTip(event, 'tt4', 'link33')" onMouseOut="HideTip('tt4')">uvm_object_wrapper</a>.</p></div></div></div>
 
@@ -314,7 +314,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=13 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).get" href="../../../../src/base/uvm_registry.svh">get</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).get" href="../../src/base/uvm_registry.svh">get</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function this_type get()
   </td></tr></table></blockquote><div class=CBody><p>Returns the singleton instance of this type.&nbsp; Type-based factory operation depends on there being a single proxy instance for each registered type.</p></div></div></div>
 
@@ -322,7 +322,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=14 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).create" href="../../../../src/base/uvm_registry.svh">create</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).create" href="../../src/base/uvm_registry.svh">create</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function T create (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -346,7 +346,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=15 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).set_type_override" href="../../../../src/base/uvm_registry.svh">set_type_override</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).set_type_override" href="../../src/base/uvm_registry.svh">set_type_override</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void set_type_override (</td>      <td class=PType nowrap>uvm_object_wrapper&nbsp;</td>
@@ -366,7 +366,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=16 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).set_inst_override" href="../../../../src/base/uvm_registry.svh">set_inst_override</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).set_inst_override" href="../../src/base/uvm_registry.svh">set_inst_override</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void set_inst_override(</td>      <td class=PType nowrap>uvm_object_wrapper&nbsp;</td>
@@ -390,7 +390,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=17 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).Usage" href="../../../../src/base/uvm_registry.svh">Usage</a></h3><div class=CBody><p>This section describes usage for the uvm_*_registry classes.</p><p>The wrapper classes are used to register lightweight proxies of objects and components.</p><p>To register a particular component type, you need only typedef a specialization of its proxy class, which is typically done inside the class.</p><p>For example, to register an UVM component of type <i>mycomp</i></p><blockquote><pre>class mycomp extends uvm_component;
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_object_registry#(T,Tname).Usage" href="../../src/base/uvm_registry.svh">Usage</a></h3><div class=CBody><p>This section describes usage for the uvm_*_registry classes.</p><p>The wrapper classes are used to register lightweight proxies of objects and components.</p><p>To register a particular component type, you need only typedef a specialization of its proxy class, which is typically done inside the class.</p><p>For example, to register an UVM component of type <i>mycomp</i></p><blockquote><pre>class mycomp extends uvm_component;
   typedef uvm_component_registry #(mycomp,&quot;mycomp&quot;) type_id;
 endclass</pre></blockquote><p>However, because of differences between simulators, it is necessary to use a macro to ensure vendor interoperability with factory registration.&nbsp; To register an UVM component of type <i>mycomp</i> in a vendor-independent way, you would write instead:</p><blockquote><pre>class mycomp extends uvm_component;
   `uvm_component_utils(mycomp);

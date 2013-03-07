@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="UVM_HDL_Backdoor_Access_support_routines" href="../../../../src/dpi/uvm_hdl.svh">UVM HDL Backdoor Access support routines.</a></h1><div class=CBody><p>These routines provide an interface to the DPI/PLI implementation of backdoor access used by registers.</p><p>If you DON&rsquo;T want to use the DPI HDL API, then compile your SystemVerilog code with the vlog switch</p><blockquote><pre>vlog ... +define+UVM_HDL_NO_DPI ...</pre></blockquote>
+<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="UVM_HDL_Backdoor_Access_support_routines" href="../../src/dpi/uvm_hdl.svh">UVM HDL Backdoor Access support routines.</a></h1><div class=CBody><p>These routines provide an interface to the DPI/PLI implementation of backdoor access used by registers.</p><p>If you DON&rsquo;T want to use the DPI HDL API, then compile your SystemVerilog code with the vlog switch</p><blockquote><pre>vlog ... +define+UVM_HDL_NO_DPI ...</pre></blockquote>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -62,13 +62,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Variables" href="../../../../src/dpi/uvm_hdl.svh">Variables</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Variables" href="../../src/dpi/uvm_hdl.svh">Variables</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=2 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="UVM_HDL_MAX_WIDTH" href="../../../../src/dpi/uvm_hdl.svh">UVM_HDL_MAX_WIDTH</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="UVM_HDL_MAX_WIDTH" href="../../src/dpi/uvm_hdl.svh">UVM_HDL_MAX_WIDTH</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>parameter int UVM_HDL_MAX_WIDTH = `UVM_HDL_MAX_WIDTH
   </td></tr></table></blockquote><div class=CBody><p>Sets the maximum size bit vector for backdoor access.&nbsp; This parameter will be looked up by the DPI-C code using: vpi_handle_by_name( &ldquo;uvm_pkg::UVM_HDL_MAX_WIDTH&rdquo;, 0);</p></div></div></div>
 
@@ -76,13 +76,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=3 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Methods" href="../../../../src/dpi/uvm_hdl.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Methods" href="../../src/dpi/uvm_hdl.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=4 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_check_path" href="../../../../src/dpi/uvm_hdl.svh">uvm_hdl_check_path</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_check_path" href="../../src/dpi/uvm_hdl.svh">uvm_hdl_check_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>import &quot;DPI-C&quot; context function int uvm_hdl_check_path(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -96,7 +96,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=5 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_deposit" href="../../../../src/dpi/uvm_hdl.svh">uvm_hdl_deposit</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_deposit" href="../../src/dpi/uvm_hdl.svh">uvm_hdl_deposit</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>import &quot;DPI-C&quot; context function int uvm_hdl_deposit(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -112,7 +112,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_force" href="../../../../src/dpi/uvm_hdl.svh">uvm_hdl_force</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_force" href="../../src/dpi/uvm_hdl.svh">uvm_hdl_force</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>import &quot;DPI-C&quot; context function int uvm_hdl_force(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -128,7 +128,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=7 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_force_time" href="../../../../src/dpi/uvm_hdl.svh">uvm_hdl_force_time</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_force_time" href="../../src/dpi/uvm_hdl.svh">uvm_hdl_force_time</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>task uvm_hdl_force_time(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -149,7 +149,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=8 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_release_and_read" href="../../../../src/dpi/uvm_hdl.svh">uvm_hdl_release_and_read</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_release_and_read" href="../../src/dpi/uvm_hdl.svh">uvm_hdl_release_and_read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters colspan=4>import &quot;DPI-C&quot; context function int uvm_hdl_release_and_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
@@ -169,7 +169,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=9 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_release" href="../../../../src/dpi/uvm_hdl.svh">uvm_hdl_release</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_release" href="../../src/dpi/uvm_hdl.svh">uvm_hdl_release</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>import &quot;DPI-C&quot; context function int uvm_hdl_release(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -183,7 +183,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=10 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_read" href="../../../../src/dpi/uvm_hdl.svh">uvm_hdl_read()</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_hdl_read" href="../../src/dpi/uvm_hdl.svh">uvm_hdl_read()</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>import &quot;DPI-C&quot; context function int uvm_hdl_read(</td>      <td class=PTypePrefix nowrap></td>

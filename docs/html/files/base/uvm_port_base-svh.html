@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Port_Base_Classes" href="../../../../src/base/uvm_port_base.svh">Port Base Classes</a></h1><div class=CBody>
+<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Port_Base_Classes" href="../../src/base/uvm_port_base.svh">Port Base Classes</a></h1><div class=CBody>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Contents</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -40,7 +40,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_port_component_base" href="../../../../src/base/uvm_port_base.svh">uvm_port_component_base</a></h2><div class=CBody><p>This class defines an interface for obtaining a port&rsquo;s connectivity lists after or during the end_of_elaboration phase.&nbsp;  The sub-class, <a href="#uvm_port_component#(PORT)" class=LClass id=link15 onMouseOver="ShowTip(event, 'tt2', 'link15')" onMouseOut="HideTip('tt2')">uvm_port_component #(PORT)</a>, implements this interface.</p><p>The connectivity lists are returned in the form of handles to objects of this type.&nbsp; This allowing traversal of any port&rsquo;s fan-out and fan-in network through recursive calls to <a href="#uvm_port_component_base.get_connected_to" class=LMethod id=link16 onMouseOver="ShowTip(event, 'tt8', 'link16')" onMouseOut="HideTip('tt8')">get_connected_to</a> and <a href="#uvm_port_component_base.get_provided_to" class=LMethod id=link17 onMouseOver="ShowTip(event, 'tt9', 'link17')" onMouseOut="HideTip('tt9')">get_provided_to</a>.&nbsp; Each port&rsquo;s full name and type name can be retrieved using get_full_name and get_type_name methods inherited from <a href="uvm_component-svh.html#uvm_component" class=LClass id=link18 onMouseOver="ShowTip(event, 'tt7', 'link18')" onMouseOut="HideTip('tt7')">uvm_component</a>.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_port_component_base" href="../../src/base/uvm_port_base.svh">uvm_port_component_base</a></h2><div class=CBody><p>This class defines an interface for obtaining a port&rsquo;s connectivity lists after or during the end_of_elaboration phase.&nbsp;  The sub-class, <a href="#uvm_port_component#(PORT)" class=LClass id=link15 onMouseOver="ShowTip(event, 'tt2', 'link15')" onMouseOut="HideTip('tt2')">uvm_port_component #(PORT)</a>, implements this interface.</p><p>The connectivity lists are returned in the form of handles to objects of this type.&nbsp; This allowing traversal of any port&rsquo;s fan-out and fan-in network through recursive calls to <a href="#uvm_port_component_base.get_connected_to" class=LMethod id=link16 onMouseOver="ShowTip(event, 'tt8', 'link16')" onMouseOut="HideTip('tt8')">get_connected_to</a> and <a href="#uvm_port_component_base.get_provided_to" class=LMethod id=link17 onMouseOver="ShowTip(event, 'tt9', 'link17')" onMouseOut="HideTip('tt9')">get_provided_to</a>.&nbsp; Each port&rsquo;s full name and type name can be retrieved using get_full_name and get_type_name methods inherited from <a href="uvm_component-svh.html#uvm_component" class=LClass id=link18 onMouseOver="ShowTip(event, 'tt7', 'link18')" onMouseOut="HideTip('tt7')">uvm_component</a>.</p>
 
 <!--START_ND_SUMMARY index=1-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -95,13 +95,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=2 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.Methods" href="../../../../src/base/uvm_port_base.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.Methods" href="../../src/base/uvm_port_base.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=3 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.get_connected_to" href="../../../../src/base/uvm_port_base.svh">get_connected_to</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.get_connected_to" href="../../src/base/uvm_port_base.svh">get_connected_to</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>pure virtual function void get_connected_to(</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
@@ -116,7 +116,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=4 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.get_provided_to" href="../../../../src/base/uvm_port_base.svh">get_provided_to</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.get_provided_to" href="../../src/base/uvm_port_base.svh">get_provided_to</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>pure virtual function void get_provided_to(</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
@@ -131,7 +131,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=5 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.is_port" href="../../../../src/base/uvm_port_base.svh">is_port</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.is_port" href="../../src/base/uvm_port_base.svh">is_port</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>pure virtual function bit is_port()
   </td></tr></table></blockquote><div class=CBody></div></div></div>
 
@@ -139,7 +139,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.is_export" href="../../../../src/base/uvm_port_base.svh">is_export</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.is_export" href="../../src/base/uvm_port_base.svh">is_export</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>pure virtual function bit is_export()
   </td></tr></table></blockquote><div class=CBody></div></div></div>
 
@@ -147,7 +147,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=7 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.is_imp" href="../../../../src/base/uvm_port_base.svh">is_imp</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.is_imp" href="../../src/base/uvm_port_base.svh">is_imp</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>pure virtual function bit is_imp()
   </td></tr></table></blockquote><div class=CBody><p>These function determine the type of port.&nbsp; The functions are mutually exclusive; one will return 1 and the other two will return 0.</p></div></div></div>
 
@@ -155,7 +155,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=8 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_port_component#(PORT)" href="../../../../src/base/uvm_port_base.svh">uvm_port_component #(PORT)</a></h2><div class=CBody><p>See description of <a href="#uvm_port_component_base" class=LClass id=link27 onMouseOver="ShowTip(event, 'tt1', 'link27')" onMouseOut="HideTip('tt1')">uvm_port_component_base</a> for information about this class</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_port_component#(PORT)" href="../../src/base/uvm_port_base.svh">uvm_port_component #(PORT)</a></h2><div class=CBody><p>See description of <a href="#uvm_port_component_base" class=LClass id=link27 onMouseOver="ShowTip(event, 'tt1', 'link27')" onMouseOut="HideTip('tt1')">uvm_port_component_base</a> for information about this class</p>
 
 <!--START_ND_SUMMARY index=8-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -209,13 +209,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=9 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component#(PORT).Methods" href="../../../../src/base/uvm_port_base.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component#(PORT).Methods" href="../../src/base/uvm_port_base.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=10 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component#(PORT).get_port" href="../../../../src/base/uvm_port_base.svh">get_port</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component#(PORT).get_port" href="../../src/base/uvm_port_base.svh">get_port</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function PORT get_port()
   </td></tr></table></blockquote><div class=CBody><p>Retrieve the actual port object that this proxy refers to.</p></div></div></div>
 
@@ -223,7 +223,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=11 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_port_base#(IF)" href="../../../../src/base/uvm_port_base.svh">uvm_port_base #(IF)</a></h2><div class=CBody><p>Transaction-level communication between components is handled via its ports, exports, and imps, all of which derive from this class.</p><p>The uvm_port_base extends IF, which is the type of the interface implemented by derived port, export, or implementation.&nbsp; IF is also a type parameter to uvm_port_base.</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>IF</td><td class=CDLDescription>The interface type implemented by the subtype to this base port</td></tr></table><p>The UVM provides a complete set of ports, exports, and imps for the OSCI- standard TLM interfaces.&nbsp; They can be found in the ../src/tlm/ directory.&nbsp; For the TLM interfaces, the IF parameter is always <a href="../tlm1/uvm_tlm_ifs-svh.html#uvm_tlm_if_base#(T1,T2)" class=LClass id=link47 onMouseOver="ShowTip(event, 'tt31', 'link47')" onMouseOut="HideTip('tt31')">uvm_tlm_if_base #(T1,T2)</a>.</p><p>Just before &lt;uvm_component::end_of_elaboration&gt;, an internal <a href="uvm_component-svh.html#uvm_component.resolve_bindings" class=LMethod id=link48 onMouseOver="ShowTip(event, 'tt32', 'link48')" onMouseOut="HideTip('tt32')">uvm_component::resolve_bindings</a> process occurs, after which each port and export holds a list of all imps connected to it via hierarchical connections to other ports and exports.&nbsp; In effect, we are collapsing the port&rsquo;s fanout, which can span several levels up and down the component hierarchy, into a single array held local to the port.&nbsp; Once the list is determined, the port&rsquo;s min and max connection settings can be checked and enforced.</p><p>uvm_port_base possesses the properties of components in that they have a hierarchical instance path and parent.&nbsp; Because SystemVerilog does not support multiple inheritance, uvm_port_base can not extend both the interface it implements and <a href="uvm_component-svh.html#uvm_component" class=LClass id=link49 onMouseOver="ShowTip(event, 'tt7', 'link49')" onMouseOut="HideTip('tt7')">uvm_component</a>.&nbsp; Thus, uvm_port_base contains a local instance of uvm_component, to which it delegates such commands as get_name, get_full_name, and get_parent.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_port_base#(IF)" href="../../src/base/uvm_port_base.svh">uvm_port_base #(IF)</a></h2><div class=CBody><p>Transaction-level communication between components is handled via its ports, exports, and imps, all of which derive from this class.</p><p>The uvm_port_base extends IF, which is the type of the interface implemented by derived port, export, or implementation.&nbsp; IF is also a type parameter to uvm_port_base.</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>IF</td><td class=CDLDescription>The interface type implemented by the subtype to this base port</td></tr></table><p>The UVM provides a complete set of ports, exports, and imps for the OSCI- standard TLM interfaces.&nbsp; They can be found in the ../src/tlm/ directory.&nbsp; For the TLM interfaces, the IF parameter is always <a href="../tlm1/uvm_tlm_ifs-svh.html#uvm_tlm_if_base#(T1,T2)" class=LClass id=link47 onMouseOver="ShowTip(event, 'tt31', 'link47')" onMouseOut="HideTip('tt31')">uvm_tlm_if_base #(T1,T2)</a>.</p><p>Just before &lt;uvm_component::end_of_elaboration&gt;, an internal <a href="uvm_component-svh.html#uvm_component.resolve_bindings" class=LMethod id=link48 onMouseOver="ShowTip(event, 'tt32', 'link48')" onMouseOut="HideTip('tt32')">uvm_component::resolve_bindings</a> process occurs, after which each port and export holds a list of all imps connected to it via hierarchical connections to other ports and exports.&nbsp; In effect, we are collapsing the port&rsquo;s fanout, which can span several levels up and down the component hierarchy, into a single array held local to the port.&nbsp; Once the list is determined, the port&rsquo;s min and max connection settings can be checked and enforced.</p><p>uvm_port_base possesses the properties of components in that they have a hierarchical instance path and parent.&nbsp; Because SystemVerilog does not support multiple inheritance, uvm_port_base can not extend both the interface it implements and <a href="uvm_component-svh.html#uvm_component" class=LClass id=link49 onMouseOver="ShowTip(event, 'tt7', 'link49')" onMouseOut="HideTip('tt7')">uvm_component</a>.&nbsp; Thus, uvm_port_base contains a local instance of uvm_component, to which it delegates such commands as get_name, get_full_name, and get_parent.</p>
 
 <!--START_ND_SUMMARY index=11-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -327,13 +327,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=12 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).Methods" href="../../../../src/base/uvm_port_base.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).Methods" href="../../src/base/uvm_port_base.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=13 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).new" href="../../../../src/base/uvm_port_base.svh">new</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).new" href="../../src/base/uvm_port_base.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -365,7 +365,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=14 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_name" href="../../../../src/base/uvm_port_base.svh">get_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_name" href="../../src/base/uvm_port_base.svh">get_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_name()
   </td></tr></table></blockquote><div class=CBody><p>Returns the leaf name of this port.</p></div></div></div>
 
@@ -373,7 +373,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=15 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_full_name" href="../../../../src/base/uvm_port_base.svh">get_full_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_full_name" href="../../src/base/uvm_port_base.svh">get_full_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function string get_full_name()
   </td></tr></table></blockquote><div class=CBody><p>Returns the full hierarchical name of this port.</p></div></div></div>
 
@@ -381,7 +381,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=16 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_parent" href="../../../../src/base/uvm_port_base.svh">get_parent</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_parent" href="../../src/base/uvm_port_base.svh">get_parent</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_component get_parent()
   </td></tr></table></blockquote><div class=CBody><p>Returns the handle to this port&rsquo;s parent, or null if it has no parent.</p></div></div></div>
 
@@ -389,7 +389,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=17 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_comp" href="../../../../src/base/uvm_port_base.svh">get_comp</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_comp" href="../../src/base/uvm_port_base.svh">get_comp</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_port_component_base get_comp()
   </td></tr></table></blockquote><div class=CBody><p>Returns a handle to the internal proxy component representing this port.</p><p>Ports are considered components.&nbsp; However, they do not inherit <a href="uvm_component-svh.html#uvm_component" class=LClass id=link56 onMouseOver="ShowTip(event, 'tt7', 'link56')" onMouseOut="HideTip('tt7')">uvm_component</a>.&nbsp; Instead, they contain an instance of <a href="#uvm_port_component#(PORT)" class=LClass id=link57 onMouseOver="ShowTip(event, 'tt2', 'link57')" onMouseOut="HideTip('tt2')">uvm_port_component #(PORT)</a> that serves as a proxy to this port.</p></div></div></div>
 
@@ -397,7 +397,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=18 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_type_name" href="../../../../src/base/uvm_port_base.svh">get_type_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_type_name" href="../../src/base/uvm_port_base.svh">get_type_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function string get_type_name()
   </td></tr></table></blockquote><div class=CBody><p>Returns the type name to this port.&nbsp; Derived port classes must implement this method to return the concrete type.&nbsp; Otherwise, only a generic &ldquo;uvm_port&rdquo;, &ldquo;uvm_export&rdquo; or &ldquo;uvm_implementation&rdquo; is returned.</p></div></div></div>
 
@@ -405,19 +405,19 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=19 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).min_size" href="../../../../src/base/uvm_port_base.svh">min_size</a></h3><div class=CBody><p>Returns the mininum number of implementation ports that must be connected to this port by the end_of_elaboration phase.</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).min_size" href="../../src/base/uvm_port_base.svh">min_size</a></h3><div class=CBody><p>Returns the mininum number of implementation ports that must be connected to this port by the end_of_elaboration phase.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=20 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).max_size" href="../../../../src/base/uvm_port_base.svh">max_size</a></h3><div class=CBody><p>Returns the maximum number of implementation ports that must be connected to this port by the end_of_elaboration phase.</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).max_size" href="../../src/base/uvm_port_base.svh">max_size</a></h3><div class=CBody><p>Returns the maximum number of implementation ports that must be connected to this port by the end_of_elaboration phase.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=21 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).is_unbounded" href="../../../../src/base/uvm_port_base.svh">is_unbounded</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).is_unbounded" href="../../src/base/uvm_port_base.svh">is_unbounded</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit is_unbounded ()
   </td></tr></table></blockquote><div class=CBody><p>Returns 1 if this port has no maximum on the number of implementation ports this port can connect to.&nbsp; A port is unbounded when the <i>max_size</i> argument in the constructor is specified as <i>UVM_UNBOUNDED_CONNECTIONS</i>.</p></div></div></div>
 
@@ -425,7 +425,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=22 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).is_port" href="../../../../src/base/uvm_port_base.svh">is_port</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).is_port" href="../../src/base/uvm_port_base.svh">is_port</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit is_port ()
   </td></tr></table></blockquote><div class=CBody></div></div></div>
 
@@ -433,7 +433,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=23 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).is_export" href="../../../../src/base/uvm_port_base.svh">is_export</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).is_export" href="../../src/base/uvm_port_base.svh">is_export</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit is_export ()
   </td></tr></table></blockquote><div class=CBody></div></div></div>
 
@@ -441,7 +441,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=24 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).is_imp" href="../../../../src/base/uvm_port_base.svh">is_imp</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).is_imp" href="../../src/base/uvm_port_base.svh">is_imp</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit is_imp ()
   </td></tr></table></blockquote><div class=CBody><p>Returns 1 if this port is of the type given by the method name, 0 otherwise.</p></div></div></div>
 
@@ -449,7 +449,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=25 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).size" href="../../../../src/base/uvm_port_base.svh">size</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).size" href="../../src/base/uvm_port_base.svh">size</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function int size ()
   </td></tr></table></blockquote><div class=CBody><p>Gets the number of implementation ports connected to this port.&nbsp; The value is not valid before the end_of_elaboration phase, as port connections have not yet been resolved.</p></div></div></div>
 
@@ -457,7 +457,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=26 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).set_default_index" href="../../../../src/base/uvm_port_base.svh">set_default_index</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).set_default_index" href="../../src/base/uvm_port_base.svh">set_default_index</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_default_index (</td>      <td class=PType nowrap>int&nbsp;</td>
@@ -471,7 +471,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=27 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).connect" href="../../../../src/base/uvm_port_base.svh">connect</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).connect" href="../../src/base/uvm_port_base.svh">connect</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void connect (</td>      <td class=PType nowrap>this_type&nbsp;</td>
@@ -485,7 +485,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=28 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).debug_connected_to" href="../../../../src/base/uvm_port_base.svh">debug_connected_to</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).debug_connected_to" href="../../src/base/uvm_port_base.svh">debug_connected_to</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void debug_connected_to (</td>      <td class=PType nowrap>int&nbsp;</td>
@@ -505,7 +505,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=29 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).debug_provided_to" href="../../../../src/base/uvm_port_base.svh">debug_provided_to</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).debug_provided_to" href="../../src/base/uvm_port_base.svh">debug_provided_to</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void debug_provided_to (</td>      <td class=PType nowrap>int&nbsp;</td>
@@ -525,7 +525,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=30 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).resolve_bindings" href="../../../../src/base/uvm_port_base.svh">resolve_bindings</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).resolve_bindings" href="../../src/base/uvm_port_base.svh">resolve_bindings</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function void resolve_bindings()
   </td></tr></table></blockquote><div class=CBody><p>This callback is called just before entering the end_of_elaboration phase.&nbsp; It recurses through each port&rsquo;s fanout to determine all the imp destina- tions.&nbsp; It then checks against the required min and max connections.&nbsp; After resolution, <a href="#uvm_port_base#(IF).size" class=LMethod id=link62 onMouseOver="ShowTip(event, 'tt24', 'link62')" onMouseOut="HideTip('tt24')">size</a> returns a valid value and <a href="#uvm_port_base#(IF).get_if" class=LMethod id=link63 onMouseOver="ShowTip(event, 'tt30', 'link63')" onMouseOut="HideTip('tt30')">get_if</a> can be used to access a particular imp.</p><p>This method is automatically called just before the start of the end_of_elaboration phase.&nbsp; Users should not need to call it directly.</p></div></div></div>
 
@@ -533,7 +533,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=31 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_if" href="../../../../src/base/uvm_port_base.svh">get_if</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_if" href="../../src/base/uvm_port_base.svh">get_if</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_port_base #(</td>      <td class=PParameter nowrap>IF</td>

@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_agent" href="../../../../src/comps/uvm_agent.svh">uvm_agent</a></h1><div class=CBody><p>The uvm_agent virtual class should be used as the base class for the user- defined agents.&nbsp; Deriving from uvm_agent will allow you to distinguish agents from other component types also using its inheritance.&nbsp; Such agents will automatically inherit features that may be added to uvm_agent in the future.</p><p>While an agent&rsquo;s build function, inherited from <a href="../base/uvm_component-svh.html#uvm_component" class=LClass id=link9 onMouseOver="ShowTip(event, 'tt4', 'link9')" onMouseOut="HideTip('tt4')">uvm_component</a>, can be implemented to define any agent topology, an agent typically contains three subcomponents: a driver, sequencer, and monitor.&nbsp; If the agent is active, subtypes should contain all three subcomponents.&nbsp; If the agent is passive, subtypes should contain only the monitor.</p>
+<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_agent" href="../../src/comps/uvm_agent.svh">uvm_agent</a></h1><div class=CBody><p>The uvm_agent virtual class should be used as the base class for the user- defined agents.&nbsp; Deriving from uvm_agent will allow you to distinguish agents from other component types also using its inheritance.&nbsp; Such agents will automatically inherit features that may be added to uvm_agent in the future.</p><p>While an agent&rsquo;s build function, inherited from <a href="../base/uvm_component-svh.html#uvm_component" class=LClass id=link9 onMouseOver="ShowTip(event, 'tt4', 'link9')" onMouseOut="HideTip('tt4')">uvm_component</a>, can be implemented to define any agent topology, an agent typically contains three subcomponents: a driver, sequencer, and monitor.&nbsp; If the agent is active, subtypes should contain all three subcomponents.&nbsp; If the agent is passive, subtypes should contain only the monitor.</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -64,13 +64,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_agent.Methods" href="../../../../src/comps/uvm_agent.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_agent.Methods" href="../../src/comps/uvm_agent.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=2 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_agent.new" href="../../../../src/comps/uvm_agent.svh">new</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_agent.new" href="../../src/comps/uvm_agent.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -86,7 +86,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=3 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_agent.get_is_active" href="../../../../src/comps/uvm_agent.svh">get_is_active</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_agent.get_is_active" href="../../src/comps/uvm_agent.svh">get_is_active</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_active_passive_enum get_is_active()
   </td></tr></table></blockquote><div class=CBody><p>Returns UVM_ACTIVE is the agent is acting as an active agent and UVM_PASSIVE if it is acting as a passive agent.&nbsp; The default implementation is to just return the is_active flag, but the component developer may override this behavior if a more complex algorithm is needed to determine the active/passive nature of the agent.</p></div></div></div>
 

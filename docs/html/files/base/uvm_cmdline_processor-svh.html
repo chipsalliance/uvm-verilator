@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_cmdline_processor" href="../../../../src/base/uvm_cmdline_processor.svh">uvm_cmdline_processor</a></h1><div class=CBody><p>This class provides an interface to the command line arguments that were provided for the given simulation.&nbsp;  The class is intended to be used as a singleton, but that isn&rsquo;t required.&nbsp;  The generation of the data structures which hold the command line argument information happens during construction of the class object.&nbsp;  A global variable called <i>uvm_cmdline_proc</i> is created at initialization time and may be used to access command line information.</p><p>The uvm_cmdline_processor class also provides support for setting various UVM variables from the command line such as components&rsquo; verbosities and configuration settings for integral types and strings.&nbsp;  Each of these capablities is described in the Built-in UVM Aware Command Line Arguments section.</p>
+<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_cmdline_processor" href="../../src/base/uvm_cmdline_processor.svh">uvm_cmdline_processor</a></h1><div class=CBody><p>This class provides an interface to the command line arguments that were provided for the given simulation.&nbsp;  The class is intended to be used as a singleton, but that isn&rsquo;t required.&nbsp;  The generation of the data structures which hold the command line argument information happens during construction of the class object.&nbsp;  A global variable called <i>uvm_cmdline_proc</i> is created at initialization time and may be used to access command line information.</p><p>The uvm_cmdline_processor class also provides support for setting various UVM variables from the command line such as components&rsquo; verbosities and configuration settings for integral types and strings.&nbsp;  Each of these capablities is described in the Built-in UVM Aware Command Line Arguments section.</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -141,13 +141,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Singleton" href="../../../../src/base/uvm_cmdline_processor.svh">Singleton</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Singleton" href="../../src/base/uvm_cmdline_processor.svh">Singleton</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=2 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_inst" href="../../../../src/base/uvm_cmdline_processor.svh">get_inst</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_inst" href="../../src/base/uvm_cmdline_processor.svh">get_inst</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function uvm_cmdline_processor get_inst()
   </td></tr></table></blockquote><div class=CBody><p>Returns the singleton instance of the UVM command line processor.</p></div></div></div>
 
@@ -155,13 +155,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=3 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Basic_Arguments" href="../../../../src/base/uvm_cmdline_processor.svh">Basic Arguments</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Basic_Arguments" href="../../src/base/uvm_cmdline_processor.svh">Basic Arguments</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=4 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_args" href="../../../../src/base/uvm_cmdline_processor.svh">get_args</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_args" href="../../src/base/uvm_cmdline_processor.svh">get_args</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void get_args (</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
@@ -176,7 +176,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=5 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_plusargs" href="../../../../src/base/uvm_cmdline_processor.svh">get_plusargs</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_plusargs" href="../../src/base/uvm_cmdline_processor.svh">get_plusargs</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void get_plusargs (</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
@@ -191,13 +191,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_uvmargs" href="../../../../src/base/uvm_cmdline_processor.svh">get_uvmargs</a></h3><div class=CBody><p>This function returns a queue with all of the uvm arguments that were used to start the simulation.&nbsp; An UVM argument is taken to be any argument that starts with a - or + and uses the keyword UVM (case insensitive) as the first three letters of the argument.</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_uvmargs" href="../../src/base/uvm_cmdline_processor.svh">get_uvmargs</a></h3><div class=CBody><p>This function returns a queue with all of the uvm arguments that were used to start the simulation.&nbsp; An UVM argument is taken to be any argument that starts with a - or + and uses the keyword UVM (case insensitive) as the first three letters of the argument.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=7 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_arg_matches" href="../../../../src/base/uvm_cmdline_processor.svh">get_arg_matches</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_arg_matches" href="../../src/base/uvm_cmdline_processor.svh">get_arg_matches</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function int get_arg_matches (</td>      <td class=PTypePrefix nowrap></td>
@@ -223,13 +223,13 @@ initial begin
 
 
  <!--CONTENT index=8 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Argument_Values" href="../../../../src/base/uvm_cmdline_processor.svh">Argument Values</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Argument_Values" href="../../src/base/uvm_cmdline_processor.svh">Argument Values</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=9 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_arg_value" href="../../../../src/base/uvm_cmdline_processor.svh">get_arg_value</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_arg_value" href="../../src/base/uvm_cmdline_processor.svh">get_arg_value</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function int get_arg_value (</td>      <td class=PTypePrefix nowrap></td>
@@ -247,7 +247,7 @@ initial begin
 
 
  <!--CONTENT index=10 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_arg_values" href="../../../../src/base/uvm_cmdline_processor.svh">get_arg_values</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_arg_values" href="../../src/base/uvm_cmdline_processor.svh">get_arg_values</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function int get_arg_values (</td>      <td class=PTypePrefix nowrap></td>
@@ -267,13 +267,13 @@ initial begin
 
 
  <!--CONTENT index=11 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Tool_information" href="../../../../src/base/uvm_cmdline_processor.svh">Tool information</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Tool_information" href="../../src/base/uvm_cmdline_processor.svh">Tool information</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=12 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_tool_name" href="../../../../src/base/uvm_cmdline_processor.svh">get_tool_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_tool_name" href="../../src/base/uvm_cmdline_processor.svh">get_tool_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_tool_name ()
   </td></tr></table></blockquote><div class=CBody><p>Returns the simulation tool that is executing the simlation.&nbsp; This is a vendor specific string.</p></div></div></div>
 
@@ -281,7 +281,7 @@ initial begin
 
 
  <!--CONTENT index=13 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_tool_version" href="../../../../src/base/uvm_cmdline_processor.svh">get_tool_version</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_tool_version" href="../../src/base/uvm_cmdline_processor.svh">get_tool_version</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_tool_version ()
   </td></tr></table></blockquote><div class=CBody><p>Returns the version of the simulation tool that is executing the simlation.&nbsp; This is a vendor specific string.</p></div></div></div>
 
@@ -289,97 +289,97 @@ initial begin
 
 
  <!--CONTENT index=14 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Command_Line_Debug" href="../../../../src/base/uvm_cmdline_processor.svh">Command Line Debug</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Command_Line_Debug" href="../../src/base/uvm_cmdline_processor.svh">Command Line Debug</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=15 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_DUMP_CMDLINE_ARGS" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_DUMP_CMDLINE_ARGS</a></h3><div class=CBody><p><i>+UVM_DUMP_CMDLINE_ARGS</i> allows the user to dump all command line arguments to the reporting mechanism.&nbsp;  The output in is tree format.</p></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_DUMP_CMDLINE_ARGS" href="../../src/base/uvm_cmdline_processor.svh">+UVM_DUMP_CMDLINE_ARGS</a></h3><div class=CBody><p><i>+UVM_DUMP_CMDLINE_ARGS</i> allows the user to dump all command line arguments to the reporting mechanism.&nbsp;  The output in is tree format.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=16 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Built-in_UVM_Aware_Command_Line_Arguments" href="../../../../src/base/uvm_cmdline_processor.svh">Built-in UVM Aware Command Line Arguments</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.Built-in_UVM_Aware_Command_Line_Arguments" href="../../src/base/uvm_cmdline_processor.svh">Built-in UVM Aware Command Line Arguments</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=17 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_TESTNAME" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_TESTNAME</a></h3><div class=CBody><p><i>+UVM_TESTNAME=&lt;class name&gt;</i> allows the user to specify which uvm_test (or uvm_component) should be created via the factory and cycled through the UVM phases.&nbsp; If multiple of these settings are provided, the first occurrence is used and a warning is issued for subsequent settings.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +UVM_TESTNAME=read_modify_write_test</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_TESTNAME" href="../../src/base/uvm_cmdline_processor.svh">+UVM_TESTNAME</a></h3><div class=CBody><p><i>+UVM_TESTNAME=&lt;class name&gt;</i> allows the user to specify which uvm_test (or uvm_component) should be created via the factory and cycled through the UVM phases.&nbsp; If multiple of these settings are provided, the first occurrence is used and a warning is issued for subsequent settings.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +UVM_TESTNAME=read_modify_write_test</pre></blockquote></div></div></div>
 
 
 
 
  <!--CONTENT index=18 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_VERBOSITY" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_VERBOSITY</a></h3><div class=CBody><p><i>+UVM_VERBOSITY=&lt;verbosity&gt;</i> allows the user to specify the initial verbosity for all components.&nbsp;  If multiple of these settings are provided, the first occurrence is used and a warning is issued for subsequent settings.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +UVM_VERBOSITY=UVM_HIGH</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_VERBOSITY" href="../../src/base/uvm_cmdline_processor.svh">+UVM_VERBOSITY</a></h3><div class=CBody><p><i>+UVM_VERBOSITY=&lt;verbosity&gt;</i> allows the user to specify the initial verbosity for all components.&nbsp;  If multiple of these settings are provided, the first occurrence is used and a warning is issued for subsequent settings.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +UVM_VERBOSITY=UVM_HIGH</pre></blockquote></div></div></div>
 
 
 
 
  <!--CONTENT index=19 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_verbosity" href="../../../../src/base/uvm_cmdline_processor.svh">+uvm_set_verbosity</a></h3><div class=CBody><p><i>+uvm_set_verbosity=&lt;comp&gt;,&lt;id&gt;,&lt;verbosity&gt;,&lt;phase&gt;</i> and <i>+uvm_set_verbosity=&lt;comp&gt;,&lt;id&gt;,&lt;verbosity&gt;,time,&lt;time&gt;</i> allow the users to manipulate the verbosity of specific components at specific phases (and times during the &ldquo;run&rdquo; phases) of the simulation.&nbsp;  The <i>id</i> argument can be either <i><u>ALL</u></i> for all IDs or a specific message id.&nbsp;  Wildcarding is not supported for <i>id</i> due to performance concerns.&nbsp; Settings for non-&rdquo;run&rdquo; phases are executed in order of occurrence on the command line.&nbsp; Settings for &ldquo;run&rdquo; phases (times) are sorted by time and then executed in order of occurrence for settings of the same time.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_verbosity=uvm_test_top.env0.agent1.*,_ALL_,UVM_FULL,time,800</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_verbosity" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_verbosity</a></h3><div class=CBody><p><i>+uvm_set_verbosity=&lt;comp&gt;,&lt;id&gt;,&lt;verbosity&gt;,&lt;phase&gt;</i> and <i>+uvm_set_verbosity=&lt;comp&gt;,&lt;id&gt;,&lt;verbosity&gt;,time,&lt;time&gt;</i> allow the users to manipulate the verbosity of specific components at specific phases (and times during the &ldquo;run&rdquo; phases) of the simulation.&nbsp;  The <i>id</i> argument can be either <i><u>ALL</u></i> for all IDs or a specific message id.&nbsp;  Wildcarding is not supported for <i>id</i> due to performance concerns.&nbsp; Settings for non-&rdquo;run&rdquo; phases are executed in order of occurrence on the command line.&nbsp; Settings for &ldquo;run&rdquo; phases (times) are sorted by time and then executed in order of occurrence for settings of the same time.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_verbosity=uvm_test_top.env0.agent1.*,_ALL_,UVM_FULL,time,800</pre></blockquote></div></div></div>
 
 
 
 
  <!--CONTENT index=20 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_action" href="../../../../src/base/uvm_cmdline_processor.svh">+uvm_set_action</a></h3><div class=CBody><p><i>+uvm_set_action=&lt;comp&gt;,&lt;id&gt;,&lt;severity&gt;,&lt;action&gt;</i> provides the equivalent of various uvm_report_object&rsquo;s set_report_*_action APIs.&nbsp;  The special keyword, <i><u>ALL</u></i>, can be provided for both/either the <i>id</i> and/or <i>severity</i> arguments.&nbsp;  The action can be UVM_NO_ACTION or a | separated list of the other UVM message actions.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_action=uvm_test_top.env0.*,_ALL_,UVM_ERROR,UVM_NO_ACTION</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_action" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_action</a></h3><div class=CBody><p><i>+uvm_set_action=&lt;comp&gt;,&lt;id&gt;,&lt;severity&gt;,&lt;action&gt;</i> provides the equivalent of various uvm_report_object&rsquo;s set_report_*_action APIs.&nbsp;  The special keyword, <i><u>ALL</u></i>, can be provided for both/either the <i>id</i> and/or <i>severity</i> arguments.&nbsp;  The action can be UVM_NO_ACTION or a | separated list of the other UVM message actions.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_action=uvm_test_top.env0.*,_ALL_,UVM_ERROR,UVM_NO_ACTION</pre></blockquote></div></div></div>
 
 
 
 
  <!--CONTENT index=21 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_severity" href="../../../../src/base/uvm_cmdline_processor.svh">+uvm_set_severity</a></h3><div class=CBody><p><i>+uvm_set_severity=&lt;comp&gt;,&lt;id&gt;,&lt;current severity&gt;,&lt;new severity&gt;</i> provides the equivalent of the various uvm_report_object&rsquo;s set_report_*_severity_override APIs.&nbsp; The special keyword, <i><u>ALL</u></i>, can be provided for both/either the <i>id</i> and/or <i>current severity</i> arguments.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_severity=uvm_test_top.env0.*,BAD_CRC,UVM_ERROR,UVM_WARNING</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_severity" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_severity</a></h3><div class=CBody><p><i>+uvm_set_severity=&lt;comp&gt;,&lt;id&gt;,&lt;current severity&gt;,&lt;new severity&gt;</i> provides the equivalent of the various uvm_report_object&rsquo;s set_report_*_severity_override APIs.&nbsp; The special keyword, <i><u>ALL</u></i>, can be provided for both/either the <i>id</i> and/or <i>current severity</i> arguments.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_severity=uvm_test_top.env0.*,BAD_CRC,UVM_ERROR,UVM_WARNING</pre></blockquote></div></div></div>
 
 
 
 
  <!--CONTENT index=22 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_TIMEOUT" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_TIMEOUT</a></h3><div class=CBody><p><i>+UVM_TIMEOUT=&lt;timeout&gt;,&lt;overridable&gt;</i> allows users to change the global timeout of the UVM framework.&nbsp;  The &lt;overridable&gt; argument (&lsquo;YES&rsquo; or &lsquo;NO&rsquo;) specifies whether user code can subsequently change this value.&nbsp;  If set to &lsquo;NO&rsquo; and the user code tries to change the global timeout value, an warning message will be generated.</p><blockquote><pre>&lt;sim command&gt; +UVM_TIMEOUT=200000,NO</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_TIMEOUT" href="../../src/base/uvm_cmdline_processor.svh">+UVM_TIMEOUT</a></h3><div class=CBody><p><i>+UVM_TIMEOUT=&lt;timeout&gt;,&lt;overridable&gt;</i> allows users to change the global timeout of the UVM framework.&nbsp;  The &lt;overridable&gt; argument (&lsquo;YES&rsquo; or &lsquo;NO&rsquo;) specifies whether user code can subsequently change this value.&nbsp;  If set to &lsquo;NO&rsquo; and the user code tries to change the global timeout value, an warning message will be generated.</p><blockquote><pre>&lt;sim command&gt; +UVM_TIMEOUT=200000,NO</pre></blockquote></div></div></div>
 
 
 
 
  <!--CONTENT index=23 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_MAX_QUIT_COUNT" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_MAX_QUIT_COUNT</a></h3><div class=CBody><p><i>+UVM_MAX_QUIT_COUNT=&lt;count&gt;,&lt;overridable&gt;</i> allows users to change max quit count for the report server.&nbsp;  The &lt;overridable&gt; argument (&lsquo;YES&rsquo; or &lsquo;NO&rsquo;) specifies whether user code can subsequently change this value.&nbsp;  If set to &lsquo;NO&rsquo; and the user code tries to change the max quit count value, an warning message will be generated.</p><blockquote><pre>&lt;sim command&gt; +UVM_MAX_QUIT_COUNT=5,NO</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_MAX_QUIT_COUNT" href="../../src/base/uvm_cmdline_processor.svh">+UVM_MAX_QUIT_COUNT</a></h3><div class=CBody><p><i>+UVM_MAX_QUIT_COUNT=&lt;count&gt;,&lt;overridable&gt;</i> allows users to change max quit count for the report server.&nbsp;  The &lt;overridable&gt; argument (&lsquo;YES&rsquo; or &lsquo;NO&rsquo;) specifies whether user code can subsequently change this value.&nbsp;  If set to &lsquo;NO&rsquo; and the user code tries to change the max quit count value, an warning message will be generated.</p><blockquote><pre>&lt;sim command&gt; +UVM_MAX_QUIT_COUNT=5,NO</pre></blockquote></div></div></div>
 
 
 
 
  <!--CONTENT index=24 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_PHASE_TRACE" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_PHASE_TRACE</a></h3><div class=CBody><p><i>+UVM_PHASE_TRACE</i> turns on tracing of phase executions.&nbsp;  Users simply need to put the argument on the command line.</p></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_PHASE_TRACE" href="../../src/base/uvm_cmdline_processor.svh">+UVM_PHASE_TRACE</a></h3><div class=CBody><p><i>+UVM_PHASE_TRACE</i> turns on tracing of phase executions.&nbsp;  Users simply need to put the argument on the command line.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=25 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_OBJECTION_TRACE" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_OBJECTION_TRACE</a></h3><div class=CBody><p><i>+UVM_OBJECTION_TRACE</i> turns on tracing of objection activity.&nbsp;  Users simply need to put the argument on the command line.</p></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_OBJECTION_TRACE" href="../../src/base/uvm_cmdline_processor.svh">+UVM_OBJECTION_TRACE</a></h3><div class=CBody><p><i>+UVM_OBJECTION_TRACE</i> turns on tracing of objection activity.&nbsp;  Users simply need to put the argument on the command line.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=26 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_RESOURCE_DB_TRACE" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_RESOURCE_DB_TRACE</a></h3><div class=CBody><p><i>+UVM_RESOURCE_DB_TRACE</i> turns on tracing of resource DB access.&nbsp; Users simply need to put the argument on the command line.</p></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_RESOURCE_DB_TRACE" href="../../src/base/uvm_cmdline_processor.svh">+UVM_RESOURCE_DB_TRACE</a></h3><div class=CBody><p><i>+UVM_RESOURCE_DB_TRACE</i> turns on tracing of resource DB access.&nbsp; Users simply need to put the argument on the command line.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=27 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_CONFIG_DB_TRACE" href="../../../../src/base/uvm_cmdline_processor.svh">+UVM_CONFIG_DB_TRACE</a></h3><div class=CBody><p><i>+UVM_CONFIG_DB_TRACE</i> turns on tracing of configuration DB access.&nbsp; Users simply need to put the argument on the command line.</p></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+UVM_CONFIG_DB_TRACE" href="../../src/base/uvm_cmdline_processor.svh">+UVM_CONFIG_DB_TRACE</a></h3><div class=CBody><p><i>+UVM_CONFIG_DB_TRACE</i> turns on tracing of configuration DB access.&nbsp; Users simply need to put the argument on the command line.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=28 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_inst_override,+uvm_set_type_override" href="../../../../src/base/uvm_cmdline_processor.svh">+uvm_set_inst_override, +uvm_set_type_override</a></h3><div class=CBody><p><i>+uvm_set_inst_override=&lt;req_type&gt;,&lt;override_type&gt;,&lt;full_inst_path&gt;</i> and <i>+uvm_set_type_override=&lt;req_type&gt;,&lt;override_type&gt;[,&lt;replace&gt;]</i> work like the name based overrides in the factory--factory.set_inst_override_by_name() and factory.set_type_override_by_name().&nbsp; For uvm_set_type_override, the third argument is 0 or 1 (the default is 1 if this argument is left off); this argument specifies whether previous type overrides for the type should be replaced.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_type_override=eth_packet,short_eth_packet</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_inst_override,+uvm_set_type_override" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_inst_override, +uvm_set_type_override</a></h3><div class=CBody><p><i>+uvm_set_inst_override=&lt;req_type&gt;,&lt;override_type&gt;,&lt;full_inst_path&gt;</i> and <i>+uvm_set_type_override=&lt;req_type&gt;,&lt;override_type&gt;[,&lt;replace&gt;]</i> work like the name based overrides in the factory--factory.set_inst_override_by_name() and factory.set_type_override_by_name().&nbsp; For uvm_set_type_override, the third argument is 0 or 1 (the default is 1 if this argument is left off); this argument specifies whether previous type overrides for the type should be replaced.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_type_override=eth_packet,short_eth_packet</pre></blockquote></div></div></div>
 
 
 
 
  <!--CONTENT index=29 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_config_int,+uvm_set_config_string" href="../../../../src/base/uvm_cmdline_processor.svh">+uvm_set_config_int, +uvm_set_config_string</a></h3><div class=CBody><p><i>+uvm_set_config_int=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> and <i>+uvm_set_config_string=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> work like their procedural counterparts: set_config_int() and set_config_string().&nbsp; For the value of int config settings, &lsquo;b (0b), &lsquo;o, &lsquo;d, &lsquo;h (&lsquo;x or 0x) as the first two characters of the value are treated as base specifiers for interpreting the base of the number.&nbsp; Size specifiers are not used since SystemVerilog does not allow size specifiers in string to value conversions.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_config_int=uvm_test_top.soc_env,mode,5</pre></blockquote><p>No equivalent of set_config_object() exists since no way exists to pass an uvm_object into the simulation via the command line.</p></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_config_int,+uvm_set_config_string" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_config_int, +uvm_set_config_string</a></h3><div class=CBody><p><i>+uvm_set_config_int=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> and <i>+uvm_set_config_string=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> work like their procedural counterparts: set_config_int() and set_config_string().&nbsp; For the value of int config settings, &lsquo;b (0b), &lsquo;o, &lsquo;d, &lsquo;h (&lsquo;x or 0x) as the first two characters of the value are treated as base specifiers for interpreting the base of the number.&nbsp; Size specifiers are not used since SystemVerilog does not allow size specifiers in string to value conversions.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_config_int=uvm_test_top.soc_env,mode,5</pre></blockquote><p>No equivalent of set_config_object() exists since no way exists to pass an uvm_object into the simulation via the command line.</p></div></div></div>
 
 </div><!--Content-->
 

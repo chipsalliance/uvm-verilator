@@ -1,7 +1,7 @@
 var indexSectionsWithContent = {
    "General": {
       "Symbols": true,
-      "Numbers": true,
+      "Numbers": false,
       "A": true,
       "B": true,
       "C": true,

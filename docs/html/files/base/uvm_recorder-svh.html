@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_recorder" href="../../../../src/base/uvm_recorder.svh">uvm_recorder</a></h1><div class=CBody><p>The uvm_recorder class provides a policy object for recording <a href="uvm_object-svh.html#uvm_object" class=LClass id=link18 onMouseOver="ShowTip(event, 'tt2', 'link18')" onMouseOut="HideTip('tt2')">uvm_objects</a>.&nbsp; The policies determine how recording should be done.</p><p>A default recorder instance, <a href="uvm_object_globals-svh.html#uvm_default_recorder" class=LVariable id=link19 onMouseOver="ShowTip(event, 'tt16', 'link19')" onMouseOut="HideTip('tt16')">uvm_default_recorder</a>, is used when the <a href="uvm_object-svh.html#uvm_object.record" class=LMethod id=link20 onMouseOver="ShowTip(event, 'tt17', 'link20')" onMouseOut="HideTip('tt17')">uvm_object::record</a> is called without specifying a recorder.</p>
+<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_recorder" href="../../src/base/uvm_recorder.svh">uvm_recorder</a></h1><div class=CBody><p>The uvm_recorder class provides a policy object for recording <a href="uvm_object-svh.html#uvm_object" class=LClass id=link18 onMouseOver="ShowTip(event, 'tt2', 'link18')" onMouseOut="HideTip('tt2')">uvm_objects</a>.&nbsp; The policies determine how recording should be done.</p><p>A default recorder instance, <a href="uvm_object_globals-svh.html#uvm_default_recorder" class=LVariable id=link19 onMouseOver="ShowTip(event, 'tt16', 'link19')" onMouseOut="HideTip('tt16')">uvm_default_recorder</a>, is used when the <a href="uvm_object-svh.html#uvm_object.record" class=LMethod id=link20 onMouseOver="ShowTip(event, 'tt17', 'link20')" onMouseOut="HideTip('tt17')">uvm_object::record</a> is called without specifying a recorder.</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -98,13 +98,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.Variables" href="../../../../src/base/uvm_recorder.svh">Variables</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.Variables" href="../../src/base/uvm_recorder.svh">Variables</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=2 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.tr_handle" href="../../../../src/base/uvm_recorder.svh">tr_handle</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.tr_handle" href="../../src/base/uvm_recorder.svh">tr_handle</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>integer tr_handle = 0
   </td></tr></table></blockquote><div class=CBody><p>This is an integral handle to a transaction object.&nbsp; Its use is vendor specific.</p><p>A handle of 0 indicates there is no active transaction object.</p></div></div></div>
 
@@ -112,7 +112,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=3 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.default_radix" href="../../../../src/base/uvm_recorder.svh">default_radix</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.default_radix" href="../../src/base/uvm_recorder.svh">default_radix</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_radix_enum default_radix = UVM_HEX
   </td></tr></table></blockquote><div class=CBody><p>This is the default radix setting if <a href="#uvm_recorder.record_field" class=LMethod id=link21 onMouseOver="ShowTip(event, 'tt6', 'link21')" onMouseOut="HideTip('tt6')">record_field</a> is called without a radix.</p></div></div></div>
 
@@ -120,7 +120,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=4 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.physical" href="../../../../src/base/uvm_recorder.svh">physical</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.physical" href="../../src/base/uvm_recorder.svh">physical</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>bit physical = 1
   </td></tr></table></blockquote><div class=CBody><p>This bit provides a filtering mechanism for fields.</p><p>The <a href="#uvm_recorder.abstract" class=LVariable id=link22 onMouseOver="ShowTip(event, 'tt8', 'link22')" onMouseOut="HideTip('tt8')">abstract</a> and physical settings allow an object to distinguish between two different classes of fields.</p><p>It is up to you, in the <a href="uvm_object-svh.html#uvm_object.do_record" class=LMethod id=link23 onMouseOver="ShowTip(event, 'tt18', 'link23')" onMouseOut="HideTip('tt18')">uvm_object::do_record</a> method, to test the setting of this field if you want to use the physical trait as a filter.</p></div></div></div>
 
@@ -128,7 +128,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=5 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.abstract" href="../../../../src/base/uvm_recorder.svh">abstract</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.abstract" href="../../src/base/uvm_recorder.svh">abstract</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>bit abstract = 1
   </td></tr></table></blockquote><div class=CBody><p>This bit provides a filtering mechanism for fields.</p><p>The abstract and physical settings allow an object to distinguish between two different classes of fields.</p><p>It is up to you, in the <a href="uvm_object-svh.html#uvm_object.do_record" class=LMethod id=link24 onMouseOver="ShowTip(event, 'tt18', 'link24')" onMouseOut="HideTip('tt18')">uvm_object::do_record</a> method, to test the setting of this field if you want to use the abstract trait as a filter.</p></div></div></div>
 
@@ -136,7 +136,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=6 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.identifier" href="../../../../src/base/uvm_recorder.svh">identifier</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.identifier" href="../../src/base/uvm_recorder.svh">identifier</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>bit identifier = 1
   </td></tr></table></blockquote><div class=CBody><p>This bit is used to specify whether or not an object&rsquo;s reference should be recorded when the object is recorded.</p></div></div></div>
 
@@ -144,7 +144,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=7 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.recursion_policy" href="../../../../src/base/uvm_recorder.svh">recursion_policy</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.recursion_policy" href="../../src/base/uvm_recorder.svh">recursion_policy</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY
   </td></tr></table></blockquote><div class=CBody><p>Sets the recursion policy for recording objects.</p><p>The default policy is deep (which means to recurse an object).</p></div></div></div>
 
@@ -152,19 +152,19 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=8 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.Methods" href="../../../../src/base/uvm_recorder.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.Methods" href="../../src/base/uvm_recorder.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=9 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.get_type_name" href="../../../../src/base/uvm_recorder.svh">get_type_name</a></h3><div class=CBody><p>Returns type name of the recorder.&nbsp; Subtypes must override this method to enable the <a href="../macros/uvm_object_defines-svh.html#`uvm_record_field" class=LMacro id=link25 onMouseOver="ShowTip(event, 'tt19', 'link25')" onMouseOut="HideTip('tt19')">`uvm_record_field</a> macro.</p><blockquote><pre>virtual function string get_type_name()</pre></blockquote></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.get_type_name" href="../../src/base/uvm_recorder.svh">get_type_name</a></h3><div class=CBody><p>Returns type name of the recorder.&nbsp; Subtypes must override this method to enable the <a href="../macros/uvm_object_defines-svh.html#`uvm_record_field" class=LMacro id=link25 onMouseOver="ShowTip(event, 'tt19', 'link25')" onMouseOut="HideTip('tt19')">`uvm_record_field</a> macro.</p><blockquote><pre>virtual function string get_type_name()</pre></blockquote></div></div></div>
 
 
 
 
  <!--CONTENT index=10 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_field" href="../../../../src/base/uvm_recorder.svh">record_field</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_field" href="../../src/base/uvm_recorder.svh">record_field</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void record_field (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -192,7 +192,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=11 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_field_real" href="../../../../src/base/uvm_recorder.svh">record_field_real</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_field_real" href="../../src/base/uvm_recorder.svh">record_field_real</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void record_field_real (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -208,7 +208,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=12 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_object" href="../../../../src/base/uvm_recorder.svh">record_object</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_object" href="../../src/base/uvm_recorder.svh">record_object</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void record_object (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -224,7 +224,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=13 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_string" href="../../../../src/base/uvm_recorder.svh">record_string</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_string" href="../../src/base/uvm_recorder.svh">record_string</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void record_string (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -240,7 +240,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=14 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_time" href="../../../../src/base/uvm_recorder.svh">record_time</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_time" href="../../src/base/uvm_recorder.svh">record_time</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void record_time (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -256,7 +256,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=15 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_generic" href="../../../../src/base/uvm_recorder.svh">record_generic</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_recorder.record_generic" href="../../src/base/uvm_recorder.svh">record_generic</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void record_generic (</td>      <td class=PType nowrap>string&nbsp;</td>

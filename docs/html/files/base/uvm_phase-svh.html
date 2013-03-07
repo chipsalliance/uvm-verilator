@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_phase" href="../../../../src/base/uvm_phase.svh">uvm_phase</a></h1><div class=CBody><p>This base class defines everything about a phase: behavior, state, and context.</p><p>To define behavior, it is extended by UVM or the user to create singleton objects which capture the definition of what the phase does and how it does it.&nbsp; These are then cloned to produce multiple nodes which are hooked up in a graph structure to provide context: which phases follow which, and to hold the state of the phase throughout its lifetime.&nbsp; UVM provides default extensions of this class for the standard runtime phases.&nbsp; VIP Providers can likewise extend this class to define the phase functor for a particular component context as required.</p><p><b>Phase Definition</b></p><p>Singleton instances of those extensions are provided as package variables.&nbsp; These instances define the attributes of the phase (not what state it is in) They are then cloned into schedule nodes which point back to one of these implementations, and calls it&rsquo;s virtual task or function methods on each participating component.&nbsp; It is the base class for phase functors, for both predefined and user-defined phases.&nbsp; Per-component overrides can use a customized imp.</p><p>To create custom phases, do not extend uvm_phase directly: see the three predefined extended classes below which encapsulate behavior for different phase types: task, bottom-up function and top-down function.</p><p>Extend the appropriate one of these to create a uvm_YOURNAME_phase class (or YOURPREFIX_NAME_phase class) for each phase, containing the default implementation of the new phase, which must be a uvm_component-compatible delegate, and which may be a null implementation.&nbsp; Instantiate a singleton instance of that class for your code to use when a phase handle is required.&nbsp; If your custom phase depends on methods that are not in uvm_component, but are within an extended class, then extend the base YOURPREFIX_NAME_phase class with parameterized component class context as required, to create a specialized functor which calls your extended component class methods.&nbsp; This scheme ensures compile-safety for your extended component classes while providing homogeneous base types for APIs and underlying data structures.</p><p><b>Phase Context</b></p><p>A schedule is a coherent group of one or mode phase/state nodes linked together by a graph structure, allowing arbitrary linear/parallel relationships to be specified, and executed by stepping through them in the graph order.&nbsp; Each schedule node points to a phase and holds the execution state of that phase, and has optional links to other nodes for synchronization.</p><p>The main operations are: construct, add phases, and instantiate hierarchically within another schedule.</p><p>Structure is a DAG (Directed Acyclic Graph).&nbsp; Each instance is a node connected to others to form the graph.&nbsp; Hierarchy is overlaid with m_parent.&nbsp; Each node in the graph has zero or more successors, and zero or more predecessors.&nbsp; No nodes are completely isolated from others.&nbsp; Exactly one node has zero predecessors.&nbsp; This is the root node.&nbsp; Also the graph is acyclic, meaning for all nodes in the graph, by following the forward arrows you will never end up back where you started but you will eventually reach a node that has no successors.</p><p><b>Phase State</b></p><p>A given phase may appear multiple times in the complete phase graph, due to the multiple independent domain feature, and the ability for different VIP to customize their own phase schedules perhaps reusing existing phases.&nbsp; Each node instance in the graph maintains its own state of execution.</p><p><b>Phase Handle</b></p><p>Handles of this type uvm_phase are used frequently in the API, both by the user, to access phasing-specific API, and also as a parameter to some APIs.&nbsp; In many cases, the singleton package-global phase handles can be used (eg. connect_ph, run_ph) in APIs.&nbsp; For those APIs that need to look up that phase in the graph, this is done automatically.</p>
+<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_phase" href="../../src/base/uvm_phase.svh">uvm_phase</a></h1><div class=CBody><p>This base class defines everything about a phase: behavior, state, and context.</p><p>To define behavior, it is extended by UVM or the user to create singleton objects which capture the definition of what the phase does and how it does it.&nbsp; These are then cloned to produce multiple nodes which are hooked up in a graph structure to provide context: which phases follow which, and to hold the state of the phase throughout its lifetime.&nbsp; UVM provides default extensions of this class for the standard runtime phases.&nbsp; VIP Providers can likewise extend this class to define the phase functor for a particular component context as required.</p><p><b>Phase Definition</b></p><p>Singleton instances of those extensions are provided as package variables.&nbsp; These instances define the attributes of the phase (not what state it is in) They are then cloned into schedule nodes which point back to one of these implementations, and calls it&rsquo;s virtual task or function methods on each participating component.&nbsp; It is the base class for phase functors, for both predefined and user-defined phases.&nbsp; Per-component overrides can use a customized imp.</p><p>To create custom phases, do not extend uvm_phase directly: see the three predefined extended classes below which encapsulate behavior for different phase types: task, bottom-up function and top-down function.</p><p>Extend the appropriate one of these to create a uvm_YOURNAME_phase class (or YOURPREFIX_NAME_phase class) for each phase, containing the default implementation of the new phase, which must be a uvm_component-compatible delegate, and which may be a null implementation.&nbsp; Instantiate a singleton instance of that class for your code to use when a phase handle is required.&nbsp; If your custom phase depends on methods that are not in uvm_component, but are within an extended class, then extend the base YOURPREFIX_NAME_phase class with parameterized component class context as required, to create a specialized functor which calls your extended component class methods.&nbsp; This scheme ensures compile-safety for your extended component classes while providing homogeneous base types for APIs and underlying data structures.</p><p><b>Phase Context</b></p><p>A schedule is a coherent group of one or mode phase/state nodes linked together by a graph structure, allowing arbitrary linear/parallel relationships to be specified, and executed by stepping through them in the graph order.&nbsp; Each schedule node points to a phase and holds the execution state of that phase, and has optional links to other nodes for synchronization.</p><p>The main operations are: construct, add phases, and instantiate hierarchically within another schedule.</p><p>Structure is a DAG (Directed Acyclic Graph).&nbsp; Each instance is a node connected to others to form the graph.&nbsp; Hierarchy is overlaid with m_parent.&nbsp; Each node in the graph has zero or more successors, and zero or more predecessors.&nbsp; No nodes are completely isolated from others.&nbsp; Exactly one node has zero predecessors.&nbsp; This is the root node.&nbsp; Also the graph is acyclic, meaning for all nodes in the graph, by following the forward arrows you will never end up back where you started but you will eventually reach a node that has no successors.</p><p><b>Phase State</b></p><p>A given phase may appear multiple times in the complete phase graph, due to the multiple independent domain feature, and the ability for different VIP to customize their own phase schedules perhaps reusing existing phases.&nbsp; Each node instance in the graph maintains its own state of execution.</p><p><b>Phase Handle</b></p><p>Handles of this type uvm_phase are used frequently in the API, both by the user, to access phasing-specific API, and also as a parameter to some APIs.&nbsp; In many cases, the singleton package-global phase handles can be used (eg. connect_ph, run_ph) in APIs.&nbsp; For those APIs that need to look up that phase in the graph, this is done automatically.</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -158,13 +158,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.Construction" href="../../../../src/base/uvm_phase.svh">Construction</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.Construction" href="../../src/base/uvm_phase.svh">Construction</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=2 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.new" href="../../../../src/base/uvm_phase.svh">new</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.new" href="../../src/base/uvm_phase.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function new(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -188,7 +188,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=3 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_phase_type" href="../../../../src/base/uvm_phase.svh">get_phase_type</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_phase_type" href="../../src/base/uvm_phase.svh">get_phase_type</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_phase_type get_phase_type()
   </td></tr></table></blockquote><div class=CBody><p>Returns the phase type as defined by <a href="uvm_object_globals-svh.html#uvm_phase_type" class=LType id=link34 onMouseOver="ShowTip(event, 'tt6', 'link34')" onMouseOut="HideTip('tt6')">uvm_phase_type</a></p></div></div></div>
 
@@ -196,13 +196,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=4 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.State" href="../../../../src/base/uvm_phase.svh">State</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.State" href="../../src/base/uvm_phase.svh">State</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=5 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_state" href="../../../../src/base/uvm_phase.svh">get_state</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_state" href="../../src/base/uvm_phase.svh">get_state</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_phase_state get_state()
   </td></tr></table></blockquote><div class=CBody><p>Accessor to return current state of this phase</p></div></div></div>
 
@@ -210,7 +210,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_run_count" href="../../../../src/base/uvm_phase.svh">get_run_count</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_run_count" href="../../src/base/uvm_phase.svh">get_run_count</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function int get_run_count()
   </td></tr></table></blockquote><div class=CBody><p>Accessor to return the integer number of times this phase has executed</p></div></div></div>
 
@@ -218,7 +218,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=7 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.find_by_name" href="../../../../src/base/uvm_phase.svh">find_by_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.find_by_name" href="../../src/base/uvm_phase.svh">find_by_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_phase find_by_name(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -238,7 +238,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=8 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.find" href="../../../../src/base/uvm_phase.svh">find</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.find" href="../../src/base/uvm_phase.svh">find</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_phase find(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
@@ -258,7 +258,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=9 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.is" href="../../../../src/base/uvm_phase.svh">is</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.is" href="../../src/base/uvm_phase.svh">is</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function bit is(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
@@ -272,7 +272,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=10 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.is_before" href="../../../../src/base/uvm_phase.svh">is_before</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.is_before" href="../../src/base/uvm_phase.svh">is_before</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function bit is_before(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
@@ -286,7 +286,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=11 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.is_after" href="../../../../src/base/uvm_phase.svh">is_after</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.is_after" href="../../src/base/uvm_phase.svh">is_after</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function bit is_after(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
@@ -300,13 +300,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=12 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.Callbacks" href="../../../../src/base/uvm_phase.svh">Callbacks</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.Callbacks" href="../../src/base/uvm_phase.svh">Callbacks</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=13 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.exec_func" href="../../../../src/base/uvm_phase.svh">exec_func</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.exec_func" href="../../src/base/uvm_phase.svh">exec_func</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void exec_func(</td>      <td class=PType nowrap>uvm_component&nbsp;</td>
@@ -322,7 +322,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=14 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.exec_task" href="../../../../src/base/uvm_phase.svh">exec_task</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.exec_task" href="../../src/base/uvm_phase.svh">exec_task</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual task exec_task(</td>      <td class=PType nowrap>uvm_component&nbsp;</td>
@@ -338,13 +338,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=15 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.Schedule" href="../../../../src/base/uvm_phase.svh">Schedule</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.Schedule" href="../../src/base/uvm_phase.svh">Schedule</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=16 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.add" href="../../../../src/base/uvm_phase.svh">add</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.add" href="../../src/base/uvm_phase.svh">add</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void add(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
@@ -372,7 +372,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=17 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_parent" href="../../../../src/base/uvm_phase.svh">get_parent</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_parent" href="../../src/base/uvm_phase.svh">get_parent</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_phase get_parent()
   </td></tr></table></blockquote><div class=CBody><p>Returns the parent schedule node, if any, for hierarchical graph traversal</p></div></div></div>
 
@@ -380,7 +380,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=18 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_full_name" href="../../../../src/base/uvm_phase.svh">get_full_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_full_name" href="../../src/base/uvm_phase.svh">get_full_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function string get_full_name()
   </td></tr></table></blockquote><div class=CBody><p>Returns the full path from the enclosing domain down to this node.&nbsp; The singleton IMP phases have no hierarchy.</p></div></div></div>
 
@@ -388,7 +388,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=19 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_schedule" href="../../../../src/base/uvm_phase.svh">get_schedule</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_schedule" href="../../src/base/uvm_phase.svh">get_schedule</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_phase get_schedule(</td>      <td class=PType nowrap>bit&nbsp;</td>
@@ -403,7 +403,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=20 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_schedule_name" href="../../../../src/base/uvm_phase.svh">get_schedule_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_schedule_name" href="../../src/base/uvm_phase.svh">get_schedule_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function string get_schedule_name(</td>      <td class=PType nowrap>bit&nbsp;</td>
@@ -418,7 +418,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=21 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_domain" href="../../../../src/base/uvm_phase.svh">get_domain</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_domain" href="../../src/base/uvm_phase.svh">get_domain</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_domain get_domain()
   </td></tr></table></blockquote><div class=CBody><p>Returns the enclosing domain</p></div></div></div>
 
@@ -426,7 +426,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=22 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_imp" href="../../../../src/base/uvm_phase.svh">get_imp</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_imp" href="../../src/base/uvm_phase.svh">get_imp</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_phase get_imp()
   </td></tr></table></blockquote><div class=CBody><p>Returns the phase implementation for this this node.&nbsp; Returns null if this phase type is not a UVM_PHASE_LEAF_NODE.</p></div></div></div>
 
@@ -434,7 +434,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=23 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_domain_name" href="../../../../src/base/uvm_phase.svh">get_domain_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_domain_name" href="../../src/base/uvm_phase.svh">get_domain_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_domain_name()
   </td></tr></table></blockquote><div class=CBody><p>Returns the domain name associated with this phase node</p></div></div></div>
 
@@ -442,13 +442,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=24 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.Synchronization" href="../../../../src/base/uvm_phase.svh">Synchronization</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.Synchronization" href="../../src/base/uvm_phase.svh">Synchronization</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=25 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_objection" href="../../../../src/base/uvm_phase.svh">get_objection</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_objection" href="../../src/base/uvm_phase.svh">get_objection</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_objection get_objection()
   </td></tr></table></blockquote><div class=CBody><p>Return the <a href="uvm_objection-svh.html#uvm_objection" class=LClass id=link35 onMouseOver="ShowTip(event, 'tt25', 'link35')" onMouseOut="HideTip('tt25')">uvm_objection</a> that gates the termination of the phase.</p></div></div></div>
 
@@ -456,7 +456,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=26 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.raise_objection" href="../../../../src/base/uvm_phase.svh">raise_objection</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.raise_objection" href="../../src/base/uvm_phase.svh">raise_objection</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void raise_objection (</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
@@ -485,7 +485,7 @@ end
 
 
  <!--CONTENT index=27 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.drop_objection" href="../../../../src/base/uvm_phase.svh">drop_objection</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.drop_objection" href="../../src/base/uvm_phase.svh">drop_objection</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function void drop_objection (</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
@@ -509,7 +509,7 @@ end
 
 
  <!--CONTENT index=28 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.sync_and_unsync" href="../../../../src/base/uvm_phase.svh">sync and unsync</a></h3><div class=CBody><p>Add soft sync relationships between nodes</p><h4 class=CHeading>Summary of usage</h4><blockquote><pre>my_phase.sync(.target(domain)
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.sync_and_unsync" href="../../src/base/uvm_phase.svh">sync and unsync</a></h3><div class=CBody><p>Add soft sync relationships between nodes</p><h4 class=CHeading>Summary of usage</h4><blockquote><pre>my_phase.sync(.target(domain)
              [,.phase(phase)[,.with_phase(phase)]]);
 my_phase.unsync(.target(domain)
                [,.phase(phase)[,.with_phase(phase)]]);</pre></blockquote><p>Components in different schedule domains can be phased independently or in sync with each other.&nbsp; An API is provided to specify synchronization rules between any two domains.&nbsp; Synchronization can be done at any of three levels:</p><ul><li>the domain&rsquo;s whole phase schedule can be synchronized</li><li>a phase can be specified, to sync that phase with a matching counterpart</li><li>or a more detailed arbitrary synchronization between any two phases</li></ul><p>Each kind of synchronization causes the same underlying data structures to be managed.&nbsp; Like other APIs, we use the parameter dot-notation to set optional parameters.</p><p>When a domain is synced with another domain, all of the matching phases in the two domains get a &lsquo;with&rsquo; relationship between them.&nbsp; Likewise, if a domain is unsynched, all of the matching phases that have a &lsquo;with&rsquo; relationship have the dependency removed.&nbsp; It is possible to sync two domains and then just remove a single phase from the dependency relationship by unsyncing just the one phase.</p></div></div></div>
@@ -518,7 +518,7 @@ my_phase.unsync(.target(domain)
 
 
  <!--CONTENT index=29 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.sync" href="../../../../src/base/uvm_phase.svh">sync</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.sync" href="../../src/base/uvm_phase.svh">sync</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void sync(</td>      <td class=PType nowrap>uvm_domain&nbsp;</td>
@@ -542,7 +542,7 @@ my_phase.unsync(.target(domain)
 
 
  <!--CONTENT index=30 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.unsync" href="../../../../src/base/uvm_phase.svh">unsync</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.unsync" href="../../src/base/uvm_phase.svh">unsync</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void unsync(</td>      <td class=PType nowrap>uvm_domain&nbsp;</td>
@@ -566,7 +566,7 @@ my_phase.unsync(.target(domain)
 
 
  <!--CONTENT index=31 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.wait_for_state" href="../../../../src/base/uvm_phase.svh">wait_for_state</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.wait_for_state" href="../../src/base/uvm_phase.svh">wait_for_state</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>task wait_for_state(</td>      <td class=PType nowrap>uvm_phase_state&nbsp;</td>
@@ -586,13 +586,13 @@ my_phase.unsync(.target(domain)
 
 
  <!--CONTENT index=32 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.Jumping" href="../../../../src/base/uvm_phase.svh">Jumping</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.Jumping" href="../../src/base/uvm_phase.svh">Jumping</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=33 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.jump" href="../../../../src/base/uvm_phase.svh">jump</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.jump" href="../../src/base/uvm_phase.svh">jump</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void jump(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
@@ -606,7 +606,7 @@ my_phase.unsync(.target(domain)
 
 
  <!--CONTENT index=34 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.jump_all" href="../../../../src/base/uvm_phase.svh">jump_all</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.jump_all" href="../../src/base/uvm_phase.svh">jump_all</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void jump_all(</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
@@ -620,7 +620,7 @@ my_phase.unsync(.target(domain)
 
 
  <!--CONTENT index=35 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_jump_target" href="../../../../src/base/uvm_phase.svh">get_jump_target</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_phase.get_jump_target" href="../../src/base/uvm_phase.svh">get_jump_target</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_phase get_jump_target()
   </td></tr></table></blockquote><div class=CBody><p>Return handle to the target phase of the current jump, or null if no jump is in progress.&nbsp; Valid for use during the phase_ended() callback</p></div></div></div>
 

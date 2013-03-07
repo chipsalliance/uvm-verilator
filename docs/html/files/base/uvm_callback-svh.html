@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Callbacks_Classes" href="../../../../src/base/uvm_callback.svh">Callbacks Classes</a></h1><div class=CBody><p>This section defines the classes used for callback registration, management, and user-defined callbacks.</p>
+<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Callbacks_Classes" href="../../src/base/uvm_callback.svh">Callbacks Classes</a></h1><div class=CBody><p>This section defines the classes used for callback registration, management, and user-defined callbacks.</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Contents</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -40,7 +40,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_callbacks#(T,CB)" href="../../../../src/base/uvm_callback.svh">uvm_callbacks #(T,CB)</a></h2><div class=CBody><p>The <i>uvm_callbacks</i> class provides a base class for implementing callbacks, which are typically used to modify or augment component behavior without changing the component class.&nbsp; To work effectively, the developer of the component class defines a set of &ldquo;hook&rdquo; methods that enable users to customize certain behaviors of the component in a manner that is controlled by the component developer.&nbsp; The integrity of the component&rsquo;s overall behavior is intact, while still allowing certain customizable actions by the user.</p><p>To enable compile-time type-safety, the class is parameterized on both the user-defined callback interface implementation as well as the object type associated with the callback.&nbsp; The object type-callback type pair are associated together using the <a href="../macros/uvm_callback_defines-svh.html#`uvm_register_cb" class=LMacro >`uvm_register_cb</a> macro to define a valid pairing; valid pairings are checked when a user attempts to add a callback to an object.</p><p>To provide the most flexibility for end-user customization and reuse, it is recommended that the component developer also define a corresponding set of virtual method hooks in the component itself.&nbsp; This affords users the ability to customize via inheritance/factory overrides as well as callback object registration.&nbsp; The implementation of each virtual method would provide the default traversal algorithm for the particular callback being called.&nbsp; Being virtual, users can define subtypes that override the default algorithm, perform tasks before and/or after calling super.&lt;method&gt; to execute any registered callbacks, or to not call the base implementation, effectively disabling that particalar hook.&nbsp; A demonstration of this methodology is provided in an example included in the kit.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_callbacks#(T,CB)" href="../../src/base/uvm_callback.svh">uvm_callbacks #(T,CB)</a></h2><div class=CBody><p>The <i>uvm_callbacks</i> class provides a base class for implementing callbacks, which are typically used to modify or augment component behavior without changing the component class.&nbsp; To work effectively, the developer of the component class defines a set of &ldquo;hook&rdquo; methods that enable users to customize certain behaviors of the component in a manner that is controlled by the component developer.&nbsp; The integrity of the component&rsquo;s overall behavior is intact, while still allowing certain customizable actions by the user.</p><p>To enable compile-time type-safety, the class is parameterized on both the user-defined callback interface implementation as well as the object type associated with the callback.&nbsp; The object type-callback type pair are associated together using the <a href="../macros/uvm_callback_defines-svh.html#`uvm_register_cb" class=LMacro >`uvm_register_cb</a> macro to define a valid pairing; valid pairings are checked when a user attempts to add a callback to an object.</p><p>To provide the most flexibility for end-user customization and reuse, it is recommended that the component developer also define a corresponding set of virtual method hooks in the component itself.&nbsp; This affords users the ability to customize via inheritance/factory overrides as well as callback object registration.&nbsp; The implementation of each virtual method would provide the default traversal algorithm for the particular callback being called.&nbsp; Being virtual, users can define subtypes that override the default algorithm, perform tasks before and/or after calling super.&lt;method&gt; to execute any registered callbacks, or to not call the base implementation, effectively disabling that particalar hook.&nbsp; A demonstration of this methodology is provided in an example included in the kit.</p>
 
 <!--START_ND_SUMMARY index=1-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -130,25 +130,25 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=2 -->
-<div class="CParameter"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).T" href="../../../../src/base/uvm_callback.svh">T</a></h3><div class=CBody><p>This type parameter specifies the base object type with which the <a href="#uvm_callbacks#(T,CB).CB" class=LParameter id=link15 onMouseOver="ShowTip(event, 'tt4', 'link15')" onMouseOut="HideTip('tt4')">CB</a> callback objects will be registered.&nbsp; This object must be a derivative of <i>uvm_object</i>.</p></div></div></div>
+<div class="CParameter"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).T" href="../../src/base/uvm_callback.svh">T</a></h3><div class=CBody><p>This type parameter specifies the base object type with which the <a href="#uvm_callbacks#(T,CB).CB" class=LParameter id=link15 onMouseOver="ShowTip(event, 'tt4', 'link15')" onMouseOut="HideTip('tt4')">CB</a> callback objects will be registered.&nbsp; This object must be a derivative of <i>uvm_object</i>.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=3 -->
-<div class="CParameter"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).CB" href="../../../../src/base/uvm_callback.svh">CB</a></h3><div class=CBody><p>This type parameter specifies the base callback type that will be managed by this callback class.&nbsp; The callback type is typically a interface class, which defines one or more virtual method prototypes that users can override in subtypes.&nbsp; This type must be a derivative of <a href="#uvm_callback" class=LClass id=link16 onMouseOver="ShowTip(event, 'tt3', 'link16')" onMouseOut="HideTip('tt3')">uvm_callback</a>.</p></div></div></div>
+<div class="CParameter"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).CB" href="../../src/base/uvm_callback.svh">CB</a></h3><div class=CBody><p>This type parameter specifies the base callback type that will be managed by this callback class.&nbsp; The callback type is typically a interface class, which defines one or more virtual method prototypes that users can override in subtypes.&nbsp; This type must be a derivative of <a href="#uvm_callback" class=LClass id=link16 onMouseOver="ShowTip(event, 'tt3', 'link16')" onMouseOut="HideTip('tt3')">uvm_callback</a>.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=4 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).Add/delete_inteface" href="../../../../src/base/uvm_callback.svh">Add/<span class=HB> </span>delete inteface</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).Add/delete_inteface" href="../../src/base/uvm_callback.svh">Add/<span class=HB> </span>delete inteface</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=5 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).add" href="../../../../src/base/uvm_callback.svh">add</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).add" href="../../src/base/uvm_callback.svh">add</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void add(</td>      <td class=PType nowrap>T&nbsp;</td>
@@ -173,7 +173,7 @@ uvm_callbacks#(my_comp, my_callback)::add(comp_a,cb);</pre></blockquote></div></
 
 
  <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).add_by_name" href="../../../../src/base/uvm_callback.svh">add_by_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).add_by_name" href="../../src/base/uvm_callback.svh">add_by_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void add_by_name(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -201,7 +201,7 @@ uvm_callbacks#(my_comp, my_callback)::add(comp_a,cb);</pre></blockquote></div></
 
 
  <!--CONTENT index=7 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).delete" href="../../../../src/base/uvm_callback.svh">delete</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).delete" href="../../src/base/uvm_callback.svh">delete</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void delete(</td>      <td class=PType nowrap>T&nbsp;</td>
@@ -218,7 +218,7 @@ uvm_callbacks#(my_comp, my_callback)::delete(comp_a,cb);</pre></blockquote></div
 
 
  <!--CONTENT index=8 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).delete_by_name" href="../../../../src/base/uvm_callback.svh">delete_by_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).delete_by_name" href="../../src/base/uvm_callback.svh">delete_by_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void delete_by_name(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -236,13 +236,13 @@ uvm_callbacks#(my_comp, my_callback)::delete(comp_a,cb);</pre></blockquote></div
 
 
  <!--CONTENT index=9 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).Iterator_Interface" href="../../../../src/base/uvm_callback.svh">Iterator Interface</a></h3><div class=CBody><p>This set of functions provide an iterator interface for callback queues.&nbsp; A facade class, <a href="#uvm_callback_iter" class=LClass id=link21 onMouseOver="ShowTip(event, 'tt2', 'link21')" onMouseOut="HideTip('tt2')">uvm_callback_iter</a> is also available, and is the generally preferred way to iterate over callback queues.</p></div></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).Iterator_Interface" href="../../src/base/uvm_callback.svh">Iterator Interface</a></h3><div class=CBody><p>This set of functions provide an iterator interface for callback queues.&nbsp; A facade class, <a href="#uvm_callback_iter" class=LClass id=link21 onMouseOver="ShowTip(event, 'tt2', 'link21')" onMouseOut="HideTip('tt2')">uvm_callback_iter</a> is also available, and is the generally preferred way to iterate over callback queues.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=10 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).get_first" href="../../../../src/base/uvm_callback.svh">get_first</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).get_first" href="../../src/base/uvm_callback.svh">get_first</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function CB get_first (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
@@ -260,7 +260,7 @@ uvm_callbacks#(my_comp, my_callback)::delete(comp_a,cb);</pre></blockquote></div
 
 
  <!--CONTENT index=11 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).get_last" href="../../../../src/base/uvm_callback.svh">get_last</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).get_last" href="../../src/base/uvm_callback.svh">get_last</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function CB get_last (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
@@ -278,7 +278,7 @@ uvm_callbacks#(my_comp, my_callback)::delete(comp_a,cb);</pre></blockquote></div
 
 
  <!--CONTENT index=12 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).get_next" href="../../../../src/base/uvm_callback.svh">get_next</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).get_next" href="../../src/base/uvm_callback.svh">get_next</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function CB get_next (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
@@ -296,7 +296,7 @@ uvm_callbacks#(my_comp, my_callback)::delete(comp_a,cb);</pre></blockquote></div
 
 
  <!--CONTENT index=13 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).get_prev" href="../../../../src/base/uvm_callback.svh">get_prev</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).get_prev" href="../../src/base/uvm_callback.svh">get_prev</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function CB get_prev (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
@@ -314,13 +314,13 @@ uvm_callbacks#(my_comp, my_callback)::delete(comp_a,cb);</pre></blockquote></div
 
 
  <!--CONTENT index=14 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).Debug" href="../../../../src/base/uvm_callback.svh">Debug</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).Debug" href="../../src/base/uvm_callback.svh">Debug</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=15 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).display" href="../../../../src/base/uvm_callback.svh">display</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callbacks#(T,CB).display" href="../../src/base/uvm_callback.svh">display</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>static function void display(</td>      <td class=PType nowrap>T&nbsp;</td>
@@ -336,7 +336,7 @@ uvm_callbacks#(my_comp, my_callback)::delete(comp_a,cb);</pre></blockquote></div
 
 
  <!--CONTENT index=16 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_callback_iter" href="../../../../src/base/uvm_callback.svh">uvm_callback_iter</a></h2><div class=CBody><p>The <i>uvm_callback_iter</i> class is an iterator class for iterating over callback queues of a specific callback type.&nbsp; The typical usage of the class is:</p><blockquote><pre>uvm_callback_iter#(mycomp,mycb) iter = new(this);
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_callback_iter" href="../../src/base/uvm_callback.svh">uvm_callback_iter</a></h2><div class=CBody><p>The <i>uvm_callback_iter</i> class is an iterator class for iterating over callback queues of a specific callback type.&nbsp; The typical usage of the class is:</p><blockquote><pre>uvm_callback_iter#(mycomp,mycb) iter = new(this);
 for(mycb cb = iter.first(); cb != null; cb = iter.next())
    cb.dosomething();</pre></blockquote><p>The callback iteration macros, <a href="../macros/uvm_callback_defines-svh.html#`uvm_do_callbacks" class=LMacro >`uvm_do_callbacks</a> and <a href="../macros/uvm_callback_defines-svh.html#`uvm_do_callbacks_exit_on" class=LMacro >`uvm_do_callbacks_exit_on</a> provide a simple method for iterating callbacks and executing the callback methods.</p>
 
@@ -391,13 +391,13 @@ for(mycb cb = iter.first(); cb != null; cb = iter.next())
 
 
  <!--CONTENT index=17 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.Methods" href="../../../../src/base/uvm_callback.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.Methods" href="../../src/base/uvm_callback.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=18 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.new" href="../../../../src/base/uvm_callback.svh">new</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.new" href="../../src/base/uvm_callback.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function new(</td>      <td class=PType nowrap>T&nbsp;</td>
@@ -411,7 +411,7 @@ for(mycb cb = iter.first(); cb != null; cb = iter.next())
 
 
  <!--CONTENT index=19 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.first" href="../../../../src/base/uvm_callback.svh">first</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.first" href="../../src/base/uvm_callback.svh">first</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function CB first()
   </td></tr></table></blockquote><div class=CBody><p>Returns the first valid (enabled) callback of the callback type (or a derivative) that is in the queue of the context object.&nbsp; If the queue is empty then null is returned.</p></div></div></div>
 
@@ -419,7 +419,7 @@ for(mycb cb = iter.first(); cb != null; cb = iter.next())
 
 
  <!--CONTENT index=20 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.last" href="../../../../src/base/uvm_callback.svh">last</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.last" href="../../src/base/uvm_callback.svh">last</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function CB last()
   </td></tr></table></blockquote><div class=CBody><p>Returns the last valid (enabled) callback of the callback type (or a derivative) that is in the queue of the context object.&nbsp; If the queue is empty then null is returned.</p></div></div></div>
 
@@ -427,7 +427,7 @@ for(mycb cb = iter.first(); cb != null; cb = iter.next())
 
 
  <!--CONTENT index=21 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.next" href="../../../../src/base/uvm_callback.svh">next</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.next" href="../../src/base/uvm_callback.svh">next</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function CB next()
   </td></tr></table></blockquote><div class=CBody><p>Returns the next valid (enabled) callback of the callback type (or a derivative) that is in the queue of the context object.&nbsp; If there are no more valid callbacks in the queue, then null is returned.</p></div></div></div>
 
@@ -435,7 +435,7 @@ for(mycb cb = iter.first(); cb != null; cb = iter.next())
 
 
  <!--CONTENT index=22 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.prev" href="../../../../src/base/uvm_callback.svh">prev</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.prev" href="../../src/base/uvm_callback.svh">prev</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function CB prev()
   </td></tr></table></blockquote><div class=CBody><p>Returns the previous valid (enabled) callback of the callback type (or a derivative) that is in the queue of the context object.&nbsp; If there are no more valid callbacks in the queue, then null is returned.</p></div></div></div>
 
@@ -443,7 +443,7 @@ for(mycb cb = iter.first(); cb != null; cb = iter.next())
 
 
  <!--CONTENT index=23 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.get_cb" href="../../../../src/base/uvm_callback.svh">get_cb</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback_iter.get_cb" href="../../src/base/uvm_callback.svh">get_cb</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function CB get_cb()
   </td></tr></table></blockquote><div class=CBody><p>Returns the last callback accessed via a first() or next() call.</p></div></div></div>
 
@@ -451,7 +451,7 @@ for(mycb cb = iter.first(); cb != null; cb = iter.next())
 
 
  <!--CONTENT index=24 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_callback" href="../../../../src/base/uvm_callback.svh">uvm_callback</a></h2><div class=CBody><p>The <i>uvm_callback</i> class is the base class for user-defined callback classes.&nbsp; Typically, the component developer defines an application-specific callback class that extends from this class.&nbsp; In it, he defines one or more virtual methods, called a <i>callback interface</i>, that represent the hooks available for user override.</p><p>Methods intended for optional override should not be declared <i>pure.</i>&nbsp; Usually, all the callback methods are defined with empty implementations so users have the option of overriding any or all of them.</p><p>The prototypes for each hook method are completely application specific with no restrictions.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_callback" href="../../src/base/uvm_callback.svh">uvm_callback</a></h2><div class=CBody><p>The <i>uvm_callback</i> class is the base class for user-defined callback classes.&nbsp; Typically, the component developer defines an application-specific callback class that extends from this class.&nbsp; In it, he defines one or more virtual methods, called a <i>callback interface</i>, that represent the hooks available for user override.</p><p>Methods intended for optional override should not be declared <i>pure.</i>&nbsp; Usually, all the callback methods are defined with empty implementations so users have the option of overriding any or all of them.</p><p>The prototypes for each hook method are completely application specific with no restrictions.</p>
 
 <!--START_ND_SUMMARY index=24-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -501,13 +501,13 @@ for(mycb cb = iter.first(); cb != null; cb = iter.next())
 
 
  <!--CONTENT index=25 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_callback.Methods" href="../../../../src/base/uvm_callback.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_callback.Methods" href="../../src/base/uvm_callback.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=26 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback.new" href="../../../../src/base/uvm_callback.svh">new</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback.new" href="../../src/base/uvm_callback.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function new(</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -523,7 +523,7 @@ for(mycb cb = iter.first(); cb != null; cb = iter.next())
 
 
  <!--CONTENT index=27 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback.callback_mode" href="../../../../src/base/uvm_callback.svh">callback_mode</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback.callback_mode" href="../../src/base/uvm_callback.svh">callback_mode</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function bit callback_mode(</td>      <td class=PType nowrap>int&nbsp;</td>
@@ -539,7 +539,7 @@ for(mycb cb = iter.first(); cb != null; cb = iter.next())
 
 
  <!--CONTENT index=28 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback.is_enabled" href="../../../../src/base/uvm_callback.svh">is_enabled</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback.is_enabled" href="../../src/base/uvm_callback.svh">is_enabled</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit is_enabled()
   </td></tr></table></blockquote><div class=CBody><p>Returns 1 if the callback is enabled, 0 otherwise.</p></div></div></div>
 
@@ -547,7 +547,7 @@ for(mycb cb = iter.first(); cb != null; cb = iter.next())
 
 
  <!--CONTENT index=29 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback.get_type_name" href="../../../../src/base/uvm_callback.svh">get_type_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_callback.get_type_name" href="../../src/base/uvm_callback.svh">get_type_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function string get_type_name()
   </td></tr></table></blockquote><div class=CBody><p>Returns the type name of this callback object.</p></div></div></div>
 

@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="UVM_Factory" href="../../../../src/base/uvm_factory.svh">UVM Factory</a></h1><div class=CBody><p>This page covers the classes that define the UVM factory facility.</p>
+<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="UVM_Factory" href="../../src/base/uvm_factory.svh">UVM Factory</a></h1><div class=CBody><p>This page covers the classes that define the UVM factory facility.</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Contents</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -37,7 +37,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_factory" href="../../../../src/base/uvm_factory.svh">uvm_factory</a></h2><div class=CBody><p>As the name implies, uvm_factory is used to manufacture (create) UVM objects and components.&nbsp; Only one instance of the factory is present in a given simulation (termed a singleton).&nbsp; Object and component types are registered with the factory using lightweight proxies to the actual objects and components being created.&nbsp; The <a href="uvm_registry-svh.html#uvm_object_registry#(T,Tname)" class=LClass id=link19 onMouseOver="ShowTip(event, 'tt18', 'link19')" onMouseOut="HideTip('tt18')">uvm_object_registry #(T,Tname)</a> and <a href="uvm_registry-svh.html#uvm_component_registry#(T,Tname)" class=LClass id=link20 onMouseOver="ShowTip(event, 'tt19', 'link20')" onMouseOut="HideTip('tt19')">uvm_component_registry #(T,Tname)</a> class are used to proxy <a href="uvm_object-svh.html#uvm_object" class=LClass id=link21 onMouseOver="ShowTip(event, 'tt20', 'link21')" onMouseOut="HideTip('tt20')">uvm_objects</a> and <a href="uvm_component-svh.html#uvm_component" class=LClass id=link22 onMouseOver="ShowTip(event, 'tt21', 'link22')" onMouseOut="HideTip('tt21')">uvm_components</a>.</p><p>The factory provides both name-based and type-based interfaces.</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>type-based</td><td class=CDLDescription>The type-based interface is far less prone to errors in usage.&nbsp; When errors do occur, they are caught at compile-time.</td></tr><tr><td class=CDLEntry>name-based</td><td class=CDLDescription>The name-based interface is dominated by string arguments that can be misspelled and provided in the wrong order.&nbsp; Errors in name-based requests might only be caught at the time of the call, if at all.&nbsp; Further, the name-based interface is not portable across simulators when used with parameterized classes.</td></tr></table><p>See <a href="#uvm_factory.Usage" class=LGroup id=link23 onMouseOver="ShowTip(event, 'tt22', 'link23')" onMouseOut="HideTip('tt22')">Usage</a> section for details on configuring and using the factory.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_factory" href="../../src/base/uvm_factory.svh">uvm_factory</a></h2><div class=CBody><p>As the name implies, uvm_factory is used to manufacture (create) UVM objects and components.&nbsp; Only one instance of the factory is present in a given simulation (termed a singleton).&nbsp; Object and component types are registered with the factory using lightweight proxies to the actual objects and components being created.&nbsp; The <a href="uvm_registry-svh.html#uvm_object_registry#(T,Tname)" class=LClass id=link19 onMouseOver="ShowTip(event, 'tt18', 'link19')" onMouseOut="HideTip('tt18')">uvm_object_registry #(T,Tname)</a> and <a href="uvm_registry-svh.html#uvm_component_registry#(T,Tname)" class=LClass id=link20 onMouseOver="ShowTip(event, 'tt19', 'link20')" onMouseOut="HideTip('tt19')">uvm_component_registry #(T,Tname)</a> class are used to proxy <a href="uvm_object-svh.html#uvm_object" class=LClass id=link21 onMouseOver="ShowTip(event, 'tt20', 'link21')" onMouseOut="HideTip('tt20')">uvm_objects</a> and <a href="uvm_component-svh.html#uvm_component" class=LClass id=link22 onMouseOver="ShowTip(event, 'tt21', 'link22')" onMouseOut="HideTip('tt21')">uvm_components</a>.</p><p>The factory provides both name-based and type-based interfaces.</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>type-based</td><td class=CDLDescription>The type-based interface is far less prone to errors in usage.&nbsp; When errors do occur, they are caught at compile-time.</td></tr><tr><td class=CDLEntry>name-based</td><td class=CDLDescription>The name-based interface is dominated by string arguments that can be misspelled and provided in the wrong order.&nbsp; Errors in name-based requests might only be caught at the time of the call, if at all.&nbsp; Further, the name-based interface is not portable across simulators when used with parameterized classes.</td></tr></table><p>See <a href="#uvm_factory.Usage" class=LGroup id=link23 onMouseOver="ShowTip(event, 'tt22', 'link23')" onMouseOut="HideTip('tt22')">Usage</a> section for details on configuring and using the factory.</p>
 
 <!--START_ND_SUMMARY index=1-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -117,7 +117,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=2 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.get" href="../../../../src/base/uvm_factory.svh">get()</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.get" href="../../src/base/uvm_factory.svh">get()</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function uvm_factory get()
   </td></tr></table></blockquote><div class=CBody><p>Get the factory singleton</p></div></div></div>
 
@@ -125,13 +125,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=3 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.Registering_Types" href="../../../../src/base/uvm_factory.svh">Registering Types</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.Registering_Types" href="../../src/base/uvm_factory.svh">Registering Types</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=4 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.register" href="../../../../src/base/uvm_factory.svh">register</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.register" href="../../src/base/uvm_factory.svh">register</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void register (</td>      <td class=PType nowrap>uvm_object_wrapper&nbsp;</td>
@@ -145,13 +145,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=5 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.TypeInstance_Overrides" href="../../../../src/base/uvm_factory.svh">Type &amp; Instance Overrides</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.TypeInstance_Overrides" href="../../src/base/uvm_factory.svh">Type &amp; Instance Overrides</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.set_inst_override_by_type" href="../../../../src/base/uvm_factory.svh">set_inst_override_by_type</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.set_inst_override_by_type" href="../../src/base/uvm_factory.svh">set_inst_override_by_type</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_inst_override_by_type (</td>      <td class=PType nowrap>uvm_object_wrapper&nbsp;</td>
@@ -169,7 +169,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=7 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.set_inst_override_by_name" href="../../../../src/base/uvm_factory.svh">set_inst_override_by_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.set_inst_override_by_name" href="../../src/base/uvm_factory.svh">set_inst_override_by_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_inst_override_by_name (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -187,7 +187,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=8 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.set_type_override_by_type" href="../../../../src/base/uvm_factory.svh">set_type_override_by_type</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.set_type_override_by_type" href="../../src/base/uvm_factory.svh">set_type_override_by_type</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_type_override_by_type (</td>      <td class=PType nowrap>uvm_object_wrapper&nbsp;</td>
@@ -211,7 +211,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=9 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.set_type_override_by_name" href="../../../../src/base/uvm_factory.svh">set_type_override_by_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.set_type_override_by_name" href="../../src/base/uvm_factory.svh">set_type_override_by_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_type_override_by_name (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -235,13 +235,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=10 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.Creation" href="../../../../src/base/uvm_factory.svh">Creation</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.Creation" href="../../src/base/uvm_factory.svh">Creation</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=11 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.create_object_by_type" href="../../../../src/base/uvm_factory.svh">create_object_by_type</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.create_object_by_type" href="../../src/base/uvm_factory.svh">create_object_by_type</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_object create_object_by_type (</td>      <td class=PType nowrap>uvm_object_wrapper&nbsp;</td>
@@ -265,7 +265,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=12 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.create_component_by_type" href="../../../../src/base/uvm_factory.svh">create_component_by_type</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.create_component_by_type" href="../../src/base/uvm_factory.svh">create_component_by_type</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters colspan=5>function uvm_component create_component_by_type (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_object_wrapper&nbsp;</td>
@@ -295,7 +295,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=13 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.create_object_by_name" href="../../../../src/base/uvm_factory.svh">create_object_by_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.create_object_by_name" href="../../src/base/uvm_factory.svh">create_object_by_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_object create_object_by_name (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -319,7 +319,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=14 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.create_component_by_name" href="../../../../src/base/uvm_factory.svh">create_component_by_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.create_component_by_name" href="../../src/base/uvm_factory.svh">create_component_by_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_component create_component_by_name (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -347,13 +347,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=15 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.Debug" href="../../../../src/base/uvm_factory.svh">Debug</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.Debug" href="../../src/base/uvm_factory.svh">Debug</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=16 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.debug_create_by_type" href="../../../../src/base/uvm_factory.svh">debug_create_by_type</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.debug_create_by_type" href="../../src/base/uvm_factory.svh">debug_create_by_type</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void debug_create_by_type (</td>      <td class=PType nowrap>uvm_object_wrapper&nbsp;</td>
@@ -377,7 +377,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=17 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.debug_create_by_name" href="../../../../src/base/uvm_factory.svh">debug_create_by_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.debug_create_by_name" href="../../src/base/uvm_factory.svh">debug_create_by_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void debug_create_by_name (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -401,7 +401,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=18 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.find_override_by_type" href="../../../../src/base/uvm_factory.svh">find_override_by_type</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.find_override_by_type" href="../../src/base/uvm_factory.svh">find_override_by_type</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters colspan=3>function uvm_object_wrapper find_override_by_type (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_object_wrapper&nbsp;</td>
@@ -419,7 +419,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=19 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.find_override_by_name" href="../../../../src/base/uvm_factory.svh">find_override_by_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.find_override_by_name" href="../../src/base/uvm_factory.svh">find_override_by_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function uvm_object_wrapper find_override_by_name (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -435,7 +435,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=20 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.print" href="../../../../src/base/uvm_factory.svh">print</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.print" href="../../src/base/uvm_factory.svh">print</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void print (</td>      <td class=PType nowrap>int&nbsp;</td>
@@ -451,7 +451,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=21 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.Usage" href="../../../../src/base/uvm_factory.svh">Usage</a></h3><div class=CBody><p>Using the factory involves three basic operations</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>1</td><td class=CDLDescription>Registering objects and components types with the factory</td></tr><tr><td class=CDLEntry>2</td><td class=CDLDescription>Designing components to use the factory to create objects or components</td></tr><tr><td class=CDLEntry>3</td><td class=CDLDescription>Configuring the factory with type and instance overrides, both within and outside components</td></tr></table><p>We&rsquo;ll briefly cover each of these steps here.&nbsp; More reference information can be found at <a href="../macros/uvm_object_defines-svh.html#Utility_Macros" class=LGroup id=link29 onMouseOver="ShowTip(event, 'tt24', 'link29')" onMouseOut="HideTip('tt24')">Utility Macros</a>, <a href="uvm_registry-svh.html#uvm_component_registry#(T,Tname)" class=LClass id=link30 onMouseOver="ShowTip(event, 'tt19', 'link30')" onMouseOut="HideTip('tt19')">uvm_component_registry #(T,Tname)</a>, <a href="uvm_registry-svh.html#uvm_object_registry#(T,Tname)" class=LClass id=link31 onMouseOver="ShowTip(event, 'tt18', 'link31')" onMouseOut="HideTip('tt18')">uvm_object_registry #(T,Tname)</a>, <a href="uvm_component-svh.html#uvm_component" class=LClass id=link32 onMouseOver="ShowTip(event, 'tt21', 'link32')" onMouseOut="HideTip('tt21')">uvm_component</a>.</p><h4 class=CHeading>1 -- Registering objects and component types with the factory</h4><p>When defining <a href="uvm_object-svh.html#uvm_object" class=LClass id=link33 onMouseOver="ShowTip(event, 'tt20', 'link33')" onMouseOut="HideTip('tt20')">uvm_object</a> and <a href="uvm_component-svh.html#uvm_component" class=LClass id=link34 onMouseOver="ShowTip(event, 'tt21', 'link34')" onMouseOut="HideTip('tt21')">uvm_component</a>-based classes, simply invoke the appropriate macro.&nbsp; Use of macros are required to ensure portability across different vendors&rsquo; simulators.</p><p>Objects that are not parameterized are declared as</p><blockquote><pre>class packet extends uvm_object;
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_factory.Usage" href="../../src/base/uvm_factory.svh">Usage</a></h3><div class=CBody><p>Using the factory involves three basic operations</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>1</td><td class=CDLDescription>Registering objects and components types with the factory</td></tr><tr><td class=CDLEntry>2</td><td class=CDLDescription>Designing components to use the factory to create objects or components</td></tr><tr><td class=CDLEntry>3</td><td class=CDLDescription>Configuring the factory with type and instance overrides, both within and outside components</td></tr></table><p>We&rsquo;ll briefly cover each of these steps here.&nbsp; More reference information can be found at <a href="../macros/uvm_object_defines-svh.html#Utility_Macros" class=LGroup id=link29 onMouseOver="ShowTip(event, 'tt24', 'link29')" onMouseOut="HideTip('tt24')">Utility Macros</a>, <a href="uvm_registry-svh.html#uvm_component_registry#(T,Tname)" class=LClass id=link30 onMouseOver="ShowTip(event, 'tt19', 'link30')" onMouseOut="HideTip('tt19')">uvm_component_registry #(T,Tname)</a>, <a href="uvm_registry-svh.html#uvm_object_registry#(T,Tname)" class=LClass id=link31 onMouseOver="ShowTip(event, 'tt18', 'link31')" onMouseOut="HideTip('tt18')">uvm_object_registry #(T,Tname)</a>, <a href="uvm_component-svh.html#uvm_component" class=LClass id=link32 onMouseOver="ShowTip(event, 'tt21', 'link32')" onMouseOut="HideTip('tt21')">uvm_component</a>.</p><h4 class=CHeading>1 -- Registering objects and component types with the factory</h4><p>When defining <a href="uvm_object-svh.html#uvm_object" class=LClass id=link33 onMouseOver="ShowTip(event, 'tt20', 'link33')" onMouseOut="HideTip('tt20')">uvm_object</a> and <a href="uvm_component-svh.html#uvm_component" class=LClass id=link34 onMouseOver="ShowTip(event, 'tt21', 'link34')" onMouseOut="HideTip('tt21')">uvm_component</a>-based classes, simply invoke the appropriate macro.&nbsp; Use of macros are required to ensure portability across different vendors&rsquo; simulators.</p><p>Objects that are not parameterized are declared as</p><blockquote><pre>class packet extends uvm_object;
   `uvm_object_utils(packet)
 endclass
 
@@ -645,7 +645,7 @@ endmodule</pre></blockquote><p>When the above example is run, the resulting topo
 
 
  <!--CONTENT index=22 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_object_wrapper" href="../../../../src/base/uvm_factory.svh">uvm_object_wrapper</a></h2><div class=CBody><p>The uvm_object_wrapper provides an abstract interface for creating object and component proxies.&nbsp; Instances of these lightweight proxies, representing every <a href="uvm_object-svh.html#uvm_object" class=LClass id=link48 onMouseOver="ShowTip(event, 'tt20', 'link48')" onMouseOut="HideTip('tt20')">uvm_object</a>-based and <a href="uvm_component-svh.html#uvm_component" class=LClass id=link49 onMouseOver="ShowTip(event, 'tt21', 'link49')" onMouseOut="HideTip('tt21')">uvm_component</a>-based object available in the test environment, are registered with the <a href="#uvm_factory" class=LClass id=link50 onMouseOver="ShowTip(event, 'tt1', 'link50')" onMouseOut="HideTip('tt1')">uvm_factory</a>.&nbsp; When the factory is called upon to create an object or component, it finds and delegates the request to the appropriate proxy.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_object_wrapper" href="../../src/base/uvm_factory.svh">uvm_object_wrapper</a></h2><div class=CBody><p>The uvm_object_wrapper provides an abstract interface for creating object and component proxies.&nbsp; Instances of these lightweight proxies, representing every <a href="uvm_object-svh.html#uvm_object" class=LClass id=link48 onMouseOver="ShowTip(event, 'tt20', 'link48')" onMouseOut="HideTip('tt20')">uvm_object</a>-based and <a href="uvm_component-svh.html#uvm_component" class=LClass id=link49 onMouseOver="ShowTip(event, 'tt21', 'link49')" onMouseOut="HideTip('tt21')">uvm_component</a>-based object available in the test environment, are registered with the <a href="#uvm_factory" class=LClass id=link50 onMouseOver="ShowTip(event, 'tt1', 'link50')" onMouseOut="HideTip('tt1')">uvm_factory</a>.&nbsp; When the factory is called upon to create an object or component, it finds and delegates the request to the appropriate proxy.</p>
 
 <!--START_ND_SUMMARY index=22-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -677,13 +677,13 @@ endmodule</pre></blockquote><p>When the above example is run, the resulting topo
 
 
  <!--CONTENT index=23 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_object_wrapper.Methods" href="../../../../src/base/uvm_factory.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_object_wrapper.Methods" href="../../src/base/uvm_factory.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=24 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_wrapper.create_object" href="../../../../src/base/uvm_factory.svh">create_object</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_wrapper.create_object" href="../../src/base/uvm_factory.svh">create_object</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function uvm_object create_object (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -699,7 +699,7 @@ endmodule</pre></blockquote><p>When the above example is run, the resulting topo
 
 
  <!--CONTENT index=25 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_wrapper.create_component" href="../../../../src/base/uvm_factory.svh">create_component</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_wrapper.create_component" href="../../src/base/uvm_factory.svh">create_component</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>virtual function uvm_component create_component (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -715,7 +715,7 @@ endmodule</pre></blockquote><p>When the above example is run, the resulting topo
 
 
  <!--CONTENT index=26 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_wrapper.get_type_name" href="../../../../src/base/uvm_factory.svh">get_type_name</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_wrapper.get_type_name" href="../../src/base/uvm_factory.svh">get_type_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>pure virtual function string get_type_name()
   </td></tr></table></blockquote><div class=CBody><p>Derived classes implement this method to return the type name of the object created by <a href="#uvm_object_wrapper.create_component" class=LMethod id=link53 onMouseOver="ShowTip(event, 'tt29', 'link53')" onMouseOut="HideTip('tt29')">create_component</a> or <a href="#uvm_object_wrapper.create_object" class=LMethod id=link54 onMouseOver="ShowTip(event, 'tt28', 'link54')" onMouseOut="HideTip('tt28')">create_object</a>.&nbsp; The factory uses this name when matching against the requested type in name-based lookups.</p></div></div></div>
 

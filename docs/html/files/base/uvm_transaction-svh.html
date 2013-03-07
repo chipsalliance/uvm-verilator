@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_transaction" href="../../../../src/base/uvm_transaction.svh">uvm_transaction</a></h1><div class=CBody><p>The uvm_transaction class is the root base class for UVM transactions.&nbsp; Inheriting all the methods of uvm_object, uvm_transaction adds a timing and recording interface.</p><p>This class provides timestamp properties, notification events, and transaction recording support.</p><p>Use of this class as a base for user-defined transactions is deprecated.&nbsp; Its subtype, <a href="../seq/uvm_sequence_item-svh.html#uvm_sequence_item" class=LClass id=link42 onMouseOver="ShowTip(event, 'tt31', 'link42')" onMouseOut="HideTip('tt31')">uvm_sequence_item</a>, shall be used as the base class for all user-defined transaction types.</p><p>The intended use of this API is via a &lt;uvm_driver&gt; to call <a href="uvm_component-svh.html#uvm_component.accept_tr" class=LMethod id=link43 onMouseOver="ShowTip(event, 'tt32', 'link43')" onMouseOut="HideTip('tt32')">uvm_component::accept_tr</a>, <a href="uvm_component-svh.html#uvm_component.begin_tr" class=LMethod id=link44 onMouseOver="ShowTip(event, 'tt28', 'link44')" onMouseOut="HideTip('tt28')">uvm_component::begin_tr</a>, and <a href="uvm_component-svh.html#uvm_component.end_tr" class=LMethod id=link45 onMouseOver="ShowTip(event, 'tt30', 'link45')" onMouseOut="HideTip('tt30')">uvm_component::end_tr</a> during the course of sequence item execution.&nbsp; These methods in the component base class will call into the corresponding methods in this class to set the corresponding timestamps (accept_time, begin_time, and end_tr), trigger the corresponding event (<a href="#uvm_transaction.begin_event" class=LVariable id=link46 onMouseOver="ShowTip(event, 'tt26', 'link46')" onMouseOut="HideTip('tt26')">begin_event</a> and <a href="#uvm_transaction.end_event" class=LVariable id=link47 onMouseOver="ShowTip(event, 'tt29', 'link47')" onMouseOut="HideTip('tt29')">end_event</a>, and, if enabled, record the transaction contents to a vendor-specific transaction database.</p><p>Note that start_item/finish_item (or `uvm_do* macro) executed from a <a href="../seq/uvm_sequence-svh.html#uvm_sequence#(REQ,RSP)" class=LClass id=link48 onMouseOver="ShowTip(event, 'tt33', 'link48')" onMouseOut="HideTip('tt33')">uvm_sequence #(REQ,RSP)</a> will automatically trigger the begin_event and end_events via calls to begin_tr and end_tr.&nbsp; While convenient, it is generally the responsibility of drivers to mark a transaction&rsquo;s progress during execution.&nbsp;  To allow the driver to control sequence item timestamps, events, and recording, you must add +define+UVM_DISABLE_AUTO_ITEM_RECORDING when compiling the UVM package.&nbsp; Alternatively, users may use the transaction&rsquo;s event pool, <a href="#uvm_transaction.events" class=LVariable id=link49 onMouseOver="ShowTip(event, 'tt25', 'link49')" onMouseOut="HideTip('tt25')">events</a>, to define custom events for the driver to trigger and the sequences to wait on.&nbsp; Any in-between events such as marking the begining of the address and data phases of transaction execution could be implemented via the <a href="#uvm_transaction.events" class=LVariable id=link50 onMouseOver="ShowTip(event, 'tt25', 'link50')" onMouseOut="HideTip('tt25')">events</a> pool.</p><p>In pipelined protocols, the driver may release a sequence (return from finish_item() or it&rsquo;s `uvm_do macro) before the item has been completed.&nbsp; If the driver uses the begin_tr/end_tr API in uvm_component, the sequence can wait on the item&rsquo;s <a href="#uvm_transaction.end_event" class=LVariable id=link51 onMouseOver="ShowTip(event, 'tt29', 'link51')" onMouseOut="HideTip('tt29')">end_event</a> to block until the item was fully executed, as in the following example.</p><blockquote><pre>task uvm_execute(item, ...);
+<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_transaction" href="../../src/base/uvm_transaction.svh">uvm_transaction</a></h1><div class=CBody><p>The uvm_transaction class is the root base class for UVM transactions.&nbsp; Inheriting all the methods of uvm_object, uvm_transaction adds a timing and recording interface.</p><p>This class provides timestamp properties, notification events, and transaction recording support.</p><p>Use of this class as a base for user-defined transactions is deprecated.&nbsp; Its subtype, <a href="../seq/uvm_sequence_item-svh.html#uvm_sequence_item" class=LClass id=link42 onMouseOver="ShowTip(event, 'tt31', 'link42')" onMouseOut="HideTip('tt31')">uvm_sequence_item</a>, shall be used as the base class for all user-defined transaction types.</p><p>The intended use of this API is via a &lt;uvm_driver&gt; to call <a href="uvm_component-svh.html#uvm_component.accept_tr" class=LMethod id=link43 onMouseOver="ShowTip(event, 'tt32', 'link43')" onMouseOut="HideTip('tt32')">uvm_component::accept_tr</a>, <a href="uvm_component-svh.html#uvm_component.begin_tr" class=LMethod id=link44 onMouseOver="ShowTip(event, 'tt28', 'link44')" onMouseOut="HideTip('tt28')">uvm_component::begin_tr</a>, and <a href="uvm_component-svh.html#uvm_component.end_tr" class=LMethod id=link45 onMouseOver="ShowTip(event, 'tt30', 'link45')" onMouseOut="HideTip('tt30')">uvm_component::end_tr</a> during the course of sequence item execution.&nbsp; These methods in the component base class will call into the corresponding methods in this class to set the corresponding timestamps (accept_time, begin_time, and end_tr), trigger the corresponding event (<a href="#uvm_transaction.begin_event" class=LVariable id=link46 onMouseOver="ShowTip(event, 'tt26', 'link46')" onMouseOut="HideTip('tt26')">begin_event</a> and <a href="#uvm_transaction.end_event" class=LVariable id=link47 onMouseOver="ShowTip(event, 'tt29', 'link47')" onMouseOut="HideTip('tt29')">end_event</a>, and, if enabled, record the transaction contents to a vendor-specific transaction database.</p><p>Note that start_item/finish_item (or `uvm_do* macro) executed from a <a href="../seq/uvm_sequence-svh.html#uvm_sequence#(REQ,RSP)" class=LClass id=link48 onMouseOver="ShowTip(event, 'tt33', 'link48')" onMouseOut="HideTip('tt33')">uvm_sequence #(REQ,RSP)</a> will automatically trigger the begin_event and end_events via calls to begin_tr and end_tr.&nbsp; While convenient, it is generally the responsibility of drivers to mark a transaction&rsquo;s progress during execution.&nbsp;  To allow the driver to control sequence item timestamps, events, and recording, you must add +define+UVM_DISABLE_AUTO_ITEM_RECORDING when compiling the UVM package.&nbsp; Alternatively, users may use the transaction&rsquo;s event pool, <a href="#uvm_transaction.events" class=LVariable id=link49 onMouseOver="ShowTip(event, 'tt25', 'link49')" onMouseOut="HideTip('tt25')">events</a>, to define custom events for the driver to trigger and the sequences to wait on.&nbsp; Any in-between events such as marking the begining of the address and data phases of transaction execution could be implemented via the <a href="#uvm_transaction.events" class=LVariable id=link50 onMouseOver="ShowTip(event, 'tt25', 'link50')" onMouseOut="HideTip('tt25')">events</a> pool.</p><p>In pipelined protocols, the driver may release a sequence (return from finish_item() or it&rsquo;s `uvm_do macro) before the item has been completed.&nbsp; If the driver uses the begin_tr/end_tr API in uvm_component, the sequence can wait on the item&rsquo;s <a href="#uvm_transaction.end_event" class=LVariable id=link51 onMouseOver="ShowTip(event, 'tt29', 'link51')" onMouseOut="HideTip('tt29')">end_event</a> to block until the item was fully executed, as in the following example.</p><blockquote><pre>task uvm_execute(item, ...);
     // can use the `uvm_do macros as well
     start_item(item);
     item.randomize();
@@ -174,13 +174,13 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=1 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.Methods" href="../../../../src/base/uvm_transaction.svh">Methods</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.Methods" href="../../src/base/uvm_transaction.svh">Methods</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=2 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.new" href="../../../../src/base/uvm_transaction.svh">new</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.new" href="../../src/base/uvm_transaction.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -200,7 +200,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=3 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.accept_tr" href="../../../../src/base/uvm_transaction.svh">accept_tr</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.accept_tr" href="../../src/base/uvm_transaction.svh">accept_tr</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void accept_tr (</td>      <td class=PType nowrap>time&nbsp;</td>
@@ -215,7 +215,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=4 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.do_accept_tr" href="../../../../src/base/uvm_transaction.svh">do_accept_tr</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.do_accept_tr" href="../../src/base/uvm_transaction.svh">do_accept_tr</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual protected function void do_accept_tr ()
   </td></tr></table></blockquote><div class=CBody><p>This user-definable callback is called by <a href="#uvm_transaction.accept_tr" class=LMethod id=link54 onMouseOver="ShowTip(event, 'tt5', 'link54')" onMouseOut="HideTip('tt5')">accept_tr</a> just before the accept event is triggered.&nbsp; Implementations should call <i>super.do_accept_tr</i> to ensure correct operation.</p></div></div></div>
 
@@ -223,7 +223,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=5 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.begin_tr" href="../../../../src/base/uvm_transaction.svh">begin_tr</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.begin_tr" href="../../src/base/uvm_transaction.svh">begin_tr</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function integer begin_tr (</td>      <td class=PType nowrap>time&nbsp;</td>
@@ -238,7 +238,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.begin_child_tr" href="../../../../src/base/uvm_transaction.svh">begin_child_tr</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.begin_child_tr" href="../../src/base/uvm_transaction.svh">begin_child_tr</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function integer begin_child_tr (</td>      <td class=PType nowrap>time&nbsp;</td>
@@ -258,7 +258,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=7 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.do_begin_tr" href="../../../../src/base/uvm_transaction.svh">do_begin_tr</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.do_begin_tr" href="../../src/base/uvm_transaction.svh">do_begin_tr</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual protected function void do_begin_tr ()
   </td></tr></table></blockquote><div class=CBody><p>This user-definable callback is called by <a href="#uvm_transaction.begin_tr" class=LMethod id=link63 onMouseOver="ShowTip(event, 'tt7', 'link63')" onMouseOut="HideTip('tt7')">begin_tr</a> and <a href="#uvm_transaction.begin_child_tr" class=LMethod id=link64 onMouseOver="ShowTip(event, 'tt8', 'link64')" onMouseOut="HideTip('tt8')">begin_child_tr</a> just before the begin event is triggered.&nbsp; Implementations should call <i>super.do_begin_tr</i> to ensure correct operation.</p></div></div></div>
 
@@ -266,7 +266,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=8 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.end_tr" href="../../../../src/base/uvm_transaction.svh">end_tr</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.end_tr" href="../../src/base/uvm_transaction.svh">end_tr</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void end_tr (</td>      <td class=PType nowrap>time&nbsp;</td>
@@ -286,7 +286,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=9 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.do_end_tr" href="../../../../src/base/uvm_transaction.svh">do_end_tr</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.do_end_tr" href="../../src/base/uvm_transaction.svh">do_end_tr</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual protected function void do_end_tr ()
   </td></tr></table></blockquote><div class=CBody><p>This user-definable callback is called by <a href="#uvm_transaction.end_tr" class=LMethod id=link70 onMouseOver="ShowTip(event, 'tt10', 'link70')" onMouseOut="HideTip('tt10')">end_tr</a> just before the end event is triggered.&nbsp; Implementations should call <i>super.do_end_tr</i> to ensure correct operation.</p></div></div></div>
 
@@ -294,7 +294,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=10 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_tr_handle" href="../../../../src/base/uvm_transaction.svh">get_tr_handle</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_tr_handle" href="../../src/base/uvm_transaction.svh">get_tr_handle</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function integer get_tr_handle ()
   </td></tr></table></blockquote><div class=CBody><p>Returns the handle associated with the transaction, as set by a previous call to <a href="#uvm_transaction.begin_child_tr" class=LMethod id=link71 onMouseOver="ShowTip(event, 'tt8', 'link71')" onMouseOut="HideTip('tt8')">begin_child_tr</a> or <a href="#uvm_transaction.begin_tr" class=LMethod id=link72 onMouseOver="ShowTip(event, 'tt7', 'link72')" onMouseOut="HideTip('tt7')">begin_tr</a> with transaction recording enabled.</p></div></div></div>
 
@@ -302,7 +302,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=11 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.disable_recording" href="../../../../src/base/uvm_transaction.svh">disable_recording</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.disable_recording" href="../../src/base/uvm_transaction.svh">disable_recording</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function void disable_recording ()
   </td></tr></table></blockquote><div class=CBody><p>Turns off recording for the transaction stream.&nbsp; This method does not effect a <a href="uvm_component-svh.html#uvm_component" class=LClass id=link73 onMouseOver="ShowTip(event, 'tt35', 'link73')" onMouseOut="HideTip('tt35')">uvm_component</a>&rsquo;s recording streams.</p></div></div></div>
 
@@ -310,7 +310,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=12 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.enable_recording" href="../../../../src/base/uvm_transaction.svh">enable_recording</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.enable_recording" href="../../src/base/uvm_transaction.svh">enable_recording</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void enable_recording (</td>      <td class=PType nowrap>string&nbsp;</td>
@@ -330,7 +330,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=13 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.is_recording_enabled" href="../../../../src/base/uvm_transaction.svh">is_recording_enabled</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.is_recording_enabled" href="../../src/base/uvm_transaction.svh">is_recording_enabled</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit is_recording_enabled()
   </td></tr></table></blockquote><div class=CBody><p>Returns 1 if recording is currently on, 0 otherwise.</p></div></div></div>
 
@@ -338,7 +338,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=14 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.is_active" href="../../../../src/base/uvm_transaction.svh">is_active</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.is_active" href="../../src/base/uvm_transaction.svh">is_active</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit is_active ()
   </td></tr></table></blockquote><div class=CBody><p>Returns 1 if the transaction has been started but has not yet been ended.&nbsp; Returns 0 if the transaction has not been started.</p></div></div></div>
 
@@ -346,7 +346,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=15 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_event_pool" href="../../../../src/base/uvm_transaction.svh">get_event_pool</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_event_pool" href="../../src/base/uvm_transaction.svh">get_event_pool</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_event_pool get_event_pool ()
   </td></tr></table></blockquote><div class=CBody><p>Returns the event pool associated with this transaction.</p><p>By default, the event pool contains the events: begin, accept, and end.&nbsp; Events can also be added by derivative objects.&nbsp; An event pool is a specialization of an &lt;uvm_pool #(T)&gt;, e.g. a <i>uvm_pool#(uvm_event)</i>.</p></div></div></div>
 
@@ -354,7 +354,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=16 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.set_initiator" href="../../../../src/base/uvm_transaction.svh">set_initiator</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.set_initiator" href="../../src/base/uvm_transaction.svh">set_initiator</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_initiator (</td>      <td class=PType nowrap>uvm_component&nbsp;</td>
@@ -368,7 +368,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=17 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_initiator" href="../../../../src/base/uvm_transaction.svh">get_initiator</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_initiator" href="../../src/base/uvm_transaction.svh">get_initiator</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_component get_initiator ()
   </td></tr></table></blockquote><div class=CBody><p>Returns the component that produced or started the transaction, as set by a previous call to set_initiator.</p></div></div></div>
 
@@ -376,7 +376,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=18 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_accept_time" href="../../../../src/base/uvm_transaction.svh">get_accept_time</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_accept_time" href="../../src/base/uvm_transaction.svh">get_accept_time</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function time get_accept_time ()
   </td></tr></table></blockquote><div class=CBody></div></div></div>
 
@@ -384,7 +384,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=19 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_begin_time" href="../../../../src/base/uvm_transaction.svh">get_begin_time</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_begin_time" href="../../src/base/uvm_transaction.svh">get_begin_time</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function time get_begin_time ()
   </td></tr></table></blockquote><div class=CBody></div></div></div>
 
@@ -392,7 +392,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=20 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_end_time" href="../../../../src/base/uvm_transaction.svh">get_end_time</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_end_time" href="../../src/base/uvm_transaction.svh">get_end_time</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function time get_end_time ()
   </td></tr></table></blockquote><div class=CBody><p>Returns the time at which this transaction was accepted, begun, or ended, as by a previous call to <a href="#uvm_transaction.accept_tr" class=LMethod id=link74 onMouseOver="ShowTip(event, 'tt5', 'link74')" onMouseOut="HideTip('tt5')">accept_tr</a>, <a href="#uvm_transaction.begin_tr" class=LMethod id=link75 onMouseOver="ShowTip(event, 'tt7', 'link75')" onMouseOut="HideTip('tt7')">begin_tr</a>, <a href="#uvm_transaction.begin_child_tr" class=LMethod id=link76 onMouseOver="ShowTip(event, 'tt8', 'link76')" onMouseOut="HideTip('tt8')">begin_child_tr</a>, or <a href="#uvm_transaction.end_tr" class=LMethod id=link77 onMouseOver="ShowTip(event, 'tt10', 'link77')" onMouseOut="HideTip('tt10')">end_tr</a>.</p></div></div></div>
 
@@ -400,7 +400,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=21 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.set_transaction_id" href="../../../../src/base/uvm_transaction.svh">set_transaction_id</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.set_transaction_id" href="../../src/base/uvm_transaction.svh">set_transaction_id</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters nowrap>function void set_transaction_id(</td>      <td class=PType nowrap>integer&nbsp;</td>
@@ -414,7 +414,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=22 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_transaction_id" href="../../../../src/base/uvm_transaction.svh">get_transaction_id</a></h3>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.get_transaction_id" href="../../src/base/uvm_transaction.svh">get_transaction_id</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function integer get_transaction_id()
   </td></tr></table></blockquote><div class=CBody><p>Returns this transaction&rsquo;s numeric identifier, which is -1 if not set explicitly by <i>set_transaction_id</i>.</p><p>When using a <a href="../seq/uvm_sequence-svh.html#uvm_sequence#(REQ,RSP)" class=LClass id=link78 onMouseOver="ShowTip(event, 'tt33', 'link78')" onMouseOut="HideTip('tt33')">uvm_sequence #(REQ,RSP)</a> to generate stimulus, the transaction ID is used along with the sequence ID to route responses in sequencers and to correlate responses to requests.</p></div></div></div>
 
@@ -422,13 +422,13 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=23 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.Variables" href="../../../../src/base/uvm_transaction.svh">Variables</a></h3></div></div>
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.Variables" href="../../src/base/uvm_transaction.svh">Variables</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=24 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.events" href="../../../../src/base/uvm_transaction.svh">events</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.events" href="../../src/base/uvm_transaction.svh">events</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>const uvm_event_pool events = new
   </td></tr></table></blockquote><div class=CBody><p>The event pool instance for this transaction.&nbsp; This pool is used to track various The <a href="#uvm_transaction.begin_event" class=LVariable id=link79 onMouseOver="ShowTip(event, 'tt26', 'link79')" onMouseOut="HideTip('tt26')">begin_event</a></p></div></div></div>
 
@@ -436,7 +436,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=25 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.begin_event" href="../../../../src/base/uvm_transaction.svh">begin_event</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.begin_event" href="../../src/base/uvm_transaction.svh">begin_event</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_event begin_event
   </td></tr></table></blockquote><div class=CBody><p>A <a href="uvm_event-svh.html#uvm_event" class=LClass id=link80 onMouseOver="ShowTip(event, 'tt27', 'link80')" onMouseOut="HideTip('tt27')">uvm_event</a> that is triggered when this transaction&rsquo;s actual execution on the bus begins, typically as a result of a driver calling <a href="uvm_component-svh.html#uvm_component.begin_tr" class=LMethod id=link81 onMouseOver="ShowTip(event, 'tt28', 'link81')" onMouseOut="HideTip('tt28')">uvm_component::begin_tr</a>.&nbsp; Processes that wait on this event will block until the transaction has begun.</p><p>For more information, see the general discussion for <a href="#uvm_transaction" class=LClass id=link82 onMouseOver="ShowTip(event, 'tt3', 'link82')" onMouseOut="HideTip('tt3')">uvm_transaction</a>.&nbsp; See <a href="uvm_event-svh.html#uvm_event" class=LClass id=link83 onMouseOver="ShowTip(event, 'tt27', 'link83')" onMouseOut="HideTip('tt27')">uvm_event</a> for details on the event API.</p></div></div></div>
 
@@ -444,7 +444,7 @@ endtask: do_item</pre></blockquote>
 
 
  <!--CONTENT index=26 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.end_event" href="../../../../src/base/uvm_transaction.svh">end_event</a></h3>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_transaction.end_event" href="../../src/base/uvm_transaction.svh">end_event</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_event end_event
   </td></tr></table></blockquote><div class=CBody><p>A <a href="uvm_event-svh.html#uvm_event" class=LClass id=link84 onMouseOver="ShowTip(event, 'tt27', 'link84')" onMouseOut="HideTip('tt27')">uvm_event</a> that is triggered when this transaction&rsquo;s actual execution on the bus ends, typically as a result of a driver calling <a href="uvm_component-svh.html#uvm_component.end_tr" class=LMethod id=link85 onMouseOver="ShowTip(event, 'tt30', 'link85')" onMouseOut="HideTip('tt30')">uvm_component::end_tr</a>.&nbsp; Processes that wait on this event will block until the transaction has ended.</p><p>For more information, see the general discussion for <a href="#uvm_transaction" class=LClass id=link86 onMouseOver="ShowTip(event, 'tt3', 'link86')" onMouseOut="HideTip('tt3')">uvm_transaction</a>.&nbsp; See <a href="uvm_event-svh.html#uvm_event" class=LClass id=link87 onMouseOver="ShowTip(event, 'tt27', 'link87')" onMouseOut="HideTip('tt27')">uvm_event</a> for details on the event API.</p><blockquote><pre>virtual task my_sequence::body();
  ...

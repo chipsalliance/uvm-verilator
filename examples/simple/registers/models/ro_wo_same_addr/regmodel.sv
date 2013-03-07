@@ -85,8 +85,8 @@ class block_B extends uvm_reg_block;
       W.configure(this, null, "W_reg");
       W.build();
 
-      default_map.add_reg(R, 'h100,  "R");
-      default_map.add_reg(W, 'h100,  "W");
+      default_map.add_reg(R, 'h100,  "RO");
+      default_map.add_reg(W, 'h100,  "WO");
    endfunction : build
    
    `uvm_object_utils(block_B)
