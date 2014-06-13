@@ -32,7 +32,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LGeneric id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LClass id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_transaction-svh.html#uvm_transaction" class=LClass id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">uvm_transaction</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_sequence_item</div></div></td></tr>
@@ -83,7 +83,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent1"><td class=SEntry><a href="#uvm_sequence_item.set_depth" id=link15 onMouseOver="ShowTip(event, 'tt15', 'link15')" onMouseOut="HideTip('tt15')">set_depth</a></td><td class=SDescription>The depth of any sequence is calculated automatically. </td></tr>
   <!-- index=12 -->
 
-<tr class="SMethod SIndent1 SMarked"><td class=SEntry><a href="#uvm_sequence_item.get_depth" id=link16 onMouseOver="ShowTip(event, 'tt16', 'link16')" onMouseOut="HideTip('tt16')">get_depth</a></td><td class=SDescription>Returns the depth of a sequence from it&rsquo;s parent. </td></tr>
+<tr class="SMethod SIndent1 SMarked"><td class=SEntry><a href="#uvm_sequence_item.get_depth" id=link16 onMouseOver="ShowTip(event, 'tt16', 'link16')" onMouseOut="HideTip('tt16')">get_depth</a></td><td class=SDescription>Returns the depth of a sequence from its parent. </td></tr>
   <!-- index=13 -->
 
 <tr class="SMethod SIndent1"><td class=SEntry><a href="#uvm_sequence_item.is_item" id=link17 onMouseOver="ShowTip(event, 'tt17', 'link17')" onMouseOut="HideTip('tt17')">is_item</a></td><td class=SDescription>This function may be called on any sequence_item or sequence. </td></tr>
@@ -123,11 +123,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.new" href="../../src/seq/uvm_sequence_item.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;uvm_sequence_item&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>The constructor method for uvm_sequence_item.</p></div></div></div>
@@ -138,7 +140,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=2 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.get_sequence_id" href="../../src/seq/uvm_sequence_item.svh">get_sequence_id</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function int get_sequence_id()
-  </td></tr></table></blockquote><div class=CBody><p>private</p><p>Get_sequence_id is an internal method that is not intended for user code.&nbsp; The sequence_id is not a simple integer.&nbsp;  The get_transaction_id is meant for users to identify specific transactions.</p><p>These methods allow access to the sequence_item sequence and transaction IDs. get_transaction_id and set_transaction_id are methods on the uvm_transaction base_class.&nbsp; These IDs are used to identify sequences to the sequencer, to route responses back to the sequence that issued a request, and to uniquely identify transactions.</p><p>The sequence_id is assigned automatically by a sequencer when a sequence initiates communication through any sequencer calls (i.e.&nbsp; `uvm_do_xxx, wait_for_grant).&nbsp;  A sequence_id will remain unique for this sequence until it ends or it is killed.&nbsp;  However, a single sequence may have multiple valid sequence ids at any point in time.&nbsp;  Should a sequence start again after it has ended, it will be given a new unique sequence_id.</p><p>The transaction_id is assigned automatically by the sequence each time a transaction is sent to the sequencer with the transaction_id in its default (-1) value.&nbsp;  If the user sets the transaction_id to any non-default value, that value will be maintained.</p><p>Responses are routed back to this sequences based on sequence_id.&nbsp; The sequence may use the transaction_id to correlate responses with their requests.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>private</p><p>Get_sequence_id is an internal method that is not intended for user code.&nbsp; The sequence_id is not a simple integer.&nbsp;  The get_transaction_id is meant for users to identify specific transactions.</p><p>These methods allow access to the sequence_item sequence and transaction IDs. get_transaction_id and set_transaction_id are methods on the uvm_transaction base_class.&nbsp; These IDs are used to identify sequences to the sequencer, to route responses back to the sequence that issued a request, and to uniquely identify transactions.</p><p>The sequence_id is assigned automatically by a sequencer when a sequence initiates communication through any sequencer calls (i.e.&nbsp; `uvm_do_*, wait_for_grant).&nbsp;  A sequence_id will remain unique for this sequence until it ends or it is killed.&nbsp;  However, a single sequence may have multiple valid sequence ids at any point in time.&nbsp;  Should a sequence start again after it has ended, it will be given a new unique sequence_id.</p><p>The transaction_id is assigned automatically by the sequence each time a transaction is sent to the sequencer with the transaction_id in its default (-1) value.&nbsp;  If the user sets the transaction_id to any non-default value, that value will be maintained.</p><p>Responses are routed back to this sequences based on sequence_id.&nbsp; The sequence may use the transaction_id to correlate responses with their requests.</p></div></div></div>
 
 
 
@@ -147,15 +149,17 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.set_item_context" href="../../src/seq/uvm_sequence_item.svh">set_item_context</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_item_context(</td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void set_item_context(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent_seq,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
       <td class=PParameter nowrap>sequencer</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Set the sequence and sequencer execution context for a sequence item</p></div></div></div>
@@ -167,9 +171,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.set_use_sequence_info" href="../../src/seq/uvm_sequence_item.svh">set_use_sequence_info</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_use_sequence_info(</td>      <td class=PType nowrap>bit&nbsp;</td>
-      <td class=PParameter nowrap>value</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_use_sequence_info(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap width=100%>value</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody></div></div></div>
@@ -189,9 +195,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.set_id_info" href="../../src/seq/uvm_sequence_item.svh">set_id_info</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_id_info(</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
-      <td class=PParameter nowrap>item</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_id_info(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
+      <td class=PParameter nowrap width=100%>item</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Copies the sequence_id and transaction_id from the referenced item into the calling item.&nbsp;  This routine should always be used by drivers to initialize responses for future compatibility.</p></div></div></div>
@@ -203,9 +211,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.set_sequencer" href="../../src/seq/uvm_sequence_item.svh">set_sequencer</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void set_sequencer(</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
-      <td class=PParameter nowrap>sequencer</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void set_sequencer(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      <td class=PParameter nowrap width=100%>sequencer</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Sets the default sequencer for the sequence to sequencer.&nbsp;  It will take effect immediately, so it should not be called while the sequence is actively communicating with the sequencer.</p></div></div></div>
@@ -225,9 +235,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.set_parent_sequence" href="../../src/seq/uvm_sequence_item.svh">set_parent_sequence</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_parent_sequence(</td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
-      <td class=PParameter nowrap>parent</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_parent_sequence(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
+      <td class=PParameter nowrap width=100%>parent</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Sets the parent sequence of this sequence_item.&nbsp;  This is used to identify the source sequence of a sequence_item.</p></div></div></div>
@@ -238,7 +250,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=10 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.get_parent_sequence" href="../../src/seq/uvm_sequence_item.svh">get_parent_sequence</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function uvm_sequence_base get_parent_sequence()
-  </td></tr></table></blockquote><div class=CBody><p>Returns a reference to the parent sequence of any sequence on which this method was called.&nbsp; If this is a parent sequence, the method returns null.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Returns a reference to the parent sequence of any sequence on which this method was called.&nbsp; If this is a parent sequence, the method returns <i>null</i>.</p></div></div></div>
 
 
 
@@ -247,9 +259,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.set_depth" href="../../src/seq/uvm_sequence_item.svh">set_depth</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_depth(</td>      <td class=PType nowrap>int&nbsp;</td>
-      <td class=PParameter nowrap>value</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_depth(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap width=100%>value</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>The depth of any sequence is calculated automatically.&nbsp;  However, the user may use  set_depth to specify the depth of a particular sequence.&nbsp; This method will override the automatically calculated depth, even if it is incorrect.</p></div></div></div>
@@ -260,7 +274,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=12 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.get_depth" href="../../src/seq/uvm_sequence_item.svh">get_depth</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function int get_depth()
-  </td></tr></table></blockquote><div class=CBody><p>Returns the depth of a sequence from it&rsquo;s parent.&nbsp;  A  parent sequence will have a depth of 1, it&rsquo;s child will have a depth  of 2, and it&rsquo;s grandchild will have a depth of 3.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Returns the depth of a sequence from its parent.&nbsp;  A  parent sequence will have a depth of 1, its child will have a depth  of 2, and its grandchild will have a depth of 3.</p></div></div></div>
 
 
 
@@ -330,6 +344,14 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>line</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>context_name</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>report_enabled_checked</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
     </tr>
     <tr>
@@ -345,27 +367,37 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.uvm_report_info" href="../../src/seq/uvm_sequence_item.svh">uvm_report_info</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void uvm_report_info(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void uvm_report_info(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>id,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>message,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>verbosity</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_MEDIUM,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>filename</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>line</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>context_name</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>report_enabled_checked</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody></div></div></div>
@@ -377,27 +409,37 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.uvm_report_warning" href="../../src/seq/uvm_sequence_item.svh">uvm_report_warning</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void uvm_report_warning(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void uvm_report_warning(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>id,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>message,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>verbosity</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_MEDIUM,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>filename</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>line</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>context_name</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>report_enabled_checked</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody></div></div></div>
@@ -409,27 +451,37 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.uvm_report_error" href="../../src/seq/uvm_sequence_item.svh">uvm_report_error</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void uvm_report_error(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void uvm_report_error(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>id,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>message,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>verbosity</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_LOW,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>filename</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>line</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>context_name</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>report_enabled_checked</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody></div></div></div>
@@ -441,27 +493,37 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_sequence_item.uvm_report_fatal" href="../../src/seq/uvm_sequence_item.svh">uvm_report_fatal</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void uvm_report_fatal(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void uvm_report_fatal(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>id,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>message,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>verbosity</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_NONE,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>filename</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>line</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>context_name</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>report_enabled_checked</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>These are the primary reporting methods in the UVM. uvm_sequence_item derived types delegate these functions to their associated sequencer if they have one, or to the global reporter.&nbsp; See <a href="../base/uvm_report_object-svh.html#uvm_report_object.Reporting" class=LGroup >uvm_report_object::Reporting</a> for details on the messaging functions.</p></div></div></div>
@@ -471,7 +533,9 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 <!--START_ND_TOOLTIPS-->
-<div class=CToolTip id="tt1"><div class=CGeneric>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt2"><div class=CClass>
+<div class=CToolTip id="tt1"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_void
+  </td></tr></table></blockquote>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt2"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
   </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt3"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_transaction extends uvm_object
@@ -480,11 +544,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   </td></tr></table></blockquote>The base class for user-defined sequence items and also the base class for the uvm_sequence class. </div></div><div class=CToolTip id="tt5"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;uvm_sequence_item&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 The constructor method for uvm_sequence_item.</div></div><div class=CToolTip id="tt6"><div class=CMethod>
@@ -492,23 +558,27 @@ The constructor method for uvm_sequence_item.</div></div><div class=CToolTip id=
   </td></tr></table></blockquote>private</div></div><div class=CToolTip id="tt7"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_item_context(</td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void set_item_context(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent_seq,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
       <td class=PParameter nowrap>sequencer</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Set the sequence and sequencer execution context for a sequence item</div></div><div class=CToolTip id="tt8"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_use_sequence_info(</td>      <td class=PType nowrap>bit&nbsp;</td>
-      <td class=PParameter nowrap>value</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_use_sequence_info(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap width=100%>value</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 </div></div><div class=CToolTip id="tt9"><div class=CMethod>
@@ -516,17 +586,21 @@ Set the sequence and sequencer execution context for a sequence item</div></div>
   </td></tr></table></blockquote>These methods are used to set and get the status of the use_sequence_info bit. </div></div><div class=CToolTip id="tt10"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_id_info(</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
-      <td class=PParameter nowrap>item</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_id_info(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
+      <td class=PParameter nowrap width=100%>item</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Copies the sequence_id and transaction_id from the referenced item into the calling item. </div></div><div class=CToolTip id="tt11"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void set_sequencer(</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
-      <td class=PParameter nowrap>sequencer</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void set_sequencer(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      <td class=PParameter nowrap width=100%>sequencer</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Sets the default sequencer for the sequence to sequencer. </div></div><div class=CToolTip id="tt12"><div class=CMethod>
@@ -534,9 +608,11 @@ Sets the default sequencer for the sequence to sequencer. </div></div><div class
   </td></tr></table></blockquote>Returns a reference to the default sequencer used by this sequence.</div></div><div class=CToolTip id="tt13"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_parent_sequence(</td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
-      <td class=PParameter nowrap>parent</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_parent_sequence(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
+      <td class=PParameter nowrap width=100%>parent</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Sets the parent sequence of this sequence_item. </div></div><div class=CToolTip id="tt14"><div class=CMethod>
@@ -544,14 +620,16 @@ Sets the parent sequence of this sequence_item. </div></div><div class=CToolTip 
   </td></tr></table></blockquote>Returns a reference to the parent sequence of any sequence on which this method was called. </div></div><div class=CToolTip id="tt15"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_depth(</td>      <td class=PType nowrap>int&nbsp;</td>
-      <td class=PParameter nowrap>value</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_depth(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap width=100%>value</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 The depth of any sequence is calculated automatically. </div></div><div class=CToolTip id="tt16"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function int get_depth()
-  </td></tr></table></blockquote>Returns the depth of a sequence from it&rsquo;s parent. </div></div><div class=CToolTip id="tt17"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the depth of a sequence from its parent. </div></div><div class=CToolTip id="tt17"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function bit is_item()
   </td></tr></table></blockquote>This function may be called on any sequence_item or sequence. </div></div><div class=CToolTip id="tt18"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_root_sequence_name()
@@ -585,6 +663,14 @@ The depth of any sequence is calculated automatically. </div></div><div class=CT
       </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>line</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>context_name</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>report_enabled_checked</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
     </tr>
     <tr>
@@ -594,145 +680,189 @@ The depth of any sequence is calculated automatically. </div></div><div class=CT
 </div></div><div class=CToolTip id="tt22"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void uvm_report_info(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void uvm_report_info(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>id,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>message,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>verbosity</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_MEDIUM,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>filename</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>line</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>context_name</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>report_enabled_checked</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 </div></div><div class=CToolTip id="tt23"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void uvm_report_warning(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void uvm_report_warning(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>id,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>message,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>verbosity</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_MEDIUM,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>filename</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>line</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>context_name</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>report_enabled_checked</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 </div></div><div class=CToolTip id="tt24"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void uvm_report_error(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void uvm_report_error(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>id,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>message,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>verbosity</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_LOW,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>filename</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>line</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>context_name</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>report_enabled_checked</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 </div></div><div class=CToolTip id="tt25"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void uvm_report_fatal(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void uvm_report_fatal(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>id,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>message,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>verbosity</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_NONE,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>filename</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>line</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> 0,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap>context_name</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> &quot;&quot;,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap>report_enabled_checked</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 These are the primary reporting methods in the UVM. </div></div><div class=CToolTip id="tt26"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task start_item (</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual task start_item (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
       <td class=PParameter nowrap>item,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>set_priority</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
       <td class=PParameter nowrap>sequencer</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <i>start_item</i> and finish_item together will initiate operation of a sequence item. </div></div><div class=CToolTip id="tt27"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task start (</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual task start (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
       <td class=PParameter nowrap>sequencer,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent_sequence</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>this_priority</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PType nowrap>bit&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>call_pre_post</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Executes this sequence, returning when the sequence has completed.</div></div><!--END_ND_TOOLTIPS-->

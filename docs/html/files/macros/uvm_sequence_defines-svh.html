@@ -85,8 +85,14 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_rand_send_pri_with" >`uvm_rand_send_pri_with</a></td><td class=SDescription></td></tr>
   <!-- index=20 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#Sequencer_Subtypes" >Sequencer Subtypes</a></td><td class=SDescription></td></tr>
+<tr class="SMacro SIndent2 SMarked"><td class=SEntry><a href="#`uvm_add_to_sequence_library" >`uvm_add_to_sequence_library</a></td><td class=SDescription>Adds the given sequence <i>TYPE</i> to the given sequence library <i>LIBTYPE</i></td></tr>
   <!-- index=21 -->
+
+<tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_sequence_library_utils" >`uvm_sequence_library_utils</a></td><td class=SDescription></td></tr>
+  <!-- index=22 -->
+
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#Sequencer_Subtypes" >Sequencer Subtypes</a></td><td class=SDescription></td></tr>
+  <!-- index=23 -->
 
 <tr class="SMacro SIndent2"><td class=SEntry><a href="#`uvm_declare_p_sequencer" >`uvm_declare_p_sequencer</a></td><td class=SDescription>This macro is used to declare a variable <i>p_sequencer</i> whose type is specified by <i>SEQUENCER</i>.</td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
@@ -127,7 +133,7 @@ sub_seq.post_start()        (task)</pre></blockquote></div></div></div>
 
 
  <!--CONTENT index=4 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_do_pri" href="../../src/macros/uvm_sequence_defines.svh">`uvm_do_pri</a></h3><div class=CBody><blockquote><pre>`uvm_do_pri(SEQ_OR_ITEM, PRIORITY)</pre></blockquote><p>This is the same as `uvm_do except that the sequene item or sequence is executed with the priority specified in the argument</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_do_pri" href="../../src/macros/uvm_sequence_defines.svh">`uvm_do_pri</a></h3><div class=CBody><blockquote><pre>`uvm_do_pri(SEQ_OR_ITEM, PRIORITY)</pre></blockquote><p>This is the same as `uvm_do except that the sequence item or sequence is executed with the priority specified in the argument</p></div></div></div>
 
 
 
@@ -193,7 +199,7 @@ sub_seq.post_start()        (task)</pre></blockquote></div></div></div>
 
 
  <!--CONTENT index=15 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_send_pri" href="../../src/macros/uvm_sequence_defines.svh">`uvm_send_pri</a></h3><div class=CBody><blockquote><pre>`uvm_send_pri(SEQ_OR_ITEM, PRIORITY)</pre></blockquote><p>This is the same as `uvm_send except that the sequene item or sequence is executed with the priority specified in the argument.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_send_pri" href="../../src/macros/uvm_sequence_defines.svh">`uvm_send_pri</a></h3><div class=CBody><blockquote><pre>`uvm_send_pri(SEQ_OR_ITEM, PRIORITY)</pre></blockquote><p>This is the same as `uvm_send except that the sequence item or sequence is executed with the priority specified in the argument.</p></div></div></div>
 
 
 
@@ -205,7 +211,7 @@ sub_seq.post_start()        (task)</pre></blockquote></div></div></div>
 
 
  <!--CONTENT index=17 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_rand_send_pri" href="../../src/macros/uvm_sequence_defines.svh">`uvm_rand_send_pri</a></h3><div class=CBody><blockquote><pre>`uvm_rand_send_pri(SEQ_OR_ITEM, PRIORITY)</pre></blockquote><p>This is the same as `uvm_rand_send except that the sequene item or sequence is executed with the priority specified in the argument.</p></div></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_rand_send_pri" href="../../src/macros/uvm_sequence_defines.svh">`uvm_rand_send_pri</a></h3><div class=CBody><blockquote><pre>`uvm_rand_send_pri(SEQ_OR_ITEM, PRIORITY)</pre></blockquote><p>This is the same as `uvm_rand_send except that the sequence item or sequence is executed with the priority specified in the argument.</p></div></div></div>
 
 
 
@@ -223,13 +229,54 @@ sub_seq.post_start()        (task)</pre></blockquote></div></div></div>
 
 
  <!--CONTENT index=20 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Sequencer_Subtypes" href="../../src/macros/uvm_sequence_defines.svh">Sequencer Subtypes</a></h3></div></div>
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_add_to_sequence_library" href="../../src/macros/uvm_sequence_defines.svh">`uvm_add_to_sequence_library</a></h3><div class=CBody><p>Adds the given sequence <i>TYPE</i> to the given sequence library <i>LIBTYPE</i></p><blockquote><pre>`uvm_add_to_seq_lib(TYPE,LIBTYPE)</pre></blockquote><p>Invoke any number of times within a sequence declaration to statically add that sequence to one or more sequence library types.&nbsp; The sequence will then be available for selection and execution in all instances of the given sequencer types.</p><blockquote><pre>class seqA extends uvm_sequence_base #(simple_item);
+
+   function new(string name=`&quot;TYPE`&quot;);
+     super.new(name);
+   endfunction
+
+   `uvm_object_utils(seqA)
+
+   `uvm_add_to_seq_lib(seqA, simple_seq_lib_RST)
+   `uvm_add_to_seq_lib(seqA, simple_seq_lib_CFG)
+
+   virtual task body(); \
+     `uvm_info(&quot;SEQ_START&quot;, {&quot;Executing sequence '&quot;, get_full_name(),
+                            &quot;' (&quot;,get_type_name(),&quot;)&quot;},UVM_HIGH)
+     #10;
+   endtask
+
+ endclass</pre></blockquote></div></div></div>
 
 
 
 
  <!--CONTENT index=21 -->
-<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_declare_p_sequencer" href="../../src/macros/uvm_sequence_defines.svh">`uvm_declare_p_sequencer</a></h3><div class=CBody><p>This macro is used to declare a variable <i>p_sequencer</i> whose type is specified by <i>SEQUENCER</i>.</p><blockquote><pre>`uvm_declare_p_sequencer(SEQUENCER)</pre></blockquote><p>The example below shows using the the `uvm_declare_p_sequencer macro along with the uvm_object_utils macros to set up the sequence but not register the sequence in the sequencer&rsquo;s library.</p><blockquote><pre>class mysequence extends uvm_sequence#(mydata);
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_sequence_library_utils" href="../../src/macros/uvm_sequence_defines.svh">`uvm_sequence_library_utils</a></h3><div class=CBody><blockquote><pre>`uvm_sequence_library_utils(TYPE)</pre></blockquote><p>Declares the infrastructure needed to define extensions to the <a href="../seq/uvm_sequence_library-svh.html#uvm_sequence_library" class=LClass id=link5 onMouseOver="ShowTip(event, 'tt4', 'link5')" onMouseOut="HideTip('tt4')">uvm_sequence_library</a> class.&nbsp; You define new sequence library subtypes to statically specify sequence membership from within sequence definitions.&nbsp; See also <a href="#`uvm_add_to_sequence_library" class=LMacro id=link6 onMouseOver="ShowTip(event, 'tt5', 'link6')" onMouseOut="HideTip('tt5')">`uvm_add_to_sequence_library</a> for more information.</p><blockquote><pre>typedef simple_seq_lib uvm_sequence_library #(simple_item);
+
+class simple_seq_lib_RST extends simple_seq_lib;
+
+  `uvm_object_utils(simple_seq_lib_RST)
+
+  `uvm_sequence_library_utils(simple_seq_lib_RST)
+
+  function new(string name=&quot;&quot;);
+    super.new(name);
+  endfunction
+
+endclass</pre></blockquote><p>Each library, itself a sequence, can then be started independently on different sequencers or in different phases of the same sequencer.&nbsp; See <a href="../seq/uvm_sequencer_base-svh.html#uvm_sequencer_base.start_phase_sequence" class=LMethod id=link7 onMouseOver="ShowTip(event, 'tt6', 'link7')" onMouseOut="HideTip('tt6')">uvm_sequencer_base::start_phase_sequence</a> for information on starting default sequences.</p></div></div></div>
+
+
+
+
+ <!--CONTENT index=22 -->
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Sequencer_Subtypes" href="../../src/macros/uvm_sequence_defines.svh">Sequencer Subtypes</a></h3></div></div>
+
+
+
+
+ <!--CONTENT index=23 -->
+<div class="CMacro"><div class=CTopic><h3 class=CTitle><a name="`uvm_declare_p_sequencer" href="../../src/macros/uvm_sequence_defines.svh">`uvm_declare_p_sequencer</a></h3><div class=CBody><p>This macro is used to declare a variable <i>p_sequencer</i> whose type is specified by <i>SEQUENCER</i>.</p><blockquote><pre>`uvm_declare_p_sequencer(SEQUENCER)</pre></blockquote><p>The example below shows using the `uvm_declare_p_sequencer macro along with the uvm_object_utils macros to set up the sequence but not register the sequence in the sequencer&rsquo;s library.</p><blockquote><pre>class mysequence extends uvm_sequence#(mydata);
   `uvm_object_utils(mysequence)
   `uvm_declare_p_sequencer(some_seqr_type)
   task body;
@@ -248,52 +295,84 @@ endclass</pre></blockquote></div></div></div>
 <div class=CToolTip id="tt1"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task start (</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual task start (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
       <td class=PParameter nowrap>sequencer,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent_sequence</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>this_priority</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PType nowrap>bit&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>call_pre_post</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Executes this sequence, returning when the sequence has completed.</div></div><div class=CToolTip id="tt2"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void set_sequencer(</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
-      <td class=PParameter nowrap>sequencer</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void set_sequencer(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      <td class=PParameter nowrap width=100%>sequencer</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Sets the default sequencer for the sequence to sequencer. </div></div><div class=CToolTip id="tt3"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task start_item (</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual task start_item (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
       <td class=PParameter nowrap>item,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>set_priority</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
       <td class=PParameter nowrap>sequencer</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<i>start_item</i> and finish_item together will initiate operation of a sequence item. </div></div><!--END_ND_TOOLTIPS-->
+<i>start_item</i> and finish_item together will initiate operation of a sequence item. </div></div><div class=CToolTip id="tt4"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters colspan=5>class uvm_sequence_library #(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>type&nbsp;</td>
+      <td class=PParameter nowrap>REQ</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%>uvm_sequence_item,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>&nbsp;</td>
+      <td class=PParameter nowrap>RSP</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%>REQ</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>) extends uvm_sequence #(REQ,RSP)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+The <i>uvm_sequence_library</i> is a sequence that contains a list of registered sequence types. </div></div><div class=CToolTip id="tt5"><div class=CMacro>Adds the given sequence <i>TYPE</i> to the given sequence library <i>LIBTYPE</i></div></div><div class=CToolTip id="tt6"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters colspan=3>virtual function void start_phase_sequence(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
+      <td class=PParameter nowrap width=100%>phase</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+Start the default sequence for this phase, if any. </div></div><!--END_ND_TOOLTIPS-->
 
 <script language=JavaScript><!--
 if (browserType) {if (browserVer) {document.write("</div>"); }document.write("</div>");}// --></script></body></html>

@@ -2,7 +2,8 @@
 //------------------------------------------------------------------------------
 //   Copyright 2007-2011 Mentor Graphics Corporation
 //   Copyright 2007-2010 Cadence Design Systems, Inc. 
-//   Copyright 2010 Synopsys, Inc.
+//   Copyright 2010-2013 Synopsys, Inc.
+//   Copyright 2013      NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -34,42 +35,28 @@ bit uvm_start_uvm_declarations = 1;
 // Group: Field automation
 //------------------------
 
-// Macro: `UVM_MAX_STREAMBITS
-//
-// Defines the maximum bit vector size for integral types.
-
-`ifndef UVM_MAX_STREAMBITS
-`define UVM_MAX_STREAMBITS 4096
-`endif
-
-
-// Macro: `UVM_PACKER_MAX_BYTES
-//
-// Defines the maximum bytes to allocate for packing an object using
-// the <uvm_packer>. Default is <`UVM_MAX_STREAMBITS>, in ~bytes~.
-
-`ifndef UVM_PACKER_MAX_BYTES
-  `define UVM_PACKER_MAX_BYTES UVM_STREAMBITS
-`endif
 
 parameter UVM_STREAMBITS = `UVM_MAX_STREAMBITS; 
 
 
-// Macro: `UVM_DEFAULT_TIMEOUT
-//
-// The default timeout for simulation, if not overridden by
-// <uvm_root::set_timeout> or <+UVM_TIMEOUT>
-//
-
-`define UVM_DEFAULT_TIMEOUT 9200s
-
 // Type: uvm_bitstream_t
 //
 // The bitstream type is used as a argument type for passing integral values
-// in such methods as set_int_local, get_int_local, get_config_int, report,
-// pack and unpack. 
+// in such methods as <uvm_object::set_int_local>, <uvm_config_int>, 
+// <uvm_printer::print_field>, <uvm_recorder::record_field>, 
+// <uvm_packer::pack_field> and <uvm_packer::unpack_field>.
 
 typedef logic signed [UVM_STREAMBITS-1:0] uvm_bitstream_t;
+
+// Type: uvm_integral_t
+//
+// The integral type is used as a argument type for passing integral values
+// of 64 bits or less in such methods as 
+// <uvm_printer::print_field_int>, <uvm_recorder::record_field_int>, 
+// <uvm_packer::pack_field_int> and <uvm_packer::unpack_field_int>.
+//
+
+typedef logic signed [63:0] uvm_integral_t;
 
 
 
@@ -80,11 +67,17 @@ typedef logic signed [UVM_STREAMBITS-1:0] uvm_bitstream_t;
 // UVM_BIN       - Selects binary (%b) format
 // UVM_DEC       - Selects decimal (%d) format
 // UVM_UNSIGNED  - Selects unsigned decimal (%u) format
+// UVM_UNFORMAT2 - Selects unformatted 2 value data (%u) format
+// UVM_UNFORMAT4 - Selects unformatted 4 value data (%z) format
 // UVM_OCT       - Selects octal (%o) format
-// UVM_HEX       - Selects hexidecimal (%h) format
+// UVM_HEX       - Selects hexadecimal (%h) format
 // UVM_STRING    - Selects string (%s) format
 // UVM_TIME      - Selects time (%t) format
 // UVM_ENUM      - Selects enumeration value (name) format
+// UVM_REAL      - Selects real (%g) in exponential or decimal format,
+//                 whichever format results in the shorter printed output
+// UVM_REAL_DEC  - Selects real (%f) in decimal format
+// UVM_REAL_EXP  - Selects real (%e) in exponential format
 
 typedef enum {
    UVM_BIN       = 'h1000000,
@@ -132,7 +125,7 @@ endfunction
 //
 // Specifies the policy for copying objects.
 //
-// UVM_DEEP      - Objects are deep copied (object must implement copy method)
+// UVM_DEEP      - Objects are deep copied (object must implement <uvm_object::copy> method)
 // UVM_SHALLOW   - Objects are shallow copied using default SV copy.
 // UVM_REFERENCE - Only object handles are copied.
 
@@ -148,7 +141,9 @@ typedef enum {
 //
 // Convenience value to define whether a component, usually an agent,
 // is in "active" mode or "passive" mode.
-
+//
+// UVM_PASSIVE - "Passive" mode
+// UVM_ACTIVE  - "Active" mode
 typedef enum bit { UVM_PASSIVE=0, UVM_ACTIVE=1 } uvm_active_passive_enum;
 
 
@@ -187,7 +182,7 @@ parameter UVM_ALL_ON      = 'b000000101010101;
 parameter UVM_FLAGS_ON    = 'b000000101010101;
 parameter UVM_FLAGS_OFF   = 0;
 
-//Values are or'ed into a 32 bit value
+//Values are OR'ed into a 32 bit value
 //and externally
 parameter UVM_COPY         = (1<<0);
 parameter UVM_NOCOPY       = (1<<1);
@@ -237,23 +232,24 @@ string uvm_aa_string_key;
 //
 // Defines all possible values for report severity.
 //
-//   UVM_INFO    - Informative messsage.
+//   UVM_INFO    - Informative message.
 //   UVM_WARNING - Indicates a potential problem.
 //   UVM_ERROR   - Indicates a real problem. Simulation continues subject
 //                 to the configured message action.
-//   UVM_FATAL   - Indicates a problem from which simulation can not
+//   UVM_FATAL   - Indicates a problem from which simulation cannot
 //                 recover. Simulation exits via $finish after a #0 delay.
 
-typedef bit [1:0] uvm_severity;
-
-typedef enum uvm_severity
+typedef enum bit [1:0]
 {
   UVM_INFO,
   UVM_WARNING,
   UVM_ERROR,
   UVM_FATAL
-} uvm_severity_type;
+} uvm_severity;
 
+`ifndef UVM_NO_DEPRECATED
+typedef uvm_severity uvm_severity_type;
+`endif
 
 // Enum: uvm_action
 //
@@ -270,19 +266,21 @@ typedef enum uvm_severity
 //   UVM_CALL_HOOK - Callback the report hook methods 
 //   UVM_STOP      - Causes ~$stop~ to be executed, putting the simulation into
 //                   interactive mode.
+//   UVM_RM_RECORD - Sends the report to the recorder
 
 
 typedef int uvm_action;
 
 typedef enum
 {
-  UVM_NO_ACTION = 'b000000,
-  UVM_DISPLAY   = 'b000001,
-  UVM_LOG       = 'b000010,
-  UVM_COUNT     = 'b000100,
-  UVM_EXIT      = 'b001000,
-  UVM_CALL_HOOK = 'b010000,
-  UVM_STOP      = 'b100000
+  UVM_NO_ACTION = 'b0000000,
+  UVM_DISPLAY   = 'b0000001,
+  UVM_LOG       = 'b0000010,
+  UVM_COUNT     = 'b0000100,
+  UVM_EXIT      = 'b0001000,
+  UVM_CALL_HOOK = 'b0010000,
+  UVM_STOP      = 'b0100000,
+  UVM_RM_RECORD = 'b1000000
 } uvm_action_type;
 
 
@@ -290,7 +288,7 @@ typedef enum
 //
 // Defines standard verbosity levels for reports.
 //
-//  UVM_NONE   - Report is always printed. Verbosity level setting can not
+//  UVM_NONE   - Report is always printed. Verbosity level setting cannot
 //               disable it.
 //  UVM_LOW    - Report is issued if configured verbosity is set to UVM_LOW
 //               or above.
@@ -348,67 +346,67 @@ typedef enum
 //
 // Specifies a sequencer's arbitration mode
 //
-// SEQ_ARB_FIFO          - Requests are granted in FIFO order (default)
-// SEQ_ARB_WEIGHTED      - Requests are granted randomly by weight
-// SEQ_ARB_RANDOM        - Requests are granted randomly
-// SEQ_ARB_STRICT_FIFO   - Requests at highest priority granted in fifo order
-// SEQ_ARB_STRICT_RANDOM - Requests at highest priority granted in randomly
-// SEQ_ARB_USER          - Arbitration is delegated to the user-defined 
-//                         function, user_priority_arbitration. That function
-//                         will specify the next sequence to grant.
+// UVM_SEQ_ARB_FIFO          - Requests are granted in FIFO order (default)
+// UVM_SEQ_ARB_WEIGHTED      - Requests are granted randomly by weight
+// UVM_SEQ_ARB_RANDOM        - Requests are granted randomly
+// UVM_SEQ_ARB_STRICT_FIFO   - Requests at highest priority granted in fifo order
+// UVM_SEQ_ARB_STRICT_RANDOM - Requests at highest priority granted in randomly
+// UVM_SEQ_ARB_USER          - Arbitration is delegated to the user-defined 
+//                             function, user_priority_arbitration. That function
+//                             will specify the next sequence to grant.
 
 
 typedef enum
 {
-  SEQ_ARB_FIFO,
-  SEQ_ARB_WEIGHTED,
-  SEQ_ARB_RANDOM,
-  SEQ_ARB_STRICT_FIFO,
-  SEQ_ARB_STRICT_RANDOM,
-  SEQ_ARB_USER
+  UVM_SEQ_ARB_FIFO,
+  UVM_SEQ_ARB_WEIGHTED,
+  UVM_SEQ_ARB_RANDOM,
+  UVM_SEQ_ARB_STRICT_FIFO,
+  UVM_SEQ_ARB_STRICT_RANDOM,
+  UVM_SEQ_ARB_USER
 } uvm_sequencer_arb_mode;
 
 
-typedef uvm_sequencer_arb_mode SEQ_ARB_TYPE; // backward compat
+typedef uvm_sequencer_arb_mode UVM_SEQ_ARB_TYPE; // backward compat
 
 
 // Enum: uvm_sequence_state_enum
 //
 // Defines current sequence state
 //
-// CREATED            - The sequence has been allocated.
-// PRE_START          - The sequence is started and the
-//                      <uvm_sequence_base::pre_start()> task is
-//                      being executed.
-// PRE_BODY           - The sequence is started and the
-//                      <uvm_sequence_base::pre_body()> task is
-//                      being executed.
-// BODY               - The sequence is started and the
-//                      <uvm_sequence_base::body()> task is
-//                      being executed.
-// ENDED              - The sequence has completed the execution of the 
-//                      <uvm_sequence_base::body()> task.
-// POST_BODY          - The sequence is started and the
-//                      <uvm_sequence_base::post_body()> task is
-//                      being executed.
-// POST_START         - The sequence is started and the
-//                      <uvm_sequence_base::post_start()> task is
-//                      being executed.
-// STOPPED            - The sequence has been forcibly ended by issuing a
-//                      <uvm_sequence_base::kill()> on the sequence.
-// FINISHED           - The sequence is completely finished executing.
+// UVM_CREATED            - The sequence has been allocated.
+// UVM_PRE_START          - The sequence is started and the
+//                          <uvm_sequence_base::pre_start()> task is
+//                          being executed.
+// UVM_PRE_BODY           - The sequence is started and the
+//                          <uvm_sequence_base::pre_body()> task is
+//                           being executed.
+// UVM_BODY               - The sequence is started and the
+//                          <uvm_sequence_base::body()> task is
+//                          being executed.
+// UVM_ENDED              - The sequence has completed the execution of the 
+//                          <uvm_sequence_base::body()> task.
+// UVM_POST_BODY          - The sequence is started and the
+//                          <uvm_sequence_base::post_body()> task is
+//                           being executed.
+// UVM_POST_START         - The sequence is started and the
+//                          <uvm_sequence_base::post_start()> task is
+//                          being executed.
+// UVM_STOPPED            - The sequence has been forcibly ended by issuing a
+//                          <uvm_sequence_base::kill()> on the sequence.
+// UVM_FINISHED           - The sequence is completely finished executing.
 
 typedef enum
 {
-  CREATED   = 1,
-  PRE_START = 2,
-  PRE_BODY  = 4,
-  BODY      = 8,
-  POST_BODY = 16,
-  POST_START= 32,
-  ENDED     = 64,
-  STOPPED   = 128,
-  FINISHED  = 256
+  UVM_CREATED   = 1,
+  UVM_PRE_START = 2,
+  UVM_PRE_BODY  = 4,
+  UVM_BODY      = 8,
+  UVM_POST_BODY = 16,
+  UVM_POST_START= 32,
+  UVM_ENDED     = 64,
+  UVM_STOPPED   = 128,
+  UVM_FINISHED  = 256
 } uvm_sequence_state;
 
 typedef uvm_sequence_state uvm_sequence_state_enum; // backward compat
@@ -484,7 +482,12 @@ typedef enum { UVM_PHASE_IMP,
 // The set of possible states of a phase. This is an attribute of a schedule
 // node in the graph, not of a phase, to maintain independent per-domain state
 //
-//   UVM_PHASE_DORMANT -  Nothing has happened with the phase in this domain.
+//   UVM_PHASE_UNINITIALIZED - The state is uninitialized.  This is the default
+//             state for phases, and for nodes which have not yet been added to
+//             a schedule.
+//
+//   UVM_PHASE_DORMANT -  The schedule is not currently operating on the phase
+//             node, however it will be scheduled at some point in the future.
 //
 //   UVM_PHASE_SCHEDULED - At least one immediate predecessor has completed.
 //              Scheduled phases block until all predecessors complete or
@@ -496,7 +499,7 @@ typedef enum { UVM_PHASE_IMP,
 //   UVM_PHASE_STARTED - phase ready to execute, running phase_started() callback
 //
 //   UVM_PHASE_EXECUTING - An executing phase is one where the phase callbacks are
-//              being executed. It's process is tracked by the phaser.
+//              being executed. Its process is tracked by the phaser.
 //
 //   UVM_PHASE_READY_TO_END - no objections remain in this phase or in any
 //              predecessors of its successors or in any sync'd phases. This 
@@ -511,6 +514,9 @@ typedef enum { UVM_PHASE_IMP,
 //
 //   UVM_PHASE_ENDED - phase completed execution, now running phase_ended() callback
 //
+//   UVM_PHASE_JUMPING - all processes related to phase are being killed and all
+//                       predecessors are forced into the DONE state.
+//
 //   UVM_PHASE_CLEANUP - all processes related to phase are being killed
 //
 //   UVM_PHASE_DONE - A phase is done after it terminated execution.  Becoming
@@ -518,12 +524,13 @@ typedef enum { UVM_PHASE_IMP,
 //
 //    The state transitions occur as follows:
 //
-//|   DORMANT -> SCHED -> SYNC -> START -> EXEC -> READY -> END -> CLEAN -> DONE
-//|      ^                                                            |
-//|      |                      <-- jump_to                           v
-//|      +------------------------------------------------------------+
+//|   UNINITIALIZED -> DORMANT -> SCHED -> SYNC -> START -> EXEC -> READY -> END -+-> CLEAN -> DONE
+//|                       ^                                                       |
+//|                       |                      <-- jump_to                      |
+//|                       +-------------------------------------------- JUMPING< -+
 
-   typedef enum { UVM_PHASE_DORMANT      = 1,
+   typedef enum { UVM_PHASE_UNINITIALIZED = 0,
+                  UVM_PHASE_DORMANT      = 1,
                   UVM_PHASE_SCHEDULED    = 2,
                   UVM_PHASE_SYNCING      = 4,
                   UVM_PHASE_STARTED      = 8,
@@ -534,24 +541,6 @@ typedef enum { UVM_PHASE_IMP,
                   UVM_PHASE_DONE         = 256,
                   UVM_PHASE_JUMPING      = 512
                   } uvm_phase_state;
-
-
-
-// Enum: uvm_phase_transition
-//
-// These are the phase state transition for callbacks which provide
-// additional information that may be useful during callbacks
-//
-// UVM_COMPLETED   - the phase completed normally
-// UVM_FORCED_STOP - the phase was forced to terminate prematurely
-// UVM_SKIPPED     - the phase was in the path of a forward jump
-// UVM_RERUN       - the phase was in the path of a backwards jump
-//
-typedef enum { UVM_COMPLETED   = 'h01, 
-               UVM_FORCED_STOP = 'h02,
-               UVM_SKIPPED     = 'h04, 
-               UVM_RERUN       = 'h08   
-} uvm_phase_transition;
 
 
 
@@ -609,6 +598,8 @@ typedef class uvm_tree_printer;
 typedef class uvm_line_printer;
 typedef class uvm_comparer;
 typedef class uvm_packer;
+typedef class uvm_tr_database;
+typedef class uvm_text_tr_database;
 typedef class uvm_recorder;
 
 // Variable: uvm_default_table_printer
@@ -661,16 +652,6 @@ uvm_packer uvm_default_packer = new();
 // do not specify a comparer policy.
 
 uvm_comparer uvm_default_comparer = new(); // uvm_comparer::init();
-
-
-// Variable: uvm_default_recorder
-//
-// The default recording policy. Used when calls to <uvm_object::record>
-// do not specify a recorder policy.
-
-uvm_recorder uvm_default_recorder = new();
-
-
 
 
 

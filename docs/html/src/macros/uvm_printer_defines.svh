@@ -48,7 +48,10 @@
    end while(0);
 
 `define uvm_print_int4(F, R, NM, P) \
-    P.print_int(NM, F, $bits(F), R, "[");
+    if ($bits(F) > 64) \
+      P.print_field(NM, F, $bits(F), R, "["); \
+    else \
+      P.print_field_int(NM, F, $bits(F), R, "["); 
 
 
 // uvm_print_enum
@@ -111,7 +114,7 @@
     int curr, max__; max__=0; curr=0; \
     if(P!=null) p__ = P; \
     else p__ = uvm_default_printer; \
-    foreach(F[i]) max__ = i+1; \
+    max__ = $right(F)+1; \
 //    max__=$size(F); \
     p__.print_array_header (`"F`", max__,`"T``(integral)`"); \
     k__ = p__.knobs; \

@@ -27,7 +27,7 @@
 
 // class: uvm_tlm_b_transport_port
 //
-// Class providing the blocking transport port,
+// Class providing the blocking transport port.
 // The port can be bound to one export.
 // There is no backward path for the blocking transport.
 

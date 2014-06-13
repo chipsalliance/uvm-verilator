@@ -21,7 +21,7 @@ common base class and interface mask.
 
 Like their SystemC counterparts, the UVM's TLM port and export implementations
 allow connections between ports whose interfaces are not an exact match.
-For example, an ~uvm_blocking_get_port~ can be connected to any port,
+For example, a ~uvm_blocking_get_port~ can be connected to any port,
 export or imp port that provides ~at the least~ an implementation
 of the blocking_get interface, which includes the ~uvm_get_*~ ports and
 exports, ~uvm_blocking_get_peek_*~ ports and exports, and
@@ -178,7 +178,7 @@ where the asterisk can be any of
 Group: Usage
 
 This example illustrates basic TLM connectivity using
-the blocking put inteface.
+the blocking put interface.
 
 (see uvm_ref_tlm_hierarchy.gif)
 
@@ -192,8 +192,8 @@ export-to-imp - subcomp2's ~in~ export is connected leaf2's ~in~ imp port.
 
 imp-to-implementation - leaf2's ~in~ imp port is connected to its implementation, leaf2
 
-Hierarchical port connections are resolved and optimized just before the 
-<uvm_component::end_of_elaboration> phase. After optimization, calling
+Hierarchical port connections are resolved and optimized just before 
+<uvm_component::end_of_elaboration_phase>. After optimization, calling
 any port's interface method (e.g. leaf1.out.put(trans)) incurs a single
 hop to get to the implementation (e.g. leaf2's put task), no matter how
 far up and down the hierarchy the implementation resides.
@@ -218,11 +218,13 @@ far up and down the hierarchy the implementation resides.
 |     out = new("out",this);
 |   endfunction
 | 
-|   virtual task run();
+|   virtual task run_phase(uvm_phase phase);
 |     trans t;
+|     phase.raise_objection(this, "prolonging run_phase");
 |     t = new;
 |     t.randomize();
 |     out.put(t);
+|     phase.drop_objection(this, "prolonging run_phase");
 |   endtask
 | 
 | endclass
@@ -240,13 +242,13 @@ far up and down the hierarchy the implementation resides.
 |     super.new(name,parent);
 |   endfunction
 | 
-|   virtual function void build();
+|   virtual function void build_phase(uvm_phase phase);
 |     out = new("out",this);
 |     leaf = new("leaf1",this);
 |   endfunction
 | 
 |   // connect port to port
-|   virtual function void connect();
+|   virtual function void connect_phase(uvm_phase phase);
 |     leaf.out.connect(out);
 |   endfunction
 | 
@@ -285,13 +287,13 @@ far up and down the hierarchy the implementation resides.
 |     super.new(name,parent);
 |   endfunction
 | 
-|   virtual function void build();
+|   virtual function void build_phase(uvm_phase phase);
 |     in = new("in",this);
 |     leaf = new("leaf2",this);
 |   endfunction
 | 
 |   // connect export to imp
-|   virtual function void connect();
+|   virtual function void connect_phase(uvm_phase phase);
 |     in.connect(leaf.in);
 |   endfunction
 | 
@@ -310,13 +312,13 @@ far up and down the hierarchy the implementation resides.
 |     super.new(name,parent);
 |   endfunction
 | 
-|   virtual function void build();
+|   virtual function void build_phase(uvm_phase phase);
 |     in = new("in",this);
 |     subcomp = new("subcomp2",this);
 |   endfunction
 | 
 |   // connect export to export
-|   virtual function void connect();
+|   virtual function void connect_phase(uvm_phase phase);
 |     in.connect(subcomp.in);
 |   endfunction
 | 
@@ -334,13 +336,13 @@ far up and down the hierarchy the implementation resides.
 |     super.new(name,parent);
 |   endfunction
 | 
-|   virtual function void build();
+|   virtual function void build_phase(uvm_phase phase);
 |     comp1_i = new("comp1",this);
 |     comp2_i = new("comp2",this);
 |   endfunction
 | 
 |   // connect port to export
-|   virtual function void connect();
+|   virtual function void connect_phase(uvm_phase phase);
 |     comp1_i.out.connect(comp2_i.in);
 |   endfunction
 | 

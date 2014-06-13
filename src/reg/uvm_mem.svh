@@ -96,7 +96,7 @@ class uvm_mem extends uvm_object;
    // Specify the parent block of this memory.
    //
    // If this memory is implemented in a single HDL variable,
-   // it's name is specified as the ~hdl_path~.
+   // its name is specified as the ~hdl_path~.
    // Otherwise, if the memory is implemented as a concatenation
    // of variables (usually one per bank), then the HDL path
    // must be specified using the <add_hdl_path()> or
@@ -372,7 +372,7 @@ class uvm_mem extends uvm_object;
    // Computes all of the external physical addresses that must be accessed
    // to completely read or write the specified location in this memory.
    // The addressed are specified in little endian order.
-   // Returns the number of bytes transfered on each access.
+   // Returns the number of bytes transferred on each access.
    //
    // If no address map is specified and the memory is mapped in only one
    // address map, that address map is used. If the memory is mapped
@@ -494,7 +494,7 @@ class uvm_mem extends uvm_object;
    // Deposit the specified value in a memory location
    //
    // Deposit the value in the DUT memory location corresponding to this
-   // abstraction class instance at the secified ~offset~, as-is,
+   // abstraction class instance at the specified ~offset~, as-is,
    // using a back-door access.
    //
    // Uses the HDL path for the design abstraction specified by ~kind~.
@@ -514,7 +514,7 @@ class uvm_mem extends uvm_object;
    // Read the current value from a memory location
    //
    // Sample the value in the DUT memory location corresponding to this
-   // absraction class instance at the specified ~offset~
+   // abstraction class instance at the specified ~offset~
    // using a back-door access.
    // The memory location value is sampled, not modified.
    //
@@ -548,9 +548,9 @@ class uvm_mem extends uvm_object;
    //
    // Set a user-defined frontdoor for this memory
    //
-   // By default, memorys are mapped linearly into the address space
+   // By default, memories are mapped linearly into the address space
    // of the address maps that instantiate them.
-   // If memorys are accessed using a different mechanism,
+   // If memories are accessed using a different mechanism,
    // a user-defined access
    // mechanism must be defined and associated with
    // the corresponding memory abstraction class
@@ -568,7 +568,7 @@ class uvm_mem extends uvm_object;
    //
    // Returns the user-defined frontdoor for this memory
    //
-   // If null, no user-defined frontdoor has been defined.
+   // If ~null~, no user-defined frontdoor has been defined.
    // A user-defined frontdoor is defined
    // by using the <uvm_mem::set_frontdoor()> method. 
    //
@@ -604,7 +604,7 @@ class uvm_mem extends uvm_object;
    //
    // Returns the user-defined backdoor for this memory
    //
-   // If null, no user-defined backdoor has been defined.
+   // If ~null~, no user-defined backdoor has been defined.
    // A user-defined backdoor is defined
    // by using the <uvm_reg::set_backdoor()> method. 
    //
@@ -671,7 +671,7 @@ class uvm_mem extends uvm_object;
    // Returns only the component of the HDL paths that corresponds to
    // the memory, not a full hierarchical path
    //
-   // If no design asbtraction is specified, the default design abstraction
+   // If no design abstraction is specified, the default design abstraction
    // for the parent block is used.
    //
    extern function void get_hdl_path (ref uvm_hdl_path_concat paths[$],
@@ -689,7 +689,7 @@ class uvm_mem extends uvm_object;
    // parent components have more than one path defined for the same design
    // abstraction
    //
-   // If no design asbtraction is specified, the default design abstraction
+   // If no design abstraction is specified, the default design abstraction
    // for each ancestor block is used to get each incremental path.
    //
    extern function void get_full_hdl_path (ref uvm_hdl_path_concat paths[$],
@@ -853,7 +853,7 @@ class uvm_mem extends uvm_object;
    // for this memory.
    // The functional coverage measurement is turned on for every
    // coverage model specified using <uvm_coverage_model_e> symbolic
-   // identifers.
+   // identifiers.
    // Multiple functional coverage models can be specified by adding
    // the functional coverage model identifiers.
    // All other functional coverage models are turned off.
@@ -889,7 +889,7 @@ class uvm_mem extends uvm_object;
    //
    // This method is invoked by the memory abstraction class
    // whenever an address within one of its address map
-   // is succesfully read or written.
+   // is successfully read or written.
    // The specified offset is the offset within the memory,
    // not an absolute address.
    //
@@ -1107,7 +1107,7 @@ endfunction
 
 function uvm_reg_map uvm_mem::get_default_map(string caller="");
 
-   // if mem is not associated with any may, return null
+   // if mem is not associated with any may, return ~null~
    if (m_maps.num() == 0) begin
       `uvm_warning("RegModel", 
         {"Memory '",get_full_name(),"' is not registered with any map",
@@ -2350,8 +2350,8 @@ endfunction
 function void uvm_mem::do_print (uvm_printer printer);
   super.do_print(printer);
   //printer.print_generic(" ", " ", -1, convert2string());
-  printer.print_int("n_bits",get_n_bits(),32, UVM_UNSIGNED);
-  printer.print_int("size",get_size(),32, UVM_UNSIGNED);
+  printer.print_field_int("n_bits",get_n_bits(),32, UVM_UNSIGNED);
+  printer.print_field_int("size",get_size(),32, UVM_UNSIGNED);
 endfunction
 
 

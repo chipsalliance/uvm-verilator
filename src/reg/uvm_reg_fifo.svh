@@ -120,12 +120,12 @@ class uvm_reg_fifo extends uvm_reg;
 
     //  Function: write
     // 
-    //  Pushes the given value to the DUT FIFO. If auto-predition is enabled,
+    //  Pushes the given value to the DUT FIFO. If auto-prediction is enabled,
     //  the written value is also pushed to the abstract FIFO before the
-    //  call returns. If auto-prediction is not enabled (see 
-    //  <uvm_map::set_auto_predict>), the value is pushed to abstract
+    //  call returns. If auto-prediction is not enabled (via 
+    //  <uvm_reg_map::set_auto_predict>), the value is pushed to abstract
     //  FIFO only when the write operation is observed on the target bus.
-    //  This mode requires using the <uvm_reg_predictor #(BUSTYPE)> class.
+    //  This mode requires using the <uvm_reg_predictor> class.
     //  If the write is via an <update()> operation, the abstract FIFO
     //  already contains the written value and is thus not affected by
     //  either prediction mode.
@@ -160,7 +160,7 @@ class uvm_reg_fifo extends uvm_reg;
 
     // Function: update
     //
-    // Pushes (writes) all values preloaded using <set(()> to the DUT>.
+    // Pushes (writes) all values preloaded using <set()> to the DUT.
     // You must ~update~ after ~set~ before any blocking statements,
     // else other reads/writes to the DUT FIFO may cause the mirror to
     // become out of sync with the DUT.

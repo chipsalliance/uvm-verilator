@@ -60,7 +60,7 @@ class apb_monitor extends uvm_monitor;
       end
    endfunction
 
-   virtual protected task run_phase(uvm_phase phase);
+   virtual task run_phase(uvm_phase phase);
       super.run_phase(phase);
       forever begin
          apb_rw tr;

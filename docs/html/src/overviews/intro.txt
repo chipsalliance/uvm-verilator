@@ -1,5 +1,5 @@
 
-Title: UVM Class Reference
+Title: UVM 1.2 Class Reference
 
 The UVM Class Library provides the building blocks needed to quickly develop
 well-constructed and reusable verification components and test environments in
@@ -46,15 +46,15 @@ a set of classes which provide a configuration database. The configuration
 database is used to store and retrieve both configuration time and
 run time properties.
 
-Sychronization - The UVM provides event and barrier synchronization classes
+Synchronization - The UVM provides event and barrier synchronization classes
 for process synchronization. See <Synchronization Classes> for more information.
 
-Containers - The <Container Classes> are type parameterized datastructures 
+Containers - The <Container Classes> are type parameterized data structures 
 which provide queue and pool services. The class based queue and pool types
-allow for efficient sharing of the datastructures compared with their
+allow for efficient sharing of the data structures compared with their
 SystemVerilog built-in counterparts.
 
-Policies - Each of UVM's policy classes perform a specific task for
+Policies - Each of UVM's policy classes performs a specific task for
 <uvm_object>-based objects: printing, comparing, recording, packing, and unpacking.
 They are implemented separately from ~uvm_object~ so that users can plug in
 different ways to print, compare, etc. without modifying the object class being

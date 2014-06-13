@@ -26,7 +26,7 @@ class producer #(type T=packet) extends uvm_component;
   function new(string name, uvm_component parent=null);
     super.new(name,parent);
     out = new("out",this);
-    void'(get_config_int("num_packets", this.num_packets));
+    void'(uvm_config_int::get(this, "", "num_packets", this.num_packets));
   endfunction
 
   protected T   proto       = new;
@@ -55,7 +55,7 @@ class producer #(type T=packet) extends uvm_component;
       p.set_initiator(this);
 
       if (uvm_verbosity'(recording_detail)!=UVM_NONE)
-        p.enable_recording("packet_stream");
+        p.enable_recording(get_tr_stream("packet_stream"));
 
       void'(p.randomize());
 

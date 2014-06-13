@@ -38,7 +38,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
  <!--CONTENT index=1 -->
 <div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_reg_single_bit_bash_seq" href="../../../src/reg/sequences/uvm_reg_bit_bash_seq.svh">uvm_reg_single_bit_bash_seq</a></h2><div class=CBody><p>Verify the implementation of a single register by attempting to write 1&rsquo;s and 0&rsquo;s to every bit in it, via every address map in which the register is mapped, making sure that the resulting value matches the mirrored value.</p><p>If bit-type resource named &ldquo;NO_REG_TESTS&rdquo; or &ldquo;NO_REG_BIT_BASH_TEST&rdquo; in the &ldquo;REG::&rdquo; namespace matches the full name of the register, the register is not tested.</p><blockquote><pre>uvm_resource_db#(bit)::set({&quot;REG::&quot;,regmodel.blk.r0.get_full_name()},
-                           &quot;NO_REG_TESTS&quot;, 1, this);</pre></blockquote><p>Registers that contain fields with unknown access policies cannot be tested.</p><p>The DUT should be idle and not modify any register durign this test.</p>
+                           &quot;NO_REG_TESTS&quot;, 1, this);</pre></blockquote><p>Registers that contain fields with unknown access policies cannot be tested.</p><p>The DUT should be idle and not modify any register during this test.</p>
 
 <!--START_ND_SUMMARY index=1-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -154,7 +154,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg_bit_bash_seq.body" id=link9 onMouseOver="ShowTip(event, 'tt5', 'link9')" onMouseOut="HideTip('tt5')">body</a></td><td class=SDescription>Executes the Register Bit Bash sequence. </td></tr>
   <!-- index=10 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg_bit_bash_seq.do_block" id=link10 onMouseOver="ShowTip(event, 'tt6', 'link10')" onMouseOut="HideTip('tt6')">do_block</a></td><td class=SDescription>Test all of the registers in a a given <i>block</i></td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_reg_bit_bash_seq.do_block" id=link10 onMouseOver="ShowTip(event, 'tt6', 'link10')" onMouseOut="HideTip('tt6')">do_block</a></td><td class=SDescription>Test all of the registers in a given <i>block</i></td></tr>
   <!-- index=11 -->
 
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_reg_bit_bash_seq.reset_blk" id=link11 onMouseOver="ShowTip(event, 'tt7', 'link11')" onMouseOut="HideTip('tt7')">reset_blk</a></td><td class=SDescription>Reset the DUT that corresponds to the specified block abstraction class.</td></tr></table></div></div><!--END_ND_SUMMARY-->
@@ -201,12 +201,14 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_bit_bash_seq.do_block" href="../../../src/reg/sequences/uvm_reg_bit_bash_seq.svh">do_block</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>protected virtual task do_block(</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
-      <td class=PParameter nowrap>blk</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>protected virtual task do_block(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
+      <td class=PParameter nowrap width=100%>blk</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Test all of the registers in a a given <i>block</i></p></div></div></div>
+<div class=CBody><p>Test all of the registers in a given <i>block</i></p></div></div></div>
 
 
 
@@ -215,9 +217,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_bit_bash_seq.reset_blk" href="../../../src/reg/sequences/uvm_reg_bit_bash_seq.svh">reset_blk</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task reset_blk(</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
-      <td class=PParameter nowrap>blk</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual task reset_blk(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
+      <td class=PParameter nowrap width=100%>blk</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Reset the DUT that corresponds to the specified block abstraction class.</p><p>Currently empty.&nbsp; Will rollback the environment&rsquo;s phase to the <i>reset</i> phase once the new phasing is available.</p><p>In the meantime, the DUT should be reset before executing this test sequence or this method should be implemented in an extension to reset the DUT.</p></div></div></div>
@@ -256,17 +260,21 @@ Verify the implementation of all registers in a block by executing the uvm_reg_s
   </td></tr></table></blockquote>Executes the Register Bit Bash sequence. </div></div><div class=CToolTip id="tt6"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>protected virtual task do_block(</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
-      <td class=PParameter nowrap>blk</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>protected virtual task do_block(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
+      <td class=PParameter nowrap width=100%>blk</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Test all of the registers in a a given <i>block</i></div></div><div class=CToolTip id="tt7"><div class=CMethod>
+Test all of the registers in a given <i>block</i></div></div><div class=CToolTip id="tt7"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task reset_blk(</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
-      <td class=PParameter nowrap>blk</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual task reset_blk(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
+      <td class=PParameter nowrap width=100%>blk</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Reset the DUT that corresponds to the specified block abstraction class.</div></div><!--END_ND_TOOLTIPS-->

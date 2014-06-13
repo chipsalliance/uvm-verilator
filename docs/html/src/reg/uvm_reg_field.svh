@@ -3,6 +3,7 @@
 //    Copyright 2004-2009 Synopsys, Inc.
 //    Copyright 2010-2011 Mentor Graphics Corporation
 //    Copyright 2010-2011 Cadence Design Systems, Inc.
+//    Copyright 2013 Semifore, Inc.
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -32,7 +33,7 @@ typedef class uvm_reg_cbs;
 // as a single entity.
 //
 // A field is contained within a single register, but may
-// have different access policies depending on the adddress map
+// have different access policies depending on the address map
 // use the access the register (thus the field).
 //-----------------------------------------------------------------
 class uvm_reg_field extends uvm_object;
@@ -80,7 +81,7 @@ class uvm_reg_field extends uvm_object;
    // Create a new field instance
    //
    // This method should not be used directly.
-   // The uvm_reg_field::type_id::create() factory method
+   // The ~uvm_reg_field::type_id::create()~ factory method
    // should be used instead.
    //
    extern function new(string name = "uvm_reg_field");
@@ -187,31 +188,32 @@ class uvm_reg_field extends uvm_object;
    // The read operation will return the current value,
    // not the value affected by the read operation (if any).
    //
-   // "RO"    - W: no effect, R: no effect
-   // "RW"    - W: as-is, R: no effect
-   // "RC"    - W: no effect, R: clears all bits
-   // "RS"    - W: no effect, R: sets all bits
-   // "WRC"   - W: as-is, R: clears all bits
-   // "WRS"   - W: as-is, R: sets all bits
-   // "WC"    - W: clears all bits, R: no effect
-   // "WS"    - W: sets all bits, R: no effect
-   // "WSRC"  - W: sets all bits, R: clears all bits
-   // "WCRS"  - W: clears all bits, R: sets all bits
-   // "W1C"   - W: 1/0 clears/no effect on matching bit, R: no effect
-   // "W1S"   - W: 1/0 sets/no effect on matching bit, R: no effect
-   // "W1T"   - W: 1/0 toggles/no effect on matching bit, R: no effect
-   // "W0C"   - W: 1/0 no effect on/clears matching bit, R: no effect
-   // "W0S"   - W: 1/0 no effect on/sets matching bit, R: no effect
-   // "W0T"   - W: 1/0 no effect on/toggles matching bit, R: no effect
-   // "W1SRC" - W: 1/0 sets/no effect on matching bit, R: clears all bits
-   // "W1CRS" - W: 1/0 clears/no effect on matching bit, R: sets all bits
-   // "W0SRC" - W: 1/0 no effect on/sets matching bit, R: clears all bits
-   // "W0CRS" - W: 1/0 no effect on/clears matching bit, R: sets all bits
-   // "WO"    - W: as-is, R: error
-   // "WOC"   - W: clears all bits, R: error
-   // "WOS"   - W: sets all bits, R: error
-   // "W1"    - W: first one after ~HARD~ reset is as-is, other W have no effects, R: no effect
-   // "WO1"   - W: first one after ~HARD~ reset is as-is, other W have no effects, R: error
+   // "RO"       - W: no effect, R: no effect
+   // "RW"       - W: as-is, R: no effect
+   // "RC"       - W: no effect, R: clears all bits
+   // "RS"       - W: no effect, R: sets all bits
+   // "WRC"      - W: as-is, R: clears all bits
+   // "WRS"      - W: as-is, R: sets all bits
+   // "WC"       - W: clears all bits, R: no effect
+   // "WS"       - W: sets all bits, R: no effect
+   // "WSRC"     - W: sets all bits, R: clears all bits
+   // "WCRS"     - W: clears all bits, R: sets all bits
+   // "W1C"      - W: 1/0 clears/no effect on matching bit, R: no effect
+   // "W1S"      - W: 1/0 sets/no effect on matching bit, R: no effect
+   // "W1T"      - W: 1/0 toggles/no effect on matching bit, R: no effect
+   // "W0C"      - W: 1/0 no effect on/clears matching bit, R: no effect
+   // "W0S"      - W: 1/0 no effect on/sets matching bit, R: no effect
+   // "W0T"      - W: 1/0 no effect on/toggles matching bit, R: no effect
+   // "W1SRC"    - W: 1/0 sets/no effect on matching bit, R: clears all bits
+   // "W1CRS"    - W: 1/0 clears/no effect on matching bit, R: sets all bits
+   // "W0SRC"    - W: 1/0 no effect on/sets matching bit, R: clears all bits
+   // "W0CRS"    - W: 1/0 no effect on/clears matching bit, R: sets all bits
+   // "WO"       - W: as-is, R: error
+   // "WOC"      - W: clears all bits, R: error
+   // "WOS"      - W: sets all bits, R: error
+   // "W1"       - W: first one after ~HARD~ reset is as-is, other W have no effects, R: no effect
+   // "WO1"      - W: first one after ~HARD~ reset is as-is, other W have no effects, R: error
+   // "NOACCESS" - W: no effect, R: no effect
    //
    // It is important to remember that modifying the access of a field
    // will make the register model diverge from the specification
@@ -225,10 +227,10 @@ class uvm_reg_field extends uvm_object;
    // Define a new access policy value
    //
    // Because field access policies are specified using string values,
-   // there is no way for SystemVerilog to verify if a spceific access
+   // there is no way for SystemVerilog to verify if a specific access
    // value is valid or not.
    // To help catch typing errors, user-defined access values
-   // must be defined using this method to avoid beign reported as an
+   // must be defined using this method to avoid begin reported as an
    // invalid access policy.
    //
    // The name of field access policies are always converted to all uppercase.
@@ -254,7 +256,10 @@ class uvm_reg_field extends uvm_object;
    // address map.
    // For example, a RW field may only be writable through one of
    // the address maps and read-only through all of the other maps.
-   //
+   // If the field access contradicts the map's access value
+   // (field access of WO, and map access value of RO, etc), the
+   // method's return value is NOACCESS.
+
    extern virtual function string get_access(uvm_reg_map map = null);
 
 
@@ -492,7 +497,7 @@ class uvm_reg_field extends uvm_object;
    // specified if a physical access is used (front-door access).
    // If a back-door access path is used, the effect of reading
    // the field through a physical access is mimicked. For
-   // example, clear-on-read bits in the filed will be set to zero.
+   // example, clear-on-read bits in the field will be set to zero.
    //
    // The mirrored value will be updated using the <uvm_reg_field::predict()>
    // method.
@@ -547,7 +552,7 @@ class uvm_reg_field extends uvm_object;
    // Read the current value from this field
    //
    // Sample the value in the DUT field corresponding to this
-   // absraction class instance using a back-door access.
+   // abstraction class instance using a back-door access.
    // The field value is sampled, not modified.
    //
    // Uses the HDL path for the design abstraction specified by ~kind~.
@@ -576,8 +581,8 @@ class uvm_reg_field extends uvm_object;
    // method based on the readback value.
    //
    // The ~path~ argument specifies whether to mirror using 
-   // the  <UVM_FRONTDOOR> (<read>) or
-   // or <UVM_BACKDOOR> (<peek()>).
+   // the  <UVM_FRONTDOOR> (<read>) or 
+   // <UVM_BACKDOOR> (<peek()>).
    //
    // If ~check~ is specified as <UVM_CHECK>,
    // an error message is issued if the current mirrored value
@@ -630,9 +635,9 @@ class uvm_reg_field extends uvm_object;
 
    // Function: predict
    //
-   // Update the mirrored value for this field.
+   // Update the mirrored and desired value for this field.
    //
-   // Predict the mirror value of the field based on the specified
+   // Predict the mirror and desired value of the field based on the specified
    // observed ~value~ on a bus using the specified address ~map~.
    //
    // If ~kind~ is specified as <UVM_PREDICT_READ>, the value
@@ -646,12 +651,12 @@ class uvm_reg_field extends uvm_object;
    // For example, the mirrored value of a read-only field is modified
    // by this method if ~kind~ is specified as <UVM_PREDICT_DIRECT>.
    //
-   // This method does not allow an update of the mirror
+   // This method does not allow an update of the mirror (or desired)
    // when the register containing this field is busy executing
    // a transaction because the results are unpredictable and
    // indicative of a race condition in the testbench.
    //
-   // Returns TRUE if the prediction was succesful.
+   // Returns TRUE if the prediction was successful.
    //
    extern function bit predict (uvm_reg_data_t    value,
                                 uvm_reg_byte_en_t be = -1,
@@ -904,56 +909,57 @@ endfunction
 // get_access
 
 function string uvm_reg_field::get_access(uvm_reg_map map = null);
-   get_access = m_access;
+   string field_access = m_access;
 
    if (map == uvm_reg_map::backdoor())
-     return get_access;
+     return field_access;
 
    // Is the register restricted in this map?
    case (m_parent.get_rights(map))
      "RW":
        // No restrictions
-       return get_access;
+       return field_access;
 
      "RO":
-       case (get_access)
+       case (field_access)
         "RW", "RO", "WC", "WS",
           "W1C", "W1S", "W1T", "W0C", "W0S", "W0T",
           "W1"
-        : get_access = "RO";
+        : field_access = "RO";
         
         "RC", "WRC", "W1SRC", "W0SRC", "WSRC"
-        : get_access = "RC";
+        : field_access = "RC";
         
         "RS", "WRS", "W1CRS", "W0CRS", "WCRS"
-        : get_access = "RS";
+        : field_access = "RS";
         
          "WO", "WOC", "WOS", "WO1": begin
-            `uvm_error("RegModel",
-                       $sformatf("%s field \"%s\" restricted to RO in map \"%s\"",
-                                 get_access(), get_name(), map.get_full_name()))
+            field_access = "NOACCESS";
          end
 
          // No change for the other modes
        endcase
 
      "WO":
-       case (get_access)
+       case (field_access)
          "RW",
-         "WO": get_access = "WO";
+         "WO": field_access = "WO";
          default: begin
-            `uvm_error("RegModel", {get_access," field '",get_full_name(),
-                       "' restricted to WO in map '",map.get_full_name(),"'"})
+            field_access = "NOACCESS";
          end
 
          // No change for the other modes
        endcase
 
      default:
-       `uvm_error("RegModel", {"Register '",m_parent.get_full_name(),
-                  "' containing field '",get_name(),"' is mapped in map '",
-                  map.get_full_name(),"' with unknown access right '", m_parent.get_rights(map), "'"})
+       begin
+         field_access = "NOACCESS";
+         `uvm_warning("RegModel", {"Register '",m_parent.get_full_name(),
+                      "' containing field '",get_name(),"' is mapped in map '",
+                      map.get_full_name(),"' with unknown access right '", m_parent.get_rights(map), "'"})
+       end
    endcase
+   return field_access;
 endfunction: get_access
 
 
@@ -1067,6 +1073,7 @@ function uvm_reg_data_t uvm_reg_field::XpredictX (uvm_reg_data_t cur_val,
      "WOS":   return mask;
      "W1":    return (m_written) ? cur_val : wr_val;
      "WO1":   return (m_written) ? cur_val : wr_val;
+     "NOACCESS": return cur_val;
      default: return wr_val;
    endcase
 
@@ -1158,7 +1165,8 @@ function void uvm_reg_field::do_predict(uvm_reg_item      rw,
             else if (acc == "WO" ||
                      acc == "WOC" ||
                      acc == "WOS" ||
-                     acc == "WO1")
+                     acc == "WO1" ||
+                     acc == "NOACCESS")
               return;
          end
 
@@ -1357,7 +1365,7 @@ endfunction: set_reset
 // needs_update
 
 function bit uvm_reg_field::needs_update();
-   needs_update = (m_mirrored != m_desired);
+   needs_update = (m_mirrored != m_desired) | m_volatile;
 endfunction: needs_update
 
 

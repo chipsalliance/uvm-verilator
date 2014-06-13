@@ -83,7 +83,7 @@ class uvm_sequence_item extends uvm_transaction;
   // request, and to uniquely identify transactions.
   //
   // The sequence_id is assigned automatically by a sequencer when a sequence
-  // initiates communication through any sequencer calls (i.e. `uvm_do_xxx,
+  // initiates communication through any sequencer calls (i.e. `uvm_do_*,
   // wait_for_grant).  A sequence_id will remain unique for this sequence
   // until it ends or it is killed.  However, a single sequence may have
   // multiple valid sequence ids at any point in time.  Should a sequence 
@@ -189,7 +189,7 @@ class uvm_sequence_item extends uvm_transaction;
   // Function: get_parent_sequence
   //
   // Returns a reference to the parent sequence of any sequence on which this
-  // method was called. If this is a parent sequence, the method returns null.
+  // method was called. If this is a parent sequence, the method returns ~null~.
 
   function uvm_sequence_base get_parent_sequence();
     return (m_parent_sequence);
@@ -210,8 +210,8 @@ class uvm_sequence_item extends uvm_transaction;
 
   // Function: get_depth
   //
-  // Returns the depth of a sequence from it's parent.  A  parent sequence will
-  // have a depth of 1, it's child will have a depth  of 2, and it's grandchild
+  // Returns the depth of a sequence from its parent.  A  parent sequence will
+  // have a depth of 1, its child will have a depth  of 2, and its grandchild
   // will have a depth of 3.
 
   function int get_depth();
@@ -332,32 +332,20 @@ class uvm_sequence_item extends uvm_transaction;
   // <uvm_sequence_base::start_item> or <uvm_sequence_base::start>),
   // then the global reporter will be used.
 
-  // The sequence path string is an on-demand string. To avoid building this name
-  // information continuously, we save the info here. The m_get_client_info function
-  // should only be called for a message that has passed the is_enabled check, 
-  // e.g. from the `uvm_info macro.
-  protected string m_client_str;
-  protected uvm_report_object m_client;
-  protected uvm_report_handler m_rh;
+  virtual function uvm_report_object uvm_get_report_object();
+    if(m_sequencer == null) begin
+      uvm_coreservice_t cs = uvm_coreservice_t::get();
+       return cs.get_root();
+    end else 
+      return m_sequencer;
+  endfunction
 
-  virtual function string m_get_client_info (output uvm_report_object client);
-    if(m_client_str != "") begin
-      client = m_client;
-      return m_client_str;
-    end
-    if(m_sequencer != null)
-      m_client = m_sequencer;
-    else 
-      m_client = uvm_root::get();
-    m_rh = m_client.get_report_handler();
-    client = m_client;
-  
-    m_client_str = client.get_full_name();
-    if(m_client_str == "")
-      m_client_str = {"reporter@@", get_sequence_path()};
-    else
-      m_client_str = {m_client_str,"@@", get_sequence_path()};
-    return m_client_str;
+  function int uvm_report_enabled(int verbosity, 
+    				  uvm_severity severity=UVM_INFO, string id="");
+    uvm_report_object l_report_object = uvm_get_report_object();
+    if (l_report_object.get_report_verbosity_level(severity, id) < verbosity)
+      return 0;
+    return 1;
   endfunction
 
   // Function: uvm_report
@@ -367,54 +355,61 @@ class uvm_sequence_item extends uvm_transaction;
                                     int verbosity = (severity == uvm_severity'(UVM_ERROR)) ? UVM_LOW :
                                                     (severity == uvm_severity'(UVM_FATAL)) ? UVM_NONE : UVM_MEDIUM,
                                     string filename = "",
-                                    int line = 0);
-      uvm_report_object client;
-      string str = m_get_client_info(client);
+                                    int line = 0,
+                                    string context_name = "",
+                                    bit report_enabled_checked = 0);
+    uvm_report_message l_report_message;
+    if (report_enabled_checked == 0) begin
+      if (!uvm_report_enabled(verbosity, severity, id))
+        return;
+    end
+    l_report_message = uvm_report_message::new_report_message();
+    l_report_message.set_report_message(severity, id, message, 
+					verbosity, filename, line, context_name);
+    uvm_process_report_message(l_report_message);
 
-      m_rh.report(severity, str, id, message, verbosity, filename,
-                  line, client);
   endfunction
     
   // Function: uvm_report_info
 
   virtual function void uvm_report_info( string id,
-                                         string message,
-                                         int verbosity = UVM_MEDIUM,
-                                         string filename = "",
-                                         int line = 0);
-    uvm_report_object client;
-    string str = m_get_client_info(client);
+					 string message,
+   					 int verbosity = UVM_MEDIUM,
+					 string filename = "",
+					 int line = 0,
+   					 string context_name = "",
+					 bit report_enabled_checked = 0);
 
-    m_rh.report(UVM_INFO, str, id, message, verbosity, filename,
-      line, client);
+    this.uvm_report(UVM_INFO, id, message, verbosity, filename, line,
+                    context_name, report_enabled_checked);
   endfunction
 
   // Function: uvm_report_warning
 
   virtual function void uvm_report_warning( string id,
-                                            string message,
-                                            int verbosity = UVM_MEDIUM,
-                                            string filename = "",
-                                            int line = 0);
-    uvm_report_object client;
-    string str = m_get_client_info(client);
+					    string message,
+   					    int verbosity = UVM_MEDIUM,
+					    string filename = "",
+					    int line = 0,
+   					    string context_name = "",
+					    bit report_enabled_checked = 0);
 
-    m_rh.report(UVM_WARNING, str, id, message, verbosity, filename,
-      line, client);
+    this.uvm_report(UVM_WARNING, id, message, verbosity, filename, line,
+                    context_name, report_enabled_checked);
   endfunction
 
   // Function: uvm_report_error
 
   virtual function void uvm_report_error( string id,
-                                          string message,
-                                          int verbosity = UVM_LOW,
-                                          string filename = "",
-                                          int line = 0);
-    uvm_report_object client;
-    string str = m_get_client_info(client);
+					  string message,
+   					  int verbosity = UVM_LOW,
+					  string filename = "",
+					  int line = 0,
+   					  string context_name = "",
+					  bit report_enabled_checked = 0);
 
-    m_rh.report(UVM_ERROR, str, id, message, verbosity, filename,
-      line, client);
+    this.uvm_report(UVM_ERROR, id, message, verbosity, filename, line,
+                    context_name, report_enabled_checked);
   endfunction
 
   // Function: uvm_report_fatal
@@ -425,29 +420,23 @@ class uvm_sequence_item extends uvm_transaction;
   // for details on the messaging functions.
 
   virtual function void uvm_report_fatal( string id,
-                                          string message,
-                                          int verbosity = UVM_NONE,
-                                          string filename = "",
-                                          int line = 0);
-    uvm_report_object client;
-    string str = m_get_client_info(client);
+					  string message,
+   					  int verbosity = UVM_NONE,
+					  string filename = "",
+					  int line = 0,
+   					  string context_name = "",
+					  bit report_enabled_checked = 0);
 
-    m_rh.report(UVM_FATAL, str, id, message, verbosity, filename,
-      line, client);
+    this.uvm_report(UVM_FATAL, id, message, verbosity, filename, line,
+                    context_name, report_enabled_checked);
   endfunction
 
-
-  function int uvm_report_enabled(int verbosity, 
-                          uvm_severity severity=UVM_INFO, string id="");
-    if(m_client == null) begin
-      if(m_sequencer != null) m_client = m_sequencer;
-      else m_client = uvm_root::get();
-    end
-    if (m_client.get_report_verbosity_level(severity, id) < verbosity ||
-        m_client.get_report_action(severity,id) == uvm_action'(UVM_NO_ACTION))
-      return 0;
-    else
-      return 1;
+  virtual function void uvm_process_report_message (uvm_report_message report_message);
+    uvm_report_object l_report_object = uvm_get_report_object();
+    report_message.set_report_object(l_report_object);
+    if (report_message.get_context() == "")
+      report_message.set_context(get_sequence_path());
+    l_report_object.m_rh.process_report_message(report_message);
   endfunction
 
 
@@ -460,7 +449,7 @@ class uvm_sequence_item extends uvm_transaction;
     int depth = get_depth();
     super.do_print(printer);
     if(print_sequence_info || m_use_sequence_info) begin
-      printer.print_int("depth", depth, $bits(depth), UVM_DEC, ".", "int");
+      printer.print_field_int("depth", depth, $bits(depth), UVM_DEC, ".", "int");
       if(m_parent_sequence != null) begin
         temp_str0 = m_parent_sequence.get_name();
         temp_str1 = m_parent_sequence.get_full_name();

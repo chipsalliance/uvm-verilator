@@ -3,6 +3,7 @@
 //   Copyright 2007-2011 Mentor Graphics Corporation
 //   Copyright 2007-2010 Cadence Design Systems, Inc.
 //   Copyright 2010 Synopsys, Inc.
+//   Copyright 2013 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -86,6 +87,7 @@ virtual class uvm_task_phase extends uvm_phase;
     string name;
     uvm_domain phase_domain =phase.get_domain();
     uvm_domain comp_domain = comp.get_domain();
+    uvm_sequencer_base seqr;
     
     if (comp.get_first_child(name))
       do
@@ -104,6 +106,8 @@ virtual class uvm_task_phase extends uvm_phase;
           comp.m_current_phase = phase;
           comp.m_apply_verbosity_settings(phase);
           comp.phase_started(phase);
+          if ($cast(seqr, comp))
+            seqr.start_phase_sequence(phase);
           end
         UVM_PHASE_EXECUTING: begin
           uvm_phase ph = this; 
@@ -115,6 +119,8 @@ virtual class uvm_task_phase extends uvm_phase;
           comp.phase_ready_to_end(phase);
           end
         UVM_PHASE_ENDED: begin
+          if ($cast(seqr, comp))
+            seqr.stop_phase_sequence(phase);
           comp.phase_ended(phase);
           comp.m_current_phase = null;
           end
@@ -135,7 +141,6 @@ virtual class uvm_task_phase extends uvm_phase;
 
     fork
       begin
-        uvm_sequencer_base seqr;
         process proc;
 
         // reseed this process for random stability
@@ -143,9 +148,6 @@ virtual class uvm_task_phase extends uvm_phase;
         proc.srandom(uvm_create_random_seed(phase.get_type_name(), comp.get_full_name()));
 
         phase.m_num_procs_not_yet_returned++;
-
-        if ($cast(seqr,comp))
-          seqr.start_phase_sequence(phase);
 
         exec_task(comp,phase);
 

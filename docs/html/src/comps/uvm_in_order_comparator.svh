@@ -189,7 +189,7 @@ class uvm_in_order_comparator
   // Function: flush
   //
   // This method sets m_matches and m_mismatches back to zero. The
-  // <uvm_tlm_fifo::flush> takes care of flushing the FIFOs.
+  // <uvm_tlm_fifo#(T)::flush> takes care of flushing the FIFOs.
 
   virtual function void flush();
     m_matches = 0;

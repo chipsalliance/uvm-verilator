@@ -120,7 +120,7 @@
 // MACRO- `uvm_update_sequence_lib
 //
 // This macro populates the instance-specific sequence library for a sequencer.
-// It should be invoked inside the sequencer¿s constructor.
+// It should be invoked inside the sequencer��s constructor.
 
 `define uvm_update_sequence_lib \
   m_add_builtin_seqs(0); \
@@ -136,9 +136,10 @@
 // The macro should be invoked inside the sequencer's constructor.
 
 `define uvm_update_sequence_lib_and_item(USER_ITEM) \
+  begin   uvm_coreservice_t cs = uvm_coreservice_t::get(); uvm_factory factory=cs.get_factory(); \
   factory.set_inst_override_by_type( \
     uvm_sequence_item::get_type(), USER_ITEM::get_type(), \
-    {get_full_name(), "*.item"}); \
+  {get_full_name(), "*.item"}); end \
   m_add_builtin_seqs(1); \
   uvm_update_sequence_lib();
 

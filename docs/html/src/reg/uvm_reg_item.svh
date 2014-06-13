@@ -23,7 +23,7 @@
 //------------------------------------------------------------------------------
 // Title: Generic Register Operation Descriptors
 //
-// This section defines the abtract register transaction item. It also defines
+// This section defines the abstract register transaction item. It also defines
 // a descriptor for a physical bus operation that is used by <uvm_reg_adapter>
 // subtypes to convert from a protocol-specific address/data/rw operation to
 // a bus-independent, canonical r/w operation.

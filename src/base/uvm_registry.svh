@@ -89,9 +89,10 @@ class uvm_component_registry #(type T=uvm_component, string Tname="<unknown>")
 
   static function this_type get();
     if (me == null) begin
-      uvm_factory f = uvm_factory::get();
+  	  uvm_coreservice_t cs = uvm_coreservice_t::get();                                                     
+  	  uvm_factory factory=cs.get_factory();
       me = new;
-      f.register(me);
+      factory.register(me);
     end
     return me;
   endfunction
@@ -101,16 +102,17 @@ class uvm_component_registry #(type T=uvm_component, string Tname="<unknown>")
   //
   // Returns an instance of the component type, ~T~, represented by this proxy,
   // subject to any factory overrides based on the context provided by the
-  // ~parent~'s full name. The ~contxt~ argument, if supplied, supercedes the
+  // ~parent~'s full name. The ~contxt~ argument, if supplied, supersedes the
   // ~parent~'s context. The new instance will have the given leaf ~name~
   // and ~parent~.
 
   static function T create(string name, uvm_component parent, string contxt="");
     uvm_object obj;
-    uvm_factory f = uvm_factory::get();
+    uvm_coreservice_t cs = uvm_coreservice_t::get();                                                     
+    uvm_factory factory=cs.get_factory();
     if (contxt == "" && parent != null)
       contxt = parent.get_full_name();
-    obj = f.create_component_by_type(get(),contxt,name,parent);
+    obj = factory.create_component_by_type(get(),contxt,name,parent);
     if (!$cast(create, obj)) begin
       string msg;
       msg = {"Factory did not return a component of type '",type_name,
@@ -131,6 +133,8 @@ class uvm_component_registry #(type T=uvm_component, string Tname="<unknown>")
 
   static function void set_type_override (uvm_object_wrapper override_type,
                                           bit replace=1);
+    uvm_coreservice_t cs = uvm_coreservice_t::get();
+    uvm_factory factory=cs.get_factory();                                          
     factory.set_type_override_by_type(get(),override_type,replace);
   endfunction
 
@@ -154,6 +158,9 @@ class uvm_component_registry #(type T=uvm_component, string Tname="<unknown>")
                                          string inst_path,
                                          uvm_component parent=null);
     string full_inst_path;
+    uvm_coreservice_t cs = uvm_coreservice_t::get();                                                     
+    uvm_factory factory=cs.get_factory();
+    
     if (parent != null) begin
       if (inst_path == "")
         inst_path = parent.get_full_name();
@@ -170,7 +177,7 @@ endclass
 //
 // CLASS: uvm_object_registry #(T,Tname)
 //
-// The uvm_object_registry serves as a lightweight proxy for an <uvm_object> of
+// The uvm_object_registry serves as a lightweight proxy for a <uvm_object> of
 // type ~T~ and type name ~Tname~, a string. The proxy enables efficient
 // registration with the <uvm_factory>. Without it, registration would
 // require an instance of the object itself.
@@ -185,20 +192,20 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
 
   // Function: create_object
   //
-  // Creates an object of type ~T~ and returns it as a handle to an
+  // Creates an object of type ~T~ and returns it as a handle to a
   // <uvm_object>. This is an override of the method in <uvm_object_wrapper>.
   // It is called by the factory after determining the type of object to create.
   // You should not call this method directly. Call <create> instead.
 
   virtual function uvm_object create_object(string name="");
     T obj;
-`ifdef UVM_OBJECT_MUST_HAVE_CONSTRUCTOR
-    if (name=="") obj = new();
-    else obj = new(name);
-`else
+`ifdef UVM_OBJECT_DO_NOT_NEED_CONSTRUCTOR
     obj = new();
     if (name!="")
       obj.set_name(name);
+`else
+    if (name=="") obj = new();
+    else obj = new(name);
 `endif
     return obj;
   endfunction
@@ -223,9 +230,10 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
 
   static function this_type get();
     if (me == null) begin
-      uvm_factory f = uvm_factory::get();
+      uvm_coreservice_t cs = uvm_coreservice_t::get();                                                     
+      uvm_factory factory=cs.get_factory();
       me = new;
-      f.register(me);
+      factory.register(me);
     end
     return me;
   endfunction
@@ -235,17 +243,19 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
   //
   // Returns an instance of the object type, ~T~, represented by this proxy,
   // subject to any factory overrides based on the context provided by the
-  // ~parent~'s full name. The ~contxt~ argument, if supplied, supercedes the
+  // ~parent~'s full name. The ~contxt~ argument, if supplied, supersedes the
   // ~parent~'s context. The new instance will have the given leaf ~name~,
   // if provided.
 
   static function T create (string name="", uvm_component parent=null,
                             string contxt="");
     uvm_object obj;
-    uvm_factory f = uvm_factory::get();
+    uvm_coreservice_t cs = uvm_coreservice_t::get();                                                     
+    uvm_factory factory=cs.get_factory();
+  
     if (contxt == "" && parent != null)
       contxt = parent.get_full_name();
-    obj = f.create_object_by_type(get(),contxt,name);
+    obj = factory.create_object_by_type(get(),contxt,name);
     if (!$cast(create, obj)) begin
       string msg;
       msg = {"Factory did not return an object of type '",type_name,
@@ -266,6 +276,8 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
 
   static function void set_type_override (uvm_object_wrapper override_type,
                                           bit replace=1);
+    uvm_coreservice_t cs = uvm_coreservice_t::get();
+    uvm_factory factory=cs.get_factory();
     factory.set_type_override_by_type(get(),override_type,replace);
   endfunction
 
@@ -289,6 +301,9 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
                                          string inst_path,
                                          uvm_component parent=null);
     string full_inst_path;
+    uvm_coreservice_t cs = uvm_coreservice_t::get();                                                     
+    uvm_factory factory=cs.get_factory();
+    
     if (parent != null) begin
       if (inst_path == "")
         inst_path = parent.get_full_name();
@@ -311,7 +326,7 @@ endclass
 // To register a particular component type, you need only typedef a
 // specialization of its proxy class, which is typically done inside the class.
 //
-// For example, to register an UVM component of type ~mycomp~
+// For example, to register a UVM component of type ~mycomp~
 //
 //|  class mycomp extends uvm_component;
 //|    typedef uvm_component_registry #(mycomp,"mycomp") type_id;
@@ -319,7 +334,7 @@ endclass
 //
 // However, because of differences between simulators, it is necessary to use a
 // macro to ensure vendor interoperability with factory registration. To
-// register an UVM component of type ~mycomp~ in a vendor-independent way, you
+// register a UVM component of type ~mycomp~ in a vendor-independent way, you
 // would write instead:
 //
 //|  class mycomp extends uvm_component;
@@ -334,14 +349,14 @@ endclass
 // set overrides and create objects and components of non-parameterized types.
 //
 // For parameterized types, the type name changes with each specialization, so
-// you can not specify a ~Tname~ inside a parameterized class and get the behavior
+// you cannot specify a ~Tname~ inside a parameterized class and get the behavior
 // you want; the same type name string would be registered for all
 // specializations of the class! (The factory would produce warnings for each
 // specialization beyond the first.) To avoid the warnings and simulator
 // interoperability issues with parameterized classes, you must register
 // parameterized classes with a different macro.
 //
-// For example, to register an UVM component of type driver #(T), you
+// For example, to register a UVM component of type driver #(T), you
 // would write:
 //
 //|  class driver #(type T=int) extends uvm_component;
@@ -350,7 +365,7 @@ endclass
 //|  endclass
 //
 // The <`uvm_component_param_utils> and <`uvm_object_param_utils> macros are used
-// to register parameterized classes with the factory. Unlike the the non-param
+// to register parameterized classes with the factory. Unlike the non-param
 // versions, these macros do not specify the ~Tname~ parameter in the underlying
 // uvm_component_registry typedef, and they do not define the get_type_name
 // method for the user class. Consequently, you will not be able to use the

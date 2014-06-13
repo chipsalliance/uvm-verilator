@@ -6,7 +6,7 @@ Sequences encapsulate user-defined procedures that generate multiple
 extended, randomized, and combined sequentially and hierarchically
 in interesting ways to produce realistic stimulus to your DUT.
 
-With ~uvm_sequence~ objects, users can encapsulate DUT initializaton
+With ~uvm_sequence~ objects, users can encapsulate DUT initialization
 code, bus-based stress tests, network protocol stacks-- anything
 procedural-- then have them all execute in specific or random order
 to more quickly reach corner cases and coverage goals. 
@@ -21,4 +21,4 @@ The UVM sequence item and sequence class hierarchy is shown below.
 
 - <uvm_sequence #(REQ,RSP)> - The ~uvm_sequence~ extends ~uvm_sequence_item~ to
   add the ability to generate streams of ~uvm_sequence_items~, either
-  directly or by recursively execting other ~uvm_sequences~.
+  directly or by recursively executing other ~uvm_sequences~.

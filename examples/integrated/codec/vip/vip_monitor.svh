@@ -91,7 +91,7 @@ class vip_monitor extends uvm_monitor;
       wait (!m_suspended);
    endtask
 
-   virtual protected task run_phase(uvm_phase phase);
+   virtual task run_phase(uvm_phase phase);
       forever begin
          m_suspended = 1;
          m_in_sync = 0;

@@ -150,7 +150,7 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
      adapter.bus2reg(tr,rw);
      rg = map.get_reg_by_offset(rw.addr, (rw.kind == UVM_READ));
 
-     // ToDo: Add memory look-up and call uvm_mem::XsampleX()
+     // ToDo: Add memory look-up and call <uvm_mem::XsampleX()>
 
      if (rg != null) begin
        bit found;
@@ -243,17 +243,21 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
   
   // Function: check_phase
   //
-  // Checks that no pending register transactions are still enqueued.
+  // Checks that no pending register transactions are still queued.
 
   virtual function void check_phase(uvm_phase phase);
+	 string q[$];
      super.check_phase(phase);
+            
+     foreach (m_pending[l]) begin
+	     uvm_reg rg=l;
+         q.push_back($sformatf("\n%s",rg.get_full_name()));
+     end
+            
     if (m_pending.num() > 0) begin
-      `uvm_error("PENDING REG ITEMS",{"There are ",$sformatf("%0d",m_pending.num()),
-                 " incomplete register transactions still pending completion:"})
-       foreach (m_pending[l]) begin
-          uvm_reg rg=l;
-          $display("\n%s",rg.get_full_name());
-       end
+      `uvm_error("PENDING REG ITEMS",
+      	$sformatf("There are %0d incomplete register transactions still pending completion:%s",m_pending.num(),`UVM_STRING_QUEUE_STREAMING_PACK(q)))
+
     end
   endfunction
 

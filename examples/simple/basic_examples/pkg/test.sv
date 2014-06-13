@@ -44,8 +44,8 @@ module test;
     endfunction
 
     function void build_phase(uvm_phase phase);
-       void'(get_config_int("data", data));
-       void'(get_config_string("str", str));
+       void'(uvm_config_int::get(this, "", "data", data));
+       void'(uvm_config_string::get(this, "", "str", str));
     endfunction 
 
     function void do_print(uvm_printer printer);
@@ -66,8 +66,8 @@ module test;
       super.new(name, parent);
       l1 = new ("l1", this);
       l2 = new ("l2", this);
-      set_config_string("l1", "str", "hi");
-      set_config_int("*", "da*", 'h100);
+      uvm_config_string::set(this, "l1", "str", "hi");
+      uvm_config_int::set(this, "*", "da*", 'h100);
       l1.data = 'h30;
       l2.data = 'h40;
       a = new[5]; for(int i=0; i<5;++i) a[i] = i*i;
@@ -110,7 +110,9 @@ module test;
       return "lower";
     endfunction
   
-    static function bit register_me();
+    static function bit register_me(); uvm_coreservice_t cs_ = uvm_coreservice_t::get();
+
+      uvm_factory factory = cs_.get_factory();
       lower_wrapper w; w = new;
       factory.register(w);
       return 1;
@@ -134,7 +136,9 @@ module test;
       return "myunit";
     endfunction
 
-    static function bit register_me();
+    static function bit register_me(); uvm_coreservice_t cs_ = uvm_coreservice_t::get();
+
+      uvm_factory factory = cs_.get_factory();
       myunit_wrapper w; w = new;
       factory.register(w);
       return 1;
@@ -184,7 +188,9 @@ module test;
       return "myobject";
     endfunction
 
-    static function bit register_me();
+    static function bit register_me(); uvm_coreservice_t cs_ = uvm_coreservice_t::get();
+
+      uvm_factory factory = cs_.get_factory();
       mydata_wrapper w; w = new;
       factory.register(w);
       return 1;
@@ -196,11 +202,14 @@ module test;
 
   mydata bar = new;
 
-  initial begin
-    set_config_int("mu.*", "data", 101);
-    set_config_string("mu.*", "str", "hi");
-    set_config_int("mu.l1", "data", 55);
-    set_config_object("mu.*", "obj", bar);
+  initial begin automatic uvm_coreservice_t cs_ = uvm_coreservice_t::get();
+
+    uvm_factory factory;
+    factory=cs_.get_factory();
+    uvm_config_int::set(null, "mu.*", "data", 101);
+    uvm_config_string::set(null, "mu.*", "str", "hi");
+    uvm_config_int::set(null, "mu.l1", "data", 55);
+    uvm_config_object::set(null, "mu.*", "obj", bar);
     mu.print_config_settings("", null, 1);
     uvm_default_printer = uvm_default_tree_printer;
     mu.print();

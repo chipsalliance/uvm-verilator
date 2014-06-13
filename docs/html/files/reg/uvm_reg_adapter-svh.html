@@ -51,7 +51,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LGeneric id=link6 onMouseOver="ShowTip(event, 'tt5', 'link6')" onMouseOut="HideTip('tt5')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LClass id=link6 onMouseOver="ShowTip(event, 'tt5', 'link6')" onMouseOut="HideTip('tt5')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link7 onMouseOver="ShowTip(event, 'tt6', 'link7')" onMouseOut="HideTip('tt6')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_reg_adapter</div></div></td></tr>
         </table>
@@ -99,11 +99,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.new" href="../../src/reg/uvm_reg_adapter.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Create a new instance of this type, giving it the optional <i>name</i>.</p></div></div></div>
@@ -139,10 +141,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.reg2bus" href="../../src/reg/uvm_reg_adapter.svh">reg2bus</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>pure virtual function uvm_sequence_item reg2bus(</td>      <td class=PTypePrefix nowrap>const ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>pure virtual function uvm_sequence_item reg2bus(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>const ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_bus_op&nbsp;</td>
-      <td class=PParameter nowrap>rw</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>rw</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Extensions of this class <i>must</i> implement this method to convert the specified <a href="uvm_reg_item-svh.html#uvm_reg_bus_op" class=LClass id=link20 onMouseOver="ShowTip(event, 'tt2', 'link20')" onMouseOut="HideTip('tt2')">uvm_reg_bus_op</a> to a corresponding <a href="../seq/uvm_sequence_item-svh.html#uvm_sequence_item" class=LClass id=link21 onMouseOver="ShowTip(event, 'tt12', 'link21')" onMouseOut="HideTip('tt12')">uvm_sequence_item</a> subtype that defines the bus transaction.</p><p>The method must allocate a new bus-specific <a href="../seq/uvm_sequence_item-svh.html#uvm_sequence_item" class=LClass id=link22 onMouseOver="ShowTip(event, 'tt12', 'link22')" onMouseOut="HideTip('tt12')">uvm_sequence_item</a>, assign its members from the corresponding members from the given generic <i>rw</i> bus operation, then return it.</p></div></div></div>
@@ -154,13 +158,15 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.bus2reg" href="../../src/reg/uvm_reg_adapter.svh">bus2reg</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>pure virtual function void bus2reg(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>pure virtual function void bus2reg(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
-      <td class=PParameter nowrap>bus_item,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>bus_item,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_bus_op&nbsp;</td>
-      <td class=PParameter nowrap>rw</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>rw</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Extensions of this class <i>must</i> implement this method to copy members of the given bus-specific <i>bus_item</i> to corresponding members of the provided <i>bus_rw</i> instance.&nbsp; Unlike <a href="#uvm_reg_adapter.reg2bus" class=LMethod id=link23 onMouseOver="ShowTip(event, 'tt11', 'link23')" onMouseOut="HideTip('tt11')">reg2bus</a>, the resulting transaction is not allocated from scratch.&nbsp; This is to accommodate applications where the bus response must be returned in the original request.</p></div></div></div>
@@ -171,7 +177,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=8 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_adapter.get_item" href="../../src/reg/uvm_reg_adapter.svh">get_item</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_reg_item get_item()
-  </td></tr></table></blockquote><div class=CBody><p>Returns the bus-independent read/write information that corresponds to the generic bus transaction currently translated to a bus-specific transaction.&nbsp; This function returns a value reference only when called in the <a href="#uvm_reg_adapter.reg2bus" class=LMethod id=link24 onMouseOver="ShowTip(event, 'tt11', 'link24')" onMouseOut="HideTip('tt11')">uvm_reg_adapter::reg2bus()</a> method.&nbsp; It returns null at all other times.&nbsp; The content of the return <a href="uvm_reg_item-svh.html#uvm_reg_item" class=LClass id=link25 onMouseOver="ShowTip(event, 'tt15', 'link25')" onMouseOut="HideTip('tt15')">uvm_reg_item</a> instance must not be modified and used strictly to obtain additional information about the operation.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Returns the bus-independent read/write information that corresponds to the generic bus transaction currently translated to a bus-specific transaction.&nbsp; This function returns a value reference only when called in the <a href="#uvm_reg_adapter.reg2bus" class=LMethod id=link24 onMouseOver="ShowTip(event, 'tt11', 'link24')" onMouseOut="HideTip('tt11')">uvm_reg_adapter::reg2bus()</a> method.&nbsp; It returns <i>null</i> at all other times.&nbsp; The content of the return <a href="uvm_reg_item-svh.html#uvm_reg_item" class=LClass id=link25 onMouseOver="ShowTip(event, 'tt15', 'link25')" onMouseOut="HideTip('tt15')">uvm_reg_item</a> instance must not be modified and used strictly to obtain additional information about the operation.</p></div></div></div>
 
 
 
@@ -225,7 +231,7 @@ endclass</pre></blockquote></div></div></div>
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LGeneric id=link26 onMouseOver="ShowTip(event, 'tt5', 'link26')" onMouseOut="HideTip('tt5')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LClass id=link26 onMouseOver="ShowTip(event, 'tt5', 'link26')" onMouseOut="HideTip('tt5')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link27 onMouseOver="ShowTip(event, 'tt6', 'link27')" onMouseOut="HideTip('tt6')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="#uvm_reg_adapter" class=LClass id=link28 onMouseOver="ShowTip(event, 'tt1', 'link28')" onMouseOut="HideTip('tt1')">uvm_reg_adapter</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_reg_tlm_adapter</div></div></td></tr>
@@ -265,10 +271,12 @@ endclass</pre></blockquote></div></div></div>
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_tlm_adapter.reg2bus" href="../../src/reg/uvm_reg_adapter.svh">reg2bus</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_sequence_item reg2bus(</td>      <td class=PTypePrefix nowrap>const ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function uvm_sequence_item reg2bus(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>const ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_bus_op&nbsp;</td>
-      <td class=PParameter nowrap>rw</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>rw</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Converts a <a href="uvm_reg_item-svh.html#uvm_reg_bus_op" class=LClass id=link40 onMouseOver="ShowTip(event, 'tt2', 'link40')" onMouseOut="HideTip('tt2')">uvm_reg_bus_op</a> struct to a <a href="../tlm2/uvm_tlm2_generic_payload-svh.html#uvm_tlm_gp" class=LClass id=link41 onMouseOver="ShowTip(event, 'tt4', 'link41')" onMouseOut="HideTip('tt4')">uvm_tlm_gp</a> item.</p></div></div></div>
@@ -280,13 +288,15 @@ endclass</pre></blockquote></div></div></div>
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_tlm_adapter.bus2reg" href="../../src/reg/uvm_reg_adapter.svh">bus2reg</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void bus2reg(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>virtual function void bus2reg(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
-      <td class=PParameter nowrap>bus_item,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>bus_item,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_bus_op&nbsp;</td>
-      <td class=PParameter nowrap>rw</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>rw</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Converts a <a href="../tlm2/uvm_tlm2_generic_payload-svh.html#uvm_tlm_gp" class=LClass id=link42 onMouseOver="ShowTip(event, 'tt4', 'link42')" onMouseOut="HideTip('tt4')">uvm_tlm_gp</a> item to a <a href="uvm_reg_item-svh.html#uvm_reg_bus_op" class=LClass id=link43 onMouseOver="ShowTip(event, 'tt2', 'link43')" onMouseOut="HideTip('tt2')">uvm_reg_bus_op</a>. into the provided <i>rw</i> transaction.</p></div></div></div>
@@ -302,16 +312,20 @@ endclass</pre></blockquote></div></div></div>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_reg_tlm_adapter extends uvm_reg_adapter
   </td></tr></table></blockquote>For converting between uvm_reg_bus_op and uvm_tlm_gp items.</div></div><div class=CToolTip id="tt4"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>typedef uvm_tlm_generic_payload uvm_tlm_gp
-  </td></tr></table></blockquote>This typedef provides a short, more convenient name for the uvm_tlm_generic_payload type.</div></div><div class=CToolTip id="tt5"><div class=CGeneric>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt6"><div class=CClass>
+  </td></tr></table></blockquote>This typedef provides a short, more convenient name for the uvm_tlm_generic_payload type.</div></div><div class=CToolTip id="tt5"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_void
+  </td></tr></table></blockquote>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt6"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
   </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt7"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Create a new instance of this type, giving it the optional <i>name</i>.</div></div><div class=CToolTip id="tt8"><div class=CVariable>
@@ -323,10 +337,12 @@ Create a new instance of this type, giving it the optional <i>name</i>.</div></d
   </td></tr></table></blockquote>Set this member in extensions of this class if the bus driver requires bus items be executed via a particular sequence base type. </div></div><div class=CToolTip id="tt11"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>pure virtual function uvm_sequence_item reg2bus(</td>      <td class=PTypePrefix nowrap>const ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>pure virtual function uvm_sequence_item reg2bus(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>const ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_bus_op&nbsp;</td>
-      <td class=PParameter nowrap>rw</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>rw</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Extensions of this class <i>must</i> implement this method to convert the specified uvm_reg_bus_op to a corresponding uvm_sequence_item subtype that defines the bus transaction.</div></div><div class=CToolTip id="tt12"><div class=CClass>
@@ -334,13 +350,15 @@ Extensions of this class <i>must</i> implement this method to convert the specif
   </td></tr></table></blockquote>The base class for user-defined sequence items and also the base class for the uvm_sequence class. </div></div><div class=CToolTip id="tt13"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>pure virtual function void bus2reg(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>pure virtual function void bus2reg(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
-      <td class=PParameter nowrap>bus_item,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>bus_item,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_bus_op&nbsp;</td>
-      <td class=PParameter nowrap>rw</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>rw</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Extensions of this class <i>must</i> implement this method to copy members of the given bus-specific <i>bus_item</i> to corresponding members of the provided <i>bus_rw</i> instance. </div></div><div class=CToolTip id="tt14"><div class=CMethod>
@@ -350,22 +368,26 @@ Extensions of this class <i>must</i> implement this method to copy members of th
   </td></tr></table></blockquote>Defines an abstract register transaction item. </div></div><div class=CToolTip id="tt16"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_sequence_item reg2bus(</td>      <td class=PTypePrefix nowrap>const ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function uvm_sequence_item reg2bus(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>const ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_bus_op&nbsp;</td>
-      <td class=PParameter nowrap>rw</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>rw</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Converts a uvm_reg_bus_op struct to a uvm_tlm_gp item.</div></div><div class=CToolTip id="tt17"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void bus2reg(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>virtual function void bus2reg(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
-      <td class=PParameter nowrap>bus_item,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>bus_item,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_bus_op&nbsp;</td>
-      <td class=PParameter nowrap>rw</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>rw</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Converts a uvm_tlm_gp item to a uvm_reg_bus_op. </div></div><!--END_ND_TOOLTIPS-->

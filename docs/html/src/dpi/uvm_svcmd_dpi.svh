@@ -24,12 +24,12 @@
 // lists.
 
 `ifndef UVM_CMDLINE_NO_DPI
-import "DPI-C" function string uvm_dpi_get_next_arg_c ();
+import "DPI-C" function string uvm_dpi_get_next_arg_c (int init);
 import "DPI-C" function string uvm_dpi_get_tool_name_c ();
 import "DPI-C" function string uvm_dpi_get_tool_version_c ();
 
-function string uvm_dpi_get_next_arg();
-  return uvm_dpi_get_next_arg_c();
+function string uvm_dpi_get_next_arg(int init=0);
+  return uvm_dpi_get_next_arg_c(init);
 endfunction
 
 function string uvm_dpi_get_tool_name();
@@ -45,7 +45,7 @@ import "DPI-C" function int uvm_dpi_regexec(chandle preg, string str);
 import "DPI-C" function void uvm_dpi_regfree(chandle preg);
 
 `else
-function string uvm_dpi_get_next_arg();
+function string uvm_dpi_get_next_arg(int init=0);
   return "";
 endfunction
 
@@ -56,5 +56,10 @@ endfunction
 function string uvm_dpi_get_tool_version();
   return "?";
 endfunction
+
+
+function chandle uvm_dpi_regcomp(string regex); return null; endfunction
+function int uvm_dpi_regexec(chandle preg, string str); return 0; endfunction
+function void uvm_dpi_regfree(chandle preg); endfunction
 
 `endif

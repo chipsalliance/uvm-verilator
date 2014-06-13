@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="TLM1_Interfaces,Ports,Exports_and_Transport_Interfaces" href="../../src/overviews/tlm1.txt">TLM1 Interfaces, Ports, Exports and Transport Interfaces</a></h1><div class=CBody><p>Each TLM1 interface is either blocking, non-blocking, or a combination of these two.</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>blocking</td><td class=CDLDescription>A blocking interface conveys transactions in blocking fashion; its methods do not return until the transaction has been successfully sent or retrieved.&nbsp; Because delivery may consume time to complete, the methods in such an interface are declared as tasks.</td></tr><tr><td class=CDLEntry>non-blocking</td><td class=CDLDescription>A non-blocking interface attempts to convey a transaction without consuming simulation time.&nbsp; Its methods are declared as functions.&nbsp; Because delivery may fail (e.g. the target component is busy and can not accept the request), the methods may return with failed status.</td></tr><tr><td class=CDLEntry>combination</td><td class=CDLDescription>A combination interface contains both the blocking and non-blocking variants.&nbsp;  In SystemC, combination interfaces are defined through multiple inheritance.&nbsp;  Because SystemVerilog does not support multiple inheritance, the UVM emulates hierarchical interfaces via a common base class and interface mask.</td></tr></table><p>Like their SystemC counterparts, the UVM&rsquo;s TLM port and export implementations allow connections between ports whose interfaces are not an exact match.&nbsp; For example, an <i>uvm_blocking_get_port</i> can be connected to any port, export or imp port that provides <i>at the least</i> an implementation of the blocking_get interface, which includes the <i>uvm_get_*</i> ports and exports, <i>uvm_blocking_get_peek_*</i> ports and exports, and <i>uvm_get_peek_*</i> ports and exports.</p><p>The sections below provide and overview of the unidirectional and bidirectional TLM interfaces, ports, and exports.</p>
+<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="TLM1_Interfaces,Ports,Exports_and_Transport_Interfaces" href="../../src/overviews/tlm1.txt">TLM1 Interfaces, Ports, Exports and Transport Interfaces</a></h1><div class=CBody><p>Each TLM1 interface is either blocking, non-blocking, or a combination of these two.</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>blocking</td><td class=CDLDescription>A blocking interface conveys transactions in blocking fashion; its methods do not return until the transaction has been successfully sent or retrieved.&nbsp; Because delivery may consume time to complete, the methods in such an interface are declared as tasks.</td></tr><tr><td class=CDLEntry>non-blocking</td><td class=CDLDescription>A non-blocking interface attempts to convey a transaction without consuming simulation time.&nbsp; Its methods are declared as functions.&nbsp; Because delivery may fail (e.g. the target component is busy and can not accept the request), the methods may return with failed status.</td></tr><tr><td class=CDLEntry>combination</td><td class=CDLDescription>A combination interface contains both the blocking and non-blocking variants.&nbsp;  In SystemC, combination interfaces are defined through multiple inheritance.&nbsp;  Because SystemVerilog does not support multiple inheritance, the UVM emulates hierarchical interfaces via a common base class and interface mask.</td></tr></table><p>Like their SystemC counterparts, the UVM&rsquo;s TLM port and export implementations allow connections between ports whose interfaces are not an exact match.&nbsp; For example, a <i>uvm_blocking_get_port</i> can be connected to any port, export or imp port that provides <i>at the least</i> an implementation of the blocking_get interface, which includes the <i>uvm_get_*</i> ports and exports, <i>uvm_blocking_get_peek_*</i> ports and exports, and <i>uvm_get_peek_*</i> ports and exports.</p><p>The sections below provide and overview of the unidirectional and bidirectional TLM interfaces, ports, and exports.</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -52,7 +52,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SGeneric SIndent2 SMarked"><td class=SEntry><a href="#Ports,Exports,and_Imps" >Ports, Exports, and Imps</a></td><td class=SDescription>The UVM provides bidirectional ports, exports, and implementation ports for connecting your components via the TLM interfaces.</td></tr>
   <!-- index=9 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#Usage" >Usage</a></td><td class=SDescription>This example illustrates basic TLM connectivity using the blocking put inteface.</td></tr></table></div></div><!--END_ND_SUMMARY-->
+<tr class="SGroup SIndent1"><td class=SEntry><a href="#Usage" >Usage</a></td><td class=SDescription>This example illustrates basic TLM connectivity using the blocking put interface.</td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
 
 
@@ -147,7 +147,7 @@ slave</pre></blockquote></div></div></div>
 
 
  <!--CONTENT index=9 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Usage" href="../../src/overviews/tlm1.txt">Usage</a></h3><div class=CBody><p>This example illustrates basic TLM connectivity using the blocking put inteface.</p><img src="../../images/uvm_ref_tlm_hierarchy.gif" width="486" height="236"><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>port-to-port</td><td class=CDLDescription>leaf1&rsquo;s <i>out</i> port is connected to its parent&rsquo;s (comp1) <i>out</i> port</td></tr><tr><td class=CDLEntry>port-to-export</td><td class=CDLDescription>comp1&rsquo;s <i>out</i> port is connected to comp2&rsquo;s <i>in</i> export</td></tr><tr><td class=CDLEntry>export-to-export</td><td class=CDLDescription>comp2&rsquo;s <i>in</i> export is connected to its child&rsquo;s (subcomp2) <i>in</i> export</td></tr><tr><td class=CDLEntry>export-to-imp</td><td class=CDLDescription>subcomp2&rsquo;s <i>in</i> export is connected leaf2&rsquo;s <i>in</i> imp port.</td></tr><tr><td class=CDLEntry>imp-to-implementation</td><td class=CDLDescription>leaf2&rsquo;s <i>in</i> imp port is connected to its implementation, leaf2</td></tr></table><p>Hierarchical port connections are resolved and optimized just before the &lt;uvm_component::end_of_elaboration&gt; phase.&nbsp; After optimization, calling any port&rsquo;s interface method (e.g. leaf1.out.put(trans)) incurs a single hop to get to the implementation (e.g. leaf2&rsquo;s put task), no matter how far up and down the hierarchy the implementation resides.</p><blockquote><pre>`include &quot;uvm_pkg.sv&quot;
+<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="Usage" href="../../src/overviews/tlm1.txt">Usage</a></h3><div class=CBody><p>This example illustrates basic TLM connectivity using the blocking put interface.</p><img src="../../images/uvm_ref_tlm_hierarchy.gif" width="486" height="236"><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>port-to-port</td><td class=CDLDescription>leaf1&rsquo;s <i>out</i> port is connected to its parent&rsquo;s (comp1) <i>out</i> port</td></tr><tr><td class=CDLEntry>port-to-export</td><td class=CDLDescription>comp1&rsquo;s <i>out</i> port is connected to comp2&rsquo;s <i>in</i> export</td></tr><tr><td class=CDLEntry>export-to-export</td><td class=CDLDescription>comp2&rsquo;s <i>in</i> export is connected to its child&rsquo;s (subcomp2) <i>in</i> export</td></tr><tr><td class=CDLEntry>export-to-imp</td><td class=CDLDescription>subcomp2&rsquo;s <i>in</i> export is connected leaf2&rsquo;s <i>in</i> imp port.</td></tr><tr><td class=CDLEntry>imp-to-implementation</td><td class=CDLDescription>leaf2&rsquo;s <i>in</i> imp port is connected to its implementation, leaf2</td></tr></table><p>Hierarchical port connections are resolved and optimized just before <a href="../base/uvm_component-svh.html#uvm_component.end_of_elaboration_phase" class=LMethod id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_component::end_of_elaboration_phase</a>.&nbsp; After optimization, calling any port&rsquo;s interface method (e.g. leaf1.out.put(trans)) incurs a single hop to get to the implementation (e.g. leaf2&rsquo;s put task), no matter how far up and down the hierarchy the implementation resides.</p><blockquote><pre>`include &quot;uvm_pkg.sv&quot;
 import uvm_pkg::*;
 
 class trans extends uvm_transaction;
@@ -167,11 +167,13 @@ class leaf1 extends uvm_component;
     out = new(&quot;out&quot;,this);
   endfunction
 
-  virtual task run();
+  virtual task run_phase(uvm_phase phase);
     trans t;
+    phase.raise_objection(this, &quot;prolonging run_phase&quot;);
     t = new;
     t.randomize();
     out.put(t);
+    phase.drop_objection(this, &quot;prolonging run_phase&quot;);
   endtask
 
 endclass
@@ -189,13 +191,13 @@ class comp1 extends uvm_component;
     super.new(name,parent);
   endfunction
 
-  virtual function void build();
+  virtual function void build_phase(uvm_phase phase);
     out = new(&quot;out&quot;,this);
     leaf = new(&quot;leaf1&quot;,this);
   endfunction
 
   // connect port to port
-  virtual function void connect();
+  virtual function void connect_phase(uvm_phase phase);
     leaf.out.connect(out);
   endfunction
 
@@ -234,13 +236,13 @@ class subcomp2 extends uvm_component;
     super.new(name,parent);
   endfunction
 
-  virtual function void build();
+  virtual function void build_phase(uvm_phase phase);
     in = new(&quot;in&quot;,this);
     leaf = new(&quot;leaf2&quot;,this);
   endfunction
 
   // connect export to imp
-  virtual function void connect();
+  virtual function void connect_phase(uvm_phase phase);
     in.connect(leaf.in);
   endfunction
 
@@ -259,13 +261,13 @@ class comp2 extends uvm_component;
     super.new(name,parent);
   endfunction
 
-  virtual function void build();
+  virtual function void build_phase(uvm_phase phase);
     in = new(&quot;in&quot;,this);
     subcomp = new(&quot;subcomp2&quot;,this);
   endfunction
 
   // connect export to export
-  virtual function void connect();
+  virtual function void connect_phase(uvm_phase phase);
     in.connect(subcomp.in);
   endfunction
 
@@ -283,13 +285,13 @@ class env extends uvm_component;
     super.new(name,parent);
   endfunction
 
-  virtual function void build();
+  virtual function void build_phase(uvm_phase phase);
     comp1_i = new(&quot;comp1&quot;,this);
     comp2_i = new(&quot;comp2&quot;,this);
   endfunction
 
   // connect port to export
-  virtual function void connect();
+  virtual function void connect_phase(uvm_phase phase);
     comp1_i.out.connect(comp2_i.in);
   endfunction
 
@@ -307,7 +309,17 @@ endmodule</pre></blockquote></div></div></div>
 
 
 <!--START_ND_TOOLTIPS-->
-<!--END_ND_TOOLTIPS-->
+<div class=CToolTip id="tt1"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters colspan=3>virtual function void end_of_elaboration_phase(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
+      <td class=PParameter nowrap width=100%>phase</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+The uvm_end_of_elaboration_phase phase implementation method.</div></div><!--END_ND_TOOLTIPS-->
 
 <script language=JavaScript><!--
 if (browserType) {if (browserVer) {document.write("</div>"); }document.write("</div>");}// --></script></body></html>

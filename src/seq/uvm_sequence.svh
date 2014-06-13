@@ -2,6 +2,7 @@
 //   Copyright 2007-2011 Mentor Graphics Corporation
 //   Copyright 2007-2010 Cadence Design Systems, Inc. 
 //   Copyright 2010 Synopsys, Inc.
+//   Copyright 2013 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -35,7 +36,19 @@ virtual class uvm_sequence #(type REQ = uvm_sequence_item,
   typedef uvm_sequencer_param_base #(REQ, RSP) sequencer_t;
 
   sequencer_t        param_sequencer;
+
+  // Variable: req
+  //
+  // The sequence contains a field of the request type called req.  The user
+  // can use this field, if desired, or create another field to use.  The
+  // default ~do_print~ will print this field.
   REQ                req;
+
+  // Variable: rsp
+  //
+  // The sequence contains a field of the response type called rsp.  The user
+  // can use this field, if desired, or create another field to use.   The
+  // default ~do_print~ will print this field.
   RSP                rsp;
 
   // Function: new
@@ -69,7 +82,7 @@ virtual class uvm_sequence #(type REQ = uvm_sequence_item,
   // Function: get_current_item
   //
   // Returns the request item currently being executed by the sequencer. If the
-  // sequencer is not currently executing an item, this method will return null.
+  // sequencer is not currently executing an item, this method will return ~null~.
   //
   // The sequencer is executing an item from the time that get_next_item or peek
   // is called until the time that get or item_done is called.
@@ -89,7 +102,7 @@ virtual class uvm_sequence #(type REQ = uvm_sequence_item,
   // By default, sequences must retrieve responses by calling get_response.
   // If no transaction_id is specified, this task will return the next response
   // sent to this sequence.  If no response is available in the response queue,
-  // the method will block until a response is recieved.
+  // the method will block until a response is received.
   //
   // If a transaction_id is parameter is specified, the task will block until
   // a response with that transaction_id is received in the response queue.

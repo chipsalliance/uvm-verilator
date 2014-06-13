@@ -13,13 +13,13 @@ must meet the specified semantic.
 
 Topic: TLM1
 
-The TLM1 ports provide blocking and nonblocking pass-by-value
+The TLM1 ports provide blocking and non-blocking pass-by-value
 transaction-level interfaces.
 The semantics of these interfaces are limited to message passing.
 
 Topic: TLM2
 
-The TLM2 sockets provide blocking and nonblocking transaction-level interfaces
+The TLM2 sockets provide blocking and non-blocking transaction-level interfaces
 with well-defined completion semantics.
 
 Topic: Sequencer Port

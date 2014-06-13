@@ -18,13 +18,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Generic_Register_Operation_Descriptors" href="../../src/reg/uvm_reg_item.svh">Generic Register Operation Descriptors</a></h1><div class=CBody><p>This section defines the abtract register transaction item.&nbsp; It also defines a descriptor for a physical bus operation that is used by <a href="uvm_reg_adapter-svh.html#uvm_reg_adapter" class=LClass id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">uvm_reg_adapter</a> subtypes to convert from a protocol-specific address/data/rw operation to a bus-independent, canonical r/w operation.</p>
+<div class="CSection"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="Generic_Register_Operation_Descriptors" href="../../src/reg/uvm_reg_item.svh">Generic Register Operation Descriptors</a></h1><div class=CBody><p>This section defines the abstract register transaction item.&nbsp; It also defines a descriptor for a physical bus operation that is used by <a href="uvm_reg_adapter-svh.html#uvm_reg_adapter" class=LClass id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">uvm_reg_adapter</a> subtypes to convert from a protocol-specific address/data/rw operation to a bus-independent, canonical r/w operation.</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Contents</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
   <!-- index=0 -->
 
-<tr class="SMain"><td class=SEntry><a href="#Generic_Register_Operation_Descriptors" >Generic Register Operation Descriptors</a></td><td class=SDescription>This section defines the abtract register transaction item. </td></tr>
+<tr class="SMain"><td class=SEntry><a href="#Generic_Register_Operation_Descriptors" >Generic Register Operation Descriptors</a></td><td class=SDescription>This section defines the abstract register transaction item. </td></tr>
   <!-- index=1 -->
 
 <tr class="SSMethod SMarked"><td class=SEntry><a href="#uvm_reg_item" id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_reg_item</a></td><td class=SDescription>Defines an abstract register transaction item. </td></tr>
@@ -51,7 +51,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LGeneric id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LClass id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link4 onMouseOver="ShowTip(event, 'tt4', 'link4')" onMouseOut="HideTip('tt4')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_transaction-svh.html#uvm_transaction" class=LClass id=link5 onMouseOver="ShowTip(event, 'tt5', 'link5')" onMouseOut="HideTip('tt5')">uvm_transaction</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../seq/uvm_sequence_item-svh.html#uvm_sequence_item" class=LClass id=link6 onMouseOver="ShowTip(event, 'tt6', 'link6')" onMouseOut="HideTip('tt6')">uvm_sequence_item</a></div></div></td></tr>
@@ -269,11 +269,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_item.new" href="../../src/reg/uvm_reg_item.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Create a new instance of this type, giving it the optional <i>name</i>.</p></div></div></div>
@@ -293,9 +295,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_item.do_copy" href="../../src/reg/uvm_reg_item.svh">do_copy</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void do_copy(</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>rhs</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void do_copy(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rhs</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Copy the <i>rhs</i> object into this object.&nbsp; The <i>rhs</i> object must derive from <a href="#uvm_reg_item" class=LClass id=link43 onMouseOver="ShowTip(event, 'tt1', 'link43')" onMouseOut="HideTip('tt1')">uvm_reg_item</a>.</p></div></div></div>
@@ -398,7 +402,9 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_reg_item extends uvm_sequence_item
   </td></tr></table></blockquote>Defines an abstract register transaction item. </div></div><div class=CToolTip id="tt2"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_reg_adapter extends uvm_object
-  </td></tr></table></blockquote>This class defines an interface for converting between uvm_reg_bus_op and a specific bus transaction.</div></div><div class=CToolTip id="tt3"><div class=CGeneric>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt4"><div class=CClass>
+  </td></tr></table></blockquote>This class defines an interface for converting between uvm_reg_bus_op and a specific bus transaction.</div></div><div class=CToolTip id="tt3"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_void
+  </td></tr></table></blockquote>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt4"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
   </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt5"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_transaction extends uvm_object
@@ -429,19 +435,21 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   </td></tr></table></blockquote>The priority requested of this transfer, as defined by uvm_sequence_base::start_item.</div></div><div class=CToolTip id="tt20"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task start_item (</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual task start_item (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequence_item&nbsp;</td>
       <td class=PParameter nowrap>item,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>set_priority</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_sequencer_base&nbsp;</td>
       <td class=PParameter nowrap>sequencer</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <i>start_item</i> and finish_item together will initiate operation of a sequence item. </div></div><div class=CToolTip id="tt21"><div class=CVariable>
@@ -455,11 +463,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   </td></tr></table></blockquote>The file name from where this transaction originated, if provided at the call site.</div></div><div class=CToolTip id="tt25"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Create a new instance of this type, giving it the optional <i>name</i>.</div></div><div class=CToolTip id="tt26"><div class=CMethod>
@@ -467,9 +477,11 @@ Create a new instance of this type, giving it the optional <i>name</i>.</div></d
   </td></tr></table></blockquote>Returns a string showing the contents of this transaction.</div></div><div class=CToolTip id="tt27"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void do_copy(</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>rhs</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void do_copy(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rhs</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Copy the <i>rhs</i> object into this object. </div></div><div class=CToolTip id="tt28"><div class=CClass>
@@ -483,21 +495,25 @@ Copy the <i>rhs</i> object into this object. </div></div><div class=CToolTip id=
   </td></tr></table></blockquote>Field abstraction class</div></div><div class=CToolTip id="tt33"><div class=CType>Return status for register operations</div></div><div class=CToolTip id="tt34"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_sequencer_base get_sequencer (</td>      <td class=PType nowrap>uvm_hier_e&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function uvm_sequencer_base get_sequencer (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_hier_e&nbsp;</td>
       <td class=PParameter nowrap>hier</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>UVM_HIER</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Gets the sequencer for the bus associated with this map. </div></div><div class=CToolTip id="tt35"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_reg_adapter get_adapter (</td>      <td class=PType nowrap>uvm_hier_e&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function uvm_reg_adapter get_adapter (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_hier_e&nbsp;</td>
       <td class=PParameter nowrap>hier</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>UVM_HIER</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Gets the bus adapter for the bus associated with this map. </div></div><div class=CToolTip id="tt36"><div class=CVariable>

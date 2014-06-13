@@ -70,15 +70,17 @@ The uvm_sequence class provides the interfaces necessary in order to create stre
 </div></div><div class=CToolTip id="tt4"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>class uvm_driver #(</td>      <td class=PType nowrap>type&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>class uvm_driver #(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>type&nbsp;</td>
       <td class=PParameter nowrap>REQ</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>uvm_sequence_item,</td>
-</tr><tr><td></td>      <td class=PType nowrap>type&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>type&nbsp;</td>
       <td class=PParameter nowrap>RSP</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>REQ</td>
-      <td class=PAfterParameters nowrap>) extends uvm_component</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>) extends uvm_component</td></tr>
       </table></td></tr>
     </table></blockquote>
 The base class for drivers that initiate requests for new transactions via a uvm_seq_item_pull_port. </div></div><div class=CToolTip id="tt5"><div class=CClass>
@@ -100,15 +102,17 @@ The base class for drivers that initiate requests for new transactions via a uvm
 </div></div><div class=CToolTip id="tt6"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>class uvm_push_driver #(</td>      <td class=PType nowrap>type&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>class uvm_push_driver #(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>type&nbsp;</td>
       <td class=PParameter nowrap>REQ</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>uvm_sequence_item,</td>
-</tr><tr><td></td>      <td class=PType nowrap>type&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>type&nbsp;</td>
       <td class=PParameter nowrap>RSP</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>REQ</td>
-      <td class=PAfterParameters nowrap>) extends uvm_component</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>) extends uvm_component</td></tr>
       </table></td></tr>
     </table></blockquote>
 Base class for a driver that passively receives transactions, i.e. </div></div><div class=CToolTip id="tt7"><div class=CSection>Sequences encapsulate user-defined procedures that generate multiple uvm_sequence_item-based transactions. </div></div><div class=CToolTip id="tt8"><div class=CSection>The UVM TLM library defines several abstract, transaction-level interfaces and the ports and exports that facilitate their use. </div></div><!--END_ND_TOOLTIPS-->

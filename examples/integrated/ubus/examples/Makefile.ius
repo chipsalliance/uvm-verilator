@@ -32,5 +32,5 @@ comp:
               ubus_tb_top.sv
 
 run:
-	$(IUS) +incdir+../sv ubus_tb_top.sv +UVM_TESTNAME=test_2m_4s 
+	$(IUS) +incdir+../sv ubus_tb_top.sv +UVM_TESTNAME=test_2m_4s
 	$(CHECK)

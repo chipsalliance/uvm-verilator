@@ -3,6 +3,7 @@
 //   Copyright 2007-2011 Mentor Graphics Corporation
 //   Copyright 2007-2010 Cadence Design Systems, Inc. 
 //   Copyright 2010-2011 Synopsys, Inc.
+//   Copyright 2013      NVIDIA, Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -28,6 +29,7 @@ package uvm_pkg;
 
   `include "dpi/uvm_dpi.svh"
   `include "base/uvm_base.svh"
+  `include "dap/uvm_dap.svh"
   `include "tlm1/uvm_tlm.svh"
   `include "comps/uvm_comps.svh"
   `include "seq/uvm_seq.svh"

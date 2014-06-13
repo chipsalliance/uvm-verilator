@@ -26,9 +26,9 @@ within a single method call
 transaction using multiple nb_transport() method calls going
 back-and-forth between initiator and target
 
-In general,any component might modify a transaction object during
+In general, any component might modify a transaction object during
 its lifetime (subject to the rules of the protocol). Significant timing
-points during the lifetime of a transaction (for example: start-ofresponse-
+points during the lifetime of a transaction (for example: start of response-
 phase) are indicated by calling nb_transport() in either
 forward or backward direction, the specific timing point being given
 by the phase argument.
@@ -60,8 +60,8 @@ they are created and connected
 in the same way as port, and exports. Create them in the build phase and connect 
 them in the connect phase by calling connect().
 Initiator and target termination sockets are on the ends of any connection. 
-There can be an arbitrary number of passthrough sockets in the path between 
-initator and target.
+There can be an arbitrary number of pass-through sockets in the path between 
+initiator and target.
 Some socket types must be bound to imps  implementations of the transport 
 tasks and functions. Blocking terminator sockets must be bound to an 
 implementation of b_transport(), for example. Nonblocking initiator 
@@ -100,7 +100,7 @@ Any component that has either a blocking termination socket, a nonblocking
  initiator socket, or a nonblocking termination socket must provide 
 implementations of the relevant components. This includes initiator and 
 target components as well as interconnect components that have these kinds 
-of sockets. Components with passthrough sockets do not need to provide 
+of sockets. Components with pass-through sockets do not need to provide 
 implementations of any sort. Of course, they must ultimately be connected 
 to sockets that do that the necessary implementations.
 
@@ -124,6 +124,6 @@ However, TLM-2.0 strongly recommends either using the base
 protocol off-the-shelf or creating models of specific protocols on top
 of the base protocol.
 
-The UVM 1.1 standard only defines and supports this TLM2 style interface for
-SystemVerilog to SystemVerlog communication. Mixed languanged TLM
+The UVM 1.2 standard only defines and supports this TLM2 style interface for
+SystemVerilog to SystemVerilog communication. Mixed language TLM
 communication is saved for future extension.

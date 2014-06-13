@@ -1,6 +1,7 @@
 //----------------------------------------------------------------------
 //   Copyright 2011 Cypress Semiconductor
 //   Copyright 2010-2011 Mentor Graphics Corporation
+//   Copyright 2014 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -44,6 +45,7 @@ class m_uvm_waiter;
   endfunction
 endclass
 
+typedef class uvm_root;
 typedef class uvm_config_db_options;
 
 //----------------------------------------------------------------------
@@ -57,7 +59,7 @@ typedef class uvm_config_db_options;
 // The parameter value "int" identifies the configuration type as
 // an int property.  
 //
-// The <set> and <get> methods provide the same api and
+// The <set> and <get> methods provide the same API and
 // semantics as the set/get_config_* functions in <uvm_component>.
 //----------------------------------------------------------------------
 class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
@@ -77,7 +79,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   // instance that the configuration object applies to. ~field_name~
   // is the specific field in the scope that is being searched for.
   //
-  // The basic get_config_* methods from <uvm_component> are mapped to 
+  // The basic ~get_config_*~ methods from <uvm_component> are mapped to
   // this function as:
   //
   //| get_config_int(...) => uvm_config_db#(uvm_bitstream_t)::get(cntxt,...)
@@ -93,9 +95,10 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
     uvm_resource#(T) r, rt;
     uvm_resource_pool rp = uvm_resource_pool::get();
     uvm_resource_types::rsrc_q_t rq;
+    uvm_coreservice_t cs = uvm_coreservice_t::get();
 
     if(cntxt == null) 
-      cntxt = uvm_root::get();
+      cntxt = cs.get_root();
     if(inst_name == "") 
       inst_name = cntxt.get_full_name();
     else if(cntxt.get_full_name() != "") 
@@ -120,7 +123,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   // Create a new or update an existing configuration setting for
   // ~field_name~ in ~inst_name~ from ~cntxt~.
   // The setting is made at ~cntxt~, with the full scope of the set 
-  // being {~cntxt~,".",~inst_name~}. If ~cntxt~ is null then ~inst_name~
+  // being {~cntxt~,".",~inst_name~}. If ~cntxt~ is ~null~ then ~inst_name~
   // provides the complete scope information of the setting.
   // ~field_name~ is the target field. Both ~inst_name~ and ~field_name~
   // may be glob style or regular expression style expressions.
@@ -131,7 +134,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   // precedence. Settings from the same level of hierarchy have
   // a last setting wins semantic. A precedence setting of 
   // <uvm_resource_base::default_precedence>  is used for uvm_top, and 
-  // each hierarcical level below the top is decremented by 1.
+  // each hierarchical level below the top is decremented by 1.
   //
   // After build time, all settings use the default precedence and thus
   // have a last wins semantic. So, if at run time, a low level 
@@ -139,7 +142,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   // will have precedence over a setting from the test level that was 
   // made earlier in the simulation.
   //
-  // The basic set_config_* methods from <uvm_component> are mapped to 
+  // The basic ~set_config_*~ methods from <uvm_component> are mapped to
   // this function as:
   //
   //| set_config_int(...) => uvm_config_db#(uvm_bitstream_t)::set(cntxt,...)
@@ -157,11 +160,16 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
     bit exists;
     string lookup;
     uvm_pool#(string,uvm_resource#(T)) pool;
+    string rstate;
+    uvm_coreservice_t cs = uvm_coreservice_t::get();
      
     //take care of random stability during allocation
     process p = process::self();
-    string rstate = p.get_randstate();
-    top = uvm_root::get();
+    if(p != null) 
+  		rstate = p.get_randstate();
+  		
+    top = cs.get_root();
+
     curr_phase = top.m_current_phase;
 
     if(cntxt == null) 
@@ -217,7 +225,8 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
       end
     end
 
-    p.set_randstate(rstate);
+    if(p != null)
+    	p.set_randstate(rstate);
 
     if(uvm_config_db_options::is_tracing())
       m_show_msg("CFGDB/SET", "Configuration","set", inst_name, field_name, cntxt, r);
@@ -237,10 +246,11 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   //
 
   static function bit exists(uvm_component cntxt, string inst_name,
-      string field_name, bit spell_chk=0);
+    string field_name, bit spell_chk=0);
+    uvm_coreservice_t cs = uvm_coreservice_t::get();
 
     if(cntxt == null)
-      cntxt = uvm_root::get();
+      cntxt = cs.get_root();
     if(inst_name == "")
       inst_name = cntxt.get_full_name();
     else if(cntxt.get_full_name() != "")
@@ -261,10 +271,11 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
     process p = process::self();
     string rstate = p.get_randstate();
     m_uvm_waiter waiter;
+    uvm_coreservice_t cs = uvm_coreservice_t::get();
 
     if(cntxt == null)
-      cntxt = uvm_root::get();
-    if(cntxt != uvm_root::get()) begin
+      cntxt = cs.get_root();
+    if(cntxt != cs.get_root()) begin
       if(inst_name != "")
         inst_name = {cntxt.get_full_name(),".",inst_name};
       else
@@ -294,6 +305,38 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
 
 endclass
 
+// Section: Types
+   
+//----------------------------------------------------------------------
+// Topic: uvm_config_int
+//
+// Convenience type for uvm_config_db#(uvm_bitstream_t)
+//
+//| typedef uvm_config_db#(uvm_bitstream_t) uvm_config_int;
+typedef uvm_config_db#(uvm_bitstream_t) uvm_config_int;
+
+//----------------------------------------------------------------------
+// Topic: uvm_config_string
+//
+// Convenience type for uvm_config_db#(string)
+//
+//| typedef uvm_config_db#(string) uvm_config_string;
+typedef uvm_config_db#(string) uvm_config_string;
+
+//----------------------------------------------------------------------
+// Topic: uvm_config_object
+//
+// Convenience type for uvm_config_db#(uvm_object)
+//
+//| typedef uvm_config_db#(uvm_object) uvm_config_object;
+typedef uvm_config_db#(uvm_object) uvm_config_object;
+
+//----------------------------------------------------------------------
+// Topic: uvm_config_wrapper
+//
+// Convenience type for uvm_config_db#(uvm_object_wrapper)
+//
+//| typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;   
 typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;
 
 

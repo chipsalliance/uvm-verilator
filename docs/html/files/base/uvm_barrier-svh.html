@@ -32,7 +32,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LClass id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_barrier</div></div></td></tr>
         </table>
@@ -89,15 +89,17 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_barrier.new" href="../../src/base/uvm_barrier.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>threshold</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Creates a new barrier object.</p></div></div></div>
@@ -117,11 +119,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_barrier.reset" href="../../src/base/uvm_barrier.svh">reset</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void reset (</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void reset (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>wakeup</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Resets the barrier.&nbsp; This sets the waiter count back to zero.</p><p>The threshold is unchanged.&nbsp; After reset, the barrier will force processes to wait for the threshold again.</p><p>If the <i>wakeup</i> bit is set, any currently waiting processes will be activated.</p></div></div></div>
@@ -133,11 +137,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_barrier.set_auto_reset" href="../../src/base/uvm_barrier.svh">set_auto_reset</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void set_auto_reset (</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void set_auto_reset (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>value</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Determines if the barrier should reset itself after the threshold is reached.</p><p>The default is on, so when a barrier hits its threshold it will reset, and new processes will block until the threshold is reached again.</p><p>If auto reset is off, then once the threshold is achieved, new processes pass through without being blocked until the barrier is reset.</p></div></div></div>
@@ -149,9 +155,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_barrier.set_threshold" href="../../src/base/uvm_barrier.svh">set_threshold</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void set_threshold (</td>      <td class=PType nowrap>int&nbsp;</td>
-      <td class=PParameter nowrap>threshold</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void set_threshold (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap width=100%>threshold</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Sets the process threshold.</p><p>This determines how many processes must be waiting on the barrier before the processes may proceed.</p><p>Once the <i>threshold</i> is reached, all waiting processes are activated.</p><p>If <i>threshold</i> is set to a value less than the number of currently waiting processes, then the barrier is reset and waiting processes are activated.</p></div></div></div>
@@ -185,22 +193,26 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 <!--START_ND_TOOLTIPS-->
-<div class=CToolTip id="tt1"><div class=CGeneric>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt2"><div class=CClass>
+<div class=CToolTip id="tt1"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_void
+  </td></tr></table></blockquote>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt2"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
   </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt3"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_barrier extends uvm_object
   </td></tr></table></blockquote>The uvm_barrier class provides a multiprocess synchronization mechanism. </div></div><div class=CToolTip id="tt4"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>threshold</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Creates a new barrier object.</div></div><div class=CToolTip id="tt5"><div class=CMethod>
@@ -208,29 +220,35 @@ Creates a new barrier object.</div></div><div class=CToolTip id="tt5"><div class
   </td></tr></table></blockquote>Waits for enough processes to reach the barrier before continuing.</div></div><div class=CToolTip id="tt6"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void reset (</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void reset (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>wakeup</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Resets the barrier. </div></div><div class=CToolTip id="tt7"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void set_auto_reset (</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function void set_auto_reset (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>value</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Determines if the barrier should reset itself after the threshold is reached.</div></div><div class=CToolTip id="tt8"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void set_threshold (</td>      <td class=PType nowrap>int&nbsp;</td>
-      <td class=PParameter nowrap>threshold</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void set_threshold (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap width=100%>threshold</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Sets the process threshold.</div></div><div class=CToolTip id="tt9"><div class=CMethod>

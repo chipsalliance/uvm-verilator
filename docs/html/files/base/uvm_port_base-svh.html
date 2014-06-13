@@ -40,7 +40,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=1 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_port_component_base" href="../../src/base/uvm_port_base.svh">uvm_port_component_base</a></h2><div class=CBody><p>This class defines an interface for obtaining a port&rsquo;s connectivity lists after or during the end_of_elaboration phase.&nbsp;  The sub-class, <a href="#uvm_port_component#(PORT)" class=LClass id=link15 onMouseOver="ShowTip(event, 'tt2', 'link15')" onMouseOut="HideTip('tt2')">uvm_port_component #(PORT)</a>, implements this interface.</p><p>The connectivity lists are returned in the form of handles to objects of this type.&nbsp; This allowing traversal of any port&rsquo;s fan-out and fan-in network through recursive calls to <a href="#uvm_port_component_base.get_connected_to" class=LMethod id=link16 onMouseOver="ShowTip(event, 'tt8', 'link16')" onMouseOut="HideTip('tt8')">get_connected_to</a> and <a href="#uvm_port_component_base.get_provided_to" class=LMethod id=link17 onMouseOver="ShowTip(event, 'tt9', 'link17')" onMouseOut="HideTip('tt9')">get_provided_to</a>.&nbsp; Each port&rsquo;s full name and type name can be retrieved using get_full_name and get_type_name methods inherited from <a href="uvm_component-svh.html#uvm_component" class=LClass id=link18 onMouseOver="ShowTip(event, 'tt7', 'link18')" onMouseOut="HideTip('tt7')">uvm_component</a>.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_port_component_base" href="../../src/base/uvm_port_base.svh">uvm_port_component_base</a></h2><div class=CBody><p>This class defines an interface for obtaining a port&rsquo;s connectivity lists after or during the end_of_elaboration phase.&nbsp;  The sub-class, <a href="#uvm_port_component#(PORT)" class=LClass id=link15 onMouseOver="ShowTip(event, 'tt2', 'link15')" onMouseOut="HideTip('tt2')">uvm_port_component #(PORT)</a>, implements this interface.</p><p>The connectivity lists are returned in the form of handles to objects of this type.&nbsp; This allowing traversal of any port&rsquo;s fan-out and fan-in network through recursive calls to <a href="#uvm_port_component_base.get_connected_to" class=LMethod id=link16 onMouseOver="ShowTip(event, 'tt8', 'link16')" onMouseOut="HideTip('tt8')">get_connected_to</a> and <a href="#uvm_port_component_base.get_provided_to" class=LMethod id=link17 onMouseOver="ShowTip(event, 'tt9', 'link17')" onMouseOut="HideTip('tt9')">get_provided_to</a>.&nbsp; Each port&rsquo;s full name and type name can be retrieved using <i>get_full_name</i> and <i>get_type_name</i> methods inherited from <a href="uvm_component-svh.html#uvm_component" class=LClass id=link18 onMouseOver="ShowTip(event, 'tt7', 'link18')" onMouseOut="HideTip('tt7')">uvm_component</a>.</p>
 
 <!--START_ND_SUMMARY index=1-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -54,7 +54,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link5 onMouseOver="ShowTip(event, 'tt4', 'link5')" onMouseOut="HideTip('tt4')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LClass id=link5 onMouseOver="ShowTip(event, 'tt4', 'link5')" onMouseOut="HideTip('tt4')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link6 onMouseOver="ShowTip(event, 'tt5', 'link6')" onMouseOut="HideTip('tt5')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link7 onMouseOver="ShowTip(event, 'tt6', 'link7')" onMouseOut="HideTip('tt6')">uvm_report_object</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_component-svh.html#uvm_component" class=LClass id=link8 onMouseOver="ShowTip(event, 'tt7', 'link8')" onMouseOut="HideTip('tt7')">uvm_component</a></div></div></td></tr>
@@ -104,10 +104,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.get_connected_to" href="../../src/base/uvm_port_base.svh">get_connected_to</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>pure virtual function void get_connected_to(</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>pure virtual function void get_connected_to(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_port_list&nbsp;</td>
-      <td class=PParameter nowrap>list</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>list</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>For a port or export type, this function fills <i>list</i> with all of the ports, exports and implementations that this port is connected to.</p></div></div></div>
@@ -119,10 +121,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_component_base.get_provided_to" href="../../src/base/uvm_port_base.svh">get_provided_to</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>pure virtual function void get_provided_to(</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>pure virtual function void get_provided_to(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_port_list&nbsp;</td>
-      <td class=PParameter nowrap>list</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>list</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>For an implementation or export type, this function fills <i>list</i> with all of the ports, exports and implementations that this port is provides its implementation to.</p></div></div></div>
@@ -169,7 +173,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link19 onMouseOver="ShowTip(event, 'tt4', 'link19')" onMouseOut="HideTip('tt4')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LClass id=link19 onMouseOver="ShowTip(event, 'tt4', 'link19')" onMouseOut="HideTip('tt4')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link20 onMouseOver="ShowTip(event, 'tt5', 'link20')" onMouseOut="HideTip('tt5')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link21 onMouseOver="ShowTip(event, 'tt6', 'link21')" onMouseOut="HideTip('tt6')">uvm_report_object</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_component-svh.html#uvm_component" class=LClass id=link22 onMouseOver="ShowTip(event, 'tt7', 'link22')" onMouseOut="HideTip('tt7')">uvm_component</a></div></div></td></tr>
@@ -223,7 +227,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=11 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_port_base#(IF)" href="../../src/base/uvm_port_base.svh">uvm_port_base #(IF)</a></h2><div class=CBody><p>Transaction-level communication between components is handled via its ports, exports, and imps, all of which derive from this class.</p><p>The uvm_port_base extends IF, which is the type of the interface implemented by derived port, export, or implementation.&nbsp; IF is also a type parameter to uvm_port_base.</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>IF</td><td class=CDLDescription>The interface type implemented by the subtype to this base port</td></tr></table><p>The UVM provides a complete set of ports, exports, and imps for the OSCI- standard TLM interfaces.&nbsp; They can be found in the ../src/tlm/ directory.&nbsp; For the TLM interfaces, the IF parameter is always <a href="../tlm1/uvm_tlm_ifs-svh.html#uvm_tlm_if_base#(T1,T2)" class=LClass id=link47 onMouseOver="ShowTip(event, 'tt31', 'link47')" onMouseOut="HideTip('tt31')">uvm_tlm_if_base #(T1,T2)</a>.</p><p>Just before &lt;uvm_component::end_of_elaboration&gt;, an internal <a href="uvm_component-svh.html#uvm_component.resolve_bindings" class=LMethod id=link48 onMouseOver="ShowTip(event, 'tt32', 'link48')" onMouseOut="HideTip('tt32')">uvm_component::resolve_bindings</a> process occurs, after which each port and export holds a list of all imps connected to it via hierarchical connections to other ports and exports.&nbsp; In effect, we are collapsing the port&rsquo;s fanout, which can span several levels up and down the component hierarchy, into a single array held local to the port.&nbsp; Once the list is determined, the port&rsquo;s min and max connection settings can be checked and enforced.</p><p>uvm_port_base possesses the properties of components in that they have a hierarchical instance path and parent.&nbsp; Because SystemVerilog does not support multiple inheritance, uvm_port_base can not extend both the interface it implements and <a href="uvm_component-svh.html#uvm_component" class=LClass id=link49 onMouseOver="ShowTip(event, 'tt7', 'link49')" onMouseOut="HideTip('tt7')">uvm_component</a>.&nbsp; Thus, uvm_port_base contains a local instance of uvm_component, to which it delegates such commands as get_name, get_full_name, and get_parent.</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_port_base#(IF)" href="../../src/base/uvm_port_base.svh">uvm_port_base #(IF)</a></h2><div class=CBody><p>Transaction-level communication between components is handled via its ports, exports, and imps, all of which derive from this class.</p><p>The uvm_port_base extends IF, which is the type of the interface implemented by derived port, export, or implementation.&nbsp; IF is also a type parameter to uvm_port_base.</p><table border=0 cellspacing=0 cellpadding=0 class=CDescriptionList><tr><td class=CDLEntry>IF</td><td class=CDLDescription>The interface type implemented by the subtype to this base port</td></tr></table><p>The UVM provides a complete set of ports, exports, and imps for the OSCI- standard TLM interfaces.&nbsp; They can be found in the ../src/tlm/ directory.&nbsp; For the TLM interfaces, the IF parameter is always <a href="../tlm1/uvm_tlm_ifs-svh.html#uvm_tlm_if_base#(T1,T2)" class=LClass id=link47 onMouseOver="ShowTip(event, 'tt31', 'link47')" onMouseOut="HideTip('tt31')">uvm_tlm_if_base #(T1,T2)</a>.</p><p>Just before <a href="uvm_component-svh.html#uvm_component.end_of_elaboration_phase" class=LMethod id=link48 onMouseOver="ShowTip(event, 'tt32', 'link48')" onMouseOut="HideTip('tt32')">uvm_component::end_of_elaboration_phase</a>, an internal <a href="uvm_component-svh.html#uvm_component.resolve_bindings" class=LMethod id=link49 onMouseOver="ShowTip(event, 'tt33', 'link49')" onMouseOut="HideTip('tt33')">uvm_component::resolve_bindings</a> process occurs, after which each port and export holds a list of all imps connected to it via hierarchical connections to other ports and exports.&nbsp; In effect, we are collapsing the port&rsquo;s fanout, which can span several levels up and down the component hierarchy, into a single array held local to the port.&nbsp; Once the list is determined, the port&rsquo;s min and max connection settings can be checked and enforced.</p><p>uvm_port_base possesses the properties of components in that they have a hierarchical instance path and parent.&nbsp; Because SystemVerilog does not support multiple inheritance, uvm_port_base cannot extend both the interface it implements and <a href="uvm_component-svh.html#uvm_component" class=LClass id=link50 onMouseOver="ShowTip(event, 'tt7', 'link50')" onMouseOut="HideTip('tt7')">uvm_component</a>.&nbsp; Thus, uvm_port_base contains a local instance of uvm_component, to which it delegates such commands as get_name, get_full_name, and get_parent.</p>
 
 <!--START_ND_SUMMARY index=11-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -275,7 +279,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_port_base#(IF).get_full_name" id=link32 onMouseOver="ShowTip(event, 'tt16', 'link32')" onMouseOut="HideTip('tt16')">get_full_name</a></td><td class=SDescription>Returns the full hierarchical name of this port.</td></tr>
   <!-- index=16 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_port_base#(IF).get_parent" id=link33 onMouseOver="ShowTip(event, 'tt17', 'link33')" onMouseOut="HideTip('tt17')">get_parent</a></td><td class=SDescription>Returns the handle to this port&rsquo;s parent, or null if it has no parent.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_port_base#(IF).get_parent" id=link33 onMouseOver="ShowTip(event, 'tt17', 'link33')" onMouseOut="HideTip('tt17')">get_parent</a></td><td class=SDescription>Returns the handle to this port&rsquo;s parent, or <i>null</i> if it has no parent.</td></tr>
   <!-- index=17 -->
 
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_port_base#(IF).get_comp" id=link34 onMouseOver="ShowTip(event, 'tt18', 'link34')" onMouseOut="HideTip('tt18')">get_comp</a></td><td class=SDescription>Returns a handle to the internal proxy component representing this port.</td></tr>
@@ -284,7 +288,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_port_base#(IF).get_type_name" id=link35 onMouseOver="ShowTip(event, 'tt19', 'link35')" onMouseOut="HideTip('tt19')">get_type_name</a></td><td class=SDescription>Returns the type name to this port. </td></tr>
   <!-- index=19 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_port_base#(IF).min_size" >min_size</a></td><td class=SDescription>Returns the mininum number of implementation ports that must be connected to this port by the end_of_elaboration phase.</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_port_base#(IF).min_size" >min_size</a></td><td class=SDescription>Returns the minimum number of implementation ports that must be connected to this port by the end_of_elaboration phase.</td></tr>
   <!-- index=20 -->
 
 <tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_port_base#(IF).max_size" >max_size</a></td><td class=SDescription>Returns the maximum number of implementation ports that must be connected to this port by the end_of_elaboration phase.</td></tr>
@@ -311,10 +315,10 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_port_base#(IF).connect" id=link42 onMouseOver="ShowTip(event, 'tt26', 'link42')" onMouseOut="HideTip('tt26')">connect</a></td><td class=SDescription>Connects this port to the given <i>provider</i> port. </td></tr>
   <!-- index=28 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_port_base#(IF).debug_connected_to" id=link43 onMouseOver="ShowTip(event, 'tt27', 'link43')" onMouseOut="HideTip('tt27')">debug_connected_to</a></td><td class=SDescription>The debug_connected_to method outputs a visual text display of the port/export/imp network to which this port connects (i.e., the port&rsquo;s fanout).</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_port_base#(IF).debug_connected_to" id=link43 onMouseOver="ShowTip(event, 'tt27', 'link43')" onMouseOut="HideTip('tt27')">debug_connected_to</a></td><td class=SDescription>The <i>debug_connected_to</i> method outputs a visual text display of the port/export/imp network to which this port connects (i.e., the port&rsquo;s fanout).</td></tr>
   <!-- index=29 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_port_base#(IF).debug_provided_to" id=link44 onMouseOver="ShowTip(event, 'tt28', 'link44')" onMouseOut="HideTip('tt28')">debug_provided_to</a></td><td class=SDescription>The debug_provided_to method outputs a visual display of the port/export network that ultimately connect to this port (i.e., the port&rsquo;s fanin).</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_port_base#(IF).debug_provided_to" id=link44 onMouseOver="ShowTip(event, 'tt28', 'link44')" onMouseOut="HideTip('tt28')">debug_provided_to</a></td><td class=SDescription>The <i>debug_provided_to</i> method outputs a visual display of the port/export network that ultimately connect to this port (i.e., the port&rsquo;s fanin).</td></tr>
   <!-- index=30 -->
 
 <tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_port_base#(IF).resolve_bindings" id=link45 onMouseOver="ShowTip(event, 'tt29', 'link45')" onMouseOut="HideTip('tt29')">resolve_bindings</a></td><td class=SDescription>This callback is called just before entering the end_of_elaboration phase. </td></tr>
@@ -336,30 +340,32 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).new" href="../../src/base/uvm_port_base.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_component&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_component&nbsp;</td>
       <td class=PParameter nowrap>parent,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_port_type_e&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_port_type_e&nbsp;</td>
       <td class=PParameter nowrap>port_type,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>min_size</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>0,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>max_size</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>The first two arguments are the normal <a href="uvm_component-svh.html#uvm_component" class=LClass id=link50 onMouseOver="ShowTip(event, 'tt7', 'link50')" onMouseOut="HideTip('tt7')">uvm_component</a> constructor arguments.</p><p>The <i>port_type</i> can be one of <a href="uvm_object_globals-svh.html#UVM_PORT" class=LConstant id=link51 onMouseOver="ShowTip(event, 'tt33', 'link51')" onMouseOut="HideTip('tt33')">UVM_PORT</a>, <a href="uvm_object_globals-svh.html#UVM_EXPORT" class=LConstant id=link52 onMouseOver="ShowTip(event, 'tt34', 'link52')" onMouseOut="HideTip('tt34')">UVM_EXPORT</a>, or <a href="uvm_object_globals-svh.html#UVM_IMPLEMENTATION" class=LConstant id=link53 onMouseOver="ShowTip(event, 'tt35', 'link53')" onMouseOut="HideTip('tt35')">UVM_IMPLEMENTATION</a>.</p><p>The <i>min_size</i> and <i>max_size</i> specify the minimum and maximum number of implementation (imp) ports that must be connected to this port base by the end of elaboration.&nbsp; Setting <i>max_size</i> to <i>UVM_UNBOUNDED_CONNECTIONS</i> sets no maximum, i.e., an unlimited number of connections are allowed.</p><p>By default, the parent/child relationship of any port being connected to this port is not checked.&nbsp; This can be overridden by configuring the port&rsquo;s <i>check_connection_relationships</i> bit via <a href="uvm_globals-svh.html#set_config_int" class=LMethod id=link54 onMouseOver="ShowTip(event, 'tt36', 'link54')" onMouseOut="HideTip('tt36')">set_config_int</a>.&nbsp; See <a href="#uvm_port_base#(IF).connect" class=LMethod id=link55 onMouseOver="ShowTip(event, 'tt26', 'link55')" onMouseOut="HideTip('tt26')">connect</a> for more information.</p></div></div></div>
+<div class=CBody><p>The first two arguments are the normal <a href="uvm_component-svh.html#uvm_component" class=LClass id=link51 onMouseOver="ShowTip(event, 'tt7', 'link51')" onMouseOut="HideTip('tt7')">uvm_component</a> constructor arguments.</p><p>The <i>port_type</i> can be one of <a href="uvm_object_globals-svh.html#UVM_PORT" class=LConstant id=link52 onMouseOver="ShowTip(event, 'tt34', 'link52')" onMouseOut="HideTip('tt34')">UVM_PORT</a>, <a href="uvm_object_globals-svh.html#UVM_EXPORT" class=LConstant id=link53 onMouseOver="ShowTip(event, 'tt35', 'link53')" onMouseOut="HideTip('tt35')">UVM_EXPORT</a>, or <a href="uvm_object_globals-svh.html#UVM_IMPLEMENTATION" class=LConstant id=link54 onMouseOver="ShowTip(event, 'tt36', 'link54')" onMouseOut="HideTip('tt36')">UVM_IMPLEMENTATION</a>.</p><p>The <i>min_size</i> and <i>max_size</i> specify the minimum and maximum number of implementation (imp) ports that must be connected to this port base by the end of elaboration.&nbsp; Setting <i>max_size</i> to <i>UVM_UNBOUNDED_CONNECTIONS</i> sets no maximum, i.e., an unlimited number of connections are allowed.</p><p>By default, the parent/child relationship of any port being connected to this port is not checked.&nbsp; This can be overridden by configuring the port&rsquo;s <i>check_connection_relationships</i> bit via <i>uvm_config_int::set()</i>.&nbsp; See <a href="#uvm_port_base#(IF).connect" class=LMethod id=link55 onMouseOver="ShowTip(event, 'tt26', 'link55')" onMouseOut="HideTip('tt26')">connect</a> for more information.</p></div></div></div>
 
 
 
@@ -383,7 +389,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=16 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_parent" href="../../src/base/uvm_port_base.svh">get_parent</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_component get_parent()
-  </td></tr></table></blockquote><div class=CBody><p>Returns the handle to this port&rsquo;s parent, or null if it has no parent.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Returns the handle to this port&rsquo;s parent, or <i>null</i> if it has no parent.</p></div></div></div>
 
 
 
@@ -405,7 +411,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=19 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).min_size" href="../../src/base/uvm_port_base.svh">min_size</a></h3><div class=CBody><p>Returns the mininum number of implementation ports that must be connected to this port by the end_of_elaboration phase.</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).min_size" href="../../src/base/uvm_port_base.svh">min_size</a></h3><div class=CBody><p>Returns the minimum number of implementation ports that must be connected to this port by the end_of_elaboration phase.</p></div></div></div>
 
 
 
@@ -460,9 +466,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).set_default_index" href="../../src/base/uvm_port_base.svh">set_default_index</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_default_index (</td>      <td class=PType nowrap>int&nbsp;</td>
-      <td class=PParameter nowrap>index</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_default_index (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap width=100%>index</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Sets the default implementation port to use when calling an interface method.&nbsp; This method should only be called on UVM_EXPORT types.&nbsp; The value must not be set before the end_of_elaboration phase, when port connections have not yet been resolved.</p></div></div></div>
@@ -474,12 +482,14 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).connect" href="../../src/base/uvm_port_base.svh">connect</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void connect (</td>      <td class=PType nowrap>this_type&nbsp;</td>
-      <td class=PParameter nowrap>provider</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void connect (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>this_type&nbsp;</td>
+      <td class=PParameter nowrap width=100%>provider</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Connects this port to the given <i>provider</i> port.&nbsp; The ports must be compatible in the following ways</p><ul><li>Their type parameters must match</li><li>The <i>provider</i>&rsquo;s interface type (blocking, non-blocking, analysis, etc.) must be compatible.&nbsp; Each port has an interface mask that encodes the interface(s) it supports.&nbsp; If the bitwise AND of these masks is equal to the this port&rsquo;s mask, the requirement is met and the ports are compatible.&nbsp; For example, an uvm_blocking_put_port #(T) is compatible with an uvm_put_export #(T) and uvm_blocking_put_imp #(T) because the export and imp provide the interface required by the uvm_blocking_put_port.</li><li>Ports of type <a href="uvm_object_globals-svh.html#UVM_EXPORT" class=LConstant id=link58 onMouseOver="ShowTip(event, 'tt34', 'link58')" onMouseOut="HideTip('tt34')">UVM_EXPORT</a> can only connect to other exports or imps.</li><li>Ports of type <a href="uvm_object_globals-svh.html#UVM_IMPLEMENTATION" class=LConstant id=link59 onMouseOver="ShowTip(event, 'tt35', 'link59')" onMouseOut="HideTip('tt35')">UVM_IMPLEMENTATION</a> can not be connected, as they are bound to the component that implements the interface at time of construction.</li></ul><p>In addition to type-compatibility checks, the relationship between this port and the <i>provider</i> port will also be checked if the port&rsquo;s <i>check_connection_relationships</i> configuration has been set.&nbsp; (See <a href="#uvm_port_base#(IF).new" class=LMethod id=link60 onMouseOver="ShowTip(event, 'tt14', 'link60')" onMouseOut="HideTip('tt14')">new</a> for more information.)</p><h4 class=CHeading>Relationships, when enabled, are checked are as follows</h4><ul><li>If this port is an UVM_PORT type, the <i>provider</i> can be a parent port, or a sibling export or implementation port.</li><li>If this port is an <a href="uvm_object_globals-svh.html#UVM_EXPORT" class=LConstant id=link61 onMouseOver="ShowTip(event, 'tt34', 'link61')" onMouseOut="HideTip('tt34')">UVM_EXPORT</a> type, the provider can be a child export or implementation port.</li></ul><p>If any relationship check is violated, a warning is issued.</p><p>Note- the &lt;uvm_component::connect&gt; method is related to but not the same as this method.&nbsp; The component&rsquo;s connect method is a phase callback where port&rsquo;s connect method calls are made.</p></div></div></div>
+<div class=CBody><p>Connects this port to the given <i>provider</i> port.&nbsp; The ports must be compatible in the following ways</p><ul><li>Their type parameters must match</li><li>The <i>provider</i>&rsquo;s interface type (blocking, non-blocking, analysis, etc.) must be compatible.&nbsp; Each port has an interface mask that encodes the interface(s) it supports.&nbsp; If the bitwise AND of these masks is equal to the this port&rsquo;s mask, the requirement is met and the ports are compatible.&nbsp; For example, a uvm_blocking_put_port #(T) is compatible with a uvm_put_export #(T) and uvm_blocking_put_imp #(T) because the export and imp provide the interface required by the uvm_blocking_put_port.</li><li>Ports of type <a href="uvm_object_globals-svh.html#UVM_EXPORT" class=LConstant id=link58 onMouseOver="ShowTip(event, 'tt35', 'link58')" onMouseOut="HideTip('tt35')">UVM_EXPORT</a> can only connect to other exports or imps.</li><li>Ports of type <a href="uvm_object_globals-svh.html#UVM_IMPLEMENTATION" class=LConstant id=link59 onMouseOver="ShowTip(event, 'tt36', 'link59')" onMouseOut="HideTip('tt36')">UVM_IMPLEMENTATION</a> cannot be connected, as they are bound to the component that implements the interface at time of construction.</li></ul><p>In addition to type-compatibility checks, the relationship between this port and the <i>provider</i> port will also be checked if the port&rsquo;s <i>check_connection_relationships</i> configuration has been set.&nbsp; (See <a href="#uvm_port_base#(IF).new" class=LMethod id=link60 onMouseOver="ShowTip(event, 'tt14', 'link60')" onMouseOut="HideTip('tt14')">new</a> for more information.)</p><h4 class=CHeading>Relationships, when enabled, are checked are as follows</h4><ul><li>If this port is a UVM_PORT type, the <i>provider</i> can be a parent port, or a sibling export or implementation port.</li><li>If this port is a <a href="uvm_object_globals-svh.html#UVM_EXPORT" class=LConstant id=link61 onMouseOver="ShowTip(event, 'tt35', 'link61')" onMouseOut="HideTip('tt35')">UVM_EXPORT</a> type, the provider can be a child export or implementation port.</li></ul><p>If any relationship check is violated, a warning is issued.</p><p>Note- the <a href="uvm_component-svh.html#uvm_component.connect_phase" class=LMethod id=link62 onMouseOver="ShowTip(event, 'tt37', 'link62')" onMouseOut="HideTip('tt37')">uvm_component::connect_phase</a> method is related to but not the same as this method.&nbsp; The component&rsquo;s <i>connect</i> method is a phase callback where port&rsquo;s <i>connect</i> method calls are made.</p></div></div></div>
 
 
 
@@ -488,18 +498,20 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).debug_connected_to" href="../../src/base/uvm_port_base.svh">debug_connected_to</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void debug_connected_to (</td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void debug_connected_to (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>level</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>0,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>max_level</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>-1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>The debug_connected_to method outputs a visual text display of the port/export/imp network to which this port connects (i.e., the port&rsquo;s fanout).</p><p>This method must not be called before the end_of_elaboration phase, as port connections are not resolved until then.</p></div></div></div>
+<div class=CBody><p>The <i>debug_connected_to</i> method outputs a visual text display of the port/export/imp network to which this port connects (i.e., the port&rsquo;s fanout).</p><p>This method must not be called before the end_of_elaboration phase, as port connections are not resolved until then.</p></div></div></div>
 
 
 
@@ -508,18 +520,20 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).debug_provided_to" href="../../src/base/uvm_port_base.svh">debug_provided_to</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void debug_provided_to (</td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void debug_provided_to (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>level</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>0,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>max_level</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>-1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>The debug_provided_to method outputs a visual display of the port/export network that ultimately connect to this port (i.e., the port&rsquo;s fanin).</p><p>This method must not be called before the end_of_elaboration phase, as port connections are not resolved until then.</p></div></div></div>
+<div class=CBody><p>The <i>debug_provided_to</i> method outputs a visual display of the port/export network that ultimately connect to this port (i.e., the port&rsquo;s fanin).</p><p>This method must not be called before the end_of_elaboration phase, as port connections are not resolved until then.</p></div></div></div>
 
 
 
@@ -527,7 +541,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=30 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).resolve_bindings" href="../../src/base/uvm_port_base.svh">resolve_bindings</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function void resolve_bindings()
-  </td></tr></table></blockquote><div class=CBody><p>This callback is called just before entering the end_of_elaboration phase.&nbsp; It recurses through each port&rsquo;s fanout to determine all the imp destina- tions.&nbsp; It then checks against the required min and max connections.&nbsp; After resolution, <a href="#uvm_port_base#(IF).size" class=LMethod id=link62 onMouseOver="ShowTip(event, 'tt24', 'link62')" onMouseOut="HideTip('tt24')">size</a> returns a valid value and <a href="#uvm_port_base#(IF).get_if" class=LMethod id=link63 onMouseOver="ShowTip(event, 'tt30', 'link63')" onMouseOut="HideTip('tt30')">get_if</a> can be used to access a particular imp.</p><p>This method is automatically called just before the start of the end_of_elaboration phase.&nbsp; Users should not need to call it directly.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>This callback is called just before entering the end_of_elaboration phase.&nbsp; It recurses through each port&rsquo;s fanout to determine all the imp destinations.&nbsp; It then checks against the required min and max connections.&nbsp; After resolution, <a href="#uvm_port_base#(IF).size" class=LMethod id=link63 onMouseOver="ShowTip(event, 'tt24', 'link63')" onMouseOut="HideTip('tt24')">size</a> returns a valid value and <a href="#uvm_port_base#(IF).get_if" class=LMethod id=link64 onMouseOver="ShowTip(event, 'tt30', 'link64')" onMouseOut="HideTip('tt30')">get_if</a> can be used to access a particular imp.</p><p>This method is automatically called just before the start of the end_of_elaboration phase.&nbsp; Users should not need to call it directly.</p></div></div></div>
 
 
 
@@ -536,11 +550,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_port_base#(IF).get_if" href="../../src/base/uvm_port_base.svh">get_if</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_port_base #(</td>      <td class=PParameter nowrap>IF</td>
-      <td class=PAfterParameters nowrap>) get_if(int index=0)</td></tr>
+      <td class=PBeforeParameters colspan=2>function uvm_port_base #(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PParameter nowrap width=100%>IF</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=2>) get_if(int index=0)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Returns the implementation (imp) port at the given index from the array of imps this port is connected to.&nbsp; Use <a href="#uvm_port_base#(IF).size" class=LMethod id=link64 onMouseOver="ShowTip(event, 'tt24', 'link64')" onMouseOut="HideTip('tt24')">size</a> to get the valid range for index.&nbsp; This method can only be called at the end_of_elaboration phase or after, as port connections are not resolved before then.</p></div></div></div>
+<div class=CBody><p>Returns the implementation (imp) port at the given index from the array of imps this port is connected to.&nbsp; Use <a href="#uvm_port_base#(IF).size" class=LMethod id=link65 onMouseOver="ShowTip(event, 'tt24', 'link65')" onMouseOut="HideTip('tt24')">size</a> to get the valid range for index.&nbsp; This method can only be called at the end_of_elaboration phase or after, as port connections are not resolved before then.</p></div></div></div>
 
 </div><!--Content-->
 
@@ -564,14 +580,18 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 See description of uvm_port_component_base for information about this class</div></div><div class=CToolTip id="tt3"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual class uvm_port_base #(</td>      <td class=PType nowrap>type&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual class uvm_port_base #(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>type&nbsp;</td>
       <td class=PParameter nowrap>IF</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>uvm_void</td>
-      <td class=PAfterParameters nowrap>) extends IF</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>) extends IF</td></tr>
       </table></td></tr>
     </table></blockquote>
-Transaction-level communication between components is handled via its ports, exports, and imps, all of which derive from this class.</div></div><div class=CToolTip id="tt4"><div class=CGeneric>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt5"><div class=CClass>
+Transaction-level communication between components is handled via its ports, exports, and imps, all of which derive from this class.</div></div><div class=CToolTip id="tt4"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_void
+  </td></tr></table></blockquote>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt5"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
   </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt6"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_report_object extends uvm_object
@@ -580,19 +600,23 @@ Transaction-level communication between components is handled via its ports, exp
   </td></tr></table></blockquote>The uvm_component class is the root base class for UVM components. </div></div><div class=CToolTip id="tt8"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>pure virtual function void get_connected_to(</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>pure virtual function void get_connected_to(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_port_list&nbsp;</td>
-      <td class=PParameter nowrap>list</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>list</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 For a port or export type, this function fills <i>list</i> with all of the ports, exports and implementations that this port is connected to.</div></div><div class=CToolTip id="tt9"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>pure virtual function void get_provided_to(</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>pure virtual function void get_provided_to(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_port_list&nbsp;</td>
-      <td class=PParameter nowrap>list</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>list</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 For an implementation or export type, this function fills <i>list</i> with all of the ports, exports and implementations that this port is provides its implementation to.</div></div><div class=CToolTip id="tt10"><div class=CMethod>
@@ -606,27 +630,29 @@ For an implementation or export type, this function fills <i>list</i> with all o
   </td></tr></table></blockquote>Retrieve the actual port object that this proxy refers to.</div></div><div class=CToolTip id="tt14"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_component&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_component&nbsp;</td>
       <td class=PParameter nowrap>parent,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_port_type_e&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_port_type_e&nbsp;</td>
       <td class=PParameter nowrap>port_type,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>min_size</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>0,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>max_size</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 The first two arguments are the normal uvm_component constructor arguments.</div></div><div class=CToolTip id="tt15"><div class=CMethod>
@@ -635,7 +661,7 @@ The first two arguments are the normal uvm_component constructor arguments.</div
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function string get_full_name()
   </td></tr></table></blockquote>Returns the full hierarchical name of this port.</div></div><div class=CToolTip id="tt17"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_component get_parent()
-  </td></tr></table></blockquote>Returns the handle to this port&rsquo;s parent, or null if it has no parent.</div></div><div class=CToolTip id="tt18"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the handle to this port&rsquo;s parent, or <i>null</i> if it has no parent.</div></div><div class=CToolTip id="tt18"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_port_component_base get_comp()
   </td></tr></table></blockquote>Returns a handle to the internal proxy component representing this port.</div></div><div class=CToolTip id="tt19"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function string get_type_name()
@@ -652,85 +678,105 @@ The first two arguments are the normal uvm_component constructor arguments.</div
   </td></tr></table></blockquote>Gets the number of implementation ports connected to this port. </div></div><div class=CToolTip id="tt25"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_default_index (</td>      <td class=PType nowrap>int&nbsp;</td>
-      <td class=PParameter nowrap>index</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_default_index (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap width=100%>index</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Sets the default implementation port to use when calling an interface method. </div></div><div class=CToolTip id="tt26"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void connect (</td>      <td class=PType nowrap>this_type&nbsp;</td>
-      <td class=PParameter nowrap>provider</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void connect (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>this_type&nbsp;</td>
+      <td class=PParameter nowrap width=100%>provider</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Connects this port to the given <i>provider</i> port. </div></div><div class=CToolTip id="tt27"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void debug_connected_to (</td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void debug_connected_to (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>level</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>0,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>max_level</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>-1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The debug_connected_to method outputs a visual text display of the port/export/imp network to which this port connects (i.e., the port&rsquo;s fanout).</div></div><div class=CToolTip id="tt28"><div class=CMethod>
+The <i>debug_connected_to</i> method outputs a visual text display of the port/export/imp network to which this port connects (i.e., the port&rsquo;s fanout).</div></div><div class=CToolTip id="tt28"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void debug_provided_to (</td>      <td class=PType nowrap>int&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void debug_provided_to (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>level</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>0,</td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>max_level</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>-1</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The debug_provided_to method outputs a visual display of the port/export network that ultimately connect to this port (i.e., the port&rsquo;s fanin).</div></div><div class=CToolTip id="tt29"><div class=CMethod>
+The <i>debug_provided_to</i> method outputs a visual display of the port/export network that ultimately connect to this port (i.e., the port&rsquo;s fanin).</div></div><div class=CToolTip id="tt29"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function void resolve_bindings()
   </td></tr></table></blockquote>This callback is called just before entering the end_of_elaboration phase. </div></div><div class=CToolTip id="tt30"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_port_base #(</td>      <td class=PParameter nowrap>IF</td>
-      <td class=PAfterParameters nowrap>) get_if(int index=0)</td></tr>
+      <td class=PBeforeParameters colspan=2>function uvm_port_base #(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PParameter nowrap width=100%>IF</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=2>) get_if(int index=0)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the implementation (imp) port at the given index from the array of imps this port is connected to. </div></div><div class=CToolTip id="tt31"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual class uvm_tlm_if_base #(</td>      <td class=PType nowrap>type&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual class uvm_tlm_if_base #(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>type&nbsp;</td>
       <td class=PParameter nowrap>T1</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>int,</td>
-</tr><tr><td></td>      <td class=PType nowrap>type&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>type&nbsp;</td>
       <td class=PParameter nowrap>T2</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>int</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 This class declares all of the methods of the TLM API.</div></div><div class=CToolTip id="tt32"><div class=CMethod>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function void resolve_bindings ()
-  </td></tr></table></blockquote>Processes all port, export, and imp connections. </div></div><div class=CToolTip id="tt33"><div class=CConstant>The port requires the interface that is its type parameter.</div></div><div class=CToolTip id="tt34"><div class=CConstant>The port provides the interface that is its type parameter via a connection to some other export or implementation.</div></div><div class=CToolTip id="tt35"><div class=CConstant>The port provides the interface that is its type parameter, and it is bound to the component that implements the interface.</div></div><div class=CToolTip id="tt36"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_config_int (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>inst_name,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>field_name,</td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_bitstream_t&nbsp;</td>
-      <td class=PParameter nowrap>value</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void end_of_elaboration_phase(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
+      <td class=PParameter nowrap width=100%>phase</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-This is the global version of set_config_int in uvm_component. </div></div><!--END_ND_TOOLTIPS-->
+The uvm_end_of_elaboration_phase phase implementation method.</div></div><div class=CToolTip id="tt33"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function void resolve_bindings ()
+  </td></tr></table></blockquote>Processes all port, export, and imp connections. </div></div><div class=CToolTip id="tt34"><div class=CConstant>The port requires the interface that is its type parameter.</div></div><div class=CToolTip id="tt35"><div class=CConstant>The port provides the interface that is its type parameter via a connection to some other export or implementation.</div></div><div class=CToolTip id="tt36"><div class=CConstant>The port provides the interface that is its type parameter, and it is bound to the component that implements the interface.</div></div><div class=CToolTip id="tt37"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters colspan=3>virtual function void connect_phase(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_phase&nbsp;</td>
+      <td class=PParameter nowrap width=100%>phase</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+The uvm_connect_phase phase implementation method.</div></div><!--END_ND_TOOLTIPS-->
 
 <script language=JavaScript><!--
 if (browserType) {if (browserVer) {document.write("</div>"); }document.write("</div>");}// --></script></body></html>

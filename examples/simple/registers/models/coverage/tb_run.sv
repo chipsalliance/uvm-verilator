@@ -57,12 +57,12 @@ class tb_test extends uvm_test;
          seq = uvm_reg_bit_bash_seq::type_id::create("seq");
          seq.model = env.regmodel;
          seq.start(env.bus.sqr);
-         seq.wait_for_sequence_state(FINISHED);
+         seq.wait_for_sequence_state(UVM_FINISHED);
 
          seq = uvm_mem_walk_seq::type_id::create("seq");
          seq.model = env.regmodel;
          seq.start(env.bus.sqr);
-         seq.wait_for_sequence_state(FINISHED);
+         seq.wait_for_sequence_state(UVM_FINISHED);
 
       end
 
@@ -83,7 +83,8 @@ class tb_test extends uvm_test;
 endclass
 
 
-initial begin
+initial begin automatic uvm_coreservice_t cs_ = uvm_coreservice_t::get();
+
    tb_env env;
    tb_test test;
    uvm_report_server svr;
@@ -93,7 +94,7 @@ initial begin
    env = new("env");
    test = new("test");
 
-   svr = _global_reporter.get_report_server();
+   svr = cs_.get_report_server();
    svr.set_max_quit_count(10);
    
    run_test();

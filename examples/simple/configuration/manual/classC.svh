@@ -32,11 +32,11 @@ class C extends uvm_component;
   function void build_phase(uvm_phase phase);
     string str;
     super.build_phase(phase);
-    void'(get_config_int("v", v));
-    void'(get_config_int("s", s));
-    if(get_config_string("myaa[foo]", str)) myaa["foo"] = str;
-    if(get_config_string("myaa[bar]", str)) myaa["bar"] = str;
-    if(get_config_string("myaa[foobar]", str)) myaa["foobar"] = str;
+    void'(uvm_config_int::get(this, "", "v", v));
+    void'(uvm_config_int::get(this, "", "s", s));
+    if(uvm_config_string::get(this, "", "myaa[foo]", str)) myaa["foo"] = str;
+    if(uvm_config_string::get(this, "", "myaa[bar]", str)) myaa["bar"] = str;
+    if(uvm_config_string::get(this, "", "myaa[foobar]", str)) myaa["foobar"] = str;
   endfunction
 
   function string get_type_name();

@@ -42,7 +42,6 @@ N_FATALS = 0
 
 VCS =	vcs -sverilog -timescale=1ns/1ns \
 	+acc +vpi \
-	+define+UVM_OBJECT_MUST_HAVE_CONSTRUCTOR \
 	+incdir+$(UVM_HOME)/src $(UVM_HOME)/src/uvm.sv \
 	$(UVM_HOME)/src/dpi/uvm_dpi.cc -CFLAGS -DVCS
 

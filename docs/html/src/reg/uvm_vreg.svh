@@ -163,6 +163,8 @@ class uvm_vreg extends uvm_object;
    // Implement a virtual register array of the specified
    // size in a randomly allocated region of the appropriate size
    // in the address space managed by the specified memory allocation manager.
+   // If a memory allocation policy is specified, it is passed to the
+   // uvm_mem_mam::request_region() method.
    //
    // The initial value of the newly-implemented
    // or relocated set of virtual registers is whatever values are
@@ -171,15 +173,16 @@ class uvm_vreg extends uvm_object;
    //
    // Returns a reference to a <uvm_mem_region> memory region descriptor
    // if the memory allocation manager was able to allocate a region
-   // that can implement the virtual register array.
+   // that can implement the virtual register array with the specified allocation policy.
    // Returns ~null~ otherwise.
    //
    // A region implementing a virtual register array
    // must not be released using the <uvm_mem_mam::release_region()> method.
    // It must be released using the <uvm_vreg::release_region()> method.
    // 
-   extern virtual function uvm_mem_region allocate(longint unsigned n,
-                                                   uvm_mem_mam          mam);
+   extern virtual function uvm_mem_region allocate(longint unsigned   n,
+                                                   uvm_mem_mam        mam,
+                                                   uvm_mem_mam_policy alloc = null);
 
    //
    // FUNCTION: get_region
@@ -247,7 +250,7 @@ class uvm_vreg extends uvm_object;
 
    //
    // FUNCTION: get_memory
-   // Get the memory where the virtual regoster array is implemented
+   // Get the memory where the virtual register array is implemented
    //
    extern virtual function uvm_mem get_memory();
 
@@ -271,7 +274,7 @@ class uvm_vreg extends uvm_object;
 
    //
    // FUNCTION: get_rights
-   // Returns the access rights of this virtual reigster array
+   // Returns the access rights of this virtual register array
    //
    // Returns "RW", "RO" or "WO".
    // The access rights of a virtual register array is always "RW",
@@ -354,7 +357,7 @@ class uvm_vreg extends uvm_object;
    //
    // Finds a virtual field with the specified name in this virtual register
    // and returns its abstraction class.
-   // If no fields are found, returns null.
+   // If no fields are found, returns ~null~.
    //
    extern virtual function uvm_vreg_field get_field_by_name(string name);
 
@@ -373,7 +376,7 @@ class uvm_vreg extends uvm_object;
    // Returns the base external physical address of a virtual register
    //
    // Returns the base external physical address of the specified
-   // virtual reigster if accessed through the specified address ~map~.
+   // virtual register if accessed through the specified address ~map~.
    //
    // If no address map is specified and the memory implementing
    // the virtual register array is mapped in only one
@@ -962,8 +965,9 @@ function bit uvm_vreg::implement(longint unsigned n,
 endfunction: implement
 
 
-function uvm_mem_region uvm_vreg::allocate(longint unsigned n,
-                                               uvm_mem_mam          mam);
+function uvm_mem_region uvm_vreg::allocate(longint unsigned   n,
+                                           uvm_mem_mam        mam,
+                                           uvm_mem_mam_policy alloc=null);
 
    uvm_mem mem;
 
@@ -1003,14 +1007,14 @@ function uvm_mem_region uvm_vreg::allocate(longint unsigned n,
    end
 
    // Need memory at least of size num_vregs*sizeof(vreg) in bytes.
-   allocate = mam.request_region(n*incr*mem.get_n_bytes());
+   allocate = mam.request_region(n*incr*mem.get_n_bytes(), alloc);
    if (allocate == null) begin
       `uvm_error("RegModel", $sformatf("Could not allocate a memory region for virtual register \"%s\"", this.get_full_name()));
       return null;
    end
 
    if (this.mem != null) begin
-     `uvm_info("RegModel", $sformatf("Virtual register \"%s\" is being moved re-allocated from %s@'h%0h to %s@'h%0h",
+     `uvm_info("RegModel", $sformatf("Virtual register \"%s\" is being moved from %s@'h%0h to %s@'h%0h",
                                 this.get_full_name(),
                                 this.mem.get_full_name(),
                                 this.offset,

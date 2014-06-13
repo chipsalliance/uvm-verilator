@@ -12,5 +12,5 @@ settings for integral types and strings.  Command line arguments that are in
 uppercase should only have one setting to invocation.  Command line
 arguments that in lowercase can have multiple settings per invocation.
 
-All of these capablities are described in the <uvm_cmdline_processor> section.
+All of these capabilities are described in the <uvm_cmdline_processor> section.
 

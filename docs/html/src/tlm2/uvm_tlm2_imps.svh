@@ -123,7 +123,7 @@
 // The macro wraps the function b_transport()
 // Execute a blocking transaction. Once this method returns,
 // the transaction is assumed to have been executed. Whether
-// that execution is succesful or not must be indicated by the
+// that execution is successful or not must be indicated by the
 // transaction itself.
 //
 // The callee may modify or update the transaction object, subject
@@ -157,7 +157,7 @@
 //----------------------------------------------------------------------
 // Class: uvm_tlm_b_transport_imp
 //
-// Used like exports, except an addtional class parameter specifices 
+// Used like exports, except an additional class parameter specifies 
 // the type of the implementation object.  When the
 // imp is instantiated the implementation object is bound.
 //----------------------------------------------------------------------
@@ -172,7 +172,7 @@ endclass
 //----------------------------------------------------------------------
 // Class: uvm_tlm_nb_transport_fw_imp
 //
-// Used like exports, except an addtional class parameter specifices 
+// Used like exports, except an additional class parameter specifies 
 // the type of the implementation object.  When the
 // imp is instantiated the implementation object is bound.
 //----------------------------------------------------------------------
@@ -188,7 +188,7 @@ endclass
 //----------------------------------------------------------------------
 // Class: uvm_tlm_nb_transport_bw_imp
 //
-// Used like exports, except an addtional class parameter specifices 
+// Used like exports, except an additional class parameter specifies 
 // the type of the implementation object.  When the
 // imp is instantiated the implementation object is bound.
 //----------------------------------------------------------------------

@@ -66,7 +66,7 @@ virtual class uvm_reg_file extends uvm_object;
    // ~regfile_parent~ is specified as that register file.
    //
    // If the register file corresponds to a hierarchical RTL structure,
-   // it's contribution to the HDL path is specified as the ~hdl_path~.
+   // its contribution to the HDL path is specified as the ~hdl_path~.
    // Otherwise, the register file does not correspond to a hierarchical RTL
    // structure (e.g. it is physically flattened) and does not contribute
    // to the hierarchical HDL path of any contained registers.
@@ -144,7 +144,7 @@ virtual class uvm_reg_file extends uvm_object;
    // uses the default design abstraction specified for the nearest
    // enclosing register file or block
    //
-   // If no design asbtraction is specified, the default design abstraction
+   // If no design abstraction is specified, the default design abstraction
    // for this register file is used.
    //
    extern function bit  has_hdl_path      (string kind = "");
@@ -160,7 +160,7 @@ virtual class uvm_reg_file extends uvm_object;
    // Returns only the component of the HDL paths that corresponds to
    // the register file, not a full hierarchical path
    //
-   // If no design asbtraction is specified, the default design abstraction
+   // If no design abstraction is specified, the default design abstraction
    // for this register file is used.
    //
    extern function void get_hdl_path      (ref string paths[$], input string kind = "");
@@ -178,7 +178,7 @@ virtual class uvm_reg_file extends uvm_object;
    // parent components have more than one path defined for the same design
    // abstraction
    //
-   // If no design asbtraction is specified, the default design abstraction
+   // If no design abstraction is specified, the default design abstraction
    // for each ancestor register file or block is used to get each
    // incremental path.
    //
@@ -200,7 +200,7 @@ virtual class uvm_reg_file extends uvm_object;
    //
    // Returns the default design abstraction for this register file instance.
    // If a default design abstraction has not been explicitly set for this
-   // register file instance, returns the default design absraction for the
+   // register file instance, returns the default design abstraction for the
    // nearest register file or block ancestor.
    // Returns "" if no default design abstraction has been specified.
    //
@@ -234,6 +234,11 @@ endfunction: new
 // configure
 
 function void uvm_reg_file::configure(uvm_reg_block blk_parent, uvm_reg_file regfile_parent, string hdl_path = "");
+   if (blk_parent == null) begin
+     `uvm_error("UVM/RFILE/CFG/NOBLK", {"uvm_reg_file::configure() called without a parent block for instance \"", get_name(), "\" of register file type \"", get_type_name(), "\"."})
+     return;
+   end
+
    this.parent = blk_parent;
    this.m_rf = regfile_parent;
    this.add_hdl_path(hdl_path);
@@ -425,15 +430,12 @@ function string uvm_reg_file::get_full_name();
 
    get_full_name = this.get_name();
 
-   // Do not include top-level name in full name
+   // Is there a parent register file?
    if (m_rf != null)
       return {m_rf.get_full_name(), ".", get_full_name};
 
-   // Do not include top-level name in full name
-   blk = this.get_block();
-   if (blk == null)
-      return get_full_name;
-   if (blk.get_parent() == null)
+   // No: then prepend the full name of the parent block (if any)
+   if (this.parent == null)
       return get_full_name;
    get_full_name = {this.parent.get_full_name(), ".", get_full_name};
 endfunction: get_full_name

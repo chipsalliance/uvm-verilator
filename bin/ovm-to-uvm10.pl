@@ -56,7 +56,7 @@ local $text_file_mime_regexp="(text\/|application\/x-shellscript|regular file)";
 # ignore pattern
 local $file_ignore_pattern="(/(.hg|.git|INCA_libs|.daidir|.vdb|simv|csrc|DVEfiles)\/|[#~]\$|\.(zip|gz|bz2|orig|diff|patch)\$)";
 
-my $VerID='-*- $Id: ovm2uvm.pl,v d60c9fc172de 2010/10/13 14:58:52 accellera $ -*-';
+my $VerID='-*- $Id: ovm-to-uvm10.pl,v d60c9fc172de 2010/10/13 14:58:52 accellera $ -*-';
 my @Options=(
           ["help","this help screen"],
 	  ["top_dir=s","the top directory name containing the files to translate"],
@@ -425,9 +425,9 @@ standard usage model sv files only:
 4. inspect the MARKERS 
 
 
-usage: ovm2uvm.pl options* args*
+usage: ovm-to-uvm10.pl options* args*
 
-example: ovm2uvm.pl --top_dir /xyz/abc/src
+example: ovm-to-uvm10.pl --top_dir /xyz/abc/src
 
 
 all_text_files use model:
@@ -436,5 +436,5 @@ If the all_text_files use model is enabled using the --all_text_files switch all
 as text files are additionally considered for replacements. The simple o-to-u replacements will be performed 
 in all files (textual + sv) while the SV/OVM specific changes will be only applied to files identified as SV.
 
-example: example: ovm2uvm.pl --top_dir /xyz/abc/src --all
+example: example: ovm-to-uvm10.pl --top_dir /xyz/abc/src --all
 

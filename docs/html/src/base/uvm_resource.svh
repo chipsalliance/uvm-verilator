@@ -35,7 +35,7 @@
 // interfaces.
 //
 // Resources are stored in a resource database so that each resource can
-// be retrieved by name or by type. The databse has both a name table
+// be retrieved by name or by type. The database has both a name table
 // and a type table and each resource is entered into both. The database
 // is globally accessible.
 //
@@ -50,7 +50,7 @@
 // each resource has a static type handle that uniquely identifies the
 // type of each specialized resource container.
 //
-// Mutliple resources that have the same name are stored in a queue.
+// Multiple resources that have the same name are stored in a queue.
 // Each resource is pushed into a queue with the first one at the front
 // of the queue and each subsequent one behind it.  The same happens for
 // multiple resources that have the same type.  The resource queues are
@@ -88,7 +88,7 @@
 // <uvm_resource#(T)>: parameterized resource container.  This class
 // includes the interfaces for reading and writing each resource.
 // Because the class is parameterized, all the access functions are type
-// sace.
+// safe.
 //
 // <uvm_resource_pool>: the resource database. This is a singleton
 // class object.
@@ -202,8 +202,6 @@ virtual class uvm_resource_base extends uvm_object;
   protected bit modified;
   protected bit read_only;
 
-  local bit m_is_regex_name;
-
   uvm_resource_types::access_t access[string];
 
   // variable: precedence
@@ -227,7 +225,7 @@ virtual class uvm_resource_base extends uvm_object;
   // Function: new
   //
   // constructor for uvm_resource_base.  The constructor takes two
-  // arguments, the name of the resource and a resgular expression which
+  // arguments, the name of the resource and a regular expression which
   // represents the set of scopes over which this resource is visible.
 
   function new(string name = "", string s = "*");
@@ -236,8 +234,6 @@ virtual class uvm_resource_base extends uvm_object;
     modified = 0;
     read_only = 0;
     precedence = default_precedence;
-    if(uvm_has_wildcard(name))
-      m_is_regex_name = 1;
   endfunction
 
   // Function: get_type_handle
@@ -276,7 +272,7 @@ virtual class uvm_resource_base extends uvm_object;
 
   // Function: is_read_only
   //
-  // Retruns one if this resource has been set to read-only, zero
+  // Returns one if this resource has been set to read-only, zero
   // otherwise
   function bit is_read_only();
     return read_only;
@@ -333,11 +329,11 @@ virtual class uvm_resource_base extends uvm_object;
   //|    top\.u[1-5]\.*	        all of the scopes rooted and named u1, u2, u3,
   //                             u4, or u5, and any of their subscopes.
   // 
-  // The examples above use posix regular expression notation.  This is
+  // The examples above use POSIX regular expression notation.  This is
   // a very general and expressive notation.  It is not always the case
   // that so much expressiveness is required.  Sometimes an expression
   // syntax that is easy to read and easy to write is useful, even if
-  // the syntax is not as expressive as the full power of posix regular
+  // the syntax is not as expressive as the full power of POSIX regular
   // expressions.  A popular substitute for regular expressions is
   // globs.  A glob is a simplified regular expression. It only has
   // three metacharacters -- *, +, and ?.  Character ranges are not
@@ -369,13 +365,13 @@ virtual class uvm_resource_base extends uvm_object;
   // are treated as glob expressions. They are converted from glob 
   // notation to regular expression notation internally.  Regular expression 
   // compilation and matching as well as glob-to-regular expression 
-  // conversion are handled by three DPI functions:
+  // conversion are handled by two DPI functions:
   // 
   //|    function int uvm_re_match(string re, string str);
   //|    function string uvm_glob_to_re(string glob);
   // 
   // uvm_re_match both compiles and matches the regular expression.
-  // of the matching is done using regular expressions, so globs are
+  // All of the matching is done using regular expressions, so globs are
   // converted to regular expressions and then processed.
 
 
@@ -445,7 +441,7 @@ virtual class uvm_resource_base extends uvm_object;
   // Implementation of do_print which is called by print().
 
   function void do_print (uvm_printer printer);
-    $display("%s [%s] : %s", get_name(), get_scope(), convert2string());
+    printer.print_string("",$sformatf("%s [%s] : %s", get_name(), get_scope(), convert2string()));
   endfunction
 
   //-------------------
@@ -453,8 +449,8 @@ virtual class uvm_resource_base extends uvm_object;
   //-------------------
   //
   // To find out what is happening as the simulation proceeds, an audit 
-  // trail of each read and write is kept. The read and write methods
-  // in uvm_resource#(T) each take an accessor argument.  This is a
+  // trail of each read and write is kept. The <uvm_resource#(T)::read> and 
+  // <uvm_resource#(T)::write> methods each take an accessor argument.  This is a
   // handle to the object that performed that resource access.
   //
   //|    function T read(uvm_object accessor = null);
@@ -477,7 +473,7 @@ virtual class uvm_resource_base extends uvm_object;
   // Each audit record also includes the time of the access (simulation time)
   // and the particular operation performed (read or write).
   //
-  // Auditting is controlled through the <uvm_resource_options> class.
+  // Auditing is controlled through the <uvm_resource_options> class.
 
   // function: record_read_access
 
@@ -551,41 +547,34 @@ virtual class uvm_resource_base extends uvm_object;
     string str;
     uvm_component comp;
     uvm_resource_types::access_t access_record;
-
+    string qs[$];
+    
     if(access.num() == 0)
       return;
 
-    $display("  --------");
-
     foreach (access[i]) begin
       str = i;
-      $write("  %s", str);
       access_record = access[str];
-      $display(" reads: %0d @ %0t  writes: %0d @ %0t",
+      qs.push_back($sformatf("%s reads: %0d @ %0t  writes: %0d @ %0t\n",str,
                access_record.read_count,
                access_record.read_time,
                access_record.write_count,
-               access_record.write_time);
+               access_record.write_time));
     end
-
-    $display();
+    `uvm_info("UVM/RESOURCE/ACCESSOR",`UVM_STRING_QUEUE_STREAMING_PACK(qs),UVM_NONE)
 
   endfunction
 
 
   // Function: init_access_record
   //
-  // Initalize a new access record
+  // Initialize a new access record
   //
   function void init_access_record (inout uvm_resource_types::access_t access_record);
     access_record.read_time = 0;
     access_record.write_time = 0;
     access_record.read_count = 0;
     access_record.write_count = 0;
-  endfunction
-
-  virtual function bit has_regex_name();
-  	return m_is_regex_name;
   endfunction
 endclass
 
@@ -594,7 +583,7 @@ endclass
 // Class - get_t
 //
 // Instances of get_t are stored in the history list as a record of each
-// get.  Failed gets are indicated with rsrc set to null.  This is part
+// get.  Failed gets are indicated with rsrc set to ~null~.  This is part
 // of the audit trail facility for resources.
 //----------------------------------------------------------------------
 class get_t;
@@ -613,7 +602,7 @@ endclass
 // resource pool contains two associative arrays, one with name as the
 // key and one with the type handle as the key.  Each associative array
 // contains a queue of resources.  Each resource has a regular
-// expression that represents the set of scopes over with it is visible.
+// expression that represents the set of scopes over which it is visible.
 //
 //|  +------+------------+                          +------------+------+
 //|  | name | rsrc queue |                          | rsrc queue | type |
@@ -645,7 +634,7 @@ endclass
 // Resources are added to the pool by calling <set>; they are retrieved
 // from the pool by calling <get_by_name> or <get_by_type>.  When an object 
 // creates a new resource and calls <set> the resource is made available to be
-// retrieved by other objects outside of itsef; an object gets a
+// retrieved by other objects outside of itself; an object gets a
 // resource when it wants to access a resource not currently available
 // in its scope.
 //
@@ -660,14 +649,13 @@ endclass
 // history list.  This will tell which resources were successfully
 // located and which were not.  You can use this information
 // to determine if there is some error in name, type, or
-// scope that has caused a resource to not be located or to be incorrrectly
+// scope that has caused a resource to not be located or to be incorrectly
 // located (i.e. the wrong resource is located).
 //
 //----------------------------------------------------------------------
 
 class uvm_resource_pool;
 
-  static bit m_has_wildcard_names;
   static local uvm_resource_pool rp = get();
 
   uvm_resource_types::rsrc_q_t rtab [string];
@@ -719,7 +707,7 @@ class uvm_resource_pool;
   // override, a type override or both can be specified.  If an
   // override is specified then the resource is entered at the front of
   // the queue instead of at the back.  It is not recommended that users
-  // specify the override paramterer directly, rather they use the
+  // specify the override parameter directly, rather they use the
   // <set_override>, <set_name_override>, or <set_type_override>
   // functions.
   //
@@ -730,7 +718,7 @@ class uvm_resource_pool;
     string name;
     uvm_resource_base type_handle;
 
-    // If resource handle is null then there is nothing to do.
+    // If resource handle is ~null~ then there is nothing to do.
     if(rsrc == null)
       return;
 
@@ -770,11 +758,6 @@ class uvm_resource_pool;
       rq.push_back(rsrc);
     ttab[type_handle] = rq;
 
-    //optimization for name lookups. Since most environments never
-    //use wildcarded names, don't want to incurr a search penalty
-    //unless a wildcarded name has been used.
-    if(rsrc.has_regex_name())
-      m_has_wildcard_names = 1;
   endfunction
 
   // Function: set_override
@@ -801,7 +784,7 @@ class uvm_resource_pool;
   // Function: set_type_override
   //
   // The resource provided as an argument will be entered into the pool
-  // using noraml precedence in the name map and will override the type.
+  // using normal precedence in the name map and will override the type.
 
   function void set_type_override(uvm_resource_base rsrc);
     set(rsrc, uvm_resource_types::TYPE_OVERRIDE);
@@ -839,16 +822,18 @@ class uvm_resource_pool;
 
     get_t record;
     bit success;
+    string qs[$];
 
-    $display("--- resource get records ---");
+    qs.push_back("--- resource get records ---\n");
     foreach (get_record[i]) begin
       record = get_record[i];
       success = (record.rsrc != null);
-      $display("get: name=%s  scope=%s  %s @ %0t",
+      qs.push_back($sformatf("get: name=%s  scope=%s  %s @ %0t\n",
                record.name, record.scope,
                ((success)?"success":"fail"),
-               record.t);
+               record.t));
     end
+    `uvm_info("UVM/RESOURCE/GETRECORD",`UVM_STRING_QUEUE_STREAMING_PACK(qs),UVM_NONE)
   endfunction
 
   //--------------
@@ -861,7 +846,7 @@ class uvm_resource_pool;
   // matches the name or type (respectively) and is visible in the
   // current scope.  These functions return a queue of resources.
   //
-  // <get_highest_precedence> traverese a queue of resources and
+  // <get_highest_precedence> traverse a queue of resources and
   // returns the one with the highest precedence -- i.e. the one whose
   // precedence member has the highest value.
   //
@@ -876,7 +861,7 @@ class uvm_resource_pool;
   // match the ~name~, ~scope~, and ~type_handle~.  If no resources
   // match the queue is returned empty. If ~rpterr~ is set then a
   // warning is issued if no matches are found, and the spell checker is
-  // invoked on ~name~.  If ~type_handle~ is null then a type check is
+  // invoked on ~name~.  If ~type_handle~ is ~null~ then a type check is
   // not made and resources are returned that match only ~name~ and
   // ~scope~.
 
@@ -885,19 +870,30 @@ class uvm_resource_pool;
                                                     uvm_resource_base type_handle = null,
                                                     bit rpterr = 1);
     uvm_resource_types::rsrc_q_t rq;
-    uvm_resource_types::rsrc_q_t q = new();
+    uvm_resource_types::rsrc_q_t q;
     uvm_resource_base rsrc;
     uvm_resource_base r;
 
+     // ensure rand stability during lookup
+     begin
+	process p = process::self();
+	string s;
+	if(p!=null) s=p.get_randstate();
+	q=new();
+	if(p!=null) p.set_randstate(s);
+     end
+
+     
     // resources with empty names are anonymous and do not exist in the name map
     if(name == "")
       return q;
 
     // Does an entry in the name map exist with the specified name?
     // If not, then we're done
-    if((rpterr && !spell_check(name)) || (!rpterr && !rtab.exists(name))) begin
-      return q;
-    end
+    if(!rtab.exists(name)) begin
+	    if(rpterr) void'(spell_check(name));	
+		return q;
+    end	
 
     rsrc = null;
     rq = rtab[name];
@@ -1061,42 +1057,15 @@ class uvm_resource_pool;
   // Function: lookup_regex_names
   //
   // This utility function answers the question, for a given ~name~,
-  // ~scope~,and ~type_handle~, what are all of the resources with a
-  // matching name (where the resource name may be a regular
-  // expression), a matching scope (where the resoucre scope may be a
-  // regular expression), and a matching type? ~name~ and ~scope~ are
-  // explicit values.
+  // ~scope~, and ~type_handle~, what are all of the resources with requested name,
+  // a matching scope (where the resource scope may be a
+  // regular expression), and a matching type? 
+  // ~name~ and ~scope~ are explicit values.
 
   function uvm_resource_types::rsrc_q_t lookup_regex_names(string scope,
                                                            string name,
                                                            uvm_resource_base type_handle = null);
-
-    uvm_resource_types::rsrc_q_t rq;
-    uvm_resource_types::rsrc_q_t result_q;
-    int unsigned i;
-    uvm_resource_base r;
-
-    //For the simple case where no wildcard names exist, then we can
-    //just return the queue associated with name.
-    if(!m_has_wildcard_names) begin
-      result_q = lookup_name(scope, name, type_handle, 0);
-      return result_q;
-    end
-
-    result_q = new();
-
-    foreach (rtab[re]) begin
-      rq = rtab[re];
-      for(i = 0; i < rq.size(); i++) begin
-        r = rq.get(i);
-        if(uvm_re_match(uvm_glob_to_re(re),name) == 0)
-          // does the type and scope match?
-          if(((type_handle == null) || (r.get_type_handle() == type_handle)) &&
-             r.match_scope(scope))
-            result_q.push_back(r);
-      end
-    end
-    return result_q;
+      return lookup_name(scope, name, type_handle, 0);
   endfunction
 
   // Function: lookup_regex
@@ -1172,7 +1141,7 @@ class uvm_resource_pool;
   //
   // Functions for altering the search priority of resources.  Resources
   // are stored in queues in the type and name maps.  When retrieving
-  // resoures, either by type or by name, the resource queue is search
+  // resources, either by type or by name, the resource queue is search
   // from front to back.  The first one that matches the search criteria
   // is the one that is returned.  The ~set_priority~ functions let you
   // change the order in which resources are searched.  For any
@@ -1220,7 +1189,7 @@ class uvm_resource_pool;
   //
   // Change the priority of the ~rsrc~ based on the value of ~pri~, the
   // priority enum argument.  This function changes the priority only in
-  // the type map, leavint the name map untouched.
+  // the type map, leaving the name map untouched.
 
   function void set_priority_type(uvm_resource_base rsrc,
                                   uvm_resource_types::priority_e pri);
@@ -1349,7 +1318,7 @@ class uvm_resource_pool;
     printer.knobs.reference=0;
 
     if(rq == null || rq.size() == 0) begin
-      $display("<none>");
+      `uvm_info("UVM/RESOURCE/PRINT","<none>",UVM_NONE)
       return;
     end
 
@@ -1375,14 +1344,14 @@ class uvm_resource_pool;
     uvm_resource_types::rsrc_q_t rq;
     string name;
 
-    $display("\n=== resource pool ===");
+    `uvm_info("UVM/RESOURCE/DUMP","\n=== resource pool ===",UVM_NONE)
 
     foreach (rtab[name]) begin
       rq = rtab[name];
       print_resources(rq, audit);
     end
 
-    $display("=== end of resource pool ===");
+    `uvm_info("UVM/RESOURCE/DUMP","=== end of resource pool ===",UVM_NONE)
 
   endfunction
   
@@ -1439,6 +1408,18 @@ class uvm_resource #(type T=int) extends uvm_resource_base;
 
   function new(string name="", scope="");
     super.new(name, scope);
+    
+`ifndef UVM_NO_DEPRECATED
+begin
+	for(int i=0;i<name.len();i++) begin
+		if(name.getc(i) inside {".","/","[","*","{"}) begin
+			`uvm_warning("UVM/RSRC/NOREGEX", $sformatf("a resource with meta characters in the field name has been created \"%s\"",name))
+			break;
+		end	
+	end	
+end
+
+`endif    
   endfunction
 
   function string convert2string();
@@ -1489,7 +1470,7 @@ class uvm_resource #(type T=int) extends uvm_resource_base;
   // uvm_resource#(T) provides an interface for setting and getting a
   // resources.  Specifically, a resource can insert itself into the
   // resource pool.  It doesn't make sense for a resource to get itself,
-  // since you can't call a funtion on a handle you don't have.
+  // since you can't call a function on a handle you don't have.
   // However, a static get interface is provided as a convenience.  This
   // obviates the need for the user to get a handle to the global
   // resource pool as this is done for him here.
@@ -1521,7 +1502,7 @@ class uvm_resource #(type T=int) extends uvm_resource_base;
   // Function: get_by_name
   //
   // looks up a resource by ~name~ in the name map. The first resource
-  // with the specified nam, whose type is the current type, and is
+  // with the specified name, whose type is the current type, and is
   // visible in the specified ~scope~ is returned, if one exists.  The
   // ~rpterr~ flag indicates whether or not an error should be reported
   // if the search fails.  If ~rpterr~ is set to one then a failure
@@ -1558,8 +1539,8 @@ class uvm_resource #(type T=int) extends uvm_resource_base;
   //
   // looks up a resource by ~type_handle~ in the type map. The first resource
   // with the specified ~type_handle~ that is visible in the specified ~scope~ is
-  // returned, if one exists. Null is returned if there is no resource matching
-  // the specifications.
+  // returned, if one exists. If there is no resource matching the specifications,
+  // ~null~ is returned.
 
   static function this_type get_by_type(string scope = "",
                                         uvm_resource_base type_handle);

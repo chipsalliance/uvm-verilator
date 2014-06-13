@@ -158,7 +158,7 @@ class uvm_mem_mam;
    // Reserve a memory region of the specified number of bytes
    // starting at the specified offset.
    // A descriptor of the reserved region is returned.
-   // If the specified region cannot be reserved, null is returned.
+   // If the specified region cannot be reserved, ~null~ is returned.
    //
    // It may not be possible to reserve a region because
    // it overlaps with an already-allocated region or
@@ -661,11 +661,12 @@ endfunction: new
 
 function uvm_mem_mam_cfg uvm_mem_mam::reconfigure(uvm_mem_mam_cfg cfg = null);
    uvm_root top;
-
+   uvm_coreservice_t cs;
    if (cfg == null)
      return this.cfg;
 
-   top = uvm_root::get();
+   cs = uvm_coreservice_t::get();
+   top = cs.get_root();
 
    // Cannot reconfigure n_bytes
    if (cfg.n_bytes !== this.cfg.n_bytes) begin

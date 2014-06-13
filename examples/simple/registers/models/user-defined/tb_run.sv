@@ -58,7 +58,7 @@ class tb_test extends uvm_test;
          seq = uvm_reg_hw_reset_seq::type_id::create("seq");
          seq.model = env.regmodel;
          seq.start(null);
-         seq.wait_for_sequence_state(FINISHED);
+         seq.wait_for_sequence_state(UVM_FINISHED);
       end
 
       `uvm_info("Test", "Performing 257 writes...", UVM_LOW)
@@ -78,7 +78,8 @@ class tb_test extends uvm_test;
 endclass
 
 
-initial begin
+initial begin automatic uvm_coreservice_t cs_ = uvm_coreservice_t::get();
+
    tb_env env;
    tb_test test;
    uvm_report_server svr;
@@ -86,7 +87,7 @@ initial begin
    env = new("env");
    test = new("test");
 
-   svr = _global_reporter.get_report_server();
+   svr = cs_.get_report_server();
    svr.set_max_quit_count(10);
    
    run_test();

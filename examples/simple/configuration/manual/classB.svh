@@ -33,8 +33,8 @@ class B extends uvm_component;
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
 
-    void'(get_config_int("debug", debug));
-    set_config_int("u1", "v", 0);
+    void'(uvm_config_int::get(this, "", "debug", debug));
+    uvm_config_int::set(this, "u1", "v", 0);
 
     $display("%s: In Build: debug = %0d", get_full_name(), debug);
 

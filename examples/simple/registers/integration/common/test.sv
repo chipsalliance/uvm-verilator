@@ -33,13 +33,13 @@ import apb_pkg::*;
 `include "regmodel.sv"
 `include "tb_env.sv"
 
-initial
-begin
+initial begin automatic uvm_coreservice_t cs_ = uvm_coreservice_t::get();
+
    static tb_env env = new("env");
 
    begin
      uvm_report_server svr;
-     svr = _global_reporter.get_report_server();
+     svr = cs_.get_report_server();
      svr.set_max_quit_count(10);
    end
 

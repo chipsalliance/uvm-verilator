@@ -45,8 +45,8 @@ class lower extends uvm_component;
   endfunction
 
   function void build_phase(uvm_phase phase);
-     void'(get_config_int("data", data));
-     void'(get_config_string("str", str));
+     void'(uvm_config_int::get(this, "", "data", data));
+     void'(uvm_config_string::get(this, "", "str", str));
   endfunction 
 
   function void do_print(uvm_printer printer);
@@ -65,8 +65,8 @@ class myunit extends uvm_component;
 
   function new (string name, uvm_component parent);
     super.new(name, parent);
-    set_config_string("l1", "str", "hi");
-    set_config_int("*", "data", 'h100);
+    uvm_config_string::set(this, "l1", "str", "hi");
+    uvm_config_int::set(this, "*", "data", 'h100);
     l1 = new ("l1", this);
     l2 = new ("l2", this);
     l1.data = 'h30;
@@ -134,10 +134,10 @@ module top;
 
   initial begin
     uvm_top.finish_on_completion = 0;
-    set_config_int("mu.*", "data", 101);
-    set_config_string("mu.*", "str", "hi");
-    set_config_int("mu.l1", "data", 55);
-    set_config_object("mu.*", "obj", bar);
+    uvm_config_int::set(null, "mu.*", "data", 101);
+    uvm_config_string::set(null, "mu.*", "str", "hi");
+    uvm_config_int::set(null, "mu.l1", "data", 55);
+    uvm_config_object::set(null, "mu.*", "obj", bar);
     mu.print();
     run_test();
     mu.print();

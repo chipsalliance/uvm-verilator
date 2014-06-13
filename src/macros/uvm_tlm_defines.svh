@@ -23,12 +23,12 @@
 //
 // Title: TLM Implementation Port Declaration Macros
 //
-// The TLM implemenation declaration macros provide a way for components
-// to provide multiple implemenation ports of the same implementation 
+// The TLM implementation declaration macros provide a way for components
+// to provide multiple implementation ports of the same implementation 
 // interface. When an implementation port is defined using the built-in
 // set of imps, there must be exactly one implementation of the interface.
 //
-// For example, if a component needs to provide a put implemenation then
+// For example, if a component needs to provide a put implementation then
 // it would have an implementation port defined like:
 //
 //| class mycomp extends uvm_component;
@@ -39,12 +39,12 @@
 //|   endtask
 //| endclass
 //
-// There are times, however, when you need more than one implementation for
+// There are times, however, when you need more than one implementation 
 // for an interface. This set of declarations allow you to easily create
-// a new implemenation class to allow for multiple implementations. Although
-// the new implemenation class is a different class, it can be bound to
+// a new implementation class to allow for multiple implementations. Although
+// the new implementation class is a different class, it can be bound to
 // the same types of exports and ports as the original class. Extending
-// the put example above, lets say that mycomp needs to provide two put
+// the put example above, let's say that mycomp needs to provide two put
 // implementation ports. In that case, you would do something like:
 //
 //| //Define two new put interfaces which are compatible with uvm_put_ports
@@ -54,15 +54,15 @@
 //| `uvm_put_imp_decl(_2)
 //|
 //| class my_put_imp#(type T=int) extends uvm_component;
-//|    uvm_put_imp_1#(T) put_imp1;
-//|    uvm_put_imp_2#(T) put_imp2;
+//|    uvm_put_imp_1#(T,my_put_imp#(T)) put_imp1;
+//|    uvm_put_imp_2#(T,my_put_imp#(T)) put_imp2;
 //|    ...
 //|    function void put_1 (input T t);
-//|      //puts comming into put_imp1
+//|      //puts coming into put_imp1
 //|      ...
 //|    endfunction
 //|    function void put_2(input T t);
-//|      //puts comming into put_imp2
+//|      //puts coming into put_imp2
 //|      ...
 //|    endfunction
 //| endclass
@@ -70,7 +70,7 @@
 // The important thing to note is that each `uvm_<interface>_imp_decl creates a 
 // new class of type uvm_<interface>_imp<suffix>, where suffix is the input 
 // argument to the macro. For this reason, you will typically want to put
-// these macros in a seperate package to avoid collisions and to allow 
+// these macros in a separate package to avoid collisions and to allow 
 // sharing of the definitions.
 //-----------------------------------------------------------------------------
 
@@ -212,7 +212,7 @@ endclass
 //| `uvm_blocking_get_peek_imp_decl(SFX)
 //
 // Define the class uvm_blocking_get_peek_impSFX for providing the
-// blocking get_peek implemenation.
+// blocking get_peek implementation.
 
 `define uvm_blocking_get_peek_imp_decl(SFX) \
 class uvm_blocking_get_peek_imp``SFX #(type T=int, type IMP=int) \
@@ -227,7 +227,7 @@ endclass
 //| `uvm_nonblocking_get_peek_imp_decl(SFX)
 //
 // Define the class uvm_nonblocking_get_peek_impSFX for providing non-blocking 
-// get_peek implemenation.
+// get_peek implementation.
 
 `define uvm_nonblocking_get_peek_imp_decl(SFX) \
 class uvm_nonblocking_get_peek_imp``SFX #(type T=int, type IMP=int) \
@@ -261,7 +261,7 @@ endclass
 //| `uvm_blocking_master_imp_decl(SFX)
 //
 // Define the class uvm_blocking_master_impSFX for providing the
-// blocking master implemenation.
+// blocking master implementation.
 
 `define uvm_blocking_master_imp_decl(SFX) \
 class uvm_blocking_master_imp``SFX #(type REQ=int, type RSP=int, type IMP=int, \
@@ -284,7 +284,7 @@ endclass
 //| `uvm_nonblocking_master_imp_decl(SFX)
 //
 // Define the class uvm_nonblocking_master_impSFX for providing the
-// non-blocking master implemenation.
+// non-blocking master implementation.
 
 `define uvm_nonblocking_master_imp_decl(SFX) \
 class uvm_nonblocking_master_imp``SFX #(type REQ=int, type RSP=int, type IMP=int, \
@@ -334,7 +334,7 @@ endclass
 //| `uvm_blocking_slave_imp_decl(SFX)
 //
 // Define the class uvm_blocking_slave_impSFX for providing the
-// blocking slave implemenation.
+// blocking slave implementation.
 
 `define uvm_blocking_slave_imp_decl(SFX) \
 class uvm_blocking_slave_imp``SFX #(type REQ=int, type RSP=int, type IMP=int, \
@@ -357,7 +357,7 @@ endclass
 //| `uvm_nonblocking_slave_imp_decl(SFX)
 //
 // Define the class uvm_nonblocking_slave_impSFX for providing the
-// non-blocking slave implemenation.
+// non-blocking slave implementation.
 
 `define uvm_nonblocking_slave_imp_decl(SFX) \
 class uvm_nonblocking_slave_imp``SFX #(type REQ=int, type RSP=int, type IMP=int, \
@@ -407,7 +407,7 @@ endclass
 //| `uvm_blocking_transport_imp_decl(SFX)
 //
 // Define the class uvm_blocking_transport_impSFX for providing the
-// blocking transport implemenation.
+// blocking transport implementation.
 
 `define uvm_blocking_transport_imp_decl(SFX) \
 class uvm_blocking_transport_imp``SFX #(type REQ=int, type RSP=int, type IMP=int) \
@@ -421,7 +421,7 @@ endclass
 //| `uvm_nonblocking_transport_imp_decl(SFX)
 //
 // Define the class uvm_nonblocking_transport_impSFX for providing the
-// non-blocking transport implemenation.
+// non-blocking transport implementation.
 
 `define uvm_nonblocking_transport_imp_decl(SFX) \
 class uvm_nonblocking_transport_imp``SFX #(type REQ=int, type RSP=int, type IMP=int) \
@@ -455,7 +455,7 @@ endclass
 //
 // Define the class uvm_analysis_impSFX for providing an analysis
 // implementation. ~SFX~ is the suffix for the new class type. The analysis 
-// implemenation is the write function. The `uvm_analysis_imp_decl allows 
+// implementation is the write function. The `uvm_analysis_imp_decl allows 
 // for a scoreboard (or other analysis component) to support input from many 
 // places. For example:
 //
@@ -546,6 +546,8 @@ endclass
 // imp definitions
 //----------------------------------------------------------------------
 `define UVM_SEQ_ITEM_PULL_IMP(imp, REQ, RSP, req_arg, rsp_arg) \
+  function void disable_auto_item_recording(); imp.disable_auto_item_recording(); endfunction \
+  function bit is_auto_item_recording_enabled(); return imp.is_auto_item_recording_enabled(); endfunction \
   task get_next_item(output REQ req_arg); imp.get_next_item(req_arg); endtask \
   task try_next_item(output REQ req_arg); imp.try_next_item(req_arg); endtask \
   function void item_done(input RSP rsp_arg = null); imp.item_done(rsp_arg); endfunction \

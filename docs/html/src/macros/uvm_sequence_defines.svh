@@ -95,7 +95,7 @@
 //
 //| `uvm_do_pri(SEQ_OR_ITEM, PRIORITY)
 //
-// This is the same as `uvm_do except that the sequene item or sequence is
+// This is the same as `uvm_do except that the sequence item or sequence is
 // executed with the priority specified in the argument
 
 `define uvm_do_pri(SEQ_OR_ITEM, PRIORITY) \
@@ -234,7 +234,7 @@
 //
 //| `uvm_send_pri(SEQ_OR_ITEM, PRIORITY)
 //
-// This is the same as `uvm_send except that the sequene item or sequence is
+// This is the same as `uvm_send except that the sequence item or sequence is
 // executed with the priority specified in the argument.
 
 `define uvm_send_pri(SEQ_OR_ITEM, PRIORITY) \
@@ -264,7 +264,7 @@
 //
 //| `uvm_rand_send_pri(SEQ_OR_ITEM, PRIORITY)
 //
-// This is the same as `uvm_rand_send except that the sequene item or sequence
+// This is the same as `uvm_rand_send except that the sequence item or sequence
 // is executed with the priority specified in the argument.
 
 `define uvm_rand_send_pri(SEQ_OR_ITEM, PRIORITY) \
@@ -322,7 +322,7 @@
 //-----------------------------------------------------------------------------
 
 
-// MACRO- `uvm_add_to_sequence_library
+// MACRO: `uvm_add_to_sequence_library
 //
 // Adds the given sequence ~TYPE~ to the given sequence library ~LIBTYPE~
 //
@@ -359,7 +359,7 @@
 
 
 
-// MACRO- `uvm_sequence_library_utils
+// MACRO: `uvm_sequence_library_utils
 //
 //| `uvm_sequence_library_utils(TYPE)
 // 
@@ -428,7 +428,7 @@
 //
 //| `uvm_declare_p_sequencer(SEQUENCER)
 //
-// The example below shows using the the `uvm_declare_p_sequencer macro
+// The example below shows using the `uvm_declare_p_sequencer macro
 // along with the uvm_object_utils macros to set up the sequence but
 // not register the sequence in the sequencer's library.
 //

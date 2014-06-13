@@ -27,11 +27,11 @@ This test is supposed to test the hierarchical connection between ports of hiera
 
 
 Walk through the test:
-A thread *gen* will use an uvm_blocking_put_port to put a transaction.
+A thread *gen* will use a uvm_blocking_put_port to put a transaction.
 
-A *conv* thread will use an uvm_blocking_put_port to put a transaction,an  uvm_blocking_get_port to get a transactions, and an uvm_analysis_ port to a writte a transaction through it.
+A *conv* thread will use a uvm_blocking_put_port to put a transaction,an  uvm_blocking_get_port to get a transactions, and a uvm_analysis_ port to a writte a transaction through it.
 
-Another thread *bfm* will use an uvm_blocking_get_port to only get the transactions that has been sent by the other threads.
+Another thread *bfm* will use a uvm_blocking_get_port to only get the transactions that has been sent by the other threads.
 
 A *listener* will extends the uvm_subscriber, to implement the analysis port write function.
 
@@ -39,7 +39,7 @@ A *producer* component will use uvm_blocking_put_port and uvm_analysis_port and 
 
 A *consumer* component will use uvm_blocking_put export and connect it directly to a fifo export, also will connect the *bfm*  get port to the fifo export
 
-At *top* env, the *producer*, *consumer*, and the the *listener* will be connected
+At *top* env, the *producer*, *consumer*, and the *listener* will be connected
 
 */
 

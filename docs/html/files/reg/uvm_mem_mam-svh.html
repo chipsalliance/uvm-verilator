@@ -137,19 +137,21 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_mam.new" href="../../src/reg/uvm_mem_mam.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_mem_mam_cfg&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_mem_mam_cfg&nbsp;</td>
       <td class=PParameter nowrap>cfg,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_mem&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_mem&nbsp;</td>
       <td class=PParameter nowrap>mem</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Create a new manager instance</p><p>Create an instance of a memory allocation manager with the specified name and configuration.&nbsp; This instance manages all memory region allocation within the address range specified in the configuration descriptor.</p><p>If a reference to a memory abstraction class is provided, the memory locations within the regions can be accessed through the region descriptor, using the <a href="#uvm_mem_region.read" class=LMethod id=link17 onMouseOver="ShowTip(event, 'tt15', 'link17')" onMouseOut="HideTip('tt15')">uvm_mem_region::read()</a> and <a href="#uvm_mem_region.write" class=LMethod id=link18 onMouseOver="ShowTip(event, 'tt16', 'link18')" onMouseOut="HideTip('tt16')">uvm_mem_region::write()</a> methods.</p></div></div></div>
@@ -161,11 +163,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_mam.reconfigure" href="../../src/reg/uvm_mem_mam.svh">reconfigure</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_mem_mam_cfg reconfigure(</td>      <td class=PType nowrap>uvm_mem_mam_cfg&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function uvm_mem_mam_cfg reconfigure(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_mem_mam_cfg&nbsp;</td>
       <td class=PParameter nowrap>cfg</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Reconfigure the manager</p><p>Modify the maximum and minimum addresses of the address space managed by the allocation manager, allocation mode, or locality.&nbsp; The number of bytes per memory location cannot be modified once an allocation manager has been constructed.&nbsp; All currently allocated regions must fall within the new address space.</p><p>Returns the previous configuration.</p><p>if no new configuration is specified, simply returns the current configuration.</p></div></div></div>
@@ -183,30 +187,32 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_mam.reserve_region" href="../../src/reg/uvm_mem_mam.svh">reserve_region</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_mem_region reserve_region(</td>      <td class=PTypePrefix nowrap>bit&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>function uvm_mem_region reserve_region(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>bit&nbsp;</td>
       <td class=PType nowrap>[63:0]&nbsp;</td>
       <td class=PParameter nowrap>start_offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>n_bytes,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Reserve a specific memory region</p><p>Reserve a memory region of the specified number of bytes starting at the specified offset.&nbsp; A descriptor of the reserved region is returned.&nbsp; If the specified region cannot be reserved, null is returned.</p><p>It may not be possible to reserve a region because it overlaps with an already-allocated region or it lies outside the address range managed by the memory manager.</p><p>Regions can be reserved to create &ldquo;holes&rdquo; in the managed address space.</p></div></div></div>
+<div class=CBody><p>Reserve a specific memory region</p><p>Reserve a memory region of the specified number of bytes starting at the specified offset.&nbsp; A descriptor of the reserved region is returned.&nbsp; If the specified region cannot be reserved, <i>null</i> is returned.</p><p>It may not be possible to reserve a region because it overlaps with an already-allocated region or it lies outside the address range managed by the memory manager.</p><p>Regions can be reserved to create &ldquo;holes&rdquo; in the managed address space.</p></div></div></div>
 
 
 
@@ -215,27 +221,29 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_mam.request_region" href="../../src/reg/uvm_mem_mam.svh">request_region</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_mem_region request_region(</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>function uvm_mem_region request_region(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>n_bytes,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_mem_mam_policy&nbsp;</td>
       <td class=PParameter nowrap>alloc</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Request and reserve a memory region</p><p>Request and reserve a memory region of the specified number of bytes starting at a random location.&nbsp; If an policy is specified, it is randomized to determine the start offset of the region.&nbsp; If no policy is specified, the policy found in the <a href="#uvm_mem_mam.default_alloc" class=LVariable id=link19 onMouseOver="ShowTip(event, 'tt5', 'link19')" onMouseOut="HideTip('tt5')">uvm_mem_mam::default_alloc</a> class property is randomized.</p><p>A descriptor of the allocated region is returned.&nbsp; If no region can be allocated, <i>null</i> is returned.</p><p>It may not be possible to allocate a region because there is no area in the memory with enough consecutive locations to meet the size requirements or because there is another contradiction when randomizing the policy.</p><p>If the memory allocation is configured to <i>THRIFTY</i> or <i>NEARBY</i>, a suitable region is first sought procedurally.</p></div></div></div>
@@ -247,9 +255,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_mam.release_region" href="../../src/reg/uvm_mem_mam.svh">release_region</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void release_region(</td>      <td class=PType nowrap>uvm_mem_region&nbsp;</td>
-      <td class=PParameter nowrap>region</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void release_region(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_mem_region&nbsp;</td>
+      <td class=PParameter nowrap width=100%>region</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Release the specified region</p><p>Release a previously allocated memory region.&nbsp; An error is issued if the specified region has not been previously allocated or is no longer allocated.</p></div></div></div>
@@ -283,11 +293,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_mam.for_each" href="../../src/reg/uvm_mem_mam.svh">for_each</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_mem_region for_each(</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function uvm_mem_region for_each(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>reset</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Iterate over all currently allocated regions</p><p>If reset is <i>TRUE</i>, reset the iterator and return the first allocated region.&nbsp; Returns <i>null</i> when there are no additional allocated regions to iterate on.</p></div></div></div>
@@ -431,57 +443,59 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_region.write" href="../../src/reg/uvm_mem_mam.svh">write</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task write(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Write to a memory location in the region.</p><p>Write to the memory location that corresponds to the specified <i>offset</i> within this region.&nbsp; Requires that the memory abstraction class be associated with the memory allocation manager that allocated this region.</p><p>See <a href="uvm_mem-svh.html#uvm_mem.write" class=LMethod id=link36 onMouseOver="ShowTip(event, 'tt28', 'link36')" onMouseOut="HideTip('tt28')">uvm_mem::write()</a> for more details.</p></div></div></div>
@@ -493,57 +507,59 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_region.read" href="../../src/reg/uvm_mem_mam.svh">read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task read(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Read from a memory location in the region.</p><p>Read from the memory location that corresponds to the specified <i>offset</i> within this region.&nbsp; Requires that the memory abstraction class be associated with the memory allocation manager that allocated this region.</p><p>See <a href="uvm_mem-svh.html#uvm_mem.read" class=LMethod id=link37 onMouseOver="ShowTip(event, 'tt29', 'link37')" onMouseOut="HideTip('tt29')">uvm_mem::read()</a> for more details.</p></div></div></div>
@@ -555,57 +571,59 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_region.burst_write" href="../../src/reg/uvm_mem_mam.svh">burst_write</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task burst_write(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task burst_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value[],</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Write to a set of memory location in the region.</p><p>Write to the memory locations that corresponds to the specified <i>burst</i> within this region.&nbsp; Requires that the memory abstraction class be associated with the memory allocation manager that allocated this region.</p><p>See <a href="uvm_mem-svh.html#uvm_mem.burst_write" class=LMethod id=link38 onMouseOver="ShowTip(event, 'tt30', 'link38')" onMouseOut="HideTip('tt30')">uvm_mem::burst_write()</a> for more details.</p></div></div></div>
@@ -617,57 +635,59 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_region.burst_read" href="../../src/reg/uvm_mem_mam.svh">burst_read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task burst_read(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task burst_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value[],</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Read from a set of memory location in the region.</p><p>Read from the memory locations that corresponds to the specified <i>burst</i> within this region.&nbsp; Requires that the memory abstraction class be associated with the memory allocation manager that allocated this region.</p><p>See <a href="uvm_mem-svh.html#uvm_mem.burst_read" class=LMethod id=link39 onMouseOver="ShowTip(event, 'tt31', 'link39')" onMouseOut="HideTip('tt31')">uvm_mem::burst_read()</a> for more details.</p></div></div></div>
@@ -679,42 +699,44 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_region.poke" href="../../src/reg/uvm_mem_mam.svh">poke</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task poke(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task poke(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Deposit in a memory location in the region.</p><p>Deposit the specified value in the memory location that corresponds to the specified <i>offset</i> within this region.&nbsp; Requires that the memory abstraction class be associated with the memory allocation manager that allocated this region.</p><p>See <a href="uvm_mem-svh.html#uvm_mem.poke" class=LMethod id=link40 onMouseOver="ShowTip(event, 'tt32', 'link40')" onMouseOut="HideTip('tt32')">uvm_mem::poke()</a> for more details.</p></div></div></div>
@@ -726,42 +748,44 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_mem_region.peek" href="../../src/reg/uvm_mem_mam.svh">peek</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task peek(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task peek(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Sample a memory location in the region.</p><p>Sample the memory location that corresponds to the specified <i>offset</i> within this region.&nbsp; Requires that the memory abstraction class be associated with the memory allocation manager that allocated this region.</p><p>See <a href="uvm_mem-svh.html#uvm_mem.peek" class=LMethod id=link41 onMouseOver="ShowTip(event, 'tt33', 'link41')" onMouseOut="HideTip('tt33')">uvm_mem::peek()</a> for more details.</p></div></div></div>
@@ -941,89 +965,99 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   </td></tr></table></blockquote>Region allocation policy</div></div><div class=CToolTip id="tt6"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_mem_mam_cfg&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_mem_mam_cfg&nbsp;</td>
       <td class=PParameter nowrap>cfg,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_mem&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_mem&nbsp;</td>
       <td class=PParameter nowrap>mem</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Create a new manager instance</div></div><div class=CToolTip id="tt7"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_mem_mam_cfg reconfigure(</td>      <td class=PType nowrap>uvm_mem_mam_cfg&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function uvm_mem_mam_cfg reconfigure(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_mem_mam_cfg&nbsp;</td>
       <td class=PParameter nowrap>cfg</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Reconfigure the manager</div></div><div class=CToolTip id="tt8"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_mem_region reserve_region(</td>      <td class=PTypePrefix nowrap>bit&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>function uvm_mem_region reserve_region(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>bit&nbsp;</td>
       <td class=PType nowrap>[63:0]&nbsp;</td>
       <td class=PParameter nowrap>start_offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>n_bytes,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Reserve a specific memory region</div></div><div class=CToolTip id="tt9"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_mem_region request_region(</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>function uvm_mem_region request_region(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>n_bytes,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_mem_mam_policy&nbsp;</td>
       <td class=PParameter nowrap>alloc</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Request and reserve a memory region</div></div><div class=CToolTip id="tt10"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void release_region(</td>      <td class=PType nowrap>uvm_mem_region&nbsp;</td>
-      <td class=PParameter nowrap>region</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void release_region(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_mem_region&nbsp;</td>
+      <td class=PParameter nowrap width=100%>region</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Release the specified region</div></div><div class=CToolTip id="tt11"><div class=CMethod>
@@ -1033,11 +1067,13 @@ Release the specified region</div></div><div class=CToolTip id="tt11"><div class
   </td></tr></table></blockquote>Image of the state of the manager</div></div><div class=CToolTip id="tt13"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function uvm_mem_region for_each(</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function uvm_mem_region for_each(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
       <td class=PParameter nowrap>reset</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Iterate over all currently allocated regions</div></div><div class=CToolTip id="tt14"><div class=CMethod>
@@ -1045,113 +1081,117 @@ Iterate over all currently allocated regions</div></div><div class=CToolTip id="
   </td></tr></table></blockquote>Get the managed memory implementation</div></div><div class=CToolTip id="tt15"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task read(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Read from a memory location in the region.</div></div><div class=CToolTip id="tt16"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task write(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Write to a memory location in the region.</div></div><div class=CToolTip id="tt17"><div class=CMethod>
@@ -1171,511 +1211,531 @@ Write to a memory location in the region.</div></div><div class=CToolTip id="tt1
   </td></tr></table></blockquote>Get the virtual register array in this region</div></div><div class=CToolTip id="tt24"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task burst_write(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task burst_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value[],</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Write to a set of memory location in the region.</div></div><div class=CToolTip id="tt25"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task burst_read(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task burst_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value[],</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Read from a set of memory location in the region.</div></div><div class=CToolTip id="tt26"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task poke(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task poke(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Deposit in a memory location in the region.</div></div><div class=CToolTip id="tt27"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>task peek(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>task peek(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Sample a memory location in the region.</div></div><div class=CToolTip id="tt28"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task write(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Write the specified value in a memory location</div></div><div class=CToolTip id="tt29"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task read(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Read the current value from a memory location</div></div><div class=CToolTip id="tt30"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task burst_write(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task burst_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value[],</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Write the specified values in memory locations</div></div><div class=CToolTip id="tt31"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task burst_read(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task burst_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value[],</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>prior</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> -1,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Read values from memory locations</div></div><div class=CToolTip id="tt32"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task poke(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task poke(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Deposit the specified value in a memory location</div></div><div class=CToolTip id="tt33"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task peek(</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task peek(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Read the current value from a memory location</div></div><div class=CToolTip id="tt34"><div class=CVariable>

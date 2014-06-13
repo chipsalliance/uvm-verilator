@@ -2,6 +2,7 @@
 //   Copyright 2007-2011 Mentor Graphics Corporation
 //   Copyright 2007-2009 Cadence Design Systems, Inc. 
 //   Copyright 2010 Synopsys, Inc.
+//   Copyright 2013 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -30,7 +31,7 @@ typedef enum {
 } uvm_heartbeat_modes;
 
 typedef class uvm_heartbeat_callback;
-typedef uvm_callbacks #(uvm_callbacks_objection,uvm_heartbeat_callback) uvm_heartbeat_cbs_t;
+typedef uvm_callbacks #(uvm_objection,uvm_heartbeat_callback) uvm_heartbeat_cbs_t;
 
 
 //------------------------------------------------------------------------------
@@ -42,8 +43,7 @@ typedef uvm_callbacks #(uvm_callbacks_objection,uvm_heartbeat_callback) uvm_hear
 // descendants are alive. A uvm_heartbeat is associated with a specific
 // objection object. A component that is being tracked by the heartbeat
 // object must raise (or drop) the synchronizing objection during
-// the heartbeat window. The synchronizing objection must be a
-// <uvm_callbacks_objection> type.
+// the heartbeat window. 
 //
 // The uvm_heartbeat object has a list of participating objects. The heartbeat
 // can be configured so that all components (UVM_ALL_ACTIVE), exactly one
@@ -54,12 +54,12 @@ typedef uvm_callbacks #(uvm_callbacks_objection,uvm_heartbeat_callback) uvm_hear
 typedef class uvm_objection_callback;
 class uvm_heartbeat extends uvm_object;
 
-  protected uvm_callbacks_objection m_objection;
+  protected uvm_objection m_objection;
   protected uvm_heartbeat_callback m_cb;
   protected uvm_component   m_cntxt;
   protected uvm_heartbeat_modes   m_mode;
   protected uvm_component   m_hblist[$];
-  protected uvm_event       m_event;
+  protected uvm_event#(uvm_object)       m_event;
   protected bit             m_started;
   protected event           m_stop_event;
 
@@ -68,22 +68,24 @@ class uvm_heartbeat extends uvm_object;
   // Creates a new heartbeat instance associated with ~cntxt~. The context
   // is the hierarchical location that the heartbeat objections will flow
   // through and be monitored at. The ~objection~ associated with the heartbeat 
-  // is optional, if it is left null but it must be set before the heartbeat
+  // is optional, if it is left ~null~ but it must be set before the heartbeat
   // monitor will activate.
   //
-  //| uvm_callbacks_objection myobjection = new("myobjection"); //some shared objection
+  //| uvm_objection myobjection = new("myobjection"); //some shared objection
   //| class myenv extends uvm_env;
   //|    uvm_heartbeat hb = new("hb", this, myobjection);
   //|    ...
   //| endclass
 
-  function new(string name, uvm_component cntxt, uvm_callbacks_objection objection=null);
+  function new(string name, uvm_component cntxt, uvm_objection objection=null);
+     uvm_coreservice_t cs;
     super.new(name);
     m_objection = objection;
-    
+    cs  = uvm_coreservice_t::get();
+     
     //if a cntxt is given it will be used for reporting.
     if(cntxt != null) m_cntxt = cntxt;
-    else m_cntxt = uvm_root::get();
+    else m_cntxt = cs.get_root();
 
     m_cb = new({name,"_cb"},m_cntxt);
 
@@ -111,11 +113,11 @@ class uvm_heartbeat extends uvm_object;
   // monitor event results in an error. To change trigger events, you
   // must first <stop> the monitor and then <start> with a new event trigger.
   //
-  // If the trigger event ~e~ is null and there was no previously set
+  // If the trigger event ~e~ is ~null~ and there was no previously set
   // trigger event, then the monitoring is not started. Monitoring can be 
   // started by explicitly calling <start>.
 
-  function void set_heartbeat (uvm_event e, ref uvm_component comps[$]);
+  function void set_heartbeat (uvm_event#(uvm_object) e, ref uvm_component comps[$]);
     uvm_object c;
     foreach(comps[i]) begin
       c = comps[i];
@@ -158,13 +160,13 @@ class uvm_heartbeat extends uvm_object;
 
   // Function: start
   //
-  // Starts the heartbeat monitor. If ~e~ is null then whatever event
+  // Starts the heartbeat monitor. If ~e~ is ~null~ then whatever event
   // was previously set is used. If no event was previously set then
   // a warning is issued. It is an error if the monitor is currently
   // running and ~e~ is specifying a different trigger event from the
   // current event.
 
-  function void start (uvm_event e=null);
+  function void start (uvm_event#(uvm_object) e=null);
     if(m_event == null && e == null) begin
       m_cntxt.uvm_report_warning("NOEVNT", { "start() was called for: ",
         get_name(), " with a null trigger and no currently set trigger" },
@@ -291,13 +293,14 @@ class uvm_heartbeat_callback extends uvm_objection_callback;
   int  cnt [uvm_object];
   time last_trigger [uvm_object];
   uvm_object target;
+  uvm_coreservice_t cs = uvm_coreservice_t::get();
 
   function new(string name, uvm_object target);
     super.new(name);
     if (target != null)
        this.target = target;
     else
-       this.target = uvm_root::get();
+       this.target = cs.get_root();
   endfunction
 
   virtual function void raised (uvm_objection objection,

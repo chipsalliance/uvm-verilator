@@ -2,7 +2,7 @@
 // -------------------------------------------------------------
 //    Copyright 2004-2008 Synopsys, Inc.
 //    Copyright 2010 Mentor Graphics Corporation
-//    Copyright 2010 Cadence Design Systems, Inc.
+//    Copyright 2010-2013 Cadence Design Systems, Inc.
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -101,20 +101,25 @@ class uvm_reg_single_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
          uvm_reg_field fields[$];
 
          rg.get_fields(fields);
-         foreach (fields[j]) begin
-            foreach (maps[k]) begin
+         foreach (maps[k]) begin
+	        int ro;
+	       	ro=0;
+	     	foreach (fields[j]) begin    
                if (fields[j].get_access(maps[k]) == "RO") begin
-                  `uvm_warning("uvm_reg_access_seq", {"Register '",
-                               rg.get_full_name(),"' has RO fields"})
-                  return;
+                  ro++;
                end
                if (!fields[j].is_known_access(maps[k])) begin
                   `uvm_warning("uvm_reg_access_seq", {"Register '",rg.get_full_name(),
                     "' has field with unknown access type '",
-                    fields[j].get_access(maps[k]),"'"})
+                    fields[j].get_access(maps[k]),"', skipping"})
                   return;
                end
-            end
+	     	end
+	     	if(ro==fields.size()) begin
+	     		`uvm_warning("uvm_reg_access_seq", {"Register '",
+                rg.get_full_name(),"' has only RO fields in map ",maps[k].get_full_name(),", skipping"})
+                return;
+	     	end	
          end
       end
       

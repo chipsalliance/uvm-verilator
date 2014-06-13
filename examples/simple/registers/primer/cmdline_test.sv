@@ -31,7 +31,8 @@ class cmdline_test extends uvm_test;
       super.new(name, parent);
    endfunction
 
-   virtual task run_phase(uvm_phase phase);
+   virtual task run_phase(uvm_phase phase); uvm_coreservice_t cs_ = uvm_coreservice_t::get();
+
       tb_env env;
 
       phase.raise_objection(this);
@@ -50,7 +51,9 @@ class cmdline_test extends uvm_test;
 
          uvm_reg_sequence  seq;
          string            seq_name;
+	 uvm_factory factory;
 
+	 factory = cs_.get_factory();
          void'(opts.get_arg_value("+UVM_REG_SEQ=", seq_name));
          
          if (!$cast(seq, factory.create_object_by_name(seq_name,

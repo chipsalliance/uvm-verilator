@@ -3,6 +3,7 @@
 //   Copyright 2007-2011 Mentor Graphics Corporation
 //   Copyright 2007-2010 Cadence Design Systems, Inc.
 //   Copyright 2010 Synopsys, Inc.
+//   Copyright 2013 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -25,15 +26,18 @@
 
   typedef class uvm_cmdline_processor;
 
+
+  `include "base/uvm_coreservice.svh"
+  
   // Miscellaneous classes and functions. uvm_void is defined in uvm_misc,
   // along with some auxillary functions that UVM needs but are not really
   // part of UVM.
   `include "base/uvm_version.svh"
   `include "base/uvm_object_globals.svh"
   `include "base/uvm_misc.svh"
-  
-  // The base object element. Contains data methods (copy/compare etc) and
-  // factory creation methods (create). Also includes control classes.
+
+  // The base object element. Contains data methods (<copy>, <compare> etc) and
+  // factory creation methods (<create>). Also includes control classes.
   `include "base/uvm_object.svh"
 
   `include "base/uvm_pool.svh"
@@ -58,6 +62,9 @@
   `include "base/uvm_printer.svh"
   `include "base/uvm_comparer.svh"
   `include "base/uvm_packer.svh"
+  `include "base/uvm_links.svh"
+  `include "base/uvm_tr_database.svh"
+  `include "base/uvm_tr_stream.svh"
   `include "base/uvm_recorder.svh"
 
   // Event interface
@@ -69,6 +76,7 @@
   `include "base/uvm_callback.svh"
 
   // Reporting interface
+  `include "base/uvm_report_message.svh"
   `include "base/uvm_report_catcher.svh"
   `include "base/uvm_report_server.svh"
   `include "base/uvm_report_handler.svh"
@@ -96,5 +104,8 @@
 
   // Command Line Processor
   `include "base/uvm_cmdline_processor.svh"
+  
+  // traversal utilities
+  `include "base/uvm_traversal.svh"
 
 `endif // UVM_BASE_SVH

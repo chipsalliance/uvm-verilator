@@ -18,12 +18,7 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
-//----------------------------------------------------------------------
-// Title: tlm interfaces
-//----------------------------------------------------------------------
-
-// Group: Globals
-// Global macro's & enums
+// File: TLM2 Types
 
 // Enum: uvm_tlm_phase_e 
 //
@@ -33,7 +28,7 @@
 //  UNINITIALIZED_PHASE  - Defaults for constructor
 //  BEGIN_REQ            - Beginning of request phase
 //  END_REQ              - End of request phase
-//  BEGIN_RESP           - Begining of response phase
+//  BEGIN_RESP           - Beginning of response phase
 //  END_RESP             - End of response phase
 
 typedef enum
@@ -70,9 +65,6 @@ typedef enum
 //
 // Defines Not-Yet-Implemented TLM functions
 `define UVM_TLM_FUNCTION_ERROR "TLM-2 interface function not implemented"
-
-// Group:  TLM IF Class
-// Base class type to define the transport functions.
 
 //
 // Class: uvm_tlm_if
@@ -163,7 +155,7 @@ class uvm_tlm_if #(type T=uvm_tlm_generic_payload,
    //
    // Execute a blocking transaction. Once this method returns,
    // the transaction is assumed to have been executed. Whether
-   // that execution is succesful or not must be indicated by the
+   // that execution is successful or not must be indicated by the
    // transaction itself.
    //
    // The callee may modify or update the transaction object, subject

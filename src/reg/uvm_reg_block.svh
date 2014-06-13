@@ -91,7 +91,7 @@ virtual class uvm_reg_block extends uvm_object;
    // A block without parent is a root block.
    //
    // If the block file corresponds to a hierarchical RTL structure,
-   // it's contribution to the HDL path is specified as the ~hdl_path~.
+   // its contribution to the HDL path is specified as the ~hdl_path~.
    // Otherwise, the block does not correspond to a hierarchical RTL
    // structure (e.g. it is physically flattened) and does not contribute
    // to the hierarchical HDL path of any contained registers or memories.
@@ -162,8 +162,8 @@ virtual class uvm_reg_block extends uvm_object;
    // address map is specified for a register operation and that
    // register is accessible from more than one address map.
    //
-   // It is also the implciit address map for a block with a single,
-   // unamed address map because it has only one physical interface.
+   // It is also the implicit address map for a block with a single,
+   // unnamed address map because it has only one physical interface.
    //
    uvm_reg_map default_map;
 
@@ -526,7 +526,7 @@ virtual class uvm_reg_block extends uvm_object;
    // for this block and all blocks, registers, fields and memories within it.
    // The functional coverage measurement is turned on for every
    // coverage model specified using <uvm_coverage_model_e> symbolic
-   // identifers.
+   // identifiers.
    // Multiple functional coverage models can be specified by adding
    // the functional coverage model identifiers.
    // All other functional coverage models are turned off.
@@ -562,7 +562,7 @@ virtual class uvm_reg_block extends uvm_object;
    //
    // This method is invoked by the block abstraction class
    // whenever an address within one of its address map
-   // is succesfully read or written.
+   // is successfully read or written.
    // The specified offset is the offset within the block,
    // not an absolute address.
    //
@@ -637,7 +637,7 @@ virtual class uvm_reg_block extends uvm_object;
    // the mirror and state of the registers are outdated.
    // The corresponding registers in the DUT need to be updated.
    //
-   // This method returns TRUE if the state of at lest one register in
+   // This method returns TRUE if the state of at least one register in
    // the block or sub-blocks needs to be updated to match the mirrored
    // values.
    // The mirror values, or actual content of registers, are not modified.
@@ -780,7 +780,7 @@ virtual class uvm_reg_block extends uvm_object;
    // Get the user-defined backdoor for all registers in this block
    //
    // Return the user-defined backdoor for all register in this
-   // block and all sub-blocks -- unless overriden by a backdoor set
+   // block and all sub-blocks -- unless overridden by a backdoor set
    // in a lower-level block or in the register itself.
    //
    // If ~inherited~ is TRUE, returns the backdoor of the parent block
@@ -794,7 +794,7 @@ virtual class uvm_reg_block extends uvm_object;
    // Set the user-defined backdoor for all registers in this block
    //
    // Defines the backdoor mechanism for all registers instantiated
-   // in this block and sub-blocks, unless overriden by a definition
+   // in this block and sub-blocks, unless overridden by a definition
    // in a lower-level block or register.
    //
    extern function void set_backdoor (uvm_reg_backdoor bkdr,
@@ -845,7 +845,7 @@ virtual class uvm_reg_block extends uvm_object;
    // Returns only the component of the HDL paths that corresponds to
    // the block, not a full hierarchical path
    //
-   // If no design asbtraction is specified, the default design abstraction
+   // If no design abstraction is specified, the default design abstraction
    // for this block is used.
    //
    extern function void get_hdl_path (ref string paths[$], input string kind = "");
@@ -862,7 +862,7 @@ virtual class uvm_reg_block extends uvm_object;
    // parent components have more than one path defined for the same design
    // abstraction
    //
-   // If no design asbtraction is specified, the default design abstraction
+   // If no design abstraction is specified, the default design abstraction
    // for each ancestor block is used to get each incremental path.
    //
    extern function void get_full_hdl_path (ref string paths[$],
@@ -885,7 +885,7 @@ virtual class uvm_reg_block extends uvm_object;
    //
    // Returns the default design abstraction for this block instance.
    // If a default design abstraction has not been explicitly set for this
-   // block instance, returns the default design absraction for the
+   // block instance, returns the default design abstraction for the
    // nearest block ancestor.
    // Returns "" if no default design abstraction has been specified.
    //
@@ -898,7 +898,7 @@ virtual class uvm_reg_block extends uvm_object;
    //
    // Set the specified path as the absolute HDL path to the block instance
    // for the specified design abstraction.
-   // This absolute root path is preppended to all hierarchical paths
+   // This absolute root path is prepended to all hierarchical paths
    // under this block. The HDL path of any ancestor block is ignored.
    // This method overrides any incremental path for the
    // same design abstraction specified using <add_hdl_path>.
@@ -912,7 +912,7 @@ virtual class uvm_reg_block extends uvm_object;
    //
    // Returns TRUE if an absolute HDL path to the block instance
    // for the specified design abstraction has been defined.
-   // If no design asbtraction is specified, the default design abstraction
+   // If no design abstraction is specified, the default design abstraction
    // for this block is used.
    //
    extern function bit is_hdl_path_root (string kind = "");

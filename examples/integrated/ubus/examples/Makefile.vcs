@@ -28,7 +28,7 @@ all: comp run
 
 comp:
 	$(VCS) +incdir+../sv \
-		ubus_tb_top.sv
+		ubus_tb_top.sv +define+UVM_USE_RESOURCE_CONVERTER
 
 run:
 	$(SIMV) +UVM_TESTNAME=test_2m_4s

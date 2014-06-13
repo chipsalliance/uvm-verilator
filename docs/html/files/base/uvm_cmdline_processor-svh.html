@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_cmdline_processor" href="../../src/base/uvm_cmdline_processor.svh">uvm_cmdline_processor</a></h1><div class=CBody><p>This class provides an interface to the command line arguments that were provided for the given simulation.&nbsp;  The class is intended to be used as a singleton, but that isn&rsquo;t required.&nbsp;  The generation of the data structures which hold the command line argument information happens during construction of the class object.&nbsp;  A global variable called <i>uvm_cmdline_proc</i> is created at initialization time and may be used to access command line information.</p><p>The uvm_cmdline_processor class also provides support for setting various UVM variables from the command line such as components&rsquo; verbosities and configuration settings for integral types and strings.&nbsp;  Each of these capablities is described in the Built-in UVM Aware Command Line Arguments section.</p>
+<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_cmdline_processor" href="../../src/base/uvm_cmdline_processor.svh">uvm_cmdline_processor</a></h1><div class=CBody><p>This class provides an interface to the command line arguments that were provided for the given simulation.&nbsp;  The class is intended to be used as a singleton, but that isn&rsquo;t required.&nbsp;  The generation of the data structures which hold the command line argument information happens during construction of the class object.&nbsp;  A global variable called <i>uvm_cmdline_proc</i> is created at initialization time and may be used to access command line information.</p><p>The uvm_cmdline_processor class also provides support for setting various UVM variables from the command line such as components&rsquo; verbosities and configuration settings for integral types and strings.&nbsp;  Each of these capabilities is described in the Built-in UVM Aware Command Line Arguments section.</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -32,7 +32,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LClass id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_report_object-svh.html#uvm_report_object" class=LClass id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">uvm_report_object</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_cmdline_processor</div></div></td></tr>
@@ -83,10 +83,10 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_cmdline_processor.Tool_information" >Tool information</a></td><td class=SDescription></td></tr>
   <!-- index=12 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_cmdline_processor.get_tool_name" id=link11 onMouseOver="ShowTip(event, 'tt11', 'link11')" onMouseOut="HideTip('tt11')">get_tool_name</a></td><td class=SDescription>Returns the simulation tool that is executing the simlation. </td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_cmdline_processor.get_tool_name" id=link11 onMouseOver="ShowTip(event, 'tt11', 'link11')" onMouseOut="HideTip('tt11')">get_tool_name</a></td><td class=SDescription>Returns the simulation tool that is executing the simulation. </td></tr>
   <!-- index=13 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_cmdline_processor.get_tool_version" id=link12 onMouseOver="ShowTip(event, 'tt12', 'link12')" onMouseOut="HideTip('tt12')">get_tool_version</a></td><td class=SDescription>Returns the version of the simulation tool that is executing the simlation. </td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_cmdline_processor.get_tool_version" id=link12 onMouseOver="ShowTip(event, 'tt12', 'link12')" onMouseOut="HideTip('tt12')">get_tool_version</a></td><td class=SDescription>Returns the version of the simulation tool that is executing the simulation. </td></tr>
   <!-- index=14 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_cmdline_processor.Command_Line_Debug" >Command Line Debug</a></td><td class=SDescription></td></tr>
@@ -131,10 +131,19 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_cmdline_processor.+UVM_CONFIG_DB_TRACE" >+UVM_CONFIG_DB_TRACE</a></td><td class=SDescription><i>+UVM_CONFIG_DB_TRACE</i> turns on tracing of configuration DB access. </td></tr>
   <!-- index=28 -->
 
-<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_cmdline_processor.+uvm_set_inst_override,+uvm_set_type_override" >+uvm_set_inst_override, +uvm_set_type_override</a></td><td class=SDescription><i>+uvm_set_inst_override=&lt;req_type&gt;,&lt;override_type&gt;,&lt;full_inst_path&gt;</i> and <i>+uvm_set_type_override=&lt;req_type&gt;,&lt;override_type&gt;[,&lt;replace&gt;]</i> work like the name based overrides in the factory--factory.set_inst_override_by_name() and factory.set_type_override_by_name(). </td></tr>
+<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_cmdline_processor.+uvm_set_inst_override" >+uvm_set_inst_override</a></td><td class=SDescription></td></tr>
   <!-- index=29 -->
 
-<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_cmdline_processor.+uvm_set_config_int,+uvm_set_config_string" >+uvm_set_config_int, +uvm_set_config_string</a></td><td class=SDescription><i>+uvm_set_config_int=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> and <i>+uvm_set_config_string=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> work like their procedural counterparts: set_config_int() and set_config_string(). </td></tr></table></div></div><!--END_ND_SUMMARY-->
+<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_cmdline_processor.+uvm_set_type_override" >+uvm_set_type_override</a></td><td class=SDescription><i>+uvm_set_inst_override=&lt;req_type&gt;,&lt;override_type&gt;,&lt;full_inst_path&gt;</i> and <i>+uvm_set_type_override=&lt;req_type&gt;,&lt;override_type&gt;[,&lt;replace&gt;]</i> work like the name based overrides in the factory--factory.set_inst_override_by_name() and factory.set_type_override_by_name(). </td></tr>
+  <!-- index=30 -->
+
+<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_cmdline_processor.+uvm_set_config_int" >+uvm_set_config_int</a></td><td class=SDescription></td></tr>
+  <!-- index=31 -->
+
+<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_cmdline_processor.+uvm_set_config_string" >+uvm_set_config_string</a></td><td class=SDescription><i>+uvm_set_config_int=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> and <i>+uvm_set_config_string=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> work like their procedural counterparts: set_config_int() and set_config_string(). </td></tr>
+  <!-- index=32 -->
+
+<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_cmdline_processor.+uvm_set_default_sequence" >+uvm_set_default_sequence</a></td><td class=SDescription>The <i>+uvm_set_default_sequence=&lt;seqr&gt;,&lt;phase&gt;,&lt;type&gt;</i> plusarg allows the user to define a default sequence from the command line, using the <i>typename</i> of that sequence. </td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
 
 
@@ -164,10 +173,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_args" href="../../src/base/uvm_cmdline_processor.svh">get_args</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void get_args (</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>function void get_args (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>args[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>args[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>This function returns a queue with all of the command line arguments that were used to start the simulation.&nbsp; Note that element 0 of the array will always be the name of the executable which started the simulation.</p></div></div></div>
@@ -179,19 +190,21 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_plusargs" href="../../src/base/uvm_cmdline_processor.svh">get_plusargs</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void get_plusargs (</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>function void get_plusargs (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>args[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>args[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>This function returns a queue with all of the plus arguments that were used to start the simulation.&nbsp; Plusarguments may be used by the simulator vendor, or may be specific to a company or individiual user.&nbsp; Plusargs never have extra arguments (i.e. if there is a plusarg as the second argument on the command line, the third argument is unrelated); this is not necessarily the case with vendor specific dash arguments.</p></div></div></div>
+<div class=CBody><p>This function returns a queue with all of the plus arguments that were used to start the simulation.&nbsp; Plusarguments may be used by the simulator vendor, or may be specific to a company or individual user.&nbsp; Plusargs never have extra arguments (i.e. if there is a plusarg as the second argument on the command line, the third argument is unrelated); this is not necessarily the case with vendor specific dash arguments.</p></div></div></div>
 
 
 
 
  <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_uvmargs" href="../../src/base/uvm_cmdline_processor.svh">get_uvmargs</a></h3><div class=CBody><p>This function returns a queue with all of the uvm arguments that were used to start the simulation.&nbsp; An UVM argument is taken to be any argument that starts with a - or + and uses the keyword UVM (case insensitive) as the first three letters of the argument.</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_uvmargs" href="../../src/base/uvm_cmdline_processor.svh">get_uvmargs</a></h3><div class=CBody><p>This function returns a queue with all of the uvm arguments that were used to start the simulation.&nbsp; A UVM argument is taken to be any argument that starts with a - or + and uses the keyword UVM (case insensitive) as the first three letters of the argument.</p></div></div></div>
 
 
 
@@ -200,13 +213,15 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_arg_matches" href="../../src/base/uvm_cmdline_processor.svh">get_arg_matches</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function int get_arg_matches (</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>function int get_arg_matches (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>match,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>match,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>args[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>args[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>This function loads a queue with all of the arguments that match the input expression and returns the number of items that matched.&nbsp; If the input expression is bracketed with //, then it is taken as an extended regular expression otherwise, it is taken as the beginning of an argument to match.&nbsp; For example:</p><blockquote><pre>string myargs[$]
@@ -232,16 +247,18 @@ initial begin
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_arg_value" href="../../src/base/uvm_cmdline_processor.svh">get_arg_value</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function int get_arg_value (</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>function int get_arg_value (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>match,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>match,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>value</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>value</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>This function finds the first argument which matches the <i>match</i> arg and returns the suffix of the argument.&nbsp; This is similar to the $value$plusargs system task, but does not take a formating string.&nbsp; The return value is the number of command line arguments that match the <i>match</i> string, and <i>value</i> is the value of the first match.</p></div></div></div>
+<div class=CBody><p>This function finds the first argument which matches the <i>match</i> arg and returns the suffix of the argument.&nbsp; This is similar to the $value$plusargs system task, but does not take a formatting string.&nbsp; The return value is the number of command line arguments that match the <i>match</i> string, and <i>value</i> is the value of the first match.</p></div></div></div>
 
 
 
@@ -250,13 +267,15 @@ initial begin
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_arg_values" href="../../src/base/uvm_cmdline_processor.svh">get_arg_values</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function int get_arg_values (</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>function int get_arg_values (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>match,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>match,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>values[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>values[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>This function finds all the arguments which matches the <i>match</i> arg and returns the suffix of the arguments in a list of values.&nbsp; The return value is the number of matches that were found (it is the same as values.size() ).&nbsp; For example if &lsquo;+foo=1,yes,on +foo=5,no,off&rsquo; was provided on the command line and the following code was executed:</p><blockquote><pre>string foo_values[$]
@@ -275,7 +294,7 @@ initial begin
  <!--CONTENT index=12 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_tool_name" href="../../src/base/uvm_cmdline_processor.svh">get_tool_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_tool_name ()
-  </td></tr></table></blockquote><div class=CBody><p>Returns the simulation tool that is executing the simlation.&nbsp; This is a vendor specific string.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Returns the simulation tool that is executing the simulation.&nbsp; This is a vendor specific string.</p></div></div></div>
 
 
 
@@ -283,7 +302,7 @@ initial begin
  <!--CONTENT index=13 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.get_tool_version" href="../../src/base/uvm_cmdline_processor.svh">get_tool_version</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_tool_version ()
-  </td></tr></table></blockquote><div class=CBody><p>Returns the version of the simulation tool that is executing the simlation.&nbsp; This is a vendor specific string.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Returns the version of the simulation tool that is executing the simulation.&nbsp; This is a vendor specific string.</p></div></div></div>
 
 
 
@@ -373,20 +392,45 @@ initial begin
 
 
  <!--CONTENT index=28 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_inst_override,+uvm_set_type_override" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_inst_override, +uvm_set_type_override</a></h3><div class=CBody><p><i>+uvm_set_inst_override=&lt;req_type&gt;,&lt;override_type&gt;,&lt;full_inst_path&gt;</i> and <i>+uvm_set_type_override=&lt;req_type&gt;,&lt;override_type&gt;[,&lt;replace&gt;]</i> work like the name based overrides in the factory--factory.set_inst_override_by_name() and factory.set_type_override_by_name().&nbsp; For uvm_set_type_override, the third argument is 0 or 1 (the default is 1 if this argument is left off); this argument specifies whether previous type overrides for the type should be replaced.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_type_override=eth_packet,short_eth_packet</pre></blockquote></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_inst_override" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_inst_override</a></h3></div></div>
 
 
 
 
  <!--CONTENT index=29 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_config_int,+uvm_set_config_string" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_config_int, +uvm_set_config_string</a></h3><div class=CBody><p><i>+uvm_set_config_int=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> and <i>+uvm_set_config_string=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> work like their procedural counterparts: set_config_int() and set_config_string().&nbsp; For the value of int config settings, &lsquo;b (0b), &lsquo;o, &lsquo;d, &lsquo;h (&lsquo;x or 0x) as the first two characters of the value are treated as base specifiers for interpreting the base of the number.&nbsp; Size specifiers are not used since SystemVerilog does not allow size specifiers in string to value conversions.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_config_int=uvm_test_top.soc_env,mode,5</pre></blockquote><p>No equivalent of set_config_object() exists since no way exists to pass an uvm_object into the simulation via the command line.</p></div></div></div>
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_type_override" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_type_override</a></h3><div class=CBody><p><i>+uvm_set_inst_override=&lt;req_type&gt;,&lt;override_type&gt;,&lt;full_inst_path&gt;</i> and <i>+uvm_set_type_override=&lt;req_type&gt;,&lt;override_type&gt;[,&lt;replace&gt;]</i> work like the name based overrides in the factory--factory.set_inst_override_by_name() and factory.set_type_override_by_name().&nbsp; For uvm_set_type_override, the third argument is 0 or 1 (the default is 1 if this argument is left off); this argument specifies whether previous type overrides for the type should be replaced.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_type_override=eth_packet,short_eth_packet</pre></blockquote></div></div></div>
+
+
+
+
+ <!--CONTENT index=30 -->
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_config_int" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_config_int</a></h3></div></div>
+
+
+
+
+ <!--CONTENT index=31 -->
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_config_string" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_config_string</a></h3><div class=CBody><p><i>+uvm_set_config_int=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> and <i>+uvm_set_config_string=&lt;comp&gt;,&lt;field&gt;,&lt;value&gt;</i> work like their procedural counterparts: set_config_int() and set_config_string().&nbsp; For the value of int config settings, &lsquo;b (0b), &lsquo;o, &lsquo;d, &lsquo;h (&lsquo;x or 0x) as the first two characters of the value are treated as base specifiers for interpreting the base of the number.&nbsp; Size specifiers are not used since SystemVerilog does not allow size specifiers in string to value conversions.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_config_int=uvm_test_top.soc_env,mode,5</pre></blockquote><p>No equivalent of set_config_object() exists since no way exists to pass a uvm_object into the simulation via the command line.</p></div></div></div>
+
+
+
+
+ <!--CONTENT index=32 -->
+<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_cmdline_processor.+uvm_set_default_sequence" href="../../src/base/uvm_cmdline_processor.svh">+uvm_set_default_sequence</a></h3><div class=CBody><p>The <i>+uvm_set_default_sequence=&lt;seqr&gt;,&lt;phase&gt;,&lt;type&gt;</i> plusarg allows the user to define a default sequence from the command line, using the <i>typename</i> of that sequence.&nbsp;  For example:</p><blockquote><pre>&lt;sim command&gt; +uvm_set_default_sequence=path.to.sequencer,main_phase,seq_type</pre></blockquote><p>This is functionally equivalent to calling the following in your test:</p><blockquote><pre>uvm_coreservice_t cs = uvm_coreservice_t::get();
+uvm_factory f = cs.get_factory();
+uvm_config_db#(uvm_object_wrapper)::set(this,
+                                        &quot;path.to.sequencer.main_phase&quot;,
+                                        &quot;default_sequence&quot;,
+                                        f.find_wrapper_by_name(&quot;seq_type&quot;));</pre></blockquote></div></div></div>
 
 </div><!--Content-->
 
 
 
 <!--START_ND_TOOLTIPS-->
-<div class=CToolTip id="tt1"><div class=CGeneric>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt2"><div class=CClass>
+<div class=CToolTip id="tt1"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_void
+  </td></tr></table></blockquote>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt2"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
   </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt3"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_report_object extends uvm_object
@@ -397,62 +441,72 @@ initial begin
   </td></tr></table></blockquote>Returns the singleton instance of the UVM command line processor.</div></div><div class=CToolTip id="tt6"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void get_args (</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>function void get_args (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>args[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>args[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 This function returns a queue with all of the command line arguments that were used to start the simulation. </div></div><div class=CToolTip id="tt7"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void get_plusargs (</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>function void get_plusargs (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>args[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>args[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 This function returns a queue with all of the plus arguments that were used to start the simulation. </div></div><div class=CToolTip id="tt8"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function int get_arg_matches (</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>function int get_arg_matches (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>match,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>match,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>args[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>args[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 This function loads a queue with all of the arguments that match the input expression and returns the number of items that matched. </div></div><div class=CToolTip id="tt9"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function int get_arg_value (</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>function int get_arg_value (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>match,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>match,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>value</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>value</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 This function finds the first argument which matches the <i>match</i> arg and returns the suffix of the argument. </div></div><div class=CToolTip id="tt10"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function int get_arg_values (</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>function int get_arg_values (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>match,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>match,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>values[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>values[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 This function finds all the arguments which matches the <i>match</i> arg and returns the suffix of the arguments in a list of values. </div></div><div class=CToolTip id="tt11"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_tool_name ()
-  </td></tr></table></blockquote>Returns the simulation tool that is executing the simlation. </div></div><div class=CToolTip id="tt12"><div class=CMethod>
+  </td></tr></table></blockquote>Returns the simulation tool that is executing the simulation. </div></div><div class=CToolTip id="tt12"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_tool_version ()
-  </td></tr></table></blockquote>Returns the version of the simulation tool that is executing the simlation. </div></div><!--END_ND_TOOLTIPS-->
+  </td></tr></table></blockquote>Returns the version of the simulation tool that is executing the simulation. </div></div><!--END_ND_TOOLTIPS-->
 
 <script language=JavaScript><!--
 if (browserType) {if (browserVer) {document.write("</div>"); }document.write("</div>");}// --></script></body></html>

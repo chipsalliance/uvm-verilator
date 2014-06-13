@@ -32,7 +32,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LGeneric id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LClass id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_report_object-svh.html#uvm_report_object" class=LClass id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">uvm_report_object</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_component-svh.html#uvm_component" class=LClass id=link4 onMouseOver="ShowTip(event, 'tt4', 'link4')" onMouseOut="HideTip('tt4')">uvm_component</a></div></div></td></tr>
@@ -70,11 +70,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_scoreboard.new" href="../../src/comps/uvm_scoreboard.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_component&nbsp;</td>
-      <td class=PParameter nowrap>parent</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_component&nbsp;</td>
+      <td class=PParameter nowrap width=100%>parent</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Creates and initializes an instance of this class using the normal constructor arguments for <a href="../base/uvm_component-svh.html#uvm_component" class=LClass id=link8 onMouseOver="ShowTip(event, 'tt4', 'link8')" onMouseOut="HideTip('tt4')">uvm_component</a>: <i>name</i> is the name of the instance, and <i>parent</i> is the handle to the hierarchical parent, if any.</p></div></div></div>
@@ -84,7 +86,9 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
 <!--START_ND_TOOLTIPS-->
-<div class=CToolTip id="tt1"><div class=CGeneric>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt2"><div class=CClass>
+<div class=CToolTip id="tt1"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_void
+  </td></tr></table></blockquote>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt2"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
   </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt3"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_report_object extends uvm_object
@@ -95,11 +99,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   </td></tr></table></blockquote>The uvm_scoreboard virtual class should be used as the base class for user-defined scoreboards.</div></div><div class=CToolTip id="tt6"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_component&nbsp;</td>
-      <td class=PParameter nowrap>parent</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_component&nbsp;</td>
+      <td class=PParameter nowrap width=100%>parent</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Creates and initializes an instance of this class using the normal constructor arguments for uvm_component: <i>name</i> is the name of the instance, and <i>parent</i> is the handle to the hierarchical parent, if any.</div></div><!--END_ND_TOOLTIPS-->

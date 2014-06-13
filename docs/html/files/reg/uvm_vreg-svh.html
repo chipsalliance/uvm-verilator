@@ -51,7 +51,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LGeneric id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LClass id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link4 onMouseOver="ShowTip(event, 'tt4', 'link4')" onMouseOut="HideTip('tt4')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_vreg</div></div></td></tr>
         </table>
@@ -101,7 +101,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_vreg.get_parent" id=link13 onMouseOver="ShowTip(event, 'tt12', 'link13')" onMouseOut="HideTip('tt12')">get_parent</a></td><td class=SDescription>Get the parent block</td></tr>
   <!-- index=13 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_vreg.get_memory" id=link14 onMouseOver="ShowTip(event, 'tt13', 'link14')" onMouseOut="HideTip('tt13')">get_memory</a></td><td class=SDescription>Get the memory where the virtual regoster array is implemented</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_vreg.get_memory" id=link14 onMouseOver="ShowTip(event, 'tt13', 'link14')" onMouseOut="HideTip('tt13')">get_memory</a></td><td class=SDescription>Get the memory where the virtual register array is implemented</td></tr>
   <!-- index=14 -->
 
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_vreg.get_n_maps" id=link15 onMouseOver="ShowTip(event, 'tt14', 'link15')" onMouseOut="HideTip('tt14')">get_n_maps</a></td><td class=SDescription>Returns the number of address maps this virtual register array is mapped in</td></tr>
@@ -113,7 +113,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_vreg.get_maps" id=link17 onMouseOver="ShowTip(event, 'tt16', 'link17')" onMouseOut="HideTip('tt16')">get_maps</a></td><td class=SDescription>Returns all of the address <i>maps</i> where this virtual register array is mapped</td></tr>
   <!-- index=17 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_vreg.get_rights" id=link18 onMouseOver="ShowTip(event, 'tt17', 'link18')" onMouseOut="HideTip('tt17')">get_rights</a></td><td class=SDescription>Returns the access rights of this virtual reigster array</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_vreg.get_rights" id=link18 onMouseOver="ShowTip(event, 'tt17', 'link18')" onMouseOut="HideTip('tt17')">get_rights</a></td><td class=SDescription>Returns the access rights of this virtual register array</td></tr>
   <!-- index=18 -->
 
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_vreg.get_access" id=link19 onMouseOver="ShowTip(event, 'tt18', 'link19')" onMouseOut="HideTip('tt18')">get_access</a></td><td class=SDescription>Returns the access policy of the virtual register array when written and read via an address map.</td></tr>
@@ -189,13 +189,15 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.new" href="../../src/reg/uvm_vreg.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>function new(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>n_bits</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>n_bits</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Create a new instance and type-specific configuration</p><p>Creates an instance of a virtual register abstraction class with the specified name.</p><p><i>n_bits</i> specifies the total number of bits in a virtual register.&nbsp; Not all bits need to be mapped to a virtual field.&nbsp; This value is usually a multiple of 8.</p></div></div></div>
@@ -207,32 +209,34 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.configure" href="../../src/reg/uvm_vreg.svh">configure</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void configure(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=6>function void configure(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_block&nbsp;</td>
       <td class=PParameter nowrap>parent,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_mem&nbsp;</td>
       <td class=PParameter nowrap>mem</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>size</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>incr</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Instance-specific configuration</p><p>Specify the <i>parent</i> block of this virtual register array.&nbsp; If one of the other parameters are specified, the virtual register is assumed to be dynamic and can be later (re-)implemented using the <a href="#uvm_vreg.implement" class=LMethod id=link37 onMouseOver="ShowTip(event, 'tt7', 'link37')" onMouseOut="HideTip('tt7')">uvm_vreg::implement()</a> method.</p><p>If <i>mem</i> is specified, then the virtual register array is assumed to be statically implemented in the memory corresponding to the specified memory abstraction class and <i>size</i>, <i>offset</i> and <i>incr</i> must also be specified.&nbsp; Static virtual register arrays cannot be re-implemented.</p></div></div></div>
@@ -244,27 +248,29 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.implement" href="../../src/reg/uvm_vreg.svh">implement</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit implement(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual function bit implement(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>n,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_mem&nbsp;</td>
       <td class=PParameter nowrap>mem</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>incr</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Dynamically implement, resize or relocate a virtual register array</p><p>Implement an array of virtual registers of the specified <i>size</i>, in the specified memory and <i>offset</i>.&nbsp; If an offset increment is specified, each virtual register is implemented at the specified offset increment from the previous one.&nbsp; If an offset increment of 0 is specified, virtual registers are packed as closely as possible in the memory.</p><p>If no memory is specified, the virtual register array is in the same memory, at the same base offset using the same offset increment as originally implemented.&nbsp; Only the number of virtual registers in the virtual register array is modified.</p><p>The initial value of the newly-implemented or relocated set of virtual registers is whatever values are currently stored in the memory now implementing them.</p><p>Returns TRUE if the memory can implement the number of virtual registers at the specified base offset and offset increment.&nbsp; Returns FALSE otherwise.</p><p>The memory region used to implement a virtual register array is reserved in the memory allocation manager associated with the memory to prevent it from being allocated for another purpose.</p></div></div></div>
@@ -276,16 +282,27 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.allocate" href="../../src/reg/uvm_vreg.svh">allocate</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_mem_region allocate(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual function uvm_mem_region allocate(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>n,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_mem_mam&nbsp;</td>
-      <td class=PParameter nowrap>mam</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap>mam,</td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PType nowrap>uvm_mem_mam_policy&nbsp;</td>
+      <td class=PParameter nowrap>alloc</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> null</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Randomly implement, resize or relocate a virtual register array</p><p>Implement a virtual register array of the specified size in a randomly allocated region of the appropriate size in the address space managed by the specified memory allocation manager.</p><p>The initial value of the newly-implemented or relocated set of virtual registers is whatever values are currently stored in the memory region now implementing them.</p><p>Returns a reference to a <a href="uvm_mem_mam-svh.html#uvm_mem_region" class=LClass id=link38 onMouseOver="ShowTip(event, 'tt36', 'link38')" onMouseOut="HideTip('tt36')">uvm_mem_region</a> memory region descriptor if the memory allocation manager was able to allocate a region that can implement the virtual register array.&nbsp; Returns <i>null</i> otherwise.</p><p>A region implementing a virtual register array must not be released using the <a href="uvm_mem_mam-svh.html#uvm_mem_mam.release_region" class=LMethod id=link39 onMouseOver="ShowTip(event, 'tt37', 'link39')" onMouseOut="HideTip('tt37')">uvm_mem_mam::release_region()</a> method.&nbsp; It must be released using the <a href="#uvm_vreg.release_region" class=LMethod id=link40 onMouseOver="ShowTip(event, 'tt10', 'link40')" onMouseOut="HideTip('tt10')">uvm_vreg::release_region()</a> method.</p></div></div></div>
+<div class=CBody><p>Randomly implement, resize or relocate a virtual register array</p><p>Implement a virtual register array of the specified size in a randomly allocated region of the appropriate size in the address space managed by the specified memory allocation manager.&nbsp; If a memory allocation policy is specified, it is passed to the uvm_mem_mam::request_region() method.</p><p>The initial value of the newly-implemented or relocated set of virtual registers is whatever values are currently stored in the memory region now implementing them.</p><p>Returns a reference to a <a href="uvm_mem_mam-svh.html#uvm_mem_region" class=LClass id=link38 onMouseOver="ShowTip(event, 'tt36', 'link38')" onMouseOut="HideTip('tt36')">uvm_mem_region</a> memory region descriptor if the memory allocation manager was able to allocate a region that can implement the virtual register array with the specified allocation policy.&nbsp; Returns <i>null</i> otherwise.</p><p>A region implementing a virtual register array must not be released using the <a href="uvm_mem_mam-svh.html#uvm_mem_mam.release_region" class=LMethod id=link39 onMouseOver="ShowTip(event, 'tt37', 'link39')" onMouseOut="HideTip('tt37')">uvm_mem_mam::release_region()</a> method.&nbsp; It must be released using the <a href="#uvm_vreg.release_region" class=LMethod id=link40 onMouseOver="ShowTip(event, 'tt10', 'link40')" onMouseOut="HideTip('tt10')">uvm_vreg::release_region()</a> method.</p></div></div></div>
 
 
 
@@ -337,7 +354,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=13 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.get_memory" href="../../src/reg/uvm_vreg.svh">get_memory</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_mem get_memory()
-  </td></tr></table></blockquote><div class=CBody><p>Get the memory where the virtual regoster array is implemented</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Get the memory where the virtual register array is implemented</p></div></div></div>
 
 
 
@@ -354,9 +371,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.is_in_map" href="../../src/reg/uvm_vreg.svh">is_in_map</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function bit is_in_map (</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function bit is_in_map (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
+      <td class=PParameter nowrap width=100%>map</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Return TRUE if this virtual register array is in the specified address <i>map</i></p></div></div></div>
@@ -368,10 +387,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.get_maps" href="../../src/reg/uvm_vreg.svh">get_maps</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void get_maps (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function void get_maps (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>maps[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>maps[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Returns all of the address <i>maps</i> where this virtual register array is mapped</p></div></div></div>
@@ -383,14 +404,16 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.get_rights" href="../../src/reg/uvm_vreg.svh">get_rights</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function string get_rights(</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function string get_rights(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Returns the access rights of this virtual reigster array</p><p>Returns &ldquo;RW&rdquo;, &ldquo;RO&rdquo; or &ldquo;WO&rdquo;.&nbsp; The access rights of a virtual register array is always &ldquo;RW&rdquo;, unless it is implemented in a shared memory with access restriction in a particular address map.</p><p>If no address map is specified and the memory is mapped in only one address map, that address map is used.&nbsp; If the memory is mapped in more than one address map, the default address map of the parent block is used.</p><p>If an address map is specified and the memory is not mapped in the specified address map, an error message is issued and &ldquo;RW&rdquo; is returned.</p></div></div></div>
+<div class=CBody><p>Returns the access rights of this virtual register array</p><p>Returns &ldquo;RW&rdquo;, &ldquo;RO&rdquo; or &ldquo;WO&rdquo;.&nbsp; The access rights of a virtual register array is always &ldquo;RW&rdquo;, unless it is implemented in a shared memory with access restriction in a particular address map.</p><p>If no address map is specified and the memory is mapped in only one address map, that address map is used.&nbsp; If the memory is mapped in more than one address map, the default address map of the parent block is used.</p><p>If an address map is specified and the memory is not mapped in the specified address map, an error message is issued and &ldquo;RW&rdquo; is returned.</p></div></div></div>
 
 
 
@@ -399,11 +422,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.get_access" href="../../src/reg/uvm_vreg.svh">get_access</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function string get_access(</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function string get_access(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Returns the access policy of the virtual register array when written and read via an address map.</p><p>If the memory implementing the virtual register array is mapped in more than one address map, an address <i>map</i> must be specified.&nbsp; If access restrictions are present when accessing a memory through the specified address map, the access mode returned takes the access restrictions into account.&nbsp; For example, a read-write memory accessed through an address map with read-only restrictions would return &ldquo;RO&rdquo;.</p></div></div></div>
@@ -447,10 +472,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.get_fields" href="../../src/reg/uvm_vreg.svh">get_fields</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void get_fields(</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function void get_fields(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_vreg_field&nbsp;</td>
-      <td class=PParameter nowrap>fields[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>fields[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Return the virtual fields in this virtual register</p><p>Fills the specified array with the abstraction class for all of the virtual fields contained in this virtual register.&nbsp; Fields are ordered from least-significant position to most-significant position within the register.</p></div></div></div>
@@ -462,12 +489,14 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.get_field_by_name" href="../../src/reg/uvm_vreg.svh">get_field_by_name</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_vreg_field get_field_by_name(</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function uvm_vreg_field get_field_by_name(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Return the named virtual field in this virtual register</p><p>Finds a virtual field with the specified name in this virtual register and returns its abstraction class.&nbsp; If no fields are found, returns null.</p></div></div></div>
+<div class=CBody><p>Return the named virtual field in this virtual register</p><p>Finds a virtual field with the specified name in this virtual register and returns its abstraction class.&nbsp; If no fields are found, returns <i>null</i>.</p></div></div></div>
 
 
 
@@ -476,10 +505,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.get_offset_in_memory" href="../../src/reg/uvm_vreg.svh">get_offset_in_memory</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_reg_addr_t get_offset_in_memory(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function uvm_reg_addr_t get_offset_in_memory(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>idx</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Returns the offset of a virtual register</p><p>Returns the base offset of the specified virtual register, in the overall address space of the memory that implements the virtual register array.</p></div></div></div>
@@ -491,20 +522,22 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.get_address" href="../../src/reg/uvm_vreg.svh">get_address</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_reg_addr_t get_address(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual function uvm_reg_addr_t get_address(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>idx,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Returns the base external physical address of a virtual register</p><p>Returns the base external physical address of the specified virtual reigster if accessed through the specified address <i>map</i>.</p><p>If no address map is specified and the memory implementing the virtual register array is mapped in only one address map, that address map is used.&nbsp; If the memory is mapped in more than one address map, the default address map of the parent block is used.</p><p>If an address map is specified and the memory is not mapped in the specified address map, an error message is issued.</p></div></div></div>
+<div class=CBody><p>Returns the base external physical address of a virtual register</p><p>Returns the base external physical address of the specified virtual register if accessed through the specified address <i>map</i>.</p><p>If no address map is specified and the memory implementing the virtual register array is mapped in only one address map, that address map is used.&nbsp; If the memory is mapped in more than one address map, the default address map of the parent block is used.</p><p>If an address map is specified and the memory is not mapped in the specified address map, an error message is issued.</p></div></div></div>
 
 
 
@@ -519,52 +552,54 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.write" href="../../src/reg/uvm_vreg.svh">write</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task write(</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>idx,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Write the specified value in a virtual register</p><p>Write <i>value</i> in the DUT memory location(s) that implements the virtual register array that corresponds to this abstraction class instance using the specified access <i>path</i>.</p><p>If the memory implementing the virtual register array is mapped in more than one address map, an address <i>map</i> must be specified if a physical access is used (front-door access).</p><p>The operation is eventually mapped into set of memory-write operations at the location where the virtual register specified by <i>idx</i> in the virtual register array is implemented.</p></div></div></div>
@@ -576,52 +611,54 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.read" href="../../src/reg/uvm_vreg.svh">read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task read(</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>idx,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Read the current value from a virtual register</p><p>Read from the DUT memory location(s) that implements the virtual register array that corresponds to this abstraction class instance using the specified access <i>path</i> and return the readback <i>value</i>.</p><p>If the memory implementing the virtual register array is mapped in more than one address map, an address <i>map</i> must be specified if a physical access is used (front-door access).</p><p>The operation is eventually mapped into set of memory-read operations at the location where the virtual register specified by <i>idx</i> in the virtual register array is implemented.</p></div></div></div>
@@ -633,42 +670,44 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.poke" href="../../src/reg/uvm_vreg.svh">poke</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task poke(</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task poke(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>idx,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Deposit the specified value in a virtual register</p><p>Deposit <i>value</i> in the DUT memory location(s) that implements the virtual register array that corresponds to this abstraction class instance using the memory backdoor access.</p><p>The operation is eventually mapped into set of memory-poke operations at the location where the virtual register specified by <i>idx</i> in the virtual register array is implemented.</p></div></div></div>
@@ -680,42 +719,44 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.peek" href="../../src/reg/uvm_vreg.svh">peek</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task peek(</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task peek(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>idx,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Sample the current value in a virtual register</p><p>Sample the DUT memory location(s) that implements the virtual register array that corresponds to this abstraction class instance using the memory backdoor access, and return the sampled <i>value</i>.</p><p>The operation is eventually mapped into set of memory-peek operations at the location where the virtual register specified by <i>idx</i> in the virtual register array is implemented.</p></div></div></div>
@@ -727,11 +768,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.reset" href="../../src/reg/uvm_vreg.svh">reset</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void reset(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void reset(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;HARD&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Reset the access semaphore</p><p>Reset the semaphore that prevents concurrent access to the virtual register.&nbsp; This semaphore must be explicitly reset if a thread accessing this virtual register array was killed in before the access was completed</p></div></div></div>
@@ -749,19 +792,21 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.pre_write" href="../../src/reg/uvm_vreg.svh">pre_write</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task pre_write(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual task pre_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>wdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>wdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>map</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Called before virtual register write.</p><p>If the specified data value, access <i>path</i> or address <i>map</i> are modified, the updated data value, access path or address map will be used to perform the virtual register operation.</p><p>The registered callback methods are invoked after the invocation of this method.&nbsp; All register callbacks are executed after the corresponding field callbacks The pre-write virtual register and field callbacks are executed before the corresponding pre-write memory callbacks</p></div></div></div>
@@ -773,22 +818,24 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.post_write" href="../../src/reg/uvm_vreg.svh">post_write</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task post_write(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual task post_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>wdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>wdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>map,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
-      <td class=PParameter nowrap>status</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>status</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Called after virtual register write.</p><p>If the specified <i>status</i> is modified, the updated status will be returned by the virtual register operation.</p><p>The registered callback methods are invoked before the invocation of this method.&nbsp; All register callbacks are executed before the corresponding field callbacks The post-write virtual register and field callbacks are executed after the corresponding post-write memory callbacks</p></div></div></div>
@@ -800,16 +847,18 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.pre_read" href="../../src/reg/uvm_vreg.svh">pre_read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task pre_read(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual task pre_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>map</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Called before virtual register read.</p><p>If the specified access <i>path</i> or address <i>map</i> are modified, the updated access path or address map will be used to perform the register operation.</p><p>The registered callback methods are invoked after the invocation of this method.&nbsp; All register callbacks are executed after the corresponding field callbacks The pre-read virtual register and field callbacks are executed before the corresponding pre-read memory callbacks</p></div></div></div>
@@ -821,22 +870,24 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg.post_read" href="../../src/reg/uvm_vreg.svh">post_read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task post_read(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual task post_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>rdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>map,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
-      <td class=PParameter nowrap>status</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>status</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Called after virtual register read.</p><p>If the specified readback data or <i>status</i> is modified, the updated readback data or status will be returned by the register operation.</p><p>The registered callback methods are invoked before the invocation of this method.&nbsp; All register callbacks are executed before the corresponding field callbacks The post-read virtual register and field callbacks are executed after the corresponding post-read memory callbacks</p></div></div></div>
@@ -859,7 +910,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LGeneric id=link44 onMouseOver="ShowTip(event, 'tt3', 'link44')" onMouseOut="HideTip('tt3')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LClass id=link44 onMouseOver="ShowTip(event, 'tt3', 'link44')" onMouseOut="HideTip('tt3')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link45 onMouseOver="ShowTip(event, 'tt4', 'link45')" onMouseOut="HideTip('tt4')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_callback-svh.html#uvm_callback" class=LClass id=link46 onMouseOver="ShowTip(event, 'tt38', 'link46')" onMouseOut="HideTip('tt38')">uvm_callback</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_vreg_cbs</div></div></td></tr>
@@ -914,22 +965,24 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg_cbs.pre_write" href="../../src/reg/uvm_vreg.svh">pre_write</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task pre_write(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>virtual task pre_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_vreg&nbsp;</td>
-      <td class=PParameter nowrap>rg,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rg,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>wdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>wdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>map</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Callback called before a write operation.</p><p>The registered callback methods are invoked after the invocation of the <a href="#uvm_vreg.pre_write" class=LMethod id=link52 onMouseOver="ShowTip(event, 'tt32', 'link52')" onMouseOut="HideTip('tt32')">uvm_vreg::pre_write()</a> method.&nbsp; All virtual register callbacks are executed after the corresponding virtual field callbacks The pre-write virtual register and field callbacks are executed before the corresponding pre-write memory callbacks</p><p>The written value <i>wdat</i>, access <i>path</i> and address <i>map</i>, if modified, modifies the actual value, access path or address map used in the virtual register operation.</p></div></div></div>
@@ -941,25 +994,27 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg_cbs.post_write" href="../../src/reg/uvm_vreg.svh">post_write</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task post_write(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>virtual task post_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_vreg&nbsp;</td>
-      <td class=PParameter nowrap>rg,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rg,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>wdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>wdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>map,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
-      <td class=PParameter nowrap>status</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>status</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Called after register write.</p><p>The registered callback methods are invoked before the invocation of the <a href="uvm_reg-svh.html#uvm_reg.post_write" class=LMethod id=link53 onMouseOver="ShowTip(event, 'tt43', 'link53')" onMouseOut="HideTip('tt43')">uvm_reg::post_write()</a> method.&nbsp; All register callbacks are executed before the corresponding virtual field callbacks The post-write virtual register and field callbacks are executed after the corresponding post-write memory callbacks</p><p>The <i>status</i> of the operation, if modified, modifies the actual returned status.</p></div></div></div>
@@ -971,19 +1026,21 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg_cbs.pre_read" href="../../src/reg/uvm_vreg.svh">pre_read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task pre_read(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>virtual task pre_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_vreg&nbsp;</td>
-      <td class=PParameter nowrap>rg,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rg,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>map</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Called before register read.</p><p>The registered callback methods are invoked after the invocation of the <a href="uvm_reg-svh.html#uvm_reg.pre_read" class=LMethod id=link54 onMouseOver="ShowTip(event, 'tt44', 'link54')" onMouseOut="HideTip('tt44')">uvm_reg::pre_read()</a> method.&nbsp; All register callbacks are executed after the corresponding virtual field callbacks The pre-read virtual register and field callbacks are executed before the corresponding pre-read memory callbacks</p><p>The access <i>path</i> and address <i>map</i>, if modified, modifies the actual access path or address map used in the register operation.</p></div></div></div>
@@ -995,25 +1052,27 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_vreg_cbs.post_read" href="../../src/reg/uvm_vreg.svh">post_read</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task post_read(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>virtual task post_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_vreg&nbsp;</td>
-      <td class=PParameter nowrap>rg,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rg,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>rdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>map,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
-      <td class=PParameter nowrap>status</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>status</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Called after register read.</p><p>The registered callback methods are invoked before the invocation of the <a href="uvm_reg-svh.html#uvm_reg.post_read" class=LMethod id=link55 onMouseOver="ShowTip(event, 'tt45', 'link55')" onMouseOut="HideTip('tt45')">uvm_reg::post_read()</a> method.&nbsp; All register callbacks are executed before the corresponding virtual field callbacks The post-read virtual register and field callbacks are executed after the corresponding post-read memory callbacks</p><p>The readback value <i>rdat</i> and the <i>status</i> of the operation, if modified, modifies the actual returned readback value and status.</p></div></div></div>
@@ -1045,87 +1104,106 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_vreg extends uvm_object
   </td></tr></table></blockquote>Virtual register abstraction base class</div></div><div class=CToolTip id="tt2"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_vreg_cbs extends uvm_callback
-  </td></tr></table></blockquote>Pre/post read/write callback facade class</div></div><div class=CToolTip id="tt3"><div class=CGeneric>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt4"><div class=CClass>
+  </td></tr></table></blockquote>Pre/post read/write callback facade class</div></div><div class=CToolTip id="tt3"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_void
+  </td></tr></table></blockquote>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt4"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
   </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt5"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>function new(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>n_bits</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>n_bits</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Create a new instance and type-specific configuration</div></div><div class=CToolTip id="tt6"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void configure(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=6>function void configure(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_block&nbsp;</td>
       <td class=PParameter nowrap>parent,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_mem&nbsp;</td>
       <td class=PParameter nowrap>mem</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>size</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>incr</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Instance-specific configuration</div></div><div class=CToolTip id="tt7"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit implement(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual function bit implement(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>n,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_mem&nbsp;</td>
       <td class=PParameter nowrap>mem</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_addr_t&nbsp;</td>
       <td class=PParameter nowrap>offset</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>int&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>incr</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Dynamically implement, resize or relocate a virtual register array</div></div><div class=CToolTip id="tt8"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_mem_region allocate(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual function uvm_mem_region allocate(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>n,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_mem_mam&nbsp;</td>
-      <td class=PParameter nowrap>mam</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap>mam,</td>
+      <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
+      <td class=PDefaultValue width=100%></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PType nowrap>uvm_mem_mam_policy&nbsp;</td>
+      <td class=PParameter nowrap>alloc</td>
+      <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
+      <td class=PDefaultValue width=100%> null</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Randomly implement, resize or relocate a virtual register array</div></div><div class=CToolTip id="tt9"><div class=CMethod>
@@ -1138,43 +1216,51 @@ Randomly implement, resize or relocate a virtual register array</div></div><div 
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_reg_block get_parent()
   </td></tr></table></blockquote>Get the parent block</div></div><div class=CToolTip id="tt13"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function uvm_mem get_memory()
-  </td></tr></table></blockquote>Get the memory where the virtual regoster array is implemented</div></div><div class=CToolTip id="tt14"><div class=CMethod>
+  </td></tr></table></blockquote>Get the memory where the virtual register array is implemented</div></div><div class=CToolTip id="tt14"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual function int get_n_maps ()
   </td></tr></table></blockquote>Returns the number of address maps this virtual register array is mapped in</div></div><div class=CToolTip id="tt15"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function bit is_in_map (</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function bit is_in_map (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
+      <td class=PParameter nowrap width=100%>map</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Return TRUE if this virtual register array is in the specified address <i>map</i></div></div><div class=CToolTip id="tt16"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void get_maps (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function void get_maps (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>maps[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>maps[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns all of the address <i>maps</i> where this virtual register array is mapped</div></div><div class=CToolTip id="tt17"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function string get_rights(</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function string get_rights(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Returns the access rights of this virtual reigster array</div></div><div class=CToolTip id="tt18"><div class=CMethod>
+Returns the access rights of this virtual register array</div></div><div class=CToolTip id="tt18"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function string get_access(</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function string get_access(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the access policy of the virtual register array when written and read via an address map.</div></div><div class=CToolTip id="tt19"><div class=CMethod>
@@ -1188,312 +1274,338 @@ Returns the access policy of the virtual register array when written and read vi
   </td></tr></table></blockquote>Returns the number of memory locations between two individual virtual registers in the same array.</div></div><div class=CToolTip id="tt23"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void get_fields(</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function void get_fields(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_vreg_field&nbsp;</td>
-      <td class=PParameter nowrap>fields[$]</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>fields[$]</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Return the virtual fields in this virtual register</div></div><div class=CToolTip id="tt24"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_vreg_field get_field_by_name(</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function uvm_vreg_field get_field_by_name(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Return the named virtual field in this virtual register</div></div><div class=CToolTip id="tt25"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_reg_addr_t get_offset_in_memory(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function uvm_reg_addr_t get_offset_in_memory(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>idx</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the offset of a virtual register</div></div><div class=CToolTip id="tt26"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function uvm_reg_addr_t get_address(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual function uvm_reg_addr_t get_address(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>idx,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the base external physical address of a virtual register</div></div><div class=CToolTip id="tt27"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task write(</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>idx,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Write the specified value in a virtual register</div></div><div class=CToolTip id="tt28"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task read(</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>idx,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
       <td class=PParameter nowrap>path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> UVM_DEFAULT_PATH,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
       <td class=PParameter nowrap>map</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Read the current value from a virtual register</div></div><div class=CToolTip id="tt29"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task poke(</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task poke(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>idx,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Deposit the specified value in a virtual register</div></div><div class=CToolTip id="tt30"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task peek(</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>virtual task peek(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
       <td class=PParameter nowrap>idx,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
       <td class=PParameter nowrap>status,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>output&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
       <td class=PParameter nowrap>value,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_sequence_base&nbsp;</td>
       <td class=PParameter nowrap>parent</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>extension</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> null,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>fname</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>lineno</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> 0</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Sample the current value in a virtual register</div></div><div class=CToolTip id="tt31"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void reset(</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void reset(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;HARD&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Reset the access semaphore</div></div><div class=CToolTip id="tt32"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task pre_write(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual task pre_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>wdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>wdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>map</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Called before virtual register write.</div></div><div class=CToolTip id="tt33"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task post_write(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual task post_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>wdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>wdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>map,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
-      <td class=PParameter nowrap>status</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>status</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Called after virtual register write.</div></div><div class=CToolTip id="tt34"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task pre_read(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual task pre_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>map</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Called before virtual register read.</div></div><div class=CToolTip id="tt35"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task post_read(</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual task post_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>rdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>map,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
-      <td class=PParameter nowrap>status</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>status</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Called after virtual register read.</div></div><div class=CToolTip id="tt36"><div class=CClass>
@@ -1501,9 +1613,11 @@ Called after virtual register read.</div></div><div class=CToolTip id="tt36"><di
   </td></tr></table></blockquote>Allocated memory region descriptor</div></div><div class=CToolTip id="tt37"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void release_region(</td>      <td class=PType nowrap>uvm_mem_region&nbsp;</td>
-      <td class=PParameter nowrap>region</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void release_region(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_mem_region&nbsp;</td>
+      <td class=PParameter nowrap width=100%>region</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Release the specified region</div></div><div class=CToolTip id="tt38"><div class=CClass>
@@ -1511,112 +1625,126 @@ Release the specified region</div></div><div class=CToolTip id="tt38"><div class
   </td></tr></table></blockquote>The <i>uvm_callback</i> class is the base class for user-defined callback classes. </div></div><div class=CToolTip id="tt39"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task pre_write(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>virtual task pre_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_vreg&nbsp;</td>
-      <td class=PParameter nowrap>rg,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rg,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>wdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>wdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>map</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Callback called before a write operation.</div></div><div class=CToolTip id="tt40"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task post_write(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>virtual task post_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_vreg&nbsp;</td>
-      <td class=PParameter nowrap>rg,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rg,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>wdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>wdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap></td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>map,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
-      <td class=PParameter nowrap>status</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>status</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Called after register write.</div></div><div class=CToolTip id="tt41"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task pre_read(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>virtual task pre_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_vreg&nbsp;</td>
-      <td class=PParameter nowrap>rg,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rg,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>map</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Called before register read.</div></div><div class=CToolTip id="tt42"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task post_read(</td>      <td class=PTypePrefix nowrap></td>
+      <td class=PBeforeParameters colspan=4>virtual task post_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap></td>
       <td class=PType nowrap>uvm_vreg&nbsp;</td>
-      <td class=PParameter nowrap>rg,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rg,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>longint&nbsp;</td>
       <td class=PType nowrap>unsigned&nbsp;</td>
-      <td class=PParameter nowrap>idx,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>idx,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_reg_data_t&nbsp;</td>
-      <td class=PParameter nowrap>rdat,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rdat,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_path_e&nbsp;</td>
-      <td class=PParameter nowrap>path,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      <td class=PParameter nowrap width=100%>path,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>uvm_reg_map&nbsp;</td>
-      <td class=PParameter nowrap>map,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PParameter nowrap width=100%>map,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>uvm_status_e&nbsp;</td>
-      <td class=PParameter nowrap>status</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>status</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Called after register read.</div></div><div class=CToolTip id="tt43"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task post_write(</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
-      <td class=PParameter nowrap>rw</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual task post_write(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rw</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Called after register write.</div></div><div class=CToolTip id="tt44"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task pre_read(</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
-      <td class=PParameter nowrap>rw</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual task pre_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rw</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Called before register read.</div></div><div class=CToolTip id="tt45"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual task post_read(</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
-      <td class=PParameter nowrap>rw</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual task post_read(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_item&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rw</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Called after register read.</div></div><!--END_ND_TOOLTIPS-->

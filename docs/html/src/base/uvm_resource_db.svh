@@ -70,9 +70,9 @@ class uvm_resource_db #(type T=uvm_object);
 
   // function: get_by_name
   //
-  // Imports a resource by ~name~.  The first argument is the ~name~ of the
-  // resource to be retrieved and the second argument is the current
-  // ~scope~. The ~rpterr~ flag indicates whether or not to generate
+  // Imports a resource by ~name~.  The first argument is the current 
+  // ~scope~ of the resource to be retrieved and the second argument is
+  // the ~name~. The ~rpterr~ flag indicates whether or not to generate
   // a warning if no matching resource is found.
 
   static function rsrc_t get_by_name(string scope,
@@ -125,7 +125,7 @@ class uvm_resource_db #(type T=uvm_object);
   //
   // Create a new resource, write a ~val~ to it, and set it into the
   // database using ~name~ and ~scope~ as the lookup parameters. The
-  // ~accessor~ is used for auditting.
+  // ~accessor~ is used for auditing.
   static function void set(input string scope, input string name,
                            T val, input uvm_object accessor = null);
 
@@ -142,7 +142,7 @@ class uvm_resource_db #(type T=uvm_object);
   // Create a new resource, write a ~val~ to it, and set it into the
   // database.  The resource has no name and therefore will not be
   // entered into the name map. But is does have a ~scope~ for lookup
-  // purposes. The ~accessor~ is used for auditting.
+  // purposes. The ~accessor~ is used for auditing.
   static function void set_anonymous(input string scope,
                                      T val, input uvm_object accessor = null);
 
@@ -214,7 +214,7 @@ class uvm_resource_db #(type T=uvm_object);
   // locate a resource by ~name~ and ~scope~ and read its value. The value 
   // is returned through the output argument ~val~.  The return value is a bit 
   // that indicates whether or not the read was successful. The ~accessor~
-  // is used for auditting.
+  // is used for auditing.
   static function bit read_by_name(input string scope,
                                    input string name,
                                    inout T val, input uvm_object accessor = null);
@@ -238,7 +238,7 @@ class uvm_resource_db #(type T=uvm_object);
   // Read a value by type.  The value is returned through the output
   // argument ~val~.  The ~scope~ is used for the lookup. The return
   // value is a bit that indicates whether or not the read is successful.
-  // The ~accessor~ is used for auditting.
+  // The ~accessor~ is used for auditing.
   static function bit read_by_type(input string scope,
                                    inout T val,
                                    input uvm_object accessor = null);
@@ -270,7 +270,7 @@ class uvm_resource_db #(type T=uvm_object);
   // will be written to that matching resource and thus may impact
   // other scopes which also match the resource.
   static function bit write_by_name(input string scope, input string name,
-                                     T val, input uvm_object accessor = null);
+                                    input T val, input uvm_object accessor = null);
 
     rsrc_t rsrc = get_by_name(scope, name);
 

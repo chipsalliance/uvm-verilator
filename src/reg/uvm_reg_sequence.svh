@@ -44,7 +44,7 @@
 //   delegation methods in this class. 
 //
 // - When used as a translation sequence, objects of this class are
-//   executed directly on a bus sequencerwhich are used in support of a layered sequencer
+//   executed directly on a bus sequencer which are used in support of a layered sequencer
 //   use model, a pre-defined convert-and-execute algorithm is provided.
 //
 // Register operations do not require extending this class if none of the above
@@ -122,7 +122,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
   //
   // Continually gets a register transaction from the configured upstream
   // sequencer, <reg_seqr>, and executes the corresponding bus transaction
-  // via <do_rw_access>. 
+  // via <do_reg_item>. 
   //
   // User-defined RegModel test sequences must override body() and not call
   // super.body(), else a warning will be issued and the calling process
@@ -137,7 +137,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
       `uvm_warning("REG_XLATE_NO_SEQR",
          {"Executing RegModel translation sequence on sequencer ",
        m_sequencer.get_full_name(),"' does not have an upstream sequencer defined. ",
-       "Execution of register items available only via direct calls to 'do_rw_access'"})
+       "Execution of register items available only via direct calls to 'do_reg_item'"})
       wait(0);
     end
     `uvm_info("REG_XLATE_SEQ_START",
@@ -168,12 +168,13 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
   // this sequencer.
   //
   virtual task do_reg_item(uvm_reg_item rw);
+     string rws=rw.convert2string();
     if (m_sequencer == null)
      `uvm_fatal("REG/DO_ITEM/NULL","do_reg_item: m_sequencer is null") 
     if (adapter == null)
      `uvm_fatal("REG/DO_ITEM/NULL","do_reg_item: adapter handle is null") 
 
-    `uvm_info("DO_RW_ACCESS",{"Doing transaction: ",rw.convert2string()},UVM_HIGH)
+    `uvm_info("DO_RW_ACCESS",{"Doing transaction: ",rws},UVM_HIGH)
 
     if (parent_select == LOCAL) begin
       upstream_parent = rw.parent;
@@ -529,7 +530,7 @@ virtual class uvm_reg_frontdoor extends uvm_reg_sequence #(uvm_sequence #(uvm_se
 
    // Function: new
    //
-   // Constructor, new object givne optional ~name~.
+   // Constructor, new object given optional ~name~.
    //
    function new(string name="");
       super.new(name);

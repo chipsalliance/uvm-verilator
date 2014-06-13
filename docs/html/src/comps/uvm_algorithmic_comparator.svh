@@ -20,7 +20,7 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
-// Group: Comparators
+// File: Algorithmic Comparator
 //
 // A common function of testbenches is to compare streams of transactions for
 // equivalence. For example, a testbench may compare a stream of transactions
@@ -58,7 +58,7 @@
 //
 //|    function AFTER transform (BEFORE b);
 //
-// Matches and mistmatches are reported in terms of the ~AFTER~ transactions.
+// Matches and mismatches are reported in terms of the ~AFTER~ transactions.
 // For more information, see the 
 // <uvm_in_order_comparator #(T,comp_type,convert,pair_type)> class.
 //
@@ -105,7 +105,7 @@ class uvm_algorithmic_comparator #( type BEFORE=int,
   // Creates an instance of a specialization of this class.
   // In addition to the standard uvm_component constructor arguments, ~name~
   // and ~parent~, the constructor takes a handle to a ~transformer~ object,
-  // which must already be allocated (no null handles) and must implement
+  // which must already be allocated (handles can't be ~null~) and must implement
   // the transform() method.
 
  function new(string name, uvm_component parent=null, TRANSFORMER transformer=null);

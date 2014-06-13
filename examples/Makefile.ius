@@ -40,7 +40,7 @@ TEST = /usr/bin/test
 N_ERRS = 0
 N_FATALS = 0
 
-IUS =	irun -access rw -uvmhome $(UVM_HOME) +UVM_VERBOSITY=$(UVM_VERBOSITY) -quiet  +define+UVM_OBJECT_MUST_HAVE_CONSTRUCTOR
+IUS =	irun -access rw -uvmhome $(UVM_HOME) +UVM_VERBOSITY=$(UVM_VERBOSITY) -quiet
 
 
 CHECK = \

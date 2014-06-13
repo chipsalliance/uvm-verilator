@@ -28,12 +28,12 @@
 // visible.
 //
 // Termination Sockets - A termination socket must be the terminus
-// of every TLM path.  A transaction originates with an initator socket
+// of every TLM path.  A transaction originates with an initiator socket
 // and ultimately ends up in a target socket.  There may be zero or more
-// passthrough sockets between initiator and target.
+// pass-through sockets between initiator and target.
 //
-// Passthrough Sockets - Passthrough initiators are ports and contain
-// exports for instance IS-A port and HAS-A export. Passthrough targets
+// Pass-through Sockets - Pass-through initiators are ports and contain
+// exports for instance IS-A port and HAS-A export. Pass-through targets
 // are the opposite, they are exports and contain ports.
 //----------------------------------------------------------------------
 

@@ -3,6 +3,7 @@
 //   Copyright 2007-2011 Mentor Graphics Corporation
 //   Copyright 2007-2011 Cadence Design Systems, Inc. 
 //   Copyright 2010 Synopsys, Inc.
+//   Copyright 2013 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -56,14 +57,57 @@ class uvm_packer;
   // ~$bits~. This optimized version of <pack_field> is useful for sizes up
   // to 64 bits.
 
-  extern virtual function void pack_field_int (logic[63:0] value, int size);
+  extern virtual function void pack_field_int (uvm_integral_t value, int size);
 
+  // Function: pack_bits
+  //
+  // Packs bits from upacked array of bits into the pack array.
+  //
+  // See <pack_ints> for additional information.
+  extern virtual function void pack_bits(ref bit value[], input int size = -1);
 
+  // Function: pack_bytes
+  //
+  // Packs bits from an upacked array of bytes into the pack array.
+  //
+  // See <pack_ints> for additional information.
+  extern virtual function void pack_bytes(ref byte value[], input int size = -1);
+
+  // Function: pack_ints
+  // 
+  // Packs bits from an unpacked array of ints into the pack array.
+  //
+  // The bits are appended to the internal pack array.  
+  // This method allows for fields of arbitrary length to be 
+  // passed in, using the SystemVerilog ~stream~ operator.
+  //
+  // For example
+  // | bit[511:0] my_field;
+  // | begin
+  // |   int my_stream[];
+  // |   { << int {my_stream}} = my_field;
+  // |   packer.pack_ints(my_stream);
+  // | end
+  //
+  // When appending the stream to the internal pack array, the packer will obey
+  // the value of <big_endian> (appending the array from MSB to LSB if set).
+  //
+  // An optional ~size~ parameter is provided, which defaults to '-1'.  If set
+  // to any value greater than '-1' (including 0), then the packer will use
+  // the size as the number of bits to pack, otherwise the packer will simply
+  // pack the entire stream.
+  //
+  // An error will be asserted if the ~size~ has been specified, and exceeds the
+  // size of the source array.
+  //
+  extern virtual function void pack_ints(ref int value[], input int size = -1);
+
+   
   // Function: pack_string
   //
   // Packs a string value into the pack array. 
   //
-  // When the metadata flag is set, the packed string is terminated by a null
+  // When the metadata flag is set, the packed string is terminated by a ~null~
   // character to mark the end of the string.
   //
   // This is useful for mixed language communication where unpacking may occur
@@ -94,7 +138,7 @@ class uvm_packer;
   // Packs an object value into the pack array. 
   //
   // A 4-bit header is inserted ahead of the string to indicate the number of
-  // bits that was packed. If a null object was packed, then this header will
+  // bits that was packed. If a ~null~ object was packed, then this header will
   // be 0. 
   //
   // This is useful for mixed-language communication where unpacking may occur
@@ -121,6 +165,13 @@ class uvm_packer;
   extern virtual function bit is_null ();
 
 
+  // Function: unpack_field
+  //
+  // Unpacks bits from the pack array and returns the bit-stream that was
+  // unpacked. ~size~ is the number of bits to unpack; the maximum is 4096 bits.
+
+  extern virtual function uvm_bitstream_t unpack_field (int size);
+
   // Function: unpack_field_int
   //
   // Unpacks bits from the pack array and returns the bit-stream that was
@@ -130,23 +181,56 @@ class uvm_packer;
   // This is a more efficient variant than unpack_field when unpacking into
   // smaller vectors.
 
-  extern virtual function logic[63:0] unpack_field_int (int size);
+  extern virtual function uvm_integral_t unpack_field_int (int size);
 
-
-  // Function: unpack_field
+  // Function: unpack_bits
   //
-  // Unpacks bits from the pack array and returns the bit-stream that was
-  // unpacked. ~size~ is the number of bits to unpack; the maximum is 4096 bits.
+  // Unpacks bits from the pack array into an unpacked array of bits.
+  //
+  extern virtual function void unpack_bits(ref bit value[], input int size = -1);
 
-  extern virtual function uvm_bitstream_t unpack_field (int size);
+  // Function: unpack_bytes
+  //
+  // Unpacks bits from the pack array into an unpacked array of bytes.
+  //
+  extern virtual function void unpack_bytes(ref byte value[], input int size = -1);
 
+  // Function: unpack_ints
+  //
+  // Unpacks bits from the pack array into an unpacked array of ints.
+  //
+  // The unpacked array is unpacked from the internal pack array.  
+  // This method allows for fields of arbitrary length to be 
+  // passed in without expanding into a pre-defined integral type first.
+  //
+  // For example
+  // | bit[511:0] my_field;
+  // | begin
+  // |   int my_stream[] = new[16]; // 512/32 = 16
+  // |   packer.unpack_ints(my_stream);
+  // |   my_field = {<<{my_stream}};
+  // | end
+  //
+  // When unpacking the stream from the internal pack array, the packer will obey
+  // the value of <big_endian> (unpacking the array from MSB to LSB if set).
+  //
+  // An optional ~size~ parameter is provided, which defaults to '-1'.  If set
+  // to any value greater than '-1' (including 0), then the packer will use
+  // the size as the number of bits to unpack, otherwise the packer will simply
+  // unpack the entire stream.
+  //
+  // An error will be asserted if the ~size~ has been specified, and
+  // exceeds the size of the target array.
+  //
+  extern virtual function void unpack_ints(ref int value[], input int size = -1);
+   
 
   // Function: unpack_string
   //
   // Unpacks a string. 
   //
   // num_chars bytes are unpacked into a string. If num_chars is -1 then
-  // unpacking stops on at the first null character that is encountered.
+  // unpacking stops on at the first ~null~ character that is encountered.
 
   extern virtual function string unpack_string (int num_chars=-1);
 
@@ -176,7 +260,7 @@ class uvm_packer;
   //
   // ~value~ must be an allocated object that has enough space for the data
   // being unpacked. The first four bits of packed data are used to determine
-  // if a null object was packed into the array. 
+  // if a ~null~ object was packed into the array.
   //
   // The <is_null> function can be used to peek at the next four bits in
   // the pack array before calling this method.
@@ -226,14 +310,14 @@ class uvm_packer;
   // and <uvm_object::do_unpack> should regard this bit when performing their
   // respective operation. When set, metadata should be encoded as follows:
   //
-  // - For strings, pack an additional null byte after the string is packed.
+  // - For strings, pack an additional ~null~ byte after the string is packed.
   //
   // - For objects, pack 4 bits prior to packing the object itself. Use 4'b0000
-  //   to indicate the object being packed is null, otherwise pack 4'b0001 (the
+  //   to indicate the object being packed is ~null~, otherwise pack 4'b0001 (the
   //   remaining 3 bits are reserved).
   //
   // - For queues, dynamic arrays, and associative arrays, pack 32 bits
-  //   indicating the size of the array prior to to packing individual elements.
+  //   indicating the size of the array prior to packing individual elements.
 
   bit use_metadata;
 
@@ -560,7 +644,7 @@ function void uvm_packer::pack_object(uvm_object value);
   if((policy != UVM_REFERENCE) && (value != null) ) begin
       if(use_metadata == 1) begin
         m_bits[count +: 4] = 1;
-        count += 4; // to better debug when display packed bits in hexidecimal
+        count += 4; // to better debug when display packed bits in hexadecimal
       end
       scope.down(value.get_name());
       value.__m_uvm_field_automation(null, UVM_PACK,"");
@@ -608,7 +692,7 @@ endfunction
 // pack_field_int
 // --------------
 
-function void uvm_packer::pack_field_int(logic [63:0] value, int size);
+function void uvm_packer::pack_field_int(uvm_integral_t value, int size);
   for (int i=0; i<size; i++)
     if(big_endian == 1)
       m_bits[count+i] = value[size-1-i];
@@ -617,6 +701,93 @@ function void uvm_packer::pack_field_int(logic [63:0] value, int size);
   count += size;
 endfunction
   
+// pack_bits
+// -----------------
+
+function void uvm_packer::pack_bits(ref bit value[], input int size = -1);
+   if (size < 0)
+     size = value.size();
+
+   if (size > value.size()) begin
+      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+                 $sformatf("pack_bits called with size '%0d', which exceeds value.size() of '%0d'",
+                           size,
+                           value.size()))
+      return;
+   end
+   
+   for (int i=0; i<size; i++)
+     if (big_endian == 1)
+       m_bits[count+i] = value[size-1-i];
+     else
+       m_bits[count+i] = value[i];
+   count += size;
+endfunction 
+
+// pack_bytes
+// -----------------
+
+function void uvm_packer::pack_bytes(ref byte value[], input int size = -1);
+   int max_size = value.size() * $bits(byte);
+   
+   if (size < 0)
+     size = max_size;
+
+   if (size > max_size) begin
+      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+                 $sformatf("pack_bytes called with size '%0d', which exceeds value size of '%0d'",
+                           size,
+                           max_size))
+      return;
+   end
+   else begin
+      int idx_select;
+
+      for (int i=0; i<size; i++) begin
+         if (big_endian == 1)
+           idx_select = size-1-i;
+         else
+           idx_select = i;
+         
+         m_bits[count+i] = value[idx_select / $bits(byte)][idx_select % $bits(byte)];
+      end
+   
+      count += size;
+   end
+endfunction 
+
+// pack_ints
+// -----------------
+
+function void uvm_packer::pack_ints(ref int value[], input int size = -1);
+   int max_size = value.size() * $bits(int);
+   
+   if (size < 0)
+     size = max_size;
+
+   if (size > max_size) begin
+      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+                 $sformatf("pack_ints called with size '%0d', which exceeds value size of '%0d'",
+                           size,
+                           max_size))
+      return;
+   end
+   else begin
+      int idx_select;
+
+      for (int i=0; i<size; i++) begin
+         if (big_endian == 1)
+           idx_select = size-1-i;
+         else
+           idx_select = i;
+         
+         m_bits[count+i] = value[idx_select / $bits(int)][idx_select % $bits(int)];
+      end
+   
+      count += size;
+   end
+endfunction 
+
 
 // pack_string
 // -----------
@@ -688,7 +859,7 @@ function void uvm_packer::unpack_object(uvm_object value);
     end
   end
   else if ((is_non_null != 0) && (value == null)) begin
-     uvm_report_error("UNPOBJ","can not unpack into null object", UVM_NONE);
+     uvm_report_error("UNPOBJ","cannot unpack into null object", UVM_NONE);
   end
   value.__m_uvm_status_container.cycle_check.delete(value);
 
@@ -734,7 +905,7 @@ endfunction
 // unpack_field_int
 // ----------------
 
-function logic[63:0] uvm_packer::unpack_field_int(int size);
+function uvm_integral_t uvm_packer::unpack_field_int(int size);
   unpack_field_int = 'b0;
   if (enough_bits(size,"integral")) begin
     count += size;
@@ -746,6 +917,90 @@ function logic[63:0] uvm_packer::unpack_field_int(int size);
   end
 endfunction
   
+// unpack_bits
+// -------------------
+
+function void uvm_packer::unpack_bits(ref bit value[], input int size = -1);
+   if (size < 0)
+     size = value.size();
+
+   if (size > value.size()) begin
+      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+                 $sformatf("unpack_bits called with size '%0d', which exceeds value.size() of '%0d'",
+                           size,
+                           value.size()))
+      return;
+   end
+   
+   if (enough_bits(size, "integral")) begin
+      count += size;
+      for (int i=0; i<size; i++)
+        if (big_endian == 1)
+          value[i] = m_bits[count-i-1];
+        else
+          value[i] = m_bits[count-size+i];
+   end
+endfunction
+
+// unpack_bytes
+// -------------------
+
+function void uvm_packer::unpack_bytes(ref byte value[], input int size = -1);
+   int max_size = value.size() * $bits(byte);
+   if (size < 0)
+     size = max_size;
+
+   if (size > max_size) begin
+      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+                 $sformatf("unpack_bytes called with size '%0d', which exceeds value size of '%0d'",
+                           size,
+                           value.size()))
+      return;
+   end
+   else begin
+      if (enough_bits(size, "integral")) begin
+         count += size;
+
+         for (int i=0; i<size; i++) begin
+            if (big_endian == 1)
+              value[ i / $bits(byte) ][ i % $bits(byte) ] = m_bits[count-i-1];
+            else
+              value[ i / $bits(byte) ][ i % $bits(byte) ] = m_bits[count-size+i];
+         
+         end
+      end // if (enough_bits(size, "integral"))
+   end
+endfunction
+
+// unpack_ints
+// -------------------
+
+function void uvm_packer::unpack_ints(ref int value[], input int size = -1);
+   int max_size = value.size() * $bits(int);
+   if (size < 0)
+     size = max_size;
+
+   if (size > max_size) begin
+      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+                 $sformatf("unpack_ints called with size '%0d', which exceeds value size of '%0d'",
+                           size,
+                           value.size()))
+      return;
+   end
+   else begin
+      if (enough_bits(size, "integral")) begin
+         count += size;
+
+         for (int i=0; i<size; i++) begin
+            if (big_endian == 1)
+              value[ i / $bits(int) ][ i % $bits(int) ] = m_bits[count-i-1];
+            else
+              value[ i / $bits(int) ][ i % $bits(int) ] = m_bits[count-size+i];
+         end   
+      end
+   end
+endfunction
+
 
 // unpack_string
 // -------------
@@ -754,7 +1009,7 @@ endfunction
 // specific number of bytes into the string.
 function string uvm_packer::unpack_string(int num_chars=-1);
   byte b;
-  bit  is_null_term; // Assumes a null terminated string
+  bit  is_null_term; // Assumes a ~null~ terminated string
   int i; i=0;
   if(num_chars == -1) is_null_term = 1;
   else is_null_term = 0;
@@ -763,7 +1018,7 @@ function string uvm_packer::unpack_string(int num_chars=-1);
         ((m_bits[count+:8] != 0) || (is_null_term == 0)) &&
         ((i<num_chars)||(is_null_term==1)) )
   begin
-    // silly, because can not append byte/char to string
+    // silly, because cannot append byte/char to string
     unpack_string = {unpack_string," "};
     if(big_endian == 0)
       unpack_string[i] = m_bits[count +: 8];

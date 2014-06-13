@@ -81,7 +81,7 @@ class uvm_mem_single_walk_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_
    // Task: body
    //
    // Performs the walking-ones algorithm on each map of the memory
-   // specifed in <mem>.
+   // specified in <mem>.
 
    virtual task body();
       uvm_reg_map maps[$];

@@ -49,16 +49,69 @@ virtual class uvm_agent extends uvm_component;
   // agent should be acting in active or passive mode. This parameter can
   // be set by doing:
   //
-  //| set_config_int("<path_to_agent>", "is_active", UVM_ACTIVE);
+  //| uvm_config_int::set(this, "<relative_path_to_agent>, "is_active", UVM_ACTIVE);
 
   function new (string name, uvm_component parent);
     super.new(name, parent);
   endfunction
 
   function void build_phase(uvm_phase phase);
-    int active;
-    super.build_phase(phase);
-    if(get_config_int("is_active", active)) is_active = uvm_active_passive_enum'(active);
+     int active;
+     uvm_resource_pool rp;
+     uvm_resource_types::rsrc_q_t rq;
+     
+     super.build_phase(phase);
+     // is_active is treated as if it were declared via `uvm_field_enum,
+     // which means it matches against uvm_active_passive_enum, int,
+     // int unsigned, uvm_integral_t, uvm_bitstream_t, and string.
+     rp = uvm_resource_pool::get();
+     rq = rp.lookup_name(get_full_name(), "is_active", null, 0);
+     uvm_resource_pool::sort_by_precedence(rq);
+     for (int i = 0; i < rq.size(); i++) begin
+        uvm_resource_base rsrc = rq.get(i);
+        uvm_resource#(uvm_active_passive_enum) rap;
+
+        if ($cast(rap, rsrc)) begin
+           is_active = rap.read(this);
+           break;
+        end
+        else begin
+           uvm_resource#(uvm_integral_t) rit;
+           if ($cast(rit, rsrc)) begin
+              is_active = uvm_active_passive_enum'(rit.read(this));
+              break;
+           end
+           else begin
+              uvm_resource#(uvm_bitstream_t) rbs;
+              if ($cast(rbs, rsrc)) begin
+                 is_active = uvm_active_passive_enum'(rbs.read(this));
+                 break;
+              end
+              else begin
+                 uvm_resource#(int) ri;
+                 if ($cast(ri, rsrc)) begin
+                    is_active = uvm_active_passive_enum'(ri.read(this));
+                    break;
+                 end
+                 else begin
+                    uvm_resource#(int unsigned) riu;
+                    if ($cast(riu, rsrc)) begin
+                       is_active = uvm_active_passive_enum'(riu.read(this));
+                       break;
+                    end
+                    else begin
+                       uvm_resource#(string) rs;
+                       if ($cast(rs, rsrc)) begin
+                          void'(uvm_enum_wrapper#(uvm_active_passive_enum)::from_name(rs.read(this), is_active));
+                          break;
+                       end
+                    end // else: !if($cast(riu, rsrc))
+                 end // else: !if($cast(ri, rsrc))
+              end // else: !if($cast(rbs, rsrc))
+           end // else: !if($cast(rit, rsrc))
+        end // else: !if($cast(rap, rsrc))
+     end // for (int i = 0; found == 0 && i < rq.size(); i++)
+     
   endfunction
 
   const static string type_name = "uvm_agent";

@@ -68,29 +68,44 @@ class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
 
    virtual task body();
 
-      uvm_reg regs[$];
-      uvm_reg_map maps[$];
-
       if (model == null) begin
          `uvm_error("uvm_reg_hw_reset_seq", "Not block or system specified to run sequence on");
          return;
       end
-      
       uvm_report_info("STARTING_SEQ",{"\n\nStarting ",get_name()," sequence...\n"},UVM_LOW);
-
-      if (uvm_resource_db#(bit)::get_by_name({"REG::",model.get_full_name()},
-                                             "NO_REG_TESTS", 0) != null ||
-          uvm_resource_db#(bit)::get_by_name({"REG::",model.get_full_name()},
-                                             "NO_REG_HW_RESET_TEST", 0) != null )
-            return;
-
+      
       this.reset_blk(model);
       model.reset();
-      model.get_maps(maps);
 
+      do_block(model);
+   endtask: body
+
+// Task: do_block
+   //
+   // Test all of the registers in a given ~block~
+   //
+   protected virtual task do_block(uvm_reg_block blk);
+      uvm_reg_map maps[$];
+      uvm_reg_map sub_maps[$];
+
+      if (uvm_resource_db#(bit)::get_by_name({"REG::",blk.get_full_name()},
+                                             "NO_REG_TESTS", 0) != null ||
+          uvm_resource_db#(bit)::get_by_name({"REG::",blk.get_full_name()},
+                                             "NO_REG_HW_RESET_TEST", 0) != null ) begin
+            return;
+
+      end
+
+      
+      blk.get_maps(maps);
       // Iterate over all maps defined for the RegModel block
 
       foreach (maps[d]) begin
+        uvm_reg regs[$];
+        maps[d].get_submaps(sub_maps);
+        if(sub_maps.size() !=0) begin 
+          continue;
+        end
 
         // Iterate over all registers in the map, checking accesses
         // Note: if map were in inner loop, could test simulataneous
@@ -124,7 +139,16 @@ class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
         end
       end
 
-   endtask: body
+      begin
+         uvm_reg_block blks[$];
+         
+         blk.get_blocks(blks);
+         foreach (blks[i]) begin
+            do_block(blks[i]);
+         end
+      end
+
+   endtask:do_block
 
 
    //

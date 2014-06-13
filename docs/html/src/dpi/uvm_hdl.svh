@@ -80,7 +80,7 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   // If ~force_time~ is 0, <uvm_hdl_deposit> is called.
   // Returns 1 if the call succeeded, 0 otherwise.
   //
-  task uvm_hdl_force_time(string path, uvm_hdl_data_t value, time force_time=0);
+  task uvm_hdl_force_time(string path, uvm_hdl_data_t value, time force_time = 0);
     if (force_time == 0) begin
       void'(uvm_hdl_deposit(path, value));
       return;
@@ -97,7 +97,7 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   // Releases a value previously set with <uvm_hdl_force>.
   // Returns 1 if the call succeeded, 0 otherwise. ~value~ is set to
   // the HDL value after the release. For 'reg', the value will still be
-  // the forced value until it has bee procedurally reassigned. For 'wire',
+  // the forced value until it has been procedurally reassigned. For 'wire',
   // the value will change immediately to the resolved value of its
   // continuous drivers, if any. If none, its value remains as forced until
   // the next direct assignment.

@@ -18,7 +18,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_comparer" href="../../src/base/uvm_comparer.svh">uvm_comparer</a></h1><div class=CBody><p>The uvm_comparer class provides a policy object for doing comparisons.&nbsp; The policies determine how miscompares are treated and counted.&nbsp; Results of a comparison are stored in the comparer object.&nbsp; The <a href="uvm_object-svh.html#uvm_object.compare" class=LMethod id=link22 onMouseOver="ShowTip(event, 'tt18', 'link22')" onMouseOut="HideTip('tt18')">uvm_object::compare</a> and <a href="uvm_object-svh.html#uvm_object.do_compare" class=LMethod id=link23 onMouseOver="ShowTip(event, 'tt19', 'link23')" onMouseOut="HideTip('tt19')">uvm_object::do_compare</a> methods are passed an uvm_comparer policy object.</p>
+<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_comparer" href="../../src/base/uvm_comparer.svh">uvm_comparer</a></h1><div class=CBody><p>The uvm_comparer class provides a policy object for doing comparisons.&nbsp; The policies determine how miscompares are treated and counted.&nbsp; Results of a comparison are stored in the comparer object.&nbsp; The <a href="uvm_object-svh.html#uvm_object.compare" class=LMethod id=link22 onMouseOver="ShowTip(event, 'tt18', 'link22')" onMouseOut="HideTip('tt18')">uvm_object::compare</a> and <a href="uvm_object-svh.html#uvm_object.do_compare" class=LMethod id=link23 onMouseOver="ShowTip(event, 'tt19', 'link23')" onMouseOut="HideTip('tt19')">uvm_object::do_compare</a> methods are passed a uvm_comparer policy object.</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -40,7 +40,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_comparer.policy" id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">policy</a></td><td class=SDescription>Determines whether comparison is UVM_DEEP, UVM_REFERENCE, or UVM_SHALLOW.</td></tr>
   <!-- index=3 -->
 
-<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_comparer.show_max" id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">show_max</a></td><td class=SDescription>Sets the maximum number of messages to send to the messager for miscompares of an object.</td></tr>
+<tr class="SVariable SIndent2 SMarked"><td class=SEntry><a href="#uvm_comparer.show_max" id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">show_max</a></td><td class=SDescription>Sets the maximum number of messages to send to the printer for miscompares of an object.</td></tr>
   <!-- index=4 -->
 
 <tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_comparer.verbosity" id=link4 onMouseOver="ShowTip(event, 'tt4', 'link4')" onMouseOut="HideTip('tt4')">verbosity</a></td><td class=SDescription>Sets the verbosity for printed messages.</td></tr>
@@ -105,7 +105,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=3 -->
 <div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_comparer.show_max" href="../../src/base/uvm_comparer.svh">show_max</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>int unsigned show_max = 1
-  </td></tr></table></blockquote><div class=CBody><p>Sets the maximum number of messages to send to the messager for miscompares of an object.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Sets the maximum number of messages to send to the printer for miscompares of an object.</p></div></div></div>
 
 
 
@@ -176,27 +176,29 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_comparer.compare_field" href="../../src/base/uvm_comparer.svh">compare_field</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit compare_field (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function bit compare_field (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_bitstream_t&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_bitstream_t&nbsp;</td>
       <td class=PParameter nowrap>lhs,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_bitstream_t&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_bitstream_t&nbsp;</td>
       <td class=PParameter nowrap>rhs,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>size,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_radix_enum&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_radix_enum&nbsp;</td>
       <td class=PParameter nowrap>radix</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>UVM_NORADIX</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Compares two integral values.</p><p>The <i>name</i> input is used for purposes of storing and printing a miscompare.</p><p>The left-hand-side <i>lhs</i> and right-hand-side <i>rhs</i> objects are the two objects used for comparison.</p><p>The size variable indicates the number of bits to compare; size must be less than or equal to 4096.</p><p>The radix is used for reporting purposes, the default radix is hex.</p></div></div></div>
@@ -208,27 +210,29 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_comparer.compare_field_int" href="../../src/base/uvm_comparer.svh">compare_field_int</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit compare_field_int (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function bit compare_field_int (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>logic[63:0]&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_integral_t&nbsp;</td>
       <td class=PParameter nowrap>lhs,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>logic[63:0]&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_integral_t&nbsp;</td>
       <td class=PParameter nowrap>rhs,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>size,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_radix_enum&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_radix_enum&nbsp;</td>
       <td class=PParameter nowrap>radix</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>UVM_NORADIX</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>This method is the same as <a href="#uvm_comparer.compare_field" class=LMethod id=link28 onMouseOver="ShowTip(event, 'tt12', 'link28')" onMouseOut="HideTip('tt12')">compare_field</a> except that the arguments are small integers, less than or equal to 64 bits.&nbsp; It is automatically called by <a href="#uvm_comparer.compare_field" class=LMethod id=link29 onMouseOver="ShowTip(event, 'tt12', 'link29')" onMouseOut="HideTip('tt12')">compare_field</a> if the operand size is less than or equal to 64.</p></div></div></div>
@@ -240,13 +244,15 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_comparer.compare_field_real" href="../../src/base/uvm_comparer.svh">compare_field_real</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit compare_field_real (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-</tr><tr><td></td>      <td class=PType nowrap>real&nbsp;</td>
-      <td class=PParameter nowrap>lhs,</td>
-</tr><tr><td></td>      <td class=PType nowrap>real&nbsp;</td>
-      <td class=PParameter nowrap>rhs</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function bit compare_field_real (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>real&nbsp;</td>
+      <td class=PParameter nowrap width=100%>lhs,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>real&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rhs</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>This method is the same as <a href="#uvm_comparer.compare_field" class=LMethod id=link30 onMouseOver="ShowTip(event, 'tt12', 'link30')" onMouseOut="HideTip('tt12')">compare_field</a> except that the arguments are real numbers.</p></div></div></div>
@@ -258,13 +264,15 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_comparer.compare_object" href="../../src/base/uvm_comparer.svh">compare_object</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit compare_object (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>lhs,</td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>rhs</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function bit compare_object (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PParameter nowrap width=100%>lhs,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rhs</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Compares two class objects using the <a href="#uvm_comparer.policy" class=LVariable id=link31 onMouseOver="ShowTip(event, 'tt2', 'link31')" onMouseOut="HideTip('tt2')">policy</a> knob to determine whether the comparison should be deep, shallow, or reference.</p><p>The name input is used for purposes of storing and printing a miscompare.</p><p>The <i>lhs</i> and <i>rhs</i> objects are the two objects used for comparison.</p><p>The <i>check_type</i> determines whether or not to verify the object types match (the return from <i>lhs.get_type_name()</i> matches <i>rhs.get_type_name()</i>).</p></div></div></div>
@@ -276,13 +284,15 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_comparer.compare_string" href="../../src/base/uvm_comparer.svh">compare_string</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit compare_string (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>lhs,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>rhs</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function bit compare_string (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>lhs,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rhs</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Compares two string variables.</p><p>The <i>name</i> input is used for purposes of storing and printing a miscompare.</p><p>The <i>lhs</i> and <i>rhs</i> objects are the two objects used for comparison.</p></div></div></div>
@@ -294,9 +304,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_comparer.print_msg" href="../../src/base/uvm_comparer.svh">print_msg</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void print_msg (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>msg</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void print_msg (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>msg</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Causes the error count to be incremented and the message, <i>msg</i>, to be appended to the <a href="#uvm_comparer.miscompares" class=LVariable id=link32 onMouseOver="ShowTip(event, 'tt6', 'link32')" onMouseOut="HideTip('tt6')">miscompares</a> string (a newline is used to separate messages).</p><p>If the message count is less than the <a href="#uvm_comparer.show_max" class=LVariable id=link33 onMouseOver="ShowTip(event, 'tt3', 'link33')" onMouseOut="HideTip('tt3')">show_max</a> setting, then the message is printed to standard-out using the current verbosity and severity settings.&nbsp; See the <a href="#uvm_comparer.verbosity" class=LVariable id=link34 onMouseOver="ShowTip(event, 'tt4', 'link34')" onMouseOut="HideTip('tt4')">verbosity</a> and <a href="#uvm_comparer.sev" class=LVariable id=link35 onMouseOver="ShowTip(event, 'tt5', 'link35')" onMouseOut="HideTip('tt5')">sev</a> variables for more information.</p></div></div></div>
@@ -312,7 +324,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY
   </td></tr></table></blockquote>Determines whether comparison is UVM_DEEP, UVM_REFERENCE, or UVM_SHALLOW.</div></div><div class=CToolTip id="tt3"><div class=CVariable>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>int unsigned show_max = 1
-  </td></tr></table></blockquote>Sets the maximum number of messages to send to the messager for miscompares of an object.</div></div><div class=CToolTip id="tt4"><div class=CVariable>
+  </td></tr></table></blockquote>Sets the maximum number of messages to send to the printer for miscompares of an object.</div></div><div class=CToolTip id="tt4"><div class=CVariable>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>int unsigned verbosity = UVM_LOW
   </td></tr></table></blockquote>Sets the verbosity for printed messages.</div></div><div class=CToolTip id="tt5"><div class=CVariable>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>uvm_severity sev = UVM_INFO
@@ -331,124 +343,140 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   </td></tr></table></blockquote>This bit stores the number of miscompares for a given compare operation. </div></div><div class=CToolTip id="tt12"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit compare_field (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function bit compare_field (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_bitstream_t&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_bitstream_t&nbsp;</td>
       <td class=PParameter nowrap>lhs,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_bitstream_t&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_bitstream_t&nbsp;</td>
       <td class=PParameter nowrap>rhs,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>size,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_radix_enum&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_radix_enum&nbsp;</td>
       <td class=PParameter nowrap>radix</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>UVM_NORADIX</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Compares two integral values.</div></div><div class=CToolTip id="tt13"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit compare_field_int (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>virtual function bit compare_field_int (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>logic[63:0]&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_integral_t&nbsp;</td>
       <td class=PParameter nowrap>lhs,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>logic[63:0]&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_integral_t&nbsp;</td>
       <td class=PParameter nowrap>rhs,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>int&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>int&nbsp;</td>
       <td class=PParameter nowrap>size,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_radix_enum&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_radix_enum&nbsp;</td>
       <td class=PParameter nowrap>radix</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>UVM_NORADIX</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 This method is the same as compare_field except that the arguments are small integers, less than or equal to 64 bits. </div></div><div class=CToolTip id="tt14"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit compare_field_real (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-</tr><tr><td></td>      <td class=PType nowrap>real&nbsp;</td>
-      <td class=PParameter nowrap>lhs,</td>
-</tr><tr><td></td>      <td class=PType nowrap>real&nbsp;</td>
-      <td class=PParameter nowrap>rhs</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function bit compare_field_real (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>real&nbsp;</td>
+      <td class=PParameter nowrap width=100%>lhs,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>real&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rhs</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 This method is the same as compare_field except that the arguments are real numbers.</div></div><div class=CToolTip id="tt15"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit compare_object (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>lhs,</td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>rhs</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function bit compare_object (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PParameter nowrap width=100%>lhs,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rhs</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Compares two class objects using the policy knob to determine whether the comparison should be deep, shallow, or reference.</div></div><div class=CToolTip id="tt16"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit compare_string (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>name,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>lhs,</td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>rhs</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function bit compare_string (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>name,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>lhs,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rhs</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Compares two string variables.</div></div><div class=CToolTip id="tt17"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void print_msg (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>msg</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void print_msg (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>msg</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Causes the error count to be incremented and the message, <i>msg</i>, to be appended to the miscompares string (a newline is used to separate messages).</div></div><div class=CToolTip id="tt18"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function bit compare (</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function bit compare (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
       <td class=PParameter nowrap>rhs,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_comparer&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_comparer&nbsp;</td>
       <td class=PParameter nowrap>comparer</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>null</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Deep compares members of this data object with those of the object provided in the <i>rhs</i> (right-hand side) argument, returning 1 on a match, 0 othewise.</div></div><div class=CToolTip id="tt19"><div class=CMethod>
+Deep compares members of this data object with those of the object provided in the <i>rhs</i> (right-hand side) argument, returning 1 on a match, 0 otherwise.</div></div><div class=CToolTip id="tt19"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function bit do_compare (</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
-      <td class=PParameter nowrap>rhs,</td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_comparer&nbsp;</td>
-      <td class=PParameter nowrap>comparer</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function bit do_compare (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_object&nbsp;</td>
+      <td class=PParameter nowrap width=100%>rhs,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_comparer&nbsp;</td>
+      <td class=PParameter nowrap width=100%>comparer</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-The do_compare method is the user-definable hook called by the compare method. </div></div><!--END_ND_TOOLTIPS-->
+The <i>do_compare</i> method is the user-definable hook called by the compare method. </div></div><!--END_ND_TOOLTIPS-->
 
 <script language=JavaScript><!--
 if (browserType) {if (browserVer) {document.write("</div>"); }document.write("</div>");}// --></script></body></html>

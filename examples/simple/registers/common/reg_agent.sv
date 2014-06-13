@@ -119,6 +119,12 @@ class reg_agent #(type DO=int) extends uvm_agent;
       mon = new("mon", this);
    endfunction: new
 
+   virtual function void build_phase(uvm_phase phase);
+      $write("Started building...\n");
+      super.build_phase(phase);
+      $write("Ended building...\n");
+   endfunction
+   
    virtual function void connect_phase(uvm_phase phase);
       drv.seqr_port.connect(sqr.seq_item_export);
    endfunction

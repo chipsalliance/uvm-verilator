@@ -171,7 +171,7 @@ class uvm_vreg_field extends uvm_object;
    // memory read-modify-write operations at the location
    // where the virtual register
    // specified by ~idx~ in the virtual register array is implemented.
-   // If a backdoor is available for the memory implemeting the
+   // If a backdoor is available for the memory implementing the
    // virtual field, it will be used for the memory-read operation.
    //
    extern virtual task write(input  longint unsigned   idx,

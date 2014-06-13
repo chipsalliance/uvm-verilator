@@ -44,7 +44,7 @@ class uvm_spell_chkr #(type T=int);
   // match.
   //
   // First, we do the simple thing and see if the string already is in
-  // the string table by calling the exists() method.  If it does exist
+  // the string table by calling the ~exists()~ method.  If it does exist
   // then there is a match and we're done.  If the string doesn't exist
   // in the table then we invoke the spell checker algorithm to see if
   // our string is a misspelled variation on a string that does exist in
@@ -64,8 +64,10 @@ class uvm_spell_chkr #(type T=int);
   // string table is not excessive and run times will be fast enough.
   // If, on average, that proves to be an invalid assumption then we'll
   // have to find ways to optimize this algorithm.
+  //
+  // note: strtab should not be modified inside check() 
   //--------------------------------------------------------------------
-  static function bit check (tab_t strtab, string s);
+  static function bit check ( /* const */ ref tab_t strtab, input string s);
 
     string key;
     int distance;
@@ -101,18 +103,25 @@ class uvm_spell_chkr #(type T=int);
 
     end
 
-    $display("%s not located", s);
 
     // if (min == max) then the string table is empty
     if(min == max) begin
-      $display("  no alternatives to suggest");
-      return 0;
-    end
-
+	  `uvm_info("UVM/CONFIGDB/SPELLCHK",$sformatf("%s not located, no alternatives to suggest", s),UVM_NONE)
+    end	
+    else
     // dump all the alternatives with the minimum distance    
-    foreach(min_key[i]) begin
-      $display("  did you mean %s?", min_key[i]);
-    end
+    begin
+	   	string q[$];
+	    
+	   	foreach(min_key[i]) begin
+     			q.push_back(min_key[i]);
+     			q.push_back("|");
+	   	end
+	   	if(q.size())
+	   		void'(q.pop_back());
+	   		
+	   	`uvm_info("UVM/CONFIGDB/SPELLCHK",$sformatf("%s not located, did you mean %s", s, `UVM_STRING_QUEUE_STREAMING_PACK(q)),UVM_NONE)
+    end	
     
     return 0;
 

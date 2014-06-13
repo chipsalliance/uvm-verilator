@@ -101,7 +101,7 @@ class vip_driver extends uvm_driver#(vip_tr);
       wait (!m_suspended);
    endtask
 
-   virtual protected task run_phase(uvm_phase phase);
+   virtual task run_phase(uvm_phase phase);
       int    count = 0;
       vip_tr tr;
       

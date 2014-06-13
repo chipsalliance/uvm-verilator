@@ -51,7 +51,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LGeneric id=link7 onMouseOver="ShowTip(event, 'tt4', 'link7')" onMouseOut="HideTip('tt4')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_misc-svh.html#uvm_void" class=LClass id=link7 onMouseOver="ShowTip(event, 'tt4', 'link7')" onMouseOut="HideTip('tt4')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="uvm_object-svh.html#uvm_object" class=LClass id=link8 onMouseOver="ShowTip(event, 'tt3', 'link8')" onMouseOut="HideTip('tt3')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_pool#(KEY,T)</div></div></td></tr>
         </table>
@@ -65,15 +65,17 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>class uvm_pool #(</td>      <td class=PType nowrap>type&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>class uvm_pool #(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>type&nbsp;</td>
       <td class=PParameter nowrap>KEY</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>int,</td>
-</tr><tr><td></td>      <td class=PType nowrap>&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>&nbsp;</td>
       <td class=PParameter nowrap>T</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>uvm_void</td>
-      <td class=PAfterParameters nowrap>) extends uvm_object</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>) extends uvm_object</td></tr>
       </table></td></tr>
     </table></blockquote>
 </td></tr>
@@ -104,7 +106,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_pool#(KEY,T).delete" id=link16 onMouseOver="ShowTip(event, 'tt11', 'link16')" onMouseOut="HideTip('tt11')">delete</a></td><td class=SDescription>Removes the item with the given <i>key</i> from the pool.</td></tr>
   <!-- index=10 -->
 
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_pool#(KEY,T).exists" id=link17 onMouseOver="ShowTip(event, 'tt12', 'link17')" onMouseOut="HideTip('tt12')">exists</a></td><td class=SDescription>Returns 1 if a item with the given <i>key</i> exists in the pool, 0 otherwise.</td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_pool#(KEY,T).exists" id=link17 onMouseOver="ShowTip(event, 'tt12', 'link17')" onMouseOut="HideTip('tt12')">exists</a></td><td class=SDescription>Returns 1 if an item with the given <i>key</i> exists in the pool, 0 otherwise.</td></tr>
   <!-- index=11 -->
 
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_pool#(KEY,T).first" id=link18 onMouseOver="ShowTip(event, 'tt13', 'link18')" onMouseOut="HideTip('tt13')">first</a></td><td class=SDescription>Returns the key of the first item stored in the pool.</td></tr>
@@ -132,11 +134,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_pool#(KEY,T).new" href="../../src/base/uvm_pool.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Creates a new pool with the given <i>name</i>.</p></div></div></div>
@@ -156,9 +160,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_pool#(KEY,T).get_global" href="../../src/base/uvm_pool.svh">get_global</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>static function T get_global (</td>      <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>static function T get_global (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>KEY&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Returns the specified item instance from the global item pool.</p></div></div></div>
@@ -170,9 +176,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_pool#(KEY,T).get" href="../../src/base/uvm_pool.svh">get</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function T get (</td>      <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function T get (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>KEY&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Returns the item with the given <i>key</i>.</p><p>If no item exists by that key, a new item is created with that key and returned.</p></div></div></div>
@@ -184,11 +192,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_pool#(KEY,T).add" href="../../src/base/uvm_pool.svh">add</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void add (</td>      <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key,</td>
-</tr><tr><td></td>      <td class=PType nowrap>T&nbsp;</td>
-      <td class=PParameter nowrap>item</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void add (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>KEY&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>T&nbsp;</td>
+      <td class=PParameter nowrap width=100%>item</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Adds the given (<i>key</i>, <i>item</i>) pair to the pool.&nbsp; If an item already exists at the given <i>key</i> it is overwritten with the new <i>item</i>.</p></div></div></div>
@@ -208,9 +218,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_pool#(KEY,T).delete" href="../../src/base/uvm_pool.svh">delete</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void delete (</td>      <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void delete (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>KEY&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Removes the item with the given <i>key</i> from the pool.</p></div></div></div>
@@ -222,12 +234,14 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_pool#(KEY,T).exists" href="../../src/base/uvm_pool.svh">exists</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function int exists (</td>      <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function int exists (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>KEY&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Returns 1 if a item with the given <i>key</i> exists in the pool, 0 otherwise.</p></div></div></div>
+<div class=CBody><p>Returns 1 if an item with the given <i>key</i> exists in the pool, 0 otherwise.</p></div></div></div>
 
 
 
@@ -236,10 +250,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_pool#(KEY,T).first" href="../../src/base/uvm_pool.svh">first</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function int first (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function int first (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Returns the key of the first item stored in the pool.</p><p>If the pool is empty, then <i>key</i> is unchanged and 0 is returned.</p><p>If the pool is not empty, then <i>key</i> is key of the first item and 1 is returned.</p></div></div></div>
@@ -251,10 +267,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_pool#(KEY,T).last" href="../../src/base/uvm_pool.svh">last</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function int last (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function int last (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Returns the key of the last item stored in the pool.</p><p>If the pool is empty, then 0 is returned and <i>key</i> is unchanged.</p><p>If the pool is not empty, then <i>key</i> is set to the last key in the pool and 1 is returned.</p></div></div></div>
@@ -266,10 +284,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_pool#(KEY,T).next" href="../../src/base/uvm_pool.svh">next</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function int next (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function int next (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Returns the key of the next item in the pool.</p><p>If the input <i>key</i> is the last key in the pool, then <i>key</i> is left unchanged and 0 is returned.</p><p>If a next key is found, then <i>key</i> is updated with that key and 1 is returned.</p></div></div></div>
@@ -281,10 +301,12 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_pool#(KEY,T).prev" href="../../src/base/uvm_pool.svh">prev</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function int prev (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function int prev (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Returns the key of the previous item in the pool.</p><p>If the input <i>key</i> is the first key in the pool, then <i>key</i> is left unchanged and 0 is returned.</p><p>If a previous key is found, then <i>key</i> is updated with that key and 1 is returned.</p></div></div></div>
@@ -293,7 +315,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=15 -->
-<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_object_string_pool#(T)" href="../../src/base/uvm_pool.svh">uvm_object_string_pool #(T)</a></h2><div class=CBody><p>This provides a specialization of the generic <a href="#uvm_pool#(KEY,T)" class=LClass id=link31 onMouseOver="ShowTip(event, 'tt1', 'link31')" onMouseOut="HideTip('tt1')">uvm_pool #(KEY,T)</a> class for an associative array of <a href="uvm_object-svh.html#uvm_object" class=LClass id=link32 onMouseOver="ShowTip(event, 'tt3', 'link32')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects indexed by string.&nbsp; Specializations of this class include the <i>uvm_event_pool</i> (a uvm_object_string_pool storing <a href="uvm_event-svh.html#uvm_event" class=LClass id=link33 onMouseOver="ShowTip(event, 'tt23', 'link33')" onMouseOut="HideTip('tt23')">uvm_event</a>s) and <i>uvm_barrier_pool</i> (a uvm_obejct_string_pool storing <a href="uvm_barrier-svh.html#uvm_barrier" class=LClass id=link34 onMouseOver="ShowTip(event, 'tt24', 'link34')" onMouseOut="HideTip('tt24')">uvm_barrier</a>s).</p>
+<div class="CClass"><div class=CTopic><h2 class=CTitle><a name="uvm_object_string_pool#(T)" href="../../src/base/uvm_pool.svh">uvm_object_string_pool #(T)</a></h2><div class=CBody><p>This provides a specialization of the generic <a href="#uvm_pool#(KEY,T)" class=LClass id=link31 onMouseOver="ShowTip(event, 'tt1', 'link31')" onMouseOut="HideTip('tt1')">uvm_pool #(KEY,T)</a> class for an associative array of <a href="uvm_object-svh.html#uvm_object" class=LClass id=link32 onMouseOver="ShowTip(event, 'tt3', 'link32')" onMouseOut="HideTip('tt3')">uvm_object</a>-based objects indexed by string.&nbsp; Specializations of this class include the <i>uvm_event_pool</i> (a uvm_object_string_pool storing <i>uvm_event#(uvm_object)</i>) and <i>uvm_barrier_pool</i> (a uvm_obejct_string_pool storing <a href="uvm_barrier-svh.html#uvm_barrier" class=LClass id=link33 onMouseOver="ShowTip(event, 'tt23', 'link33')" onMouseOut="HideTip('tt23')">uvm_barrier</a>).</p>
 
 <!--START_ND_SUMMARY index=15-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
@@ -367,11 +389,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_string_pool#(T).new" href="../../src/base/uvm_pool.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Creates a new pool with the given <i>name</i>.</p></div></div></div>
@@ -399,9 +423,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_string_pool#(T).get_global" href="../../src/base/uvm_pool.svh">get_global</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>static function T get_global (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>static function T get_global (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Returns the specified item instance from the global item pool.</p></div></div></div>
@@ -413,9 +439,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_string_pool#(T).get" href="../../src/base/uvm_pool.svh">get</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function T get (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function T get (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Returns the object item at the given string <i>key</i>.</p><p>If no item exists by the given <i>key</i>, a new item is created for that key and returned.</p></div></div></div>
@@ -427,9 +455,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_object_string_pool#(T).delete" href="../../src/base/uvm_pool.svh">delete</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void delete (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void delete (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Removes the item with the given string <i>key</i> from the pool.</p></div></div></div>
@@ -442,37 +472,45 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class=CToolTip id="tt1"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>class uvm_pool #(</td>      <td class=PType nowrap>type&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>class uvm_pool #(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>type&nbsp;</td>
       <td class=PParameter nowrap>KEY</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>int,</td>
-</tr><tr><td></td>      <td class=PType nowrap>&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>&nbsp;</td>
       <td class=PParameter nowrap>T</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>uvm_void</td>
-      <td class=PAfterParameters nowrap>) extends uvm_object</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>) extends uvm_object</td></tr>
       </table></td></tr>
     </table></blockquote>
 Implements a class-based dynamic associative array. </div></div><div class=CToolTip id="tt2"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>class uvm_object_string_pool #(</td>      <td class=PType nowrap>type&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>class uvm_object_string_pool #(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>type&nbsp;</td>
       <td class=PParameter nowrap>T</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>uvm_object</td>
-      <td class=PAfterParameters nowrap>) extends uvm_pool #(string,T)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>) extends uvm_pool #(string,T)</td></tr>
       </table></td></tr>
     </table></blockquote>
 This provides a specialization of the generic uvm_pool #(KEY,T) class for an associative array of uvm_object-based objects indexed by string. </div></div><div class=CToolTip id="tt3"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
-  </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt4"><div class=CGeneric>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt5"><div class=CMethod>
+  </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt4"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_void
+  </td></tr></table></blockquote>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt5"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Creates a new pool with the given <i>name</i>.</div></div><div class=CToolTip id="tt6"><div class=CMethod>
@@ -480,27 +518,33 @@ Creates a new pool with the given <i>name</i>.</div></div><div class=CToolTip id
   </td></tr></table></blockquote>Returns the singleton global pool for the item type, T.</div></div><div class=CToolTip id="tt7"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>static function T get_global (</td>      <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>static function T get_global (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>KEY&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the specified item instance from the global item pool.</div></div><div class=CToolTip id="tt8"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function T get (</td>      <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function T get (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>KEY&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the item with the given <i>key</i>.</div></div><div class=CToolTip id="tt9"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void add (</td>      <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key,</td>
-</tr><tr><td></td>      <td class=PType nowrap>T&nbsp;</td>
-      <td class=PParameter nowrap>item</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void add (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>KEY&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key,</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>T&nbsp;</td>
+      <td class=PParameter nowrap width=100%>item</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Adds the given (<i>key</i>, <i>item</i>) pair to the pool. </div></div><div class=CToolTip id="tt10"><div class=CMethod>
@@ -508,63 +552,77 @@ Adds the given (<i>key</i>, <i>item</i>) pair to the pool. </div></div><div clas
   </td></tr></table></blockquote>Returns the number of uniquely keyed items stored in the pool.</div></div><div class=CToolTip id="tt11"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void delete (</td>      <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void delete (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>KEY&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Removes the item with the given <i>key</i> from the pool.</div></div><div class=CToolTip id="tt12"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function int exists (</td>      <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function int exists (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>KEY&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Returns 1 if a item with the given <i>key</i> exists in the pool, 0 otherwise.</div></div><div class=CToolTip id="tt13"><div class=CMethod>
+Returns 1 if an item with the given <i>key</i> exists in the pool, 0 otherwise.</div></div><div class=CToolTip id="tt13"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function int first (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function int first (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the key of the first item stored in the pool.</div></div><div class=CToolTip id="tt14"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function int last (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function int last (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the key of the last item stored in the pool.</div></div><div class=CToolTip id="tt15"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function int next (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function int next (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the key of the next item in the pool.</div></div><div class=CToolTip id="tt16"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function int prev (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=4>virtual function int prev (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>KEY&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=4>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the key of the previous item in the pool.</div></div><div class=CToolTip id="tt17"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Creates a new pool with the given <i>name</i>.</div></div><div class=CToolTip id="tt18"><div class=CMethod>
@@ -574,30 +632,34 @@ Creates a new pool with the given <i>name</i>.</div></div><div class=CToolTip id
   </td></tr></table></blockquote>Returns the singleton global pool for the item type, T.</div></div><div class=CToolTip id="tt20"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>static function T get_global (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>static function T get_global (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the specified item instance from the global item pool.</div></div><div class=CToolTip id="tt21"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function T get (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function T get (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Returns the object item at the given string <i>key</i>.</div></div><div class=CToolTip id="tt22"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>virtual function void delete (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>key</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>virtual function void delete (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>key</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Removes the item with the given string <i>key</i> from the pool.</div></div><div class=CToolTip id="tt23"><div class=CClass>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_event extends uvm_object
-  </td></tr></table></blockquote>The uvm_event class is a wrapper class around the SystemVerilog event construct. </div></div><div class=CToolTip id="tt24"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_barrier extends uvm_object
   </td></tr></table></blockquote>The uvm_barrier class provides a multiprocess synchronization mechanism. </div></div><!--END_ND_TOOLTIPS-->
 

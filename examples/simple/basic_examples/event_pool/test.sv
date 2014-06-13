@@ -37,7 +37,8 @@ module test;
 
   uvm_event_pool ep=new("ep");
 
-  initial begin
+  initial begin static uvm_coreservice_t cs_ = uvm_coreservice_t::get();
+
     uvm_event e;
     e = ep.get("fred");
     e = ep.get("george");
@@ -46,7 +47,7 @@ module test;
 
     begin
       uvm_report_server svr;
-      svr = _global_reporter.get_report_server();
+      svr = cs_.get_report_server();
 
       svr.summarize();
 

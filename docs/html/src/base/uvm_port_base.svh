@@ -3,6 +3,7 @@
 //   Copyright 2007-2011 Mentor Graphics Corporation
 //   Copyright 2007-2011 Cadence Design Systems, Inc.
 //   Copyright 2010 Synopsys, Inc.
+//   Copyright 2013 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -43,8 +44,8 @@ typedef uvm_port_component_base uvm_port_list[string];
 // The connectivity lists are returned in the form of handles to objects of this
 // type. This allowing traversal of any port's fan-out and fan-in network
 // through recursive calls to <get_connected_to> and <get_provided_to>. Each
-// port's full name and type name can be retrieved using get_full_name and
-// get_type_name methods inherited from <uvm_component>.
+// port's full name and type name can be retrieved using ~get_full_name~ and
+// ~get_type_name~ methods inherited from <uvm_component>.
 //------------------------------------------------------------------------------
 
 virtual class uvm_port_component_base extends uvm_component;
@@ -175,7 +176,7 @@ endclass
 // standard TLM interfaces. They can be found in the ../src/tlm/ directory.
 // For the TLM interfaces, the IF parameter is always <uvm_tlm_if_base #(T1,T2)>.
 //
-// Just before <uvm_component::end_of_elaboration>, an internal
+// Just before <uvm_component::end_of_elaboration_phase>, an internal
 // <uvm_component::resolve_bindings> process occurs, after which each port and
 // export holds a list of all imps connected to it via hierarchical connections
 // to other ports and exports. In effect, we are collapsing the port's fanout,
@@ -185,7 +186,7 @@ endclass
 //
 // uvm_port_base possesses the properties of components in that they have a
 // hierarchical instance path and parent. Because SystemVerilog does not support
-// multiple inheritance, uvm_port_base can not extend both the interface it
+// multiple inheritance, uvm_port_base cannot extend both the interface it
 // implements and <uvm_component>. Thus, uvm_port_base contains a local instance
 // of uvm_component, to which it delegates such commands as get_name,
 // get_full_name, and get_parent.
@@ -225,7 +226,7 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
   //
   // By default, the parent/child relationship of any port being connected to
   // this port is not checked. This can be overridden by configuring the
-  // port's ~check_connection_relationships~ bit via <set_config_int>. See
+  // port's ~check_connection_relationships~ bit via ~uvm_config_int::set()~. See
   // <connect> for more information.
 
   function new (string name,
@@ -240,7 +241,7 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
     m_max_size  = max_size;
     m_comp = new(name, parent, this);
 
-    if (!m_comp.get_config_int("check_connection_relationships",tmp))
+    if (!uvm_config_int::get(m_comp, "", "check_connection_relationships",tmp))
       m_comp.set_report_id_action(s_connection_warning_id, UVM_NO_ACTION);
 
   endfunction
@@ -266,7 +267,7 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
 
   // Function: get_parent
   //
-  // Returns the handle to this port's parent, or null if it has no parent.
+  // Returns the handle to this port's parent, or ~null~ if it has no parent.
 
   virtual function uvm_component get_parent();
     return m_comp.get_parent();
@@ -303,7 +304,7 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
 
   // Function: min_size
   //
-  // Returns the mininum number of implementation ports that must
+  // Returns the minimum number of implementation ports that must
   // be connected to this port by the end_of_elaboration phase.
 
   function int max_size ();
@@ -399,13 +400,13 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
   //   must be compatible. Each port has an interface mask that encodes the
   //   interface(s) it supports. If the bitwise AND of these masks is equal to
   //   the this port's mask, the requirement is met and the ports are
-  //   compatible. For example, an uvm_blocking_put_port #(T) is compatible with
-  //   an uvm_put_export #(T) and uvm_blocking_put_imp #(T) because the export
+  //   compatible. For example, a uvm_blocking_put_port #(T) is compatible with
+  //   a uvm_put_export #(T) and uvm_blocking_put_imp #(T) because the export
   //   and imp provide the interface required by the uvm_blocking_put_port.
   // 
   // - Ports of type <UVM_EXPORT> can only connect to other exports or imps.
   //
-  // - Ports of type <UVM_IMPLEMENTATION> can not be connected, as they are
+  // - Ports of type <UVM_IMPLEMENTATION> cannot be connected, as they are
   //   bound to the component that implements the interface at time of
   //   construction.
   //
@@ -416,20 +417,23 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
   //
   // Relationships, when enabled, are checked are as follows:
   //
-  // - If this port is an UVM_PORT type, the ~provider~ can be a parent port,
+  // - If this port is a UVM_PORT type, the ~provider~ can be a parent port,
   //   or a sibling export or implementation port.
   //
-  // - If this port is an <UVM_EXPORT> type, the provider can be a child
+  // - If this port is a <UVM_EXPORT> type, the provider can be a child
   //   export or implementation port.
   //
   // If any relationship check is violated, a warning is issued.
   //
-  // Note- the <uvm_component::connect> method is related to but not the same
-  // as this method. The component's connect method is a phase callback where
-  // port's connect method calls are made.
+  // Note- the <uvm_component::connect_phase> method is related to but not the same
+  // as this method. The component's ~connect~ method is a phase callback where
+  // port's ~connect~ method calls are made.
 
   virtual function void connect (this_type provider);
-    uvm_root top = uvm_root::get();
+     uvm_root top;
+     uvm_coreservice_t cs;
+     cs = uvm_coreservice_t::get();
+     top = cs.get_root();
     if (end_of_elaboration_ph.get_state() == UVM_PHASE_EXECUTING || // TBD tidy
         end_of_elaboration_ph.get_state() == UVM_PHASE_DONE ) begin
        m_comp.uvm_report_warning("Late Connection", 
@@ -444,12 +448,6 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
       return;
     end
     
-    if (provider == this) begin
-      m_comp.uvm_report_error(s_connection_error_id,
-                       "Cannot connect a port instance to itself", UVM_NONE);
-      return;
-    end
-
     if (provider == this) begin
       m_comp.uvm_report_error(s_connection_error_id,
                        "Cannot connect a port instance to itself", UVM_NONE);
@@ -491,7 +489,7 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
 
   // Function: debug_connected_to
   //
-  // The debug_connected_to method outputs a visual text display of the
+  // The ~debug_connected_to~ method outputs a visual text display of the
   // port/export/imp network to which this port connects (i.e., the port's
   // fanout).
   //
@@ -529,7 +527,10 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
         save = {"This port's fanout network:\n\n  ",
                get_full_name()," (",get_type_name(),")\n",save,"\n"};
       if (m_imp_list.num() == 0) begin
-        uvm_root top = uvm_root::get();
+	 uvm_root top;
+	 uvm_coreservice_t cs;
+	 cs = uvm_coreservice_t::get();
+	 top = cs.get_root();
         if (end_of_elaboration_ph.get_state() == UVM_PHASE_EXECUTING ||
             end_of_elaboration_ph.get_state() == UVM_PHASE_DONE )  // TBD tidy
            save = {save,"  Connected implementations: none\n"};
@@ -553,7 +554,7 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
 
   // Function: debug_provided_to
   //
-  // The debug_provided_to method outputs a visual display of the port/export
+  // The ~debug_provided_to~ method outputs a visual display of the port/export
   // network that ultimately connect to this port (i.e., the port's fanin).
   //
   // This method must not be called before the end_of_elaboration phase, as port
@@ -717,8 +718,8 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
   // Function: resolve_bindings
   //
   // This callback is called just before entering the end_of_elaboration phase.
-  // It recurses through each port's fanout to determine all the imp destina-
-  // tions. It then checks against the required min and max connections.
+  // It recurses through each port's fanout to determine all the imp 
+  // destinations. It then checks against the required min and max connections.
   // After resolution, <size> returns a valid value and <get_if>
   // can be used to access a particular imp.
   //

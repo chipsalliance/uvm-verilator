@@ -33,6 +33,10 @@
 `endif
 `endif
 
+`ifndef UVM_USE_STRING_QUEUE_STREAMING_PACK
+  `define UVM_STRING_QUEUE_STREAMING_PACK(q) uvm_pkg::m_uvm_string_queue_join(q)
+`endif
+
 `ifndef QUESTA
 `define uvm_typename(X) $typename(X)
 `else
@@ -40,10 +44,13 @@
 `endif
 
 `ifdef VCS
-`ifndef UVM_DISABLE_RESOURCE_CONVERTER
-//UVM_USE_RESOURCE_CONVERTER enables UVM-1.1d to print resources output to match uvm-1.1c. VCS2012.09-SP1 or later does not need resource_converter object, disbale by using +define+UVM_DISABLE_RESOURCE_CONVERTER
-`define UVM_USE_RESOURCE_CONVERTER
-`endif
+// `ifndef UVM_DISABLE_RESOURCE_CONVERTER
+
+//UVM_USE_RESOURCE_CONVERTER enables UVM-1.1d to print resources output to match uvm-1.1c. VCS2014.03 or later does not need resource_converter object.
+// As per agreement in Committee at time of UVM-1.1d, from UVM-1.2 onwards the default is to disable resource converter and allow simulators to deal with %p natively. If a user wishes to enable resource converter then they need to compile using +define+UVM_USE_RESOURCE_CONVERTER. The resource converter was never officially sanctioned by Accellera and is placed in the deprecated directory which may be removed in future version. 
+// `define UVM_USE_RESOURCE_CONVERTER
+
+// `endif
 `endif
 
 `ifdef INCA
@@ -54,13 +61,13 @@
 // Deprecation Control Macros
 //
 `ifdef UVM_NO_DEPRECATED
-  `define UVM_OBJECT_MUST_HAVE_CONSTRUCTOR
 `endif
 
 `define uvm_delay(TIME) #(TIME);
 
 
 `include "macros/uvm_version_defines.svh"
+`include "macros/uvm_global_defines.svh"
 `include "macros/uvm_message_defines.svh"
 `include "macros/uvm_phase_defines.svh"
 `include "macros/uvm_object_defines.svh"

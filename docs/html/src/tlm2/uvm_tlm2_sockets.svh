@@ -27,14 +27,14 @@
 // contain the connection semantics.
 //
 // Sockets come in several flavors: Each socket is either an initiator or a 
-// target, a passthrough or a terminator. Further, any particular socket 
+// target, a pass-through or a terminator. Further, any particular socket 
 // implements either the blocking interfaces or the nonblocking interfaces. 
 // Terminator sockets are used on initiators and targets as well as 
-// interconnect components as shown in the figure above. Passthrough
+// interconnect components as shown in the figure above. Pass-through
 //  sockets are used to enable connections to cross hierarchical boundaries.
 //
 // There are eight socket types: the cross of blocking and nonblocking,
-// passthrough and termination, target and initiator
+// pass-through and termination, target and initiator
 //
 // Sockets are specified based on what they are (IS-A)
 // and what they contains (HAS-A).

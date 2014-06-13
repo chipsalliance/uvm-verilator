@@ -23,20 +23,9 @@
 virtual class vip_sequence extends uvm_sequence#(vip_tr);
 
   function new(string name);
-    super.new(name);
+     super.new(name);
+     set_automatic_phase_objection(1);
   endfunction
-  
-  virtual task pre_body();
-     if (starting_phase != null)
-        starting_phase.raise_objection(this, {"Running sequence '",
-                                              get_full_name(), "'"});
-  endtask
-  
-  virtual task post_body();
-     if (starting_phase != null)
-        starting_phase.drop_objection(this, {"Completed sequence '",
-                                             get_full_name(), "'"});
-  endtask
   
 endclass
 

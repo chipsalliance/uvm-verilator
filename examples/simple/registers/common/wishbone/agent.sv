@@ -22,11 +22,10 @@
 
 
 class wb_sequencer extends uvm_sequencer #(wb_cycle);
-   `uvm_sequencer_utils(wb_sequencer)
+   `uvm_component_utils(wb_sequencer)
 
    function new(string name = "", uvm_component parent = null);
       super.new(name, parent);
-      `uvm_update_sequence_lib_and_item(wb_cycle)
    endfunction
 endclass
 

@@ -64,7 +64,7 @@ endclass: wb_driver
 
 
 task wb_driver::run_phase(uvm_phase phase);
-   if (!get_config_int("max_n_wss", this.m_max_n_wss)) begin
+   if (!uvm_config_int::get(this, "", "max_n_wss", this.m_max_n_wss)) begin
       this.m_max_n_wss = 10;
    end
 

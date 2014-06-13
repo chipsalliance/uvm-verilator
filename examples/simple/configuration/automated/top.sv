@@ -24,25 +24,11 @@
 //This test will focus on testing auto configurations using the uvm_component related config methods.
 //
 //
-//
-//To get a more details about the auto config methods of the uvm component, refer to the file:
-//	- uvm/src/base/uvm_component.svh , the configuration related part.
-//
-//
-//
 //Walk through the test:
 //Configuration settings are stored in each component instance. 
 //
 //Then a search is made to verify that those components full names match the field_name that had been set.
 // 
-//
-//The following configuration interfaces virtual methods will be override:
-//
-//void set_config_int (string inst_name,string field_name,uvm_bitstream_t value)
-//
-//void set_config_object (string inst_name,string field_name,uvm_object value, bit clone=1)
-//
-//void set_config_string (string inst_name,string field_name,string value)
 //
 
 
@@ -54,14 +40,14 @@ module top;
 
   initial begin
     //set configuration prior to creating the environment
-    set_config_int("topenv.*.u1", "v", 30);
-    set_config_int("topenv.inst2.u1", "v", 10);
-    set_config_int("*", "recording_detail", 0);
-    set_config_string("*", "myaa[foo]", "hi");
-    set_config_string("*", "myaa[bar]", "bye");
-    set_config_string("*", "myaa[foobar]", "howdy");
-    set_config_string("topenv.inst1.u1", "myaa[foo]", "boo");
-    set_config_string("topenv.inst1.u1", "myaa[foobar]", "boobah");
+    uvm_config_int::set(null, "topenv.*.u1", "v", 30);
+    uvm_config_int::set(null, "topenv.inst2.u1", "v", 10);
+    uvm_config_int::set(null, "*", "recording_detail", 0);
+    uvm_config_string::set(null, "*", "myaa[foo]", "hi");
+    uvm_config_string::set(null, "*", "myaa[bar]", "bye");
+    uvm_config_string::set(null, "*", "myaa[foobar]", "howdy");
+    uvm_config_string::set(null, "topenv.inst1.u1", "myaa[foo]", "boo");
+    uvm_config_string::set(null, "topenv.inst1.u1", "myaa[foobar]", "boobah");
 
     topenv = new("topenv", null);
 

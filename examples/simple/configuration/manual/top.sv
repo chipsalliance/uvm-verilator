@@ -31,14 +31,14 @@ module top;
     uvm_top.enable_print_topology = 1;
 
     //set configuration prior to creating the environment
-    set_config_int("topenv.*.u1", "v", 30);
-    set_config_int("topenv.inst2.u1", "v", 10);
-    set_config_int("topenv.*", "debug", 1);
-    set_config_string("*", "myaa[foo]", "hi");
-    set_config_string("*", "myaa[bar]", "bye");
-    set_config_string("*", "myaa[foobar]", "howdy");
-    set_config_string("topenv.inst1.u1", "myaa[foo]", "boo");
-    set_config_string("topenv.inst1.u1", "myaa[foobar]", "boobah");
+    uvm_config_int::set(null, "topenv.*.u1", "v", 30);
+    uvm_config_int::set(null, "topenv.inst2.u1", "v", 10);
+    uvm_config_int::set(null, "topenv.*", "debug", 1);
+    uvm_config_string::set(null, "*", "myaa[foo]", "hi");
+    uvm_config_string::set(null, "*", "myaa[bar]", "bye");
+    uvm_config_string::set(null, "*", "myaa[foobar]", "howdy");
+    uvm_config_string::set(null, "topenv.inst1.u1", "myaa[foo]", "boo");
+    uvm_config_string::set(null, "topenv.inst1.u1", "myaa[foobar]", "boobah");
 
     topenv = new("topenv", null);
     run_test();

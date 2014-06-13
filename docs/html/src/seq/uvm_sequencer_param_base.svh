@@ -70,13 +70,13 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   // Function: get_current_item
   //
   // Returns the request_item currently being executed by the sequencer. If the
-  // sequencer is not currently executing an item, this method will return null.
+  // sequencer is not currently executing an item, this method will return ~null~.
   //
   // The sequencer is executing an item from the time that get_next_item or peek
   // is called until the time that get or item_done is called.
   //
   // Note that a driver that only calls get() will never show a current item,
-  // since the item is completed at the same time as it is requsted.
+  // since the item is completed at the same time as it is requested.
   //
   function REQ get_current_item();
     REQ t;
@@ -117,7 +117,7 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   //
   // Returns the last request item by default.  If n is not 0, then it will get
   // the n�th before last request item.  If n is greater than the last request
-  // buffer size, the function will return null.
+  // buffer size, the function will return ~null~.
   //
   function REQ last_req(int unsigned n = 0);
     if(n > m_num_last_reqs) begin
@@ -183,7 +183,7 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   //
   // Returns the last response item by default.  If n is not 0, then it will
   // get the nth-before-last response item.  If n is greater than the last
-  // response buffer size, the function will return null.
+  // response buffer size, the function will return ~null~.
   //
   function RSP last_rsp(int unsigned n = 0);
     if(n > m_num_last_rsps) begin
@@ -200,7 +200,7 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
 
 
 
-  // Internal methods and variables; do not use directly; not part of standard
+  // Internal methods and variables; do not use directly, not part of standard
 
   /* local */ extern function void m_last_rsp_push_front(RSP item);
   /* local */ extern function void put_response (RSP t);
@@ -238,8 +238,8 @@ endfunction
 
 function void uvm_sequencer_param_base::do_print (uvm_printer printer);
   super.do_print(printer);
-  printer.print_int("num_last_reqs", m_num_last_reqs, $bits(m_num_last_reqs), UVM_DEC);
-  printer.print_int("num_last_rsps", m_num_last_rsps, $bits(m_num_last_rsps), UVM_DEC);
+  printer.print_field_int("num_last_reqs", m_num_last_reqs, $bits(m_num_last_reqs), UVM_DEC);
+  printer.print_field_int("num_last_rsps", m_num_last_rsps, $bits(m_num_last_rsps), UVM_DEC);
 endfunction
 
 

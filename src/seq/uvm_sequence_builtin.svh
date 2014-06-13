@@ -122,11 +122,11 @@ function bit do_compare (uvm_object rhs, uvm_comparer comparer);
 endfunction
 
 function void do_print (uvm_printer printer);
-  printer.print_int("l_count", l_count, $bits(l_count));
+  printer.print_field_int("l_count", l_count, $bits(l_count));
 endfunction
 
 function void do_record (uvm_recorder recorder);
-  recorder.record_field("l_count", l_count, $bits(l_count));
+  recorder.record_field_int("l_count", l_count, $bits(l_count));
 endfunction // void
 
   function uvm_object create (string name="");
@@ -223,11 +223,11 @@ function bit do_compare (uvm_object rhs, uvm_comparer comparer);
 endfunction
 
 function void do_print (uvm_printer printer);
-  printer.print_int("l_count", l_count, $bits(l_count));
+  printer.print_field_int("l_count", l_count, $bits(l_count));
 endfunction
 
 function void do_record (uvm_recorder recorder);
-  recorder.record_field("l_count", l_count, $bits(l_count));
+  recorder.record_field_int("l_count", l_count, $bits(l_count));
 endfunction // void
 
 function uvm_object create (string name="");

@@ -40,7 +40,7 @@
 // compatible input ports. The difference is that UVM ports and exports bind
 // interfaces (groups of methods), not signals and wires. The methods of the
 // interfaces so bound pass data as whole transactions (e.g. objects).
-// The set of primitve and combination TLM interfaces afford many choices for
+// The set of primitive and combination TLM interfaces afford many choices for
 // designing components that communicate at the transaction level.
 // 
 //-----------------------------------------------------------------------------

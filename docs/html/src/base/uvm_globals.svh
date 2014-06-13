@@ -3,6 +3,7 @@
 //   Copyright 2007-2011 Mentor Graphics Corporation
 //   Copyright 2007-2011 Cadence Design Systems, Inc.
 //   Copyright 2010-2011 Synopsys, Inc.
+//   Copyright 2013-2014 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -36,7 +37,9 @@
 
 task run_test (string test_name="");
   uvm_root top;
-  top = uvm_root::get();
+  uvm_coreservice_t cs;
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
   top.run_test(test_name);
 endtask
 
@@ -50,7 +53,7 @@ endtask
 // raised objections, an implicit call to <global_stop_request> is issued
 // to end the run phase (or any other task-based phase).
 
-uvm_test_done_objection uvm_test_done = uvm_test_done_objection::get();
+const uvm_test_done_objection uvm_test_done = uvm_test_done_objection::get();
 
 
 // Method- global_stop_request  - DEPRECATED
@@ -74,7 +77,9 @@ endfunction
 
 function void set_global_timeout(time timeout, bit overridable = 1);
   uvm_root top;
-  top = uvm_root::get();
+  uvm_coreservice_t cs;
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
   top.set_timeout(timeout,overridable);
 endfunction
 
@@ -98,24 +103,39 @@ endfunction
 //
 //----------------------------------------------------------------------------
 
+
+// Function: uvm_get_report_object
+//
+// Returns the nearest uvm_report_object when called.  
+// For the global version, it returns uvm_root.
+//
+function uvm_report_object uvm_get_report_object();
+  uvm_root top;
+  uvm_coreservice_t cs;
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
+  return top;
+endfunction
+
+
 // Function: uvm_report_enabled
 //
-// Returns 1 if the configured verbosity in ~uvm_top~ is greater than 
-// ~verbosity~ and the action associated with the given ~severity~ and ~id~
-// is not UVM_NO_ACTION, else returns 0.
+// Returns 1 if the configured verbosity in ~uvm_top~ for this 
+// severity/id is greater than or equal to ~verbosity~ else returns 0.
 // 
 // See also <uvm_report_object::uvm_report_enabled>.
 //
-//
-// Static methods of an extension of uvm_report_object, e.g. uvm_compoent-based
-// objects, can not call ~uvm_report_enabled~ because the call will resolve to
+// Static methods of an extension of uvm_report_object, e.g. uvm_component-based
+// objects, cannot call ~uvm_report_enabled~ because the call will resolve to
 // the <uvm_report_object::uvm_report_enabled>, which is non-static.
-// Static methods can not call non-static methods of the same class. 
+// Static methods cannot call non-static methods of the same class. 
 
-function bit uvm_report_enabled (int verbosity,
+function int uvm_report_enabled (int verbosity,
                                  uvm_severity severity=UVM_INFO, string id="");
   uvm_root top;
-  top = uvm_root::get();
+  uvm_coreservice_t cs;
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
   return top.uvm_report_enabled(verbosity,severity,id);
 endfunction
 
@@ -127,11 +147,26 @@ function void uvm_report( uvm_severity severity,
                           int verbosity = (severity == uvm_severity'(UVM_ERROR)) ? UVM_LOW :
                                           (severity == uvm_severity'(UVM_FATAL)) ? UVM_NONE : UVM_MEDIUM,
                           string filename = "",
-                          int line = 0);
+                          int line = 0,
+                          string context_name = "",
+                          bit report_enabled_checked = 0);
   uvm_root top;
-  top = uvm_root::get();
-  top.uvm_report(severity, id, message, verbosity, filename, line);
+  uvm_coreservice_t cs;
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
+  top.uvm_report(severity, id, message, verbosity, filename, line, context_name, report_enabled_checked);
 endfunction 
+
+// Undocumented DPI available version of uvm_report
+export "DPI-C" function m__uvm_report_dpi;
+function void m__uvm_report_dpi(int severity,
+                                string id,
+                                string message,
+                                int    verbosity,
+                                string filename,
+                                int    line);
+   uvm_report(uvm_severity'(severity), id, message, verbosity, filename, line);
+endfunction : m__uvm_report_dpi
 
 // Function: uvm_report_info
 
@@ -139,10 +174,15 @@ function void uvm_report_info(string id,
 			      string message,
                               int verbosity = UVM_MEDIUM,
 			      string filename = "",
-			      int line = 0);
+			      int line = 0,
+                              string context_name = "",
+                              bit report_enabled_checked = 0);
   uvm_root top;
-  top = uvm_root::get();
-  top.uvm_report_info(id, message, verbosity, filename, line);
+  uvm_coreservice_t cs;
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
+  top.uvm_report_info(id, message, verbosity, filename, line, context_name,
+    report_enabled_checked);
 endfunction
 
 
@@ -152,10 +192,15 @@ function void uvm_report_warning(string id,
                                  string message,
                                  int verbosity = UVM_MEDIUM,
 				 string filename = "",
-				 int line = 0);
+				 int line = 0,
+                                 string context_name = "",
+                                 bit report_enabled_checked = 0);
   uvm_root top;
-  top = uvm_root::get();
-  top.uvm_report_warning(id, message, verbosity, filename, line);
+  uvm_coreservice_t cs;
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
+  top.uvm_report_warning(id, message, verbosity, filename, line, context_name,
+    report_enabled_checked);
 endfunction
 
 
@@ -165,10 +210,15 @@ function void uvm_report_error(string id,
                                string message,
                                int verbosity = UVM_LOW,
 			       string filename = "",
-			       int line = 0);
+			       int line = 0,
+                               string context_name = "",
+                               bit report_enabled_checked = 0);
   uvm_root top;
-  top = uvm_root::get();
-  top.uvm_report_error(id, message, verbosity, filename, line);
+  uvm_coreservice_t cs;
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
+  top.uvm_report_error(id, message, verbosity, filename, line, context_name,
+    report_enabled_checked);
 endfunction
 
 
@@ -187,13 +237,37 @@ function void uvm_report_fatal(string id,
 	                       string message,
                                int verbosity = UVM_NONE,
 			       string filename = "",
-			       int line = 0);
+			       int line = 0,
+                               string context_name = "",
+                               bit report_enabled_checked = 0);
   uvm_root top;
-  top = uvm_root::get();
-  top.uvm_report_fatal(id, message, verbosity, filename, line);
+  uvm_coreservice_t cs;
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
+  top.uvm_report_fatal(id, message, verbosity, filename, line, context_name,
+    report_enabled_checked);
 endfunction
 
 
+// Function: uvm_process_report_message
+//
+// This method, defined in package scope, is a convenience function that
+// delegate to the corresponding component method in ~uvm_top~. It can be
+// used in module-based code to use the same reporting mechanism as class-based
+// components. See <uvm_report_object> for details on the reporting mechanism.
+
+function void uvm_process_report_message(uvm_report_message report_message);
+  uvm_root top;
+  uvm_coreservice_t cs;
+  process p;
+  p = process::self();
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
+  top.uvm_process_report_message(report_message);
+endfunction
+
+
+// TODO merge with uvm_enum_wrapper#(uvm_severity)
 function bit uvm_string_to_severity (string sev_str, output uvm_severity sev);
   case (sev_str)
     "UVM_INFO": sev = UVM_INFO;
@@ -205,7 +279,8 @@ function bit uvm_string_to_severity (string sev_str, output uvm_severity sev);
   return 1;
 endfunction
 
- function automatic bit uvm_string_to_action (string action_str, output uvm_action action);
+
+function automatic bit uvm_string_to_action (string action_str, output uvm_action action);
   string actions[$];
   uvm_split_string(action_str,"|",actions);
   uvm_string_to_action = 1;
@@ -219,19 +294,21 @@ endfunction
       "UVM_EXIT":      action |= UVM_EXIT;
       "UVM_CALL_HOOK": action |= UVM_CALL_HOOK;
       "UVM_STOP":      action |= UVM_STOP;
+      "UVM_RM_RECORD": action |= UVM_RM_RECORD;
       default: uvm_string_to_action = 0;
     endcase
   end
 endfunction
 
   
+`ifndef UVM_NO_DEPRECATED
 //------------------------------------------------------------------------------
 //
-// Group: Configuration
+// Group- Configuration
 //
 //------------------------------------------------------------------------------
 
-// Function: set_config_int
+// Function- set_config_int
 //
 // This is the global version of set_config_int in <uvm_component>. This
 // function places the configuration setting for an integral field in a
@@ -243,12 +320,18 @@ function void  set_config_int  (string inst_name,
                                 string field_name,
                                 uvm_bitstream_t value);
   uvm_root top;
-  top = uvm_root::get();
+  uvm_coreservice_t cs;
+  if (!uvm_component::m_config_deprecated_warned) begin
+     `uvm_warning("UVM/CFG/SET/DPR", "get/set_config_* API has been deprecated. Use uvm_config_db instead.")
+     uvm_component::m_config_deprecated_warned = 1;
+  end
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
   top.set_config_int(inst_name, field_name, value);
 endfunction
 
 
-// Function: set_config_object
+// Function- set_config_object
 //
 // This is the global version of set_config_object in <uvm_component>. This
 // function places the configuration setting for an object field in a
@@ -261,12 +344,18 @@ function void set_config_object (string inst_name,
                                  uvm_object value,
                                  bit clone=1);
   uvm_root top;
-  top = uvm_root::get();
+  uvm_coreservice_t cs;
+  if (!uvm_component::m_config_deprecated_warned) begin
+     `uvm_warning("UVM/CFG/SET/DPR", "get/set_config_* API has been deprecated. Use uvm_config_db instead.")
+     uvm_component::m_config_deprecated_warned = 1;
+  end
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
   top.set_config_object(inst_name, field_name, value, clone);
 endfunction
 
 
-// Function: set_config_string
+// Function- set_config_string
 //
 // This is the global version of set_config_string in <uvm_component>. This
 // function places the configuration setting for an string field in a
@@ -278,10 +367,16 @@ function void set_config_string (string inst_name,
                                  string field_name,
                                  string value);
   uvm_root top;
-  top = uvm_root::get();
+  uvm_coreservice_t cs;
+  if (!uvm_component::m_config_deprecated_warned) begin
+     `uvm_warning("UVM/CFG/SET/DPR", "get/set_config_* API has been deprecated. Use uvm_config_db instead.")
+     uvm_component::m_config_deprecated_warned = 1;
+  end
+  cs = uvm_coreservice_t::get();
+  top = cs.get_root();
   top.set_config_string(inst_name, field_name, value);
 endfunction
-
+`endif
 
 
 //----------------------------------------------------------------------------
@@ -308,16 +403,9 @@ function bit uvm_is_match (string expr, string str);
   return (uvm_re_match(s, str) == 0);
 endfunction
 
-`ifndef UVM_LINE_WIDTH
-  `define UVM_LINE_WIDTH 120
-`endif 
+
 parameter UVM_LINE_WIDTH = `UVM_LINE_WIDTH;
-
-`ifndef UVM_NUM_LINES
-  `define UVM_NUM_LINES 120
-`endif
 parameter UVM_NUM_LINES = `UVM_NUM_LINES;
-
 parameter UVM_SMALL_STRING = UVM_LINE_WIDTH*8-1;
 parameter UVM_LARGE_STRING = UVM_LINE_WIDTH*UVM_NUM_LINES*8-1;
 
@@ -366,7 +454,7 @@ task uvm_wait_for_nba_region;
   int next_nba;
 
   //If `included directly in a program block, can't use a non-blocking assign,
-  //but it isn't needed since program blocks are in a seperate region.
+  //but it isn't needed since program blocks are in a separate region.
 `ifndef UVM_NO_WAIT_FOR_NBA
   next_nba++;
   nba <= next_nba;
@@ -403,4 +491,74 @@ function automatic void uvm_split_string (string str, byte sep, ref string value
     e++;
   end
 endfunction
+
+// Class: uvm_enum_wrapper#(T)
+//
+// The ~uvm_enum_wrapper#(T)~ class is a utility mechanism provided
+// as a convenience to the end user.  It provides a <from_name>
+// method which is the logical inverse of the System Verilog ~name~ 
+// method which is built into all enumerations.
+
+class uvm_enum_wrapper#(type T=uvm_active_passive_enum);
+
+    protected static T map[string];
+
+    // Function: from_name
+    // Attempts to convert a string ~name~ to an enumerated value.
+    //
+    // If the conversion is successful, the method will return
+    // 1, otherwise 0.
+    //
+    // Note that the ~name~ passed in to the method must exactly
+    // match the value which would be produced by ~enum::name~, and
+    // is case sensitive.
+    //
+    // For example:
+    //| typedef uvm_enum_wrapper#(uvm_radix_enum) radix_wrapper;
+    //| uvm_radix_enum r_v;
+    //|
+    //| // The following would return '0', as "foo" isn't a value
+    //| // in uvm_radix_enum:
+    //| radix_wrapper::from_name("foo", r_v);
+    //|
+    //| // The following would return '0', as "uvm_bin" isn't a value
+    //| // in uvm_radix_enum (although the upper case "UVM_BIN" is):
+    //| radix_wrapper::from_name("uvm_bin", r_v);
+    //|
+    //| // The following would return '1', and r_v would be set to
+    //| // the value of UVM_BIN
+    //| radix_wrapper::from_name("UVM_BIN", r_v);
+    //
+    static function bit from_name(string name, ref T value);
+        if (map.size() == 0)
+          m_init_map();
+
+        if (map.exists(name)) begin
+            value = map[name];
+            return 1;
+        end
+        else begin
+            return 0;
+        end
+    endfunction : from_name
+
+    // Function- m_init_map
+    // Initializes the name map, only needs to be performed once
+    protected static function void m_init_map();
+        T e = e.first();
+        do 
+          begin
+            map[e.name()] = e;
+            e = e.next();
+          end
+        while (e != e.first());
+    endfunction : m_init_map
+
+    // Function- new
+    // Prevents accidental instantiations
+    protected function new();
+    endfunction : new
+
+endclass : uvm_enum_wrapper
+
 

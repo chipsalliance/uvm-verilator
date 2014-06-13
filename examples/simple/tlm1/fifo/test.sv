@@ -76,10 +76,10 @@ module test;
       #100;  // fifo will fill up
       $display("%0t: getting one", $time);
       data_in.get(p);
-      $display("%0t: recieved data %0d", $time, p.i);
+      $display("%0t: received data %0d", $time, p.i);
       #100;  // let the blocking put succeed
       while(data_in.try_get(p)) begin
-        $display("%0t: recieved data %0d", $time, p.i);
+        $display("%0t: received data %0d", $time, p.i);
         #10;
       end
     endtask

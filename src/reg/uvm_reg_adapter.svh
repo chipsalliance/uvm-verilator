@@ -107,7 +107,7 @@ virtual class uvm_reg_adapter extends uvm_object;
   // transaction.
   // This function returns a value reference only when called in the
   // <uvm_reg_adapter::reg2bus()> method.
-  // It returns null at all other times.
+  // It returns ~null~ at all other times.
   // The content of the return <uvm_reg_item> instance must not be modified
   // and used strictly to obtain additional information about the operation.  
   virtual function uvm_reg_item get_item();
@@ -193,14 +193,16 @@ class uvm_reg_tlm_adapter extends uvm_reg_adapter;
      gp.set_address(addr);
 
      gp.m_byte_enable = new [nbytes];
+     gp.m_byte_enable_length = nbytes;
 
      gp.set_streaming_width (nbytes);
 
      gp.m_data = new [gp.get_streaming_width()];
+     gp.m_length = nbytes; 
 
      for (int i = 0; i < nbytes; i++) begin
         gp.m_data[i] = rw.data[i*8+:8];
-        gp.m_byte_enable[i] = (i > nbytes) ? 1'b0 : rw.byte_en[i];
+        gp.m_byte_enable[i] = (i > nbytes) ? 8'h00 : (rw.byte_en[i] ? 8'hFF : 8'h00);
      end
 
      return gp;

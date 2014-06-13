@@ -32,7 +32,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
   <tr class="SPrototype SIndent1"><td colspan=2 class=SDescription>
       <div class=ClassHierarchy>
         <table border=0 cellspacing=0 cellpadding=0>
-          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LGeneric id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_void</a></div></div></td></tr>
+          <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_misc-svh.html#uvm_void" class=LClass id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">uvm_void</a></div></div></td></tr>
           <tr><td><div class=CHParent><div class=CHEntry><a href="../base/uvm_object-svh.html#uvm_object" class=LClass id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">uvm_object</a></div></div></td></tr>
           <tr><td><div class=CHCurrent><div class=CHEntry>uvm_reg_file</div></div></td></tr>
         </table>
@@ -110,11 +110,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_file.new" href="../../src/reg/uvm_reg_file.svh">new</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Create a new instance</p><p>Creates an instance of a register file abstraction class with the specified name.</p></div></div></div>
@@ -126,22 +128,24 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_file.configure" href="../../src/reg/uvm_reg_file.svh">configure</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void configure (</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void configure (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
       <td class=PParameter nowrap>blk_parent,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_reg_file&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_file&nbsp;</td>
       <td class=PParameter nowrap>regfile_parent,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>hdl_path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Configure a register file instance</p><p>Specify the parent block and register file of the register file instance.&nbsp; If the register file is instantiated in a block, <i>regfile_parent</i> is specified as <i>null</i>.&nbsp; If the register file is instantiated in a register file, <i>blk_parent</i> must be the block parent of that register file and <i>regfile_parent</i> is specified as that register file.</p><p>If the register file corresponds to a hierarchical RTL structure, it&rsquo;s contribution to the HDL path is specified as the <i>hdl_path</i>.&nbsp; Otherwise, the register file does not correspond to a hierarchical RTL structure (e.g. it is physically flattened) and does not contribute to the hierarchical HDL path of any contained registers.</p></div></div></div>
+<div class=CBody><p>Configure a register file instance</p><p>Specify the parent block and register file of the register file instance.&nbsp; If the register file is instantiated in a block, <i>regfile_parent</i> is specified as <i>null</i>.&nbsp; If the register file is instantiated in a register file, <i>blk_parent</i> must be the block parent of that register file and <i>regfile_parent</i> is specified as that register file.</p><p>If the register file corresponds to a hierarchical RTL structure, its contribution to the HDL path is specified as the <i>hdl_path</i>.&nbsp; Otherwise, the register file does not correspond to a hierarchical RTL structure (e.g. it is physically flattened) and does not contribute to the hierarchical HDL path of any contained registers.</p></div></div></div>
 
 
 
@@ -192,11 +196,13 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_file.clear_hdl_path" href="../../src/reg/uvm_reg_file.svh">clear_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void clear_hdl_path (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void clear_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;RTL&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Delete HDL paths</p><p>Remove any previously specified HDL path to the register file instance for the specified design abstraction.</p></div></div></div>
@@ -208,15 +214,17 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_file.add_hdl_path" href="../../src/reg/uvm_reg_file.svh">add_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void add_hdl_path (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void add_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>path,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;RTL&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Add an HDL path</p><p>Add the specified HDL path to the register file instance for the specified design abstraction.&nbsp; This method may be called more than once for the same design abstraction if the register file is physically duplicated in the design abstraction</p></div></div></div>
@@ -228,14 +236,16 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_file.has_hdl_path" href="../../src/reg/uvm_reg_file.svh">has_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function bit has_hdl_path (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function bit has_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Check if a HDL path is specified</p><p>Returns TRUE if the register file instance has a HDL path defined for the specified design abstraction.&nbsp; If no design abstraction is specified, uses the default design abstraction specified for the nearest enclosing register file or block</p><p>If no design asbtraction is specified, the default design abstraction for this register file is used.</p></div></div></div>
+<div class=CBody><p>Check if a HDL path is specified</p><p>Returns TRUE if the register file instance has a HDL path defined for the specified design abstraction.&nbsp; If no design abstraction is specified, uses the default design abstraction specified for the nearest enclosing register file or block</p><p>If no design abstraction is specified, the default design abstraction for this register file is used.</p></div></div></div>
 
 
 
@@ -244,20 +254,22 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_file.get_hdl_path" href="../../src/reg/uvm_reg_file.svh">get_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void get_hdl_path (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>function void get_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>paths[$],</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Get the incremental HDL path(s)</p><p>Returns the HDL path(s) defined for the specified design abstraction in the register file instance.&nbsp; If no design abstraction is specified, uses the default design abstraction specified for the nearest enclosing register file or block.&nbsp; Returns only the component of the HDL paths that corresponds to the register file, not a full hierarchical path</p><p>If no design asbtraction is specified, the default design abstraction for this register file is used.</p></div></div></div>
+<div class=CBody><p>Get the incremental HDL path(s)</p><p>Returns the HDL path(s) defined for the specified design abstraction in the register file instance.&nbsp; If no design abstraction is specified, uses the default design abstraction specified for the nearest enclosing register file or block.&nbsp; Returns only the component of the HDL paths that corresponds to the register file, not a full hierarchical path</p><p>If no design abstraction is specified, the default design abstraction for this register file is used.</p></div></div></div>
 
 
 
@@ -266,25 +278,27 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_file.get_full_hdl_path" href="../../src/reg/uvm_reg_file.svh">get_full_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void get_full_hdl_path (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>function void get_full_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>paths[$],</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>separator</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;.&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><p>Get the full hierarchical HDL path(s)</p><p>Returns the full hierarchical HDL path(s) defined for the specified design abstraction in the register file instance.&nbsp; If no design abstraction is specified, uses the default design abstraction specified for the nearest enclosing register file or block.&nbsp; There may be more than one path returned even if only one path was defined for the register file instance, if any of the parent components have more than one path defined for the same design abstraction</p><p>If no design asbtraction is specified, the default design abstraction for each ancestor register file or block is used to get each incremental path.</p></div></div></div>
+<div class=CBody><p>Get the full hierarchical HDL path(s)</p><p>Returns the full hierarchical HDL path(s) defined for the specified design abstraction in the register file instance.&nbsp; If no design abstraction is specified, uses the default design abstraction specified for the nearest enclosing register file or block.&nbsp; There may be more than one path returned even if only one path was defined for the register file instance, if any of the parent components have more than one path defined for the same design abstraction</p><p>If no design abstraction is specified, the default design abstraction for each ancestor register file or block is used to get each incremental path.</p></div></div></div>
 
 
 
@@ -293,9 +307,11 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_file.set_default_hdl_path" href="../../src/reg/uvm_reg_file.svh">set_default_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_default_hdl_path (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>kind</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_default_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>kind</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 <div class=CBody><p>Set the default design abstraction</p><p>Set the default design abstraction for this register file instance.</p></div></div></div>
@@ -306,43 +322,49 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=16 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_reg_file.get_default_hdl_path" href="../../src/reg/uvm_reg_file.svh">get_default_hdl_path</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function string get_default_hdl_path ()
-  </td></tr></table></blockquote><div class=CBody><p>Get the default design abstraction</p><p>Returns the default design abstraction for this register file instance.&nbsp; If a default design abstraction has not been explicitly set for this register file instance, returns the default design absraction for the nearest register file or block ancestor.&nbsp; Returns &ldquo;&rdquo; if no default design abstraction has been specified.</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Get the default design abstraction</p><p>Returns the default design abstraction for this register file instance.&nbsp; If a default design abstraction has not been explicitly set for this register file instance, returns the default design abstraction for the nearest register file or block ancestor.&nbsp; Returns &ldquo;&rdquo; if no default design abstraction has been specified.</p></div></div></div>
 
 </div><!--Content-->
 
 
 
 <!--START_ND_TOOLTIPS-->
-<div class=CToolTip id="tt1"><div class=CGeneric>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt2"><div class=CClass>
+<div class=CToolTip id="tt1"><div class=CClass>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_void
+  </td></tr></table></blockquote>The <i>uvm_void</i> class is the base class for all UVM classes. </div></div><div class=CToolTip id="tt2"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_object extends uvm_void
   </td></tr></table></blockquote>The uvm_object class is the base class for all UVM data and hierarchical classes. </div></div><div class=CToolTip id="tt3"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>virtual class uvm_reg_file extends uvm_object
   </td></tr></table></blockquote>Register file abstraction base class</div></div><div class=CToolTip id="tt4"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function new (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function new (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>name</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%>&quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Create a new instance</div></div><div class=CToolTip id="tt5"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void configure (</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void configure (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_block&nbsp;</td>
       <td class=PParameter nowrap>blk_parent,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>uvm_reg_file&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>uvm_reg_file&nbsp;</td>
       <td class=PParameter nowrap>regfile_parent,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>hdl_path</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Configure a register file instance</div></div><div class=CToolTip id="tt6"><div class=CMethod>
@@ -354,80 +376,92 @@ Configure a register file instance</div></div><div class=CToolTip id="tt6"><div 
   </td></tr></table></blockquote>Get the parent register file</div></div><div class=CToolTip id="tt9"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void clear_hdl_path (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void clear_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;RTL&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Delete HDL paths</div></div><div class=CToolTip id="tt10"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void add_hdl_path (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function void add_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>path,</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PType nowrap>string&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;RTL&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Add an HDL path</div></div><div class=CToolTip id="tt11"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function bit has_hdl_path (</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PBeforeParameters colspan=5>function bit has_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Check if a HDL path is specified</div></div><div class=CToolTip id="tt12"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void get_hdl_path (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>function void get_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>paths[$],</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Get the incremental HDL path(s)</div></div><div class=CToolTip id="tt13"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void get_full_hdl_path (</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
+      <td class=PBeforeParameters colspan=6>function void get_full_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>ref&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>paths[$],</td>
       <td class=PDefaultValuePrefix>&nbsp;&nbsp;</td>
       <td class=PDefaultValue width=100%></td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>kind</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;&quot;,</td>
-</tr><tr><td></td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
+      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PTypePrefix nowrap>input&nbsp;</td>
       <td class=PType nowrap>string&nbsp;</td>
       <td class=PParameter nowrap>separator</td>
       <td class=PDefaultValuePrefix>&nbsp;=&nbsp;</td>
       <td class=PDefaultValue width=100%> &quot;.&quot;</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=6>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Get the full hierarchical HDL path(s)</div></div><div class=CToolTip id="tt14"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
-      <td class=PBeforeParameters nowrap>function void set_default_hdl_path (</td>      <td class=PType nowrap>string&nbsp;</td>
-      <td class=PParameter nowrap>kind</td>
-      <td class=PAfterParameters nowrap>)</td></tr>
+      <td class=PBeforeParameters colspan=3>function void set_default_hdl_path (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>string&nbsp;</td>
+      <td class=PParameter nowrap width=100%>kind</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
 Set the default design abstraction</div></div><div class=CToolTip id="tt15"><div class=CMethod>

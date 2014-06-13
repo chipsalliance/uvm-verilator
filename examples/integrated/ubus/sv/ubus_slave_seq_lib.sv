@@ -32,7 +32,7 @@ class simple_response_seq extends uvm_sequence #(ubus_transfer);
     super.new(name);
   endfunction
 
-//  `uvm_sequence_utils(simple_response_seq, ubus_slave_sequencer)
+//  `uvm_object_utils(simple_response_seq)
     
   `uvm_object_utils(simple_response_seq)
 
@@ -73,7 +73,7 @@ class slave_memory_seq extends uvm_sequence #(ubus_transfer);
     super.new(name);
   endfunction
 
-//  `uvm_sequence_utils(slave_memory_seq, ubus_slave_sequencer)
+//  `uvm_object_utils(slave_memory_seq)
 
   `uvm_object_utils(slave_memory_seq)
   `uvm_declare_p_sequencer(ubus_slave_sequencer)
@@ -114,11 +114,13 @@ class slave_memory_seq extends uvm_sequence #(ubus_transfer);
   endfunction
 
   virtual task body();
+     uvm_phase p;
     `uvm_info(get_type_name(),
       $sformatf("%s starting...",
       get_sequence_path()), UVM_MEDIUM);
 
     $cast(req, create_item(ubus_transfer::get_type(), p_sequencer, "req"));
+    p = get_starting_phase();
 
     forever
     begin
@@ -126,12 +128,12 @@ class slave_memory_seq extends uvm_sequence #(ubus_transfer);
 
       // Need to raise/drop objection before each item because we don't want
       // to be stopped in the middle of a transfer.
-      starting_phase.raise_objection(this);
+      p.raise_objection(this);
 
       start_item(req);
       finish_item(req);
 
-      starting_phase.drop_objection(this);
+      p.drop_objection(this);
     end
   endtask : body
 

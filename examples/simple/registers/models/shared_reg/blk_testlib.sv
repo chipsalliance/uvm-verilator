@@ -41,7 +41,7 @@ class blk_test extends uvm_test;
       phase.raise_objection(this);
       
       seq.start(null);
-      seq.wait_for_sequence_state(FINISHED);
+      seq.wait_for_sequence_state(UVM_FINISHED);
 
       phase.drop_objection(this);
    endtask

@@ -39,7 +39,7 @@
 // Type parameters:
 //
 // REQ - Type of the request transactions conveyed by this channel.
-// RSP - Type of the reponse transactions conveyed by this channel.
+// RSP - Type of the response transactions conveyed by this channel.
 //
 //------------------------------------------------------------------------------
 
@@ -195,7 +195,7 @@ class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_componen
   // Function: new
   //
   // The ~name~ and ~parent~ are the standard <uvm_component> constructor arguments.
-  // The ~parent~ must be null if this component is defined within a static
+  // The ~parent~ must be ~null~ if this component is defined within a static
   // component such as a module, program block, or interface. The last two
   // arguments specify the request and response FIFO sizes, which have default
   // values of 1.
@@ -324,7 +324,7 @@ class uvm_tlm_transport_channel #(type REQ=int, type RSP=REQ)
   // Function: new
   //
   // The ~name~ and ~parent~ are the standard <uvm_component> constructor
-  // arguments. The ~parent~ must be null if this component is defined within a
+  // arguments. The ~parent~ must be ~null~ if this component is defined within a
   // statically elaborated construct such as a module, program block, or
   // interface.
 

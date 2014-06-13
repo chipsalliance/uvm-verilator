@@ -2,6 +2,7 @@
 //   Copyright 2007-2011 Mentor Graphics Corporation
 //   Copyright 2007-2011 Cadence Design Systems, Inc. 
 //   Copyright 2010 Synopsys, Inc.
+//   Copyright 2014 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -36,28 +37,6 @@ class uvm_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
 
   `uvm_component_param_utils(this_type)
 
-  // Variable: seq_item_export
-  //
-  // This export provides access to this sequencer's implementation of the
-  // sequencer interface, <uvm_sqr_if_base #(REQ,RSP)>, which defines the following
-  // methods:
-  //
-  //| Requests:
-  //|  virtual task          get_next_item      (output REQ request);
-  //|  virtual task          try_next_item      (output REQ request);
-  //|  virtual task          get                (output REQ request);
-  //|  virtual task          peek               (output REQ request);
-  //| Responses:
-  //|  virtual function void item_done          (input RSP response=null);
-  //|  virtual task          put                (input RSP response);
-  //| Sync Control:
-  //|  virtual task          wait_for_sequences ();
-  //|  virtual function bit  has_do_available   ();
-  //
-  // See <uvm_sqr_if_base #(REQ,RSP)> for information about this interface.
-
-  uvm_seq_item_pull_imp #(REQ, RSP, this_type) seq_item_export;
-
 
 
   // Function: new
@@ -77,27 +56,84 @@ class uvm_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
   //
   extern virtual function void stop_sequences();
 
-
   extern virtual function string get_type_name();
 
-  
+  // Group: Sequencer Interface
+  // This is an interface for communicating with sequencers.
+  //
+  // The interface is defined as:
+  //| Requests:
+  //|  virtual task          get_next_item      (output REQ request);
+  //|  virtual task          try_next_item      (output REQ request);
+  //|  virtual task          get                (output REQ request);
+  //|  virtual task          peek               (output REQ request);
+  //| Responses:
+  //|  virtual function void item_done          (input RSP response=null);
+  //|  virtual task          put                (input RSP response);
+  //| Sync Control:
+  //|  virtual task          wait_for_sequences ();
+  //|  virtual function bit  has_do_available   ();
+  //
+  // See <uvm_sqr_if_base #(REQ,RSP)> for information about this interface.
+   
+  // Variable: seq_item_export
+  //
+  // This export provides access to this sequencer's implementation of the
+  // sequencer interface.
+  //
+
+  uvm_seq_item_pull_imp #(REQ, RSP, this_type) seq_item_export;
+
+  // Task: get_next_item
+  // Retrieves the next available item from a sequence.
+  //
+  extern virtual task          get_next_item (output REQ t);
+
+  // Task: try_next_item
+  // Retrieves the next available item from a sequence if one is available.
+  //
+  extern virtual task          try_next_item (output REQ t);
+
+  // Function: item_done
+  // Indicates that the request is completed.
+  //
+  extern virtual function void item_done     (RSP item = null);
+
+  // Task: put
+  // Sends a response back to the sequence that issued the request.
+  //
+  extern virtual task          put           (RSP t);
+
+  // Task: get
+  // Retrieves the next available item from a sequence.
+  //
+  extern task                  get           (output REQ t);
+
+  // Task: peek
+  // Returns the current request item if one is in the FIFO.
+  //
+  extern task                  peek          (output REQ t);
+
+  /// Documented here for clarity, implemented in uvm_sequencer_base
+
+  // Task: wait_for_sequences
+  // Waits for a sequence to have a new item available.
+  //
+
+  // Function: has_do_available
+  // Returns 1 if any sequence running on this sequencer is ready to supply
+  // a transaction, 0 otherwise.
+  //
+   
   //-----------------
   // Internal Methods
   //-----------------
-  // Do not use directly; not part of standard
+  // Do not use directly, not part of standard
 
-  // Access to following internal methods provided via seq_item_export
-  extern virtual task          get_next_item (output REQ t);
-  extern virtual task          try_next_item (output REQ t);
-  extern virtual function void item_done     (RSP item = null);
-  extern virtual task          put           (RSP t);
-  extern task                  get           (output REQ t);
-  extern task                  peek          (output REQ t);
   extern function void         item_done_trigger(RSP item = null);
   function RSP                 item_done_get_trigger_data();
     return last_rsp(0);
   endfunction
-
   extern protected virtual function int m_find_number_driver_connections();
 
 endclass  

@@ -23,7 +23,7 @@
 //
 // Each of the following macros is a mask that identifies which
 // interfaces a particular port requires or export provides.  The
-// interfaces are identified by bit position and can be or'ed together
+// interfaces are identified by bit position and can be OR'ed together
 // for combination ports/exports.  The mask is used to do run-time
 // interface type checking of port/export connections.
 //----------------------------------------------------------------------

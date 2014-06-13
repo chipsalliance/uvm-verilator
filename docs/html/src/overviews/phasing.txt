@@ -34,11 +34,11 @@ and the phase implementation which specifies required component behavior
 
 <uvm_domain> : Phasing schedule node representing an independent branch of the schedule
 
-<uvm_bottomup_phase> : A phase implemenation for bottom up function phases.
+<uvm_bottomup_phase> : A phase implementation for bottom up function phases.
 
-<uvm_topdown_phase> : A phase implemenation for topdown function phases.
+<uvm_topdown_phase> : A phase implementation for topdown function phases.
 
-<uvm_task_phase> : A phase implemenation for task phases.
+<uvm_task_phase> : A phase implementation for task phases.
 
 *Common, Run-Time and User-Defined Phases*
 

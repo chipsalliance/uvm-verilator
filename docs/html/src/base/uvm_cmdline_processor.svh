@@ -3,6 +3,7 @@
 //   Copyright 2011 Mentor Graphics Corporation
 //   Copyright 2011 Cadence Design Systems, Inc. 
 //   Copyright 2011 Synopsys, Inc.
+//   Copyright 2013 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -42,7 +43,7 @@ endclass
 //
 // The uvm_cmdline_processor class also provides support for setting various UVM
 // variables from the command line such as components' verbosities and configuration
-// settings for integral types and strings.  Each of these capablities is described 
+// settings for integral types and strings.  Each of these capabilities is described 
 // in the Built-in UVM Aware Command Line Arguments section.
 //
 
@@ -84,7 +85,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   // This function returns a queue with all of the plus arguments
   // that were used to start the simulation. Plusarguments may be
   // used by the simulator vendor, or may be specific to a company
-  // or individiual user. Plusargs never have extra arguments
+  // or individual user. Plusargs never have extra arguments
   // (i.e. if there is a plusarg as the second argument on the
   // command line, the third argument is unrelated); this is not
   // necessarily the case with vendor specific dash arguments.
@@ -96,7 +97,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   // Function: get_uvmargs
   //
   // This function returns a queue with all of the uvm arguments
-  // that were used to start the simulation. An UVM argument is
+  // that were used to start the simulation. A UVM argument is
   // taken to be any argument that starts with a - or + and uses
   // the keyword UVM (case insensitive) as the first three
   // letters of the argument.
@@ -161,7 +162,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   //
   // This function finds the first argument which matches the ~match~ arg and
   // returns the suffix of the argument. This is similar to the $value$plusargs
-  // system task, but does not take a formating string. The return value is
+  // system task, but does not take a formatting string. The return value is
   // the number of command line arguments that match the ~match~ string, and
   // ~value~ is the value of the first match.
   
@@ -219,7 +220,7 @@ class uvm_cmdline_processor extends uvm_report_object;
 
   // Function: get_tool_name
   //
-  // Returns the simulation tool that is executing the simlation.
+  // Returns the simulation tool that is executing the simulation.
   // This is a vendor specific string.
 
   function string get_tool_name ();
@@ -228,7 +229,7 @@ class uvm_cmdline_processor extends uvm_report_object;
 
   // Function: get_tool_version
   //
-  // Returns the version of the simulation tool that is executing the simlation.
+  // Returns the version of the simulation tool that is executing the simulation.
   // This is a vendor specific string.
 
   function string  get_tool_version ();
@@ -240,9 +241,11 @@ class uvm_cmdline_processor extends uvm_report_object;
   function new(string name = "");
     string s;
     string sub;
+    int doInit=1;
     super.new(name);
     do begin
-      s = uvm_dpi_get_next_arg();
+      s = uvm_dpi_get_next_arg(doInit);
+      doInit=0;
       if(s!="") begin
         m_argv.push_back(s);
         if(s[0] == "+") begin
@@ -371,7 +374,9 @@ class uvm_cmdline_processor extends uvm_report_object;
     // ~+UVM_CONFIG_DB_TRACE~ turns on tracing of configuration DB access.
     // Users simply need to put the argument on the command line.
 
-    // Variable: +uvm_set_inst_override, +uvm_set_type_override
+    // Variable: +uvm_set_inst_override
+     
+    // Variable: +uvm_set_type_override
     //
     // ~+uvm_set_inst_override=<req_type>,<override_type>,<full_inst_path>~ and
     // ~+uvm_set_type_override=<req_type>,<override_type>[,<replace>]~ work
@@ -386,7 +391,9 @@ class uvm_cmdline_processor extends uvm_report_object;
 
     // The implementation of this is in uvm_root.
 
-    // Variable: +uvm_set_config_int, +uvm_set_config_string
+    // Variable: +uvm_set_config_int
+      
+    // Variable: +uvm_set_config_string
     //
     // ~+uvm_set_config_int=<comp>,<field>,<value>~ and
     // ~+uvm_set_config_string=<comp>,<field>,<value>~ work like their
@@ -399,12 +406,33 @@ class uvm_cmdline_processor extends uvm_report_object;
     //
     //| <sim command> +uvm_set_config_int=uvm_test_top.soc_env,mode,5
     //
-    // No equivalent of set_config_object() exists since no way exists to pass an
+    // No equivalent of set_config_object() exists since no way exists to pass a
     // uvm_object into the simulation via the command line.
     //
 
     // The implementation of this is in uvm_root.
 
+    // Variable: +uvm_set_default_sequence
+    //
+    // The ~+uvm_set_default_sequence=<seqr>,<phase>,<type>~ plusarg allows
+    // the user to define a default sequence from the command line, using the
+    // ~typename~ of that sequence.  For example:
+    //
+    //| <sim command> +uvm_set_default_sequence=path.to.sequencer,main_phase,seq_type
+    //  
+    // This is functionally equivalent to calling the following in your 
+    // test:
+    //
+    //| uvm_coreservice_t cs = uvm_coreservice_t::get();
+    //| uvm_factory f = cs.get_factory();
+    //| uvm_config_db#(uvm_object_wrapper)::set(this,
+    //|                                         "path.to.sequencer.main_phase",
+    //|                                         "default_sequence",
+    //|                                         f.find_wrapper_by_name("seq_type"));
+    //
+     
+
+    // The implementation of this is in uvm_root.
   endfunction
 
   function bit m_convert_verb(string verb_str, output uvm_verbosity verb_enum);

@@ -56,7 +56,7 @@ class uvm_push_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
   // The push sequencer continuously selects from its list of available
   // sequences and sends the next item from the selected sequence out its
   // <req_port> using req_port.put(item). Typically, the req_port would be
-  // connected to the req_export on an instance of an
+  // connected to the req_export on an instance of a
   // <uvm_push_driver #(REQ,RSP)>, which would be responsible for
   // executing the item.
   //

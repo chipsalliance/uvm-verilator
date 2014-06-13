@@ -81,7 +81,7 @@ class uvm_tlm_time;
    
 
    // Scale a timescaled value to 'm_res' units,
-   // the the specified scale
+   // the specified scale
    local function real to_m_res(real t, time scaled, real secs);
       // ToDo: Check resolution
       return t/real'(scaled) * (secs/m_res);
@@ -165,7 +165,7 @@ class uvm_tlm_time;
 
    // Function: get_abstime
    // Return the current canonical time value,
-   // in the number of specified time unit, reguardless of the
+   // in the number of specified time unit, regardless of the
    // current timescale of the caller.
    //
    // ~secs~ is the number of seconds in the desired time unit
@@ -180,7 +180,7 @@ class uvm_tlm_time;
 
    // Function: set_abstime
    // Set the current canonical time value,
-   // to the number of specified time unit, reguardless of the
+   // to the number of specified time unit, regardless of the
    // current timescale of the caller.
    //
    // ~secs~ is the number of seconds in the time unit in the value ~t~
@@ -278,11 +278,11 @@ endclass
 //| end
 //| endprogram
 //  
-// yeilds
+// yields
 //  
 //| T=10 ps (10,000)
 //
-// Scaling is needed everytime you make a procedural call
+// Scaling is needed every time you make a procedural call
 // to code that may interpret a time value in a different timescale.
 //
 // Using the uvm_tlm_time type

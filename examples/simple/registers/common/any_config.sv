@@ -40,7 +40,7 @@ virtual class utils #(type T=int, string TNAME="config") extends ovm_object;
     ovm_object obj;
     T cfg;
 
-    if (!comp.get_config_object("config", obj, 0)) begin
+    if (!uvm_config_object::get(comp, "", "config", obj)) begin
       comp.ovm_report_error("GET_CFG_FAIL", {"No set_config to with '", TNAME,
                          "' for component",comp.get_full_name()},
                          OVM_NONE , `ovm_file , `ovm_line  );
