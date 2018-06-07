@@ -1,7 +1,11 @@
 // 
 // -------------------------------------------------------------
-//    Copyright 2004-2008 Synopsys, Inc.
-//    Copyright 2010 Mentor Graphics Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2013 Semifore
+// Copyright 2004-2010 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2014-2018 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -21,14 +25,14 @@
 // 
 
 //------------------------------------------------------------------------------
-// Title: Bit Bashing Test Sequences
+// Title -- NODOCS -- Bit Bashing Test Sequences
 //------------------------------------------------------------------------------
 // This section defines classes that test individual bits of the registers
 // defined in a register model.
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Class: uvm_reg_single_bit_bash_seq
+// Class -- NODOCS -- uvm_reg_single_bit_bash_seq
 //
 // Verify the implementation of a single register
 // by attempting to write 1's and 0's to every bit in it,
@@ -51,14 +55,16 @@
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto E.2.1.1
 class uvm_reg_single_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
-   // Variable: rg
+   // Variable -- NODOCS -- rg
    // The register to be tested
    uvm_reg rg;
 
    `uvm_object_utils(uvm_reg_single_bit_bash_seq)
 
+   // @uvm-ieee 1800.2-2017 auto E.2.1.3
    function new(string name="uvm_reg_single_bit_bash_seq");
      super.new(name);
    endfunction
@@ -73,7 +79,7 @@ class uvm_reg_single_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_
       string field_access;
          
       if (rg == null) begin
-         `uvm_error("uvm_reg_bit_bash_seq", "No register specified to run sequence on");
+         `uvm_error("uvm_reg_bit_bash_seq", "No register specified to run sequence on")
          return;
       end
 
@@ -126,7 +132,7 @@ class uvm_reg_single_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_
             mode[next_lsb++] = "RO";
          
          `uvm_info("uvm_reg_bit_bash_seq", $sformatf("Verifying bits in register %s in map \"%s\"...",
-                                    rg.get_full_name(), maps[j].get_full_name()),UVM_LOW);
+                                    rg.get_full_name(), maps[j].get_full_name()),UVM_LOW)
          
          // Bash the kth bit
          for (int k = 0; k < n_bits; k++) begin
@@ -149,7 +155,7 @@ class uvm_reg_single_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_
       uvm_reg_data_t  val, exp, v;
       bit bit_val;
 
-      `uvm_info("uvm_reg_bit_bash_seq", $sformatf("...Bashing %s bit #%0d", mode, k),UVM_HIGH);
+      `uvm_info("uvm_reg_bit_bash_seq", $sformatf("...Bashing %s bit #%0d", mode, k),UVM_HIGH)
       
       repeat (2) begin
          val = rg.get();
@@ -161,20 +167,20 @@ class uvm_reg_single_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_
          rg.write(status, val, UVM_FRONTDOOR, map, this);
          if (status != UVM_IS_OK) begin
             `uvm_error("uvm_reg_bit_bash_seq", $sformatf("Status was %s when writing to register \"%s\" through map \"%s\".",
-                                        status.name(), rg.get_full_name(), map.get_full_name()));
+                                        status.name(), rg.get_full_name(), map.get_full_name()))
          end
          
          exp = rg.get() & ~dc_mask;
          rg.read(status, val, UVM_FRONTDOOR, map, this);
          if (status != UVM_IS_OK) begin
             `uvm_error("uvm_reg_bit_bash_seq", $sformatf("Status was %s when reading register \"%s\" through map \"%s\".",
-                                        status.name(), rg.get_full_name(), map.get_full_name()));
+                                        status.name(), rg.get_full_name(), map.get_full_name()))
          end
 
          val &= ~dc_mask;
          if (val !== exp) begin
             `uvm_error("uvm_reg_bit_bash_seq", $sformatf("Writing a %b in bit #%0d of register \"%s\" with initial value 'h%h yielded 'h%h instead of 'h%h",
-                                        bit_val, k, rg.get_full_name(), v, val, exp));
+                                        bit_val, k, rg.get_full_name(), v, val, exp))
          end
       end
    endtask: bash_kth_bit
@@ -183,7 +189,7 @@ endclass: uvm_reg_single_bit_bash_seq
 
 
 //------------------------------------------------------------------------------
-// Class: uvm_reg_bit_bash_seq
+// Class -- NODOCS -- uvm_reg_bit_bash_seq
 //
 //
 // Verify the implementation of all registers in a block
@@ -200,16 +206,17 @@ endclass: uvm_reg_single_bit_bash_seq
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto E.2.2.1
 class uvm_reg_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
-   // Variable: model
+   // Variable -- NODOCS -- model
    //
    // The block to be tested. Declared in the base class.
    //
    //| uvm_reg_block model; 
 
 
-   // Variable: reg_seq
+   // Variable -- NODOCS -- reg_seq
    //
    // The sequence used to test one register
    //
@@ -217,20 +224,18 @@ class uvm_reg_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
    
    `uvm_object_utils(uvm_reg_bit_bash_seq)
 
+   // @uvm-ieee 1800.2-2017 auto E.2.2.3.1
    function new(string name="uvm_reg_bit_bash_seq");
      super.new(name);
    endfunction
 
 
-   // Task: body
-   //
-   // Executes the Register Bit Bash sequence.
-   // Do not call directly. Use seq.start() instead.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto E.2.2.3.2
    virtual task body();
       
       if (model == null) begin
-         `uvm_error("uvm_reg_bit_bash_seq", "No register model specified to run sequence on");
+         `uvm_error("uvm_reg_bit_bash_seq", "No register model specified to run sequence on")
          return;
       end
 
@@ -245,7 +250,7 @@ class uvm_reg_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
    endtask
 
 
-   // Task: do_block
+   // Task -- NODOCS -- do_block
    //
    // Test all of the registers in a given ~block~
    //
@@ -275,7 +280,7 @@ class uvm_reg_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
       begin
          uvm_reg_block blks[$];
          
-         blk.get_blocks(blks);
+         blk.get_blocks(blks,UVM_NO_HIER);
          foreach (blks[i]) begin
             do_block(blks[i]);
          end
@@ -283,7 +288,7 @@ class uvm_reg_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
    endtask: do_block
 
 
-   // Task: reset_blk
+   // Task -- NODOCS -- reset_blk
    //
    // Reset the DUT that corresponds to the specified block abstraction class.
    //
@@ -299,4 +304,3 @@ class uvm_reg_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
    endtask
 
 endclass: uvm_reg_bit_bash_seq
-

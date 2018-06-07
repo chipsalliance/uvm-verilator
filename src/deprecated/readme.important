@@ -1,7 +1,9 @@
 //----------------------------------------------------------------------
-//   Copyright 2011 Mentor Graphics Corporation
-//   Copyright 2011 Cadence Design Systems, Inc. 
-//   Copyright 2011 Synopsys, Inc.
+// Copyright 2011 Mentor Graphics Corporation
+// Copyright 2010-2011 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -24,12 +26,14 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Files and Types, Classes, Functions etc within this directory are considered as
+deprecated.  By default, they are not included with the reference implementation.
 
-- an internal implementation detail
-- they shall NOT be used in USER code
+These files can be included by compiling with UVM_ENABLE_DEPRECATED_API defined.
+
+Usage of these files is not recommended, as:
+
 - they might be changed without any further notice in future versions of UVM
-- they might be removed in future versions of UVM
-- the functionality is completely undocumented  
-- not part of the UVM standard
+- they might be removed entirely in future versions of UVM
+- they are not part of the UVM standard
 
 

@@ -1,7 +1,11 @@
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc. 
-//   Copyright 2010-2011 Synopsys, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2013-2017 NVIDIA Corporation
+// Copyright 2012 Accellera Systems Initiative
+// Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -22,13 +26,16 @@
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_sequencer_param_base #(REQ,RSP)
+// CLASS -- NODOCS -- uvm_sequencer_param_base #(REQ,RSP)
 //
 // Extends <uvm_sequencer_base> with an API depending on specific
 // request (REQ) and response (RSP) types.
 //------------------------------------------------------------------------------
 
-class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
+`ifndef UVM_ENABLE_DEPRECATED_API
+virtual
+`endif
+ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
                                  type RSP = REQ) extends uvm_sequencer_base;
 
   typedef uvm_sequencer_param_base #( REQ , RSP) this_type;
@@ -46,7 +53,7 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   uvm_sequencer_analysis_fifo #(RSP) sqr_rsp_analysis_fifo;
 
 
-  // Function: new
+  // Function -- NODOCS -- new
   //
   // Creates and initializes an instance of this class using the normal 
   // constructor arguments for uvm_component: name is the name of the instance,
@@ -55,7 +62,7 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   extern function new (string name, uvm_component parent);
 
 
-  // Function: send_request
+  // Function -- NODOCS -- send_request
   //
   // The send_request function may only be called after a wait_for_grant call.
   // This call will send the request item, t,  to the sequencer pointed to by
@@ -67,7 +74,7 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
                                             bit rerandomize = 0);
 
 
-  // Function: get_current_item
+  // Function -- NODOCS -- get_current_item
   //
   // Returns the request_item currently being executed by the sequencer. If the
   // sequencer is not currently executing an item, this method will return ~null~.
@@ -87,17 +94,17 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
 
 
   //----------------
-  // Group: Requests
+  // Group -- NODOCS -- Requests
   //----------------
 
-  // Function: get_num_reqs_sent
+  // Function -- NODOCS -- get_num_reqs_sent
   //
   // Returns the number of requests that have been sent by this sequencer.
   //
   extern function int get_num_reqs_sent();
 
 
-  // Function: set_num_last_reqs
+  // Function -- NODOCS -- set_num_last_reqs
   //
   // Sets the size of the last_requests buffer.  Note that the maximum buffer
   // size is 1024.  If max is greater than 1024, a warning is issued, and the
@@ -106,14 +113,14 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   extern function void set_num_last_reqs(int unsigned max);
 
 
-  // Function: get_num_last_reqs
+  // Function -- NODOCS -- get_num_last_reqs
   //
   // Returns the size of the last requests buffer, as set by set_num_last_reqs.
 
   extern function int unsigned get_num_last_reqs();
 
 
-  // Function: last_req
+  // Function -- NODOCS -- last_req
   //
   // Returns the last request item by default.  If n is not 0, then it will get
   // the n�th before last request item.  If n is greater than the last request
@@ -135,10 +142,10 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
 
 
   //-----------------
-  // Group: Responses
+  // Group -- NODOCS -- Responses
   //-----------------
 
-  // Port: rsp_export
+  // Port -- NODOCS -- rsp_export
   //
   // Drivers or monitors can connect to this port to send responses
   // to the sequencer.  Alternatively, a driver can send responses 
@@ -155,14 +162,14 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   uvm_analysis_export #(RSP) rsp_export;
 
 
-  // Function: get_num_rsps_received
+  // Function -- NODOCS -- get_num_rsps_received
   //
   // Returns the number of responses received thus far by this sequencer.
 
   extern function int get_num_rsps_received();
 
 
-  // Function: set_num_last_rsps
+  // Function -- NODOCS -- set_num_last_rsps
   //
   // Sets the size of the last_responses buffer.  The maximum buffer size is
   // 1024. If max is greater than 1024, a warning is issued, and the buffer is
@@ -171,7 +178,7 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   extern function void set_num_last_rsps(int unsigned max);
 
 
-  // Function: get_num_last_rsps
+  // Function -- NODOCS -- get_num_last_rsps
   //
   // Returns the max size of the last responses buffer, as set by
   // set_num_last_rsps.
@@ -179,7 +186,7 @@ class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   extern function int unsigned get_num_last_rsps();
 
 
-  // Function: last_rsp
+  // Function -- NODOCS -- last_rsp
   //
   // Returns the last response item by default.  If n is not 0, then it will
   // get the nth-before-last response item.  If n is greater than the last
@@ -289,13 +296,13 @@ function void uvm_sequencer_param_base::send_request(uvm_sequence_base sequence_
     end
     m_last_req_push_front(param_t);
   end else begin
-    uvm_report_fatal(get_name(),$sformatf("send_request failed to cast sequence item"), UVM_NONE);
+    uvm_report_fatal("SQRSNDREQCAST",$sformatf("send_request failed to cast sequence item"), UVM_NONE);
   end
 
   param_t.set_sequence_id(sequence_ptr.m_get_sqr_sequence_id(m_sequencer_id, 1));
   t.set_sequencer(this);
   if (m_req_fifo.try_put(param_t) != 1) begin
-    uvm_report_fatal(get_full_name(), "Concurrent calls to get_next_item() not supported. Consider using a semaphore to ensure that concurrent processes take turns in the driver", UVM_NONE);
+    uvm_report_fatal("SQRSNDREQGNI", "Concurrent calls to get_next_item() not supported. Consider using a semaphore to ensure that concurrent processes take turns in the driver", UVM_NONE);
   end
 
   m_num_reqs_sent++;
@@ -337,7 +344,7 @@ function void uvm_sequencer_param_base::put_response (RSP t);
     sequence_ptr.put_response(t);
   end
   else begin
-    uvm_report_info("Sequencer", 
+    uvm_report_warning("Sequencer", 
                     $sformatf("Dropping response for sequence %0d, sequence not found.  Probable cause: sequence exited or has been killed", 
                               t.get_sequence_id()));
   end
@@ -455,5 +462,3 @@ function void uvm_sequencer_param_base::m_last_rsp_push_front(RSP item);
 
   this.m_last_rsp_buffer.push_front(item);
 endfunction
-
-

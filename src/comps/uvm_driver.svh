@@ -1,8 +1,10 @@
 //
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2010 Cadence Design Systems, Inc. 
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2013 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2012 Accellera Systems Initiative
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -24,7 +26,7 @@ typedef class uvm_sequence_item;
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_driver #(REQ,RSP)
+// CLASS -- NODOCS -- uvm_driver #(REQ,RSP)
 //
 // The base class for drivers that initiate requests for new transactions via
 // a uvm_seq_item_pull_port. The ports are typically connected to the exports of
@@ -41,11 +43,16 @@ typedef class uvm_sequence_item;
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 13.7.1
 class uvm_driver #(type REQ=uvm_sequence_item,
                    type RSP=REQ) extends uvm_component;
 
+  `uvm_component_param_utils(uvm_driver#(REQ,RSP))
+  // TODO: Would it be useful to change this to:
+  //| `uvm_type_name_decl($sformatf("uvm_driver #(%s,%s)", REQ::type_name(), RSP::type_name()))
+  `uvm_type_name_decl("uvm_driver #(REQ,RSP)")
 
-  // Port: seq_item_port
+  // Port -- NODOCS -- seq_item_port
   //
   // Derived driver classes should use this port to request items from the
   // sequencer. They may also use it to send responses back.
@@ -54,7 +61,7 @@ class uvm_driver #(type REQ=uvm_sequence_item,
 
   uvm_seq_item_pull_port #(REQ, RSP) seq_item_prod_if; // alias
 
-  // Port: rsp_port
+  // Port -- NODOCS -- rsp_port
   //
   // This port provides an alternate way of sending responses back to the
   // originating sequencer. Which port to use depends on which export the
@@ -65,7 +72,7 @@ class uvm_driver #(type REQ=uvm_sequence_item,
   REQ req;
   RSP rsp;
 
-  // Function: new
+  // Function -- NODOCS -- new
   //
   // Creates and initializes an instance of this class using the normal
   // constructor arguments for <uvm_component>: ~name~ is the name of the
@@ -78,11 +85,4 @@ class uvm_driver #(type REQ=uvm_sequence_item,
     seq_item_prod_if = seq_item_port;
   endfunction // new
 
-  const static string type_name = "uvm_driver #(REQ,RSP)";
-
-  virtual function string get_type_name ();
-    return type_name;
-  endfunction
-
 endclass
-

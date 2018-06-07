@@ -1,8 +1,9 @@
 //
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2010 Cadence Design Systems, Inc. 
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2017 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +22,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// CLASS: uvm_random_stimulus #(T)
+// CLASS -- NODOCS -- uvm_random_stimulus #(T)
 //
 // A general purpose unidirectional random stimulus class.
 //
@@ -42,14 +43,17 @@
 //
 //------------------------------------------------------------------------------
 
-class uvm_random_stimulus #(type T=uvm_transaction) extends uvm_component;
+`ifdef UVM_ENABLE_DEPRECATED_API 
 
-  const static string type_name = "uvm_random_stimulus #(T)";
+class uvm_random_stimulus #(type T=uvm_transaction) extends uvm_component;
 
   typedef uvm_random_stimulus #(T) this_type;
   `uvm_component_param_utils(this_type)
+  // TODO: Would this be better as:
+  //| `uvm_type_name_decl($sformatf("uvm_random_stimulus #(%s)", T::type_name))
+  `uvm_type_name_decl("uvm_random_stimulus #(T)")
 
-  // Port: blocking_put_port
+  // Port -- NODOCS -- blocking_put_port
   //
   // The blocking_put_port is used to send the generated stimulus to the rest
   // of the testbench.
@@ -57,7 +61,7 @@ class uvm_random_stimulus #(type T=uvm_transaction) extends uvm_component;
   uvm_blocking_put_port #(T) blocking_put_port;
 
 
-  // Function: new
+  // Function -- NODOCS -- new
   //
   // Creates a new instance of a specialization of this class.
   // Also, displays the random state obtained from a get_randstate call.
@@ -78,7 +82,7 @@ class uvm_random_stimulus #(type T=uvm_transaction) extends uvm_component;
   local bit m_stop;
 
 
-  // Function: generate_stimulus
+  // Function -- NODOCS -- generate_stimulus
   //
   // Generate up to max_count transactions of type T.
   // If t is not specified, a default instance of T is allocated and used.
@@ -112,7 +116,7 @@ class uvm_random_stimulus #(type T=uvm_transaction) extends uvm_component;
   endtask
   
 
-  // Function: stop_stimulus_generation
+  // Function -- NODOCS -- stop_stimulus_generation
   //
   // Stops the generation of stimulus.
   // If a subclass of this method has forked additional
@@ -124,8 +128,5 @@ class uvm_random_stimulus #(type T=uvm_transaction) extends uvm_component;
   endfunction
   
 
-  virtual function string get_type_name();
-    return type_name;
-  endfunction
-
 endclass : uvm_random_stimulus
+`endif //UVM_ENABLE_DEPRECATED_API

@@ -1,7 +1,9 @@
 //----------------------------------------------------------------------
-//   Copyright 2007-2010 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc. 
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2017-2018 Intel Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2017-2018 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -25,398 +27,633 @@
 //
 // Provides a set of printing macros that will call appropriate print methods
 // inside of a uvm_printer object. All macros have two versions: one assumes
-// a printer named printer is available in scope; the other takes a printer
-// argument.
+// that the name of the value is the string-ized value, whereas the other takes
+// an explicit name.
 //
 //------------------------------------------------------------------------------
 
 `ifndef UVM_PRINTER_DEFINES_SVH
 `define UVM_PRINTER_DEFINES_SVH
 
-// uvm_print_int*
+// uvm_print_int
 // --------------
 
-`define uvm_print_int(F, R) \
-  `uvm_print_int3(F, R, uvm_default_printer)
+`define uvm_print_int(VALUE, SIZE, RADIX=UVM_NORADIX, VALUE_TYPE=integral, PRINTER=printer) \
+  `uvm_print_named_int(`"VALUE`", VALUE, SIZE, RADIX, VALUE_TYPE, PRINTER)
 
-`define uvm_print_int3(F, R, P) \
-   do begin \
-     uvm_printer p__; \
-     if(P!=null) p__ = P; \
-     else p__ = uvm_default_printer; \
-     `uvm_print_int4(F, R, `"F`", p__) \
-   end while(0);
+`define uvm_print_named_int(NAME, VALUE, SIZE, RADIX=UVM_NORADIX, VALUE_TYPE=integral, PRINTER=printer) \
+if (SIZE > 64) \
+  PRINTER.print_field(NAME, VALUE, SIZE, RADIX, ".", `"VALUE_TYPE`"); \
+else \
+  PRINTER.print_field_int(NAME, VALUE, SIZE, RADIX, ".", `"VALUE_TYPE`");
 
-`define uvm_print_int4(F, R, NM, P) \
-    if ($bits(F) > 64) \
-      P.print_field(NM, F, $bits(F), R, "["); \
-    else \
-      P.print_field_int(NM, F, $bits(F), R, "["); 
+// uvm_print_real
+// --------------
 
+`define uvm_print_real(VALUE, PRINTER=printer) \
+  `uvm_print_named_real(`"VALUE`", VALUE, PRINTER)
+
+`define uvm_print_named_real(NAME, VALUE, PRINTER=printer) \
+  PRINTER.print_real(NAME, VALUE); 
 
 // uvm_print_enum
 // --------------
 
-`define uvm_print_enum(T, F, NM, P) \
-    P.print_generic(NM, `"T`", $bits(F), F.name(), "[");
+`define uvm_print_enum(TYPE, VALUE, PRINTER=printer) \
+  `uvm_print_named_enum(TYPE, `"VALUE`", VALUE, PRINTER)
 
+`define uvm_print_named_enum(TYPE, NAME, VALUE, PRINTER=printer) \
+if (VALUE.name()  == "") \
+  `uvm_print_named_int(NAME, VALUE, $bits(VALUE), UVM_NORADIX, TYPE, PRINTER) \
+else \
+  PRINTER.print_generic(NAME, `"TYPE`", $bits(VALUE), VALUE.name());
 
 // uvm_print_object*
 // -----------------
 
-`define uvm_print_object(F) \
-  `uvm_print_object2(F, uvm_default_printer)
+`define uvm_print_object(VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+  `uvm_print_named_object(`"VALUE`", VALUE, RECURSION_POLICY, PRINTER)
 
-`define uvm_print_object2(F, P) \
-   do begin \
-     uvm_printer p__; \
-     if(P!=null) p__ = P; \
-     else p__ = uvm_default_printer; \
-     p__.print_object(`"F`", F, "["); \
-   end while(0);
+`define uvm_print_named_object(NAME, VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+    (RECURSION_POLICY != PRINTER.get_recursion_policy())) begin \
+  uvm_recursion_policy_enum __saved_recursion_policy  = PRINTER.get_recursion_policy(); \
+  PRINTER.set_recursion_policy(RECURSION_POLICY); \
+  `m_uvm_print_named_object(NAME, VALUE, PRINTER) \
+  PRINTER.set_recursion_policy(__saved_recursion_policy); \
+end \
+else begin \
+  `m_uvm_print_named_object(NAME, VALUE, PRINTER) \
+end
 
+    
+`define m_uvm_print_named_object(NAME, VALUE, PRINTER) \
+if (PRINTER.object_printed(VALUE, PRINTER.get_recursion_policy()) != uvm_policy::NEVER) begin \
+  uvm_recursion_policy_enum __saved_recursion_policy = PRINTER.get_recursion_policy(); \
+  PRINTER.set_recursion_policy(UVM_REFERENCE); \
+  PRINTER.print_object(NAME, VALUE); \
+  PRINTER.set_recursion_policy(__saved_recursion_policy); \
+end \
+else begin \
+  PRINTER.print_object(NAME, VALUE); \
+end    
 
 // uvm_print_string*
 // -----------------
 
-`define uvm_print_string(F) \
-  `uvm_print_string2(F, uvm_default_printer)
+`define uvm_print_string(VALUE, PRINTER=printer) \
+  `uvm_print_named_string(`"VALUE`", VALUE, PRINTER)
 
-`define uvm_print_string2(F, P) \
-   do begin \
-     uvm_printer p__; \
-     if(P!=null) p__ = P; \
-     else p__ = uvm_default_printer; \
-     p__.print_string(`"F`", F, "["); \
-   end while(0);
+`define uvm_print_named_string(NAME, VALUE, PRINTER=printer) \
+  PRINTER.print_string(NAME, VALUE);
 
+////////////////////////
+// Array Printing Below
+////////////////////////
 
-// uvm_print_array*
-// ----------------
+// Arrays of ints
 
-`define uvm_print_array_int(F, R) \
-  `uvm_print_array_int3(F, R, uvm_default_printer)
-   
-`define uvm_print_array_int3(F, R, P) \
-  `uvm_print_qda_int4(F, R, P, da)
-
-
-// uvm_print_sarray*
-// -----------------
-
-`define uvm_print_sarray_int3(F, R, P) \
-  `uvm_print_qda_int4(F, R, P, sa)
-
-`define uvm_print_qda_int4(F, R, P, T) \
-  begin \
-    uvm_printer p__; \
-    uvm_printer_knobs k__; \
-    int curr, max__; max__=0; curr=0; \
-    if(P!=null) p__ = P; \
-    else p__ = uvm_default_printer; \
-    max__ = $right(F)+1; \
-//    max__=$size(F); \
-    p__.print_array_header (`"F`", max__,`"T``(integral)`"); \
-    k__ = p__.knobs; \
-    if((p__.knobs.depth == -1) || (p__.m_scope.depth() < p__.knobs.depth+1)) \
-    begin \
-      foreach(F[i__]) begin \
-        if(k__.begin_elements == -1 || k__.end_elements == -1 || curr < k__.begin_elements ) begin \
-          `uvm_print_int4(F[curr], R, p__.index_string(curr), p__) \
-        end \
-        else break; \
-        curr++; \
-      end \
-      if(curr<max__) begin \
-        if((max__-k__.end_elements) > curr) curr = max__-k__.end_elements; \
-        if(curr<k__.begin_elements) curr = k__.begin_elements; \
-        else begin \
-          p__.print_array_range(k__.begin_elements, curr-1); \
-        end \
-        for(curr=curr; curr<max__; ++curr) begin \
-          `uvm_print_int4(F[curr], R, p__.index_string(curr), p__) \
-        end \
+`define uvm_print_qda_int(ARRAY_TYPE, VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=integral, PRINTER=printer) \
+  `uvm_print_named_qda_int(ARRAY_TYPE, `"VALUE`", VALUE, RADIX, VALUE_TYPE, PRINTER)
+    
+`define uvm_print_named_qda_int(ARRAY_TYPE, NAME, VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=integral, PRINTER=printer) \
+begin \
+  int __tmp_max = $right(VALUE) + 1; \
+  PRINTER.print_array_header(NAME, \
+                             __tmp_max, \
+                             `"ARRAY_TYPE``(``VALUE_TYPE``)`"); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    int __tmp_begin_elements, __tmp_end_elements; \
+    __tmp_begin_elements      = PRINTER.get_begin_elements(); \
+    __tmp_end_elements        = PRINTER.get_end_elements(); \
+    /* Fast Bypass */ \
+    if (__tmp_begin_elements == -1 || __tmp_end_elements == -1) begin \
+      foreach (VALUE[__tmp_index]) begin \
+        `uvm_print_named_int($sformatf("[%0d]", __tmp_index), \
+                             VALUE[__tmp_index], \
+                             $bits(VALUE[__tmp_index]), \
+                             RADIX, \
+                             VALUE_TYPE, \
+                             PRINTER) \
       end \
     end \
-    p__.print_array_footer(max__); \
-    //p__.print_footer(); \
-  end
- 
-`define uvm_print_qda_enum(F, P, T, ET) \
-  begin \
-    uvm_printer p__; \
-    uvm_printer_knobs k__; \
-    int curr, max__; max__=0; curr=0; \
-    if(P!=null) p__ = P; \
-    else p__ = uvm_default_printer; \
-    foreach(F[i]) max__ = i+1; \
-    //max__=$size(F); \
-    p__.print_array_header (`"F`", max__,`"T``(``ET``)`"); \
-    k__ = p__.knobs; \
-    if((p__.knobs.depth == -1) || (p__.m_scope.depth() < p__.knobs.depth+1)) \
-    begin \
-      foreach(F[i__]) begin \
-        if(k__.begin_elements == -1 || k__.end_elements == -1 || curr < k__.begin_elements ) begin \
-          `uvm_print_enum(ET, F[curr], p__.index_string(curr), p__) \
+    else begin \
+      int __tmp_curr; \
+      foreach(VALUE[__tmp_index]) begin \
+        if (__tmp_curr < __tmp_begin_elements) begin \
+          `uvm_print_named_int($sformatf("[%0d]", __tmp_index), \
+                               VALUE[__tmp_index], \
+                               $bits(VALUE[__tmp_index]), \
+                               RADIX, \
+                               VALUE_TYPE, \
+                               PRINTER) \
         end \
-        else break; \
-        curr++; \
-      end \
-      if(curr<max__) begin \
-        if((max__-k__.end_elements) > curr) curr = max__-k__.end_elements; \
-        if(curr<k__.begin_elements) curr = k__.begin_elements; \
-        else begin \
-          p__.print_array_range(k__.begin_elements, curr-1); \
-        end \
-        for(curr=curr; curr<max__; ++curr) begin \
-          `uvm_print_enum(ET, F[curr], p__.index_string(curr), p__) \
-        end \
-      end \
-    end \
-    p__.print_array_footer(max__); \
-    //p__.print_footer(); \
-  end
- 
-`define uvm_print_queue_int(F, R) \
-  `uvm_print_queue_int3(F, R, uvm_default_printer)
-
-`define uvm_print_queue_int3(F, R, P) \
-  `uvm_print_qda_int3(F, R, P, queue)
-
-`define uvm_print_array_object(F,FLAG) \
-  `uvm_print_array_object3(F, uvm_default_printer,FLAG)
-   
-`define uvm_print_sarray_object(F,FLAG) \
-  `uvm_print_sarray_object3(F, uvm_default_printer,FLAG)
-   
-`define uvm_print_array_object3(F, P,FLAG) \
-  `uvm_print_object_qda4(F, P, da,FLAG)
-
-`define uvm_print_sarray_object3(F, P,FLAG) \
-  `uvm_print_object_qda4(F, P, sa,FLAG)
-
-`define uvm_print_object_qda4(F, P, T,FLAG) \
-  do begin \
-    int curr, max__; \
-    uvm_printer p__; \
-    max__=0; curr=0; \
-    if(P!=null) p__ = P; \
-    else p__ = uvm_default_printer; \
-    //max__=$size(F); \
-    foreach(F[i]) max__ = i+1; \
-\
-    //p__.print_header();\
-\
-    p__.m_scope.set_arg(`"F`");\
-    p__.print_array_header(`"F`", max__, `"T``(object)`");\
-    if((p__.knobs.depth == -1) || (p__.knobs.depth+1 > p__.m_scope.depth())) \
-    begin\
-      for(curr=0; curr<max__ && (p__.knobs.begin_elements == -1 || \
-         p__.knobs.end_elements == -1 || curr<p__.knobs.begin_elements); ++curr) begin \
-        if(((FLAG)&UVM_REFERENCE) == 0) \
-          p__.print_object(p__.index_string(curr), F[curr], "[");\
         else \
-          p__.print_object_header(p__.index_string(curr), F[curr], "[");\
+          break; \
+        __tmp_curr++; \
       end \
-      if(curr<max__) begin\
-        curr = max__-p__.knobs.end_elements;\
-        if(curr<p__.knobs.begin_elements) curr = p__.knobs.begin_elements;\
-        else begin\
-          p__.print_array_range(p__.knobs.begin_elements, curr-1);\
-        end\
-        for(curr=curr; curr<max__; ++curr) begin\
-          if(((FLAG)&UVM_REFERENCE) == 0) \
-            p__.print_object(p__.index_string(curr), F[curr], "[");\
-          else \
-            p__.print_object_header(p__.index_string(curr), F[curr], "[");\
+      if (__tmp_curr < __tmp_max ) begin \
+        if ((__tmp_max - __tmp_end_elements) > __tmp_curr) \
+          __tmp_curr  = __tmp_max - __tmp_end_elements; \
+        if (__tmp_curr < __tmp_begin_elements) \
+          __tmp_curr = __tmp_begin_elements; \
+        else \
+          PRINTER.print_array_range(__tmp_begin_elements, __tmp_curr-1); \
+        while (__tmp_curr < __tmp_max) begin \
+          `uvm_print_named_int($sformatf("[%0d]", __tmp_curr), \
+                               VALUE[__tmp_curr], \
+                               $bits(VALUE[__tmp_curr]), \
+                               RADIX, \
+                               VALUE_TYPE, \
+                               PRINTER) \
+          __tmp_curr++; \
         end \
-      end\
-    end \
-\
-    p__.print_array_footer(max__); \
-    //p__.print_footer(); \
-  end while(0);
- 
-`define uvm_print_object_queue(F,FLAG) \
-  `uvm_print_object_queue3(F, uvm_default_printer,FLAG)
-   
-`define uvm_print_object_queue3(F, P,FLAG) \
-  do begin \
-    `uvm_print_object_qda4(F,P, queue,FLAG); \
-  end while(0);
- 
-`define uvm_print_array_string(F) \
-  `uvm_print_array_string2(F, uvm_default_printer)
-   
-`define uvm_print_array_string2(F, P) \
-   `uvm_print_string_qda3(F, P, da)
-
-`define uvm_print_sarray_string2(F, P) \
-   `uvm_print_string_qda3(F, P, sa)
-
-`define uvm_print_string_qda3(F, P, T) \
-  do begin \
-    int curr, max__; \
-    uvm_printer p__; \
-    max__=0; curr=0; \
-    //max__=$size(F); \
-    foreach(F[i]) max__ = i+1; \
-    if(P!=null) p__ = P; \
-    else p__ = uvm_default_printer; \
-\
-    //p__.print_header();\
-\
-    p__.m_scope.set_arg(`"F`");\
-    p__.print_array_header(`"F`", max__, `"T``(string)`");\
-    if((p__.knobs.depth == -1) || (p__.knobs.depth+1 > p__.m_scope.depth())) \
-    begin\
-      for(curr=0; curr<max__ && curr<p__.knobs.begin_elements; ++curr) begin\
-        p__.print_string(p__.index_string(curr), F[curr], "[");\
       end \
-      if(curr<max__) begin\
-        curr = max__-p__.knobs.end_elements;\
-        if(curr<p__.knobs.begin_elements) curr = p__.knobs.begin_elements;\
-        else begin\
-          p__.print_array_range(p__.knobs.begin_elements, curr-1);\
-        end\
-        for(curr=curr; curr<max__; ++curr) begin\
-          p__.print_string(p__.index_string(curr), F[curr], "[");\
-        end \
-      end\
     end \
-\
-    p__.print_array_footer(max__); \
-    //p__.print_footer(); \
-  end while(0);
- 
-`define uvm_print_string_queue(F) \
-  `uvm_print_string_queue2(F, uvm_default_printer)
-   
-`define uvm_print_string_queue2(F, P) \
-  do begin \
-    `uvm_print_string_qda3(F,P, queue); \
-  end while(0);
+  end \
+  PRINTER.print_array_footer(__tmp_max); \
+end     
+    
+`define uvm_print_array_int(VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=integral, PRINTER=printer) \
+  `uvm_print_named_qda_int(da, `"VALUE`", VALUE, RADIX, VALUE_TYPE, PRINTER) 
+
+`define uvm_print_named_array_int(NAME, VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=integral, PRINTER=printer) \
+  `uvm_print_named_qda_int(da, NAME, VALUE, RADIX, VALUE_TYPE, PRINTER)
+
+`define uvm_print_sarray_int(VALUE, RADIX=UVM_RADIX, VALUE_TYPE=integral, PRINTER=printer) \
+  `uvm_print_named_qda_int(sa, `"VALUE`", VALUE, RADIX, VALUE_TYPE, PRINTER)
+
+`define uvm_print_named_sarray_int(NAME, VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=integral, PRINTER=printer) \
+  `uvm_print_named_qda_int(sa, NAME, VALUE, RADIX, VALUE_TYPE, PRINTER)
+
+`define uvm_print_queue_int(VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=integral, PRINTER=printer) \
+  `uvm_print_named_qda_int(queue, `"VALUE`", VALUE, RADIX, VALUE_TYPE, PRINTER)
+
+`define uvm_print_named_queue_int(NAME, VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=integral, PRINTER=printer) \
+  `uvm_print_named_qda_int(queue, NAME, VALUE, RADIX, VALUE_TYPE, PRINTER)
+    
+// Arrays of reals
+
+`define uvm_print_qda_real(ARRAY_TYPE, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_real(ARRAY_TYPE, `"VALUE`", VALUE, PRINTER) 
+    
+`define uvm_print_named_qda_real(ARRAY_TYPE, NAME, VALUE, PRINTER=printer) \
+begin \
+  int __tmp_max = $right(VALUE) + 1; \
+  PRINTER.print_array_header(NAME, \
+                             __tmp_max, \
+                             `"ARRAY_TYPE``(real)`"); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    int __tmp_begin_elements, __tmp_end_elements; \
+    __tmp_begin_elements    = PRINTER.get_begin_elements(); \
+    __tmp_end_elements      = PRINTER.get_end_elements(); \
+    /* Fast Bypass */ \
+    if (__tmp_begin_elements == -1 || __tmp_end_elements == -1) begin \
+      foreach (VALUE[__tmp_index]) begin \
+        `uvm_print_named_real($sformatf("[%0d]", __tmp_index), \
+                                VALUE[__tmp_index], \
+                                PRINTER) \
+      end \
+    end \
+    else begin \
+      int __tmp_curr; \
+      foreach(VALUE[__tmp_index]) begin \
+        if (__tmp_curr < __tmp_begin_elements) begin \
+          `uvm_print_named_real($sformatf("[%0d]", __tmp_index), \
+                                  VALUE[__tmp_index], \
+                                  PRINTER) \
+        end \
+        else \
+          break; \
+        __tmp_curr++; \
+      end \
+      if (__tmp_curr < __tmp_max ) begin \
+        if ((__tmp_max - __tmp_end_elements) > __tmp_curr) \
+          __tmp_curr  = __tmp_max - __tmp_end_elements; \
+        if (__tmp_curr < __tmp_begin_elements) \
+          __tmp_curr = __tmp_begin_elements; \
+        else \
+          PRINTER.print_array_range(__tmp_begin_elements, __tmp_curr-1); \
+        while (__tmp_curr < __tmp_max) begin \
+          `uvm_print_named_real($sformatf("[%0d]", __tmp_curr), \
+                                  VALUE[__tmp_curr], \
+                                  PRINTER) \
+          __tmp_curr++; \
+        end \
+      end \
+    end \
+  end \
+  PRINTER.print_array_footer(__tmp_max); \
+end     
+    
+`define uvm_print_array_real(VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_real(da, `"VALUE`", VALUE, PRINTER) 
+
+`define uvm_print_named_array_real(NAME, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_real(da, NAME, VALUE, PRINTER)
+
+`define uvm_print_sarray_real(VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_real(sa, `"VALUE`", VALUE, PRINTER)
+
+`define uvm_print_named_sarray_real(NAME, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_real(sa, NAME, VALUE, PRINTER)
+
+`define uvm_print_queue_real(VALUE,PRINTER=printer) \
+  `uvm_print_named_qda_real(queue, `"VALUE`", VALUE, PRINTER)
+
+`define uvm_print_named_queue_real(NAME, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_real(queue, NAME, VALUE, PRINTER)
+
+// Arrays of enums
+
+`define uvm_print_qda_enum(ARRAY_TYPE, TYPE, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_enum(ARRAY_TYPE, TYPE, `"VALUE`", VALUE, PRINTER)
+    
+`define uvm_print_named_qda_enum(ARRAY_TYPE, TYPE, NAME, VALUE, PRINTER=printer) \
+begin \
+  int __tmp_max = $right(VALUE) + 1; \
+  PRINTER.print_array_header(NAME, \
+                             __tmp_max, \
+                             {`"ARRAY_TYPE``(`", `"TYPE`", ")"}); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    int __tmp_begin_elements, __tmp_end_elements; \
+    __tmp_begin_elements      = PRINTER.get_begin_elements(); \
+    __tmp_end_elements        = PRINTER.get_end_elements(); \
+    /* Fast Bypass */ \
+    if (__tmp_begin_elements == -1 || __tmp_end_elements == -1) begin \
+      foreach (VALUE[__tmp_index]) begin \
+        `uvm_print_named_enum(TYPE, \
+                              $sformatf("[%0d]", __tmp_index), \
+                              VALUE[__tmp_index], \
+                              PRINTER) \
+      end \
+    end \
+    else begin \
+      int __tmp_curr; \
+      foreach(VALUE[__tmp_index]) begin \
+        if (__tmp_curr < __tmp_begin_elements) begin \
+          `uvm_print_named_enum(TYPE, \
+                                $sformatf("[%0d]", __tmp_index), \
+                                VALUE[__tmp_index], \
+                                PRINTER) \
+        end \
+        else \
+          break; \
+        __tmp_curr++; \
+      end \
+      if (__tmp_curr < __tmp_max ) begin \
+        if ((__tmp_max - __tmp_end_elements) > __tmp_curr) \
+          __tmp_curr  = __tmp_max - __tmp_end_elements; \
+        if (__tmp_curr < __tmp_begin_elements) \
+          __tmp_curr = __tmp_begin_elements; \
+        else \
+          PRINTER.print_array_range(__tmp_begin_elements, __tmp_curr-1); \
+        while (__tmp_curr < __tmp_max) begin \
+          `uvm_print_named_enum(TYPE, \
+                                $sformatf("[%0d]", __tmp_curr), \
+                                VALUE[__tmp_curr], \
+                                PRINTER) \
+          __tmp_curr++; \
+        end \
+      end \
+    end \
+  end \
+  PRINTER.print_array_footer(__tmp_max); \
+end     
+    
+`define uvm_print_array_enum(TYPE, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_enum(da, `"VALUE`", TYPE, VALUE, PRINTER) 
+
+`define uvm_print_named_array_enum(TYPE, NAME, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_enum(da, TYPE, NAME, VALUE, PRINTER)
+
+`define uvm_print_sarray_enum(TYPE, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_enum(sa, TYPE, `"VALUE`", VALUE, PRINTER)
+
+`define uvm_print_named_sarray_enum(TYPE, NAME, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_enum(sa, TYPE, NAME, VALUE, PRINTER)
+
+`define uvm_print_queue_enum(TYPE, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_enum(queue, TYPE, `"VALUE`", VALUE, PRINTER)
+
+`define uvm_print_named_queue_enum(TYPE, NAME, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_enum(queue, TYPE, NAME, VALUE, PRINTER)
+    
+// Arrays of objects
+
+`define uvm_print_qda_object(ARRAY_TYPE, VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+  `uvm_print_named_qda_object(ARRAY_TYPE, `"VALUE`", VALUE, RECURSION_POLICY, PRINTER)    
+    
+`define uvm_print_named_qda_object(ARRAY_TYPE, NAME, VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+begin \
+  int __tmp_max = $right(VALUE) + 1; \
+  PRINTER.print_array_header(NAME, \
+                             __tmp_max, \
+                             `"ARRAY_TYPE``(object)`"); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    uvm_recursion_policy_enum __tmp_recursion_policy; \
+    int __tmp_begin_elements, __tmp_end_elements; \
+    __tmp_begin_elements    = PRINTER.get_begin_elements(); \
+    __tmp_end_elements      = PRINTER.get_end_elements(); \
+    __tmp_recursion_policy  = PRINTER.get_recursion_policy(); \
+    if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+        (__tmp_recursion_policy != RECURSION_POLICY)) \
+      PRINTER.set_recursion_policy(RECURSION_POLICY); \
+    /* Fast Bypass */ \
+    if (__tmp_begin_elements == -1 || __tmp_end_elements == -1) begin \
+      foreach (VALUE[__tmp_index]) begin \
+        `m_uvm_print_named_object($sformatf("[%0d]", __tmp_index), \
+                                  VALUE[__tmp_index], \
+                                  PRINTER) \
+      end \
+    end \
+    else begin \
+      int __tmp_curr; \
+      foreach(VALUE[__tmp_index]) begin \
+        if (__tmp_curr < __tmp_begin_elements) begin \
+          `m_uvm_print_named_object($sformatf("[%0d]", __tmp_index), \
+                                    VALUE[__tmp_index], \
+                                    PRINTER) \
+        end \
+        else \
+          break; \
+        __tmp_curr++; \
+      end \
+      if (__tmp_curr < __tmp_max ) begin \
+        if ((__tmp_max - __tmp_end_elements) > __tmp_curr) \
+          __tmp_curr  = __tmp_max - __tmp_end_elements; \
+        if (__tmp_curr < __tmp_begin_elements) \
+          __tmp_curr = __tmp_begin_elements; \
+        else \
+          PRINTER.print_array_range(__tmp_begin_elements, __tmp_curr-1); \
+        while (__tmp_curr < __tmp_max) begin \
+          `m_uvm_print_named_object($sformatf("[%0d]", __tmp_curr), \
+                                    VALUE[__tmp_curr], \
+                                    PRINTER) \
+          __tmp_curr++; \
+        end \
+      end \
+    end \
+    if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+        (__tmp_recursion_policy != RECURSION_POLICY)) \
+      PRINTER.set_recursion_policy(__tmp_recursion_policy); \
+  end \
+  PRINTER.print_array_footer(__tmp_max); \
+end     
+    
+`define uvm_print_array_object(VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+  `uvm_print_named_qda_object(da, `"VALUE`", VALUE, RECURSION_POLICY, PRINTER) 
+
+`define uvm_print_named_array_object(NAME, VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+  `uvm_print_named_qda_object(da, NAME, VALUE, RECURSION_POLICY, PRINTER)
+
+`define uvm_print_sarray_object(VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+  `uvm_print_named_qda_object(sa, `"VALUE`", VALUE, RECURSION_POLICY, PRINTER)
+
+`define uvm_print_named_sarray_object(NAME, VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+  `uvm_print_named_qda_object(sa, NAME, VALUE, RECURSION_POLICY, PRINTER)
+
+`define uvm_print_queue_object(VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+  `uvm_print_named_qda_object(queue, `"VALUE`", VALUE, RECURSION_POLICY, PRINTER)
+
+`define uvm_print_named_queue_object(NAME, VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+  `uvm_print_named_qda_object(queue, NAME, VALUE, RECURSION_POLICY, PRINTER)
+
+// Arrays of strings
+
+`define uvm_print_qda_string(ARRAY_TYPE, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_string(ARRAY_TYPE, `"VALUE`", VALUE, PRINTER)
+    
+`define uvm_print_named_qda_string(ARRAY_TYPE, NAME, VALUE, PRINTER=printer) \
+begin \
+  int __tmp_max = $right(VALUE) + 1; \
+  PRINTER.print_array_header(NAME, \
+                             __tmp_max, \
+                             `"ARRAY_TYPE``(string)`"); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    int __tmp_begin_elements, __tmp_end_elements; \
+    __tmp_begin_elements    = PRINTER.get_begin_elements(); \
+    __tmp_end_elements      = PRINTER.get_end_elements(); \
+    /* Fast Bypass */ \
+    if (__tmp_begin_elements == -1 || __tmp_end_elements == -1) begin \
+      foreach (VALUE[__tmp_index]) begin \
+        `uvm_print_named_string($sformatf("[%0d]", __tmp_index), \
+                                VALUE[__tmp_index], \
+                                PRINTER) \
+      end \
+    end \
+    else begin \
+      int __tmp_curr; \
+      foreach(VALUE[__tmp_index]) begin \
+        if (__tmp_curr < __tmp_begin_elements) begin \
+          `uvm_print_named_string($sformatf("[%0d]", __tmp_index), \
+                                  VALUE[__tmp_index], \
+                                  PRINTER) \
+        end \
+        else \
+          break; \
+        __tmp_curr++; \
+      end \
+      if (__tmp_curr < __tmp_max ) begin \
+        if ((__tmp_max - __tmp_end_elements) > __tmp_curr) \
+          __tmp_curr  = __tmp_max - __tmp_end_elements; \
+        if (__tmp_curr < __tmp_begin_elements) \
+          __tmp_curr = __tmp_begin_elements; \
+        else \
+          PRINTER.print_array_range(__tmp_begin_elements, __tmp_curr-1); \
+        while (__tmp_curr < __tmp_max) begin \
+          `uvm_print_named_string($sformatf("[%0d]", __tmp_curr), \
+                                  VALUE[__tmp_curr], \
+                                  PRINTER) \
+          __tmp_curr++; \
+        end \
+      end \
+    end \
+  end \
+  PRINTER.print_array_footer(__tmp_max); \
+end     
+    
+`define uvm_print_array_string(VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_string(da, `"VALUE`", VALUE, PRINTER) 
+
+`define uvm_print_named_array_string(NAME, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_string(da, NAME, VALUE, PRINTER)
+
+`define uvm_print_sarray_string(VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_string(sa, `"VALUE`", VALUE, PRINTER)
+
+`define uvm_print_named_sarray_string(NAME, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_string(sa, NAME, VALUE, PRINTER)
+
+`define uvm_print_queue_string(VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_string(queue, `"VALUE`", VALUE, PRINTER)
+
+`define uvm_print_named_queue_string(NAME, VALUE, PRINTER=printer) \
+  `uvm_print_named_qda_string(queue, NAME, VALUE, PRINTER)
 
 //-----------------------------------------------------------------------------
 //
 // Associative array printing methods
 //
 //-----------------------------------------------------------------------------
-`define uvm_print_aa_string_int(F) \
-  `uvm_print_aa_string_int3(F, R, uvm_default_printer)
 
+`define uvm_print_aa_int_string(VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=integral, PRINTER=printer) \
+  `uvm_print_named_aa_int_string(`"VALUE`", VALUE, RADIX, VALUE_TYPE, PRINTER)
 
-`define uvm_print_aa_string_int3(F, R, P) \
-  begin \
-    uvm_printer p__; \
-    uvm_printer_knobs k__; \
-    if(P!=null) p__ = P; \
-    else p__ = uvm_default_printer; \
-    p__.print_array_header (`"F`", F.num(), "aa(int,string)"); \
-    k__ = p__.knobs; \
-    if((p__.knobs.depth == -1) || (p__.m_scope.depth() < p__.knobs.depth+1)) \
-    begin \
-      foreach(F[string_aa_key]) \
-          `uvm_print_int4(F[string_aa_key], R,  \
-                                {"[", string_aa_key, "]"}, p__) \
-    end \
-    p__.print_array_footer(F.num()); \
-    //p__.print_footer(); \
-  end
+`define uvm_print_named_aa_int_string(NAME, VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=integral, PRINTER=printer) \
+begin \
+  PRINTER.print_array_header(NAME, \
+                             VALUE.num(), \
+                             `"aa(``VALUE_TYPE``,string)`"); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    foreach(VALUE[__tmp_index]) \
+      `uvm_print_named_int($sformatf("[%s]", __tmp_index), \
+                           VALUE[__tmp_index], \
+                           $bits(VALUE[__tmp_index]), \
+                           RADIX, \
+                           VALUE_TYPE, \
+                           PRINTER ) \
+  end \
+  PRINTER.print_array_footer(VALUE.num()); \
+end
 
-`define uvm_print_aa_string_object(F,FLAG) \
-  `uvm_print_aa_string_object_3(F, uvm_default_printer,FLAG)
-  
-`define uvm_print_aa_string_object3(F, P,FLAG) \
-  begin \
-    uvm_printer p__; \
-    uvm_printer_knobs k__; \
-    uvm_object u__; \
-    if(P!=null) p__ = P; \
-    else p__ = uvm_default_printer; \
-    p__.print_array_header (`"F`", F.num(), "aa(object,string)"); \
-    k__ = p__.knobs; \
-    if((p__.knobs.depth == -1) || (p__.m_scope.depth() < p__.knobs.depth+1)) \
-    begin \
-      foreach(F[string_aa_key]) begin \
-          if(((FLAG)&UVM_REFERENCE)==0) \
-            p__.print_object({"[", string_aa_key, "]"}, F[string_aa_key], "[");\
-          else \
-            p__.print_object_header({"[", string_aa_key, "]"}, F[string_aa_key], "[");\
-      end \
-    end \
-    p__.print_array_footer(F.num()); \
-    //p__.print_footer(); \
-  end
+`define uvm_print_aa_object_string(VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+  `uvm_print_named_aa_object_string(`"VALUE`", VALUE, RECURSION_POLICY, PRINTER)
 
-`define uvm_print_aa_string_string(F) \
-  `uvm_print_aa_string_string_2(F, uvm_default_printer)
-  
-`define uvm_print_aa_string_string2(F, P) \
-  begin \
-    uvm_printer p__; \
-    uvm_printer_knobs k__; \
-    if(P!=null) p__ = P; \
-    else p__ = uvm_default_printer; \
-    p__.print_array_header (`"F`", F.num(), "aa(string,string)"); \
-    k__ = p__.knobs; \
-    if((p__.knobs.depth == -1) || (p__.m_scope.depth() < p__.knobs.depth+1)) \
-    begin \
-      foreach(F[string_aa_key]) \
-          p__.print_string({"[", string_aa_key, "]"}, F[string_aa_key], "["); \
-    end \
-    p__.print_array_footer(F.num()); \
-    //p__.print_footer(); \
-  end
+`define uvm_print_named_aa_object_string(NAME, VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, PRINTER=printer) \
+begin \
+  PRINTER.print_array_header(NAME, \
+                             VALUE.num(), \
+                             "aa(object,string)"); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    uvm_recursion_policy_enum __tmp_recursion_policy; \
+    __tmp_recursion_policy  = PRINTER.get_recursion_policy(); \
+    if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+        (__tmp_recursion_policy != RECURSION_POLICY)) \
+      PRINTER.set_recursion_policy(RECURSION_POLICY); \
+    foreach(VALUE[__tmp_index]) \
+      `m_uvm_print_named_object($sformatf("[%s]", __tmp_index), \
+                                VALUE[__tmp_index], \
+                                PRINTER ) \
+    if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+        (__tmp_recursion_policy != RECURSION_POLICY)) \
+      PRINTER.set_recursion_policy(__tmp_recursion_policy); \
+  end \
+  PRINTER.print_array_footer(VALUE.num()); \
+end
 
-`define uvm_print_aa_int_object(F,FLAG) \
-  `uvm_print_aa_int_object_3(F, uvm_default_printer,FLAG)
+`define uvm_print_aa_string_string(VALUE, PRINTER=printer) \
+  `uvm_print_named_aa_string_string(`"VALUE`", VALUE, PRINTER)
 
-`define uvm_print_aa_int_object3(F, P,FLAG) \
-  begin \
-    uvm_printer p__; \
-    uvm_printer_knobs k__; \
-    uvm_object u__; \
-    int key; \
-    if(P!=null) p__ = P; \
-    else p__ = uvm_default_printer; \
-    p__.print_array_header (`"F`", F.num(), "aa(object,int)"); \
-    k__ = p__.knobs; \
-    if((p__.knobs.depth == -1) || (p__.m_scope.depth() < p__.knobs.depth+1)) \
-    begin \
-      foreach(F[key]) begin \
-          $swrite(__m_uvm_status_container.stringv, "[%0d]", key); \
-          if(((FLAG)&UVM_REFERENCE)==0) \
-            p__.print_object(__m_uvm_status_container.stringv, F[key], "[");\
-          else \
-            p__.print_object_header(__m_uvm_status_container.stringv, F[key], "[");\
-      end \
-    end \
-    p__.print_array_footer(F.num()); \
-    //p__.print_footer(); \
-  end
+`define uvm_print_named_aa_string_string(NAME, VALUE, PRINTER=printer) \
+begin \
+  PRINTER.print_array_header(NAME, \
+                             VALUE.num(), \
+                             "aa(string,string)"); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    foreach(VALUE[__tmp_index]) \
+      `uvm_print_named_string($sformatf("[%s]", __tmp_index), \
+                              VALUE[__tmp_index], \
+                              PRINTER ) \
+  end \
+  PRINTER.print_array_footer(VALUE.num()); \
+end
 
-`define uvm_print_aa_int_key4(KEY, F, R, P) \
-  begin \
-    uvm_printer p__; \
-    uvm_printer_knobs k__; \
-    if(P!=null) p__ = P; \
-    else p__ = uvm_default_printer; \
-    __m_uvm_status_container.stringv = "aa(int,int)"; \
-    for(int i=0; i<__m_uvm_status_container.stringv.len(); ++i) \
-      if(__m_uvm_status_container.stringv[i] == " ") \
-        __m_uvm_status_container.stringv[i] = "_"; \
-    p__.print_array_header (`"F`", F.num(), __m_uvm_status_container.stringv); \
-    k__ = p__.knobs; \
-    if((p__.knobs.depth == -1) || (p__.m_scope.depth() < p__.knobs.depth+1)) \
-    begin \
-      foreach(F[aa_key]) begin \
-          `uvm_print_int4(F[aa_key], R,  \
-                                {"[", $sformatf("%0d",aa_key), "]"}, p__) \
-      end \
-    end \
-    p__.print_array_footer(F.num()); \
-    //p__.print_footer(); \
-  end
+`define uvm_print_aa_int_int(VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=int, INDEX_TYPE=int, PRINTER=printer) \
+  `uvm_print_named_aa_int_int(`"VALUE`", VALUE, RADIX, VALUE_TYPE, INDEX_TYPE, PRINTER)
 
-`endif
+`define uvm_print_named_aa_int_int(NAME, VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=int, INDEX_TYPE=int, PRINTER=printer) \
+begin \
+  PRINTER.print_array_header(NAME, \
+                             VALUE.num(), \
+                             `"aa(``VALUE_TYPE``,``INDEX_TYPE``)`"); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    foreach(VALUE[__tmp_index]) \
+      `uvm_print_named_int($sformatf("[%0d]", __tmp_index), \
+                           VALUE[__tmp_index], \
+                           $bits(VALUE[__tmp_index]), \
+                           RADIX, \
+                           VALUE_TYPE, \
+                           PRINTER ) \
+  end \
+  PRINTER.print_array_footer(VALUE.num()); \
+end
+
+`define uvm_print_aa_object_int(VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, INDEX_TYPE=int, PRINTER=printer) \
+  `uvm_print_named_aa_object_int(`"VALUE`", VALUE, RECURSION_POLICY, INDEX_TYPE, PRINTER)
+
+`define uvm_print_named_aa_object_int(NAME, VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, INDEX_TYPE=int, PRINTER=printer) \
+begin \
+  PRINTER.print_array_header(NAME, \
+                             VALUE.num(), \
+                             `"aa(object,``INDEX_TYPE``)`"); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    uvm_recursion_policy_enum __tmp_recursion_policy; \
+    __tmp_recursion_policy  = PRINTER.get_recursion_policy(); \
+    if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+        (__tmp_recursion_policy != RECURSION_POLICY)) \
+      PRINTER.set_recursion_policy(RECURSION_POLICY); \
+    foreach(VALUE[__tmp_index]) \
+      `m_uvm_print_named_object($sformatf("[%0d]", __tmp_index), \
+                                VALUE[__tmp_index], \
+                                PRINTER ) \
+    if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+        (__tmp_recursion_policy != RECURSION_POLICY)) \
+      PRINTER.set_recursion_policy(__tmp_recursion_policy); \
+  end \
+  PRINTER.print_array_footer(VALUE.num()); \
+end
+
+`define uvm_print_aa_string_int(VALUE, INDEX_TYPE=int, PRINTER=printer) \
+  `uvm_print_named_aa_string_int(`"VALUE`", VALUE, INDEX_TYPE, PRINTER)
+
+`define uvm_print_named_aa_string_int(NAME, VALUE, INDEX_TYPE=int, PRINTER=printer) \
+begin \
+  PRINTER.print_array_header(NAME, \
+                             VALUE.num(), \
+                             `"aa(string,``INDEX_TYPE``)`"); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    foreach(VALUE[__tmp_index]) \
+      `uvm_print_named_string($sformatf("[%0d]", __tmp_index), \
+                              VALUE[__tmp_index], \
+                              PRINTER ) \
+  end \
+  PRINTER.print_array_footer(VALUE.num()); \
+end
+
+`define uvm_print_aa_int_enum(ENUM_TYPE, VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=int, PRINTER=printer) \
+  `uvm_print_named_aa_int_enum(`"VALUE`", ENUM_TYPE, VALUE, RADIX, VALUE_TYPE, PRINTER)
+
+`define uvm_print_named_aa_int_enum(NAME, ENUM_TYPE, VALUE, RADIX=UVM_NORADIX, VALUE_TYPE=int, PRINTER=printer) \
+begin \
+  PRINTER.print_array_header(NAME, \
+                             VALUE.num(), \
+                             `"aa(``VALUE_TYPE``,``ENUM_TYPE``)`"); \
+  if ((PRINTER.get_max_depth() == -1) || \
+      (PRINTER.get_active_object_depth() < PRINTER.get_max_depth()+1)) begin \
+    foreach(VALUE[__tmp_index]) \
+      `uvm_print_named_int((__tmp_index.name() == "") ? $sformatf("[%s'(%0d)]", `"ENUM_TYPE`",__tmp_index) \
+                                                      : $sformatf("[%s]", __tmp_index.name()), \
+                           VALUE[__tmp_index], \
+                           $bits(VALUE[__tmp_index]), \
+                           RADIX, \
+                           VALUE_TYPE, \
+                           PRINTER ) \
+  end \
+  PRINTER.print_array_footer(VALUE.num()); \
+end
+
+    
+`endif //  `ifndef UVM_PRINTER_DEFINES_SVH
+

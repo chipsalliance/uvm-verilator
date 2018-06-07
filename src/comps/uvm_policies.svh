@@ -1,8 +1,9 @@
 //
 //----------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2010 Cadence Design Systems, Inc. 
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2015 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +22,7 @@
 //----------------------------------------------------------------------
 
 
-// Title: Policy Classes
+// Title -- NODOCS -- Policy Classes
 //
 // Policy classes are used to implement polymorphic operations that
 // differ between built-in types and class-based types. Generic
@@ -30,7 +31,7 @@
 
 
 //----------------------------------------------------------------------
-// CLASS: uvm_built_in_comp #(T)
+// CLASS -- NODOCS -- uvm_built_in_comp #(T)
 // 
 // This policy class is used to compare built-in types.
 //
@@ -48,7 +49,7 @@ endclass
 
 
 //----------------------------------------------------------------------
-// CLASS: uvm_built_in_converter #(T)
+// CLASS -- NODOCS -- uvm_built_in_converter #(T)
 //
 // This policy class is used to convert built-in types to strings.
 //
@@ -64,7 +65,7 @@ endclass
 
 
 //----------------------------------------------------------------------
-// CLASS: uvm_built_in_clone #(T)
+// CLASS -- NODOCS -- uvm_built_in_clone #(T)
 //
 // This policy class is used to clone built-in types via the = operator.
 //
@@ -81,7 +82,7 @@ endclass
 
 
 //----------------------------------------------------------------------
-// CLASS: uvm_class_comp #(T)
+// CLASS -- NODOCS -- uvm_class_comp #(T)
 //
 // This policy class is used to compare two objects of the same type.
 //
@@ -100,7 +101,7 @@ endclass
 
 
 //----------------------------------------------------------------------
-// CLASS: uvm_class_converter #(T)
+// CLASS -- NODOCS -- uvm_class_converter #(T)
 //
 // This policy class is used to convert a class object to a string.
 //
@@ -120,7 +121,7 @@ endclass
 
 
 //----------------------------------------------------------------------
-// CLASS: uvm_class_clone #(T)
+// CLASS -- NODOCS -- uvm_class_clone #(T)
 //
 // This policy class is used to clone class objects.
 //
@@ -138,4 +139,3 @@ class uvm_class_clone #(type T=int);
   endfunction
 
 endclass
-

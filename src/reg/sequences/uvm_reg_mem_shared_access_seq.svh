@@ -1,7 +1,10 @@
 // 
 // -------------------------------------------------------------
-//    Copyright 2004-2008 Synopsys, Inc.
-//    Copyright 2010 Mentor Graphics Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2004-2010 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2015-2018 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +24,7 @@
 // 
 
 //------------------------------------------------------------------------------
-// Title: Shared Register and Memory Access Test Sequences
+// Title -- NODOCS -- Shared Register and Memory Access Test Sequences
 //------------------------------------------------------------------------------
 // This section defines sequences for testing registers and memories that are
 // shared between two or more physical interfaces, i.e. are associated with
@@ -30,7 +33,7 @@
 
 
 //------------------------------------------------------------------------------
-// Class: uvm_reg_shared_access_seq
+// Class -- NODOCS -- uvm_reg_shared_access_seq
 //
 // Verify the accessibility of a shared register
 // by writing through each address map
@@ -54,14 +57,16 @@
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto E.4.1.1
 class uvm_reg_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
-   // Variable: rg
+   // Variable -- NODOCS -- rg
    // The register to be tested
    uvm_reg rg;
 
    `uvm_object_utils(uvm_reg_shared_access_seq)
 
+   // @uvm-ieee 1800.2-2017 auto E.4.1.3
    function new(string name="uvm_reg_shared_access_seq");
      super.new(name);
    endfunction
@@ -74,7 +79,7 @@ class uvm_reg_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
       uvm_reg_map maps[$];
 
       if (rg == null) begin
-         `uvm_error("uvm_reg_shared_access_seq", "No register specified to run sequence on");
+         `uvm_error("uvm_reg_shared_access_seq", "No register specified to run sequence on")
          return;
       end
 
@@ -140,21 +145,21 @@ class uvm_reg_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
          v = ({$random, $random} & ~other_mask) | (prev & other_mask);
          
          `uvm_info("uvm_reg_shared_access_seq", $sformatf("Writing register %s via map \"%s\"...",
-                                    rg.get_full_name(), maps[j].get_full_name), UVM_LOW);
+                                    rg.get_full_name(), maps[j].get_full_name), UVM_LOW)
          
-         `uvm_info("uvm_reg_shared_access_seq", $sformatf("Writing 'h%h over 'h%h", v, prev),UVM_DEBUG);
+         `uvm_info("uvm_reg_shared_access_seq", $sformatf("Writing 'h%h over 'h%h", v, prev),UVM_DEBUG)
          
          rg.write(status, v, UVM_FRONTDOOR, maps[j], this);
          if (status != UVM_IS_OK) begin
             `uvm_error("uvm_reg_shared_access_seq", $sformatf("Status was %s when writing register \"%s\" through map \"%s\".",
-                                        status.name(), rg.get_full_name(), maps[j].get_full_name()));
+                                        status.name(), rg.get_full_name(), maps[j].get_full_name()))
          end
          
          foreach (maps[k]) begin
             uvm_reg_data_t  actual, exp;
             
             `uvm_info("uvm_reg_shared_access_seq", $sformatf("Reading register %s via map \"%s\"...",
-                                       rg.get_full_name(), maps[k].get_full_name()), UVM_LOW);
+                                       rg.get_full_name(), maps[k].get_full_name()), UVM_LOW)
             
             // Was it what we expected?
             exp = rg.get() & ~wo_mask[k];
@@ -162,16 +167,16 @@ class uvm_reg_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
             rg.read(status, actual, UVM_FRONTDOOR, maps[k], this);
             if (status != UVM_IS_OK) begin
                `uvm_error("uvm_reg_shared_access_seq", $sformatf("Status was %s when reading register \"%s\" through map \"%s\".",
-                                           status.name(), rg.get_full_name(), maps[k].get_full_name()));
+                                           status.name(), rg.get_full_name(), maps[k].get_full_name()))
             end
             
             `uvm_info("uvm_reg_shared_access_seq", $sformatf("Read 'h%h, expecting 'h%h",
-                                        actual, exp),UVM_DEBUG);
+                                        actual, exp),UVM_DEBUG)
             
             if (actual !== exp) begin
                `uvm_error("uvm_reg_shared_access_seq", $sformatf("Register \"%s\" through map \"%s\" is 'h%h instead of 'h%h after writing 'h%h via map \"%s\" over 'h%h.",
                                            rg.get_full_name(), maps[k].get_full_name(),
-                                           actual, exp, v, maps[j].get_full_name(), prev));
+                                           actual, exp, v, maps[j].get_full_name(), prev))
             end
          end
       end
@@ -180,7 +185,7 @@ endclass: uvm_reg_shared_access_seq
 
 
 //------------------------------------------------------------------------------
-// Class: uvm_mem_shared_access_seq
+// Class -- NODOCS -- uvm_mem_shared_access_seq
 //------------------------------------------------------------------------------
 //
 // Verify the accessibility of a shared memory
@@ -203,14 +208,16 @@ endclass: uvm_reg_shared_access_seq
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto E.4.2.1
 class uvm_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
-   // variable: mem
+   // variable -- NODOCS -- mem
    // The memory to be tested
    uvm_mem mem;
 
    `uvm_object_utils(uvm_mem_shared_access_seq)
 
+   // @uvm-ieee 1800.2-2017 auto E.4.2.3
    function new(string name="uvm_mem_shared_access_seq");
      super.new(name);
    endfunction
@@ -220,7 +227,7 @@ class uvm_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
       uvm_reg_map maps[$];
 
       if (mem == null) begin
-         `uvm_error("uvm_mem_shared_access_seq", "No memory specified to run sequence on");
+         `uvm_error("uvm_mem_shared_access_seq", "No memory specified to run sequence on")
          return;
       end
 
@@ -253,7 +260,7 @@ class uvm_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
             end
          end
          if (read_from < 0) begin
-            `uvm_warning("uvm_mem_shared_access_seq", $sformatf("Memory \"%s\" cannot be read from any maps or backdoor. Shared access not verified.", mem.get_full_name()));
+            `uvm_warning("uvm_mem_shared_access_seq", $sformatf("Memory \"%s\" cannot be read from any maps or backdoor. Shared access not verified.", mem.get_full_name()))
             return;
          end
       end
@@ -262,7 +269,7 @@ class uvm_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
       foreach (maps[j]) begin
          
          `uvm_info("uvm_mem_shared_access_seq", $sformatf("Writing shared memory \"%s\" via map \"%s\".",
-                                    mem.get_full_name(), maps[j].get_full_name()), UVM_LOW);
+                                    mem.get_full_name(), maps[j].get_full_name()), UVM_LOW)
          
          // All addresses
          for (int offset = 0; offset < mem.get_size(); offset++) begin
@@ -274,7 +281,7 @@ class uvm_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
                mem.peek(status, offset, prev);
                if (status != UVM_IS_OK) begin
                   `uvm_error("uvm_mem_shared_access_seq", $sformatf("Status was %s when reading initial value of \"%s\"[%0d] through backdoor.",
-                                              status.name(), mem.get_full_name(), offset));
+                                              status.name(), mem.get_full_name(), offset))
                end
             end
             else begin
@@ -282,7 +289,7 @@ class uvm_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
                if (status != UVM_IS_OK) begin
                   `uvm_error("uvm_mem_shared_access_seq", $sformatf("Status was %s when reading initial value of \"%s\"[%0d] through map \"%s\".",
                                               status.name(), mem.get_full_name(),
-                                              offset, maps[read_from].get_full_name()));
+                                              offset, maps[read_from].get_full_name()))
                end
             end
             
@@ -293,7 +300,7 @@ class uvm_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
             mem.write(status, offset, v, UVM_FRONTDOOR, maps[j], this);
             if (status != UVM_IS_OK) begin
                `uvm_error("uvm_mem_shared_access_seq", $sformatf("Status was %s when writing \"%s\"[%0d] through map \"%s\".",
-                                           status.name(), mem.get_full_name(), offset, maps[j].get_full_name()));
+                                           status.name(), mem.get_full_name(), offset, maps[j].get_full_name()))
             end
             
             // Read back from all other maps
@@ -303,7 +310,7 @@ class uvm_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
                mem.read(status, offset, actual, UVM_FRONTDOOR, maps[k], this);
                if (status != UVM_IS_OK) begin
                   `uvm_error("uvm_mem_shared_access_seq", $sformatf("Status was %s when reading %s[%0d] through map \"%s\".",
-                                              status.name(), mem.get_full_name(), offset, maps[k].get_full_name()));
+                                              status.name(), mem.get_full_name(), offset, maps[k].get_full_name()))
                end
                
                // Was it what we expected?
@@ -319,7 +326,7 @@ class uvm_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
                if (actual !== exp) begin
                   `uvm_error("uvm_mem_shared_access_seq", $sformatf("%s[%0d] through map \"%s\" is 'h%h instead of 'h%h after writing 'h%h via map \"%s\" over 'h%h.",
                                               mem.get_full_name(), offset, maps[k].get_full_name(),
-                                              actual, exp, v, maps[j].get_full_name(), prev));
+                                              actual, exp, v, maps[j].get_full_name(), prev))
                end
             end
          end
@@ -330,7 +337,7 @@ endclass: uvm_mem_shared_access_seq
 
 
 //------------------------------------------------------------------------------
-// Class: uvm_reg_mem_shared_access_seq
+// Class -- NODOCS -- uvm_reg_mem_shared_access_seq
 //------------------------------------------------------------------------------
 //
 // Verify the accessibility of all shared registers
@@ -351,23 +358,24 @@ endclass: uvm_mem_shared_access_seq
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto E.4.3.1
 class uvm_reg_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
-   // Variable: model
+   // Variable -- NODOCS -- model
    //
    // The block to be tested
    //
    //| uvm_reg_block model; 
 
 
-   // Variable: reg_seq
+   // Variable -- NODOCS -- reg_seq
    //
    // The sequence used to test one register
    //
    protected uvm_reg_shared_access_seq reg_seq;
    
 
-   // Variable: mem_seq
+   // Variable -- NODOCS -- mem_seq
    //
    // The sequence used to test one memory
    //
@@ -375,19 +383,18 @@ class uvm_reg_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uv
    
    `uvm_object_utils(uvm_reg_mem_shared_access_seq)
 
+   // @uvm-ieee 1800.2-2017 auto E.4.3.3.1
    function new(string name="uvm_reg_mem_shared_access_seq");
      super.new(name);
    endfunction
 
 
-   // Task: body
-   //
-   // Executes the Shared Register and Memory sequence
-   //
+
+   // @uvm-ieee 1800.2-2017 auto E.4.3.3.2
    virtual task body();
 
       if (model == null) begin
-         `uvm_error("uvm_reg_mem_shared_access_seq", "No register model specified to run sequence on");
+         `uvm_error("uvm_reg_mem_shared_access_seq", "No register model specified to run sequence on")
          return;
       end
       
@@ -403,7 +410,7 @@ class uvm_reg_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uv
    endtask: body
 
 
-   // Task: do_block
+   // Task -- NODOCS -- do_block
    //
    // Test all of the registers and memories in a block
    //
@@ -466,7 +473,7 @@ class uvm_reg_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uv
 
 
    //
-   // task: reset_blk
+   // task -- NODOCS -- reset_blk
    // Reset the DUT that corresponds to the specified block abstraction class.
    //
    // Currently empty.
@@ -482,4 +489,3 @@ class uvm_reg_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uv
 
 
 endclass: uvm_reg_mem_shared_access_seq
-

@@ -1,6 +1,9 @@
 //----------------------------------------------------------------------
-//   Copyright 2010-2011 Mentor Graphics Corporation
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014 Semifore
+// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2014-2015 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -19,7 +22,7 @@
 //----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
-// Title: TLM2 imps (interface implementations)
+// Title -- NODOCS -- TLM2 imps (interface implementations)
 //
 // This section defines the implementation classes for connecting TLM2
 // interfaces.
@@ -35,10 +38,10 @@
 //----------------------------------------------------------------------
 
 //--------------------------
-// Group: IMP binding macros
+// Group -- NODOCS -- IMP binding macros
 //--------------------------
 
-// Macro: `UVM_TLM_NB_TRANSPORT_FW_IMP
+// Macro -- NODOCS -- `UVM_TLM_NB_TRANSPORT_FW_IMP
 //
 // The macro wraps the forward path call function nb_transport_fw()
 //
@@ -66,7 +69,7 @@
   endfunction
 
 
-// Macro: `UVM_TLM_NB_TRANSPORT_BW_IMP
+// Macro -- NODOCS -- `UVM_TLM_NB_TRANSPORT_BW_IMP
 //
 //
 // Implementation of the backward path.
@@ -118,7 +121,7 @@
   endfunction
 
 
-// Macro: `UVM_TLM_B_TRANSPORT_IMP
+// Macro -- NODOCS -- `UVM_TLM_B_TRANSPORT_IMP
 //
 // The macro wraps the function b_transport()
 // Execute a blocking transaction. Once this method returns,
@@ -151,17 +154,18 @@
 
 
 //---------------------------
-// Group: IMP binding classes
+// Group -- NODOCS -- IMP binding classes
 //---------------------------
 
 //----------------------------------------------------------------------
-// Class: uvm_tlm_b_transport_imp
+// Class -- NODOCS -- uvm_tlm_b_transport_imp
 //
 // Used like exports, except an additional class parameter specifies 
 // the type of the implementation object.  When the
 // imp is instantiated the implementation object is bound.
 //----------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 12.3.8.1
 class uvm_tlm_b_transport_imp #(type T=uvm_tlm_generic_payload,
                             type IMP=int)
   extends uvm_port_base #(uvm_tlm_if #(T));
@@ -170,13 +174,14 @@ class uvm_tlm_b_transport_imp #(type T=uvm_tlm_generic_payload,
 endclass
 
 //----------------------------------------------------------------------
-// Class: uvm_tlm_nb_transport_fw_imp
+// Class -- NODOCS -- uvm_tlm_nb_transport_fw_imp
 //
 // Used like exports, except an additional class parameter specifies 
 // the type of the implementation object.  When the
 // imp is instantiated the implementation object is bound.
 //----------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 12.3.8.2
 class uvm_tlm_nb_transport_fw_imp #(type T=uvm_tlm_generic_payload,
                                 type P=uvm_tlm_phase_e,
                                 type IMP=int)
@@ -186,13 +191,14 @@ class uvm_tlm_nb_transport_fw_imp #(type T=uvm_tlm_generic_payload,
 endclass
 
 //----------------------------------------------------------------------
-// Class: uvm_tlm_nb_transport_bw_imp
+// Class -- NODOCS -- uvm_tlm_nb_transport_bw_imp
 //
 // Used like exports, except an additional class parameter specifies 
 // the type of the implementation object.  When the
 // imp is instantiated the implementation object is bound.
 //----------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 12.3.8.3
 class uvm_tlm_nb_transport_bw_imp #(type T=uvm_tlm_generic_payload,
                                 type P=uvm_tlm_phase_e,
                                 type IMP=int)

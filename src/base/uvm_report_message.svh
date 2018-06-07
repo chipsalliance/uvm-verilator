@@ -1,8 +1,11 @@
 //
 //------------------------------------------------------------------------------
-//   Copyright 2007-2010 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc. 
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2012 AMD
+// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2014-2018 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -31,7 +34,7 @@ typedef class uvm_root;
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_report_message_element_base
+// CLASS -- NODOCS -- uvm_report_message_element_base
 //
 // Base class for report message element. Defines common interface.
 //
@@ -42,14 +45,14 @@ virtual class uvm_report_message_element_base;
    protected string          _name;
 
 
-   // Function: get_name
+   // Function -- NODOCS -- get_name
    // 
 
    virtual function string get_name();
      return _name;
    endfunction
 
-   // Function: set_name
+   // Function -- NODOCS -- set_name
    // 
    // Get or set the name of the element
    //
@@ -59,14 +62,14 @@ virtual class uvm_report_message_element_base;
    endfunction
      
 
-   // Function: get_action
+   // Function -- NODOCS -- get_action
    // 
 
    virtual function uvm_action get_action();
      return _action;
    endfunction
 
-   // Function: set_action
+   // Function -- NODOCS -- set_action
    // 
    // Get or set the authorized action for the element
    //
@@ -101,7 +104,7 @@ endclass : uvm_report_message_element_base
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_report_message_int_element
+// CLASS -- NODOCS -- uvm_report_message_int_element
 //
 // Message element class for integral type
 //
@@ -114,7 +117,7 @@ class uvm_report_message_int_element extends uvm_report_message_element_base;
    protected int             _size;
    protected uvm_radix_enum  _radix;
 
-   // Function: get_value
+   // Function -- NODOCS -- get_value
    //
 
    virtual function uvm_bitstream_t get_value(output int size, 
@@ -125,7 +128,7 @@ class uvm_report_message_int_element extends uvm_report_message_element_base;
    endfunction
 
 
-   // Function: set_value
+   // Function -- NODOCS -- set_value
    //
    // Get or set the value (integral type) of the element, with size and radix
    //
@@ -140,7 +143,7 @@ class uvm_report_message_int_element extends uvm_report_message_element_base;
 
 
    virtual function void do_print(uvm_printer printer);
-      printer.print_int(_name, _val, _size, _radix);
+      printer.print_field(_name, _val, _size, _radix);
    endfunction : do_print
 
    virtual function void do_record(uvm_recorder recorder);
@@ -167,7 +170,7 @@ endclass : uvm_report_message_int_element
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_report_message_string_element
+// CLASS -- NODOCS -- uvm_report_message_string_element
 //
 // Message element class for string type
 //
@@ -178,14 +181,14 @@ class uvm_report_message_string_element extends uvm_report_message_element_base;
    protected string  _val;
 
 
-   // Function: get_value
+   // Function -- NODOCS -- get_value
    //
 
    virtual function string get_value();
      return _val;
    endfunction
 
-   // Function: set_value
+   // Function -- NODOCS -- set_value
    //
    // Get or set the value (string type) of the element
    //
@@ -221,7 +224,7 @@ endclass : uvm_report_message_string_element
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_report_message_object_element
+// CLASS -- NODOCS -- uvm_report_message_object_element
 //
 // Message element class for object type
 //
@@ -232,7 +235,7 @@ class uvm_report_message_object_element extends uvm_report_message_element_base;
    protected uvm_object _val;
 
 
-   // Function: get_value
+   // Function -- NODOCS -- get_value
    //
    // Get the value (object reference) of the element
    //
@@ -241,7 +244,7 @@ class uvm_report_message_object_element extends uvm_report_message_element_base;
      return _val;
    endfunction
 
-   // Function: set_value
+   // Function -- NODOCS -- set_value
    //
    // Get or set the value (object reference) of the element
    //
@@ -276,7 +279,7 @@ endclass : uvm_report_message_object_element
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_report_message_element_container
+// CLASS -- NODOCS -- uvm_report_message_element_container
 //
 // A container used by report message to contain the dynamically added elements,
 // with APIs to add and delete the elements.
@@ -289,7 +292,7 @@ class uvm_report_message_element_container extends uvm_object;
 
   `uvm_object_utils(uvm_report_message_element_container)
 
-  // Function: new
+  // Function -- NODOCS -- new
   //
   // Create a new uvm_report_message_element_container object
   //
@@ -299,7 +302,7 @@ class uvm_report_message_element_container extends uvm_object;
   endfunction
 
 
-  // Function: size
+  // Function -- NODOCS -- size
   //
   // Returns the size of the container, i.e. the number of elements
   //
@@ -309,7 +312,7 @@ class uvm_report_message_element_container extends uvm_object;
   endfunction
 
 
-  // Function: delete
+  // Function -- NODOCS -- delete
   //
   // Delete the ~index~-th element in the container
   //
@@ -319,7 +322,7 @@ class uvm_report_message_element_container extends uvm_object;
   endfunction
 
 
-  // Function: delete_elements
+  // Function -- NODOCS -- delete_elements
   //
   // Delete all the elements in the container
   //
@@ -329,7 +332,7 @@ class uvm_report_message_element_container extends uvm_object;
   endfunction
 
 
-  // Function: get_elements
+  // Function -- NODOCS -- get_elements
   //
   // Get all the elements from the container and put them in a queue
   //
@@ -340,7 +343,7 @@ class uvm_report_message_element_container extends uvm_object;
   endfunction
 
 
-  // Function: add_int
+  // Function -- NODOCS -- add_int
   // 
   // This method adds an integral type of the name ~name~ and value ~value~ to
   // the container.  The required ~size~ field indicates the size of ~value~. 
@@ -370,7 +373,7 @@ class uvm_report_message_element_container extends uvm_object;
   endfunction
 
 
-  // Function: add_string
+  // Function -- NODOCS -- add_string
   // 
   // This method adds a string of the name ~name~ and value ~value~ to the 
   // message. The optional print/record bit is to specify whether 
@@ -397,7 +400,7 @@ class uvm_report_message_element_container extends uvm_object;
   endfunction
 
 
-  // Function: add_object
+  // Function -- NODOCS -- add_object
   // 
   // This method adds a uvm_object of the name ~name~ and reference ~obj~ to
   // the message. The optional print/record bit is to specify whether 
@@ -457,7 +460,7 @@ endclass
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_report_message
+// CLASS -- NODOCS -- uvm_report_message
 //
 // The uvm_report_message is the basic UVM object message class.  It provides 
 // the fields that are common to all messages.  It also has a message element 
@@ -471,6 +474,7 @@ endclass
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 6.2.1
 class uvm_report_message extends uvm_object;
 
   protected uvm_report_object _report_object;
@@ -491,23 +495,25 @@ class uvm_report_message extends uvm_object;
   protected uvm_report_message_element_container _report_message_element_container;
 
 
-  // Function: new
+  // Function -- NODOCS -- new
   // 
   // Creates a new uvm_report_message object.
   //
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.2.1
   function new(string name = "uvm_report_message");
     super.new(name);
     _report_message_element_container = new();
   endfunction
 
 
-  // Function: new_report_message
+  // Function -- NODOCS -- new_report_message
   // 
   // Creates a new uvm_report_message object.
   // This function is the same as new(), but keeps the random stability.
   //
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.2.2
   static function uvm_report_message new_report_message(string name = "uvm_report_message");
     process p;
     string rand_state;
@@ -523,7 +529,7 @@ class uvm_report_message extends uvm_object;
   endfunction
 
 
-  // Function: print
+  // Function -- NODOCS -- print
   //
   // The uvm_report_message implements <uvm_object::do_print()> such that
   // ~print~ method provides UVM printer formatted output
@@ -548,6 +554,7 @@ class uvm_report_message extends uvm_object;
   //|     bar             string              8     hi there
 
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.2.3
   virtual function void do_print(uvm_printer printer);
     uvm_verbosity l_verbosity;
 
@@ -561,13 +568,17 @@ class uvm_report_message extends uvm_object;
       printer.print_generic("verbosity", "uvm_verbosity", 
                             $bits(l_verbosity), l_verbosity.name());
     else
-      printer.print_int("verbosity", _verbosity, $bits(_verbosity), UVM_HEX);
+      printer.print_field("verbosity", _verbosity, $bits(_verbosity), UVM_HEX);
     printer.print_string("filename", _filename);
-    printer.print_int("line", _line, $bits(_line), UVM_UNSIGNED);
+    printer.print_field("line", _line, $bits(_line), UVM_UNSIGNED);
     printer.print_string("context_name", _context_name);
 
-    if (_report_message_element_container.size() != 0)
-      _report_message_element_container.print(printer);
+    if (_report_message_element_container.size() != 0) begin
+      uvm_report_message_element_base elements[$];
+      elements  = _report_message_element_container.get_elements();
+      foreach (elements[i])
+        elements[i].print(printer);
+    end
   endfunction
 
 
@@ -607,213 +618,237 @@ class uvm_report_message extends uvm_object;
 
 
   //----------------------------------------------------------------------------
-  // Group:  Infrastructure References
+  // Group -- NODOCS --  Infrastructure References
   //----------------------------------------------------------------------------
 
 
-  // Function: get_report_object
+  // Function -- NODOCS -- get_report_object
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.3.1
   virtual function uvm_report_object get_report_object();
     return _report_object;
   endfunction
 
-  // Function: set_report_object
+  // Function -- NODOCS -- set_report_object
   //
   // Get or set the uvm_report_object that originated the message.
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.3.1
   virtual function void set_report_object(uvm_report_object ro);
     _report_object = ro;
   endfunction
 
 
-  // Function: get_report_handler
+  // Function -- NODOCS -- get_report_handler
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.3.2
   virtual function uvm_report_handler get_report_handler();
     return _report_handler;
   endfunction
 
-  // Function: set_report_handler
+  // Function -- NODOCS -- set_report_handler
   //
   // Get or set the uvm_report_handler that is responsible for checking
   // whether the message is enabled, should be upgraded/downgraded, etc.
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.3.2
   virtual function void set_report_handler(uvm_report_handler rh);
     _report_handler = rh;
   endfunction
 
   
-  // Function: get_report_server
+  // Function -- NODOCS -- get_report_server
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.3.3
   virtual function uvm_report_server get_report_server();
     return _report_server;
   endfunction
 
-  // Function: set_report_server
+  // Function -- NODOCS -- set_report_server
   //
   // Get or set the uvm_report_server that is responsible for servicing
   // the message's actions.  
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.3.3
   virtual function void set_report_server(uvm_report_server rs);
     _report_server = rs;
   endfunction
 
 
   //----------------------------------------------------------------------------
-  // Group:  Message Fields
+  // Group -- NODOCS --  Message Fields
   //----------------------------------------------------------------------------
 
 
-  // Function: get_severity
+  // Function -- NODOCS -- get_severity
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.1
   virtual function uvm_severity get_severity();
     return _severity;
   endfunction
 
-  // Function: set_severity
+  // Function -- NODOCS -- set_severity
   //
   // Get or set the severity (UVM_INFO, UVM_WARNING, UVM_ERROR or 
   // UVM_FATAL) of the message.  The value of this field is determined via
   // the API used (`uvm_info(), `uvm_waring(), etc.) and populated for the user.
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.1
   virtual function void set_severity(uvm_severity sev);
     _severity = sev;
   endfunction
 
 
-  // Function: get_id
+  // Function -- NODOCS -- get_id
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.2
   virtual function string get_id();
     return _id;
   endfunction
 
-  // Function: set_id
+  // Function -- NODOCS -- set_id
   //
   // Get or set the id of the message.  The value of this field is 
   // completely under user discretion.  Users are recommended to follow a
   // consistent convention.  Settings in the uvm_report_handler allow various
   // messaging controls based on this field.  See <uvm_report_handler>.
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.2
   virtual function void set_id(string id);
     _id = id;
   endfunction
 
 
-  // Function: get_message
+  // Function -- NODOCS -- get_message
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.3
   virtual function string get_message();
     return _message;
   endfunction
 
-  // Function: set_message
+  // Function -- NODOCS -- set_message
   //
   // Get or set the user message content string.
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.3
   virtual function void set_message(string msg);
     _message = msg;
   endfunction
 
 
-  // Function: get_verbosity
+  // Function -- NODOCS -- get_verbosity
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.4
   virtual function int get_verbosity();
     return _verbosity;
   endfunction
 
-  // Function: set_verbosity
+  // Function -- NODOCS -- set_verbosity
   //
   // Get or set the message threshold value.  This value is compared
   // against settings in the <uvm_report_handler> to determine whether this
   // message should be executed.
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.4
   virtual function void set_verbosity(int ver);
     _verbosity = ver;
   endfunction
 
 
-  // Function: get_filename
+  // Function -- NODOCS -- get_filename
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.5
   virtual function string get_filename();
     return _filename;
   endfunction
 
-  // Function: set_filename
+  // Function -- NODOCS -- set_filename
   //
   // Get or set the file from which the message originates.  This value
   // is automatically populated by the messaging macros.
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.5
   virtual function void set_filename(string fname);
     _filename = fname;
   endfunction
 
 
-  // Function: get_line
+  // Function -- NODOCS -- get_line
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.6
   virtual function int get_line();
     return _line;
   endfunction
 
-  // Function: set_line
+  // Function -- NODOCS -- set_line
   //
   // Get or set the line in the ~file~ from which the message originates.
   // This value is automatically populate by the messaging macros.
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.6
   virtual function void set_line(int ln);
     _line = ln;
   endfunction
 
 
-  // Function: get_context
+  // Function -- NODOCS -- get_context
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.7
   virtual function string get_context();
     return _context_name;
   endfunction
 
-  // Function: set_context
+  // Function -- NODOCS -- set_context
   //
   // Get or set the optional user-supplied string that is meant to convey
   // the context of the message.  It can be useful in scopes that are not
   // inherently UVM like modules, interfaces, etc.
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.7
   virtual function void set_context(string cn);
     _context_name = cn;
   endfunction
  
 
-  // Function: get_action
+  // Function -- NODOCS -- get_action
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.8
   virtual function uvm_action get_action();
     return _action;
   endfunction
 
-  // Function: set_action
+  // Function -- NODOCS -- set_action
   //
   // Get or set the action(s) that the uvm_report_server should perform
   // for this message.  This field is populated by the uvm_report_handler during
   // message execution flow.
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.8
   virtual function void set_action(uvm_action act);
     _action = act;
   endfunction
 
 
-  // Function: get_file
+  // Function -- NODOCS -- get_file
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.9
   virtual function UVM_FILE get_file();
     return _file;
   endfunction
 
-  // Function: set_file
+  // Function -- NODOCS -- set_file
   //
   // Get or set the file that the message is to be written to when the 
   // message's action is UVM_LOG.  This field is populated by the 
   // uvm_report_handler during message execution flow.
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.9
   virtual function void set_file(UVM_FILE fl);
     _file = fl;
   endfunction
 
 
-  // Function: get_element_container
+  // Function -- NODOCS -- get_element_container
   //
   // Get the element_container of the message
 
@@ -822,11 +857,12 @@ class uvm_report_message extends uvm_object;
   endfunction
 
 
-  // Function: set_report_message
+  // Function -- NODOCS -- set_report_message
   //
   // Set all the common fields of the report message in one shot.
   //
 
+  // @uvm-ieee 1800.2-2017 auto 6.2.4.10
   virtual function void set_report_message(uvm_severity severity, 
     					   string id,
 					   string message,
@@ -888,11 +924,11 @@ class uvm_report_message extends uvm_object;
 
 
   //----------------------------------------------------------------------------
-  // Group:  Message Element APIs
+  // Group -- NODOCS --  Message Element APIs
   //----------------------------------------------------------------------------
 
 
-  // Function: add_int
+  // Function -- NODOCS -- add_int
   // 
   // This method adds an integral type of the name ~name~ and value ~value~ to
   // the message.  The required ~size~ field indicates the size of ~value~. 
@@ -908,7 +944,7 @@ class uvm_report_message extends uvm_object;
   endfunction
 
 
-  // Function: add_string
+  // Function -- NODOCS -- add_string
   // 
   // This method adds a string of the name ~name~ and value ~value~ to the 
   // message. The optional print/record bit is to specify whether 
@@ -921,7 +957,7 @@ class uvm_report_message extends uvm_object;
   endfunction
 
 
-  // Function: add_object
+  // Function -- NODOCS -- add_object
   // 
   // This method adds a uvm_object of the name ~name~ and reference ~obj~ to
   // the message. The optional print/record bit is to specify whether 

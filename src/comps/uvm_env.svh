@@ -1,8 +1,8 @@
 //
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2010 Cadence Design Systems, Inc.
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2015-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -22,7 +22,7 @@
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_env
+// CLASS -- NODOCS -- uvm_env
 //
 // The base class for hierarchical containers of other components that
 // together comprise a complete environment. The environment may
@@ -30,24 +30,20 @@
 // a sub-environment in even larger system-level environments.
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 13.3.1
 virtual class uvm_env extends uvm_component;
 
-  // Function: new
+  `uvm_component_abstract_utils(uvm_env)
+  
+  // Function -- NODOCS -- new
   //
   // Creates and initializes an instance of this class using the normal
   // constructor arguments for <uvm_component>: ~name~ is the name of the
   // instance, and ~parent~ is the handle to the hierarchical parent, if any.
 
+  // @uvm-ieee 1800.2-2017 auto 13.3.2
   function new (string name="env", uvm_component parent=null);
     super.new(name,parent);
   endfunction
 
-  const static string type_name = "uvm_env";
-
-  virtual function string get_type_name ();
-    return type_name;
-  endfunction
-
 endclass
-
-

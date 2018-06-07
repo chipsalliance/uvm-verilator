@@ -1,8 +1,10 @@
 //
 // -------------------------------------------------------------
-//    Copyright 2004-2009 Synopsys, Inc.
-//    Copyright 2010-2011 Mentor Graphics Corporation
-//    Copyright 2010-2011 Cadence Design Systems, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2004-2018 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2014-2018 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -23,7 +25,7 @@
  
   
 //------------------------------------------------------------------------------
-// TITLE: Register Sequence Classes
+// TITLE -- NODOCS -- Register Sequence Classes
 //------------------------------------------------------------------------------
 //
 // This section defines the base classes used for register stimulus generation.
@@ -32,7 +34,7 @@
                                                               
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_reg_sequence
+// CLASS -- NODOCS -- uvm_reg_sequence
 //
 // This class provides base functionality for both user-defined RegModel test
 // sequences and "register translation sequences".
@@ -54,11 +56,12 @@
 // Note- The convenience API not yet implemented.
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 19.4.1.1
 class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
   `uvm_object_param_utils(uvm_reg_sequence #(BASE))
 
-  // Parameter: BASE
+  // Parameter -- NODOCS -- BASE
   //
   // Specifies the sequence type to extend from.
   //
@@ -81,7 +84,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
   // user-defined base sequences.
 
 
-  // Variable: model
+  // Variable -- NODOCS -- model
   //
   // Block abstraction this sequence executes on, defined only when this
   // sequence is a user-defined test sequence.
@@ -89,7 +92,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
   uvm_reg_block model;
 
 
-  // Variable: adapter
+  // Variable -- NODOCS -- adapter
   //
   // Adapter to use for translating between abstract register transactions
   // and physical bus transactions, defined only when this sequence is a
@@ -98,7 +101,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
   uvm_reg_adapter adapter;
 
 
-  // Variable: reg_seqr
+  // Variable -- NODOCS -- reg_seqr
   //
   // Layered upstream "register" sequencer.
   //
@@ -109,25 +112,15 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
   uvm_sequencer #(uvm_reg_item) reg_seqr;
 
 
-  // Function: new
-  //
-  // Create a new instance, giving it the optional ~name~.
-  //
+
+  // @uvm-ieee 1800.2-2017 auto 19.4.1.4.1
   function new (string name="uvm_reg_sequence_inst");
     super.new(name);
   endfunction
 
 
-  // Task: body
-  //
-  // Continually gets a register transaction from the configured upstream
-  // sequencer, <reg_seqr>, and executes the corresponding bus transaction
-  // via <do_reg_item>. 
-  //
-  // User-defined RegModel test sequences must override body() and not call
-  // super.body(), else a warning will be issued and the calling process
-  // not return.
-  //
+
+  // @uvm-ieee 1800.2-2017 auto 19.4.1.4.2
   virtual task body();
     if (m_sequencer == null) begin
       `uvm_fatal("NO_SEQR", {"Sequence executing as translation sequence, ",
@@ -160,13 +153,8 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
   uvm_sequence_base upstream_parent;
 
 
-  // Function: do_reg_item
-  //
-  // Executes the given register transaction, ~rw~, via the sequencer on
-  // which this sequence was started (i.e. m_sequencer). Uses the configured
-  // <adapter> to convert the register transaction into the type expected by
-  // this sequencer.
-  //
+
+  // @uvm-ieee 1800.2-2017 auto 19.4.1.4.3
   virtual task do_reg_item(uvm_reg_item rw);
      string rws=rw.convert2string();
     if (m_sequencer == null)
@@ -192,7 +180,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
    //----------------------------------
-   // Group: Convenience Write/Read API
+   // Group -- NODOCS -- Convenience Write/Read API
    //----------------------------------
    //
    // The following methods delegate to the corresponding method in the 
@@ -208,21 +196,12 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
    //
 
 
-   // Task: write_reg
-   //
-   // Writes the given register ~rg~ using <uvm_reg::write>, supplying 'this' as
-   // the ~parent~ argument. Thus,
-   //
-   //| write_reg(model.regA, status, value);
-   //
-   // is equivalent to
-   //
-   //| model.regA.write(status, value, .parent(this));
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.1
    virtual task write_reg(input  uvm_reg           rg,
                           output uvm_status_e      status,
                           input  uvm_reg_data_t    value,
-                          input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                          input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                           input  uvm_reg_map       map = null,
                           input  int               prior = -1,
                           input  uvm_object        extension = null,
@@ -235,22 +214,12 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
    endtask
 
 
-   // Task: read_reg
-   //
-   // Reads the given register ~rg~ using <uvm_reg::read>, supplying 'this' as
-   // the ~parent~ argument. Thus,
-   //
-   //| read_reg(model.regA, status, value);
-   //
-   // is equivalent to
-   //
-   //| model.regA.read(status, value, .parent(this));
-   //
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.2
    virtual task read_reg(input  uvm_reg           rg,
                          output uvm_status_e      status,
                          output uvm_reg_data_t    value,
-                         input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                         input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                          input  uvm_reg_map       map = null,
                          input  int               prior = -1,
                          input  uvm_object        extension = null,
@@ -264,18 +233,8 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // Task: poke_reg
-   //
-   // Pokes the given register ~rg~ using <uvm_reg::poke>, supplying 'this' as
-   // the ~parent~ argument. Thus,
-   //
-   //| poke_reg(model.regA, status, value);
-   //
-   // is equivalent to
-   //
-   //| model.regA.poke(status, value, .parent(this));
-   //
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.3
    virtual task poke_reg(input  uvm_reg           rg,
                          output uvm_status_e      status,
                          input  uvm_reg_data_t    value,
@@ -291,17 +250,8 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // Task: peek_reg
-   //
-   // Peeks the given register ~rg~ using <uvm_reg::peek>, supplying 'this' as
-   // the ~parent~ argument. Thus,
-   //
-   //| peek_reg(model.regA, status, value);
-   //
-   // is equivalent to
-   //
-   //| model.regA.peek(status, value, .parent(this));
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.4
    virtual task peek_reg(input  uvm_reg           rg,
                          output uvm_status_e      status,
                          output uvm_reg_data_t    value,
@@ -317,20 +267,11 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
    
    
-   // Task: update_reg
-   //
-   // Updates the given register ~rg~ using <uvm_reg::update>, supplying 'this' as
-   // the ~parent~ argument. Thus,
-   //
-   //| update_reg(model.regA, status, value);
-   //
-   // is equivalent to
-   //
-   //| model.regA.update(status, value, .parent(this));
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.5
    virtual task update_reg(input  uvm_reg           rg,
                            output uvm_status_e      status,
-                           input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                           input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                            input  uvm_reg_map       map = null,
                            input  int               prior = -1,
                            input  uvm_object        extension = null,
@@ -344,21 +285,12 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // Task: mirror_reg
-   //
-   // Mirrors the given register ~rg~ using <uvm_reg::mirror>, supplying 'this' as
-   // the ~parent~ argument. Thus,
-   //
-   //| mirror_reg(model.regA, status, UVM_CHECK);
-   //
-   // is equivalent to
-   //
-   //| model.regA.mirror(status, UVM_CHECK, .parent(this));
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.6
    virtual task mirror_reg(input  uvm_reg       rg,
                            output uvm_status_e  status,
                            input  uvm_check_e   check  = UVM_NO_CHECK,
-                           input  uvm_path_e    path = UVM_DEFAULT_PATH,
+                           input  uvm_door_e    path = UVM_DEFAULT_DOOR,
                            input  uvm_reg_map   map = null,
                            input  int           prior = -1,
                            input  uvm_object    extension = null,
@@ -372,22 +304,13 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
   
 
-   // Task: write_mem
-   //
-   // Writes the given memory ~mem~ using <uvm_mem::write>, supplying 'this' as
-   // the ~parent~ argument. Thus,
-   //
-   //| write_mem(model.regA, status, offset, value);
-   //
-   // is equivalent to
-   //
-   //| model.regA.write(status, offset, value, .parent(this));
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.7
    virtual task write_mem(input  uvm_mem           mem,
                           output uvm_status_e      status,
                           input  uvm_reg_addr_t    offset,
                           input  uvm_reg_data_t    value,
-                          input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                          input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                           input  uvm_reg_map       map = null,
                           input  int               prior = -1,
                           input  uvm_object        extension = null,
@@ -400,23 +323,13 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
    endtask
 
 
-   // Task: read_mem
-   //
-   // Reads the given memory ~mem~ using <uvm_mem::read>, supplying 'this' as
-   // the ~parent~ argument. Thus,
-   //
-   //| read_mem(model.regA, status, offset, value);
-   //
-   // is equivalent to
-   //
-   //| model.regA.read(status, offset, value, .parent(this));
-   //
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.8
    virtual task read_mem(input  uvm_mem           mem,
                          output uvm_status_e      status,
                          input  uvm_reg_addr_t    offset,
                          output uvm_reg_data_t    value,
-                         input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                         input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                          input  uvm_reg_map       map = null,
                          input  int               prior = -1,
                          input  uvm_object        extension = null,
@@ -430,18 +343,8 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // Task: poke_mem
-   //
-   // Pokes the given memory ~mem~ using <uvm_mem::poke>, supplying 'this' as
-   // the ~parent~ argument. Thus,
-   //
-   //| poke_mem(model.regA, status, offset, value);
-   //
-   // is equivalent to
-   //
-   //| model.regA.poke(status, offset, value, .parent(this));
-   //
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.9
    virtual task poke_mem(input  uvm_mem           mem,
                          output uvm_status_e      status,
                          input  uvm_reg_addr_t    offset,
@@ -458,17 +361,8 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // Task: peek_mem
-   //
-   // Peeks the given memory ~mem~ using <uvm_mem::peek>, supplying 'this' as
-   // the ~parent~ argument. Thus,
-   //
-   //| peek_mem(model.regA, status, offset, value);
-   //
-   // is equivalent to
-   //
-   //| model.regA.peek(status, offset, value, .parent(this));
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.10
    virtual task peek_mem(input  uvm_mem           mem,
                          output uvm_status_e      status,
                          input  uvm_reg_addr_t    offset,
@@ -496,42 +390,27 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 endclass
 
 
-//------------------------------------------------------------------------------
-// Class: uvm_reg_frontdoor
-//
-// Facade class for register and memory frontdoor access.
-//------------------------------------------------------------------------------
-//
-// User-defined frontdoor access sequence
-//
-// Base class for user-defined access to register and memory reads and writes
-// through a physical interface.
-//
-// By default, different registers and memories are mapped to different
-// addresses in the address space and are accessed via those exclusively
-// through physical addresses.
-//
-// The frontdoor allows access using a non-linear and/or non-mapped mechanism.
-// Users can extend this class to provide the physical access to these registers.
-//
+
+// @uvm-ieee 1800.2-2017 auto 19.4.2.1
 virtual class uvm_reg_frontdoor extends uvm_reg_sequence #(uvm_sequence #(uvm_sequence_item));
 
-   // Variable: rw_info
+   `uvm_object_abstract_utils(uvm_reg_frontdoor)
+
+
+   // Variable -- NODOCS -- rw_info
    //
    // Holds information about the register being read or written
    //
    uvm_reg_item rw_info;
 
-   // Variable: sequencer
+   // Variable -- NODOCS -- sequencer
    //
    // Sequencer executing the operation
    //
    uvm_sequencer_base sequencer;
 
-   // Function: new
-   //
-   // Constructor, new object given optional ~name~.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.4.2.3
    function new(string name="");
       super.new(name);
    endfunction
@@ -540,8 +419,3 @@ virtual class uvm_reg_frontdoor extends uvm_reg_sequence #(uvm_sequence #(uvm_se
    int lineno;
 
 endclass: uvm_reg_frontdoor
-
-
-
-
-

@@ -1,7 +1,10 @@
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2010 Cadence Design Systems, Inc. 
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2014 Intel Corporation
+// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2018 AMD
+// Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide 
 //  
 //   Licensed under the Apache License, Version 2.0 (the
@@ -19,40 +22,46 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
-// Title: Sequence-Related Macros
+// Title -- NODOCS -- Sequence-Related Macros
 
 
 
 //-----------------------------------------------------------------------------
 //
-// Group: Sequence Action Macros
+// Group -- NODOCS -- Sequence on Sequencer Action Macros
 //
-// These macros are used to start sequences and sequence items on the default
-// sequencer, ~m_sequencer~. This is determined a number of ways. 
-// - the sequencer handle provided in the <uvm_sequence_base::start> method
-// - the sequencer used by the parent sequence
-// - the sequencer that was set using the <uvm_sequence_item::set_sequencer> method
+// These macros are used to start sequences and sequence items on a specific
+// sequencer. The sequence or item is created and executed on the given
+// sequencer.
 //-----------------------------------------------------------------------------
 
-// MACRO: `uvm_create
-//
-//| `uvm_create(SEQ_OR_ITEM)
-//
-// This action creates the item or sequence using the factory.  It intentionally
-// does zero processing.  After this action completes, the user can manually set
-// values, manipulate rand_mode and constraint_mode, etc.
 
-`define uvm_create(SEQ_OR_ITEM) \
-  `uvm_create_on(SEQ_OR_ITEM, m_sequencer)
-
-
-// MACRO: `uvm_do
+// MACRO -- NODOCS -- `uvm_create
 //
-//| `uvm_do(SEQ_OR_ITEM)
+//| `uvm_create(SEQ_OR_ITEM, SEQR=get_sequencer())
+//
+// This action creates the item or sequence using the factory. It also sets the
+// parent sequence to the sequence in which the macro is invoked,
+// and it sets the sequencer to the specified ~SEQR~ argument.
+// It intentionally does zero processing.  After this action completes,
+// the user can manually set values, manipulate rand_mode and constraint_mode, etc.
+
+// @uvm-ieee 1800.2-2017 auto B.3.1.1
+`define uvm_create(SEQ_OR_ITEM, SEQR=get_sequencer()) \
+  begin \
+  uvm_object_wrapper w_; \
+  w_ = SEQ_OR_ITEM.get_type(); \
+  $cast(SEQ_OR_ITEM , create_item(w_, SEQR, `"SEQ_OR_ITEM`"));\
+  end
+
+
+// MACRO -- NODOCS -- `uvm_do
+//
+//| `uvm_do(SEQ_OR_ITEM, SEQR=get_sequencer(), PRIORITY=-1, CONSTRAINTS={})
 //
 // This macro takes as an argument a uvm_sequence_item variable or object.
-// The argument is created using <`uvm_create> if necessary,
-// then randomized.
+// The argument is created using <`uvm_create>, which sets the sequencer to
+// the specified ~SEQR~ argument.
 // In the case of an item, it is randomized after the call to
 // <uvm_sequence_base::start_item()> returns.
 // This is called late-randomization. 
@@ -87,157 +96,31 @@
 //|   sub_seq.post_start()        (task)
 //|
 
-`define uvm_do(SEQ_OR_ITEM) \
-  `uvm_do_on_pri_with(SEQ_OR_ITEM, m_sequencer, -1, {})
-
-
-// MACRO: `uvm_do_pri
-//
-//| `uvm_do_pri(SEQ_OR_ITEM, PRIORITY)
-//
-// This is the same as `uvm_do except that the sequence item or sequence is
-// executed with the priority specified in the argument
-
-`define uvm_do_pri(SEQ_OR_ITEM, PRIORITY) \
-  `uvm_do_on_pri_with(SEQ_OR_ITEM, m_sequencer, PRIORITY, {})
-
-
-// MACRO: `uvm_do_with
-//
-//| `uvm_do_with(SEQ_OR_ITEM, CONSTRAINTS)
-//
-// This is the same as `uvm_do except that the constraint block in the 2nd
-// argument is applied to the item or sequence in a randomize with statement
-// before execution.
-
-`define uvm_do_with(SEQ_OR_ITEM, CONSTRAINTS) \
-  `uvm_do_on_pri_with(SEQ_OR_ITEM, m_sequencer, -1, CONSTRAINTS)
-
-
-// MACRO: `uvm_do_pri_with
-//
-//| `uvm_do_pri_with(SEQ_OR_ITEM, PRIORITY, CONSTRAINTS)
-//
-// This is the same as `uvm_do_pri except that the given constraint block is
-// applied to the item or sequence in a randomize with statement before
-// execution.
-
-`define uvm_do_pri_with(SEQ_OR_ITEM, PRIORITY, CONSTRAINTS) \
-  `uvm_do_on_pri_with(SEQ_OR_ITEM, m_sequencer, PRIORITY, CONSTRAINTS)
+// @uvm-ieee 1800.2-2017 auto B.3.1.4
+`define uvm_do(SEQ_OR_ITEM, SEQR=get_sequencer(), PRIORITY=-1, CONSTRAINTS={}) \
+  `uvm_create(SEQ_OR_ITEM, SEQR) \
+  `uvm_rand_send(SEQ_OR_ITEM, PRIORITY, CONSTRAINTS)
 
 
 //-----------------------------------------------------------------------------
 //
-// Group: Sequence on Sequencer Action Macros
-//
-// These macros are used to start sequences and sequence items on a specific
-// sequencer. The sequence or item is created and executed on the given
-// sequencer.
-//-----------------------------------------------------------------------------
-
-// MACRO: `uvm_create_on
-//
-//| `uvm_create_on(SEQ_OR_ITEM, SEQR)
-//
-// This is the same as <`uvm_create> except that it also sets the parent sequence
-// to the sequence in which the macro is invoked, and it sets the sequencer to
-// the specified ~SEQR~ argument.
-
-`define uvm_create_on(SEQ_OR_ITEM, SEQR) \
-  begin \
-  uvm_object_wrapper w_; \
-  w_ = SEQ_OR_ITEM.get_type(); \
-  $cast(SEQ_OR_ITEM , create_item(w_, SEQR, `"SEQ_OR_ITEM`"));\
-  end
-
-
-// MACRO: `uvm_do_on
-//
-//| `uvm_do_on(SEQ_OR_ITEM, SEQR)
-//
-// This is the same as <`uvm_do> except that it also sets the parent sequence to
-// the sequence in which the macro is invoked, and it sets the sequencer to the
-// specified ~SEQR~ argument.
-
-`define uvm_do_on(SEQ_OR_ITEM, SEQR) \
-  `uvm_do_on_pri_with(SEQ_OR_ITEM, SEQR, -1, {})
-
-
-// MACRO: `uvm_do_on_pri
-//
-//| `uvm_do_on_pri(SEQ_OR_ITEM, SEQR, PRIORITY)
-//
-// This is the same as <`uvm_do_pri> except that it also sets the parent sequence
-// to the sequence in which the macro is invoked, and it sets the sequencer to
-// the specified ~SEQR~ argument.
-
-`define uvm_do_on_pri(SEQ_OR_ITEM, SEQR, PRIORITY) \
-  `uvm_do_on_pri_with(SEQ_OR_ITEM, SEQR, PRIORITY, {})
-
-
-// MACRO: `uvm_do_on_with
-//
-//| `uvm_do_on_with(SEQ_OR_ITEM, SEQR, CONSTRAINTS)
-//
-// This is the same as <`uvm_do_with> except that it also sets the parent
-// sequence to the sequence in which the macro is invoked, and it sets the
-// sequencer to the specified ~SEQR~ argument.
-// The user must supply brackets around the constraints.
-
-`define uvm_do_on_with(SEQ_OR_ITEM, SEQR, CONSTRAINTS) \
-  `uvm_do_on_pri_with(SEQ_OR_ITEM, SEQR, -1, CONSTRAINTS)
-
-
-// MACRO: `uvm_do_on_pri_with
-//
-//| `uvm_do_on_pri_with(SEQ_OR_ITEM, SEQR, PRIORITY, CONSTRAINTS)
-//
-// This is the same as `uvm_do_pri_with except that it also sets the parent
-// sequence to the sequence in which the macro is invoked, and it sets the
-// sequencer to the specified ~SEQR~ argument.
-
-`define uvm_do_on_pri_with(SEQ_OR_ITEM, SEQR, PRIORITY, CONSTRAINTS) \
-  begin \
-  uvm_sequence_base __seq; \
-  `uvm_create_on(SEQ_OR_ITEM, SEQR) \
-  if (!$cast(__seq,SEQ_OR_ITEM)) start_item(SEQ_OR_ITEM, PRIORITY);\
-  if ((__seq == null || !__seq.do_not_randomize) && !SEQ_OR_ITEM.randomize() with CONSTRAINTS ) begin \
-    `uvm_warning("RNDFLD", "Randomization failed in uvm_do_with action") \
-  end\
-  if (!$cast(__seq,SEQ_OR_ITEM)) finish_item(SEQ_OR_ITEM, PRIORITY); \
-  else __seq.start(SEQR, this, PRIORITY, 0); \
-  end
-
-
-//-----------------------------------------------------------------------------
-//
-// Group: Sequence Action Macros for Pre-Existing Sequences
+// Group -- NODOCS -- Sequence Action Macros for Pre-Existing Sequences
 //
 // These macros are used to start sequences and sequence items that do not
 // need to be created. 
 //-----------------------------------------------------------------------------
 
 
-// MACRO: `uvm_send
+// MACRO -- NODOCS -- `uvm_send
 //
-//| `uvm_send(SEQ_OR_ITEM)
+//| `uvm_send(SEQ_OR_ITEM, PRIORITY=-1)
 //
 // This macro processes the item or sequence that has been created using
 // `uvm_create.  The processing is done without randomization.  Essentially, an
 // `uvm_do without the create or randomization.
 
-`define uvm_send(SEQ_OR_ITEM) \
-  `uvm_send_pri(SEQ_OR_ITEM, -1)
-  
-
-// MACRO: `uvm_send_pri
-//
-//| `uvm_send_pri(SEQ_OR_ITEM, PRIORITY)
-//
-// This is the same as `uvm_send except that the sequence item or sequence is
-// executed with the priority specified in the argument.
-
-`define uvm_send_pri(SEQ_OR_ITEM, PRIORITY) \
+// @uvm-ieee 1800.2-2017 auto B.3.1.2
+`define uvm_send(SEQ_OR_ITEM, PRIORITY=-1) \
   begin \
   uvm_sequence_base __seq; \
   if (!$cast(__seq,SEQ_OR_ITEM)) begin \
@@ -248,70 +131,39 @@
   end
   
 
-// MACRO: `uvm_rand_send
+// MACRO -- NODOCS -- `uvm_rand_send
 //
-//| `uvm_rand_send(SEQ_OR_ITEM)
+//| `uvm_rand_send(SEQ_OR_ITEM, PRIORITY=-1, CONSTRAINTS={})
 //
 // This macro processes the item or sequence that has been already been
-// allocated (possibly with `uvm_create). The processing is done with
-// randomization.  Essentially, an `uvm_do without the create.
+// allocated (with `uvm_create). The processing is done with
+// randomization.
 
-`define uvm_rand_send(SEQ_OR_ITEM) \
-  `uvm_rand_send_pri_with(SEQ_OR_ITEM, -1, {})
-
-
-// MACRO: `uvm_rand_send_pri
-//
-//| `uvm_rand_send_pri(SEQ_OR_ITEM, PRIORITY)
-//
-// This is the same as `uvm_rand_send except that the sequence item or sequence
-// is executed with the priority specified in the argument.
-
-`define uvm_rand_send_pri(SEQ_OR_ITEM, PRIORITY) \
-  `uvm_rand_send_pri_with(SEQ_OR_ITEM, PRIORITY, {})
-
-
-// MACRO: `uvm_rand_send_with
-//
-//| `uvm_rand_send_with(SEQ_OR_ITEM, CONSTRAINTS)
-//
-// This is the same as `uvm_rand_send except that the given constraint block is
-// applied to the item or sequence in a randomize with statement before
-// execution.
-
-`define uvm_rand_send_with(SEQ_OR_ITEM, CONSTRAINTS) \
-  `uvm_rand_send_pri_with(SEQ_OR_ITEM, -1, CONSTRAINTS)
-
-
-// MACRO: `uvm_rand_send_pri_with
-//
-//| `uvm_rand_send_pri_with(SEQ_OR_ITEM, PRIORITY, CONSTRAINTS)
-//
-// This is the same as `uvm_rand_send_pri except that the given constraint block
-// is applied to the item or sequence in a randomize with statement before
-// execution.
-
-`define uvm_rand_send_pri_with(SEQ_OR_ITEM, PRIORITY, CONSTRAINTS) \
+// @uvm-ieee 1800.2-2017 auto B.3.1.3
+`define uvm_rand_send(SEQ_OR_ITEM, PRIORITY=-1, CONSTRAINTS={}) \
   begin \
   uvm_sequence_base __seq; \
-  if (!$cast(__seq,SEQ_OR_ITEM)) start_item(SEQ_OR_ITEM, PRIORITY);\
-  else __seq.set_item_context(this,SEQ_OR_ITEM.get_sequencer()); \
-  if ((__seq == null || !__seq.do_not_randomize) && !SEQ_OR_ITEM.randomize() with CONSTRAINTS ) begin \
-    `uvm_warning("RNDFLD", "Randomization failed in uvm_rand_send_with action") \
-  end\
-  if (!$cast(__seq,SEQ_OR_ITEM)) finish_item(SEQ_OR_ITEM, PRIORITY);\
-  else __seq.start(__seq.get_sequencer(), this, PRIORITY, 0);\
+  if ( SEQ_OR_ITEM.is_item() ) begin \
+    start_item(SEQ_OR_ITEM, PRIORITY);\
+    if ( ! SEQ_OR_ITEM.randomize() with CONSTRAINTS ) begin \
+      `uvm_warning("RNDFLD", "Randomization failed in uvm_rand_send action") \
+    end\
+    finish_item(SEQ_OR_ITEM, PRIORITY);\
+  end \
+  else if ( $cast( __seq, SEQ_OR_ITEM ) ) begin \
+    __seq.set_item_context(this,SEQ_OR_ITEM.get_sequencer()); \
+    if ( __seq.get_randomize_enabled() ) begin \
+      if ( ! SEQ_OR_ITEM.randomize() with CONSTRAINTS ) begin \
+        `uvm_warning("RNDFLD", "Randomization failed in uvm_rand_send action") \
+      end \
+    end \
+    __seq.start(__seq.get_sequencer(), this, PRIORITY, 0);\
+  end \
+  else begin \
+    `uvm_warning("NOT_SEQ_OR_ITEM", "Object passed uvm_rand_send appears to be neither a sequence or item." ) \
+  end \
   end
 
-
-`define uvm_create_seq(UVM_SEQ, SEQR_CONS_IF) \
-  `uvm_create_on(UVM_SEQ, SEQR_CONS_IF.consumer_seqr) \
-
-`define uvm_do_seq(UVM_SEQ, SEQR_CONS_IF) \
-  `uvm_do_on(UVM_SEQ, SEQR_CONS_IF.consumer_seqr) \
-
-`define uvm_do_seq_with(UVM_SEQ, SEQR_CONS_IF, CONSTRAINTS) \
-  `uvm_do_on_with(UVM_SEQ, SEQR_CONS_IF.consumer_seqr, CONSTRAINTS) \
 
 
 
@@ -322,7 +174,7 @@
 //-----------------------------------------------------------------------------
 
 
-// MACRO: `uvm_add_to_sequence_library
+// MACRO -- NODOCS -- `uvm_add_to_sequence_library
 //
 // Adds the given sequence ~TYPE~ to the given sequence library ~LIBTYPE~
 //
@@ -353,13 +205,14 @@
 //|  endclass
 
 
+// @uvm-ieee 1800.2-2017 auto B.3.2.1
 `define uvm_add_to_seq_lib(TYPE,LIBTYPE) \
    static bit add_``TYPE``_to_seq_lib_``LIBTYPE =\
       LIBTYPE::m_add_typewide_sequence(TYPE::get_type());
 
 
 
-// MACRO: `uvm_sequence_library_utils
+// MACRO -- NODOCS -- `uvm_sequence_library_utils
 //
 //| `uvm_sequence_library_utils(TYPE)
 // 
@@ -388,6 +241,8 @@
 // See <uvm_sequencer_base::start_phase_sequence> for information on
 // starting default sequences.
 
+// @uvm-ieee 1800.2-2017 auto 14.4.2
+// @uvm-ieee 1800.2-2017 auto B.3.2.2
 `define uvm_sequence_library_utils(TYPE) \
 \
    static protected uvm_object_wrapper m_typewide_sequences[$]; \
@@ -416,12 +271,12 @@
 
 //-----------------------------------------------------------------------------
 //
-// Group: Sequencer Subtypes
+// Group -- NODOCS -- Sequencer Subtypes
 //
 //-----------------------------------------------------------------------------
 
 
-// MACRO: `uvm_declare_p_sequencer
+// MACRO -- NODOCS -- `uvm_declare_p_sequencer
 //
 // This macro is used to declare a variable ~p_sequencer~ whose type is
 // specified by ~SEQUENCER~.
@@ -444,6 +299,7 @@
 //| endclass
 //
 
+// @uvm-ieee 1800.2-2017 auto B.3.3
 `define uvm_declare_p_sequencer(SEQUENCER) \
   SEQUENCER p_sequencer;\
   virtual function void m_set_p_sequencer();\
@@ -452,4 +308,3 @@
         `uvm_fatal("DCLPSQ", \
         $sformatf("%m %s Error casting p_sequencer, please verify that this sequence/sequence item is intended to execute on this type of sequencer", get_full_name())) \
   endfunction  
-

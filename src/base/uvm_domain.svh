@@ -1,8 +1,10 @@
 //
 //----------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2010 Cadence Design Systems, Inc.
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2018 Mentor Graphics Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2011 AMD
+// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2012 Accellera Systems Initiative
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -54,7 +56,7 @@ uvm_phase report_ph;
    
 //------------------------------------------------------------------------------
 //
-// Class: uvm_domain
+// Class -- NODOCS -- uvm_domain
 //
 //------------------------------------------------------------------------------
 //
@@ -62,24 +64,22 @@ uvm_phase report_ph;
 // Handle used to assign domains to components or hierarchies in the testbench
 //
 
+// @uvm-ieee 1800.2-2017 auto 9.4.1
 class uvm_domain extends uvm_phase;
 
-  static local uvm_domain m_common_domain;
   static local uvm_domain m_uvm_domain; // run-time phases
   static local uvm_domain m_domains[string];
   static local uvm_phase m_uvm_schedule;
 
 
-  // Function: get_domains
-  //
-  // Provides a list of all domains in the provided ~domains~ argument. 
-  //
+
+  // @uvm-ieee 1800.2-2017 auto 9.4.2.2
   static function void get_domains(output uvm_domain domains[string]);
     domains = m_domains;
   endfunction 
 
 
-  // Function: get_uvm_schedule
+  // Function -- NODOCS -- get_uvm_schedule
   //
   // Get the "UVM" schedule, which consists of the run-time phases that
   // all components execute when participating in the "UVM" domain.
@@ -90,7 +90,7 @@ class uvm_domain extends uvm_phase;
   endfunction 
 
 
-  // Function: get_common_domain
+  // Function -- NODOCS -- get_common_domain
   //
   // Get the "common" domain, which consists of the common phases that
   // all components execute in sync with each other. Phases in the "common"
@@ -100,10 +100,12 @@ class uvm_domain extends uvm_phase;
   static function uvm_domain get_common_domain();
 
     uvm_domain domain;
-    uvm_phase schedule;
 
-    if (m_common_domain != null)
-      return m_common_domain;
+    if(m_domains.exists("common"))
+      domain = m_domains["common"];
+    
+    if (domain != null)
+      return domain;
 
     domain = new("common");
     domain.add(uvm_build_phase::get());
@@ -115,7 +117,6 @@ class uvm_domain extends uvm_phase;
     domain.add(uvm_check_phase::get());
     domain.add(uvm_report_phase::get());
     domain.add(uvm_final_phase::get());
-    m_domains["common"] = domain;
 
     // for backward compatibility, make common phases visible;
     // same as uvm_<name>_phase::get().
@@ -127,22 +128,19 @@ class uvm_domain extends uvm_phase;
     extract_ph             = domain.find(uvm_extract_phase::get());
     check_ph               = domain.find(uvm_check_phase::get());
     report_ph              = domain.find(uvm_report_phase::get());
-    m_common_domain = domain;
 
     domain = get_uvm_domain();
-    m_common_domain.add(domain,
-                     .with_phase(m_common_domain.find(uvm_run_phase::get())));
+    m_domains["common"].add(domain,
+                     .with_phase(m_domains["common"].find(uvm_run_phase::get())));
 
 
-    return m_common_domain;
+    return m_domains["common"];
 
   endfunction
 
 
-  // Function: add_uvm_phases
-  //
-  // Appends to the given ~schedule~ the built-in UVM phases.
-  //
+
+  // @uvm-ieee 1800.2-2017 auto 9.4.2.3
   static function void add_uvm_phases(uvm_phase schedule);
 
     schedule.add(uvm_pre_reset_phase::get());
@@ -161,7 +159,7 @@ class uvm_domain extends uvm_phase;
   endfunction
 
 
-  // Function: get_uvm_domain
+  // Function -- NODOCS -- get_uvm_domain
   //
   // Get a handle to the singleton ~uvm~ domain
   //
@@ -177,9 +175,8 @@ class uvm_domain extends uvm_phase;
   endfunction
 
 
-  // Function: new
-  //
-  // Create a new instance of a phase domain.
+
+  // @uvm-ieee 1800.2-2017 auto 9.4.2.1
   function new(string name);
     super.new(name,UVM_PHASE_DOMAIN);
     if (m_domains.exists(name))
@@ -187,10 +184,8 @@ class uvm_domain extends uvm_phase;
     m_domains[name] = this;
   endfunction
 
-  // Function: jump
-  //
-  // jumps all active phases of this domain to to-phase if
-  // there is a path between active-phase and to-phase
+
+  // @uvm-ieee 1800.2-2017 auto 9.4.2.4
   function void jump(uvm_phase phase);
     uvm_phase phases[$];
 

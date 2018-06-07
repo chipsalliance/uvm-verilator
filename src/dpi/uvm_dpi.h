@@ -1,7 +1,8 @@
 //----------------------------------------------------------------------
-//   Copyright 2010 Synopsys, Inc.
-//   Copyright 2011 Mentor Graphics Corporation
-//   Copyright 2013 NVIDIA Corporation
+// Copyright 2010-2017 Mentor Graphics Corporation
+// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2013 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -61,5 +62,23 @@ void m_uvm_report_dpi(int severity,
 
 int int_str_max( int );
 
+int uvm_re_match(const char * re, const char *str);
+const char * uvm_glob_to_re(const char *glob);
+
+int uvm_hdl_check_path(char *path);
+int uvm_hdl_read(char *path, p_vpi_vecval value);
+int uvm_hdl_deposit(char *path, p_vpi_vecval value);
+int uvm_hdl_force(char *path, p_vpi_vecval value);
+int uvm_hdl_release_and_read(char *path, p_vpi_vecval value);
+int uvm_hdl_release(char *path);
+
+void push_data(int lvl,char *entry, int cmd);
+void walk_level(int lvl, int argc, char**argv,int cmd);
+const char *uvm_dpi_get_next_arg_c (int init);
+extern char* uvm_dpi_get_tool_name_c ();
+extern char* uvm_dpi_get_tool_version_c ();
+extern regex_t* uvm_dpi_regcomp (char* pattern);
+extern int uvm_dpi_regexec (regex_t* re, char* str);
+extern void uvm_dpi_regfree (regex_t* re);
 
 #endif

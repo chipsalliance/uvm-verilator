@@ -1,7 +1,10 @@
 //
 // -------------------------------------------------------------
-//    Copyright 2004-2009 Synopsys, Inc.
-//    Copyright 2010 Mentor Graphics Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2004-2018 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2014-2018 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -22,7 +25,7 @@
 
 
 //------------------------------------------------------------------------------
-// Title: Virtual Register Field Classes
+// Title -- NODOCS -- Virtual Register Field Classes
 //
 // This section defines the virtual field and callback classes.
 //
@@ -37,7 +40,7 @@ typedef class uvm_vreg_field_cbs;
 
 
 //------------------------------------------------------------------------------
-// Class: uvm_vreg_field
+// Class -- NODOCS -- uvm_vreg_field
 //
 // Virtual field abstraction class
 //
@@ -46,6 +49,7 @@ typedef class uvm_vreg_field_cbs;
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 18.10.1
 class uvm_vreg_field extends uvm_object;
 
    `uvm_object_utils(uvm_vreg_field)
@@ -61,45 +65,33 @@ class uvm_vreg_field extends uvm_object;
 
 
    //
-   // Group: initialization
+   // Group -- NODOCS -- initialization
    //
 
-   //
-   // Function: new
-   // Create a new virtual field instance
-   //
-   // This method should not be used directly.
-   // The uvm_vreg_field::type_id::create() method should be used instead.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.2.1
    extern function new(string name = "uvm_vreg_field");
 
-   //
-   // Function: configure
-   // Instance-specific configuration
-   //
-   // Specify the ~parent~ virtual register of this virtual field, its
-   // ~size~ in bits, and the position of its least-significant bit
-   // within the virtual register relative to the least-significant bit
-   // of the virtual register.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.2.2
    extern function void configure(uvm_vreg parent,
                                   int unsigned size,
                                   int unsigned lsb_pos);
 
 
    //
-   // Group: Introspection
+   // Group -- NODOCS -- Introspection
    //
 
    //
-   // Function: get_name
+   // Function -- NODOCS -- get_name
    // Get the simple name
    //
    // Return the simple object name of this virtual field
    //
 
    //
-   // Function: get_full_name
+   // Function -- NODOCS -- get_full_name
    // Get the hierarchical name
    //
    // Return the hierarchal name of this virtual field
@@ -107,15 +99,13 @@ class uvm_vreg_field extends uvm_object;
    //
    extern virtual function string        get_full_name();
 
-   //
-   // FUNCTION: get_parent
-   // Get the parent virtual register
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.3.1
    extern virtual function uvm_vreg get_parent();
    extern virtual function uvm_vreg get_register();
 
    //
-   // FUNCTION: get_lsb_pos_in_register
+   // FUNCTION -- NODOCS -- get_lsb_pos_in_register
    // Return the position of the virtual field
    ///
    // Returns the index of the least significant bit of the virtual field
@@ -126,88 +116,38 @@ class uvm_vreg_field extends uvm_object;
    extern virtual function int unsigned get_lsb_pos_in_register();
 
    //
-   // FUNCTION: get_n_bits
+   // FUNCTION -- NODOCS -- get_n_bits
    // Returns the width, in bits, of the virtual field. 
    //
    extern virtual function int unsigned get_n_bits();
 
-   //
-   // FUNCTION: get_access
-   // Returns the access policy of the virtual field register
-   // when written and read via an address map.
-   //
-   // If the memory implementing the virtual field
-   // is mapped in more than one address map,
-   // an address ~map~ must be specified.
-   // If access restrictions are present when accessing a memory
-   // through the specified address map, the access mode returned
-   // takes the access restrictions into account.
-   // For example, a read-write memory accessed
-   // through an address map with read-only restrictions would return "RO". 
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.3.4
    extern virtual function string get_access(uvm_reg_map map = null);
 
 
    //
-   // Group: HDL Access
+   // Group -- NODOCS -- HDL Access
    //
 
-   //
-   // TASK: write
-   // Write the specified value in a virtual field
-   //
-   // Write ~value~ in the DUT memory location(s) that implements
-   // the virtual field that corresponds to this
-   // abstraction class instance using the specified access
-   // ~path~. 
-   //
-   // If the memory implementing the virtual register array
-   // containing this virtual field
-   // is mapped in more than one address map, 
-   // an address ~map~ must be
-   // specified if a physical access is used (front-door access).
-   //
-   // The operation is eventually mapped into
-   // memory read-modify-write operations at the location
-   // where the virtual register
-   // specified by ~idx~ in the virtual register array is implemented.
-   // If a backdoor is available for the memory implementing the
-   // virtual field, it will be used for the memory-read operation.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.4.1
    extern virtual task write(input  longint unsigned   idx,
                              output uvm_status_e  status,
                              input  uvm_reg_data_t     value,
-                             input  uvm_path_e    path = UVM_DEFAULT_PATH,
+                             input  uvm_door_e    path = UVM_DEFAULT_DOOR,
                              input  uvm_reg_map        map = null,
                              input  uvm_sequence_base  parent = null,
                              input  uvm_object         extension = null,
                              input  string             fname = "",
                              input  int                lineno = 0);
 
-   //
-   // TASK: read
-   // Read the current value from a virtual field
-   //
-   // Read from the DUT memory location(s) that implements
-   // the virtual field that corresponds to this
-   // abstraction class instance using the specified access
-   // ~path~, and return the readback ~value~.
-   //
-   // If the memory implementing the virtual register array
-   // containing this virtual field
-   // is mapped in more than one address map, 
-   // an address ~map~ must be
-   // specified if a physical access is used (front-door access).
-   //
-   // The operation is eventually mapped into
-   // memory read operations at the location(s)
-   // where the virtual register
-   // specified by ~idx~ in the virtual register array is implemented.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.4.2
    extern virtual task read(input  longint unsigned    idx,
                             output uvm_status_e   status,
                             output uvm_reg_data_t      value,
-                            input  uvm_path_e     path = UVM_DEFAULT_PATH,
+                            input  uvm_door_e     path = UVM_DEFAULT_DOOR,
                             input  uvm_reg_map         map = null,
                             input  uvm_sequence_base   parent = null,
                             input  uvm_object          extension = null,
@@ -215,20 +155,8 @@ class uvm_vreg_field extends uvm_object;
                             input  int                 lineno = 0);
                
 
-   //
-   // TASK: poke
-   // Deposit the specified value in a virtual field
-   //
-   // Deposit ~value~ in the DUT memory location(s) that implements
-   // the virtual field that corresponds to this
-   // abstraction class instance using the specified access
-   // ~path~. 
-   //
-   // The operation is eventually mapped into
-   // memory peek-modify-poke operations at the location
-   // where the virtual register
-   // specified by ~idx~ in the virtual register array is implemented.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.4.3
    extern virtual task poke(input  longint unsigned    idx,
                             output uvm_status_e   status,
                             input  uvm_reg_data_t      value,
@@ -237,26 +165,8 @@ class uvm_vreg_field extends uvm_object;
                             input  string              fname = "",
                             input  int                 lineno = 0);
 
-   //
-   // TASK: peek
-   // Sample the current value from a virtual field
-   //
-   // Sample from the DUT memory location(s) that implements
-   // the virtual field that corresponds to this
-   // abstraction class instance using the specified access
-   // ~path~, and return the readback ~value~.
-   //
-   // If the memory implementing the virtual register array
-   // containing this virtual field
-   // is mapped in more than one address map, 
-   // an address ~map~ must be
-   // specified if a physical access is used (front-door access).
-   //
-   // The operation is eventually mapped into
-   // memory peek operations at the location(s)
-   // where the virtual register
-   // specified by ~idx~ in the virtual register array is implemented.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.4.4
    extern virtual task peek(input  longint unsigned    idx,
                             output uvm_status_e   status,
                             output uvm_reg_data_t      value,
@@ -266,91 +176,39 @@ class uvm_vreg_field extends uvm_object;
                             input  int                 lineno = 0);
 
    //
-   // Group: Callbacks
+   // Group -- NODOCS -- Callbacks
    //
 
 
-   //
-   // TASK: pre_write
-   // Called before virtual field write.
-   //
-   // If the specified data value, access ~path~ or address ~map~ are modified,
-   // the updated data value, access path or address map will be used
-   // to perform the virtual register operation.
-   //
-   // The virtual field callback methods are invoked before the callback methods
-   // on the containing virtual register.
-   // The registered callback methods are invoked after the invocation
-   // of this method.
-   // The pre-write virtual register and field callbacks are executed
-   // before the corresponding pre-write memory callbacks
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.5.1
    virtual task pre_write(longint unsigned     idx,
                           ref uvm_reg_data_t   wdat,
-                          ref uvm_path_e  path,
+                          ref uvm_door_e  path,
                           ref uvm_reg_map   map);
    endtask: pre_write
 
-   //
-   // TASK: post_write
-   // Called after virtual field write
-   //
-   // If the specified ~status~ is modified,
-   // the updated status will be
-   // returned by the virtual register operation.
-   //
-   // The virtual field callback methods are invoked after the callback methods
-   // on the containing virtual register.
-   // The registered callback methods are invoked before the invocation
-   // of this method.
-   // The post-write virtual register and field callbacks are executed
-   // after the corresponding post-write memory callbacks
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.5.2
    virtual task post_write(longint unsigned       idx,
                            uvm_reg_data_t         wdat,
-                           uvm_path_e        path,
+                           uvm_door_e        path,
                            uvm_reg_map         map,
                            ref uvm_status_e  status);
    endtask: post_write
 
-   //
-   // TASK: pre_read
-   // Called before virtual field read.
-   //
-   // If the specified access ~path~ or address ~map~ are modified,
-   // the updated access path or address map will be used to perform
-   // the virtual register operation.
-   //
-   // The virtual field callback methods are invoked after the callback methods
-   // on the containing virtual register.
-   // The registered callback methods are invoked after the invocation
-   // of this method.
-   // The pre-read virtual register and field callbacks are executed
-   // before the corresponding pre-read memory callbacks
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.5.3
    virtual task pre_read(longint unsigned      idx,
-                         ref uvm_path_e   path,
+                         ref uvm_door_e   path,
                          ref uvm_reg_map    map);
    endtask: pre_read
 
-   //
-   // TASK: post_read
-   // Called after virtual field read.
-   //
-   // If the specified readback data ~rdat~ or ~status~ is modified,
-   // the updated readback data or status will be
-   // returned by the virtual register operation.
-   //
-   // The virtual field callback methods are invoked after the callback methods
-   // on the containing virtual register.
-   // The registered callback methods are invoked before the invocation
-   // of this method.
-   // The post-read virtual register and field callbacks are executed
-   // after the corresponding post-read memory callbacks
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.5.4
    virtual task post_read(longint unsigned       idx,
                           ref uvm_reg_data_t     rdat,
-                          uvm_path_e        path,
+                          uvm_door_e        path,
                           uvm_reg_map         map,
                           ref uvm_status_e  status);
    endtask: post_read
@@ -369,95 +227,61 @@ endclass: uvm_vreg_field
 
 
 //------------------------------------------------------------------------------
-// Class: uvm_vreg_field_cbs
+// Class -- NODOCS -- uvm_vreg_field_cbs
 //
 // Pre/post read/write callback facade class
 //
 //------------------------------------------------------------------------------
 
-class uvm_vreg_field_cbs extends uvm_callback;
+// @uvm-ieee 1800.2-2017 auto 18.10.6.1
+virtual class uvm_vreg_field_cbs extends uvm_callback;
    string fname;
    int    lineno;
+
+
+   `uvm_object_abstract_utils(uvm_vreg_field_cbs)
 
    function new(string name = "uvm_vreg_field_cbs");
       super.new(name);
    endfunction
    
 
-   //
-   // Task: pre_write
-   // Callback called before a write operation.
-   //
-   // The registered callback methods are invoked before the invocation
-   // of the virtual register pre-write callbacks and
-   // after the invocation of the <uvm_vreg_field::pre_write()> method.
-   //
-   // The written value ~wdat~, access ~path~ and address ~map~,
-   // if modified, modifies the actual value, access path or address map
-   // used in the register operation.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.6.2.1
    virtual task pre_write(uvm_vreg_field       field,
                           longint unsigned     idx,
                           ref uvm_reg_data_t   wdat,
-                          ref uvm_path_e  path,
+                          ref uvm_door_e  path,
                           ref uvm_reg_map   map);
    endtask: pre_write
 
 
-   //
-   // TASK: post_write
-   // Called after a write operation
-   //
-   // The registered callback methods are invoked after the invocation
-   // of the virtual register post-write callbacks and
-   // before the invocation of the <uvm_vreg_field::post_write()> method.
-   //
-   // The ~status~ of the operation,
-   // if modified, modifies the actual returned status.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.6.2.2
    virtual task post_write(uvm_vreg_field        field,
                            longint unsigned      idx,
                            uvm_reg_data_t        wdat,
-                           uvm_path_e       path,
+                           uvm_door_e       path,
                            uvm_reg_map        map,
                            ref uvm_status_e status);
    endtask: post_write
 
 
-   //
-   // TASK: pre_read
-   // Called before a virtual field read.
-   //
-   // The registered callback methods are invoked after the invocation
-   // of the virtual register pre-read callbacks and
-   // after the invocation of the <uvm_vreg_field::pre_read()> method.
-   //
-   // The access ~path~ and address ~map~,
-   // if modified, modifies the actual access path or address map
-   // used in the register operation.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.6.2.3
    virtual task pre_read(uvm_vreg_field        field,
                          longint unsigned      idx,
-                         ref uvm_path_e   path,
+                         ref uvm_door_e   path,
                          ref uvm_reg_map    map);
    endtask: pre_read
 
 
-   //
-   // TASK: post_read
-   // Called after a virtual field read.
-   //
-   // The registered callback methods are invoked after the invocation
-   // of the virtual register post-read callbacks and
-   // before the invocation of the <uvm_vreg_field::post_read()> method.
-   //
-   // The readback value ~rdat~ and the ~status~ of the operation,
-   // if modified, modifies the actual returned readback value and status.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.10.6.2.4
    virtual task post_read(uvm_vreg_field         field,
                           longint unsigned       idx,
                           ref uvm_reg_data_t     rdat,
-                          uvm_path_e        path,
+                          uvm_door_e        path,
                           uvm_reg_map         map,
                           ref uvm_status_e  status);
    endtask: post_read
@@ -465,22 +289,22 @@ endclass: uvm_vreg_field_cbs
 
 
 //
-// Type: uvm_vreg_field_cb
+// Type -- NODOCS -- uvm_vreg_field_cb
 // Convenience callback type declaration
 //
 // Use this declaration to register virtual field callbacks rather than
 // the more verbose parameterized class
 //
-typedef uvm_callbacks#(uvm_vreg_field, uvm_vreg_field_cbs) uvm_vreg_field_cb;
+typedef uvm_callbacks#(uvm_vreg_field, uvm_vreg_field_cbs) uvm_vreg_field_cb /* @uvm-ieee 1800.2-2017 auto D.4.6.11*/   ;
 
 //
-// Type: uvm_vreg_field_cb_iter
+// Type -- NODOCS -- uvm_vreg_field_cb_iter
 // Convenience callback iterator type declaration
 //
 // Use this declaration to iterate over registered virtual field callbacks
 // rather than the more verbose parameterized class
 //
-typedef uvm_callback_iter#(uvm_vreg_field, uvm_vreg_field_cbs) uvm_vreg_field_cb_iter;
+typedef uvm_callback_iter#(uvm_vreg_field, uvm_vreg_field_cbs) uvm_vreg_field_cb_iter /* @uvm-ieee 1800.2-2017 auto D.4.6.12*/   ;
 
 
 
@@ -494,13 +318,13 @@ function void uvm_vreg_field::configure(uvm_vreg  parent,
                                    int unsigned  lsb_pos);
    this.parent = parent;
    if (size == 0) begin
-      `uvm_error("RegModel", $sformatf("Virtual field \"%s\" cannot have 0 bits", this.get_full_name()));
+      `uvm_error("RegModel", $sformatf("Virtual field \"%s\" cannot have 0 bits", this.get_full_name()))
       size = 1;
    end
    if (size > `UVM_REG_DATA_WIDTH) begin
       `uvm_error("RegModel", $sformatf("Virtual field \"%s\" cannot have more than %0d bits",
                                      this.get_full_name(),
-                                     `UVM_REG_DATA_WIDTH));
+                                     `UVM_REG_DATA_WIDTH))
       size = `UVM_REG_DATA_WIDTH;
    end
 
@@ -541,7 +365,7 @@ endfunction: get_n_bits
 function string uvm_vreg_field::get_access(uvm_reg_map map = null);
    if (this.parent.get_memory() == null) begin
       `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg_field::get_rights() on unimplemented virtual field \"%s\"",
-                                     this.get_full_name()));
+                                     this.get_full_name()))
       return "RW";
    end
 
@@ -552,7 +376,7 @@ endfunction: get_access
 task uvm_vreg_field::write(input  longint unsigned    idx,
                            output uvm_status_e   status,
                            input  uvm_reg_data_t      value,
-                           input  uvm_path_e     path = UVM_DEFAULT_PATH,
+                           input  uvm_door_e     path = UVM_DEFAULT_DOOR,
                            input  uvm_reg_map      map = null,
                            input  uvm_sequence_base   parent = null,
                            input  uvm_object          extension = null,
@@ -566,7 +390,7 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
    int flsb, fmsb, rmwbits;
    int segsiz, segn;
    uvm_mem    mem;
-   uvm_path_e rm_path;
+   uvm_door_e rm_path;
 
    uvm_vreg_field_cb_iter cbs = new(this);
 
@@ -577,14 +401,14 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
    mem = this.parent.get_memory();
    if (mem == null) begin
       `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg_field::write() on unimplemented virtual register \"%s\"",
-                                     this.get_full_name()));
+                                     this.get_full_name()))
       status = UVM_NOT_OK;
       return;
    end
 
-   if (path == UVM_DEFAULT_PATH) begin
+   if (path == UVM_DEFAULT_DOOR) begin
       uvm_reg_block blk = this.parent.get_block();
-      path = blk.get_default_path();
+      path = blk.get_default_door();
    end
 
    status = UVM_IS_OK;
@@ -592,7 +416,7 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
    this.parent.XatomicX(1);
 
    if (value >> this.size) begin
-      `uvm_warning("RegModel", $sformatf("Writing value 'h%h that is greater than field \"%s\" size (%0d bits)", value, this.get_full_name(), this.get_n_bits()));
+      `uvm_warning("RegModel", $sformatf("Writing value 'h%h that is greater than field \"%s\" size (%0d bits)", value, this.get_full_name(), this.get_n_bits()))
       value &= value & ((1<<this.size)-1);
    end
    tmp = 0;
@@ -610,7 +434,7 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
    segoff  = this.parent.get_offset_in_memory(idx) + (flsb / segsiz);
 
    // Favor backdoor read to frontdoor read for the RMW operation
-   rm_path = UVM_DEFAULT_PATH;
+   rm_path = UVM_DEFAULT_DOOR;
    if (mem.get_backdoor() != null) rm_path = UVM_BACKDOOR;
 
    // Any bits on the LSB side we need to RMW?
@@ -626,7 +450,7 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
       if (st != UVM_IS_OK && st != UVM_HAS_X) begin
          `uvm_error("RegModel",
                     $sformatf("Unable to read LSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
-                              mem.get_full_name(), segoff, this.get_full_name()));
+                              mem.get_full_name(), segoff, this.get_full_name()))
          status = UVM_NOT_OK;
          this.parent.XatomicX(0);
          return;
@@ -645,7 +469,7 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
             `uvm_error("RegModel",
                        $sformatf("Unable to read MSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
                                  mem.get_full_name(), segoff+segn-1,
-                                 this.get_full_name()));
+                                 this.get_full_name()))
             status = UVM_NOT_OK;
             this.parent.XatomicX(0);
             return;
@@ -678,7 +502,7 @@ task uvm_vreg_field::write(input  longint unsigned    idx,
    `uvm_info("RegModel", $sformatf("Wrote virtual field \"%s\"[%0d] via %s with: 'h%h",
                               this.get_full_name(), idx,
                               (path == UVM_FRONTDOOR) ? "frontdoor" : "backdoor",
-                              value),UVM_MEDIUM); 
+                              value),UVM_MEDIUM)
    
    write_in_progress = 1'b0;
    this.fname = "";
@@ -689,7 +513,7 @@ endtask: write
 task uvm_vreg_field::read(input longint unsigned     idx,
                           output uvm_status_e   status,
                           output uvm_reg_data_t      value,
-                          input  uvm_path_e     path = UVM_DEFAULT_PATH,
+                          input  uvm_door_e     path = UVM_DEFAULT_DOOR,
                           input  uvm_reg_map      map = null,
                           input  uvm_sequence_base   parent = null,
                           input  uvm_object          extension = null,
@@ -713,14 +537,14 @@ task uvm_vreg_field::read(input longint unsigned     idx,
    mem = this.parent.get_memory();
    if (mem == null) begin
       `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg_field::read() on unimplemented virtual register \"%s\"",
-                                     this.get_full_name()));
+                                     this.get_full_name()))
       status = UVM_NOT_OK;
       return;
    end
 
-   if (path == UVM_DEFAULT_PATH) begin
+   if (path == UVM_DEFAULT_DOOR) begin
       uvm_reg_block blk = this.parent.get_block();
-      path = blk.get_default_path();
+      path = blk.get_default_door();
    end
 
    status = UVM_IS_OK;
@@ -776,7 +600,7 @@ task uvm_vreg_field::read(input longint unsigned     idx,
    `uvm_info("RegModel", $sformatf("Read virtual field \"%s\"[%0d] via %s: 'h%h",
                               this.get_full_name(), idx,
                               (path == UVM_FRONTDOOR) ? "frontdoor" : "backdoor",
-                              value),UVM_MEDIUM);
+                              value),UVM_MEDIUM)
 
 
    read_in_progress = 1'b0;
@@ -800,14 +624,14 @@ task uvm_vreg_field::poke(input  longint unsigned  idx,
    int flsb, fmsb, rmwbits;
    int segsiz, segn;
    uvm_mem    mem;
-   uvm_path_e rm_path;
+   uvm_door_e rm_path;
    this.fname = fname;
    this.lineno = lineno;
 
    mem = this.parent.get_memory();
    if (mem == null) begin
       `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg_field::poke() on unimplemented virtual register \"%s\"",
-                                     this.get_full_name()));
+                                     this.get_full_name()))
       status = UVM_NOT_OK;
       return;
    end
@@ -817,7 +641,7 @@ task uvm_vreg_field::poke(input  longint unsigned  idx,
    this.parent.XatomicX(1);
 
    if (value >> this.size) begin
-      `uvm_warning("RegModel", $sformatf("Writing value 'h%h that is greater than field \"%s\" size (%0d bits)", value, this.get_full_name(), this.get_n_bits()));
+      `uvm_warning("RegModel", $sformatf("Writing value 'h%h that is greater than field \"%s\" size (%0d bits)", value, this.get_full_name(), this.get_n_bits()))
       value &= value & ((1<<this.size)-1);
    end
    tmp = 0;
@@ -839,7 +663,7 @@ task uvm_vreg_field::poke(input  longint unsigned  idx,
       if (st != UVM_IS_OK && st != UVM_HAS_X) begin
          `uvm_error("RegModel",
                     $sformatf("Unable to read LSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
-                              mem.get_full_name(), segoff, this.get_full_name()));
+                              mem.get_full_name(), segoff, this.get_full_name()))
          status = UVM_NOT_OK;
          this.parent.XatomicX(0);
          return;
@@ -858,7 +682,7 @@ task uvm_vreg_field::poke(input  longint unsigned  idx,
             `uvm_error("RegModel",
                        $sformatf("Unable to read MSB bits in %s[%0d] to for RMW cycle on virtual field %s.",
                                  mem.get_full_name(), segoff+segn-1,
-                                 this.get_full_name()));
+                                 this.get_full_name()))
             status = UVM_NOT_OK;
             this.parent.XatomicX(0);
             return;
@@ -880,7 +704,7 @@ task uvm_vreg_field::poke(input  longint unsigned  idx,
    this.parent.XatomicX(0);
 
    `uvm_info("RegModel", $sformatf("Wrote virtual field \"%s\"[%0d] with: 'h%h",
-                              this.get_full_name(), idx, value),UVM_MEDIUM);
+                              this.get_full_name(), idx, value),UVM_MEDIUM)
 
    this.fname = "";
    this.lineno = 0;
@@ -908,7 +732,7 @@ task uvm_vreg_field::peek(input  longint unsigned  idx,
    mem = this.parent.get_memory();
    if (mem == null) begin
       `uvm_error("RegModel", $sformatf("Cannot call uvm_vreg_field::peek() on unimplemented virtual register \"%s\"",
-                                     this.get_full_name()));
+                                     this.get_full_name()))
       status = UVM_NOT_OK;
       return;
    end
@@ -948,7 +772,7 @@ task uvm_vreg_field::peek(input  longint unsigned  idx,
 
    this.parent.XatomicX(0);
 
-   `uvm_info("RegModel", $sformatf("Peeked virtual field \"%s\"[%0d]: 'h%h", this.get_full_name(), idx, value),UVM_MEDIUM);
+   `uvm_info("RegModel", $sformatf("Peeked virtual field \"%s\"[%0d]: 'h%h", this.get_full_name(), idx, value),UVM_MEDIUM)
 
    this.fname = "";
    this.lineno = 0;
@@ -1000,5 +824,3 @@ endfunction
 
 function void uvm_vreg_field::do_unpack (uvm_packer packer);
 endfunction
-
-

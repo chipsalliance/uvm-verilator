@@ -1,9 +1,14 @@
 //
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc. 
-//   Copyright 2010 Synopsys, Inc.
-//   Copyright 2014 NVIDIA Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014 Semifore
+// Copyright 2017 Intel Corporation
+// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2013 Verilab
+// Copyright 2012 AMD
+// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2014-2018 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,11 +26,11 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
-// File: Miscellaneous Structures
+// File -- NODOCS -- Miscellaneous Structures
 
 //------------------------------------------------------------------------------
 //
-// Class: uvm_void
+// Class -- NODOCS -- uvm_void
 //
 // The ~uvm_void~ class is the base class for all UVM classes. It is an abstract
 // class with no data members or functions. It allows for generic containers of
@@ -36,6 +41,7 @@
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 5.2
 virtual class uvm_void;
 endclass
 
@@ -54,255 +60,10 @@ typedef class uvm_config_db;
 typedef uvm_config_db#(uvm_object) m_uvm_config_obj_misc;
 
 
-//----------------------------------------------------------------------------
-//
-// CLASS- uvm_scope_stack
-//
-//----------------------------------------------------------------------------
-
-class uvm_scope_stack;
-  local string m_arg;
-  local string m_stack[$];
-
-  // depth
-  // -----
-  
-  function int depth();
-    return m_stack.size();
-  endfunction
-  
-  
-  // scope
-  // -----
-  
-  function string get();
-    string v;
-    if(m_stack.size() == 0) return m_arg;
-    get = m_stack[0];
-    for(int i=1; i<m_stack.size(); ++i) begin
-      v = m_stack[i];
-      if(v != "" && (v[0] == "[" || v[0] == "(" || v[0] == "{"))
-        get = {get,v};
-      else
-        get = {get,".",v};
-    end
-    if(m_arg != "") begin
-      if(get != "")
-        get = {get, ".", m_arg};
-      else
-        get = m_arg;
-    end
-  endfunction
-  
-  
-  // scope_arg
-  // ---------
-  
-  function string get_arg();
-    return m_arg;
-  endfunction
-  
-  
-  // set_scope
-  // ---------
-  
-  function void set (string s);
-    m_stack.delete();
-    
-    m_stack.push_back(s);
-    m_arg = "";
-  endfunction
-  
-  
-  // down
-  // ----
-  
-  function void down (string s);
-    m_stack.push_back(s);
-    m_arg = "";
-  endfunction
-  
-  
-  // down_element
-  // ------------
-  
-  function void down_element (int element);
-    m_stack.push_back($sformatf("[%0d]",element));
-    m_arg = "";
-  endfunction
-  
-
-  // up_element
-  // ------------
-  
-  function void up_element ();
-    string s;
-    if(!m_stack.size())
-      return;
-    s = m_stack.pop_back();
-    if(s != "" && s[0] != "[")
-      m_stack.push_back(s);
-  endfunction
-  
-  // up
-  // --
-  
-  function void up (byte separator =".");
-    bit found;
-    string s;
-    while(m_stack.size() && !found ) begin
-      s = m_stack.pop_back();
-      if(separator == ".") begin
-        if (s == "" || (s[0] != "[" && s[0] != "(" && s[0] != "{"))
-          found = 1;
-      end
-      else begin
-        if(s != "" && s[0] == separator)
-          found = 1;
-      end
-    end
-    m_arg = "";
-  endfunction
-  
-  
-  // set_arg
-  // -------
-  
-  function void set_arg (string arg);
-    if(arg=="") return;
-    m_arg = arg;
-  endfunction
-  
-  
-  // set_arg_element
-  // ---------------
-  
-  function void set_arg_element (string arg, int ele);
-    string tmp_value_str;
-    tmp_value_str.itoa(ele);
-    m_arg = {arg, "[", tmp_value_str, "]"};
-  endfunction
-  
-
-  // unset_arg
-  // ---------
-  
-  function void unset_arg (string arg);
-    if(arg == m_arg)
-      m_arg = "";
-  endfunction
-endclass
-
-
-
-//------------------------------------------------------------------------------
-//
-// CLASS- uvm_status_container
-//
-// Internal class to contain status information for automation methods.
-//
-//------------------------------------------------------------------------------
-
-class uvm_status_container;
-  //The clone setting is used by the set/get config to know if cloning is on.
-  bit             clone = 1;
-
-  //Information variables used by the macro functions for storage.
-  bit          warning;
-  bit          status;
-  uvm_bitstream_t  bitstream;
-  int          intv;
-  int          element;
-  string       stringv;
-  string       scratch1;
-  string       scratch2;
-  string       key;
-  uvm_object   object;
-  bit          array_warning_done;
-
-  static bit field_array[string];
-
-  static bit print_matches;
-
-  function void do_field_check(string field, uvm_object obj);
-   `ifdef UVM_ENABLE_FIELD_CHECKS                                           
-    if (field_array.exists(field))
-      uvm_report_error("MLTFLD", $sformatf("Field %s is defined multiple times in type '%s'",
-         field, obj.get_type_name()), UVM_NONE);
-    `endif
-    field_array[field] = 1;
-  endfunction
-
-
-  function string get_function_type (int what);
-    case (what)
-      UVM_COPY:    return "copy";
-      UVM_COMPARE: return "compare";
-      UVM_PRINT:   return "print";
-      UVM_RECORD:  return "record";
-      UVM_PACK:    return "pack";
-      UVM_UNPACK:  return "unpack";
-      UVM_FLAGS:   return "get_flags";
-      UVM_SETINT:  return "set";
-      UVM_SETOBJ:  return "set_object";
-      UVM_SETSTR:  return "set_string";
-      default:     return "unknown";
-    endcase
-  endfunction
-
-
-
-  // The scope stack is used for messages that are emitted by policy classes.
-  uvm_scope_stack scope  = new;
-
-  function string get_full_scope_arg ();
-    get_full_scope_arg = scope.get();
-  endfunction
-
-  //Used for checking cycles. When a data function is entered, if the depth is
-  //non-zero, then then the existeance of the object in the map means that a
-  //cycle has occured and the function should immediately exit. When the
-  //function exits, it should reset the cycle map so that there is no memory
-  //leak.
-  bit             cycle_check[uvm_object];
-
-  //These are the policy objects currently in use. The policy object gets set
-  //when a function starts up. The macros use this.
-  uvm_comparer    comparer;
-  uvm_packer      packer;
-  uvm_recorder    recorder;
-  uvm_printer     printer;
-  
-  // utility function used to perform a cycle check when config setting are pushed
-  // to uvm_objects. the function has to look at the current object stack representing 
-  // the call stack of all __m_uvm_field_automation() invocations.
-  // it is a only a cycle if the previous __m_uvm_field_automation call scope
-  // is not identical with the current scope AND the scope is already present in the 
-  // object stack
-  uvm_object m_uvm_cycle_scopes[$];
-  function bit m_do_cycle_check(uvm_object scope);
-    uvm_object l = (m_uvm_cycle_scopes.size()==0) ? null : m_uvm_cycle_scopes[$];
-
-    // we have been in this scope before (but actually right before so assuming a super/derived context of the same object)
-    if(l == scope) 
-    begin
-       m_uvm_cycle_scopes.push_back(scope);
-       return 0;
-    end
-    else
-    begin
-        // now check if we have already been in this scope before
-        uvm_object m[$] = m_uvm_cycle_scopes.find_first(item) with (item == scope);
-        if(m.size()!=0) begin
-             return 1;   //   detected a cycle 
-        end
-        else begin
-            m_uvm_cycle_scopes.push_back(scope);
-            return 0;            
-        end
-    end
-  endfunction
-endclass
+typedef class uvm_comparer ;
+typedef class uvm_packer ;
+typedef class uvm_recorder ;
+typedef class uvm_printer ;
 
 // Variable- uvm_global_random_seed
 //
@@ -630,8 +391,9 @@ typedef class uvm_component;
 typedef class uvm_root;
 typedef class uvm_report_object;
 
+`ifdef UVM_ENABLE_DEPRECATED_API 
 //------------------------------------------------------------------------------
-// CLASS: uvm_utils #(TYPE,FIELD)
+// CLASS -- NODOCS -- uvm_utils #(TYPE,FIELD)
 //
 // This class contains useful template functions.
 //
@@ -641,7 +403,7 @@ class uvm_utils #(type TYPE=int, string FIELD="config");
 
   typedef TYPE types_t[$];
 
-  // Function: find_all
+  // Function -- NODOCS -- find_all
   //
   // Recursively finds all component instances of the parameter type ~TYPE~,
   // starting with the component given by ~start~. Uses <uvm_root::find_all>.
@@ -692,7 +454,7 @@ class uvm_utils #(type TYPE=int, string FIELD="config");
   endfunction
 
 
-  // Function: get_config
+  // Function -- NODOCS -- get_config
   //
   // This method gets the object config of type ~TYPE~
   // associated with component ~comp~.
@@ -731,6 +493,7 @@ class uvm_utils #(type TYPE=int, string FIELD="config");
     return cfg;
   endfunction
 endclass
+`endif
 
 `ifdef UVM_USE_PROCESS_CONTAINER
 class process_container_c;
@@ -751,3 +514,6 @@ function automatic string m_uvm_string_queue_join(ref string i[$]);
 		m_uvm_string_queue_join = {m_uvm_string_queue_join,i[idx]};
 `endif
 endfunction
+
+
+			

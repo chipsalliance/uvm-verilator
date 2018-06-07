@@ -1,8 +1,9 @@
 //
 //----------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2010 Cadence Design Systems, Inc. 
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2015 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +22,7 @@
 //----------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Title: TLM Port Classes
+// Title -- NODOCS -- TLM Port Classes
 //------------------------------------------------------------------------------
 // The following classes define the TLM port classes.
 //------------------------------------------------------------------------------
@@ -29,7 +30,7 @@
 
 //------------------------------------------------------------------------------
 //
-// Class: uvm_*_port #(T)
+// Class -- NODOCS -- uvm_*_port #(T)
 //
 // These unidirectional ports are instantiated by components that ~require~,
 // or ~use~, the associated interface to convey transactions. A port can
@@ -67,7 +68,7 @@
 //------------------------------------------------------------------------------
 
 
-// Function: new
+// Function -- NODOCS -- new
 // 
 // The ~name~ and ~parent~ are the standard <uvm_component> constructor arguments.
 // The ~min_size~ and ~max_size~ specify the minimum and maximum number of
@@ -153,7 +154,7 @@ endclass
 
 //------------------------------------------------------------------------------
 //
-// Class: uvm_*_port #(REQ,RSP)
+// Class -- NODOCS -- uvm_*_port #(REQ,RSP)
 //
 // These bidirectional ports are instantiated by components that ~require~,
 // or ~use~, the associated interface to convey transactions. A port can
@@ -188,7 +189,7 @@ endclass
 //
 //------------------------------------------------------------------------------
 
-// Function: new
+// Function -- NODOCS -- new
 // 
 // The ~name~ and ~parent~ are the standard <uvm_component> constructor arguments.
 // The ~min_size~ and ~max_size~ specify the minimum and maximum number of
@@ -259,4 +260,3 @@ class uvm_transport_port #(type REQ=int, type RSP=REQ)
   `UVM_PORT_COMMON(`UVM_TLM_TRANSPORT_MASK,"uvm_transport_port")
   `UVM_TRANSPORT_IMP (this.m_if, REQ, RSP, req, rsp)
 endclass
-

@@ -1,6 +1,9 @@
 //----------------------------------------------------------------------
-//   Copyright 2010-2011 Mentor Graphics Corporation
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2017 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2014-2015 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -18,9 +21,10 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
-// File: TLM2 Types
+// File -- NODOCS -- TLM2 Types
+typedef class uvm_time;
 
-// Enum: uvm_tlm_phase_e 
+// Enum -- NODOCS -- uvm_tlm_phase_e 
 //
 // Nonblocking transport synchronization state values between
 // an initiator and a target.
@@ -40,7 +44,7 @@ typedef enum
     END_RESP
   } uvm_tlm_phase_e;
 
-// Enum: uvm_tlm_sync_e
+// Enum -- NODOCS -- uvm_tlm_sync_e
 //
 // Pre-defined phase state values for the nonblocking transport
 // Base Protocol between an initiator and a target.
@@ -56,18 +60,18 @@ typedef enum
     UVM_TLM_COMPLETED
   } uvm_tlm_sync_e;
 
-// MACRO: `UVM_TLM_TASK_ERROR
+// MACRO -- NODOCS -- `UVM_TLM_TASK_ERROR
 //
 // Defines Not-Yet-Implemented TLM tasks
 `define UVM_TLM_TASK_ERROR "TLM-2 interface task not implemented"
 
-// MACRO: `UVM_TLM_FUNCTION_ERROR
+// MACRO -- NODOCS -- `UVM_TLM_FUNCTION_ERROR
 //
 // Defines Not-Yet-Implemented TLM functions
 `define UVM_TLM_FUNCTION_ERROR "TLM-2 interface function not implemented"
 
 //
-// Class: uvm_tlm_if
+// Class -- NODOCS -- uvm_tlm_if
 //
 // Base class type to define the transport functions.
 //
@@ -78,10 +82,11 @@ typedef enum
 //  - <b_transport>
 //
 
+// @uvm-ieee 1800.2-2017 auto 12.3.2.1
 class uvm_tlm_if #(type T=uvm_tlm_generic_payload,
                type P=uvm_tlm_phase_e);
    //----------------------------------------------------------------------
-   // Group: tlm transport methods
+   // Group -- NODOCS -- tlm transport methods
    //
    // Each of the interface methods take a handle to the transaction to be 
    // transported and a reference argument for the delay. In addition, the 
@@ -89,7 +94,7 @@ class uvm_tlm_if #(type T=uvm_tlm_generic_payload,
    //
    
    //----------------------------------------------------------------------
-   // Function: nb_transport_fw
+   // Function -- NODOCS -- nb_transport_fw
    //
    // Forward path call.
    // The first call to this method for a transaction marks the initial timing point.
@@ -104,12 +109,14 @@ class uvm_tlm_if #(type T=uvm_tlm_generic_payload,
    // for more details on the semantics and rules of the nonblocking
    // transport interface.
    
+  // @uvm-ieee 1800.2-2017 auto 12.3.2.2.1
+  // @uvm-ieee 1800.2-2017 auto 12.3.5.3
   virtual function uvm_tlm_sync_e nb_transport_fw(T t, ref P p, input uvm_tlm_time delay);
     `uvm_error("nb_transport_fw", `UVM_TLM_FUNCTION_ERROR)
     return UVM_TLM_ACCEPTED;
   endfunction
 
-   // Function: nb_transport_bw
+   // Function -- NODOCS -- nb_transport_bw
    //
    // Implementation of the backward path.
    // This function MUST be implemented in the INITIATOR component class.
@@ -146,12 +153,13 @@ class uvm_tlm_if #(type T=uvm_tlm_generic_payload,
    //|    ...
    //| endclass
    
+  // @uvm-ieee 1800.2-2017 auto 12.3.2.2.2
   virtual function uvm_tlm_sync_e nb_transport_bw(T t, ref P p, input uvm_tlm_time delay);
     `uvm_error("nb_transport_bw", `UVM_TLM_FUNCTION_ERROR)
     return UVM_TLM_ACCEPTED;
   endfunction
 
-   // Function: b_transport
+   // Function -- NODOCS -- b_transport
    //
    // Execute a blocking transaction. Once this method returns,
    // the transaction is assumed to have been executed. Whether
@@ -169,9 +177,9 @@ class uvm_tlm_if #(type T=uvm_tlm_generic_payload,
    // allows the timing points to be offset from the simulation times
    // at which the task call and return are executed.
    
+  // @uvm-ieee 1800.2-2017 auto 12.3.2.2.3
   virtual task b_transport(T t, uvm_tlm_time delay);
     `uvm_error("b_transport", `UVM_TLM_TASK_ERROR)
   endtask
 
 endclass
-

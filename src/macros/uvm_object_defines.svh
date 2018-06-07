@@ -1,9 +1,14 @@
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc.
-//   Copyright 2010-2011 Synopsys, Inc.
-//   Copyright 2013-2014 NVIDIA Corporation
-//   Copyright 2013      Cisco Systems, Inc.
+// Copyright 2012 Aldec
+// Copyright 2007-2012 Mentor Graphics Corporation
+// Copyright 2018 Qualcomm, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2010-2013 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2012 AMD
+// Copyright 2012-2018 NVIDIA Corporation
+// Copyright 2012-2018 Cisco Systems, Inc.
+// Copyright 2012 Accellera Systems Initiative
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -32,11 +37,19 @@
 `define uvm_object_param_utils(T) 
 `define uvm_object_utils_begin(T) 
 `define uvm_object_param_utils_begin(T) 
-`define uvm_object_utils_end
+`define uvm_object_abstract_utils(T) 
+`define uvm_object_abstract_param_utils(T) 
+`define uvm_object_abstract_utils_begin(T) 
+`define uvm_object_abstract_param_utils_begin(T) 
+`define uvm_object_abstract_utils_end
 `define uvm_component_utils(T)
 `define uvm_component_param_utils(T)
 `define uvm_component_utils_begin(T)
 `define uvm_component_param_utils_begin(T)
+`define uvm_component_abstract_utils(T)
+`define uvm_component_abstract_param_utils(T)
+`define uvm_component_abstract_utils_begin(T)
+`define uvm_component_abstract_param_utils_begin(T)
 `define uvm_component_utils_end
 `define uvm_field_int(ARG,FLAG)
 `define uvm_field_real(ARG,FLAG)
@@ -78,9 +91,9 @@
 
 //------------------------------------------------------------------------------
 //
-// Title: Utility and Field Macros for Components and Objects
+// Title -- NODOCS -- Utility and Field Macros for Components and Objects
 //
-// Group: Utility Macros 
+// Group -- NODOCS -- Utility Macros 
 //
 // The ~utils~ macros define the infrastructure needed to enable the
 // object/component for correct factory operation. See <`uvm_object_utils> and
@@ -120,22 +133,23 @@
 //
 //------------------------------------------------------------------------------
 
-// Define- UVM_NO_REGISTERED_CONVERTER
+
+// Define - UVM_FIELD_FLAG_SIZE
 //
-// if this symbol is defined all auto registration of the proxies to print resources
-// are disabled and you only get the typename printed (printing the objects contents 
-// either requires fill %p support or an appropriate proxy registered)
-// 
-`ifdef UVM_NO_DEPRECATED 
-  `define UVM_NO_REGISTERED_CONVERTER
+// The macro defines the number of bits in uvm_field_flag_t.  It may be defined by the user but it
+// must be at least as large as parameter UVM_FIELD_FLAG_RESERVED_BITS.
+//
+`ifndef UVM_FIELD_FLAG_SIZE
+  // @uvm-ieee 1800.2-2017 auto B.6.1
+  `define UVM_FIELD_FLAG_SIZE  UVM_FIELD_FLAG_RESERVED_BITS
 `endif
 
 
 // Definitions for the user to use inside their derived data class declarations.
 
-// MACRO: `uvm_field_utils_begin
+// MACRO -- NODOCS -- `uvm_field_utils_begin
 
-// MACRO: `uvm_field_utils_end
+// MACRO -- NODOCS -- `uvm_field_utils_end
 //
 // These macros form a block in which `uvm_field_* macros can be placed. 
 // Used as
@@ -150,46 +164,70 @@
 // implementations of these two methods, or when you are setting up field macros
 // for an abstract class (i.e. virtual class).
 
-`define uvm_field_utils_begin(T) \
-   function void __m_uvm_field_automation (uvm_object tmp_data__, \
-                                     int what__, \
-                                     string str__); \
-   begin \
-     T local_data__; /* Used for copy and compare */ \
-     typedef T ___local_type____; \
-     string string_aa_key; /* Used for associative array lookups */ \
-     uvm_object __current_scopes[$]; \
-     if(what__ inside {UVM_SETINT,UVM_SETSTR,UVM_SETOBJ}) begin \
-        if(__m_uvm_status_container.m_do_cycle_check(this)) begin \
-            return; \
-        end \
-        else \
-            __current_scopes=__m_uvm_status_container.m_uvm_cycle_scopes; \
-     end \
-     super.__m_uvm_field_automation(tmp_data__, what__, str__); \
-     /* Type is verified by uvm_object::compare() */ \
-     if(tmp_data__ != null) \
-       /* Allow objects in same hierarchy to be copied/compared */ \
-       if(!$cast(local_data__, tmp_data__)) return;
-
+// @uvm-ieee 1800.2-2017 auto B.2.1.1
+`define uvm_field_utils_begin(T)                                                \
+function void do_execute_op( uvm_field_op op );                                 \
+   uvm_field_flag_t local_op_type__; /* Used to avoid re-querying */            \
+   T local_rhs__; /* Used for $casting copy and compare */                      \
+   uvm_resource_base local_rsrc__; /* Used for UVM_SET ops */                   \
+   string local_rsrc_name__;                                                    \
+   uvm_object local_obj__; /* Used when trying to read uvm_object resources */  \
+   bit local_success__; /* Used when trying to read resources */                \
+   typedef T __local_type__; /* Used for referring to type T in field macros */ \
+   int local_size__; /* Used when unpacking size values */                      \
+   /* All possible policy classes */                                            \
+   /* Using the same name as the do_* methods, allows macro reuse */            \
+   uvm_printer printer;                                                         \
+   uvm_comparer comparer;                                                       \
+   uvm_recorder recorder;                                                       \
+   uvm_packer packer;                                                           \
+   uvm_copier copier;                                                           \
+   /* Base class first */                                                       \
+   super.do_execute_op(op);                                                     \
+   void'($cast(local_rhs__, op.get_rhs()));                                     \
+   if (($cast(local_rsrc__, op.get_rhs())) &&                                   \
+       (local_rsrc__ != null))                                                  \
+     local_rsrc_name__ = local_rsrc__.get_name();                               \
+   local_op_type__ = op.get_op_type();                                          \
+   case (local_op_type__)                                                      \
+     UVM_PRINT: begin                                                           \
+       $cast(printer, op.get_policy());                                         \
+     end                                                                        \
+     UVM_COMPARE: begin                                                         \
+       if (local_rhs__ == null) return;                                         \
+       $cast(comparer, op.get_policy());                                        \
+     end                                                                        \
+     UVM_RECORD: begin                                                          \
+       $cast(recorder, op.get_policy());                                        \
+     end                                                                        \
+     UVM_PACK, UVM_UNPACK: begin                                                \
+       $cast(packer, op.get_policy());                                          \
+     end                                                                        \
+     UVM_COPY: begin                                                            \
+       if (local_rhs__ == null) return;                                         \
+       $cast(copier, op.get_policy());                                          \
+     end                                                                        \
+     UVM_SET: begin                                                             \
+       if (local_rsrc__ == null) return;                                        \
+     end                                                                        \
+     default:                                                                   \
+       return; /* unknown op, just return */                                    \
+   endcase                                                                      \
+   
+// @uvm-ieee 1800.2-2017 auto B.2.1.1
 `define uvm_field_utils_end \
-     if(what__ inside {UVM_SETINT,UVM_SETSTR,UVM_SETOBJ}) begin \
-        // remove all scopes recorded (through super and other objects visited before) \
-        void'(__current_scopes.pop_back()); \
-        __m_uvm_status_container.m_uvm_cycle_scopes = __current_scopes; \
-     end \
-     end \
-endfunction \
+endfunction 
 
-// MACRO: `uvm_object_utils
 
-// MACRO: `uvm_object_param_utils
+// MACRO -- NODOCS -- `uvm_object_utils
 
-// MACRO: `uvm_object_utils_begin
+// MACRO -- NODOCS -- `uvm_object_param_utils
 
-// MACRO: `uvm_object_param_utils_begin
+// MACRO -- NODOCS -- `uvm_object_utils_begin
 
-// MACRO: `uvm_object_utils_end
+// MACRO -- NODOCS -- `uvm_object_param_utils_begin
+
+// MACRO -- NODOCS -- `uvm_object_utils_end
 //
 // <uvm_object>-based class declarations may contain one of the above forms of
 // utility macros.
@@ -242,39 +280,58 @@ endfunction \
 // placed. The block must be terminated by `uvm_object_utils_end.
 //
 
+// @uvm-ieee 1800.2-2017 auto 14.4.2
+// @uvm-ieee 1800.2-2017 auto B.2.1
+// @uvm-ieee 1800.2-2017 auto B.2.1.2
 `define uvm_object_utils(T) \
-  `uvm_object_utils_begin(T) \
-  `uvm_object_utils_end
+  `m_uvm_object_registry_internal(T,T)  \
+  `m_uvm_object_create_func(T) \
+  `uvm_type_name_decl(`"T`")
 
+// @uvm-ieee 1800.2-2017 auto B.2.1.2
 `define uvm_object_param_utils(T) \
-  `uvm_object_param_utils_begin(T) \
-  `uvm_object_utils_end
+  `m_uvm_object_registry_param(T)  \
+  `m_uvm_object_create_func(T)
 
+// @uvm-ieee 1800.2-2017 auto B.2.1.2
 `define uvm_object_utils_begin(T) \
-   `m_uvm_object_registry_internal(T,T)  \
-   `m_uvm_object_create_func(T) \
-   `m_uvm_get_type_name_func(T) \
-   `uvm_field_utils_begin(T) 
+  `uvm_object_utils(T) \
+  `uvm_field_utils_begin(T) 
 
+// @uvm-ieee 1800.2-2017 auto B.2.1.2
 `define uvm_object_param_utils_begin(T) \
-   `m_uvm_object_registry_param(T)  \
-   `m_uvm_object_create_func(T) \
-   `uvm_field_utils_begin(T) 
+  `uvm_object_param_utils(T) \
+  `uvm_field_utils_begin(T)
+
+`define uvm_object_abstract_utils(T) \
+  `m_uvm_object_abstract_registry_internal(T,T)  \
+  `uvm_type_name_decl(`"T`")
+
+`define uvm_object_abstract_param_utils(T) \
+  `m_uvm_object_abstract_registry_param(T)
+
+`define uvm_object_abstract_utils_begin(T) \
+  `uvm_object_abstract_utils(T) \
+  `uvm_field_utils_begin(T)
        
+// @uvm-ieee 1800.2-2017 auto B.2.1.2
+`define uvm_object_abstract_param_utils_begin(T) \
+  `uvm_object_abstract_param_utils(T) \
+  `uvm_field_utils_begin(T) 
+       
+// @uvm-ieee 1800.2-2017 auto B.2.1.2
 `define uvm_object_utils_end \
-     end \
-   endfunction \
+  `uvm_field_utils_end
 
+// MACRO -- NODOCS -- `uvm_component_utils
 
-// MACRO: `uvm_component_utils
+// MACRO -- NODOCS -- `uvm_component_param_utils
 
-// MACRO: `uvm_component_param_utils
+// MACRO -- NODOCS -- `uvm_component_utils_begin
 
-// MACRO: `uvm_component_utils_begin
+// MACRO -- NODOCS -- `uvm_component_param_utils_begin
 
-// MACRO: `uvm_component_param_utils_begin
-
-// MACRO: `uvm_component_end
+// MACRO -- NODOCS -- `uvm_component_end
 //
 // uvm_component-based class declarations may contain one of the above forms of
 // utility macros.
@@ -327,28 +384,50 @@ endfunction \
 // placed. The block must be terminated by `uvm_component_utils_end.
 //
 
+// @uvm-ieee 1800.2-2017 auto B.2.1
+// @uvm-ieee 1800.2-2017 auto B.2.1.3
 `define uvm_component_utils(T) \
    `m_uvm_component_registry_internal(T,T) \
-   `m_uvm_get_type_name_func(T) \
+   `uvm_type_name_decl(`"T`") \
 
+// @uvm-ieee 1800.2-2017 auto B.2.1.3
 `define uvm_component_param_utils(T) \
    `m_uvm_component_registry_param(T) \
 
    
+// @uvm-ieee 1800.2-2017 auto B.2.1.3
 `define uvm_component_utils_begin(T) \
    `uvm_component_utils(T) \
    `uvm_field_utils_begin(T) 
 
+// @uvm-ieee 1800.2-2017 auto B.2.1.3
 `define uvm_component_param_utils_begin(T) \
    `uvm_component_param_utils(T) \
    `uvm_field_utils_begin(T) 
 
+`define uvm_component_abstract_utils(T) \
+   `m_uvm_component_abstract_registry_internal(T,T) \
+   `uvm_type_name_decl(`"T`") \
+
+`define uvm_component_abstract_param_utils(T) \
+   `m_uvm_component_abstract_registry_param(T) \
+
+   
+`define uvm_component_abstract_utils_begin(T) \
+   `uvm_component_abstract_utils(T) \
+   `uvm_field_utils_begin(T) 
+
+// @uvm-ieee 1800.2-2017 auto B.2.1.3
+`define uvm_component_abstract_param_utils_begin(T) \
+   `uvm_component_abstract_param_utils(T) \
+   `uvm_field_utils_begin(T) 
+
+// @uvm-ieee 1800.2-2017 auto B.2.1.3
 `define uvm_component_utils_end \
-     end \
-   endfunction
+  `uvm_field_utils_end
 
 
-// MACRO: `uvm_object_registry
+// MACRO -- NODOCS -- `uvm_object_registry
 //
 // Register a uvm_object-based class with the factory
 //
@@ -359,6 +438,7 @@ endfunction \
 // name of the class in quotes. The <`uvm_object_utils>
 // family of macros uses this macro.
 
+// @uvm-ieee 1800.2-2017 auto B.2.1.4
 `define uvm_object_registry(T,S) \
    typedef uvm_object_registry#(T,S) type_id; \
    static function type_id get_type(); \
@@ -369,7 +449,7 @@ endfunction \
    endfunction 
 
 
-// MACRO: `uvm_component_registry
+// MACRO -- NODOCS -- `uvm_component_registry
 //
 // Registers a uvm_component-based class with the factory
 //
@@ -380,6 +460,7 @@ endfunction \
 // name of the class in quotes. The <`uvm_object_utils>
 // family of macros uses this macro.
 
+// @uvm-ieee 1800.2-2017 auto B.2.1.5
 `define uvm_component_registry(T,S) \
    typedef uvm_component_registry #(T,S) type_id; \
    static function type_id get_type(); \
@@ -409,28 +490,44 @@ endfunction \
 `define m_uvm_object_create_func(T) \
    function uvm_object create (string name=""); \
      T tmp; \
-`ifdef UVM_OBJECT_DO_NOT_NEED_CONSTRUCTOR \
-     tmp = new(); \
-     if (name!="") \
-       tmp.set_name(name); \
-`else \
      if (name=="") tmp = new(); \
      else tmp = new(name); \
-`endif \
      return tmp; \
    endfunction
 
-
-// m_uvm_get_type_name_func
-// ----------------------
-
-`define m_uvm_get_type_name_func(T) \
-   const static string type_name = `"T`"; \
-   virtual function string get_type_name (); \
-     return type_name; \
-   endfunction 
-
-
+// Macro --NODOCS-- uvm_type_name_decl(TNAME_STRING)
+// Potentially public macro for Mantis 5003.
+//
+// This macro creates a statically accessible
+// ~type_name~, and implements the virtual
+// <uvm_object::get_type_name> method.
+//
+// *Note:*  When running with <`UVM_ENABLE_DEPRECATED_API>,
+// the ~type_name~ member is declared as:
+//| const static string type_name = TNAME_STRING;
+// This is unsafe, as static initialization can cause races
+// to occur.  When running without <`UVM_ENABLE_DEPRECATED_API>,
+// the implementation is an static initialization safe function:
+//| static function string type_name(); 
+//|   return TNAME_STRING; 
+//| endfunction : type_name
+// 
+`ifdef UVM_ENABLE_DEPRECATED_API
+ `define uvm_type_name_decl(TNAME_STRING) \
+     const static string type_name = TNAME_STRING; \
+     virtual function string get_type_name(); \
+       return TNAME_STRING; \
+     endfunction : get_type_name
+`else
+ `define uvm_type_name_decl(TNAME_STRING) \
+     static function string type_name(); \
+       return TNAME_STRING; \
+     endfunction : type_name \
+     virtual function string get_type_name(); \
+       return TNAME_STRING; \
+     endfunction : get_type_name
+`endif // !`ifdef UVM_ENABLE_DEPRECATED_API
+     
 // m_uvm_object_registry_internal
 // ------------------------------
 
@@ -451,6 +548,33 @@ endfunction \
 
 `define m_uvm_object_registry_param(T) \
    typedef uvm_object_registry #(T) type_id; \
+   static function type_id get_type(); \
+     return type_id::get(); \
+   endfunction \
+   virtual function uvm_object_wrapper get_object_type(); \
+     return type_id::get(); \
+   endfunction 
+
+// m_uvm_object_abstract_registry_internal
+// ---------------------------------------
+
+//This is needed due to an issue in of passing down strings
+//created by args to lower level macros.
+`define m_uvm_object_abstract_registry_internal(T,S) \
+   typedef uvm_abstract_object_registry#(T,`"S`") type_id; \
+   static function type_id get_type(); \
+     return type_id::get(); \
+   endfunction \
+   virtual function uvm_object_wrapper get_object_type(); \
+     return type_id::get(); \
+   endfunction 
+
+
+// m_uvm_object_abstract_registry_param
+// ------------------------------------
+
+`define m_uvm_object_abstract_registry_param(T) \
+   typedef uvm_abstract_object_registry #(T) type_id; \
    static function type_id get_type(); \
      return type_id::get(); \
    endfunction \
@@ -488,11 +612,40 @@ endfunction \
      return type_id::get(); \
    endfunction
 
+// m_uvm_component_abstract_registry_internal
+// ------------------------------------------
+
+//This is needed due to an issue in of passing down strings
+//created by args to lower level macros.
+`define m_uvm_component_abstract_registry_internal(T,S) \
+   typedef uvm_abstract_component_registry #(T,`"S`") type_id; \
+   static function type_id get_type(); \
+     return type_id::get(); \
+   endfunction \
+   virtual function uvm_object_wrapper get_object_type(); \
+     return type_id::get(); \
+   endfunction
+
+// versions of the uvm_component_abstract_registry macros to be used with
+// parameterized classes
+
+// m_uvm_component_abstract_registry_param
+// ---------------------------------------
+
+`define m_uvm_component_abstract_registry_param(T) \
+   typedef uvm_abstract_component_registry #(T) type_id; \
+   static function type_id get_type(); \
+     return type_id::get(); \
+   endfunction \
+   virtual function uvm_object_wrapper get_object_type(); \
+     return type_id::get(); \
+   endfunction
+
 
 
 //------------------------------------------------------------------------------
 //
-// Group: Field Macros
+// Group -- NODOCS -- Field Macros
 //
 // The `uvm_field_*  macros are invoked inside of the `uvm_*_utils_begin and
 // `uvm_*_utils_end macro blocks to form "automatic" implementations of the
@@ -610,13 +763,36 @@ endfunction \
 //------------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
-// Group: `uvm_field_* macros
+// Group -- NODOCS -- `uvm_field_* macros
 //
 // Macros that implement data operations for scalar properties.
 //
 //-----------------------------------------------------------------------------
 
-// MACRO: `uvm_field_int
+// The m_uvm_* macros are implementation artifacts.  They are not intended to be
+// directly used by the user.
+
+`define m_uvm_field_radix(FLAG) uvm_radix_enum'((FLAG)&(UVM_RADIX))
+
+`define m_uvm_field_recursion(FLAG) uvm_recursion_policy_enum'((FLAG)&(UVM_RECURSION))
+     
+`define m_uvm_field_begin(ARG, FLAG) \
+  begin \
+    case (local_op_type__)
+
+`define m_uvm_field_end(ARG) \
+    endcase \
+  end
+     
+
+`define m_uvm_field_op_begin(OP, FLAG) \
+UVM_``OP: \
+  if (!((FLAG)&UVM_NO``OP)) begin
+
+`define m_uvm_field_op_end(OP) \
+  end
+   
+// MACRO -- NODOCS -- `uvm_field_int
 //
 // Implements the data operations for any packed integral property.
 //
@@ -625,66 +801,42 @@ endfunction \
 // ~ARG~ is an integral property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.1.1
 `define uvm_field_int(ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        begin \
-          __m_uvm_status_container.do_field_check(`"ARG`", this); \
-        end \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) ARG = local_data__.ARG; \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(ARG !== local_data__.ARG) begin \
-               void'(__m_uvm_status_container.comparer.compare_field(`"ARG`", ARG, local_data__.ARG, $bits(ARG))); \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-            end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          if($bits(ARG) <= 64) __m_uvm_status_container.packer.pack_field_int(ARG, $bits(ARG)); \
-          else __m_uvm_status_container.packer.pack_field(ARG, $bits(ARG)); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          if($bits(ARG) <= 64) ARG =  __m_uvm_status_container.packer.unpack_field_int($bits(ARG)); \
-          else ARG = __m_uvm_status_container.packer.unpack_field($bits(ARG)); \
-        end \
-      UVM_RECORD: \
-        `m_uvm_record_int(ARG, FLAG) \
-      UVM_PRINT: \
-        `m_uvm_print_int(ARG, FLAG) \
-      UVM_SETINT: \
-        begin \
-          bit matched; \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          matched = uvm_is_match(str__, __m_uvm_status_container.scope.get()); \
-          if(matched) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-            else begin \
-              if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-              ARG = uvm_object::__m_uvm_status_container.bitstream; \
-              uvm_object::__m_uvm_status_container.status = 1; \
-            end \
-          end \
-          __m_uvm_status_container.scope.unset_arg(`"ARG`"); \
-        end \
-    endcase \
-  end
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_int(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_int(ARG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_int(`"ARG`", \
+                      ARG, \
+                      $bits(ARG), \
+                      `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_int(ARG, $bits(ARG), `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+        `uvm_resource_builtin_int_read(local_success__, \
+                                       local_rsrc__, \
+                                       ARG, \
+                                       this) \
+        /* TODO if(local_success__ && printing matches) */ \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
-
-// MACRO: `uvm_field_object
+// MACRO -- NODOCS -- `uvm_field_object
 //
 // Implements the data operations for a <uvm_object>-based property.
 //
@@ -693,108 +845,53 @@ endfunction \
 // ~ARG~ is an object property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.1.2
 `define uvm_field_object(ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) begin \
-            if((FLAG)&UVM_REFERENCE || local_data__.ARG == null) ARG = local_data__.ARG; \
-            else begin \
-              uvm_object l_obj; \
-              if(local_data__.ARG.get_name() == "") local_data__.ARG.set_name(`"ARG`"); \
-              l_obj = local_data__.ARG.clone(); \
-              if(l_obj == null) begin \
-                `uvm_fatal("FAILCLN", $sformatf("Failure to clone %s.ARG, thus the variable will remain null.", local_data__.get_name())); \
-              end \
-              else begin \
-                $cast(ARG, l_obj); \
-                ARG.set_name(local_data__.ARG.get_name()); \
-              end \
-            end \
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      `uvm_copy_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
+        `uvm_pack_object(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
+        `uvm_unpack_object(ARG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      recorder.record_object(`"ARG`", ARG); \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_object(ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+        `uvm_resource_read(local_success__, \
+                           local_rsrc__, \
+                           uvm_object, \
+                           local_obj__, \
+                           this) \
+        if (local_success__) begin \
+          if (local_obj__ == null) begin \
+            ARG = null; \
+          end else if (!$cast(ARG, local_obj__)) begin \
+             `uvm_warning("UVM/FIELDS/OBJ_TYPE", $sformatf("Can't set field '%s' on '%s' with '%s' type", \
+                                                           `"ARG`", \
+                                                           this.get_full_name(), \
+                                                           local_obj__.get_type_name())) \
           end \
+          /* TODO if(local_success__ && printing matches) */ \
         end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            void'(__m_uvm_status_container.comparer.compare_object(`"ARG`", ARG, local_data__.ARG)); \
-            if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          if(((FLAG)&UVM_NOPACK) == 0 && ((FLAG)&UVM_REFERENCE) == 0) \
-            __m_uvm_status_container.packer.pack_object(ARG); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          if(((FLAG)&UVM_NOPACK) == 0 && ((FLAG)&UVM_REFERENCE) == 0) \
-            __m_uvm_status_container.packer.unpack_object(ARG); \
-        end \
-      UVM_RECORD: \
-        `m_uvm_record_object(ARG,FLAG) \
-      UVM_PRINT: \
-        begin \
-          if(!((FLAG)&UVM_NOPRINT)) begin \
-            if(((FLAG)&UVM_REFERENCE) != 0) \
-              __m_uvm_status_container.printer.print_object_header(`"ARG`", ARG); \
-            else \
-              __m_uvm_status_container.printer.print_object(`"ARG`", ARG); \
-          end \
-        end \
-      UVM_SETINT: \
-        begin \
-          if((ARG != null) && (((FLAG)&UVM_READONLY)==0) && (((FLAG)&UVM_REFERENCE)==0)) begin \
-            __m_uvm_status_container.scope.down(`"ARG`"); \
-            ARG.__m_uvm_field_automation(null, UVM_SETINT, str__); \
-            __m_uvm_status_container.scope.up(); \
-          end \
-        end \
-      UVM_SETSTR: \
-        begin \
-          if((ARG != null) && (((FLAG)&UVM_READONLY)==0) && (((FLAG)&UVM_REFERENCE)==0)) begin \
-            __m_uvm_status_container.scope.down(`"ARG`"); \
-            ARG.__m_uvm_field_automation(null, UVM_SETSTR, str__); \
-            __m_uvm_status_container.scope.up(); \
-          end \
-        end \
-      UVM_SETOBJ: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-            else begin \
-              if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_object()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-              if($cast(ARG,uvm_object::__m_uvm_status_container.object)) \
-                uvm_object::__m_uvm_status_container.status = 1; \
-            end \
-          end \
-          else if(ARG!=null && ((FLAG)&UVM_READONLY) == 0) begin \
-            int cnt; \
-            //Only traverse if there is a possible match. \
-            for(cnt=0; cnt<str__.len(); ++cnt) begin \
-              if(str__[cnt] == "." || str__[cnt] == "*") break; \
-            end \
-            if(cnt!=str__.len()) begin \
-              __m_uvm_status_container.scope.down(`"ARG`"); \
-              ARG.__m_uvm_field_automation(null, UVM_SETOBJ, str__); \
-              __m_uvm_status_container.scope.up(); \
-            end \
-          end \
-        end \
-    endcase \
-  end
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
 
-// MACRO: `uvm_field_string
+// MACRO -- NODOCS -- `uvm_field_string
 //
 // Implements the data operations for a string property.
 //
@@ -803,61 +900,41 @@ endfunction \
 // ~ARG~ is a string property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.1.3
 `define uvm_field_string(ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) ARG = local_data__.ARG; \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(ARG != local_data__.ARG) begin \
-               void'(__m_uvm_status_container.comparer.compare_string(`"ARG`", ARG, local_data__.ARG)); \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-            end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          __m_uvm_status_container.packer.pack_string(ARG); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          ARG = __m_uvm_status_container.packer.unpack_string(); \
-        end \
-      UVM_RECORD: \
-        `m_uvm_record_string(ARG, ARG, FLAG) \
-      UVM_PRINT: \
-        if(!((FLAG)&UVM_NOPRINT)) begin \
-          __m_uvm_status_container.printer.print_string(`"ARG`", ARG); \
-        end \
-      UVM_SETSTR: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-            else begin \
-              if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_str()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-              ARG = uvm_object::__m_uvm_status_container.stringv; \
-              __m_uvm_status_container.status = 1; \
-            end \
-          end \
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_string(ARG, local_rhs__.ARG) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_string(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_string(ARG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_string(`"ARG`", ARG) \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      printer.print_string(`"ARG`", ARG); \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+        `uvm_resource_read(local_success__, \
+                           local_rsrc__, \
+                           string, \
+                           ARG, \
+                           this) \
+              /* TODO if(local_success__ && printing matches) */ \
       end \
-    endcase \
-  end
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
 
-// MACRO: `uvm_field_enum
+// MACRO -- NODOCS -- `uvm_field_enum
 // 
 // Implements the data operations for an enumerated property.
 //
@@ -867,80 +944,44 @@ endfunction \
 // ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.1.4
 `define uvm_field_enum(T,ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) ARG = local_data__.ARG; \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(ARG !== local_data__.ARG) begin \
-               __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-               $swrite(__m_uvm_status_container.stringv, "lhs = %0s : rhs = %0s", \
-                 ARG.name(), local_data__.ARG.name()); \
-               __m_uvm_status_container.comparer.print_msg(__m_uvm_status_container.stringv); \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-            end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          __m_uvm_status_container.packer.pack_field(ARG, $bits(ARG)); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          ARG =  T'(__m_uvm_status_container.packer.unpack_field_int($bits(ARG))); \
-        end \
-      UVM_RECORD: \
-        `m_uvm_record_string(ARG, ARG.name(), FLAG) \
-      UVM_PRINT: \
-        if(!((FLAG)&UVM_NOPRINT)) begin \
-          __m_uvm_status_container.printer.print_generic(`"ARG`", `"T`", $bits(ARG), ARG.name()); \
-        end \
-      UVM_SETINT: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-            else begin \
-              if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-              ARG = T'(uvm_object::__m_uvm_status_container.bitstream); \
-              __m_uvm_status_container.status = 1; \
-            end \
-          end \
-        end \
-      UVM_SETSTR: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-            else begin \
-              if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_str()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-              void'(uvm_enum_wrapper#(T)::from_name(uvm_object::__m_uvm_status_container.stringv, ARG)); \
-              __m_uvm_status_container.status = 1; \
-            end \
-          end \
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_enum(ARG, local_rhs__.ARG, T) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_enum(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_enum(ARG, T) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_enum(`"ARG`", ARG, T) \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      if (`m_uvm_field_radix(FLAG) inside {UVM_NORADIX, UVM_ENUM, UVM_STRING}) \
+        `uvm_print_enum(T, ARG) \
+      else \
+        `uvm_print_int(ARG, $bits(ARG), `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_resource_enum_read(local_success__, \
+                                 local_rsrc__, \
+                                 T, \
+                                 ARG, \
+                                 this) \
+              /* TODO if(local_success__ && printing matches) */ \
       end \
-    endcase \
-  end
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
 
-// MACRO: `uvm_field_real
+// MACRO -- NODOCS -- `uvm_field_real
 //
 // Implements the data operations for any real property.
 //
@@ -949,63 +990,39 @@ endfunction \
 // ~ARG~ is an real property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.1.5
 `define uvm_field_real(ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) ARG = local_data__.ARG; \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(ARG != local_data__.ARG) begin \
-               void'(__m_uvm_status_container.comparer.compare_field_real(`"ARG`", ARG, local_data__.ARG)); \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-            end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          __m_uvm_status_container.packer.pack_field_int($realtobits(ARG), 64); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          ARG = $bitstoreal(__m_uvm_status_container.packer.unpack_field_int(64)); \
-        end \
-      UVM_RECORD: \
-        if(!((FLAG)&UVM_NORECORD)) begin \
-          __m_uvm_status_container.recorder.record_field_real(`"ARG`", ARG); \
-        end \
-      UVM_PRINT: \
-        if(!((FLAG)&UVM_NOPRINT)) begin \
-          __m_uvm_status_container.printer.print_real(`"ARG`", ARG); \
-        end \
-      UVM_SETINT: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-            else begin \
-              if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-              ARG = $bitstoreal(uvm_object::__m_uvm_status_container.bitstream); \
-              __m_uvm_status_container.status = 1; \
-            end \
-          end \
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_real(ARG, local_rhs__.ARG) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_real(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_real(ARG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_real(`"ARG`", ARG) \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      printer.print_real(`"ARG`", ARG); \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_resource_real_read(local_success__, \
+                                 local_rsrc__, \
+                                 ARG, \
+                                 this) \
+              /* TODO if(local_success__ && printing matches) */ \
       end \
-    endcase \
-  end
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
-
-// MACRO: `uvm_field_event
+// MACRO -- NODOCS -- `uvm_field_event
 //   
 // Implements the data operations for an event property.
 //
@@ -1014,56 +1031,39 @@ endfunction \
 // ~ARG~ is an event property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.1.6
 `define uvm_field_event(ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) ARG = local_data__.ARG; \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(ARG != local_data__.ARG) begin \
-               __m_uvm_status_container.scope.down(`"ARG`"); \
-               __m_uvm_status_container.comparer.print_msg(""); \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-            end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          // Events aren't packed or unpacked  \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-        end \
-      UVM_RECORD: \
-        begin \
-          // Events are not recorded  \
-        end \
-      UVM_PRINT: \
-        if(!((FLAG)&UVM_NOPRINT)) begin \
-          __m_uvm_status_container.printer.print_generic(`"ARG`", "event", -1, ""); \
-        end \
-      UVM_SETINT: \
-        begin \
-          // Events are not configurable via set_config \
-        end \
-    endcase \
-  end
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `m_uvm_compare_begin(ARG, local_rhs__.ARG) \
+        comparer.print_msg({`"ARG`", " event miscompare"}); \
+      `m_uvm_compare_end \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      printer.print_generic(`"ARG`", "event", -1, ""); \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
 
 //-----------------------------------------------------------------------------
-// Group: `uvm_field_sarray_* macros
+// Group -- NODOCS -- `uvm_field_sarray_* macros
 //                            
 // Macros that implement data operations for one-dimensional static array
 // properties.
 //-----------------------------------------------------------------------------
 
-// MACRO: `uvm_field_sarray_int
+// MACRO -- NODOCS -- `uvm_field_sarray_int
 //
 // Implements the data operations for a one-dimensional static array of
 // integrals.
@@ -1074,92 +1074,64 @@ endfunction \
 // is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.2.1
 `define uvm_field_sarray_int(ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) ARG = local_data__.ARG; \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(ARG !== local_data__.ARG) begin \
-               if(__m_uvm_status_container.comparer.show_max == 1) begin \
-                 __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-                 __m_uvm_status_container.comparer.print_msg(""); \
-               end \
-               else if(__m_uvm_status_container.comparer.show_max) begin \
-                 foreach(ARG[i]) begin \
-                   if(ARG[i] !== local_data__.ARG[i]) begin \
-                     __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-                     void'(__m_uvm_status_container.comparer.compare_field("", ARG[i], local_data__.ARG[i], $bits(ARG[i]))); \
-                   end \
-                 end \
-               end \
-               else if ((__m_uvm_status_container.comparer.physical&&((FLAG)&UVM_PHYSICAL)) || \
-                        (__m_uvm_status_container.comparer.abstract&&((FLAG)&UVM_ABSTRACT)) || \
-                        (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT)) ) \
-                 __m_uvm_status_container.comparer.result++; \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-            end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          foreach(ARG[i])  \
-            if($bits(ARG[i]) <= 64) __m_uvm_status_container.packer.pack_field_int(ARG[i], $bits(ARG[i])); \
-            else __m_uvm_status_container.packer.pack_field(ARG[i], $bits(ARG[i])); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          foreach(ARG[i]) \
-            if($bits(ARG[i]) <= 64) ARG[i] = __m_uvm_status_container.packer.unpack_field_int($bits(ARG[i])); \
-            else ARG[i] = __m_uvm_status_container.packer.unpack_field($bits(ARG[i])); \
-        end \
-      UVM_RECORD: \
-        `m_uvm_record_qda_int(ARG, FLAG, $size(ARG))  \
-      UVM_PRINT: \
-        if(!((FLAG)&UVM_NOPRINT)) begin \
-          if(((FLAG)&UVM_NOPRINT) == 0) begin \
-             `uvm_print_sarray_int3(ARG, uvm_radix_enum'((FLAG)&(UVM_RADIX)), \
-                                   __m_uvm_status_container.printer) \
-          end \
-        end \
-      UVM_SETINT: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_sarray_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_sarray(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_sarray(ARG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_qda_int(ARG, `m_uvm_field_radix(FLAG))  \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_sarray_int(ARG, \
+                            `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/SARRAY_SIZE", $sformatf("Static array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          int local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            if ((local_index__ >= $size(ARG)) || (local_index__ < 0)) begin \
+              `uvm_warning("UVM/FIELDS/SARRAY_IDX", $sformatf("Index '%d' is not valid for static array '%s.%s' of size '%0d'", \
+                                                              local_index__, \
+                                                              get_full_name(), \
+                                                              `"ARG`", \
+                                                              $size(ARG))) \
             end \
             else begin \
-              uvm_report_warning("RDONLY", $sformatf("%s: static arrays cannot be resized via configuraton.",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-          end \
-          else if(!((FLAG)&UVM_READONLY)) begin \
-            foreach(ARG[i]) begin \
-              __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-              if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                ARG[i] =  uvm_object::__m_uvm_status_container.bitstream; \
-                __m_uvm_status_container.status = 1; \
-              end \
+              `uvm_resource_builtin_int_read(local_success__, \
+                                             local_rsrc__, \
+                                             ARG[local_index__], \
+                                             this) \
             end \
           end \
         end \
-    endcase \
-  end
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
 
-// MACRO: `uvm_field_sarray_object
+// MACRO -- NODOCS -- `uvm_field_sarray_object
 //
 // Implements the data operations for a one-dimensional static array of
 // <uvm_object>-based objects.
@@ -1170,162 +1142,81 @@ endfunction \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.2.2
 `define uvm_field_sarray_object(ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) begin \
-            if(((FLAG)&UVM_REFERENCE)) \
-              ARG = local_data__.ARG; \
-            else \
-              foreach(ARG[i]) begin \
-                if(ARG[i] != null && local_data__.ARG[i] != null) \
-                  ARG[i].copy(local_data__.ARG[i]); \
-                else if(ARG[i] == null && local_data__.ARG[i] != null) \
-                  $cast(ARG[i], local_data__.ARG[i].clone()); \
-                else \
-                  ARG[i] = null; \
-              end \
-          end \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(((FLAG)&UVM_REFERENCE) && (__m_uvm_status_container.comparer.show_max <= 1) && (ARG !== local_data__.ARG) ) begin \
-               if(__m_uvm_status_container.comparer.show_max == 1) begin \
-                 __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-                 __m_uvm_status_container.comparer.print_msg(""); \
-               end \
-               else if ((__m_uvm_status_container.comparer.physical&&((FLAG)&UVM_PHYSICAL)) || \
-                        (__m_uvm_status_container.comparer.abstract&&((FLAG)&UVM_ABSTRACT)) || \
-                        (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT)) ) \
-                 __m_uvm_status_container.comparer.result++; \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      foreach(ARG[i]) begin \
+        `uvm_copy_object(ARG[i], local_rhs__.ARG[i], `m_uvm_field_recursion(FLAG)) \
+      end \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_sarray_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
+        foreach(ARG[i])  \
+          `uvm_pack_object(ARG[i]) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
+        foreach(ARG[i])  \
+          `uvm_unpack_object(ARG[i]) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_qda_object(ARG) \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_sarray_object(ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/SARRAY_SIZE", $sformatf("Static array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          int local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            if ((local_index__ >= $size(ARG)) || (local_index__ < 0)) begin \
+              `uvm_warning("UVM/FIELDS/SARRAY_IDX", $sformatf("Index '%d' is not valid for static array '%s.%s' of size '%0d'", \
+                                                              local_index__, \
+                                                              get_full_name(), \
+                                                              `"ARG`", \
+                                                              $size(ARG))) \
             end \
             else begin \
-              string s; \
-              foreach(ARG[i]) begin \
-                if(ARG[i] != null && local_data__.ARG[i] != null) begin \
-                  $swrite(s,`"ARG[%0d]`",i); \
-                  void'(__m_uvm_status_container.comparer.compare_object(s, ARG[i], local_data__.ARG[i])); \
-                end \
-                if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-              end \
-            end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          foreach(ARG[i])  \
-            __m_uvm_status_container.packer.pack_object(ARG[i]); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          foreach(ARG[i]) \
-            __m_uvm_status_container.packer.unpack_object(ARG[i]); \
-        end \
-      UVM_RECORD: \
-        `m_uvm_record_qda_object(ARG,FLAG,$size(ARG)) \
-      UVM_PRINT: \
-        begin \
-          if(((FLAG)&UVM_NOPRINT) == 0) begin \
-             `uvm_print_sarray_object3(ARG, __m_uvm_status_container.printer, FLAG) \
-          end \
-        end \
-      UVM_SETINT: \
-        begin \
-          string s; \
-          if(!((FLAG)&UVM_READONLY)) begin \
-            foreach(ARG[i]) begin \
-              $swrite(s,`"ARG[%0d]`",i); \
-              __m_uvm_status_container.scope.set_arg(s); \
-              if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_object()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                if($cast(ARG[i],uvm_object::__m_uvm_status_container.object)) \
-                  uvm_object::__m_uvm_status_container.status = 1; \
-              end \
-              else if(ARG[i]!=null && !((FLAG)&UVM_REFERENCE)) begin \
-                int cnt; \
-                //Only traverse if there is a possible match. \
-                for(cnt=0; cnt<str__.len(); ++cnt) begin \
-                  if(str__[cnt] == "." || str__[cnt] == "*") break; \
-                end \
-                if(cnt!=str__.len()) begin \
-                  __m_uvm_status_container.scope.down(s); \
-                  ARG[i].__m_uvm_field_automation(null, UVM_SETINT, str__); \
-                  __m_uvm_status_container.scope.up(); \
+              `uvm_resource_read(local_success__, \
+                                 local_rsrc__, \
+                                 uvm_object, \
+                                 local_obj__, \
+                                 this) \
+              if (local_success__) begin \
+                if (local_obj__ == null) begin \
+                  ARG[local_index__] = null; \
+                end else if (!$cast(ARG[local_index__], local_obj__)) begin \
+                  `uvm_warning("UVM/FIELDS/OBJ_TYPE", $sformatf("Can't set field '%s[%d]' on '%s' with '%s' type", \
+                                                                `"ARG`", \
+                                                                local_index__, \
+                                                                this.get_full_name(), \
+                                                                local_obj__.get_type_name())) \
                 end \
               end \
             end \
           end \
         end \
-      UVM_SETSTR: \
-        begin \
-          string s; \
-          if(!((FLAG)&UVM_READONLY)) begin \
-            foreach(ARG[i]) begin \
-              $swrite(s,`"ARG[%0d]`",i); \
-              __m_uvm_status_container.scope.set_arg(s); \
-              if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_object()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                if($cast(ARG[i],uvm_object::__m_uvm_status_container.object)) \
-                  uvm_object::__m_uvm_status_container.status = 1; \
-              end \
-              else if(ARG[i]!=null && !((FLAG)&UVM_REFERENCE)) begin \
-                int cnt; \
-                //Only traverse if there is a possible match. \
-                for(cnt=0; cnt<str__.len(); ++cnt) begin \
-                  if(str__[cnt] == "." || str__[cnt] == "*") break; \
-                end \
-                if(cnt!=str__.len()) begin \
-                  __m_uvm_status_container.scope.down(s); \
-                  ARG[i].__m_uvm_field_automation(null, UVM_SETSTR, str__); \
-                  __m_uvm_status_container.scope.up(); \
-                end \
-              end \
-            end \
-          end \
-        end \
-      UVM_SETOBJ: \
-        begin \
-          string s; \
-          if(!((FLAG)&UVM_READONLY)) begin \
-            foreach(ARG[i]) begin \
-              $swrite(s,`"ARG[%0d]`",i); \
-              __m_uvm_status_container.scope.set_arg(s); \
-              if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_object()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                if($cast(ARG[i],uvm_object::__m_uvm_status_container.object)) \
-                  uvm_object::__m_uvm_status_container.status = 1; \
-              end \
-              else if(ARG[i]!=null && !((FLAG)&UVM_REFERENCE)) begin \
-                int cnt; \
-                //Only traverse if there is a possible match. \
-                for(cnt=0; cnt<str__.len(); ++cnt) begin \
-                  if(str__[cnt] == "." || str__[cnt] == "*") break; \
-                end \
-                if(cnt!=str__.len()) begin \
-                  __m_uvm_status_container.scope.down(s); \
-                  ARG[i].__m_uvm_field_automation(null, UVM_SETOBJ, str__); \
-                  __m_uvm_status_container.scope.up(); \
-                end \
-              end \
-            end \
-          end \
-        end \
-    endcase \
-  end
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)   
 
 
-// MACRO: `uvm_field_sarray_string
+// MACRO -- NODOCS -- `uvm_field_sarray_string
 //
 // Implements the data operations for a one-dimensional static array of
 // strings.
@@ -1335,93 +1226,66 @@ endfunction \
 // ~ARG~ is a one-dimensional static array of strings, and ~FLAG~ is a bitwise
 // OR of one or more flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.2.3
 `define uvm_field_sarray_string(ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) ARG = local_data__.ARG; \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(ARG != local_data__.ARG) begin \
-               if(__m_uvm_status_container.comparer.show_max == 1) begin \
-                 __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-                 __m_uvm_status_container.comparer.print_msg(""); \
-               end \
-               else if(__m_uvm_status_container.comparer.show_max) begin \
-                 foreach(ARG[i]) begin \
-                   if(ARG[i] != local_data__.ARG[i]) begin \
-                     __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-                     void'(__m_uvm_status_container.comparer.compare_string("", ARG[i], local_data__.ARG[i])); \
-                   end \
-                 end \
-               end \
-               else if ((__m_uvm_status_container.comparer.physical&&((FLAG)&UVM_PHYSICAL)) || \
-                        (__m_uvm_status_container.comparer.abstract&&((FLAG)&UVM_ABSTRACT)) || \
-                        (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT)) ) \
-                 __m_uvm_status_container.comparer.result++; \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-            end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          foreach(ARG[i])  \
-            __m_uvm_status_container.packer.pack_string(ARG[i]); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          foreach(ARG[i]) \
-            ARG[i] = __m_uvm_status_container.packer.unpack_string(); \
-        end \
-      UVM_RECORD: \
-        begin \
-          /* Issue with $size for sarray with strings */ \
-          int sz; foreach(ARG[i]) sz=i; \
-          `m_uvm_record_qda_string(ARG, FLAG, sz) \
-        end \
-      UVM_PRINT: \
-        begin \
-          if(((FLAG)&UVM_NOPRINT) == 0) begin \
-             `uvm_print_sarray_string2(ARG, __m_uvm_status_container.printer) \
-          end \
-        end \
-      UVM_SETSTR: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_sarray_string(ARG, local_rhs__.ARG) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      foreach(ARG[i]) \
+        `uvm_pack_string(ARG[i]) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      foreach(ARG[i]) \
+       `uvm_unpack_string(ARG[i]) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_qda_string(ARG)  \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_sarray_string(ARG) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/SARRAY_SIZE", $sformatf("Static array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          int local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            if ((local_index__ >= $size(ARG)) || (local_index__ < 0)) begin \
+              `uvm_warning("UVM/FIELDS/SARRAY_IDX", $sformatf("Index '%d' is not valid for static array '%s.%s' of size '%0d'", \
+                                                              local_index__, \
+                                                              get_full_name(), \
+                                                              `"ARG`", \
+                                                              $size(ARG))) \
             end \
             else begin \
-              uvm_report_warning("RDONLY", {__m_uvm_status_container.get_full_scope_arg(), \
-              ": static arrays cannot be resized via configuraton."}, UVM_NONE); \
-            end \
-          end \
-          else if(!((FLAG)&UVM_READONLY)) begin \
-            foreach(ARG[i]) begin \
-              __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-              if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                ARG[i] =  uvm_object::__m_uvm_status_container.stringv; \
-                __m_uvm_status_container.status = 1; \
-              end \
+              `uvm_resource_read(local_success__, \
+                                 local_rsrc__, \
+                                 string, \
+                                 ARG[local_index__], \
+                                 this) \
             end \
           end \
         end \
-    endcase \
-  end
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)  
 
 
-// MACRO: `uvm_field_sarray_enum
+// MACRO -- NODOCS -- `uvm_field_sarray_enum
 //
 // Implements the data operations for a one-dimensional static array of
 // enums.
@@ -1432,120 +1296,67 @@ endfunction \
 // instance of that type, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.2.4
 `define uvm_field_sarray_enum(T,ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) ARG = local_data__.ARG; \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(ARG !== local_data__.ARG) begin \
-               if(__m_uvm_status_container.comparer.show_max == 1) begin \
-                 __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-                 __m_uvm_status_container.comparer.print_msg(""); \
-               end \
-               else if(__m_uvm_status_container.comparer.show_max) begin \
-                 foreach(ARG[i]) begin \
-                   if(ARG[i] !== local_data__.ARG[i]) begin \
-                     __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-                     $swrite(__m_uvm_status_container.stringv, "lhs = %0s : rhs = %0s", \
-                       ARG[i].name(), local_data__.ARG[i].name()); \
-                     __m_uvm_status_container.comparer.print_msg(__m_uvm_status_container.stringv); \
-                     if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-                   end \
-                 end \
-               end \
-               else if ((__m_uvm_status_container.comparer.physical&&((FLAG)&UVM_PHYSICAL)) || \
-                        (__m_uvm_status_container.comparer.abstract&&((FLAG)&UVM_ABSTRACT)) || \
-                        (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT)) ) \
-                 __m_uvm_status_container.comparer.result++; \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-            end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          foreach(ARG[i])  \
-            __m_uvm_status_container.packer.pack_field_int(int'(ARG[i]), $bits(ARG[i])); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          foreach(ARG[i]) \
-            ARG[i] = T'(__m_uvm_status_container.packer.unpack_field_int($bits(ARG[i]))); \
-        end \
-      UVM_RECORD: \
-        `m_uvm_record_qda_enum(ARG, FLAG, $size(ARG)) \
-      UVM_PRINT: \
-        begin \
-          if(((FLAG)&UVM_NOPRINT) == 0) begin \
-             `uvm_print_qda_enum(ARG, __m_uvm_status_container.printer, array, T) \
-          end \
-        end \
-      UVM_SETINT: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_sarray_enum(ARG, local_rhs__.ARG, T) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      foreach (ARG[i]) \
+        `uvm_pack_enumN(ARG[i], $bits(T)) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      foreach (ARG[i]) \
+        `uvm_unpack_enumN(ARG[i], $bits(T), T) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_qda_enum(ARG, T)  \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_sarray_enum(T, ARG) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/SARRAY_SIZE", $sformatf("Static array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          int local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            if ((local_index__ >= $size(ARG)) || (local_index__ < 0)) begin \
+              `uvm_warning("UVM/FIELDS/SARRAY_IDX", $sformatf("Index '%d' is not valid for static array '%s.%s' of size '%0d'", \
+                                                              local_index__, \
+                                                              get_full_name(), \
+                                                              `"ARG`", \
+                                                              $size(ARG))) \
             end \
             else begin \
-              uvm_report_warning("RDONLY", $sformatf("%s: static arrays cannot be resized via configuraton.",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-          end \
-          else if(!((FLAG)&UVM_READONLY)) begin \
-            foreach(ARG[i]) begin \
-              __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-              if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                ARG[i] =  T'(uvm_object::__m_uvm_status_container.bitstream); \
-                __m_uvm_status_container.status = 1; \
-              end \
+              `uvm_resource_enum_read(local_success__, \
+                                      local_rsrc__, \
+                                      T, \
+                                      ARG[local_index__], \
+                                      this) \
             end \
           end \
         end \
-      UVM_SETSTR: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-            else begin \
-              uvm_report_warning("RDONLY", {__m_uvm_status_container.get_full_scope_arg(), \
-              ": static arrays cannot be resized via configuraton."}, UVM_NONE); \
-            end \
-          end \
-          else if(!((FLAG)&UVM_READONLY)) begin \
-            foreach(ARG[i]) begin \
-              __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-              if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-	              T t__;  \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                void'(uvm_enum_wrapper#(T)::from_name(uvm_object::__m_uvm_status_container.stringv, t__)); ARG[i]=t__;\
-                __m_uvm_status_container.status = 1; \
-              end \
-            end \
-          end \
-        end \
-    endcase \
-  end
-
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)  
 
 
 //-----------------------------------------------------------------------------
-// Group: `uvm_field_array_* macros
+// Group -- NODOCS -- `uvm_field_array_* macros
 //
 // Macros that implement data operations for one-dimensional dynamic array
 // properties.
@@ -1559,150 +1370,93 @@ endfunction \
 // 
 //-----------------------------------------------------------------------------
 
-// M_UVM_QUEUE_RESIZE
+             
+// m_uvm_QUEUE_resize
 // ------------------
 
-`define M_UVM_QUEUE_RESIZE(ARG,VAL) \
-  while(ARG.size()<sz) ARG.push_back(VAL); \
-  while(ARG.size()>sz) void'(ARG.pop_front()); \
+`define m_uvm_queue_resize(ARG, SZ) \
+  if (ARG.size() > SZ) \
+    ARG  = ARG[0:SZ-1]; \
+  else \
+    while (ARG.size() < SZ) ARG.push_back(ARG[SZ]);
 
-
-// M_UVM_ARRAY_RESIZE
+// m_uvm_da_resize
 // ------------------
 
-`define M_UVM_ARRAY_RESIZE(ARG,VAL) \
-  ARG = new[sz](ARG); \
+`define m_uvm_da_resize(ARG, SZ) \
+  if (ARG.size() != SZ) ARG = new[SZ](ARG); 
 
 
-// M_UVM_SARRAY_RESIZE
+// m_uvm_field_qda_int
 // -------------------
 
-`define M_UVM_SARRAY_RESIZE(ARG,VAL) \
-  /* fixed arrays cannot be resized; do nothing */
-
-
-// M_UVM_FIELD_QDA_INT
-// -------------------
-
-`define M_UVM_FIELD_QDA_INT(TYPE,ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if (local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) ARG = local_data__.ARG; \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if (local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(ARG !== local_data__.ARG) begin \
-               if(__m_uvm_status_container.comparer.show_max == 1) begin \
-                 __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-                 __m_uvm_status_container.comparer.print_msg(""); \
-               end \
-               else if(__m_uvm_status_container.comparer.show_max) begin \
-                 /**/ if(ARG.size() != local_data__.ARG.size()) begin \
-                 /**/   void'(__m_uvm_status_container.comparer.compare_field(`"ARG``.size`", ARG.size(), local_data__.ARG.size(), 32)); \
-                 /**/ end \
-                 else begin \
-                   foreach(ARG[i]) begin \
-                     if(ARG[i] !== local_data__.ARG[i]) begin \
-                       __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-                       void'(__m_uvm_status_container.comparer.compare_field("", ARG[i], local_data__.ARG[i], $bits(ARG[i]))); \
-                     end \
-                   end \
-                 end \
-               end \
-               else if ((__m_uvm_status_container.comparer.physical&&((FLAG)&UVM_PHYSICAL)) || \
-                        (__m_uvm_status_container.comparer.abstract&&((FLAG)&UVM_ABSTRACT)) || \
-                        (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT)) ) \
-                 __m_uvm_status_container.comparer.result++; \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
+`define m_uvm_field_qda_int(TYPE,ARG,FLAG) \
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_qda_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_``TYPE``(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_``TYPE``(ARG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_qda_int(ARG, `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_qda_int(TYPE, ARG, `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+        `uvm_resource_builtin_int_read(local_success__, \
+                                       local_rsrc__, \
+                                       local_size__, \
+                                       this) \
+        if (local_success__) \
+          `m_uvm_``TYPE``_resize(ARG, local_size__) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          int local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            if (local_index__ < 0) begin \
+              `uvm_warning("UVM/FIELDS/QDA_IDX", $sformatf("Index '%0d' is not valid for field '%s.%s' of size '%0d'", \
+                                                              local_index__, \
+                                                              get_full_name(), \
+                                                              `"ARG`", \
+                                                              ARG.size() ) ) \
             end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          /**/ if(__m_uvm_status_container.packer.use_metadata) __m_uvm_status_container.packer.pack_field_int(ARG.size(), 32); \
-          foreach(ARG[i])  \
-            if($bits(ARG[i]) <= 64) __m_uvm_status_container.packer.pack_field_int(ARG[i], $bits(ARG[i])); \
-            else __m_uvm_status_container.packer.pack_field(ARG[i], $bits(ARG[i])); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          /**/ int sz = ARG.size(); \
-          /**/ if(__m_uvm_status_container.packer.use_metadata) sz = __m_uvm_status_container.packer.unpack_field_int(32); \
-          if(sz != ARG.size()) begin \
-          `M_UVM_``TYPE``_RESIZE (ARG,0) \
-          end \
-          foreach(ARG[i]) \
-            if($bits(ARG[i]) <= 64) ARG[i] = __m_uvm_status_container.packer.unpack_field_int($bits(ARG[i])); \
-            else ARG[i] = __m_uvm_status_container.packer.unpack_field($bits(ARG[i])); \
-        end \
-      UVM_RECORD: \
-        `m_uvm_record_qda_int(ARG, FLAG, ARG.size()) \
-      UVM_PRINT: \
-        begin \
-          if(((FLAG)&UVM_NOPRINT) == 0) begin \
-             `uvm_print_array_int3(ARG, uvm_radix_enum'((FLAG)&(UVM_RADIX)), \
-                                   __m_uvm_status_container.printer) \
-          end \
-        end \
-      UVM_SETINT: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-            /**/ else begin \
-            /**/   int sz =  uvm_object::__m_uvm_status_container.bitstream; \
-            /**/   if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-            /**/   if(ARG.size() !=  sz) begin \
-            /**/     `M_UVM_``TYPE``_RESIZE(ARG,0) \
-            /**/   end \
-            /**/   __m_uvm_status_container.status = 1; \
-            /**/ end \
-          end \
-          else if(!((FLAG)&UVM_READONLY)) begin \
-            bit wildcard_index__; \
-            int index__; \
-            index__ = uvm_get_array_index_int(str__, wildcard_index__); \
-            if(uvm_is_array(str__)  && (index__ != -1)) begin\
-              if(wildcard_index__) begin \
-                for(index__=0; index__<ARG.size(); ++index__) begin \
-                  if(uvm_is_match(str__, {__m_uvm_status_container.scope.get_arg(),$sformatf("[%0d]", index__)})) begin \
-                    if (__m_uvm_status_container.print_matches) \
-                      uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg(), $sformatf("[%0d]",index__)}, UVM_LOW); \
-                    ARG[index__] = uvm_object::__m_uvm_status_container.bitstream; \
-                    __m_uvm_status_container.status = 1; \
-                  end \
-                end \
-              end \
-              else if(uvm_is_match(str__, {__m_uvm_status_container.scope.get_arg(),$sformatf("[%0d]", index__)})) begin \
-                if(index__+1 > ARG.size()) begin \
-                  int sz = index__; \
-                  int tmp__; \
-                  `M_UVM_``TYPE``_RESIZE(ARG,tmp__) \
-                end \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                ARG[index__] =  uvm_object::__m_uvm_status_container.bitstream; \
-                __m_uvm_status_container.status = 1; \
+            else begin \
+              bit tmp_stream__[]; \
+              `uvm_resource_builtin_int_read(local_success__, \
+                                             local_rsrc__, \
+                                             { << bit { tmp_stream__ }}, \
+                                             this) \
+              if (local_success__) begin \
+                if (local_index__ >= ARG.size()) \
+                  `m_uvm_``TYPE``_resize(ARG, local_index__ + 1) \
+                tmp_stream__ = new[$bits(ARG[local_index__])] (tmp_stream__); \
+                ARG[local_index__] = { << bit { tmp_stream__ }}; \
               end \
             end \
           end \
         end \
-    endcase \
-  end
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
-
-// MACRO: `uvm_field_array_int
+// MACRO -- NODOCS -- `uvm_field_array_int
 //
 // Implements the data operations for a one-dimensional dynamic array of
 // integrals.
@@ -1713,11 +1467,96 @@ endfunction \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.3.1
 `define uvm_field_array_int(ARG,FLAG) \
-   `M_UVM_FIELD_QDA_INT(ARRAY,ARG,FLAG) 
+   `m_uvm_field_qda_int(da,ARG,FLAG) 
 
+`define m_uvm_field_qda_object(TYPE,ARG,FLAG) \
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      if ((`m_uvm_field_recursion(FLAG) == UVM_REFERENCE) || !local_rhs__.ARG.size()) \
+        ARG = local_rhs__.ARG; \
+      else begin \
+        `m_uvm_``TYPE``_resize(ARG, local_rhs__.ARG.size()) \
+        foreach (ARG[i]) \
+          `uvm_copy_object(ARG[i], local_rhs__.ARG[i], `m_uvm_field_recursion(FLAG)) \
+      end \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_qda_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      packer.pack_field_int(ARG.size(), 32); \
+      foreach (ARG[i]) \
+        `uvm_pack_object(ARG[i]) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      local_size__ = packer.unpack_field_int(32); \
+      `m_uvm_``TYPE``_resize(ARG, local_size__); \
+      foreach (ARG[i]) \
+        `uvm_unpack_object(ARG[i]) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_qda_object(ARG) \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_qda_object(TYPE, ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+        `uvm_resource_builtin_int_read(local_success__, \
+                                       local_rsrc__, \
+                                       local_size__, \
+                                       this) \
+        if (local_success__) \
+          `m_uvm_``TYPE``_resize(ARG, local_size__) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          int local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            if (local_index__ < 0) begin \
+              `uvm_warning("UVM/FIELDS/QDA_IDX", $sformatf("Index '%0d' is not valid for field '%s.%s' of size '%0d'", \
+                                                              local_index__, \
+                                                              get_full_name(), \
+                                                              `"ARG`", \
+                                                              ARG.size() ) ) \
+            end \
+            else begin \
+              `uvm_resource_read(local_success__, \
+                                 local_rsrc__, \
+                                 uvm_object, \
+                                 local_obj__, \
+                                 this) \
+              if (local_success__) begin \
+                if (local_index__ >= ARG.size()) \
+                  `m_uvm_``TYPE``_resize(ARG, local_index__ + 1) \
+                if (local_obj__ == null) begin \
+                  ARG[local_index__] = null; \
+                end else if (!$cast(ARG[local_index__], local_obj__)) begin \
+                  `uvm_error("UVM/FIELDS/QDA_OBJ_TYPE", \
+                             $sformatf("Can't set field '%s[%0d]' on '%s' with '%s' type", \
+                                       `"ARG`", \
+                                       local_index__, \
+                                       this.get_full_name(), \
+                                       local_obj__.get_type_name())) \
+                end \
+              end \
+            end \
+          end \
+        end \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
-// MACRO: `uvm_field_array_object
+// MACRO -- NODOCS -- `uvm_field_array_object
 //
 // Implements the data operations for a one-dimensional dynamic array
 // of <uvm_object>-based objects.
@@ -1728,221 +1567,13 @@ endfunction \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.3.2
 `define uvm_field_array_object(ARG,FLAG) \
-  `M_UVM_FIELD_QDA_OBJECT(ARRAY,ARG,FLAG)
-
-`define M_UVM_FIELD_QDA_OBJECT(TYPE,ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) begin \
-            if(((FLAG)&UVM_REFERENCE)) \
-              ARG = local_data__.ARG; \
-            else begin \
-              int sz = local_data__.ARG.size(); \
-              `M_UVM_``TYPE``_RESIZE(ARG,null) \
-              foreach(ARG[i]) begin \
-                if(ARG[i] != null && local_data__.ARG[i] != null) \
-                  ARG[i].copy(local_data__.ARG[i]); \
-                else if(ARG[i] == null && local_data__.ARG[i] != null) \
-                  $cast(ARG[i], local_data__.ARG[i].clone()); \
-                else \
-                  ARG[i] = null; \
-              end \
-            end \
-          end \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(((FLAG)&UVM_REFERENCE) && (__m_uvm_status_container.comparer.show_max <= 1) && (ARG !== local_data__.ARG) ) begin \
-               if(__m_uvm_status_container.comparer.show_max == 1) begin \
-                 __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-                 __m_uvm_status_container.comparer.print_msg(""); \
-               end \
-               else if ((__m_uvm_status_container.comparer.physical&&((FLAG)&UVM_PHYSICAL)) || \
-                        (__m_uvm_status_container.comparer.abstract&&((FLAG)&UVM_ABSTRACT)) || \
-                        (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT)) ) \
-                 __m_uvm_status_container.comparer.result++; \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-            end \
-            else begin \
-              string s; \
-              if(ARG.size() != local_data__.ARG.size()) begin \
-                __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-                __m_uvm_status_container.comparer.print_msg($sformatf("size mismatch: lhs: %0d  rhs: %0d", ARG.size(), local_data__.ARG.size())); \
-              	if(__m_uvm_status_container.comparer.show_max == 1) return; \
-              end \
-              for(int i=0; i<ARG.size() && i<local_data__.ARG.size(); ++i) begin \
-                if(ARG[i] != null && local_data__.ARG[i] != null) begin \
-                  $swrite(s,`"ARG[%0d]`",i); \
-                  void'(__m_uvm_status_container.comparer.compare_object(s, ARG[i], local_data__.ARG[i])); \
-                end \
-                if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-              end \
-            end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          if(__m_uvm_status_container.packer.use_metadata) __m_uvm_status_container.packer.pack_field_int(ARG.size(), 32); \
-          foreach(ARG[i])  \
-            __m_uvm_status_container.packer.pack_object(ARG[i]); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          int sz = ARG.size(); \
-          if(__m_uvm_status_container.packer.use_metadata) sz = __m_uvm_status_container.packer.unpack_field_int(32); \
-          if(sz != ARG.size()) begin \
-            `M_UVM_``TYPE``_RESIZE(ARG,null) \
-          end \
-          foreach(ARG[i]) \
-            __m_uvm_status_container.packer.unpack_object(ARG[i]); \
-        end \
-      UVM_RECORD: \
-        `m_uvm_record_qda_object(ARG,FLAG,ARG.size()) \
-      UVM_PRINT: \
-        begin \
-          if(((FLAG)&UVM_NOPRINT) == 0) begin \
-             `uvm_print_array_object3(ARG, __m_uvm_status_container.printer,FLAG) \
-          end \
-        end \
-      UVM_SETINT: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-            else begin \
-              int sz =  uvm_object::__m_uvm_status_container.bitstream; \
-              if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-              if(ARG.size() !=  sz) begin \
-                `M_UVM_``TYPE``_RESIZE(ARG,null) \
-              end \
-              __m_uvm_status_container.status = 1; \
-            end \
-          end \
-          else if(!((FLAG)&UVM_READONLY)) begin \
-            foreach(ARG[i]) begin \
-              string s; \
-              $swrite(s,`"ARG[%0d]`",i); \
-              __m_uvm_status_container.scope.set_arg(s); \
-              if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-		 uvm_report_warning("STRMTC", {"set_int()", ": Match ignored for string ", str__, ". Cannot set object to int value."}); \
-              end \
-              else if(ARG[i]!=null && !((FLAG)&UVM_REFERENCE)) begin \
-                int cnt; \
-                //Only traverse if there is a possible match. \
-                for(cnt=0; cnt<str__.len(); ++cnt) begin \
-                  if(str__[cnt] == "." || str__[cnt] == "*") break; \
-                end \
-                if(cnt!=str__.len()) begin \
-                  __m_uvm_status_container.scope.down(s); \
-                  ARG[i].__m_uvm_field_automation(null, UVM_SETINT, str__); \
-                  __m_uvm_status_container.scope.up(); \
-                end \
-              end \
-            end \
-          end \
-        end \
-      UVM_SETSTR: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-            else begin \
-                  uvm_report_warning("STRMTC", {"set_str()", ": Match ignored for string ", str__, ". Cannot set array of objects to string value."}); \
-            end \
-          end \
-          else if(!((FLAG)&UVM_READONLY)) begin \
-            foreach(ARG[i]) begin \
-              string s; \
-              $swrite(s,`"ARG[%0d]`",i); \
-              __m_uvm_status_container.scope.set_arg(s); \
-              if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-                  uvm_report_warning("STRMTC", {"set_str()", ": Match ignored for string ", str__, ". Cannot set object to string value."}); \
-              end \
-              else if(ARG[i]!=null && !((FLAG)&UVM_REFERENCE)) begin \
-                int cnt; \
-                //Only traverse if there is a possible match. \
-                for(cnt=0; cnt<str__.len(); ++cnt) begin \
-                  if(str__[cnt] == "." || str__[cnt] == "*") break; \
-                end \
-                if(cnt!=str__.len()) begin \
-                  __m_uvm_status_container.scope.down(s); \
-                  ARG[i].__m_uvm_field_automation(null, UVM_SETSTR, str__); \
-                  __m_uvm_status_container.scope.up(); \
-                end \
-              end \
-            end \
-          end \
-        end \
-      UVM_SETOBJ: \
-        begin \
-          string s; \
-          if(!((FLAG)&UVM_READONLY)) begin \
-            bit wildcard_index__; \
-            int index__; \
-            __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-            index__ = uvm_get_array_index_int(str__, wildcard_index__); \
-            if(uvm_is_array(str__)  && (index__ != -1)) begin\
-              if(wildcard_index__) begin \
-                for(index__=0; index__<ARG.size(); ++index__) begin \
-                  if(uvm_is_match(str__, {__m_uvm_status_container.scope.get_arg(),$sformatf("[%0d]", index__)})) begin \
-                    if (__m_uvm_status_container.print_matches) \
-                      uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg(), $sformatf("[%0d]",index__)}, UVM_LOW); \
-                    $cast(ARG[index__], uvm_object::__m_uvm_status_container.object); \
-                    __m_uvm_status_container.status = 1; \
-                  end \
-                end \
-              end \
-              else if(uvm_is_match(str__, {__m_uvm_status_container.get_full_scope_arg(),$sformatf("[%0d]", index__)})) begin \
-                if(index__+1 > ARG.size()) begin \
-                  int sz = index__+1; \
-                  `M_UVM_``TYPE``_RESIZE(ARG,null) \
-                end \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                $cast(ARG[index__],  uvm_object::__m_uvm_status_container.object); \
-                __m_uvm_status_container.status = 1; \
-              end \
-            end \
-            else if(!((FLAG)&UVM_REFERENCE)) begin \
-              int cnt; \
-              foreach(ARG[i]) begin \
-                if (ARG[i]!=null) begin \
-                  string s; \
-                  $swrite(s,`"ARG[%0d]`",i); \
-                //Only traverse if there is a possible match. \
-                for(cnt=0; cnt<str__.len(); ++cnt) begin \
-                  if(str__[cnt] == "." || str__[cnt] == "*") break; \
-                end \
-                if(cnt!=str__.len()) begin \
-                  __m_uvm_status_container.scope.down(s); \
-                  ARG[i].__m_uvm_field_automation(null, UVM_SETOBJ, str__); \
-                  __m_uvm_status_container.scope.up(); \
-                end \
-              end \
-            end \
-          end \
-        end \
-        end \
-    endcase \
-  end 
+  `m_uvm_field_qda_object(da,ARG,FLAG)
 
 
-// MACRO: `uvm_field_array_string
+
+// MACRO -- NODOCS -- `uvm_field_array_string
 //
 // Implements the data operations for a one-dimensional dynamic array 
 // of strings.
@@ -1952,130 +1583,82 @@ endfunction \
 // ~ARG~ is a one-dimensional dynamic array of strings, and ~FLAG~ is a bitwise
 // OR of one or more flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.3.3
 `define uvm_field_array_string(ARG,FLAG) \
-  `M_UVM_FIELD_QDA_STRING(ARRAY,ARG,FLAG)
+  `m_uvm_field_qda_string(da,ARG,FLAG)
 
-`define M_UVM_FIELD_QDA_STRING(TYPE,ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOPY)) ARG = local_data__.ARG; \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(local_data__ == null) return; \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(ARG != local_data__.ARG) begin \
-               if(__m_uvm_status_container.comparer.show_max == 1) begin \
-                 __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-                 __m_uvm_status_container.comparer.print_msg(""); \
-               end \
-               else if(__m_uvm_status_container.comparer.show_max) begin \
-                 if(ARG.size() != local_data__.ARG.size()) begin \
-                   void'(__m_uvm_status_container.comparer.compare_field(`"ARG``.size`", ARG.size(), local_data__.ARG.size(), 32)); \
-                 end \
-                 else begin \
-                   foreach(ARG[i]) begin \
-                     if(ARG[i] != local_data__.ARG[i]) begin \
-                       __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-                       void'(__m_uvm_status_container.comparer.compare_string("", ARG[i], local_data__.ARG[i])); \
-                     end \
-                   end \
-                 end \
-               end \
-               else if ((__m_uvm_status_container.comparer.physical&&((FLAG)&UVM_PHYSICAL)) || \
-                        (__m_uvm_status_container.comparer.abstract&&((FLAG)&UVM_ABSTRACT)) || \
-                        (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT)) ) \
-                 __m_uvm_status_container.comparer.result++; \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-            end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          if(__m_uvm_status_container.packer.use_metadata) __m_uvm_status_container.packer.pack_field_int(ARG.size(), 32); \
-          foreach(ARG[i])  \
-            __m_uvm_status_container.packer.pack_string(ARG[i]); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          int sz = ARG.size(); \
-          if(__m_uvm_status_container.packer.use_metadata) sz = __m_uvm_status_container.packer.unpack_field_int(32); \
-          if(sz != ARG.size()) begin \
-            `M_UVM_``TYPE``_RESIZE(ARG,"") \
-          end \
-          foreach(ARG[i]) \
-            ARG[i] = __m_uvm_status_container.packer.unpack_string(); \
-        end \
-      UVM_RECORD: \
-        `m_uvm_record_qda_string(ARG,FLAG,ARG.size()) \
-      UVM_PRINT: \
-        begin \
-          if(((FLAG)&UVM_NOPRINT) == 0) begin \
-             `uvm_print_array_string2(ARG, __m_uvm_status_container.printer) \
-          end \
-        end \
-      UVM_SETINT: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
+`define m_uvm_field_qda_string(TYPE,ARG,FLAG) \
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_qda_string(ARG, local_rhs__.ARG) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+       packer.pack_field_int(ARG.size(), 32); \
+       foreach (ARG[i]) \
+         `uvm_pack_string(ARG[i]) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      local_size__ = packer.unpack_field_int(32); \
+      `m_uvm_``TYPE``_resize(ARG, local_size__) \
+      foreach (ARG[i]) \
+        `uvm_unpack_string(ARG[i]) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_qda_string(ARG) \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_qda_string(TYPE, ARG) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+        `uvm_resource_builtin_int_read(local_success__, \
+                                       local_rsrc__, \
+                                       local_size__, \
+                                       this) \
+        if (local_success__) \
+          `m_uvm_``TYPE``_resize(ARG, local_size__) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          int local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            if (local_index__ < 0) begin \
+              `uvm_warning("UVM/FIELDS/QDA_IDX", $sformatf("Index '%0d' is not valid for field '%s.%s' of size '%0d'", \
+                                                           local_index__, \
+                                                           get_full_name(), \
+                                                           `"ARG`", \
+                                                           ARG.size() ) ) \
             end \
             else begin \
-              int sz =  uvm_object::__m_uvm_status_container.bitstream; \
-              if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-              if(ARG.size() !=  sz) begin \
-                `M_UVM_``TYPE``_RESIZE(ARG,"") \
-              end \
-              __m_uvm_status_container.status = 1; \
-            end \
-          end \
-        end \
-      UVM_SETSTR: \
-        begin \
-          if(!((FLAG)&UVM_READONLY)) begin \
-            bit wildcard_index__; \
-            int index__; \
-            __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-            index__ = uvm_get_array_index_int(str__, wildcard_index__); \
-            if(uvm_is_array(str__)  && (index__ != -1)) begin\
-              if(wildcard_index__) begin \
-                for(index__=0; index__<ARG.size(); ++index__) begin \
-                  if(uvm_is_match(str__, {__m_uvm_status_container.scope.get_arg(),$sformatf("[%0d]", index__)})) begin \
-                    if (__m_uvm_status_container.print_matches) \
-                      uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg(), $sformatf("[%0d]",index__)}, UVM_LOW); \
-                    ARG[index__] = uvm_object::__m_uvm_status_container.stringv; \
-                    __m_uvm_status_container.status = 1; \
-                  end \
-                end \
-              end \
-              else if(uvm_is_match(str__, {__m_uvm_status_container.scope.get_arg(),$sformatf("[%0d]", index__)})) begin \
-                if(index__+1 > ARG.size()) begin \
-                  int sz = index__; \
-                  string tmp__; \
-                  `M_UVM_``TYPE``_RESIZE(ARG,tmp__) \
-                end \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                ARG[index__] =  uvm_object::__m_uvm_status_container.stringv; \
-                __m_uvm_status_container.status = 1; \
+              string tmp_string__; \
+              `uvm_resource_read(local_success__, \
+                                 local_rsrc__, \
+                                 string, \
+                                 tmp_string__, \
+                                 this) \
+              if (local_success__) begin \
+                if (local_index__ >= ARG.size()) \
+                  `m_uvm_``TYPE``_resize(ARG, local_index__ + 1) \
+                ARG[local_index__]  = tmp_string__; \
               end \
             end \
           end \
         end \
-    endcase \
-  end
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
-
-
-// MACRO: `uvm_field_array_enum
+// MACRO -- NODOCS -- `uvm_field_array_enum
 //
 // Implements the data operations for a one-dimensional dynamic array of
 // enums.
@@ -2086,169 +1669,89 @@ endfunction \
 // ~ARG~ is an instance of that type, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.3.4
 `define uvm_field_array_enum(T,ARG,FLAG) \
-  `M_FIELD_QDA_ENUM(ARRAY,T,ARG,FLAG) 
+  `m_field_qda_enum(da,T,ARG,FLAG) 
 
-`define M_FIELD_QDA_ENUM(TYPE,T,ARG,FLAG) \
-  begin \
-    case (what__) \
-      UVM_CHECK_FIELDS: \
-        __m_uvm_status_container.do_field_check(`"ARG`", this); \
-      UVM_COPY: \
-        begin \
-          if(!((FLAG)&UVM_NOCOPY)) ARG = local_data__.ARG; \
-        end \
-      UVM_COMPARE: \
-        begin \
-          if(!((FLAG)&UVM_NOCOMPARE)) begin \
-            if(ARG !== local_data__.ARG) begin \
-               if(__m_uvm_status_container.comparer.show_max == 1) begin \
-                 __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-                 __m_uvm_status_container.comparer.print_msg(""); \
-               end \
-               else if(__m_uvm_status_container.comparer.show_max) begin \
-                 /**/if(ARG.size() != local_data__.ARG.size()) begin \
-                 /**/  void'(__m_uvm_status_container.comparer.compare_field(`"ARG``.size`", ARG.size(), local_data__.ARG.size(), 32)); \
-                 /**/end \
-                 /**/else begin \
-                   foreach(ARG[i]) begin \
-                     if(ARG[i] !== local_data__.ARG[i]) begin \
-                       __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-                       $swrite(__m_uvm_status_container.stringv, "lhs = %0s : rhs = %0s", \
-                         ARG[i].name(), local_data__.ARG[i].name()); \
-                       __m_uvm_status_container.comparer.print_msg(__m_uvm_status_container.stringv); \
-                       if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
-                     end \
-                   end \
-                 /**/end \
-               end \
-               else if ((__m_uvm_status_container.comparer.physical&&((FLAG)&UVM_PHYSICAL)) || \
-                        (__m_uvm_status_container.comparer.abstract&&((FLAG)&UVM_ABSTRACT)) || \
-                        (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT)) ) \
-                 __m_uvm_status_container.comparer.result++; \
-               if(__m_uvm_status_container.comparer.result && (__m_uvm_status_container.comparer.show_max <= __m_uvm_status_container.comparer.result)) return; \
+`define m_field_qda_enum(TYPE,T,ARG,FLAG) \
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_qda_enum(ARG, local_rhs__.ARG, T) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+       packer.pack_field_int(ARG.size(), 32); \
+       foreach (ARG[i]) \
+         `uvm_pack_enumN(ARG[i], $bits(T)) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      local_size__ = packer.unpack_field_int(32); \
+      `m_uvm_``TYPE``_resize(ARG, local_size__) \
+      foreach (ARG[i]) \
+        `uvm_unpack_enumN(ARG[i], $bits(T), T) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_qda_enum(ARG, T) \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_qda_enum(TYPE, T, ARG) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+        `uvm_resource_builtin_int_read(local_success__, \
+                                       local_rsrc__, \
+                                       local_size__, \
+                                       this) \
+        if (local_success__) \
+          `m_uvm_``TYPE``_resize(ARG, local_size__) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          int local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            if (local_index__ < 0) begin \
+              `uvm_warning("UVM/FIELDS/QDA_IDX", $sformatf("Index '%0d' is not valid for field '%s.%s' of size '%0d'", \
+                                                              local_index__, \
+                                                              get_full_name(), \
+                                                              `"ARG`", \
+                                                              ARG.size() ) ) \
             end \
-          end \
-        end \
-      UVM_PACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          /**/if(__m_uvm_status_container.packer.use_metadata) __m_uvm_status_container.packer.pack_field_int(ARG.size(), 32); \
-          foreach(ARG[i])  \
-            __m_uvm_status_container.packer.pack_field_int(int'(ARG[i]), $bits(ARG[i])); \
-        end \
-      UVM_UNPACK: \
-        if(!((FLAG)&UVM_NOPACK)) begin \
-          /**/int sz = ARG.size(); \
-          /**/if(__m_uvm_status_container.packer.use_metadata) sz = __m_uvm_status_container.packer.unpack_field_int(32); \
-          /**/if(sz != ARG.size()) begin \
-          /**/  T tmp__; \
-          /**/  `M_UVM_``TYPE``_RESIZE(ARG,tmp__) \
-          /**/end \
-          foreach(ARG[i]) \
-            ARG[i] = T'(__m_uvm_status_container.packer.unpack_field_int($bits(ARG[i]))); \
-        end \
-      UVM_RECORD: \
-        /**/`m_uvm_record_qda_enum(ARG,FLAG,ARG.size()) \
-      UVM_PRINT: \
-        begin \
-          if(((FLAG)&UVM_NOPRINT) == 0) begin \
-             `uvm_print_qda_enum(ARG, __m_uvm_status_container.printer, array, T) \
-          end \
-        end \
-      UVM_SETINT: \
-        begin \
-          __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-          if(uvm_is_match(str__, __m_uvm_status_container.scope.get())) begin \
-            if((FLAG)&UVM_READONLY) begin \
-              uvm_report_warning("RDONLY", $sformatf("Readonly argument match %s is ignored",  \
-                 __m_uvm_status_container.get_full_scope_arg()), UVM_NONE); \
-            end \
-            /**/else begin \
-            /**/  int sz =  uvm_object::__m_uvm_status_container.bitstream; \
-            /**/  if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-            /**/  if(ARG.size() !=  sz) begin \
-            /**/    T tmp__; \
-            /**/    `M_UVM_``TYPE``_RESIZE(ARG,tmp__) \
-            /**/  end \
-            /**/  __m_uvm_status_container.status = 1; \
-            /**/end \
-          end \
-          else if(!((FLAG)&UVM_READONLY)) begin \
-            bit wildcard_index__; \
-            int index__; \
-            index__ = uvm_get_array_index_int(str__, wildcard_index__); \
-            if(uvm_is_array(str__)  && (index__ != -1)) begin\
-              if(wildcard_index__) begin \
-                for(index__=0; index__<ARG.size(); ++index__) begin \
-                  if(uvm_is_match(str__, {__m_uvm_status_container.scope.get_arg(),$sformatf("[%0d]", index__)})) begin \
-                    if (__m_uvm_status_container.print_matches) \
-                      uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg(), $sformatf("[%0d]",index__)}, UVM_LOW); \
-                    ARG[index__] = T'(uvm_object::__m_uvm_status_container.bitstream); \
-                    __m_uvm_status_container.status = 1; \
-                  end \
-                end \
-              end \
-              else if(uvm_is_match(str__, {__m_uvm_status_container.scope.get_arg(),$sformatf("[%0d]", index__)})) begin \
-                if(index__+1 > ARG.size()) begin \
-                  int sz = index__; \
-                  T tmp__; \
-                  `M_UVM_``TYPE``_RESIZE(ARG,tmp__) \
-                end \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                ARG[index__] =  T'(uvm_object::__m_uvm_status_container.bitstream); \
-                __m_uvm_status_container.status = 1; \
+            else begin \
+              T tmp_enum__; \
+              `uvm_resource_enum_read(local_success__, \
+                                      local_rsrc__, \
+                                      T, \
+                                      tmp_enum__, \
+                                      this) \
+              if (local_success__) begin \
+                if (local_index__ >= ARG.size()) \
+                  `m_uvm_``TYPE``_resize(ARG, local_index__ + 1) \
+                ARG[local_index__] = tmp_enum__; \
               end \
             end \
           end \
         end \
-      UVM_SETSTR: \
-        begin \
-          if(!((FLAG)&UVM_READONLY)) begin \
-            bit wildcard_index__; \
-            int index__; \
-            __m_uvm_status_container.scope.set_arg(`"ARG`"); \
-            index__ = uvm_get_array_index_int(str__, wildcard_index__); \
-            if(uvm_is_array(str__)  && (index__ != -1)) begin\
-              if(wildcard_index__) begin \
-                for(index__=0; index__<ARG.size(); ++index__) begin \
-                  if(uvm_is_match(str__, {__m_uvm_status_container.scope.get_arg(),$sformatf("[%0d]", index__)})) begin \
-	                  T t__; \
-                    if (__m_uvm_status_container.print_matches) \
-                      uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg(), $sformatf("[%0d]",index__)}, UVM_LOW); \
-                    void'(uvm_enum_wrapper#(T)::from_name(uvm_object::__m_uvm_status_container.stringv, t__)); ARG[index__]=t__; \
-                    __m_uvm_status_container.status = 1; \
-                  end \
-                end \
-              end \
-              else if(uvm_is_match(str__, {__m_uvm_status_container.scope.get_arg(),$sformatf("[%0d]", index__)})) begin \
-	            T t__; \
-                if(index__+1 > ARG.size()) begin \
-                  int sz = index__; \
-                  T tmp__; \
-                  `M_UVM_``TYPE``_RESIZE(ARG,tmp__) \
-                end \
-                if (__m_uvm_status_container.print_matches) \
-                  uvm_report_info("STRMTC", {"set_int()", ": Matched string ", str__, " to field ", __m_uvm_status_container.get_full_scope_arg()}, UVM_LOW); \
-                void'(uvm_enum_wrapper#(T)::from_name(uvm_object::__m_uvm_status_container.stringv, t__)); ARG[index__]=t__; \
-                __m_uvm_status_container.status = 1; \
-              end \
-            end \
-          end \
-        end \
-    endcase \
-  end
-
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
 //-----------------------------------------------------------------------------
-// Group: `uvm_field_queue_* macros
+// Group -- NODOCS -- `uvm_field_queue_* macros
 //
 // Macros that implement data operations for dynamic queues.
 //
 //-----------------------------------------------------------------------------
 
-// MACRO: `uvm_field_queue_int
+// MACRO -- NODOCS -- `uvm_field_queue_int
 //
 // Implements the data operations for a queue of integrals.
 //
@@ -2258,10 +1761,11 @@ endfunction \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.4.1
 `define uvm_field_queue_int(ARG,FLAG) \
-  `M_UVM_FIELD_QDA_INT(QUEUE,ARG,FLAG)
+  `m_uvm_field_qda_int(queue,ARG,FLAG)
 
-// MACRO: `uvm_field_queue_object
+// MACRO -- NODOCS -- `uvm_field_queue_object
 //
 // Implements the data operations for a queue of <uvm_object>-based objects.
 //
@@ -2271,11 +1775,12 @@ endfunction \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.4.2
 `define uvm_field_queue_object(ARG,FLAG) \
-  `M_UVM_FIELD_QDA_OBJECT(QUEUE,ARG,FLAG)
+  `m_uvm_field_qda_object(queue,ARG,FLAG)
 
 
-// MACRO: `uvm_field_queue_string
+// MACRO -- NODOCS -- `uvm_field_queue_string
 //
 // Implements the data operations for a queue of strings.
 //
@@ -2284,11 +1789,12 @@ endfunction \
 // ~ARG~ is a one-dimensional queue of strings, and ~FLAG~ is a bitwise
 // OR of one or more flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.4.3
 `define uvm_field_queue_string(ARG,FLAG) \
-  `M_UVM_FIELD_QDA_STRING(QUEUE,ARG,FLAG)
+  `m_uvm_field_qda_string(queue,ARG,FLAG)
 
 
-// MACRO: `uvm_field_queue_enum
+// MACRO -- NODOCS -- `uvm_field_queue_enum
 //
 // Implements the data operations for a one-dimensional queue of enums.
 //
@@ -2298,19 +1804,20 @@ endfunction \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described
 // in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.4.4
 `define uvm_field_queue_enum(T,ARG,FLAG) \
-  `M_FIELD_QDA_ENUM(QUEUE,T,ARG,FLAG)
+  `m_field_qda_enum(queue,T,ARG,FLAG)
 
 
 //-----------------------------------------------------------------------------
-// Group: `uvm_field_aa_*_string macros
+// Group -- NODOCS -- `uvm_field_aa_*_string macros
 //
 // Macros that implement data operations for associative arrays indexed
 // by ~string~.
 //
 //-----------------------------------------------------------------------------
 
-// MACRO: `uvm_field_aa_int_string
+// MACRO -- NODOCS -- `uvm_field_aa_int_string
 //
 // Implements the data operations for an associative array of integrals indexed
 // by ~string~.
@@ -2321,15 +1828,46 @@ endfunction \
 // with string key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.5.1
 `define uvm_field_aa_int_string(ARG, FLAG) \
-  begin \
-  if(what__==UVM_CHECK_FIELDS) __m_uvm_status_container.do_field_check(`"ARG`", this); \
-  `M_UVM_FIELD_DATA_AA_int_string(ARG,FLAG) \
-  `M_UVM_FIELD_SET_AA_TYPE(string, INT, ARG, __m_uvm_status_container.bitstream, FLAG)  \
-  end
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_aa_int_string(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_aa_int_string(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_aa_int_string(ARG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_aa_int_string(ARG, `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/AA_SIZE", $sformatf("Associative array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                          local_rsrc_name__.len()-1); \
+          `uvm_resource_builtin_int_read(local_success__, \
+                                         local_rsrc__, \
+                                         ARG[local_index__], \
+                                         this) \
+        end \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
 
-// MACRO: `uvm_field_aa_object_string
+// MACRO -- NODOCS -- `uvm_field_aa_object_string
 //
 // Implements the data operations for an associative array of <uvm_object>-based
 // objects indexed by ~string~.
@@ -2340,15 +1878,61 @@ endfunction \
 // with string key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.5.2
 `define uvm_field_aa_object_string(ARG, FLAG) \
-  begin \
-  if(what__==UVM_CHECK_FIELDS) __m_uvm_status_container.do_field_check(`"ARG`", this); \
-  `M_UVM_FIELD_DATA_AA_object_string(ARG,FLAG) \
-  `M_UVM_FIELD_SET_AA_OBJECT_TYPE(string, ARG, FLAG)  \
-  end
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      `uvm_copy_aa_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_aa_object_string(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
+        `uvm_pack_aa_object_string(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
+      `uvm_unpack_aa_object_string(ARG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_aa_object_string(ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/AA_SIZE", $sformatf("Associative array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                          local_rsrc_name__.len()-1); \
+          `uvm_resource_read(local_success__, \
+                             local_rsrc__, \
+                             uvm_object, \
+                             local_obj__, \
+                             this) \
+          if (local_success__) begin \
+            if (local_obj__ == null) begin \
+              ARG[local_index__] = null; \
+            end else if (!$cast(ARG[local_index__], local_obj__)) begin \
+              `uvm_warning("UVM/FIELDS/OBJ_TYPE", $sformatf("Can't set field '%s[%s]' on '%s' with '%s' type", \
+                                                            `"ARG`", \
+                                                            local_index__, \
+                                                            this.get_full_name(), \
+                                                            local_obj__.get_type_name())) \
+            end \
+          end \
+          /* TODO if(local_success__ && printing matches) */ \
+        end \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
 
-// MACRO: `uvm_field_aa_string_string
+// MACRO -- NODOCS -- `uvm_field_aa_string_string
 //
 // Implements the data operations for an associative array of strings indexed
 // by ~string~.
@@ -2359,23 +1943,55 @@ endfunction \
 // with string key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.5.3
 `define uvm_field_aa_string_string(ARG, FLAG) \
-  begin \
-  if(what__==UVM_CHECK_FIELDS) __m_uvm_status_container.do_field_check(`"ARG`", this); \
-  `M_UVM_FIELD_DATA_AA_string_string(ARG,FLAG) \
-  `M_UVM_FIELD_SET_AA_TYPE(string, STR, ARG, __m_uvm_status_container.stringv, FLAG)  \
-  end
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_aa_string_string(ARG, local_rhs__.ARG) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_aa_string_string(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_aa_string_string(ARG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_aa_string_string(ARG) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/AA_SIZE", $sformatf("Associative array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                          local_rsrc_name__.len()-1); \
+          `uvm_resource_read(local_success__, \
+                             local_rsrc__, \
+                             string, \
+                             ARG[local_index__], \
+                             this) \
+        end \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
 
 //-----------------------------------------------------------------------------
-// Group: `uvm_field_aa_*_int macros
+// Group -- NODOCS -- `uvm_field_aa_*_int macros
 //
 // Macros that implement data operations for associative arrays indexed by an
 // integral type.
 //
 //-----------------------------------------------------------------------------
 
-// MACRO: `uvm_field_aa_object_int
+// MACRO -- NODOCS -- `uvm_field_aa_object_int
 //
 // Implements the data operations for an associative array of <uvm_object>-based
 // objects indexed by the ~int~ data type.
@@ -2386,15 +2002,183 @@ endfunction \
 // with ~int~ key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.1
 `define uvm_field_aa_object_int(ARG, FLAG) \
-  begin \
-  if(what__==UVM_CHECK_FIELDS) __m_uvm_status_container.do_field_check(`"ARG`", this); \
-  `M_UVM_FIELD_DATA_AA_object_int(ARG,FLAG) \
-  `M_UVM_FIELD_SET_AA_OBJECT_TYPE(int, ARG, FLAG)  \
-  end
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      `uvm_copy_aa_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_aa_object_int(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      /* Unsupported, unpacking needs explicit index width */ \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      /* Unsupported, unpacking needs explicit index width */ \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_aa_object_int(ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/AA_SIZE", $sformatf("Associative array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          `uvm_warning("UVM/FIELDS/AA_INT_SET", $sformatf("Can't set '%s.%s[%s]' of unknown index type", \
+                                                          get_full_name(), \
+                                                          `"ARG`", \
+                                                          local_index_str__)) \
+        end \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
+// Not LRM, but supports packing + configuration
+`define uvm_field_aa_object_key(KEY, ARG, FLAG) \
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      `uvm_copy_aa_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_aa_object_int(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
+        `uvm_pack_aa_object_intN(ARG, $bits(KEY)) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
+        `uvm_unpack_aa_object_intN(ARG, $bits(KEY)) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_aa_object_int(ARG, `m_uvm_field_recursion(FLAG), KEY) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/SARRAY_SIZE", $sformatf("Static array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          KEY local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            `uvm_resource_read(local_success__, \
+                               local_rsrc__, \
+                               uvm_object, \
+                               local_obj__, \
+                               this) \
+            if (local_success__) begin \
+              if (local_obj__ == null) begin \
+                ARG[local_index__] = null; \
+              end else if (!$cast(ARG[local_index__], local_obj__)) begin \
+                `uvm_warning("UVM/FIELDS/OBJ_TYPE", $sformatf("Can't set field '%s[%d]' on '%s' with '%s' type", \
+                                                              `"ARG`", \
+                                                              local_index__, \
+                                                              this.get_full_name(), \
+                                                              local_obj__.get_type_name())) \
+              end \
+            end \
+          end \
+        end \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
-// MACRO: `uvm_field_aa_int_int
+// Not LRM, oversight?
+`define uvm_field_aa_string_int(ARG, FLAG) \
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_aa_string_int(ARG, local_rhs__.ARG) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      /* Unsupported, unpacking requires explicit data width */ \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      /* Unsupported, unpacking requires explicit data width */ \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      /* TODO */ \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/AA_SIZE", $sformatf("Associative array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+          `uvm_warning("UVM/FIELDS/AA_INT_SET", $sformatf("Can't set '%s.%s[%s]' of unknown index type", \
+                                                          get_full_name(), \
+                                                          `"ARG`", \
+                                                          local_index_str__)) \
+        end \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
+
+// Not LRM, but supports packing + configuration
+`define uvm_field_aa_string_key(KEY, ARG, FLAG) \
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_aa_string_int(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_aa_string_intN(ARG, $bits(KEY)) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_aa_string_intN(ARG, $bits(KEY)) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      /* TODO */ \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/SARRAY_SIZE", $sformatf("Static array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          KEY local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            `uvm_resource_read(local_success__, \
+                               local_rsrc__, \
+                               string, \
+                               ARG[local_index__], \
+                               this) \
+          end \
+        end \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
+
+// MACRO -- NODOCS -- `uvm_field_aa_int_int
 //
 // Implements the data operations for an associative array of integral
 // types indexed by the ~int~ data type.
@@ -2405,11 +2189,12 @@ endfunction \
 // with ~int~ key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.2
 `define uvm_field_aa_int_int(ARG, FLAG) \
   `uvm_field_aa_int_key(int, ARG, FLAG) \
 
 
-// MACRO: `uvm_field_aa_int_int_unsigned
+// MACRO -- NODOCS -- `uvm_field_aa_int_int_unsigned
 //
 // Implements the data operations for an associative array of integral
 // types indexed by the ~int unsigned~ data type.
@@ -2420,11 +2205,12 @@ endfunction \
 // with ~int unsigned~ key, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.3
 `define uvm_field_aa_int_int_unsigned(ARG, FLAG) \
   `uvm_field_aa_int_key(int unsigned, ARG, FLAG)
 
 
-// MACRO: `uvm_field_aa_int_integer
+// MACRO -- NODOCS -- `uvm_field_aa_int_integer
 //
 // Implements the data operations for an associative array of integral
 // types indexed by the ~integer~ data type.
@@ -2435,11 +2221,12 @@ endfunction \
 // with ~integer~ key, and ~FLAG~ is a bitwise OR of one or more flag settings
 // as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.4
 `define uvm_field_aa_int_integer(ARG, FLAG) \
   `uvm_field_aa_int_key(integer, ARG, FLAG)
 
 
-// MACRO: `uvm_field_aa_int_integer_unsigned
+// MACRO -- NODOCS -- `uvm_field_aa_int_integer_unsigned
 //
 // Implements the data operations for an associative array of integral
 // types indexed by the ~integer unsigned~ data type.
@@ -2450,11 +2237,12 @@ endfunction \
 // with ~integer unsigned~ key, and ~FLAG~ is a bitwise OR of one or more 
 // flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.5
 `define uvm_field_aa_int_integer_unsigned(ARG, FLAG) \
   `uvm_field_aa_int_key(integer unsigned, ARG, FLAG)
 
 
-// MACRO: `uvm_field_aa_int_byte
+// MACRO -- NODOCS -- `uvm_field_aa_int_byte
 //
 // Implements the data operations for an associative array of integral
 // types indexed by the ~byte~ data type.
@@ -2465,11 +2253,12 @@ endfunction \
 // with ~byte~ key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.6
 `define uvm_field_aa_int_byte(ARG, FLAG) \
   `uvm_field_aa_int_key(byte, ARG, FLAG)
 
 
-// MACRO: `uvm_field_aa_int_byte_unsigned
+// MACRO -- NODOCS -- `uvm_field_aa_int_byte_unsigned
 //
 // Implements the data operations for an associative array of integral
 // types indexed by the ~byte unsigned~ data type.
@@ -2480,11 +2269,12 @@ endfunction \
 // with ~byte unsigned~ key, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.7
 `define uvm_field_aa_int_byte_unsigned(ARG, FLAG) \
   `uvm_field_aa_int_key(byte unsigned, ARG, FLAG)
 
 
-// MACRO: `uvm_field_aa_int_shortint
+// MACRO -- NODOCS -- `uvm_field_aa_int_shortint
 //
 // Implements the data operations for an associative array of integral
 // types indexed by the ~shortint~ data type.
@@ -2495,11 +2285,12 @@ endfunction \
 // with ~shortint~ key, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.8
 `define uvm_field_aa_int_shortint(ARG, FLAG) \
   `uvm_field_aa_int_key(shortint, ARG, FLAG)
 
 
-// MACRO: `uvm_field_aa_int_shortint_unsigned
+// MACRO -- NODOCS -- `uvm_field_aa_int_shortint_unsigned
 //
 // Implements the data operations for an associative array of integral
 // types indexed by the ~shortint unsigned~ data type.
@@ -2510,11 +2301,12 @@ endfunction \
 // with ~shortint unsigned~ key, and ~FLAG~ is a bitwise OR of one or more
 // flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.9
 `define uvm_field_aa_int_shortint_unsigned(ARG, FLAG) \
   `uvm_field_aa_int_key(shortint unsigned, ARG, FLAG)
 
 
-// MACRO: `uvm_field_aa_int_longint
+// MACRO -- NODOCS -- `uvm_field_aa_int_longint
 //
 // Implements the data operations for an associative array of integral
 // types indexed by the ~longint~ data type.
@@ -2525,11 +2317,12 @@ endfunction \
 // with ~longint~ key, and ~FLAG~ is a bitwise OR of one or more flag settings
 // as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.10
 `define uvm_field_aa_int_longint(ARG, FLAG) \
   `uvm_field_aa_int_key(longint, ARG, FLAG)
 
 
-// MACRO: `uvm_field_aa_int_longint_unsigned
+// MACRO -- NODOCS -- `uvm_field_aa_int_longint_unsigned
 //
 // Implements the data operations for an associative array of integral
 // types indexed by the ~longint unsigned~ data type.
@@ -2540,11 +2333,12 @@ endfunction \
 // with ~longint unsigned~ key, and ~FLAG~ is a bitwise OR of one or more
 // flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.11
 `define uvm_field_aa_int_longint_unsigned(ARG, FLAG) \
   `uvm_field_aa_int_key(longint unsigned, ARG, FLAG)
 
 
-// MACRO: `uvm_field_aa_int_key
+// MACRO -- NODOCS -- `uvm_field_aa_int_key
 //
 // Implements the data operations for an associative array of integral
 // types indexed by any integral key data type. 
@@ -2555,15 +2349,52 @@ endfunction \
 // that is an associative array of integrals, and ~FLAG~ is a bitwise OR of one 
 // or more flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.12
 `define uvm_field_aa_int_key(KEY, ARG, FLAG) \
-  begin \
-  if(what__==UVM_CHECK_FIELDS) __m_uvm_status_container.do_field_check(`"ARG`", this); \
-  `M_UVM_FIELD_DATA_AA_int_key(KEY,ARG,FLAG) \
-  `M_UVM_FIELD_SET_AA_INT_TYPE(KEY, INT, ARG, __m_uvm_status_container.bitstream, FLAG)  \
-  end
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_aa_int_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_aa_int_intN(ARG, $bits(KEY)) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_aa_int_intN(ARG, $bits(KEY)) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_aa_int_int(ARG, `m_uvm_field_radix(FLAG), , KEY) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/AA_SIZE", $sformatf("Associative array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          KEY local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            `uvm_resource_int_read(local_success__, \
+                                   local_rsrc__, \
+                                   KEY, \
+                                   ARG[local_index__], \
+                                   this) \
+          end \
+        end \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
 
-// MACRO: `uvm_field_aa_int_enumkey
+// MACRO -- NODOCS -- `uvm_field_aa_int_enumkey
 //
 // Implements the data operations for an associative array of integral
 // types indexed by any enumeration key data type. 
@@ -2574,1241 +2405,181 @@ endfunction \
 // that is an associative array of integrals, and ~FLAG~ is a bitwise OR of one 
 // or more flag settings as described in <Field Macros> above.
 
+// @uvm-ieee 1800.2-2017 auto B.2.2.6.13
 `define uvm_field_aa_int_enumkey(KEY, ARG, FLAG) \
-  begin \
-  if(what__==UVM_CHECK_FIELDS) __m_uvm_status_container.do_field_check(`"ARG`", this); \
-  `M_UVM_FIELD_DATA_AA_enum_key(KEY,ARG,FLAG) \
-  `M_UVM_FIELD_SET_AA_INT_ENUMTYPE(KEY, INT, ARG, __m_uvm_status_container.bitstream, FLAG)  \
-  end
+  `m_uvm_field_begin(ARG, FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_aa_int_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_aa_int_enum(ARG, KEY) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_aa_int_enum(ARG, KEY) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_aa_int_enum(KEY, ARG, `m_uvm_field_radix(FLAG)) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/AA_SIZE", $sformatf("Associative array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          KEY local_index__; \
+          bit[$bits(KEY)-1:0] local_bit_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_bit_index__); \
+          if (local_code__ > 0) begin \
+            local_index__ = KEY'(local_bit_index__); \
+            `uvm_resource_int_read(local_success__, \
+                                   local_rsrc__, \
+                                   KEY, \
+                                   ARG[local_index__], \
+                                   this) \
+          end \
+        end \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
-// m_uvm_print_int
+//-- Field Macros for arrays of real (Non-LRM enhancement)
+`define uvm_field_sarray_real(ARG,FLAG) \
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_sarray_real(ARG, local_rhs__.ARG) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_sarray_real(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_sarray_real(ARG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_qda_real(ARG)  \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_sarray_real(ARG) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+         `uvm_warning("UVM/FIELDS/SARRAY_SIZE", $sformatf("Static array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
+      end \
+      else begin \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          int local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            if ((local_index__ >= $size(ARG)) || (local_index__ < 0)) begin \
+              `uvm_warning("UVM/FIELDS/SARRAY_IDX", $sformatf("Index '%d' is not valid for static array '%s.%s' of size '%0d'", \
+                                                              local_index__, \
+                                                              get_full_name(), \
+                                                              `"ARG`", \
+                                                              $size(ARG))) \
+            end \
+            else begin \
+              `uvm_resource_real_read(local_success__, \
+                                      local_rsrc__, \
+                                      ARG[local_index__], \
+                                      this) \
+            end \
+          end \
+        end \
+      end \
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
 
-// Purpose: provide print functionality for a specific integral field. This
-// macro is available for user access. If used externally, a record_options
-// object must be avaialble and must have the name opt.
-// 
-// Postcondition: ~ARG~ is printed using the format set by the FLAGS.
-
-`define m_uvm_print_int(ARG,FLAG) \
-  if(!((FLAG)&UVM_NOPRINT)) begin \
-     if ($bits(ARG) > 64) \
-      __m_uvm_status_container.printer.print_field(`"ARG`", ARG,  $bits(ARG), uvm_radix_enum'((FLAG)&(UVM_RADIX))); \
-     else \
-      __m_uvm_status_container.printer.print_field_int(`"ARG`", ARG,  $bits(ARG), uvm_radix_enum'((FLAG)&(UVM_RADIX))); \
-  end
-
-//-----------------------------------------------------------------------------
-//
-// MACROS- recording
-//
-//-----------------------------------------------------------------------------
-
-// m_uvm_record_int
-// ----------------
-
-// Purpose: provide record functionality for a specific integral field. This
-// macro is available for user access. If used externally, a record_options
-// object must be avaialble and must have the name opt.
-// 
-// Postcondition: ~ARG~ is printed using the format set by the FLAGS.
-
-`define m_uvm_record_int(ARG,FLAG) \
-  if(!((FLAG)&UVM_NORECORD)) begin \
-    if ($bits(ARG) > 64) \
-      __m_uvm_status_container.recorder.record_field(`"ARG`", ARG,  $bits(ARG), uvm_radix_enum'((FLAG)&(UVM_RADIX))); \
-    else \
-      __m_uvm_status_container.recorder.record_field_int(`"ARG`", ARG,  $bits(ARG), uvm_radix_enum'((FLAG)&(UVM_RADIX))); \
-  end
-
-
-// m_uvm_record_string
+// m_uvm_field_qda_real
 // -------------------
 
-// Purpose: provide record functionality for a specific string field. This
-// macro is available for user access. If used externally, a record_options
-// object must be avaialble and must have the name recorder.
-//  
-// Postcondition: ~ARG~ is recorded in string format.
-      
-
-`define m_uvm_record_string(ARG,STR,FLAG) \
-  if(!((FLAG)&UVM_NORECORD)) begin \
-    __m_uvm_status_container.recorder.record_string(`"ARG`", STR); \
-  end
-
-
-// m_uvm_record_object
-// -------------------
-
-// Purpose: provide record functionality for a specific <uvm_object> field. This
-// macro is available for user access. If used externally, a record_options
-// object must be avaialble and must have the name recorder.
-//
-// Postcondition: ~ARG~ is recorded. The record is done recursively where the
-// depth to record is set in the recorder object.
-
-
-`define m_uvm_record_object(ARG,FLAG) \
-  if(!((FLAG)&UVM_NORECORD)) begin \
-    __m_uvm_status_container.recorder.record_object(`"ARG`", ARG); \
-  end
-
-
-// m_uvm_record_qda_int
-// --------------------
-
-`define m_uvm_record_qda_int(ARG, FLAG, SZ) \
-  begin \
-    if(!((FLAG)&UVM_NORECORD)) begin \
-      int sz__ = SZ; \
-      if(sz__ == 0) begin \
-        __m_uvm_status_container.recorder.record_field_int(`"ARG`", 0, 32, UVM_DEC); \
-      end \
-      else if(sz__ < 10) begin \
-        foreach(ARG[i]) begin \
-           __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-           if ($bits(ARG[i]) > 64) \
-             __m_uvm_status_container.recorder.record_field(__m_uvm_status_container.scope.get(), ARG[i], $bits(ARG[i]), uvm_radix_enum'((FLAG)&UVM_RADIX)); \
-           else \
-             __m_uvm_status_container.recorder.record_field_int(__m_uvm_status_container.scope.get(), ARG[i], $bits(ARG[i]), uvm_radix_enum'((FLAG)&UVM_RADIX)); \
-        end \
+`define m_uvm_field_qda_real(TYPE,ARG,FLAG) \
+  `m_uvm_field_begin(ARG,FLAG) \
+    `m_uvm_field_op_begin(COPY,FLAG) \
+      ARG = local_rhs__.ARG; \
+    `m_uvm_field_op_end(COPY) \
+    `m_uvm_field_op_begin(COMPARE,FLAG) \
+      `uvm_compare_qda_real(ARG, local_rhs__.ARG) \
+    `m_uvm_field_op_end(COMPARE) \
+    `m_uvm_field_op_begin(PACK,FLAG) \
+      `uvm_pack_``TYPE``_real(ARG) \
+    `m_uvm_field_op_end(PACK) \
+    `m_uvm_field_op_begin(UNPACK,FLAG) \
+      `uvm_unpack_``TYPE``_real(ARG) \
+    `m_uvm_field_op_end(UNPACK) \
+    `m_uvm_field_op_begin(RECORD,FLAG) \
+      `uvm_record_qda_real(ARG) \
+    `m_uvm_field_op_end(RECORD) \
+    `m_uvm_field_op_begin(PRINT,FLAG) \
+      `uvm_print_qda_real(TYPE, ARG) \
+    `m_uvm_field_op_end(PRINT) \
+    `m_uvm_field_op_begin(SET,FLAG) \
+      if(local_rsrc_name__ == `"ARG`") begin \
+        `uvm_resource_real_read(local_success__, \
+                                local_rsrc__, \
+                                local_size__, \
+                                this) \
+        if (local_success__) \
+          `m_uvm_``TYPE``_resize(ARG, local_size__) \
       end \
       else begin \
-        for(int i=0; i<5; ++i) begin \
-           __m_uvm_status_container.scope.set_arg_element(`"ARG`", i); \
-           if ($bits(ARG[i]) > 64) \
-             __m_uvm_status_container.recorder.record_field(__m_uvm_status_container.scope.get(), ARG[i], $bits(ARG[i]), uvm_radix_enum'((FLAG)&UVM_RADIX)); \
-           else \
-             __m_uvm_status_container.recorder.record_field_int(__m_uvm_status_container.scope.get(), ARG[i], $bits(ARG[i]), uvm_radix_enum'((FLAG)&UVM_RADIX)); \
-        end \
-        for(int i=sz__-5; i<sz__; ++i) begin \
-           __m_uvm_status_container.scope.set_arg_element(`"ARG`", i); \
-           if ($bits(ARG[i]) > 64) \
-             __m_uvm_status_container.recorder.record_field(__m_uvm_status_container.scope.get(), ARG[i], $bits(ARG[i]), uvm_radix_enum'((FLAG)&UVM_RADIX)); \
-           else \
-             __m_uvm_status_container.recorder.record_field_int(__m_uvm_status_container.scope.get(), ARG[i], $bits(ARG[i]), uvm_radix_enum'((FLAG)&UVM_RADIX)); \
-        end \
-      end \
-    end \
-  end
-
-
-// m_uvm_record_qda_enum
-// ---------------------
-
-`define m_uvm_record_qda_enum(ARG, FLAG, SZ) \
-  begin \
-    if(!((FLAG)&UVM_NORECORD) && (__m_uvm_status_container.recorder != null)) begin \
-      int sz__ = SZ; \
-      if(sz__ == 0) begin \
-        __m_uvm_status_container.recorder.record_field_int(`"ARG``.size`", 0, 32, UVM_DEC); \
-      end \
-      else if(sz__ < 10) begin \
-        foreach(ARG[i]) begin \
-           __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-           __m_uvm_status_container.recorder.record_string(__m_uvm_status_container.scope.get(), ARG[i].name()); \
-        end \
-      end \
-      else begin \
-        for(int i=0; i<5; ++i) begin \
-           __m_uvm_status_container.scope.set_arg_element(`"ARG`", i); \
-           __m_uvm_status_container.recorder.record_string(__m_uvm_status_container.scope.get(), ARG[i].name()); \
-        end \
-        for(int i=sz__-5; i<sz__; ++i) begin \
-           __m_uvm_status_container.scope.set_arg_element(`"ARG`", i); \
-           __m_uvm_status_container.recorder.record_string(__m_uvm_status_container.scope.get(), ARG[i].name()); \
-        end \
-      end \
-    end \
-  end
-
-
-// m_uvm_record_qda_object
-// -----------------------
-
-`define m_uvm_record_qda_object(ARG, FLAG, SZ) \
-  begin \
-    if(!((FLAG)&UVM_NORECORD)) begin \
-      int sz__ = SZ; \
-      string s; \
-      if(sz__ == 0 ) begin \
-        __m_uvm_status_container.recorder.record_field_int(`"ARG``.size`", 0, 32, UVM_DEC); \
-      end \
-      if(sz__ < 10) begin \
-        foreach(ARG[i]) begin \
-           $swrite(s,`"ARG[%0d]`", i); \
-           __m_uvm_status_container.recorder.record_object(s, ARG[i]); \
-        end \
-      end \
-      else begin \
-        for(int i=0; i<5; ++i) begin \
-           $swrite(s,`"ARG[%0d]`", i); \
-           __m_uvm_status_container.recorder.record_object(s, ARG[i]); \
-        end \
-        for(int i=sz__-5; i<sz__; ++i) begin \
-           $swrite(s,`"ARG[%0d]`", i); \
-           __m_uvm_status_container.recorder.record_object(s, ARG[i]); \
-        end \
-      end \
-    end \
-  end
-
-
-// m_uvm_record_qda_string
-// -----------------------
-
-`define m_uvm_record_qda_string(ARG, FLAG, SZ) \
-  begin \
-    int sz__ = SZ; \
-    if(!((FLAG)&UVM_NORECORD)) begin \
-      if(sz__ == 0) begin \
-        __m_uvm_status_container.recorder.record_field_int(`"ARG``.size`", 0, 32, UVM_DEC); \
-      end \
-      else if(sz__ < 10) begin \
-        foreach(ARG[i]) begin \
-           __m_uvm_status_container.scope.set_arg_element(`"ARG`",i); \
-           __m_uvm_status_container.recorder.record_string(__m_uvm_status_container.scope.get(), ARG[i]); \
-        end \
-      end \
-      else begin \
-        for(int i=0; i<5; ++i) begin \
-           __m_uvm_status_container.scope.set_arg_element(`"ARG`", i); \
-           __m_uvm_status_container.recorder.record_string(__m_uvm_status_container.scope.get(), ARG[i]); \
-        end \
-        for(int i=sz__-5; i<sz__; ++i) begin \
-           __m_uvm_status_container.scope.set_arg_element(`"ARG`", i); \
-           __m_uvm_status_container.recorder.record_string(__m_uvm_status_container.scope.get(), ARG[i]); \
-        end \
-      end \
-    end \
-  end
-
-
-// M_UVM_FIELD_DATA_AA_generic
-// -------------------------
-
-`define M_UVM_FIELD_DATA_AA_generic(TYPE, KEY, ARG, FLAG) \
-  begin \
-    begin \
-      case (what__) \
-        UVM_COMPARE: \
-           begin \
-            if(!((FLAG)&UVM_NOCOMPARE) && (tmp_data__ != null) ) \
-            begin \
-              $cast(local_data__, tmp_data__); \
-              if(ARG.num() != local_data__.ARG.num()) begin \
-                 int s1__, s2__; \
-                 __m_uvm_status_container.stringv = ""; \
-                 s1__ = ARG.num(); s2__ = local_data__.ARG.num(); \
-                 $swrite(__m_uvm_status_container.stringv, "lhs size = %0d : rhs size = %0d", \
-                    s1__, s2__);\
-                 __m_uvm_status_container.comparer.print_msg(__m_uvm_status_container.stringv); \
-              end \
-              string_aa_key = ""; \
-              while(ARG.next(string_aa_key)) begin \
-                string s; \
-                __m_uvm_status_container.scope.set_arg({"[",string_aa_key,"]"}); \
-                s = {`"ARG[`",string_aa_key,"]"}; \
-                if($bits(ARG[string_aa_key]) <= 64) \
-                  void'(__m_uvm_status_container.comparer.compare_field_int(s, ARG[string_aa_key], local_data__.ARG[string_aa_key], $bits(ARG[string_aa_key]), uvm_radix_enum'((FLAG)&UVM_RADIX))); \
-                else \
-                  void'(__m_uvm_status_container.comparer.compare_field(s, ARG[string_aa_key], local_data__.ARG[string_aa_key], $bits(ARG[string_aa_key]), uvm_radix_enum'((FLAG)&UVM_RADIX))); \
-                __m_uvm_status_container.scope.unset_arg(string_aa_key); \
-              end \
+        string local_name__ = {`"ARG`", "["}; \
+        if (local_rsrc_name__.len() && \
+            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
+            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
+          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
+                                                              local_rsrc_name__.len()-1); \
+          int local_index__; \
+          /* TODO: Non-decimal indexes */ \
+          int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
+          if (local_code__ > 0) begin \
+            if (local_index__ < 0) begin \
+              `uvm_warning("UVM/FIELDS/QDA_IDX", $sformatf("Index '%0d' is not valid for field '%s.%s' of size '%0d'", \
+                                                              local_index__, \
+                                                              get_full_name(), \
+                                                              `"ARG`", \
+                                                              ARG.size() ) ) \
             end \
-           end \
-        UVM_COPY: \
-          begin \
-            if(!((FLAG)&UVM_NOCOPY) && (tmp_data__ != null) ) \
-            begin \
-              $cast(local_data__, tmp_data__); \
-              ARG.delete(); \
-              string_aa_key = ""; \
-              while(local_data__.ARG.next(string_aa_key)) \
-                ARG[string_aa_key] = local_data__.ARG[string_aa_key]; \
-            end \
-          end \
-        UVM_PRINT: \
-          if(!((FLAG)&UVM_NOPRINT)) begin \
-            `uvm_print_aa_``KEY``_``TYPE``3(ARG, uvm_radix_enum'((FLAG)&(UVM_RADIX)), \
-                                            __m_uvm_status_container.printer) \
-          end \
-      endcase \
-    end \
-  end
-
-
-// M_UVM_FIELD_DATA_AA_int_string
-// ----------------------------
-
-`define M_UVM_FIELD_DATA_AA_int_string(ARG, FLAG) \
-  `M_UVM_FIELD_DATA_AA_generic(int, string, ARG, FLAG)
-
-
-// M_UVM_FIELD_DATA_AA_int_int
-// ----------------------------
-
-`define M_UVM_FIELD_DATA_AA_int_key(KEY, ARG, FLAG) \
-  begin \
-    begin \
-      KEY aa_key; \
-      case (what__) \
-        UVM_COMPARE: \
-           begin \
-            if(!((FLAG)&UVM_NOCOMPARE) && (tmp_data__ != null) ) \
-            begin \
-              $cast(local_data__, tmp_data__); \
-              if(ARG.num() != local_data__.ARG.num()) begin \
-                 int s1__, s2__; \
-                 __m_uvm_status_container.stringv = ""; \
-                 s1__ = ARG.num(); s2__ = local_data__.ARG.num(); \
-                 $swrite(__m_uvm_status_container.stringv, "lhs size = %0d : rhs size = %0d", \
-                    s1__, s2__);\
-                 __m_uvm_status_container.comparer.print_msg(__m_uvm_status_container.stringv); \
-              end \
-              foreach(ARG[_aa_key]) begin \
-                  string s; \
-                  $swrite(string_aa_key, "%0d", _aa_key); \
-                  __m_uvm_status_container.scope.set_arg({"[",string_aa_key,"]"}); \
-                  s = {`"ARG[`",string_aa_key,"]"}; \
-                  if($bits(ARG[_aa_key]) <= 64) \
-                    void'(__m_uvm_status_container.comparer.compare_field_int(s, ARG[_aa_key], local_data__.ARG[_aa_key], $bits(ARG[_aa_key]), uvm_radix_enum'((FLAG)&UVM_RADIX))); \
-                  else \
-                    void'(__m_uvm_status_container.comparer.compare_field(s, ARG[_aa_key], local_data__.ARG[_aa_key], $bits(ARG[_aa_key]), uvm_radix_enum'((FLAG)&UVM_RADIX))); \
-                  __m_uvm_status_container.scope.unset_arg(string_aa_key); \
-                end \
-            end \
-           end \
-        UVM_COPY: \
-          begin \
-            if(!((FLAG)&UVM_NOCOPY) && (tmp_data__ != null) ) \
-            begin \
-              $cast(local_data__, tmp_data__); \
-              ARG.delete(); \
-              if(local_data__.ARG.first(aa_key)) \
-                do begin \
-                  ARG[aa_key] = local_data__.ARG[aa_key]; \
-                end while(local_data__.ARG.next(aa_key)); \
-            end \
-          end \
-        UVM_PRINT: \
-          if(!((FLAG)&UVM_NOPRINT)) begin \
-             `uvm_print_aa_int_key4(KEY,ARG, uvm_radix_enum'((FLAG)&(UVM_RADIX)), \
-                                    __m_uvm_status_container.printer) \
-          end \
-      endcase \
-    end \
-  end
-
-
-// M_UVM_FIELD_DATA_AA_enum_key
-// ----------------------------
-
-`define M_UVM_FIELD_DATA_AA_enum_key(KEY, ARG, FLAG) \
-  begin \
-    begin \
-      KEY aa_key; \
-      case (what__) \
-        UVM_COMPARE: \
-           begin \
-            if(!((FLAG)&UVM_NOCOMPARE) && (tmp_data__ != null) ) \
-            begin \
-              $cast(local_data__, tmp_data__); \
-              if(ARG.num() != local_data__.ARG.num()) begin \
-                 int s1__, s2__; \
-                 __m_uvm_status_container.stringv = ""; \
-                 s1__ = ARG.num(); s2__ = local_data__.ARG.num(); \
-                 $swrite(__m_uvm_status_container.stringv, "lhs size = %0d : rhs size = %0d", \
-                    s1__, s2__);\
-                 __m_uvm_status_container.comparer.print_msg(__m_uvm_status_container.stringv); \
-              end \
-              foreach(ARG[_aa_key]) begin \
-                  void'(__m_uvm_status_container.comparer.compare_field_int({`"ARG[`",_aa_key.name(),"]"}, \
-                    ARG[_aa_key], local_data__.ARG[_aa_key], $bits(ARG[_aa_key]), \
-                    uvm_radix_enum'((FLAG)&UVM_RADIX) )); \
-                end \
-            end \
-           end \
-        UVM_COPY: \
-          begin \
-            if(!((FLAG)&UVM_NOCOPY) && (tmp_data__ != null) ) \
-            begin \
-              $cast(local_data__, tmp_data__); \
-              ARG=local_data__.ARG; \
-            end \
-          end \
-        UVM_PRINT: \
-          if(!((FLAG)&UVM_NOPRINT)) begin \
-            uvm_printer p__ = __m_uvm_status_container.printer; \
-            p__.print_array_header (`"ARG`", ARG.num(),`"aa_``KEY`"); \
-            if((p__.knobs.depth == -1) || (__m_uvm_status_container.printer.m_scope.depth() < p__.knobs.depth+1)) \
-            begin \
-              foreach(ARG[_aa_key]) \
-               begin \
-                  if ($bits(ARG[_aa_key]) > 64) \
-                    __m_uvm_status_container.printer.print_field( \
-                      {"[",_aa_key.name(),"]"}, ARG[_aa_key], $bits(ARG[_aa_key]), \
-                      uvm_radix_enum'((FLAG)&UVM_RADIX), "[" ); \
-                  else \
-                    __m_uvm_status_container.printer.print_field_int( \
-                      {"[",_aa_key.name(),"]"}, ARG[_aa_key], $bits(ARG[_aa_key]), \
-                      uvm_radix_enum'((FLAG)&UVM_RADIX), "[" ); \
-                end \
-            end \
-            p__.print_array_footer(ARG.num()); \
-            //p__.print_footer(); \
-          end \
-      endcase \
-    end \
-  end 
-
-
-// M_UVM_FIELD_DATA_AA_object_string
-// -------------------------------
-
-`define M_UVM_FIELD_DATA_AA_object_string(ARG, FLAG) \
-  begin \
-    begin \
-      case (what__) \
-        UVM_COMPARE: \
-           begin \
-            if(!((FLAG)&UVM_NOCOMPARE) && (tmp_data__ != null) ) \
-            begin \
-              $cast(local_data__, tmp_data__); \
-              if(ARG.num() != local_data__.ARG.num()) begin \
-                 int s1__, s2__; \
-                 __m_uvm_status_container.stringv = ""; \
-                 s1__ = ARG.num(); s2__ = local_data__.ARG.num(); \
-                 $swrite(__m_uvm_status_container.stringv, "lhs size = %0d : rhs size = %0d", \
-                          s1__, s2__);\
-                 __m_uvm_status_container.comparer.print_msg(__m_uvm_status_container.stringv); \
-              end \
-              string_aa_key = ""; \
-              while(ARG.next(string_aa_key)) begin \
-                uvm_object lhs; \
-                uvm_object rhs; \
-                lhs = ARG[string_aa_key]; \
-                rhs = local_data__.ARG[string_aa_key]; \
-                __m_uvm_status_container.scope.down({"[",string_aa_key,"]"}); \
-                //if the object are the same then don't need to do a deep compare \
-                if(rhs != lhs) begin \
-                  bit refcmp; \
-                  refcmp = ((FLAG)& UVM_SHALLOW) && !(__m_uvm_status_container.comparer.policy == UVM_DEEP); \
-                  //do a deep compare here  \
-                  if(!refcmp && !(__m_uvm_status_container.comparer.policy == UVM_REFERENCE)) begin \
-                    if(((rhs == null) && (lhs != null)) || ((lhs==null) && (rhs!=null))) begin \
-                      __m_uvm_status_container.comparer.print_msg_object(lhs, rhs); \
-                    end \
-                    else begin \
-                      if (lhs != null)  \
-                        void'(lhs.compare(rhs, __m_uvm_status_container.comparer)); \
-                    end \
-                  end \
-                  else begin //reference compare \
-                    __m_uvm_status_container.comparer.print_msg_object(lhs, rhs); \
-                  end \
-                end \
-                __m_uvm_status_container.scope.up_element(); \
+            else begin \
+              real tmp_real__; \
+              `uvm_resource_real_read(local_success__, \
+                                      local_rsrc__, \
+                                      tmp_real__, \
+                                      this) \
+              if (local_success__) begin \
+                if (local_index__ >= ARG.size()) \
+                  `m_uvm_``TYPE``_resize(ARG, local_index__ + 1) \
+                ARG[local_index__] = tmp_real__; \
               end \
             end \
           end \
-        UVM_COPY: \
-          begin \
-           if(!((FLAG)&UVM_NOCOPY) && (tmp_data__ != null) ) \
-           begin \
-            $cast(local_data__, tmp_data__); \
-            ARG.delete(); \
-            foreach(local_data__.ARG[_string_aa_key]) begin\
-               if((FLAG)&UVM_REFERENCE) \
-                ARG[_string_aa_key] = local_data__.ARG[_string_aa_key]; \
-             /*else if((FLAG)&UVM_SHALLOW)*/ \
-             /* ARG[string_aa_key] = new local_data__.ARG[string_aa_key];*/ \
-               else begin\
-                $cast(ARG[_string_aa_key],local_data__.ARG[_string_aa_key].clone());\
-                ARG[_string_aa_key].set_name({`"ARG`","[",_string_aa_key, "]"});\
-               end \
-             end \
-           end \
-          end \
-        UVM_PRINT: \
-          if(!((FLAG)&UVM_NOPRINT)) begin \
-            `uvm_print_aa_string_object3(ARG, __m_uvm_status_container.printer,FLAG) \
-          end \
-      endcase \
-    end \
-  end
-
-
-// M_UVM_FIELD_DATA_AA_object_int
-// -------------------------------
-
-`define M_UVM_FIELD_DATA_AA_object_int(ARG, FLAG) \
-  begin \
-    int key__; \
-    begin \
-      case (what__) \
-        UVM_COMPARE: \
-           begin \
-            if(!((FLAG)&UVM_NOCOMPARE) && (tmp_data__ != null) ) \
-            begin \
-              $cast(local_data__, tmp_data__); \
-              if(ARG.num() != local_data__.ARG.num()) begin \
-                 int s1__, s2__; \
-                 __m_uvm_status_container.stringv = ""; \
-                 s1__ = ARG.num(); s2__ = local_data__.ARG.num(); \
-                 $swrite(__m_uvm_status_container.stringv, "lhs size = %0d : rhs size = %0d", \
-                          s1__, s2__);\
-                 __m_uvm_status_container.comparer.print_msg(__m_uvm_status_container.stringv); \
-              end \
-              foreach(ARG[_key__]) begin \
-                  uvm_object lhs; \
-                  uvm_object rhs; \
-                  lhs = ARG[key__]; \
-                  rhs = local_data__.ARG[_key__]; \
-                  __m_uvm_status_container.scope.down_element(_key__); \
-                  if(rhs != lhs) begin \
-                    bit refcmp; \
-                    refcmp = ((FLAG)& UVM_SHALLOW) && !(__m_uvm_status_container.comparer.policy == UVM_DEEP); \
-                    //do a deep compare here  \
-                    if(!refcmp && !(__m_uvm_status_container.comparer.policy == UVM_REFERENCE)) begin \
-                      if(((rhs == null) && (lhs != null)) || ((lhs==null) && (rhs!=null))) begin \
-                        __m_uvm_status_container.comparer.print_msg_object(lhs, rhs); \
-                      end \
-                      else begin \
-                        if (lhs != null)  \
-                          void'(lhs.compare(rhs, __m_uvm_status_container.comparer)); \
-                      end \
-                    end \
-                    else begin //reference compare \
-                      __m_uvm_status_container.comparer.print_msg_object(lhs, rhs); \
-                    end \
-                  end \
-                  __m_uvm_status_container.scope.up_element(); \
-              end \
-            end \
-          end \
-        UVM_COPY: \
-          begin \
-           if(!((FLAG)&UVM_NOCOPY) && (tmp_data__ != null) ) \
-           begin \
-            $cast(local_data__, tmp_data__); \
-            ARG.delete(); \
-            foreach(local_data__.ARG[_key__]) begin \
-               if((FLAG)&UVM_REFERENCE) \
-                ARG[_key__] = local_data__.ARG[_key__]; \
-             /*else if((FLAG)&UVM_SHALLOW)*/ \
-             /* ARG[key__] = new local_data__.ARG[key__];*/ \
-               else begin\
-                 uvm_object tmp_obj; \
-                 tmp_obj = local_data__.ARG[_key__].clone(); \
-                 if(tmp_obj != null) \
-                   $cast(ARG[_key__], tmp_obj); \
-                 else \
-                   ARG[_key__]=null; \
-               end \
-             end \
-           end \
-         end \
-        UVM_PRINT: \
-          if(!((FLAG)&UVM_NOPRINT)) begin \
-             `uvm_print_aa_int_object3(ARG, __m_uvm_status_container.printer,FLAG) \
-          end \
-      endcase \
-    end \
-  end
-
-
-// M_UVM_FIELD_DATA_AA_string_string
-// -------------------------------
-
-`define M_UVM_FIELD_DATA_AA_string_string(ARG, FLAG) \
-  begin \
-    begin \
-      case (what__) \
-        UVM_COPY: \
-          begin \
-            if(!((FLAG)&UVM_NOCOPY) && (local_data__ !=null)) \
-              ARG = local_data__.ARG ; \
-          end \
-        UVM_PRINT: \
-          if(!((FLAG)&UVM_NOPRINT)) begin \
-            `uvm_print_aa_string_string2(ARG, __m_uvm_status_container.printer) \
-          end \
-        UVM_COMPARE: \
-           begin \
-            if(!((FLAG)&UVM_NOCOMPARE) && (tmp_data__ != null) ) \
-            begin \
-              $cast(local_data__, tmp_data__); \
-              if(ARG.num() != local_data__.ARG.num()) begin \
-                 int s1__, s2__; \
-                 __m_uvm_status_container.stringv = ""; \
-                 s1__ = ARG.num(); s2__ = local_data__.ARG.num(); \
-                 $swrite(__m_uvm_status_container.stringv, "lhs size = %0d : rhs size = %0d", \
-                    s1__, s2__);\
-                 __m_uvm_status_container.comparer.print_msg(__m_uvm_status_container.stringv); \
-              end \
-              string_aa_key = ""; \
-              while(ARG.next(string_aa_key)) begin \
-                string s__ = ARG[string_aa_key]; \
-                __m_uvm_status_container.scope.set_arg({"[",string_aa_key,"]"}); \
-                if(ARG[string_aa_key] != local_data__.ARG[string_aa_key]) begin \
-                   __m_uvm_status_container.stringv = { "lhs = \"", s__, "\" : rhs = \"", local_data__.ARG[string_aa_key], "\""}; \
-                   __m_uvm_status_container.comparer.print_msg(__m_uvm_status_container.stringv); \
-                end \
-                __m_uvm_status_container.scope.unset_arg(string_aa_key); \
-              end \
-            end \
-           end \
-      endcase \
-    end \
-  end
-
-
-// M_UVM_FIELD_SET_AA_TYPE
-// -----------------------
-
-`define M_UVM_FIELD_SET_AA_TYPE(INDEX_TYPE, ARRAY_TYPE, ARRAY, RHS, FLAG) \
-  if((what__ >= UVM_START_FUNCS && what__ <= UVM_END_FUNCS) && (((FLAG)&UVM_READONLY) == 0)) begin \
-    bit wildcard_index__; \
-    INDEX_TYPE index__; \
-    index__ = uvm_get_array_index_``INDEX_TYPE(str__, wildcard_index__); \
-    if(what__==UVM_SET``ARRAY_TYPE) \
-    begin \
-      __m_uvm_status_container.scope.down(`"ARRAY`"); \
-      if(uvm_is_array(str__) ) begin\
-        if(wildcard_index__) begin \
-          if(ARRAY.first(index__)) \
-          do begin \
-            if(uvm_is_match(str__, {__m_uvm_status_container.scope.get(),$sformatf("[%0d]", index__)}) ||  \
-               uvm_is_match(str__, {__m_uvm_status_container.scope.get(),$sformatf("[%0s]", index__)})) begin \
-              ARRAY[index__] = RHS; \
-              __m_uvm_status_container.status = 1; \
-            end \
-          end while(ARRAY.next(index__));\
-        end \
-        else if(uvm_is_match(str__, {__m_uvm_status_container.scope.get(),$sformatf("[%0d]", index__)})) begin \
-          ARRAY[index__] = RHS; \
-          __m_uvm_status_container.status = 1; \
-        end \
-        else if(uvm_is_match(str__, {__m_uvm_status_container.scope.get(),$sformatf("[%0s]", index__)})) begin \
-          ARRAY[index__] = RHS; \
-          __m_uvm_status_container.status = 1; \
         end \
       end \
-      __m_uvm_status_container.scope.up(); \
-    end \
- end
-
-
-// M_UVM_FIELD_SET_AA_OBJECT_TYPE
-// ------------------------------
-
-`define M_UVM_FIELD_SET_AA_OBJECT_TYPE(INDEX_TYPE, ARRAY, FLAG) \
-  if((what__ >= UVM_START_FUNCS && what__ <= UVM_END_FUNCS) && (((FLAG)&UVM_READONLY) == 0)) begin \
-    bit wildcard_index__; \
-    INDEX_TYPE index__; \
-    index__ = uvm_get_array_index_``INDEX_TYPE(str__, wildcard_index__); \
-    if(what__==UVM_SETOBJ) \
-    begin \
-      __m_uvm_status_container.scope.down(`"ARRAY`"); \
-      if(uvm_is_array(str__) ) begin\
-        if(wildcard_index__) begin \
-          foreach(ARRAY[_index__]) begin \
-            if(uvm_is_match(str__, {__m_uvm_status_container.scope.get(),$sformatf("[%0d]", _index__)}) || \
-               uvm_is_match(str__, {__m_uvm_status_container.scope.get(),$sformatf("[%0s]", _index__)})) begin \
-              if (__m_uvm_status_container.object != null) \
-                $cast(ARRAY[_index__], __m_uvm_status_container.object); \
-              __m_uvm_status_container.status = 1; \
-            end \
-          end \
-        end \
-        else if(uvm_is_match(str__, {__m_uvm_status_container.scope.get(),$sformatf("[%0d]", index__)})) begin \
-          if (__m_uvm_status_container.object != null) \
-            $cast(ARRAY[index__], __m_uvm_status_container.object); \
-          __m_uvm_status_container.status = 1; \
-        end \
-        else if(uvm_is_match(str__, {__m_uvm_status_container.scope.get(),$sformatf("[%0s]", index__)})) begin \
-          if (__m_uvm_status_container.object != null) \
-            $cast(ARRAY[index__], __m_uvm_status_container.object); \
-          __m_uvm_status_container.status = 1; \
-        end \
-      end \
-      __m_uvm_status_container.scope.up(); \
-    end \
- end
-
-
-// M_UVM_FIELD_SET_AA_INT_TYPE
-// ---------------------------
-
-`define M_UVM_FIELD_SET_AA_INT_TYPE(INDEX_TYPE, ARRAY_TYPE, ARRAY, RHS, FLAG) \
-  if((what__ >= UVM_START_FUNCS && what__ <= UVM_END_FUNCS) && (((FLAG)&UVM_READONLY) == 0)) begin \
-    bit wildcard_index__; \
-    INDEX_TYPE index__; \
-    string idx__; \
-    index__ = uvm_get_array_index_int(str__, wildcard_index__); \
-    if(what__==UVM_SET``ARRAY_TYPE) \
-    begin \
-      __m_uvm_status_container.scope.down(`"ARRAY`"); \
-      if(uvm_is_array(str__) ) begin\
-        if(wildcard_index__) begin \
-          foreach(ARRAY[_index__]) begin \
-            $swrite(idx__, __m_uvm_status_container.scope.get(), "[", _index__, "]"); \
-            if(uvm_is_match(str__, idx__)) begin \
-              ARRAY[_index__] = RHS; \
-              __m_uvm_status_container.status = 1; \
-            end \
-          end \
-        end \
-        else if(uvm_is_match(str__, {__m_uvm_status_container.scope.get(),$sformatf("[%0d]", index__)})) begin \
-          ARRAY[index__] = RHS; \
-          __m_uvm_status_container.status = 1; \
-        end  \
-      end \
-      __m_uvm_status_container.scope.up(); \
-    end \
- end
-
-
-// M_UVM_FIELD_SET_AA_INT_ENUMTYPE
-// -------------------------------
-
-`define M_UVM_FIELD_SET_AA_INT_ENUMTYPE(INDEX_TYPE, ARRAY_TYPE, ARRAY, RHS, FLAG) \
-  if((what__ >= UVM_START_FUNCS && what__ <= UVM_END_FUNCS) && (((FLAG)&UVM_READONLY) == 0)) begin \
-    bit wildcard_index__; \
-    INDEX_TYPE index__; \
-    string idx__; \
-    index__ = INDEX_TYPE'(uvm_get_array_index_int(str__, wildcard_index__)); \
-    if(what__==UVM_SET``ARRAY_TYPE) \
-    begin \
-      __m_uvm_status_container.scope.down(`"ARRAY`"); \
-      if(uvm_is_array(str__) ) begin\
-        if(wildcard_index__) begin \
-          foreach(ARRAY[_index__]) begin \
-            $swrite(idx__, __m_uvm_status_container.scope.get(), "[", _index__, "]"); \
-            if(uvm_is_match(str__, idx__)) begin \
-              ARRAY[_index__] = RHS; \
-              __m_uvm_status_container.status = 1; \
-            end \
-          end \
-        end \
-        else if(uvm_is_match(str__, {__m_uvm_status_container.scope.get(),$sformatf("[%0d]", index__)})) begin \
-          ARRAY[index__] = RHS; \
-          __m_uvm_status_container.status = 1; \
-        end  \
-      end \
-      __m_uvm_status_container.scope.up(); \
-    end \
- end
-
-`endif //!UVM_EMPTY_MACROS
-
-
-
-
-//------------------------------------------------------------------------------
-// Group: Recording Macros
-//
-// The recording macros assist users who implement the <uvm_object::do_record>
-// method. They help ensure that the fields are recorded using a vendor-
-// independent API. Unlike the <uvm_recorder> policy, fields recorded using
-// the macros do not lose type information--they are passed
-// directly to the vendor-specific API. This results in more efficient recording
-// and no artificial limit on bit-widths. See your simulator vendor's 
-// documentation for more information on its transaction recording capabilities.
-//------------------------------------------------------------------------------
-
-// Macro: `uvm_record_attribute
-//
-// Vendor-independent macro to hide tool-specific interface for
-// recording attributes (fields) to a transaction database.
-//
-//| `uvm_record_attribute(TR_HANDLE, NAME, VALUE)
-//
-// The default implementation of the macro passes ~NAME~ and
-// ~VALUE~ through to the <uvm_recorder::record_generic> method.
-//
-// This macro should not be called directly by the user, the
-// other recording macros will call it automatically if 
-// <uvm_recorder::use_record_attribute> returns true.
-//
-
-`ifndef uvm_record_attribute
- `ifdef QUESTA
-    `define uvm_record_attribute(TR_HANDLE,NAME,VALUE) \
-      $add_attribute(TR_HANDLE,VALUE,NAME);
-  `else
-    `define uvm_record_attribute(TR_HANDLE,NAME,VALUE) \
-      recorder.record_generic(NAME, $sformatf("%p", VALUE)); 
-  `endif
-`endif
-
-// Macro: `uvm_record_int
-//
-//| `uvm_record_int(NAME,VALUE,SIZE[,RADIX])
-//
-// The ~`uvm_record_int~ macro takes the same arguments as
-// the <uvm_recorder::record_field> method (including the optional ~RADIX~).
-//
-// The default implementation will pass the name/value pair to
-// <`uvm_record_attribute> if enabled, otherwise the information
-// will be passed to <uvm_recorder::record_field>.
-//
-
-`ifndef uvm_record_int
-  `define uvm_record_int(NAME,VALUE,SIZE,RADIX = UVM_NORADIX) \
-    if (recorder != null && recorder.is_open()) begin \
-      if (recorder.use_record_attribute()) \
-        `uvm_record_attribute(recorder.get_record_attribute_handle(),NAME,VALUE) \
-      else \
-        if (SIZE > 64) \
-          recorder.record_field(NAME, VALUE, SIZE, RADIX); \
-        else \
-          recorder.record_field_int(NAME, VALUE, SIZE, RADIX); \
-    end
-`endif
-
-// Macro: `uvm_record_string
-//
-//| `uvm_record_string(NAME,VALUE)
-//
-// The ~`uvm_record_string~ macro takes the same arguments as
-// the <uvm_recorder::record_string> method.
-//
-// The default implementation will pass the name/value pair to
-// <`uvm_record_attribute> if enabled, otherwise the information
-// will be passed to <uvm_recorder::record_string>.
-//
-
-`ifndef uvm_record_string
-  `define uvm_record_string(NAME,VALUE) \
-    if (recorder != null && recorder.is_open()) begin \
-      if (recorder.use_record_attribute()) \
-        `uvm_record_attribute(recorder.get_record_attribute_handle(),NAME,VALUE) \
-      else \
-        recorder.record_string(NAME,VALUE); \
-    end
-`endif
-
-// Macro: `uvm_record_time
-//
-//| `uvm_record_time(NAME,VALUE)
-//
-// The ~`uvm_record_time~ macro takes the same arguments as
-// the <uvm_recorder::record_time> method.
-//
-// The default implementation will pass the name/value pair to
-// <`uvm_record_attribute> if enabled, otherwise the information
-// will be passed to <uvm_recorder::record_time>.
-//
-`ifndef uvm_record_time
-  `define uvm_record_time(NAME,VALUE) \
-    if (recorder != null && recorder.is_open()) begin \
-      if (recorder.use_record_attribute()) \
-        `uvm_record_attribute(recorder.get_record_attribute_handle(),NAME,VALUE) \
-      else \
-         recorder.record_time(NAME,VALUE); \
-    end
-`endif
-
-
-// Macro: `uvm_record_real
-//
-//| `uvm_record_real(NAME,VALUE)
-//
-// The ~`uvm_record_real~ macro takes the same arguments as
-// the <uvm_recorder::record_field_real> method.
-//
-// The default implementation will pass the name/value pair to
-// <`uvm_record_attribute> if enabled, otherwise the information
-// will be passed to <uvm_recorder::record_field_real>.
-//
-`ifndef uvm_record_real
-  `define uvm_record_real(NAME,VALUE) \
-    if (recorder != null && recorder.is_open()) begin \
-      if (recorder.use_record_attribute()) \
-        `uvm_record_attribute(recorder.get_record_attribute_handle(),NAME,VALUE) \
-      else \
-        recorder.record_field_real(NAME,VALUE); \
-    end
-`endif
-
-// Macro: `uvm_record_field
-//
-// Macro for recording arbitrary name-value pairs into a transaction recording database.
-// Requires a valid transaction handle, as provided by the
-// <uvm_transaction::begin_tr> and <uvm_component::begin_tr> methods. 
-//
-//| `uvm_record_field(NAME, VALUE)
-//
-// The default implementation will pass the name/value pair to
-// <`uvm_record_attribute> if enabled, otherwise the information
-// will be passed to <uvm_recorder::record_generic>, with the
-// ~VALUE~ being converted to a string using "%p" notation.
-//
-// | recorder.record_generic(NAME,$sformatf("%p",VALUE));
-//
-`define uvm_record_field(NAME,VALUE) \
-   if (recorder != null && recorder.is_open()) begin \
-     if (recorder.use_record_attribute()) begin \
-       `uvm_record_attribute(recorder.get_record_attribute_handle(),NAME,VALUE) \
-     end \
-     else \
-       recorder.record_generic(NAME, $sformatf("%p", VALUE)); \
-   end
-
-  
-//------------------------------------------------------------------------------
-// Group: Packing Macros
-//
-// The packing macros assist users who implement the <uvm_object::do_pack>
-// method. They help ensure that the pack operation is the exact inverse of the
-// unpack operation. See also <Unpacking Macros>.
-//
-//| virtual function void do_pack(uvm_packer packer);
-//|   `uvm_pack_int(cmd)
-//|   `uvm_pack_int(addr)
-//|   `uvm_pack_array(data)
-//| endfunction
-//
-// The 'N' versions of these macros take a explicit size argument, which must
-// be compile-time constant value greater than 0.
-//------------------------------------------------------------------------------
-
-//--------------------------------
-// Group: Packing - With Size Info
-//--------------------------------
-
-// Macro: `uvm_pack_intN
-//
-// Pack an integral variable.
-//
-//| `uvm_pack_intN(VAR,SIZE)
-//
-
-`define uvm_pack_intN(VAR,SIZE) \
-  begin \
-   int __array[]; \
-   begin \
-     bit [SIZE-1:0] __vector = VAR; \
-     { << int { __array }} = {{($bits(int) - (SIZE % $bits(int))) {1'b0}}, __vector}; \
-   end \
-   packer.pack_ints(__array, SIZE); \
-  end
-
-// Macro: `uvm_pack_enumN
-//
-// Pack an integral variable.
-//
-//| `uvm_pack_enumN(VAR,SIZE)
-//
-`define uvm_pack_enumN(VAR,SIZE) \
-   `uvm_pack_intN(VAR,SIZE)
-
-
-// Macro: `uvm_pack_sarrayN
-//
-// Pack a static array of integrals.
-//
-//| `uvm_pack_sarray(VAR,SIZE)
-//
-`define uvm_pack_sarrayN(VAR,SIZE) \
-    begin \
-    foreach (VAR `` [index]) \
-      `uvm_pack_intN(VAR[index],SIZE) \
-    end
-
-
-// Macro: `uvm_pack_arrayN
-//
-// Pack a dynamic array of integrals.
-//
-//| `uvm_pack_arrayN(VAR,SIZE)
-//
-`define uvm_pack_arrayN(VAR,SIZE) \
-    begin \
-    if (packer.use_metadata) \
-      `uvm_pack_intN(VAR.size(),32) \
-    `uvm_pack_sarrayN(VAR,SIZE) \
-    end
-
-
-// Macro: `uvm_pack_queueN
-//
-// Pack a queue of integrals.
-//
-//| `uvm_pack_queueN(VAR,SIZE)
-//
-`define uvm_pack_queueN(VAR,SIZE) \
-   `uvm_pack_arrayN(VAR,SIZE)
-
-
-//------------------------------
-// Group: Packing - No Size Info
-//------------------------------
-
-// Macro: `uvm_pack_int
-//
-// Pack an integral variable without having to also specify the bit size.
-//
-//| `uvm_pack_int(VAR)
-//
-`define uvm_pack_int(VAR) \
-   `uvm_pack_intN(VAR,$bits(VAR))
-
-
-// Macro: `uvm_pack_enum
-//
-// Pack an enumeration value. Packing does not require its type be specified.
-//
-//| `uvm_pack_enum(VAR)
-//
-`define uvm_pack_enum(VAR) \
-   `uvm_pack_enumN(VAR,$bits(VAR))
-
-
-// Macro: `uvm_pack_string
-//
-// Pack a string variable.
-//
-//| `uvm_pack_string(VAR)
-//
-`define uvm_pack_string(VAR) \
-    begin \
-    `uvm_pack_sarrayN(VAR,8) \
-    if (packer.use_metadata) \
-      `uvm_pack_intN(8'b0,8) \
-    end
-
-
-// Macro: `uvm_pack_real
-//
-// Pack a variable of type real.
-//
-//| `uvm_pack_real(VAR)
-//
-`define uvm_pack_real(VAR) \
-   `uvm_pack_intN($realtobits(VAR),64)
-
-
-// Macro: `uvm_pack_sarray
-//
-// Pack a static array without having to also specify the bit size
-// of its elements.
-//
-//| `uvm_pack_sarray(VAR)
-//
-`define uvm_pack_sarray(VAR)  \
-   `uvm_pack_sarrayN(VAR,$bits(VAR[0]))
-
-
-// Macro: `uvm_pack_array
-//
-// Pack a dynamic array without having to also specify the bit size
-// of its elements. Array size must be non-zero.
-//
-//| `uvm_pack_array(VAR)
-//
-`define uvm_pack_array(VAR) \
-   `uvm_pack_arrayN(VAR,$bits(VAR[0]))
-
-
-// Macro: `uvm_pack_queue
-//
-// Pack a queue without having to also specify the bit size
-// of its elements. Queue must not be empty.
-//
-//| `uvm_pack_queue(VAR)
-//
-`define uvm_pack_queue(VAR) \
-   `uvm_pack_queueN(VAR,$bits(VAR[0]))
-
-
-
-//------------------------------------------------------------------------------
-// Group: Unpacking Macros
-//
-// The unpacking macros assist users who implement the <uvm_object::do_unpack>
-// method. They help ensure that the unpack operation is the exact inverse of
-// the pack operation. See also <Packing Macros>.
-//
-//| virtual function void do_unpack(uvm_packer packer);
-//|   `uvm_unpack_enum(cmd,cmd_t)
-//|   `uvm_unpack_int(addr)
-//|   `uvm_unpack_array(data)
-//| endfunction
-//
-// The 'N' versions of these macros take a explicit size argument, which must
-// be a compile-time constant value greater than 0.
-//------------------------------------------------------------------------------
-
-//----------------------------------
-// Group: Unpacking - With Size Info
-//----------------------------------
-
-// Macro: `uvm_unpack_intN
-//
-// Unpack into an integral variable.
-//
-//| `uvm_unpack_intN(VAR,SIZE)
-//
-`define uvm_unpack_intN(VAR,SIZE) \
-   begin \
-      int __array[] = new[(SIZE+31)/32]; \
-      bit [(((SIZE + 31) / 32) * 32) - 1:0] __var; \
-      packer.unpack_ints(__array, SIZE); \
-      __var = { << int { __array }}; \
-      VAR = __var; \
-   end
-
-
-// Macro: `uvm_unpack_enumN
-//
-// Unpack enum of type ~TYPE~ into ~VAR~.
-//
-// `uvm_unpack_enumN(VAR,SIZE,TYPE)
-//
-`define uvm_unpack_enumN(VAR,SIZE,TYPE) \
-   begin \
-   if (packer.big_endian) \
-     { << { VAR }} = packer.m_bits[packer.count +: SIZE];  \
-   else \
-     VAR = TYPE'(packer.m_bits[packer.count +: SIZE]); \
-   \
-   packer.count += SIZE; \
-   end
-
-
-// Macro: `uvm_unpack_sarrayN
-//
-// Unpack a static (fixed) array of integrals.
-//
-//| `uvm_unpack_sarrayN(VAR,SIZE)
-//
-`define uvm_unpack_sarrayN(VAR,SIZE) \
-    begin \
-    foreach (VAR `` [i]) \
-      `uvm_unpack_intN(VAR``[i], SIZE) \
-    end
-
-
-// Macro: `uvm_unpack_arrayN
-//
-// Unpack into a dynamic array of integrals.
-//
-//| `uvm_unpack_arrayN(VAR,SIZE)
-//
-`define uvm_unpack_arrayN(VAR,SIZE) \
-    begin \
-    int sz__; \
-    if (packer.use_metadata) begin \
-      `uvm_unpack_intN(sz__,32) \
-      VAR = new[sz__]; \
-    end \
-    `uvm_unpack_sarrayN(VAR,SIZE) \
-    end
-
-
-// Macro: `uvm_unpack_queueN
-//
-// Unpack into a queue of integrals.
-//
-//| `uvm_unpack_queue(VAR,SIZE)
-//
-`define uvm_unpack_queueN(VAR,SIZE) \
-    begin \
-    int sz__; \
-    if (packer.use_metadata) \
-      `uvm_unpack_intN(sz__,32) \
-    while (VAR.size() > sz__) \
-      void'(VAR.pop_back()); \
-    for (int i=0; i<sz__; i++) \
-      `uvm_unpack_intN(VAR[i],SIZE) \
-    end
-
-
-//--------------------------------
-// Group: Unpacking - No Size Info
-//--------------------------------
-
-
-// Macro: `uvm_unpack_int
-//
-// Unpack an integral variable without having to also specify the bit size.
-//
-//| `uvm_unpack_int(VAR)
-//
-`define uvm_unpack_int(VAR) \
-   `uvm_unpack_intN(VAR,$bits(VAR))
-
-
-// Macro: `uvm_unpack_enum
-//
-// Unpack an enumeration value, which requires its type be specified.
-//
-//| `uvm_unpack_enum(VAR,TYPE)
-//
-`define uvm_unpack_enum(VAR,TYPE) \
-   `uvm_unpack_enumN(VAR,$bits(VAR),TYPE)
-
-
-// Macro: `uvm_unpack_string
-//
-// Unpack a string variable.
-//
-//| `uvm_unpack_string(VAR)
-//
-`define uvm_unpack_string(VAR) \
-  VAR = packer.unpack_string();
-
-// Macro: `uvm_unpack_real
-//
-// Unpack a variable of type real.
-//
-//| `uvm_unpack_real(VAR)
-//
-`define uvm_unpack_real(VAR) \
-   begin \
-   longint unsigned real_bits64__; \
-   `uvm_unpack_intN(real_bits64__,64) \
-   VAR = $bitstoreal(real_bits64__); \
-   end
-
-
-// Macro: `uvm_unpack_sarray
-//
-// Unpack a static array without having to also specify the bit size
-// of its elements.
-//
-// | `uvm_unpack_sarray(VAR)
-//
-`define uvm_unpack_sarray(VAR)  \
-   `uvm_unpack_sarrayN(VAR,$bits(VAR[0]))
-
-
-// Macro: `uvm_unpack_array
-//
-// Unpack a dynamic array without having to also specify the bit size
-// of its elements. Array size must be non-zero.
-//
-//| `uvm_unpack_array(VAR)
-//
-`define uvm_unpack_array(VAR) \
-   `uvm_unpack_arrayN(VAR,$bits(VAR[0]))
-
-
-// Macro: `uvm_unpack_queue
-//
-// Unpack a queue without having to also specify the bit size
-// of its elements. Queue must not be empty.
-//
-//| `uvm_unpack_queue(VAR)
-//
-`define uvm_unpack_queue(VAR) \
-   `uvm_unpack_queueN(VAR,$bits(VAR[0]))
-
-
-
+    `m_uvm_field_op_end(SET) \
+  `m_uvm_field_end(ARG)
+
+`define uvm_field_array_real(ARG,FLAG) \
+  `m_uvm_field_qda_real(da,ARG,FLAG)
+
+`define uvm_field_queue_real(ARG,FLAG) \
+  `m_uvm_field_qda_real(queue,ARG,FLAG)
+                                                              
+`endif // !`ifdef UVM_EMPTY_MACROS
+                                                              
 `endif  // UVM_OBJECT_DEFINES_SVH
-
-

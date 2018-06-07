@@ -1,6 +1,8 @@
 //----------------------------------------------------------------------
-//   Copyright 2010 Synopsys, Inc.
-//   Copyright 2011 Mentor Graphics Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the

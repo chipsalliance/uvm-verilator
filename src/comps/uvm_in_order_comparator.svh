@@ -1,8 +1,11 @@
 //
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc. 
-//   Copyright 2010-2011 Synopsys, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2015 Analog Devices, Inc.
+// Copyright 2011 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2017 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,14 +24,14 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Title: Comparators
+// Title --NODOCS-- Comparators
 //
 // The following classes define comparators for objects and built-in types.
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_in_order_comparator #(T,comp_type,convert,pair_type)
+// CLASS --NODOCS-- uvm_in_order_comparator #(T,comp_type,convert,pair_type)
 //
 // Compares two streams of data objects of the type parameter, T.
 // These transactions may either be classes or built-in types. To be
@@ -78,11 +81,9 @@ class uvm_in_order_comparator
 
   typedef uvm_in_order_comparator #(T,comp_type,convert,pair_type) this_type;
   `uvm_component_param_utils(this_type)
+  `uvm_type_name_decl("uvm_in_order_comparator #(T,comp_type,convert,pair_type)")
 
-  const static string type_name = 
-    "uvm_in_order_comparator #(T,comp_type,convert,pair_type)";
-
-  // Port: before_export
+  // Port --NODOCS-- before_export
   //
   // The export to which one stream of data is written. The port must be
   // connected to an analysis port that will provide such data. 
@@ -90,7 +91,7 @@ class uvm_in_order_comparator
   uvm_analysis_export #(T) before_export;
 
 
-  // Port: after_export
+  // Port --NODOCS-- after_export
   //
   // The export to which the other stream of data is written. The port must be
   // connected to an analysis port that will provide such data. 
@@ -98,7 +99,7 @@ class uvm_in_order_comparator
   uvm_analysis_export #(T) after_export;
 
 
-  // Port: pair_ap
+  // Port --NODOCS-- pair_ap
   //
   // The comparator sends out pairs of transactions across this analysis port.
   // Both matched and unmatched pairs are published via a pair_type objects.
@@ -126,10 +127,6 @@ class uvm_in_order_comparator
 
   endfunction
   
-  virtual function string get_type_name();
-    return type_name;
-  endfunction
-
   virtual function void connect_phase(uvm_phase phase);
     before_export.connect(m_before_fifo.analysis_export);
     after_export.connect(m_after_fifo.analysis_export);
@@ -186,7 +183,7 @@ class uvm_in_order_comparator
   endtask
 
 
-  // Function: flush
+  // Function --NODOCS-- flush
   //
   // This method sets m_matches and m_mismatches back to zero. The
   // <uvm_tlm_fifo#(T)::flush> takes care of flushing the FIFOs.
@@ -201,7 +198,7 @@ endclass
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_in_order_built_in_comparator #(T)
+// CLASS --NODOCS-- uvm_in_order_built_in_comparator #(T)
 //
 // This class uses the uvm_built_in_* comparison, converter, and pair classes.
 // Use this class for built-in types (int, bit, string, etc.)
@@ -213,23 +210,18 @@ class uvm_in_order_built_in_comparator #(type T=int)
 
   typedef uvm_in_order_built_in_comparator #(T) this_type;
   `uvm_component_param_utils(this_type)
-
-  const static string type_name = "uvm_in_order_built_in_comparator #(T)";
+  `uvm_type_name_decl("uvm_in_order_built_in_comparator #(T)")
 
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction
   
-  virtual function string get_type_name ();
-    return type_name;
-  endfunction
-
 endclass
 
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_in_order_class_comparator #(T)
+// CLASS --NODOCS-- uvm_in_order_class_comparator #(T)
 //
 // This class uses the uvm_class_* comparison, converter, and pair classes.
 // Use this class for comparing user-defined objects of type T, which must
@@ -245,15 +237,10 @@ class uvm_in_order_class_comparator #( type T = int )
 
   typedef uvm_in_order_class_comparator #(T) this_type;
   `uvm_component_param_utils(this_type)
-
-  const static string type_name = "uvm_in_order_class_comparator #(T)";
+  `uvm_type_name_decl("uvm_in_order_class_comparator #(T)")
 
   function new( string name  , uvm_component parent);
     super.new( name, parent );
   endfunction
   
-  virtual function string get_type_name ();
-    return type_name;
-  endfunction
-
 endclass

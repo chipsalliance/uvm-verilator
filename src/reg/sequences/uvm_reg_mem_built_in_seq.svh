@@ -1,7 +1,10 @@
 //
 // -------------------------------------------------------------
-//    Copyright 2010 Mentor Graphics Corporation
-//    Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2015-2018 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -21,44 +24,47 @@
 // 
 
 //------------------------------------------------------------------------------
-// Class: uvm_reg_mem_built_in_seq
+// Class -- NODOCS -- uvm_reg_mem_built_in_seq
 //
 // Sequence that executes a user-defined selection
 // of pre-defined register and memory test sequences.
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto E.8.1
 class uvm_reg_mem_built_in_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    `uvm_object_utils(uvm_reg_mem_built_in_seq)
 
+   // @uvm-ieee 1800.2-2017 auto E.8.3.1
    function new(string name="uvm_reg_mem_built_in_seq");
      super.new(name);
    endfunction
 
-   // Variable: model
+   // Variable -- NODOCS -- model
    //
    // The block to be tested. Declared in the base class.
    //
    //| uvm_reg_block model; 
 
 
-   // Variable: tests
+   // Variable -- NODOCS -- tests
    //
    // The pre-defined test sequences to be executed.
    //
    bit [63:0] tests = UVM_DO_ALL_REG_MEM_TESTS;
 
 
-   // Task: body
+   // Task -- NODOCS -- body
    //
    // Executes any or all the built-in register and memory sequences.
    // Do not call directly. Use seq.start() instead.
    
+   // @uvm-ieee 1800.2-2017 auto E.8.3.2
    virtual task body();
 
       if (model == null) begin
-         `uvm_error("uvm_reg_mem_built_in_seq", "Not block or system specified to run sequence on");
+         `uvm_error("uvm_reg_mem_built_in_seq", "Not block or system specified to run sequence on")
          return;
       end
 
@@ -135,4 +141,3 @@ class uvm_reg_mem_built_in_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg
    endtask: body
 
 endclass: uvm_reg_mem_built_in_seq
-

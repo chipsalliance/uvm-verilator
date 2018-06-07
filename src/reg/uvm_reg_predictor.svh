@@ -1,8 +1,10 @@
 //
 // -------------------------------------------------------------
-//    Copyright 2004-2009 Synopsys, Inc.
-//    Copyright 2010-2011 Mentor Graphics Corporation
-//    Copyright 2010-2011 Cadence Design Systems, Inc.
+// Copyright 2014 Semifore
+// Copyright 2004-2011 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2012 Accellera Systems Initiative
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -23,7 +25,7 @@
 
 
 //------------------------------------------------------------------------------
-// TITLE: Explicit Register Predictor
+// TITLE -- NODOCS -- Explicit Register Predictor
 //------------------------------------------------------------------------------
 //
 // The <uvm_reg_predictor> class defines a predictor component,
@@ -38,7 +40,7 @@ endclass
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_reg_predictor
+// CLASS -- NODOCS -- uvm_reg_predictor
 //
 // Updates the register model mirror based on observed bus transactions
 //
@@ -51,11 +53,12 @@ endclass
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 19.3.1
 class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
 
   `uvm_component_param_utils(uvm_reg_predictor#(BUSTYPE))
 
-  // Variable: bus_in
+  // Variable -- NODOCS -- bus_in
   //
   // Observed bus transactions of type ~BUSTYPE~ are received from this
   // port and processed.
@@ -77,14 +80,14 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
   uvm_analysis_imp #(BUSTYPE, uvm_reg_predictor #(BUSTYPE)) bus_in;
 
 
-  // Variable: reg_ap
+  // Variable -- NODOCS -- reg_ap
   //
   // Analysis output port that publishes <uvm_reg_item> transactions
   // converted from bus transactions received on ~bus_in~.
   uvm_analysis_port #(uvm_reg_item) reg_ap;
 
 
-  // Variable: map
+  // Variable -- NODOCS -- map
   //
   // The map used to convert a bus address to the corresponding register
   // or memory handle. Must be configured before the run phase.
@@ -92,7 +95,7 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
   uvm_reg_map map;
 
 
-  // Variable: adapter
+  // Variable -- NODOCS -- adapter
   //
   // The adapter used to convey the parameters of a bus operation in 
   // terms of a canonical <uvm_reg_bus_op> datum.
@@ -101,11 +104,8 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
   uvm_reg_adapter adapter;
 
 
-  // Function: new
-  //
-  // Create a new instance of this type, giving it the optional ~name~
-  // and ~parent~.
-  //
+
+  // @uvm-ieee 1800.2-2017 auto 19.3.3.1
   function new (string name, uvm_component parent);
     super.new(name, parent);
     bus_in = new("bus_in", this);
@@ -113,6 +113,7 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
   endfunction
 
   // This method is documented in uvm_object
+`ifdef UVM_ENABLE_DEPRECATED_API
   static string type_name = "";
   virtual function string get_type_name();
     if (type_name == "") begin
@@ -122,12 +123,25 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
     end
     return type_name;
   endfunction
-  
-  // Function: pre_predict
-  //
-  // Override this method to change the value or re-direct the
-  // target register
-  //
+`else // !`ifdef UVM_ENABLE_DEPRECATED_API
+  // TODO:  Is it better to replace this with:
+  //| `uvm_type_name_decl($sformatf("uvm_reg_predictor #(%s)", BUSTYPE::type_name())
+  static function string type_name();
+    static string m_type_name;
+    if (m_type_name == "") begin
+      BUSTYPE t;
+      t = BUSTYPE::type_id::create("t");
+      m_type_name = {"uvm_reg_predictor #(", t.get_type_name(), ")"};
+    end
+    return m_type_name;
+  endfunction // type_name
+  virtual function string get_type_name();
+    return type_name();
+  endfunction : get_type_name
+
+`endif // !`ifdef UVM_ENABLE_DEPRECATED_API
+
+  // @uvm-ieee 1800.2-2017 auto 19.3.3.2
   virtual function void pre_predict(uvm_reg_item rw);
   endfunction
 
@@ -182,7 +196,7 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
           m_pending.delete(rg);
        end
 
-       local_map = rg.get_local_map(map,"predictor::write()");
+       local_map = rg.get_local_map(map);
        map_info = local_map.get_reg_map_info(rg);
        ir=($cast(ireg, rg))?ireg.get_indirect_reg():rg;
 
@@ -241,10 +255,11 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
   endfunction
 
   
-  // Function: check_phase
+  // Function -- NODOCS -- check_phase
   //
   // Checks that no pending register transactions are still queued.
 
+  // @uvm-ieee 1800.2-2017 auto 19.3.3.3
   virtual function void check_phase(uvm_phase phase);
 	 string q[$];
      super.check_phase(phase);

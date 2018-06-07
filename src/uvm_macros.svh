@@ -1,8 +1,10 @@
 //
 //----------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc.
-//   Copyright 2010-2011 Synopsys, Inc.
+// Copyright 2007-2013 Mentor Graphics Corporation
+// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2018 AMD
+// Copyright 2013-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 // 
 //   Licensed under the Apache License, Version 2.0 (the
@@ -44,23 +46,19 @@
 `endif
 
 `ifdef VCS
-// `ifndef UVM_DISABLE_RESOURCE_CONVERTER
-
-//UVM_USE_RESOURCE_CONVERTER enables UVM-1.1d to print resources output to match uvm-1.1c. VCS2014.03 or later does not need resource_converter object.
-// As per agreement in Committee at time of UVM-1.1d, from UVM-1.2 onwards the default is to disable resource converter and allow simulators to deal with %p natively. If a user wishes to enable resource converter then they need to compile using +define+UVM_USE_RESOURCE_CONVERTER. The resource converter was never officially sanctioned by Accellera and is placed in the deprecated directory which may be removed in future version. 
-// `define UVM_USE_RESOURCE_CONVERTER
-
-// `endif
 `endif
 
+
+// cadence simulators xcelium/inca 
+`ifndef XCELIUM
 `ifdef INCA
-  `define UVM_USE_PROCESS_CONTAINER
+`define UVM_XCELIUM
+`define UVM_USE_PROCESS_CONTAINER
 `endif
-
-//
-// Deprecation Control Macros
-//
-`ifdef UVM_NO_DEPRECATED
+`endif
+`ifdef XCELIUM
+`define UVM_XCELIUM
+`define DPI_COMPATIBILITY_VERSION_1800v2005
 `endif
 
 `define uvm_delay(TIME) #(TIME);
@@ -70,12 +68,24 @@
 `include "macros/uvm_global_defines.svh"
 `include "macros/uvm_message_defines.svh"
 `include "macros/uvm_phase_defines.svh"
-`include "macros/uvm_object_defines.svh"
 `include "macros/uvm_printer_defines.svh"
+`include "macros/uvm_comparer_defines.svh"
+`include "macros/uvm_recorder_defines.svh"
+`include "macros/uvm_resource_defines.svh"
+`include "macros/uvm_packer_defines.svh"
+`include "macros/uvm_copier_defines.svh"
+`ifdef UVM_ENABLE_DEPRECATED_API
+ `include "deprecated/macros/uvm_object_defines.svh"
+`else
+ `include "macros/uvm_object_defines.svh"
+`endif
 `include "macros/uvm_tlm_defines.svh"
 `include "macros/uvm_sequence_defines.svh"
 `include "macros/uvm_callback_defines.svh"
 `include "macros/uvm_reg_defines.svh"
-`include "macros/uvm_deprecated_defines.svh"
+
+`ifdef UVM_ENABLE_DEPRECATED_API
+`include "deprecated/macros/uvm_sequence_defines.svh"
+`endif
 
 `endif

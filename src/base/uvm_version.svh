@@ -1,8 +1,12 @@
 //----------------------------------------------------------------------
-//   Copyright 2007-2010 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc. 
-//   Copyright 2010-2011 Synopsys, Inc.
-//   Copyright 2013-2014 NVIDIA Corporation
+// Copyright 2012 Paradigm Works
+// Copyright 2007-2013 Mentor Graphics Corporation
+// Copyright 2010-2011 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2017 Cisco Systems, Inc.
+// Copyright 2011-2012 Cypress Semiconductor Corp.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -23,15 +27,14 @@
 `ifndef UVM_VERSION_SVH
 `define UVM_VERSION_SVH
 
-parameter string uvm_mgc_copyright  = "(C) 2007-2014 Mentor Graphics Corporation";
-parameter string uvm_cdn_copyright  = "(C) 2007-2014 Cadence Design Systems, Inc.";
-parameter string uvm_snps_copyright = "(C) 2006-2014 Synopsys, Inc.";
-parameter string uvm_cy_copyright   = "(C) 2011-2013 Cypress Semiconductor Corp.";
-parameter string uvm_nv_copyright   = "(C) 2013-2014 NVIDIA Corporation";
-parameter string uvm_revision = `UVM_VERSION_STRING;
+parameter string UVM_VERSION_STRING = "Accellera:1800.2-2017:UVM:0.9";
+
+`ifdef UVM_ENABLE_DEPRECATED_API
+   parameter string uvm_revision = UVM_VERSION_STRING;
+`endif // UVM_ENABLE_DEPRECATED_API
 
 function string uvm_revision_string();
-  return uvm_revision;
+  return UVM_VERSION_STRING;
 endfunction
 
 `endif // UVM_VERSION_SVH

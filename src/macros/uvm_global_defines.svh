@@ -1,5 +1,7 @@
 //------------------------------------------------------------------------------
-//   Copyright 2014 Synopsys, Inc.
+// Copyright 2014 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2015 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -20,22 +22,26 @@
 `define UVM_GLOBAL_DEFINES_SVH
 
 //
-// Title: Global Macros 
+// Title -- NODOCS -- Global Macros 
 //------------------------
-// Group: Global object Macro definitions can be used in multiple locations
+// Group -- NODOCS -- Global object Macro definitions can be used in multiple locations
 //------------------------
 //
-// MACRO: `UVM_MAX_STREAMBITS
+// MACRO -- NODOCS -- `UVM_MAX_STREAMBITS
 //
 // Defines the maximum bit vector size for integral types. 
 // Used to set uvm_bitstream_t
 
 `ifndef UVM_MAX_STREAMBITS
+ // @uvm-ieee 1800.2-2017 auto 16.2.3.8
+ // @uvm-ieee 1800.2-2017 auto 16.4.6.1
+ // @uvm-ieee 1800.2-2017 auto 16.5.4.8
+ // @uvm-ieee 1800.2-2017 auto B.6.2
  `define UVM_MAX_STREAMBITS 4096
 `endif
 
 
-// MACRO: `UVM_PACKER_MAX_BYTES
+// MACRO -- NODOCS -- `UVM_PACKER_MAX_BYTES
 //
 // Defines the maximum bytes to allocate for packing an object using
 // the <uvm_packer>. Default is <`UVM_MAX_STREAMBITS>, in ~bytes~.
@@ -45,10 +51,10 @@
 `endif
 
 //------------------------
-// Group: Global Time Macro definitions that can be used in multiple locations
+// Group -- NODOCS -- Global Time Macro definitions that can be used in multiple locations
 //------------------------
 
-// MACRO: `UVM_DEFAULT_TIMEOUT
+// MACRO -- NODOCS -- `UVM_DEFAULT_TIMEOUT
 //
 // The default timeout for simulation, if not overridden by
 // <uvm_root::set_timeout> or <uvm_cmdline_processor::+UVM_TIMEOUT>

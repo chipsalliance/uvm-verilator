@@ -1,5 +1,8 @@
 //----------------------------------------------------------------------
-//   Copyright 2010 Mentor Graphics Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2018 NVIDIA Corporation
+// Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -47,7 +50,7 @@
     this_subtype t;                                                                    \
     uvm_resource_base b = uvm_resource#(base_type)::get_by_name(scope, name, rpterr);  \
     if(!$cast(t, b))                                                                   \
-      `uvm_fatal("BADCAST", "cannot cast resource to resource subtype");               \
+      `uvm_fatal("BADCAST", "cannot cast resource to resource subtype")               \
     return t;                                                                          \
   endfunction                                                                          \
                                                                                        \
@@ -56,7 +59,7 @@
     this_subtype t;                                                                    \
     uvm_resource_base b = uvm_resource#(base_type)::get_by_type(scope, type_handle);   \
     if(!$cast(t, b))                                                                   \
-      `uvm_fatal("BADCAST", "cannot cast resource to resource subtype");               \
+      `uvm_fatal("BADCAST", "cannot cast resource to resource subtype")               \
     return t;                                                                          \
   endfunction
 
@@ -71,7 +74,10 @@ class uvm_int_rsrc extends uvm_resource #(int);
   typedef uvm_int_rsrc this_subtype;
 
   function new(string name, string s = "*");
-    super.new(name, s);
+    uvm_resource_pool rp;
+    super.new(name);
+    rp = uvm_resource_pool::get();
+    rp.set_scope(this, s);
   endfunction
 
   function string convert2string();
@@ -80,7 +86,9 @@ class uvm_int_rsrc extends uvm_resource #(int);
     return s;
   endfunction
 
+`ifdef UVM_ENABLE_DEPRECATED_API
   `UVM_RESOURCE_GET_FCNS(int)
+`endif // UVM_ENABLE_DEPRECATED_API
 
 endclass
 
@@ -94,14 +102,19 @@ class uvm_string_rsrc extends uvm_resource #(string);
   typedef uvm_string_rsrc this_subtype;
 
   function new(string name, string s = "*");
-    super.new(name, s);
+    uvm_resource_pool rp;
+    super.new(name);
+    rp = uvm_resource_pool::get();
+    rp.set_scope(this, s);
   endfunction
 
   function string convert2string();
     return read();
   endfunction
 
+`ifdef UVM_ENABLE_DEPRECATED_API
   `UVM_RESOURCE_GET_FCNS(string)
+`endif // UVM_ENABLE_DEPRECATED_API
 
 endclass
 
@@ -115,10 +128,15 @@ class uvm_obj_rsrc extends uvm_resource #(uvm_object);
   typedef uvm_obj_rsrc this_subtype;
 
   function new(string name, string s = "*");
-    super.new(name, s);
+    uvm_resource_pool rp;
+    super.new(name);
+    rp = uvm_resource_pool::get();
+    rp.set_scope(this, s);
   endfunction
 
+`ifdef UVM_ENABLE_DEPRECATED_API
   `UVM_RESOURCE_GET_FCNS(uvm_object)
+`endif // UVM_ENABLE_DEPRECATED_API
 
 endclass
 
@@ -132,7 +150,10 @@ class uvm_bit_rsrc #(int unsigned N=1) extends uvm_resource #(bit[N-1:0]);
   typedef uvm_bit_rsrc#(N) this_subtype;
 
   function new(string name, string s = "*");
-    super.new(name, s);
+    uvm_resource_pool rp;
+    super.new(name);
+    rp = uvm_resource_pool::get();
+    rp.set_scope(this, s);
   endfunction
 
   function string convert2string();
@@ -141,7 +162,9 @@ class uvm_bit_rsrc #(int unsigned N=1) extends uvm_resource #(bit[N-1:0]);
     return s;
   endfunction
 
+`ifdef UVM_ENABLE_DEPRECATED_API
   `UVM_RESOURCE_GET_FCNS(bit[N-1:0])
+`endif // UVM_ENABLE_DEPRECATED_API
 
 endclass
 
@@ -155,7 +178,10 @@ class uvm_byte_rsrc #(int unsigned N=1) extends uvm_resource #(bit[7:0][N-1:0]);
   typedef uvm_byte_rsrc#(N) this_subtype;
 
   function new(string name, string s = "*");
-    super.new(name, s);
+    uvm_resource_pool rp;
+    super.new(name);
+    rp = uvm_resource_pool::get();
+    rp.set_scope(this, s);
   endfunction
 
   function string convert2string();
@@ -164,7 +190,8 @@ class uvm_byte_rsrc #(int unsigned N=1) extends uvm_resource #(bit[7:0][N-1:0]);
     return s;
   endfunction
 
+`ifdef UVM_ENABLE_DEPRECATED_API
   `UVM_RESOURCE_GET_FCNS(bit[7:0][N-1:0])
+`endif // UVM_ENABLE_DEPRECATED_API
 
 endclass
-

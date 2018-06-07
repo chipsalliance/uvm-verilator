@@ -1,7 +1,11 @@
 // 
 // -------------------------------------------------------------
-//    Copyright 2004-2008 Synopsys, Inc.
-//    Copyright 2010 Mentor Graphics Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2012 Semifore
+// Copyright 2004-2013 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2014-2018 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +25,7 @@
 // 
 
 //
-// class: uvm_reg_hw_reset_seq
+// class -- NODOCS -- uvm_reg_hw_reset_seq
 // Test the hard reset values of registers
 //
 // The test sequence performs the following steps
@@ -45,34 +49,37 @@
 // This is usually the first test executed on any DUT.
 //
 
+// @uvm-ieee 1800.2-2017 auto E.1.1
 class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    `uvm_object_utils(uvm_reg_hw_reset_seq)
 
+   // @uvm-ieee 1800.2-2017 auto E.1.2.1.1
    function new(string name="uvm_reg_hw_reset_seq");
      super.new(name);
    endfunction
 
 
-   // Variable: model
+   // Variable -- NODOCS -- model
    //
    // The block to be tested. Declared in the base class.
    //
    //| uvm_reg_block model; 
 
 
-   // Variable: body
+   // Variable -- NODOCS -- body
    //
    // Executes the Hardware Reset sequence.
    // Do not call directly. Use seq.start() instead.
 
+   // @uvm-ieee 1800.2-2017 auto E.1.2.1.2
    virtual task body();
 
       if (model == null) begin
-         `uvm_error("uvm_reg_hw_reset_seq", "Not block or system specified to run sequence on");
+         `uvm_error("uvm_reg_hw_reset_seq", "Not block or system specified to run sequence on")
          return;
       end
-      uvm_report_info("STARTING_SEQ",{"\n\nStarting ",get_name()," sequence...\n"},UVM_LOW);
+      `uvm_info("STARTING_SEQ",{"\n\nStarting ",get_name()," sequence...\n"},UVM_LOW)
       
       this.reset_blk(model);
       model.reset();
@@ -80,13 +87,14 @@ class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
       do_block(model);
    endtask: body
 
-// Task: do_block
+// Task -- NODOCS -- do_block
    //
    // Test all of the registers in a given ~block~
    //
    protected virtual task do_block(uvm_reg_block blk);
       uvm_reg_map maps[$];
       uvm_reg_map sub_maps[$];
+	  uvm_reg regs[$];
 
       if (uvm_resource_db#(bit)::get_by_name({"REG::",blk.get_full_name()},
                                              "NO_REG_TESTS", 0) != null ||
@@ -96,49 +104,37 @@ class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
 
       end
 
-      
-      blk.get_maps(maps);
-      // Iterate over all maps defined for the RegModel block
-
-      foreach (maps[d]) begin
-        uvm_reg regs[$];
-        maps[d].get_submaps(sub_maps);
-        if(sub_maps.size() !=0) begin 
-          continue;
-        end
-
-        // Iterate over all registers in the map, checking accesses
-        // Note: if map were in inner loop, could test simulataneous
-        // access to same reg via different bus interfaces 
-
-        regs.delete();
-        maps[d].get_registers(regs);
-
-        foreach (regs[i]) begin
-
-          uvm_status_e status;
-
-          // Registers with certain attributes are not to be tested
-          if (uvm_resource_db#(bit)::get_by_name({"REG::",regs[i].get_full_name()},
+      blk.get_registers(regs, UVM_NO_HIER);
+                                             
+      foreach(regs[ridx]) begin
+	                if (uvm_resource_db#(bit)::get_by_name({"REG::",regs[ridx].get_full_name()},
                                                  "NO_REG_TESTS", 0) != null ||
-              uvm_resource_db#(bit)::get_by_name({"REG::",regs[i].get_full_name()},
+		                uvm_resource_db#(bit)::get_by_name({"REG::",regs[ridx].get_full_name()},
                                                  "NO_REG_HW_RESET_TEST", 0) != null )
-              continue;
-
-          `uvm_info(get_type_name(),
-                    $sformatf("Verifying reset value of register %s in map \"%s\"...",
-                    regs[i].get_full_name(), maps[d].get_full_name()), UVM_LOW);
+			                	continue;
+	      
+	      begin
+		      uvm_reg_map rm[$];
+		      uvm_status_e status;
+		      
+		      regs[ridx].get_maps(rm);
+		      
+		      foreach(rm[midx]) begin
+			      `uvm_info(get_type_name(),
+				      $sformatf("Verifying reset value of register %s in map \"%s\"...",
+					      regs[ridx].get_full_name(), rm[midx].get_full_name()), UVM_LOW)
             
-          regs[i].mirror(status, UVM_CHECK, UVM_FRONTDOOR, maps[d], this);
+			      regs[ridx].mirror(status, UVM_CHECK, UVM_FRONTDOOR, rm[midx], this);
 
-          if (status != UVM_IS_OK) begin
-             `uvm_error(get_type_name(),
-                    $sformatf("Status was %s when reading reset value of register \"%s\" through map \"%s\".",
-                    status.name(), regs[i].get_full_name(), maps[d].get_full_name()));
-          end
-        end
-      end
-
+			      if (status != UVM_IS_OK) begin
+             		`uvm_error(get_type_name(),
+	             		$sformatf("Status was %s when reading reset value of register \"%s\" through map \"%s\".",
+                    	status.name(), regs[ridx].get_full_name(), rm[midx].get_full_name()))
+		      end	
+	      end	
+      	end
+      end	
+      
       begin
          uvm_reg_block blks[$];
          
@@ -152,7 +148,7 @@ class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
 
 
    //
-   // task: reset_blk
+   // task -- NODOCS -- reset_blk
    // Reset the DUT that corresponds to the specified block abstraction class.
    //
    // Currently empty.
@@ -167,5 +163,3 @@ class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
    endtask
 
 endclass: uvm_reg_hw_reset_seq
-
-

@@ -1,6 +1,7 @@
 //----------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2011 Cadence Design Systems, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2013-2014 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -27,6 +28,7 @@ const char uvm_re_bracket_char = '/';
 #define UVM_REGEX_MAX_LENGTH 2048
 static char uvm_re[UVM_REGEX_MAX_LENGTH+4];
 
+static const char* empty_regex="/^$/";
 
 //--------------------------------------------------------------------
 // uvm_re_match
@@ -89,7 +91,7 @@ int uvm_re_match(const char * re, const char *str)
   if (err != 0) {
       regerror(err,rexp,uvm_re,UVM_REGEX_MAX_LENGTH-1);
       const char * err_str = "uvm_re_match : invalid glob or regular expression: |%s||%s|";
-      char buffer[strlen(err_str) + strlen(re) + strlen(uvm_re)];
+      char buffer[strlen(err_str) + strlen(re) + strlen(uvm_re)+1];
       sprintf(buffer, err_str, re, uvm_re);
       m_uvm_report_dpi(M_UVM_ERROR,
                        (char*) "UVM/DPI/REGEX_INV",
@@ -132,7 +134,7 @@ const char * uvm_glob_to_re(const char *glob)
 
   if (len > 2040) {
       const char * err_str = "uvm_re_match : glob expression greater than max 2040: |%s|";
-      char buffer[strlen(err_str) + strlen(glob)];
+      char buffer[strlen(err_str) + strlen(glob)+1];
       sprintf(buffer, err_str, glob);
       m_uvm_report_dpi(M_UVM_ERROR,
                        (char*) "UVM/DPI/REGEX_MAX",
@@ -150,8 +152,7 @@ const char * uvm_glob_to_re(const char *glob)
   //      uvm_re_bracket_char  (i.e. "/")
   if(len == 0 || (len == 1 && *glob == uvm_re_bracket_char))
   {
-    uvm_re[0] = '\0';
-    return &uvm_re[0];  // return an empty string
+    return empty_regex;
   }
 
   // If bracketed with the /glob/, then it's already a regex
@@ -235,22 +236,5 @@ const char * uvm_glob_to_re(const char *glob)
   uvm_re[len++] = '\0';
 
   return &uvm_re[0];
-}
-
-
-//--------------------------------------------------------------------
-// uvm_dump_re_cache
-//
-// Dumps the set of regular expressions stored in the cache
-//--------------------------------------------------------------------
-
-void uvm_dump_re_cache()
-{
-    m_uvm_report_dpi(M_UVM_INFO,
-                     (char*) "UVM/DPI/REGEX_MAX",
-                     (char*)  "uvm_dump_re_cache: cache not implemented",
-                     M_UVM_LOW,
-                     (char*)__FILE__,
-                     __LINE__);
 }
 

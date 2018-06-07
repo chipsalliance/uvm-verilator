@@ -1,9 +1,12 @@
 //
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2010 Cadence Design Systems, Inc.
-//   Copyright 2010 Synopsys, Inc.
-//   Copyright 2013-2014 NVIDIA Corporation
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2013 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2011 AMD
+// Copyright 2013-2015 NVIDIA Corporation
+// Copyright 2014 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -27,7 +30,7 @@
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_sqr_if_base #(REQ,RSP)
+// CLASS -- NODOCS -- uvm_sqr_if_base #(REQ,RSP)
 //
 // This class defines an interface for sequence drivers to communicate with
 // sequencers. The driver requires the interface via a port, and the sequencer
@@ -35,9 +38,10 @@
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 15.2.1.1
 virtual class uvm_sqr_if_base #(type T1=uvm_object, T2=T1);
 
-  // Task: get_next_item
+  // Task -- NODOCS -- get_next_item
   //
   // Retrieves the next available item from a sequence.  The call will block
   // until an item is available.  The following steps occur on this call:
@@ -56,12 +60,13 @@ virtual class uvm_sqr_if_base #(type T1=uvm_object, T2=T1);
   // completion of the request to the sequencer.  This will remove the request
   // item from the sequencer FIFO.
 
+  // @uvm-ieee 1800.2-2017 auto 15.2.1.2.1
   virtual task get_next_item(output T1 t);
     uvm_report_error("get_next_item", `UVM_SEQ_ITEM_TASK_ERROR, UVM_NONE);
   endtask
  
 
-  // Task: try_next_item
+  // Task -- NODOCS -- try_next_item
   //
   // Retrieves the next available item from a sequence if one is available.
   // Otherwise, the function returns immediately with request set to ~null~.
@@ -80,12 +85,13 @@ virtual class uvm_sqr_if_base #(type T1=uvm_object, T2=T1);
   // completion of the request to the sequencer.  This will remove the request
   // item from the sequencer FIFO.
 
+  // @uvm-ieee 1800.2-2017 auto 15.2.1.2.2
   virtual task try_next_item(output T1 t);
     uvm_report_error("try_next_item", `UVM_SEQ_ITEM_TASK_ERROR, UVM_NONE);
   endtask
 
 
-  // Function: item_done
+  // Function -- NODOCS -- item_done
   //
   // Indicates that the request is completed to the sequencer.  Any 
   // <uvm_sequence_base::wait_for_item_done>
@@ -103,12 +109,13 @@ virtual class uvm_sqr_if_base #(type T1=uvm_object, T2=T1);
   // item that was obtained by <get_next_item>.  After <item_done> is called, peek
   // will cause the sequencer to arbitrate for a new item.
 
+  // @uvm-ieee 1800.2-2017 auto 15.2.1.2.3
   virtual function void item_done(input T2 t = null);
     uvm_report_error("item_done", `UVM_SEQ_ITEM_FUNCTION_ERROR, UVM_NONE);
   endfunction
 
   
-  // Task: wait_for_sequences
+  // Task -- NODOCS -- wait_for_sequences
   //
   // Waits for a sequence to have a new item available. The default
   // implementation in the sequencer calls
@@ -117,16 +124,18 @@ virtual class uvm_sqr_if_base #(type T1=uvm_object, T2=T1);
   // may override its <wait_for_sequences> implementation to perform some other
   // application-specific implementation.
 
+  // @uvm-ieee 1800.2-2017 auto 15.2.1.2.4
   virtual task wait_for_sequences();
     uvm_report_error("wait_for_sequences", `UVM_SEQ_ITEM_TASK_ERROR, UVM_NONE);
   endtask
 
 
-  // Function: has_do_available
+  // Function -- NODOCS -- has_do_available
   //
   // Indicates whether a sequence item is available for immediate processing.
   // Implementations should return 1 if an item is available, 0 otherwise. 
 
+  // @uvm-ieee 1800.2-2017 auto 15.2.1.2.5
   virtual function bit has_do_available();
     uvm_report_error("has_do_available", `UVM_SEQ_ITEM_FUNCTION_ERROR, UVM_NONE);
     return 0;
@@ -137,7 +146,7 @@ virtual class uvm_sqr_if_base #(type T1=uvm_object, T2=T1);
   // uvm_tlm_blocking_slave_if
   //-----------------------
 
-  // Task: get
+  // Task -- NODOCS -- get
   //
   // Retrieves the next available item from a sequence.  The call blocks until
   // an item is available. The following steps occur on this call:
@@ -157,11 +166,12 @@ virtual class uvm_sqr_if_base #(type T1=uvm_object, T2=T1);
   // obtained by calling get again, or a response may be sent using either
   // <put>, or uvm_driver::rsp_port.write().
 
+  // @uvm-ieee 1800.2-2017 auto 15.2.1.2.6
   virtual task get(output T1 t);
     uvm_report_error("get", `UVM_SEQ_ITEM_TASK_ERROR, UVM_NONE);
   endtask
 
-  // Task: peek
+  // Task -- NODOCS -- peek
   //
   // Returns the current request item if one is in the sequencer FIFO.  If no
   // item is in the FIFO, then the call will block until the sequencer has a new
@@ -181,12 +191,13 @@ virtual class uvm_sqr_if_base #(type T1=uvm_object, T2=T1);
   // subsequent calls to peek will return the same item.  The item will stay in
   // the FIFO until either get or <item_done> is called.
 
+  // @uvm-ieee 1800.2-2017 auto 15.2.1.2.7
   virtual task peek(output T1 t);
     uvm_report_error("peek", `UVM_SEQ_ITEM_TASK_ERROR, UVM_NONE);
   endtask
 
 
-  // Task: put
+  // Task -- NODOCS -- put
   //
   // Sends a response back to the sequence that issued the request. Before the
   // response is put, it must have its sequence ID and transaction ID set to
@@ -202,12 +213,13 @@ virtual class uvm_sqr_if_base #(type T1=uvm_object, T2=T1);
   //
    
 
+  // @uvm-ieee 1800.2-2017 auto 15.2.1.2.8
   virtual task put(input T2 t);
     uvm_report_error("put", `UVM_SEQ_ITEM_TASK_ERROR, UVM_NONE);
   endtask
 
 
-  // Function: put_response
+  // Function -- NODOCS -- put_response
   //
   // Sends a response back to the sequence that issued the request. Before the
   // response is put, it must have its sequence ID and transaction ID set to
@@ -217,11 +229,12 @@ virtual class uvm_sqr_if_base #(type T1=uvm_object, T2=T1);
   //   rsp.set_id_info(req);
   //
 
+  // @uvm-ieee 1800.2-2017 auto 15.2.1.2.9
   virtual function void put_response(input T2 t);
     uvm_report_error("put_response", `UVM_SEQ_ITEM_FUNCTION_ERROR, UVM_NONE);
   endfunction
 
-  // Function: disable_auto_item_recording
+  // Function -- NODOCS -- disable_auto_item_recording
   //
   // By default, item recording is performed automatically when
   // get_next_item() and item_done() are called.
@@ -237,14 +250,16 @@ virtual class uvm_sqr_if_base #(type T1=uvm_object, T2=T1);
   // For backward-compatibility, automatic item recording can be globally
   // turned off at compile time by defining UVM_DISABLE_AUTO_ITEM_RECORDING
 
+  // @uvm-ieee 1800.2-2017 auto 15.2.1.2.10
   virtual function void disable_auto_item_recording();
     uvm_report_error("disable_auto_item_recording", `UVM_SEQ_ITEM_FUNCTION_ERROR, UVM_NONE);
   endfunction
   
-  // Function: is_auto_item_recording_enabled
+  // Function -- NODOCS -- is_auto_item_recording_enabled
   //
   // Return TRUE if automatic item recording is enabled for this port instance.
 
+  // @uvm-ieee 1800.2-2017 auto 15.2.1.2.11
   virtual function bit is_auto_item_recording_enabled();
     uvm_report_error("is_auto_item_recording_enabled", `UVM_SEQ_ITEM_FUNCTION_ERROR, UVM_NONE);
     return 0;

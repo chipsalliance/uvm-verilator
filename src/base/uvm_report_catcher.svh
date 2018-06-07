@@ -1,8 +1,13 @@
 // $Id: uvm_report_catcher.svh,v 1.1.2.10 2010/04/09 15:03:25 janick Exp $
 //------------------------------------------------------------------------------
-//   Copyright 2007-2010 Mentor Graphics Corporation
-//   Copyright 2007-2009 Cadence Design Systems, Inc.
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2014 Semifore
+// Copyright 2018 Intel Corporation
+// Copyright 2010-2013 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2012 AMD
+// Copyright 2013-2017 NVIDIA Corporation
+// Copyright 2014 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -29,7 +34,7 @@ typedef class uvm_report_server;
 typedef class uvm_report_catcher;
 
 typedef uvm_callbacks    #(uvm_report_object, uvm_report_catcher) uvm_report_cb;
-typedef uvm_callback_iter#(uvm_report_object, uvm_report_catcher) uvm_report_cb_iter;
+typedef uvm_callback_iter#(uvm_report_object, uvm_report_catcher) uvm_report_cb_iter /* @uvm-ieee 1800.2-2017 auto D.4.5*/   ;
 
 class sev_id_struct;
   bit sev_specified ;
@@ -41,7 +46,7 @@ endclass
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_report_catcher
+// CLASS -- NODOCS -- uvm_report_catcher
 //
 // The uvm_report_catcher is used to catch messages issued by the uvm report
 // server. Catchers are
@@ -106,6 +111,7 @@ endclass
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 6.6.1
 virtual class uvm_report_catcher extends uvm_callback;
 
   `uvm_register_cb(uvm_report_object,uvm_report_catcher)
@@ -133,45 +139,49 @@ virtual class uvm_report_catcher extends uvm_callback;
   local static  bit do_report;
 
   
-  // Function: new
+  // Function -- NODOCS -- new
   //
   // Create a new report catcher. The name argument is optional, but
   // should generally be provided to aid in debugging.
 
+  // @uvm-ieee 1800.2-2017 auto 6.6.2
   function new(string name = "uvm_report_catcher");
     super.new(name);
     do_report = 1;
   endfunction    
 
-  // Group: Current Message State
+  // Group -- NODOCS -- Current Message State
 
-  // Function: get_client
+  // Function -- NODOCS -- get_client
   //
   // Returns the <uvm_report_object> that has generated the message that
   // is currently being processed.
 
+  // @uvm-ieee 1800.2-2017 auto 6.6.3.1
   function uvm_report_object get_client();
     return m_modified_report_message.get_report_object(); 
   endfunction
 
-  // Function: get_severity
+  // Function -- NODOCS -- get_severity
   //
   // Returns the <uvm_severity> of the message that is currently being
   // processed. If the severity was modified by a previously executed
   // catcher object (which re-threw the message), then the returned 
   // severity is the modified value.
 
+  // @uvm-ieee 1800.2-2017 auto 6.6.3.2
   function uvm_severity get_severity();
     return this.m_modified_report_message.get_severity();
   endfunction
   
-  // Function: get_context
+  // Function -- NODOCS -- get_context
   //
   // Returns the context name of the message that is currently being
   // processed. This is typically the full hierarchical name of the component
   // that issued the message. However, if user-defined context is set from
   // a uvm_report_message, the user-defined context will be returned.
 
+  // @uvm-ieee 1800.2-2017 auto 6.6.3.3
   function string get_context();
     string context_str;
     
@@ -184,67 +194,73 @@ virtual class uvm_report_catcher extends uvm_callback;
     return context_str;
   endfunction
   
-  // Function: get_verbosity
+  // Function -- NODOCS -- get_verbosity
   //
   // Returns the verbosity of the message that is currently being
   // processed. If the verbosity was modified by a previously executed
   // catcher (which re-threw the message), then the returned 
   // verbosity is the modified value.
   
+  // @uvm-ieee 1800.2-2017 auto 6.6.3.4
   function int get_verbosity();
     return this.m_modified_report_message.get_verbosity();
   endfunction
   
-  // Function: get_id
+  // Function -- NODOCS -- get_id
   //
   // Returns the string id of the message that is currently being
   // processed. If the id was modified by a previously executed
   // catcher (which re-threw the message), then the returned 
   // id is the modified value.
   
+  // @uvm-ieee 1800.2-2017 auto 6.6.3.5
   function string get_id();
     return this.m_modified_report_message.get_id();
   endfunction
   
-  // Function: get_message
+  // Function -- NODOCS -- get_message
   //
   // Returns the string message of the message that is currently being
   // processed. If the message was modified by a previously executed
   // catcher (which re-threw the message), then the returned 
   // message is the modified value.
   
+  // @uvm-ieee 1800.2-2017 auto 6.6.3.6
   function string get_message();
      return this.m_modified_report_message.get_message();
   endfunction
   
-  // Function: get_action
+  // Function -- NODOCS -- get_action
   //
   // Returns the <uvm_action> of the message that is currently being
   // processed. If the action was modified by a previously executed
   // catcher (which re-threw the message), then the returned 
   // action is the modified value.
   
+  // @uvm-ieee 1800.2-2017 auto 6.6.3.7
   function uvm_action get_action();
     return this.m_modified_report_message.get_action();
   endfunction
   
-  // Function: get_fname
+  // Function -- NODOCS -- get_fname
   //
   // Returns the file name of the message.
   
+  // @uvm-ieee 1800.2-2017 auto 6.6.3.8
   function string get_fname();
     return this.m_modified_report_message.get_filename();
   endfunction             
 
-  // Function: get_line
+  // Function -- NODOCS -- get_line
   //
   // Returns the line number of the message.
 
+  // @uvm-ieee 1800.2-2017 auto 6.6.3.9
   function int get_line();
     return this.m_modified_report_message.get_line();
   endfunction
 
-  // Function: get_element_container
+  // Function -- NODOCS -- get_element_container
   //
   // Returns the element container of the message.
 
@@ -253,64 +269,70 @@ virtual class uvm_report_catcher extends uvm_callback;
   endfunction
 
   
-  // Group: Change Message State
+  // Group -- NODOCS -- Change Message State
 
-  // Function: set_severity
+  // Function -- NODOCS -- set_severity
   //
   // Change the severity of the message to ~severity~. Any other
   // report catchers will see the modified value.
   
+  // @uvm-ieee 1800.2-2017 auto 6.6.4.1
   protected function void set_severity(uvm_severity severity);
     this.m_modified_report_message.set_severity(severity);
   endfunction
   
-  // Function: set_verbosity
+  // Function -- NODOCS -- set_verbosity
   //
   // Change the verbosity of the message to ~verbosity~. Any other
   // report catchers will see the modified value.
 
+  // @uvm-ieee 1800.2-2017 auto 6.6.4.2
   protected function void set_verbosity(int verbosity);
     this.m_modified_report_message.set_verbosity(verbosity);
   endfunction      
 
-  // Function: set_id
+  // Function -- NODOCS -- set_id
   //
   // Change the id of the message to ~id~. Any other
   // report catchers will see the modified value.
 
+  // @uvm-ieee 1800.2-2017 auto 6.6.4.3
   protected function void set_id(string id);
     this.m_modified_report_message.set_id(id);
   endfunction
   
-  // Function: set_message
+  // Function -- NODOCS -- set_message
   //
   // Change the text of the message to ~message~. Any other
   // report catchers will see the modified value.
 
+  // @uvm-ieee 1800.2-2017 auto 6.6.4.4
   protected function void set_message(string message);
     this.m_modified_report_message.set_message(message);
   endfunction
   
-  // Function: set_action
+  // Function -- NODOCS -- set_action
   //
   // Change the action of the message to ~action~. Any other
   // report catchers will see the modified value.
   
+  // @uvm-ieee 1800.2-2017 auto 6.6.4.5
   protected function void set_action(uvm_action action);
     this.m_modified_report_message.set_action(action);
     this.m_set_action_called = 1;
   endfunction
 
-  // Function: set_context
+  // Function -- NODOCS -- set_context
   //
   // Change the context of the message to ~context_str~. Any other
   // report catchers will see the modified value.
 
+  // @uvm-ieee 1800.2-2017 auto 6.6.4.6
   protected function void set_context(string context_str);
     this.m_modified_report_message.set_context(context_str);
   endfunction
 
-  // Function: add_int
+  // Function -- NODOCS -- add_int
   //
   // Add an integral type of the name ~name~ and value ~value~ to
   // the message.  The required ~size~ field indicates the size of ~value~.
@@ -328,7 +350,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   endfunction
 
 
-  // Function: add_string
+  // Function -- NODOCS -- add_string
   //
   // Adds a string of the name ~name~ and value ~value~ to the
   // message. Any other report catchers will see the newly
@@ -342,7 +364,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   endfunction
 
 
-  // Function: add_object
+  // Function -- NODOCS -- add_object
   //
   // Adds a uvm_object of the name ~name~ and reference ~obj~ to
   // the message. Any other report catchers will see the newly
@@ -355,10 +377,10 @@ virtual class uvm_report_catcher extends uvm_callback;
     this.m_modified_report_message.add_object(name, obj, action);
   endfunction
 
-  
-  // Group: Debug
+`ifdef UVM_ENABLE_DEPRECATED_API
+  // Group -- NODOCS -- Debug
      
-  // Function: get_report_catcher
+  // Function -- NODOCS -- get_report_catcher
   //
   // Returns the first report catcher that has ~name~. 
   
@@ -372,9 +394,9 @@ virtual class uvm_report_catcher extends uvm_callback;
     end
     return null;
   endfunction
+`endif 
 
-
-  // Function: print_catcher
+  // Function -- NODOCS -- print_catcher
   //
   // Prints information about all of the report catchers that are 
   // registered. For finer grained detail, the <uvm_callbacks #(T,CB)::display>
@@ -401,7 +423,7 @@ virtual class uvm_report_catcher extends uvm_callback;
 	  end
 	  q.push_back("--------------------------------------------------------------\n");
 
-	  `uvm_info_context("UVM/REPORT/CATCHER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_LOW,uvm_top)
+	  `uvm_info_context("UVM/REPORT/CATCHER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_LOW,uvm_root::get())
   endfunction
   
   // Funciton: debug_report_catcher
@@ -415,21 +437,22 @@ virtual class uvm_report_catcher extends uvm_callback;
     m_debug_flags = what;
   endfunction        
   
-  // Group: Callback Interface
+  // Group -- NODOCS -- Callback Interface
  
-  // Function: catch
+  // Function -- NODOCS -- catch
   //
   // This is the method that is called for each registered report catcher.
   // There are no arguments to this function. The <Current Message State>
   // interface methods can be used to access information about the 
   // current message being processed.
 
+  // @uvm-ieee 1800.2-2017 auto 6.6.5
   pure virtual function action_e catch();
      
 
-  // Group: Reporting
+  // Group -- NODOCS -- Reporting
 
-   // Function: uvm_report_fatal
+   // Function -- NODOCS -- uvm_report_fatal
    //
    // Issues a fatal message using the current message's report object.
    // This message will bypass any message catching callbacks.
@@ -447,7 +470,7 @@ virtual class uvm_report_catcher extends uvm_callback;
    endfunction  
 
 
-   // Function: uvm_report_error
+   // Function -- NODOCS -- uvm_report_error
    //
    // Issues an error message using the current message's report object.
    // This message will bypass any message catching callbacks.
@@ -465,7 +488,7 @@ virtual class uvm_report_catcher extends uvm_callback;
    endfunction  
      
 
-   // Function: uvm_report_warning
+   // Function -- NODOCS -- uvm_report_warning
    //
    // Issues a warning message using the current message's report object.
    // This message will bypass any message catching callbacks.
@@ -483,7 +506,7 @@ virtual class uvm_report_catcher extends uvm_callback;
    endfunction  
 
 
-   // Function: uvm_report_info
+   // Function -- NODOCS -- uvm_report_info
    //
    // Issues a info message using the current message's report object.
    // This message will bypass any message catching callbacks.
@@ -500,7 +523,7 @@ virtual class uvm_report_catcher extends uvm_callback;
                      context_name, report_enabled_checked);
    endfunction  
 
-   // Function: uvm_report
+   // Function -- NODOCS -- uvm_report
    //
    // Issues a message using the current message's report object.
    // This message will bypass any message catching callbacks.
@@ -548,7 +571,7 @@ virtual class uvm_report_catcher extends uvm_callback;
    endfunction
 
 
-  // Function: issue
+  // Function -- NODOCS -- issue
   // Immediately issues the message which is currently being processed. This
   // is useful if the message is being ~CAUGHT~ but should still be emitted.
   //
@@ -684,7 +707,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   endfunction
 
 
-  // Function: summarize
+  // Function -- NODOCS -- summarize
   //
   // This function is called automatically by <uvm_report_server::report_summarize()>.
   // It prints the statistics for the active catchers.
@@ -702,7 +725,7 @@ virtual class uvm_report_catcher extends uvm_callback;
       q.push_back($sformatf("Number of caught UVM_ERROR reports   :%5d\n", m_caught_error));
       q.push_back($sformatf("Number of caught UVM_WARNING reports :%5d\n", m_caught_warning));
 
- 	 `uvm_info_context("UVM/REPORT/CATCHER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_LOW,uvm_top)
+ 	 `uvm_info_context("UVM/REPORT/CATCHER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_LOW,uvm_root::get())
     end
   endfunction
 

@@ -1,7 +1,14 @@
 //----------------------------------------------------------------------
-//   Copyright 2011 Cypress Semiconductor
-//   Copyright 2010-2011 Mentor Graphics Corporation
-//   Copyright 2014 NVIDIA Corporation
+// Copyright 2010-2014 Mentor Graphics Corporation
+// Copyright 2015 Analog Devices, Inc.
+// Copyright 2014 Semifore
+// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2011-2012 AMD
+// Copyright 2012-2018 NVIDIA Corporation
+// Copyright 2014-2017 Cisco Systems, Inc.
+// Copyright 2011 Cypress Semiconductor Corp.
+// Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -22,7 +29,7 @@
 typedef class uvm_phase;
 
 //----------------------------------------------------------------------
-// Title: UVM Configuration Database
+// Title -- NODOCS -- UVM Configuration Database
 //
 // Topic: Intro
 //
@@ -48,20 +55,8 @@ endclass
 typedef class uvm_root;
 typedef class uvm_config_db_options;
 
-//----------------------------------------------------------------------
-// class: uvm_config_db
-//
-// All of the functions in uvm_config_db#(T) are static, so they
-// must be called using the :: operator.  For example:
-//
-//|  uvm_config_db#(int)::set(this, "*", "A");
-//
-// The parameter value "int" identifies the configuration type as
-// an int property.  
-//
-// The <set> and <get> methods provide the same API and
-// semantics as the set/get_config_* functions in <uvm_component>.
-//----------------------------------------------------------------------
+
+// @uvm-ieee 1800.2-2017 auto C.4.2.1
 class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
 
   // Internal lookup of config settings so they can be reused
@@ -71,7 +66,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   // Internal waiter list for wait_modified
   static local uvm_queue#(m_uvm_waiter) m_waiters[string];
 
-  // function: get
+  // function -- NODOCS -- get
   //
   // Get the value for ~field_name~ in ~inst_name~, using component ~cntxt~ as 
   // the starting search point. ~inst_name~ is an explicit instance name 
@@ -86,13 +81,13 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   //| get_config_string(...) => uvm_config_db#(string)::get(cntxt,...)
   //| get_config_object(...) => uvm_config_db#(uvm_object)::get(cntxt,...)
 
+  // @uvm-ieee 1800.2-2017 auto C.4.2.2.2
   static function bit get(uvm_component cntxt,
                           string inst_name,
                           string field_name,
                           inout T value);
 //TBD: add file/line
-    int unsigned p;
-    uvm_resource#(T) r, rt;
+    uvm_resource#(T) r;
     uvm_resource_pool rp = uvm_resource_pool::get();
     uvm_resource_types::rsrc_q_t rq;
     uvm_coreservice_t cs = uvm_coreservice_t::get();
@@ -118,7 +113,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
     return 1;
   endfunction
 
-  // function: set 
+  // function -- NODOCS -- set 
   //
   // Create a new or update an existing configuration setting for
   // ~field_name~ in ~inst_name~ from ~cntxt~.
@@ -149,6 +144,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   //| set_config_string(...) => uvm_config_db#(string)::set(cntxt,...)
   //| set_config_object(...) => uvm_config_db#(uvm_object)::set(cntxt,...)
 
+  // @uvm-ieee 1800.2-2017 auto C.4.2.2.1
   static function void set(uvm_component cntxt,
                            string inst_name,
                            string field_name,
@@ -162,6 +158,8 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
     uvm_pool#(string,uvm_resource#(T)) pool;
     string rstate;
     uvm_coreservice_t cs = uvm_coreservice_t::get();
+    uvm_resource_pool rp = cs.get_resource_pool();
+    int unsigned precedence;
      
     //take care of random stability during allocation
     process p = process::self();
@@ -191,7 +189,8 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
     lookup = {inst_name, "__M_UVM__", field_name};
 
     if(!pool.exists(lookup)) begin
-       r = new(field_name, inst_name);
+       r = new(field_name);
+       rp.set_scope(r, inst_name);
        pool.add(lookup, r);
     end
     else begin
@@ -200,27 +199,21 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
     end
       
     if(curr_phase != null && curr_phase.get_name() == "build")
-      r.precedence = uvm_resource_base::default_precedence - (cntxt.get_depth());
+      precedence = cs.get_resource_pool_default_precedence() - (cntxt.get_depth());
     else
-      r.precedence = uvm_resource_base::default_precedence;
+      precedence = cs.get_resource_pool_default_precedence();
 
+    rp.set_precedence(r, precedence);
     r.write(value, cntxt);
 
-    if(exists) begin
-      uvm_resource_pool rp = uvm_resource_pool::get();
-      rp.set_priority_name(r, uvm_resource_types::PRI_HIGH);
-    end
-    else begin
-      //Doesn't exist yet, so put it in resource db at the head.
-      r.set_override();
-    end
-
+    rp.set_priority_name(r, uvm_resource_types::PRI_HIGH);
+    
     //trigger any waiters
     if(m_waiters.exists(field_name)) begin
       m_uvm_waiter w;
       for(int i=0; i<m_waiters[field_name].size(); ++i) begin
         w = m_waiters[field_name].get(i);
-        if(uvm_re_match(uvm_glob_to_re(inst_name),w.inst_name) == 0)
+        if ( uvm_is_match(inst_name,w.inst_name) )
            ->w.trigger;  
       end
     end
@@ -233,7 +226,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   endfunction
 
 
-  // function: exists
+  // function -- NODOCS -- exists
   //
   // Check if a value for ~field_name~ is available in ~inst_name~, using
   // component ~cntxt~ as the starting search point. ~inst_name~ is an explicit
@@ -245,6 +238,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   // returns 1 if a config parameter exists and 0 if it doesn't exist.
   //
 
+  // @uvm-ieee 1800.2-2017 auto C.4.2.2.3
   static function bit exists(uvm_component cntxt, string inst_name,
     string field_name, bit spell_chk=0);
     uvm_coreservice_t cs = uvm_coreservice_t::get();
@@ -260,12 +254,13 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   endfunction
 
 
-  // Function: wait_modified
+  // Function -- NODOCS -- wait_modified
   //
   // Wait for a configuration setting to be set for ~field_name~
   // in ~cntxt~ and ~inst_name~. The task blocks until a new configuration
   // setting is applied that effects the specified field.
 
+  // @uvm-ieee 1800.2-2017 auto C.4.2.2.4
   static task wait_modified(uvm_component cntxt, string inst_name,
       string field_name);
     process p = process::self();
@@ -305,56 +300,47 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
 
 endclass
 
-// Section: Types
+// Section -- NODOCS -- Types
    
 //----------------------------------------------------------------------
-// Topic: uvm_config_int
+// Topic -- NODOCS -- uvm_config_int
 //
 // Convenience type for uvm_config_db#(uvm_bitstream_t)
 //
 //| typedef uvm_config_db#(uvm_bitstream_t) uvm_config_int;
-typedef uvm_config_db#(uvm_bitstream_t) uvm_config_int;
+typedef uvm_config_db#(uvm_bitstream_t) uvm_config_int /* @uvm-ieee 1800.2-2017 auto C.4.2.3.1*/   ;
 
 //----------------------------------------------------------------------
-// Topic: uvm_config_string
+// Topic -- NODOCS -- uvm_config_string
 //
 // Convenience type for uvm_config_db#(string)
 //
 //| typedef uvm_config_db#(string) uvm_config_string;
-typedef uvm_config_db#(string) uvm_config_string;
+typedef uvm_config_db#(string) uvm_config_string /* @uvm-ieee 1800.2-2017 auto C.4.2.3.2*/   ;
 
 //----------------------------------------------------------------------
-// Topic: uvm_config_object
+// Topic -- NODOCS -- uvm_config_object
 //
 // Convenience type for uvm_config_db#(uvm_object)
 //
 //| typedef uvm_config_db#(uvm_object) uvm_config_object;
-typedef uvm_config_db#(uvm_object) uvm_config_object;
+typedef uvm_config_db#(uvm_object) uvm_config_object /* @uvm-ieee 1800.2-2017 auto C.4.2.3.3*/   ;
 
 //----------------------------------------------------------------------
-// Topic: uvm_config_wrapper
+// Topic -- NODOCS -- uvm_config_wrapper
 //
 // Convenience type for uvm_config_db#(uvm_object_wrapper)
 //
 //| typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;   
-typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;
+typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper /* @uvm-ieee 1800.2-2017 auto C.4.2.3.4*/   ;
 
 
 //----------------------------------------------------------------------
 // Class: uvm_config_db_options
 //
-// Provides a namespace for managing options for the
-// configuration DB facility.  The only thing allowed in this class is static
-// local data members and static functions for manipulating and
-// retrieving the value of the data members.  The static local data
-// members represent options and settings that control the behavior of
-// the configuration DB facility.
-
-// Options include:
-//
-//  * tracing:  on/off
-//
-//    The default for tracing is off.
+// This class contains static functions for manipulating and
+// retrieving options that control the behavior of the 
+// configuration DB facility.
 //
 //----------------------------------------------------------------------
 class uvm_config_db_options;

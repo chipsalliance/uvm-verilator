@@ -1,9 +1,9 @@
 // 
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc.
-//   Copyright 2010-2011 Synopsys, Inc.
-//   Copyright 2013      NVIDIA Corporation
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2013-2015 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +21,7 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
-// Class: uvm_get_to_lock_dap
+// Class -- NODOCS -- uvm_get_to_lock_dap
 // Provides a 'Get-To-Lock' Data Access Policy.
 //
 // The 'Get-To-Lock' Data Access Policy allows for any number of 'sets',
@@ -46,16 +46,16 @@ class uvm_get_to_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    // Lock state
    local bit m_locked;
 
-   // Function: new
+   // Function -- NODOCS -- new
    // Constructor
    function new(string name="unnamed-uvm_get_to_lock_dap#(T)");
       super.new(name);
       m_locked = 0;
    endfunction : new
 
-   // Group: Set/Get Interface
+   // Group -- NODOCS -- Set/Get Interface
    
-   // Function: set
+   // Function -- NODOCS -- set
    // Updates the value stored within the DAP.
    //
    // ~set~ will result in an error if the value has
@@ -70,11 +70,11 @@ class uvm_get_to_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       end
    endfunction : set
 
-   // Function: try_set
+   // Function -- NODOCS -- try_set
    // Attempts to update the value stored within the DAP.
    //
    // ~try_set~ will return a 1 if the value was successfully
-   // updated, or a 0 if the value can not be updated due
+   // updated, or a '0' if the value cannot be updated due
    // to ~get~ having been called.  No errors will be reported
    // if ~try_set~ fails.
    virtual function bit try_set(T value);
@@ -86,7 +86,7 @@ class uvm_get_to_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       end
    endfunction : try_set
    
-   // Function: get
+   // Function -- NODOCS -- get
    // Returns the current value stored within the DAP, and 'locks' the DAP.
    //
    // After a 'get', the value contained within the DAP cannot
@@ -96,7 +96,7 @@ class uvm_get_to_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       return m_value;
    endfunction : get
 
-   // Function: try_get
+   // Function -- NODOCS -- try_get
    // Retrieves the current value stored within the DAP, and 'locks' the DAP.
    //
    // ~try_get~ will always return 1.
@@ -105,7 +105,7 @@ class uvm_get_to_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       return 1;
    endfunction : try_get
 
-   // Group: Introspection
+   // Group -- NODOCS -- Introspection
    //
    // The ~uvm_get_to_lock_dap~ cannot support the standard UVM
    // instrumentation methods (~copy~, ~clone~, ~pack~ and
@@ -151,4 +151,3 @@ class uvm_get_to_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    endfunction : do_print
 
 endclass // uvm_get_to_lock_dap
-

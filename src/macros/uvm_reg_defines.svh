@@ -1,6 +1,8 @@
 //----------------------------------------------------------------------
-//   Copyright 2010 Synopsys, Inc.
-//   Copyright 2010 Mentor Graphics Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2014-2015 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -19,32 +21,34 @@
 //----------------------------------------------------------------------
 
 //------------------------
-// File: Register Defines
+// File -- NODOCS -- Register Defines
 //------------------------
 
-// Macro: `UVM_REG_ADDR_WIDTH
+// Macro -- NODOCS -- `UVM_REG_ADDR_WIDTH
 //
 // Maximum address width in bits
 //
 // Default value is 64. Used to define the <uvm_reg_addr_t> type.
 //
 `ifndef UVM_REG_ADDR_WIDTH
+ // @uvm-ieee 1800.2-2017 auto B.6.4
  `define UVM_REG_ADDR_WIDTH 64
 `endif
 
 
-// Macro: `UVM_REG_DATA_WIDTH
+// Macro -- NODOCS -- `UVM_REG_DATA_WIDTH
 //
 // Maximum data width in bits
 //
 // Default value is 64. Used to define the <uvm_reg_data_t> type.
 //
 `ifndef UVM_REG_DATA_WIDTH
+ // @uvm-ieee 1800.2-2017 auto B.6.5
  `define UVM_REG_DATA_WIDTH 64
 `endif
 
 
-// Macro: `UVM_REG_BYTENABLE_WIDTH
+// Macro -- NODOCS -- `UVM_REG_BYTENABLE_WIDTH
 //
 // Maximum number of byte enable bits
 //
@@ -56,13 +60,13 @@
 `endif
 
 
-// Macro: `UVM_REG_CVR_WIDTH
+// Macro -- NODOCS -- `UVM_REG_CVR_WIDTH
 //
 // Maximum number of bits in a <uvm_reg_cvr_t> coverage model set.
 //
 // Default value is 32.
 //
 `ifndef UVM_REG_CVR_WIDTH
+ // @uvm-ieee 1800.2-2017 auto B.6.7
  `define UVM_REG_CVR_WIDTH 32
 `endif
-

@@ -1,9 +1,9 @@
 // 
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc.
-//   Copyright 2010-2011 Synopsys, Inc.
-//   Copyright 2013      NVIDIA Corporation
+// Copyright 2007-2009 Mentor Graphics Corporation
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2013-2015 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +21,7 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
-// Class: uvm_set_before_get_dap
+// Class -- NODOCS -- uvm_set_before_get_dap
 // Provides a 'Set Before Get' Data Access Policy.
 //
 // The 'Set Before Get' Data Access Policy enforces that the value must
@@ -79,16 +79,16 @@ class uvm_set_before_get_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    // Set state
    local bit m_set;
 
-   // Function: new
+   // Function -- NODOCS -- new
    // Constructor
    function new(string name="unnamed-uvm_set_before_get_dap#(T)");
       super.new(name);
       m_set = 0;
    endfunction : new
 
-   // Group: Set/Get Interface
+   // Group -- NODOCS -- Set/Get Interface
    
-   // Function: set
+   // Function -- NODOCS -- set
    // Updates the value stored within the DAP.
    //
    virtual function void set(T value);
@@ -96,7 +96,7 @@ class uvm_set_before_get_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       m_value = value;
    endfunction : set
 
-   // Function: try_set
+   // Function -- NODOCS -- try_set
    // Attempts to update the value stored within the DAP.
    //
    // ~try_set~ will always return a 1.
@@ -105,7 +105,7 @@ class uvm_set_before_get_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       return 1;
    endfunction : try_set
    
-   // Function: get
+   // Function -- NODOCS -- get
    // Returns the current value stored within the DAP.
    //
    // If 'get' is called before a call to <set> or <try_set>, then
@@ -119,7 +119,7 @@ class uvm_set_before_get_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       return m_value;
    endfunction : get
 
-   // Function: try_get
+   // Function -- NODOCS -- try_get
    // Attempts to retrieve the current value stored within the DAP
    //
    // If the value has not been 'set', then try_get will return a 0,
@@ -135,7 +135,7 @@ class uvm_set_before_get_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       end
    endfunction : try_get
 
-   // Group: Introspection
+   // Group -- NODOCS -- Introspection
    //
    // The ~uvm_set_before_get_dap~ cannot support the standard UVM
    // instrumentation methods (~copy~, ~clone~, ~pack~ and
@@ -181,4 +181,3 @@ class uvm_set_before_get_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    endfunction : do_print
 
 endclass // uvm_set_before_get_dap
-

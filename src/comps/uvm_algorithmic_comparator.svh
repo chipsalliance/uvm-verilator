@@ -1,8 +1,11 @@
 //
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc.
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2015 Analog Devices, Inc.
+// Copyright 2014 Semifore
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2017 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -20,7 +23,7 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
-// File: Algorithmic Comparator
+// File --NODOCS-- Algorithmic Comparator
 //
 // A common function of testbenches is to compare streams of transactions for
 // equivalence. For example, a testbench may compare a stream of transactions
@@ -40,7 +43,7 @@
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_algorithmic_comparator #(BEFORE,AFTER,TRANSFORMER)
+// CLASS --NODOCS-- uvm_algorithmic_comparator #(BEFORE,AFTER,TRANSFORMER)
 //
 // Compares two streams of data objects of different types, ~BEFORE~ and ~AFTER~.
 //
@@ -69,16 +72,14 @@ class uvm_algorithmic_comparator #( type BEFORE=int,
                                     type AFTER=int,
                                     type TRANSFORMER=int) extends uvm_component;
 
-  const static string type_name = "uvm_algorithmic_comparator #(BEFORE,AFTER,TRANSFORMER)";
-
   typedef uvm_algorithmic_comparator #( BEFORE , 
                                         AFTER , 
                                         TRANSFORMER ) this_type;
   
   `uvm_component_param_utils(this_type)
+  `uvm_type_name_decl("uvm_algorithmic_comparator #(BEFORE,AFTER,TRANSFORMER)")
 
-
-  // Port: before_export
+  // Port --NODOCS-- before_export
   //
   // The export to which a data stream of type BEFORE is sent via a connected
   // analysis port. Publishers (monitors) can send in an ordered stream of
@@ -88,7 +89,7 @@ class uvm_algorithmic_comparator #( type BEFORE=int,
   uvm_analysis_imp #(BEFORE, this_type) before_export;
 
 
-  // Port: after_export
+  // Port --NODOCS-- after_export
   //
   // The export to which a data stream of type AFTER is sent via a connected
   // analysis port. Publishers (monitors) can send in an ordered stream of
@@ -100,7 +101,7 @@ class uvm_algorithmic_comparator #( type BEFORE=int,
   local uvm_in_order_class_comparator #(AFTER) comp;
   local TRANSFORMER m_transformer;
      
-  // Function: new
+  // Function --NODOCS-- new
   //
   // Creates an instance of a specialization of this class.
   // In addition to the standard uvm_component constructor arguments, ~name~
@@ -117,10 +118,6 @@ class uvm_algorithmic_comparator #( type BEFORE=int,
     
     before_export = new("before_analysis_export" , this );
     after_export = new("after_analysis_export" , this );
-  endfunction
-
-  virtual function string get_type_name();
-    return type_name;
   endfunction
 
   virtual function void connect_phase(uvm_phase phase);

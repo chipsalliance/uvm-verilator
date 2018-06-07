@@ -1,8 +1,10 @@
 //
 // -------------------------------------------------------------
-//    Copyright 2004-2009 Synopsys, Inc.
-//    Copyright 2010-2011 Mentor Graphics Corporation
-//    Copyright 2010 Cadence Design Systems, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2004-2018 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2015-2018 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -25,7 +27,7 @@ typedef class uvm_reg_cbs;
 
 
 //------------------------------------------------------------------------------
-// Class: uvm_reg_backdoor
+// Class -- NODOCS -- uvm_reg_backdoor
 //
 // Base class for user-defined back-door register and memory access.
 //
@@ -34,27 +36,21 @@ typedef class uvm_reg_cbs;
 // or that are not accessible using the default DPI backdoor mechanism.
 //------------------------------------------------------------------------------
 
-class uvm_reg_backdoor extends uvm_object;
+// @uvm-ieee 1800.2-2017 auto 19.5.1
+virtual class uvm_reg_backdoor extends uvm_object;
 
-   // Function: new
-   //
-   // Create an instance of this class
-   //
-   // Create an instance of the user-defined backdoor class
-   // for the specified register or memory
-   //
+
+   `uvm_object_abstract_utils(uvm_reg_backdoor)
+
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.1
    function new(string name = "");
       super.new(name);
    endfunction: new
 
    
-   // Task: do_pre_read
-   //
-   // Execute the pre-read callbacks
-   //
-   // This method ~must~ be called as the first statement in
-   // a user extension of the <read()> method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.2
    protected task do_pre_read(uvm_reg_item rw);
       pre_read(rw);
       `uvm_do_obj_callbacks(uvm_reg_backdoor, uvm_reg_cbs, this,
@@ -62,13 +58,8 @@ class uvm_reg_backdoor extends uvm_object;
    endtask
 
 
-   // Task: do_post_read
-   //
-   // Execute the post-read callbacks
-   //
-   // This method ~must~ be called as the last statement in
-   // a user extension of the <read()> method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.3
    protected task do_post_read(uvm_reg_item rw);
       uvm_callback_iter#(uvm_reg_backdoor, uvm_reg_cbs) iter = new(this);
       for(uvm_reg_cbs cb = iter.last(); cb != null; cb=iter.prev())
@@ -78,13 +69,8 @@ class uvm_reg_backdoor extends uvm_object;
    endtask
 
 
-   // Task: do_pre_write
-   //
-   // Execute the pre-write callbacks
-   //
-   // This method ~must~ be called as the first statement in
-   // a user extension of the <write()> method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.4
    protected task do_pre_write(uvm_reg_item rw);
       uvm_callback_iter#(uvm_reg_backdoor, uvm_reg_cbs) iter = new(this);
       pre_write(rw);
@@ -94,79 +80,36 @@ class uvm_reg_backdoor extends uvm_object;
    endtask
 
 
-   // Task: do_post_write
-   //
-   // Execute the post-write callbacks
-   //
-   // This method ~must~ be called as the last statement in
-   // a user extension of the <write()> method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.5
    protected task do_post_write(uvm_reg_item rw);
       `uvm_do_obj_callbacks(uvm_reg_backdoor,uvm_reg_cbs,this,post_write(rw))
       post_write(rw);
    endtask
 
 
-   // Task: write
-   //
-   // User-defined backdoor write operation.
-   //
-   // Call <do_pre_write()>.
-   // Deposit the specified value in the specified register HDL implementation.
-   // Call <do_post_write()>.
-   // Returns an indication of the success of the operation.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.6
    extern virtual task write(uvm_reg_item rw);
 
 
-   // Task: read
-   //
-   // User-defined backdoor read operation.
-   //
-   // Overload this method only if the backdoor requires the use of task.
-   //
-   // Call <do_pre_read()>.
-   // Peek the current value of the specified HDL implementation.
-   // Call <do_post_read()>.
-   // Returns the current value and an indication of the success of
-   // the operation.
-   //
-   // By default, calls <read_func()>.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.7
    extern virtual task read(uvm_reg_item rw);
 
    
-   // Function: read_func
-   //
-   // User-defined backdoor read operation.
-   //
-   // Peek the current value in the HDL implementation.
-   // Returns the current value and an indication of the success of
-   // the operation.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.8
    extern virtual function void read_func(uvm_reg_item rw);
 
 
-   // Function: is_auto_updated
-   //
-   // Indicates if wait_for_change() method is implemented
-   //
-   // Implement to return TRUE if and only if
-   // <wait_for_change()> is implemented to watch for changes
-   // in the HDL implementation of the specified field
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.9
    extern virtual function bit is_auto_updated(uvm_reg_field field);
 
 
-   // Task: wait_for_change
-   //
-   // Wait for a change in the value of the register or memory
-   // element in the DUT.
-   //
-   // When this method returns, the mirror value for the register
-   // corresponding to this instance of the backdoor class will be updated
-   // via a backdoor read operation.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.10
    extern virtual local task wait_for_change(uvm_object element);
 
   
@@ -175,46 +118,23 @@ class uvm_reg_backdoor extends uvm_object;
    /*local*/ extern function bit has_update_threads();
 
 
-   // Task: pre_read
-   //
-   // Called before user-defined backdoor register read.
-   //
-   // The registered callback methods are invoked after the invocation
-   // of this method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.11
    virtual task pre_read(uvm_reg_item rw); endtask
 
 
-   // Task: post_read
-   //
-   // Called after user-defined backdoor register read.
-   //
-   // The registered callback methods are invoked before the invocation
-   // of this method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.12
    virtual task post_read(uvm_reg_item rw); endtask
 
 
-   // Task: pre_write
-   //
-   // Called before user-defined backdoor register write.
-   //
-   // The registered callback methods are invoked after the invocation
-   // of this method.
-   //
-   // The written value, if modified, modifies the actual value that
-   // will be written.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.13
    virtual task pre_write(uvm_reg_item rw); endtask
 
 
-   // Task: post_write
-   //
-   // Called after user-defined backdoor register write.
-   //
-   // The registered callback methods are invoked before the invocation
-   // of this method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 19.5.2.14
    virtual task post_write(uvm_reg_item rw); endtask
 
 
@@ -227,7 +147,6 @@ class uvm_reg_backdoor extends uvm_object;
    local process m_update_thread[uvm_object];
 `endif 
 
-   `uvm_object_utils(uvm_reg_backdoor)
    `uvm_register_cb(uvm_reg_backdoor, uvm_reg_cbs)
 
 
@@ -249,7 +168,7 @@ endfunction
 // wait_for_change
 
 task uvm_reg_backdoor::wait_for_change(uvm_object element);
-   `uvm_fatal("RegModel", "uvm_reg_backdoor::wait_for_change() method has not been overloaded");
+   `uvm_fatal("RegModel", "uvm_reg_backdoor::wait_for_change() method has not been overloaded")
 endtask
 
 
@@ -284,7 +203,7 @@ function void uvm_reg_backdoor::start_update_thread(uvm_object element);
             val = r_item.value[0];
             if (r_item.status != UVM_IS_OK) begin
                `uvm_error("RegModel", $sformatf("Backdoor read of register '%s' failed.",
-                          rg.get_name()));
+                          rg.get_name()))
             end
             foreach (fields[i]) begin
                if (this.is_auto_updated(fields[i])) begin
@@ -326,7 +245,7 @@ endfunction
 // write
 
 task uvm_reg_backdoor::write(uvm_reg_item rw);
-   `uvm_fatal("RegModel", "uvm_reg_backdoor::write() method has not been overloaded");
+   `uvm_fatal("RegModel", "uvm_reg_backdoor::write() method has not been overloaded")
 endtask
 
 
@@ -342,6 +261,6 @@ endtask
 // read_func
 
 function void uvm_reg_backdoor::read_func(uvm_reg_item rw);
-   `uvm_fatal("RegModel", "uvm_reg_backdoor::read_func() method has not been overloaded");
+   `uvm_fatal("RegModel", "uvm_reg_backdoor::read_func() method has not been overloaded")
    rw.status = UVM_NOT_OK;
 endfunction

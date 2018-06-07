@@ -1,9 +1,16 @@
 //
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc.
-//   Copyright 2010-2011 Synopsys, Inc.
-//   Copyright 2013      NVIDIA Corporation
+// Copyright 2010 Paradigm Works
+// Copyright 2007-2017 Mentor Graphics Corporation
+// Copyright 2014 Semifore
+// Copyright 2018 Intel Corporation
+// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2011-2012 AMD
+// Copyright 2012-2018 Cisco Systems, Inc.
+// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2012 Accellera Systems Initiative
+// Copyright 2017-2018 Verific
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -27,7 +34,7 @@ typedef class uvm_sequence_item;
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_component
+// CLASS -- NODOCS -- uvm_component
 //
 // The uvm_component class is the root base class for UVM components. In
 // addition to the features inherited from <uvm_object> and <uvm_report_object>,
@@ -57,9 +64,10 @@ typedef class uvm_sequence_item;
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 13.1.1
 virtual class uvm_component extends uvm_report_object;
 
-  // Function: new
+  // Function -- NODOCS -- new
   //
   // Creates a new component with the given leaf instance ~name~ and handle
   // to its ~parent~.  If the component is a top-level component (i.e. it is
@@ -73,11 +81,12 @@ virtual class uvm_component extends uvm_report_object;
   //
   // All classes derived from uvm_component must call super.new(name,parent).
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.2.1
   extern function new (string name, uvm_component parent);
 
 
   //----------------------------------------------------------------------------
-  // Group: Hierarchy Interface
+  // Group -- NODOCS -- Hierarchy Interface
   //----------------------------------------------------------------------------
   //
   // These methods provide user access to information about the component
@@ -85,23 +94,25 @@ virtual class uvm_component extends uvm_report_object;
   // 
   //----------------------------------------------------------------------------
 
-  // Function: get_parent
+  // Function -- NODOCS -- get_parent
   //
   // Returns a handle to this component's parent, or ~null~ if it has no parent.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.3.1
   extern virtual function uvm_component get_parent ();
 
 
-  // Function: get_full_name
+  // Function -- NODOCS -- get_full_name
   //
   // Returns the full hierarchical name of this object. The default
   // implementation concatenates the hierarchical name of the parent, if any,
   // with the leaf name of this object, as given by <uvm_object::get_name>. 
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.3.2
   extern virtual function string get_full_name ();
 
 
-  // Function: get_children
+  // Function -- NODOCS -- get_children
   //
   // This function populates the end of the ~children~ array with the 
   // list of this component's children. 
@@ -111,16 +122,19 @@ virtual class uvm_component extends uvm_report_object;
   //|   foreach(array[i]) 
   //|     do_something(array[i]);
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.3.3
   extern function void get_children(ref uvm_component children[$]);
 
 
-  // Function: get_child
+
+  // @uvm-ieee 1800.2-2017 auto 13.1.3.4
   extern function uvm_component get_child (string name);
 
-  // Function: get_next_child
+
+  // @uvm-ieee 1800.2-2017 auto 13.1.3.4
   extern function int get_next_child (ref string name);
 
-  // Function: get_first_child
+  // Function -- NODOCS -- get_first_child
   //
   // These methods are used to iterate through this component's children, if
   // any. For example, given a component with an object handle, ~comp~, the
@@ -134,20 +148,23 @@ virtual class uvm_component extends uvm_report_object;
   //|        child.print();
   //|      end while (comp.get_next_child(name));
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.3.4
   extern function int get_first_child (ref string name);
 
 
-  // Function: get_num_children
+  // Function -- NODOCS -- get_num_children
   //
   // Returns the number of this component's children. 
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.3.5
   extern function int get_num_children ();
 
 
-  // Function: has_child
+  // Function -- NODOCS -- has_child
   //
   // Returns 1 if this component has a child with the given ~name~, 0 otherwise.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.3.6
   extern function int has_child (string name);
 
 
@@ -159,7 +176,7 @@ virtual class uvm_component extends uvm_report_object;
   extern virtual function void set_name (string name);
 
   
-  // Function: lookup
+  // Function -- NODOCS -- lookup
   //
   // Looks for a component with the given hierarchical ~name~ relative to this
   // component. If the given ~name~ is preceded with a '.' (dot), then the search
@@ -167,10 +184,11 @@ virtual class uvm_component extends uvm_report_object;
   // matching component is returned, else ~null~. The name must not contain
   // wildcards.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.3.7
   extern function uvm_component lookup (string name);
 
 
-  // Function: get_depth
+  // Function -- NODOCS -- get_depth
   //
   // Returns the component's depth from the root level. uvm_top has a
   // depth of 0. The test and any other top level components have a depth
@@ -180,7 +198,7 @@ virtual class uvm_component extends uvm_report_object;
 
 
   //----------------------------------------------------------------------------
-  // Group: Phasing Interface
+  // Group -- NODOCS -- Phasing Interface
   //----------------------------------------------------------------------------
   //
   // These methods implement an interface which allows all components to step
@@ -196,7 +214,7 @@ virtual class uvm_component extends uvm_report_object;
   //----------------------------------------------------------------------------
 
 
-  // Function: build_phase
+  // Function -- NODOCS -- build_phase
   //
   // The <uvm_build_phase> phase implementation method.
   //
@@ -208,46 +226,37 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should never be called directly. 
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.1.1
   extern virtual function void build_phase(uvm_phase phase);
 
-  // For backward compatibility the base <build_phase> method calls <build>.
-  extern virtual function void build();
-
-
-  // Function: connect_phase
+  // Function -- NODOCS -- connect_phase
   //
   // The <uvm_connect_phase> phase implementation method.
   //
   // This method should never be called directly. 
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.1.2
   extern virtual function void connect_phase(uvm_phase phase);
 
-  // For backward compatibility the base connect_phase method calls connect.
-  extern virtual function void connect();
-
-  // Function: end_of_elaboration_phase
+  // Function -- NODOCS -- end_of_elaboration_phase
   //
   // The <uvm_end_of_elaboration_phase> phase implementation method.
   //
   // This method should never be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.1.3
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
 
-  // For backward compatibility the base <end_of_elaboration_phase> method calls <end_of_elaboration>.
-  extern virtual function void end_of_elaboration();
-
-  // Function: start_of_simulation_phase
+  // Function -- NODOCS -- start_of_simulation_phase
   //
   // The <uvm_start_of_simulation_phase> phase implementation method.
   //
   // This method should never be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.1.4
   extern virtual function void start_of_simulation_phase(uvm_phase phase);
 
-  // For backward compatibility the base <start_of_simulation_phase> method calls <start_of_simulation>.
-  extern virtual function void start_of_simulation();
-
-  // Task: run_phase
+  // Task -- NODOCS -- run_phase
   //
   // The <uvm_run_phase> phase implementation method.
   //
@@ -262,12 +271,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // The run_phase task should never be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.1.5
   extern virtual task run_phase(uvm_phase phase);
 
-  // For backward compatibility the base <run_phase> method calls <run>.
-  extern virtual task run();
-
-  // Task: pre_reset_phase
+  // Task -- NODOCS -- pre_reset_phase
   //
   // The <uvm_pre_reset_phase> phase implementation method.
   //
@@ -285,9 +292,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.1
   extern virtual task pre_reset_phase(uvm_phase phase);
 
-  // Task: reset_phase
+  // Task -- NODOCS -- reset_phase
   //
   // The <uvm_reset_phase> phase implementation method.
   //
@@ -305,9 +313,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.2
   extern virtual task reset_phase(uvm_phase phase);
 
-  // Task: post_reset_phase
+  // Task -- NODOCS -- post_reset_phase
   //
   // The <uvm_post_reset_phase> phase implementation method.
   //
@@ -325,9 +334,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.3
   extern virtual task post_reset_phase(uvm_phase phase);
 
-  // Task: pre_configure_phase
+  // Task -- NODOCS -- pre_configure_phase
   //
   // The <uvm_pre_configure_phase> phase implementation method.
   //
@@ -345,9 +355,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.4
   extern virtual task pre_configure_phase(uvm_phase phase);
 
-  // Task: configure_phase
+  // Task -- NODOCS -- configure_phase
   //
   // The <uvm_configure_phase> phase implementation method.
   //
@@ -365,9 +376,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.5
   extern virtual task configure_phase(uvm_phase phase);
 
-  // Task: post_configure_phase
+  // Task -- NODOCS -- post_configure_phase
   //
   // The <uvm_post_configure_phase> phase implementation method.
   //
@@ -385,9 +397,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.6
   extern virtual task post_configure_phase(uvm_phase phase);
 
-  // Task: pre_main_phase
+  // Task -- NODOCS -- pre_main_phase
   //
   // The <uvm_pre_main_phase> phase implementation method.
   //
@@ -405,9 +418,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.7
   extern virtual task pre_main_phase(uvm_phase phase);
 
-  // Task: main_phase
+  // Task -- NODOCS -- main_phase
   //
   // The <uvm_main_phase> phase implementation method.
   //
@@ -425,9 +439,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.8
   extern virtual task main_phase(uvm_phase phase);
 
-  // Task: post_main_phase
+  // Task -- NODOCS -- post_main_phase
   //
   // The <uvm_post_main_phase> phase implementation method.
   //
@@ -445,9 +460,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.9
   extern virtual task post_main_phase(uvm_phase phase);
 
-  // Task: pre_shutdown_phase
+  // Task -- NODOCS -- pre_shutdown_phase
   //
   // The <uvm_pre_shutdown_phase> phase implementation method.
   //
@@ -465,9 +481,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.10
   extern virtual task pre_shutdown_phase(uvm_phase phase);
 
-  // Task: shutdown_phase
+  // Task -- NODOCS -- shutdown_phase
   //
   // The <uvm_shutdown_phase> phase implementation method.
   //
@@ -485,9 +502,10 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.11
   extern virtual task shutdown_phase(uvm_phase phase);
 
-  // Task: post_shutdown_phase
+  // Task -- NODOCS -- post_shutdown_phase
   //
   // The <uvm_post_shutdown_phase> phase implementation method.
   //
@@ -505,58 +523,83 @@ virtual class uvm_component extends uvm_report_object;
   //
   // This method should not be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.2.12
   extern virtual task post_shutdown_phase(uvm_phase phase);
 
-  // Function: extract_phase
+  // Function -- NODOCS -- extract_phase
   //
   // The <uvm_extract_phase> phase implementation method.
   //
   // This method should never be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.1.6
   extern virtual function void extract_phase(uvm_phase phase);
 
-  // For backward compatibility the base extract_phase method calls extract.
-  extern virtual function void extract();
 
-  // Function: check_phase
+
+  // Function -- NODOCS -- check_phase
   //
   // The <uvm_check_phase> phase implementation method.
   //
   // This method should never be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.1.7
   extern virtual function void check_phase(uvm_phase phase);
 
-  // For backward compatibility the base check_phase method calls check.
-  extern virtual function void check();
-
-  // Function: report_phase
+  // Function -- NODOCS -- report_phase
   //
   // The <uvm_report_phase> phase implementation method.
   //
   // This method should never be called directly.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.1.8
   extern virtual function void report_phase(uvm_phase phase);
 
-  // For backward compatibility the base report_phase method calls report.
-  extern virtual function void report();
-
-  // Function: final_phase
+  // Function -- NODOCS -- final_phase
   //
   // The <uvm_final_phase> phase implementation method.
   //
   // This method should never be called directly.
   
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.1.9
   extern virtual function void final_phase(uvm_phase phase);
 
-  // Function: phase_started
+`ifdef UVM_ENABLE_DEPRECATED_API
+  // For backward compatibility the base <build_phase> method calls <build>.
+  extern virtual function void build();
+
+  // For backward compatibility the base connect_phase method calls connect.
+  extern virtual function void connect();
+
+  // For backward compatibility the base <end_of_elaboration_phase> method calls <end_of_elaboration>.
+  extern virtual function void end_of_elaboration();
+   
+  // For backward compatibility the base <start_of_simulation_phase> method calls <start_of_simulation>.
+  extern virtual function void start_of_simulation();
+
+  // For backward compatibility the base <run_phase> method calls <run>.
+  extern virtual task run();
+
+  // For backward compatibility the base extract_phase method calls extract.
+  extern virtual function void extract();
+
+  // For backward compatibility the base check_phase method calls check.
+  extern virtual function void check();
+
+  // For backward compatibility the base report_phase method calls report.
+  extern virtual function void report();
+`endif // UVM_ENABLE_DEPRECATED_API
+
+  // Function -- NODOCS -- phase_started
   //
   // Invoked at the start of each phase. The ~phase~ argument specifies
   // the phase being started. Any threads spawned in this callback are
   // not affected when the phase ends.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.3.1
   extern virtual function void phase_started (uvm_phase phase);
 
-  // Function: phase_ready_to_end
+  // Function -- NODOCS -- phase_ready_to_end
   //
   // Invoked when all objections to ending the given ~phase~ and all
   // sibling phases have been dropped, thus indicating that ~phase~ is 
@@ -578,15 +621,17 @@ virtual class uvm_component extends uvm_report_object;
   // after 20 iterations, phase_ended() is called regardless of whether
   // previous iteration had any objections raised.
   
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.3.2
   extern virtual function void phase_ready_to_end (uvm_phase phase);
 
 
-  // Function: phase_ended
+  // Function -- NODOCS -- phase_ended
   //
   // Invoked at the end of each phase. The ~phase~ argument specifies
   // the phase that is ending.  Any threads spawned in this callback are
   // not affected when the phase ends.
   
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.3.3
   extern virtual function void phase_ended (uvm_phase phase);
 
   
@@ -595,7 +640,7 @@ virtual class uvm_component extends uvm_report_object;
   //--------------------------------------------------------------------
 
   
-  // Function: set_domain
+  // Function -- NODOCS -- set_domain
   //
   // Apply a phase domain to this component and, if ~hier~ is set, 
   // recursively to all its children. 
@@ -604,17 +649,19 @@ virtual class uvm_component extends uvm_report_object;
   // override to augment or replace the domain definition of its base class.
   //
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.4.1
   extern function void set_domain(uvm_domain domain, int hier=1);
 
 
-  // Function: get_domain
+  // Function -- NODOCS -- get_domain
   //
   // Return handle to the phase domain set on this component
   
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.4.2
   extern function uvm_domain get_domain();
 
 
-  // Function: define_domain
+  // Function -- NODOCS -- define_domain
   //
   // Builds custom phase schedules into the provided ~domain~ handle.
   //
@@ -644,10 +691,11 @@ virtual class uvm_component extends uvm_report_object;
   // then call <set_domain> to apply it to a component.
 
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.4.3
   extern virtual protected function void define_domain(uvm_domain domain);
 
-
-  // Function: set_phase_imp
+`ifdef UVM_ENABLE_DEPRECATED_API
+  // Function -- NODOCS -- set_phase_imp
   //
   // Override the default implementation for a phase on this component (tree) with a
   // custom one, which must be created as a singleton object extending the default
@@ -657,9 +705,9 @@ virtual class uvm_component extends uvm_report_object;
   // just this component.
 
   extern function void set_phase_imp(uvm_phase phase, uvm_phase imp, int hier=1);
-
+`endif
   
-  // Task: suspend
+  // Task -- NODOCS -- suspend
   //
   // Suspend this component.
   //
@@ -667,10 +715,11 @@ virtual class uvm_component extends uvm_report_object;
   // component according to the protocol and functionality it implements.
   // A suspended component can be subsequently resumed using <resume()>. 
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.5.1
   extern virtual task suspend ();
 
 
-  // Task: resume
+  // Task -- NODOCS -- resume
   //
   // Resume this component.
   //
@@ -679,88 +728,11 @@ virtual class uvm_component extends uvm_report_object;
   // Some component may start in the suspended state and
   // may need to be explicitly resumed.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.5.2
   extern virtual task resume ();
 
 
-`ifndef UVM_NO_DEPRECATED
-  // Function- status  - DEPRECATED
-  //
-  // Returns the status of this component.
-  //
-  // Returns a string that describes the current status of the
-  // components. Possible values include, but are not limited to
-  //
-  // "<unknown>"   - Status is unknown (default)
-  // "FINISHED"    - Component has stopped on its own accord. May be resumed.
-  // "RUNNING"     - Component is running.
-  //                 May be suspended after normal completion
-  //                 of operation in progress.
-  // "WAITING"     - Component is waiting. May be suspended immediately.
-  // "SUSPENDED"   - Component is suspended. May be resumed.
-  // "KILLED"      - Component has been killed and is unable to operate
-  //                 any further. It cannot be resumed.
-
-
-  extern function string status ();
-
-
-  // Function- kill  - DEPRECATED
-  //
-  // Kills the process tree associated with this component's currently running
-  // task-based phase, e.g., run.
-
-  extern virtual function void kill ();
-
-
-  // Function- do_kill_all  - DEPRECATED
-  //
-  // Recursively calls <kill> on this component and all its descendants,
-  // which abruptly ends the currently running task-based phase, e.g., run.
-  // See <run_phase> for better options to ending a task-based phase.
-
-  extern virtual  function void  do_kill_all ();
-
-
-  // Task- stop_phase  -- DEPRECATED
-  //
-  // The stop_phase task is called when this component's <enable_stop_interrupt>
-  // bit is set and <global_stop_request> is called during a task-based phase,
-  // e.g., run.
-  //
-  // Before a phase is abruptly ended, e.g., when a test deems the simulation
-  // complete, some components may need extra time to shut down cleanly. Such
-  // components may implement stop_phase to finish the currently executing
-  // transaction, flush the queue, or perform other cleanup. Upon return from
-  // stop_phase, a component signals it is ready to be stopped. 
-  //
-  // The ~stop_phase~ method will not be called if <enable_stop_interrupt> is 0.
-  //
-  // The default implementation is empty, i.e., it will return immediately.
-  //
-  // This method should never be called directly.
-
-  extern virtual task stop_phase(uvm_phase phase);
-
-  // backward compat
-  extern virtual task stop (string ph_name);
-
-
-  // Variable- enable_stop_interrupt  - DEPRECATED
-  //
-  // This bit allows a component to raise an objection to the stopping of the
-  // current phase. It affects only time consuming phases (such as the run
-  // phase).
-  //
-  // When this bit is set, the <stop> task in the component is called as a result
-  // of a call to <global_stop_request>. Components that are sensitive to an
-  // immediate killing of its run-time processes should set this bit and
-  // implement the stop task to prepare for shutdown.
-
-  int enable_stop_interrupt;
-`endif
-
-
-  // Function: resolve_bindings
+  // Function -- NODOCS -- resolve_bindings
   //
   // Processes all port, export, and imp connections. Checks whether each port's
   // min and max connection requirements are met.
@@ -775,7 +747,7 @@ virtual class uvm_component extends uvm_report_object;
 
 
   //----------------------------------------------------------------------------
-  // Group: Configuration Interface
+  // Group -- NODOCS -- Configuration Interface
   //----------------------------------------------------------------------------
   //
   // Components can be designed to be user-configurable in terms of its
@@ -787,139 +759,8 @@ virtual class uvm_component extends uvm_report_object;
   //
   //----------------------------------------------------------------------------
 
-`ifndef UVM_NO_DEPRECATED
-
-  static bit m_config_deprecated_warned;
-
-  // Used for caching config settings
-  static bit m_config_set = 1;
-
-  // Function- set_config_int
-
-  extern virtual function void set_config_int (string inst_name,  
-                                               string field_name,
-                                               uvm_bitstream_t value);
-
-  // Function- set_config_string
-
-  extern virtual function void set_config_string (string inst_name,  
-                                                  string field_name,
-                                                  string value);
-
-  // Function- set_config_object
-  //
-  // Calling set_config_* causes configuration settings to be created and
-  // placed in a table internal to this component. There are similar global
-  // methods that store settings in a global table. Each setting stores the
-  // supplied ~inst_name~, ~field_name~, and ~value~ for later use by descendent
-  // components during their construction. (The global table applies to
-  // all components and takes precedence over the component tables.)
-  //
-  // When a descendant component calls a get_config_* method, the ~inst_name~
-  // and ~field_name~ provided in the get call are matched against all the
-  // configuration settings stored in the global table and then in each
-  // component in the parent hierarchy, top-down. Upon the first match, the
-  // value stored in the configuration setting is returned. Thus, precedence is
-  // global, following by the top-level component, and so on down to the
-  // descendent component's parent.
-  //
-  // These methods work in conjunction with the get_config_* methods to
-  // provide a configuration setting mechanism for integral, string, and
-  // uvm_object-based types. Settings of other types, such as virtual interfaces
-  // and arrays, can be indirectly supported by defining a class that contains
-  // them.
-  //
-  // Both ~inst_name~ and ~field_name~ may contain wildcards.
-  //
-  // - For set_config_int, ~value~ is an integral value that can be anything
-  //   from 1 bit to 4096 bits.
-  //
-  // - For set_config_string, ~value~ is a string.
-  //
-  // - For set_config_object, ~value~ must be an <uvm_object>-based object or
-  //   ~null~.  Its clone argument specifies whether the object should be cloned.
-  //   If set, the object is cloned both going into the table (during the set)
-  //   and coming out of the table (during the get), so that multiple components
-  //   matched to the same setting (by way of wildcards) do not end up sharing
-  //   the same object.
-  //
-  //
-  // See <get_config_int>, <get_config_string>, and <get_config_object> for
-  // information on getting the configurations set by these methods.
-
-
-  extern virtual function void set_config_object (string inst_name,  
-                                                  string field_name,
-                                                  uvm_object value,  
-                                                  bit clone=1);
-
-
-  // Function- get_config_int
-
-  extern virtual function bit get_config_int (string field_name,
-                                              inout uvm_bitstream_t value);
-
-  // Function- get_config_string
-
-  extern virtual function bit get_config_string (string field_name,
-                                                 inout string value);
-
-  // Function- get_config_object
-  //
-  // These methods retrieve configuration settings made by previous calls to
-  // their set_config_* counterparts. As the methods' names suggest, there is
-  // direct support for integral types, strings, and objects.  Settings of other
-  // types can be indirectly supported by defining an object to contain them.
-  //
-  // Configuration settings are stored in a global table and in each component
-  // instance. With each call to a get_config_* method, a top-down search is
-  // made for a setting that matches this component's full name and the given
-  // ~field_name~. For example, say this component's full instance name is
-  // top.u1.u2. First, the global configuration table is searched. If that
-  // fails, then it searches the configuration table in component 'top',
-  // followed by top.u1. 
-  //
-  // The first instance/field that matches causes ~value~ to be written with the
-  // value of the configuration setting and 1 is returned. If no match
-  // is found, then ~value~ is unchanged and the 0 returned.
-  //
-  // Calling the get_config_object method requires special handling. Because
-  // ~value~ is an output of type <uvm_object>, you must provide a uvm_object
-  // handle to assign to (_not_ a derived class handle). After the call, you can
-  // then $cast to the actual type.
-  //
-  // For example, the following code illustrates how a component designer might
-  // call upon the configuration mechanism to assign its ~data~ object property,
-  // whose type myobj_t derives from uvm_object.
-  //
-  //|  class mycomponent extends uvm_component;
-  //|
-  //|    local myobj_t data;
-  //|
-  //|    function void build_phase(uvm_phase phase);
-  //|      uvm_object tmp;
-  //|      super.build_phase(phase);
-  //|      if(get_config_object("data", tmp))
-  //|        if (!$cast(data, tmp))
-  //|          `uvm_error("CFGERR","error! config setting for 'data' not of type myobj_t")
-  //|        endfunction
-  //|      ...
-  //
-  // The above example overrides the <build_phase> method. If you want to retain
-  // any base functionality, you must call super.build_phase(uvm_phase phase).
-  //
-  // The ~clone~ bit clones the data inbound. The get_config_object method can
-  // also clone the data outbound.
-  //
-  // See Members for information on setting the global configuration table.
-
-  extern virtual function bit get_config_object (string field_name,
-                                                 inout uvm_object value,  
-                                                 input bit clone=1);
-`endif
-
-
-  // Function: check_config_usage
+`ifdef UVM_ENABLE_DEPRECATED_API
+  // Function -- NODOCS -- check_config_usage
   //
   // Check all configuration settings in a components configuration table
   // to determine if the setting has been used, overridden or not used.
@@ -934,9 +775,9 @@ virtual class uvm_component extends uvm_report_object;
   //|  endfunction
 
   extern function void check_config_usage (bit recurse=1);
+`endif // UVM_ENABLE_DEPRECATED_API
 
-
-  // Function: apply_config_settings
+  // Function -- NODOCS -- apply_config_settings
   //
   // Searches for all config settings matching this component's instance path.
   // For each match, the appropriate set_*_local method is called using the
@@ -963,10 +804,19 @@ virtual class uvm_component extends uvm_report_object;
   // applied. If the component's <print_config_matches> property is set, then
   // apply_config_settings is automatically called with ~verbose~ = 1.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.5.1
   extern virtual function void apply_config_settings (bit verbose = 0);
 
+  // Function -- NODOCS -- use_automatic_config
+  //
+  // Returns 1 if the component should call <apply_config_settings> in the <build_phase>;
+  // otherwise, returns 0.
+  //
+  // @uvm-ieee 1800.2-2017 auto 13.1.5.2
+  extern virtual function bit use_automatic_config();
 
-  // Function: print_config_settings
+`ifdef UVM_ENABLE_DEPRECATED_API
+  // Function -- NODOCS -- print_config_settings
   //
   // Called without arguments, print_config_settings prints all configuration
   // information for this component, as set by previous calls to <uvm_config_db::set()>.
@@ -987,8 +837,9 @@ virtual class uvm_component extends uvm_report_object;
   extern function void print_config_settings (string field="", 
                                               uvm_component comp=null, 
                                               bit recurse=0);
-
-  // Function: print_config
+`endif // UVM_ENABLE_DEPRECATED_API
+   
+  // Function -- NODOCS -- print_config
   //
   // Print_config_settings prints all configuration information for this
   // component, as set by previous calls to <uvm_config_db::set()> and exports to
@@ -1003,7 +854,7 @@ virtual class uvm_component extends uvm_report_object;
 
   extern function void print_config(bit recurse = 0, bit audit = 0);
 
-  // Function: print_config_with_audit
+  // Function -- NODOCS -- print_config_with_audit
   //
   // Operates the same as print_config except that the audit bit is
   // forced to 1.  This interface makes user code a bit more readable as
@@ -1014,16 +865,15 @@ virtual class uvm_component extends uvm_report_object;
 
   extern function void print_config_with_audit(bit recurse = 0);
 
-  // Variable: print_config_matches
+  // Variable -- NODOCS -- print_config_matches
   //
   // Setting this static variable causes uvm_config_db::get() to print info about
   // matching configuration settings as they are being applied.
 
   static bit print_config_matches;
 
-
   //----------------------------------------------------------------------------
-  // Group: Objection Interface
+  // Group -- NODOCS -- Objection Interface
   //----------------------------------------------------------------------------
   //
   // These methods provide object level hooks into the <uvm_objection> 
@@ -1032,7 +882,7 @@ virtual class uvm_component extends uvm_report_object;
   //----------------------------------------------------------------------------
 
 
-  // Function: raised
+  // Function -- NODOCS -- raised
   //
   // The ~raised~ callback is called when this or a descendant of this component
   // instance raises the specified ~objection~. The ~source_obj~ is the object
@@ -1041,12 +891,13 @@ virtual class uvm_component extends uvm_report_object;
   // reason for raising the objection. The ~count~ indicates the number of
   // objections raised by the ~source_obj~.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.5.4
   virtual function void raised (uvm_objection objection, uvm_object source_obj, 
       string description, int count);
   endfunction
 
 
-  // Function: dropped
+  // Function -- NODOCS -- dropped
   //
   // The ~dropped~ callback is called when this or a descendant of this component
   // instance drops the specified ~objection~. The ~source_obj~ is the object
@@ -1055,12 +906,13 @@ virtual class uvm_component extends uvm_report_object;
   // reason for dropping the objection. The ~count~ indicates the number of
   // objections dropped by the ~source_obj~.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.5.5
   virtual function void dropped (uvm_objection objection, uvm_object source_obj, 
       string description, int count);
   endfunction
 
 
-  // Task: all_dropped
+  // Task -- NODOCS -- all_dropped
   //
   // The ~all_droppped~ callback is called when all objections have been 
   // dropped by this component and all its descendants.  The ~source_obj~ is the
@@ -1069,13 +921,14 @@ virtual class uvm_component extends uvm_report_object;
   // reason for raising the objection. The ~count~ indicates the number of
   // objections dropped by the ~source_obj~.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.5.6
   virtual task all_dropped (uvm_objection objection, uvm_object source_obj, 
       string description, int count);
   endtask
 
 
   //----------------------------------------------------------------------------
-  // Group: Factory Interface
+  // Group -- NODOCS -- Factory Interface
   //----------------------------------------------------------------------------
   //
   // The factory interface provides convenient access to a portion of UVM's
@@ -1087,7 +940,7 @@ virtual class uvm_component extends uvm_report_object;
   //
   //----------------------------------------------------------------------------
 
-  // Function: create_component
+  // Function -- NODOCS -- create_component
   //
   // A convenience function for <uvm_factory::create_component_by_name>,
   // this method calls upon the factory to create a new child component
@@ -1106,7 +959,7 @@ virtual class uvm_component extends uvm_report_object;
                                                   string name);
 
 
-  // Function: create_object
+  // Function -- NODOCS -- create_object
   //
   // A convenience function for <uvm_factory::create_object_by_name>,
   // this method calls upon the factory to create a new object
@@ -1125,7 +978,7 @@ virtual class uvm_component extends uvm_report_object;
                                             string name="");
 
 
-  // Function: set_type_override_by_type
+  // Function -- NODOCS -- set_type_override_by_type
   //
   // A convenience function for <uvm_factory::set_type_override_by_type>, this
   // method registers a factory override for components and objects created at
@@ -1150,7 +1003,7 @@ virtual class uvm_component extends uvm_report_object;
                                               bit replace=1);
 
 
-  // Function: set_inst_override_by_type
+  // Function -- NODOCS -- set_inst_override_by_type
   //
   // A convenience function for <uvm_factory::set_inst_override_by_type>, this
   // method registers a factory override for components and objects created at
@@ -1206,7 +1059,7 @@ virtual class uvm_component extends uvm_report_object;
                                                  uvm_object_wrapper override_type);
 
 
-  // Function: set_type_override
+  // Function -- NODOCS -- set_type_override
   //
   // A convenience function for <uvm_factory::set_type_override_by_name>,
   // this method configures the factory to create an object of type
@@ -1227,7 +1080,7 @@ virtual class uvm_component extends uvm_report_object;
                                                 bit    replace=1);
 
 
-  // Function: set_inst_override
+  // Function -- NODOCS -- set_inst_override
   //
   // A convenience function for <uvm_factory::set_inst_override_by_name>, this
   // method registers a factory override for components created at this level
@@ -1251,7 +1104,7 @@ virtual class uvm_component extends uvm_report_object;
                                          string override_type_name);
 
 
-  // Function: print_override_info
+  // Function -- NODOCS -- print_override_info
   //
   // This factory debug method performs the same lookup process as create_object
   // and create_component, but instead of creating an object, it prints
@@ -1263,7 +1116,7 @@ virtual class uvm_component extends uvm_report_object;
 
 
   //----------------------------------------------------------------------------
-  // Group: Hierarchical Reporting Interface
+  // Group -- NODOCS -- Hierarchical Reporting Interface
   //----------------------------------------------------------------------------
   //
   // This interface provides versions of the set_report_* methods in the
@@ -1274,12 +1127,12 @@ virtual class uvm_component extends uvm_report_object;
   // report will be sent to its associated FILE descriptor.
   //----------------------------------------------------------------------------
 
-  // Function: set_report_id_verbosity_hier
+  // Function -- NODOCS -- set_report_id_verbosity_hier
 
   extern function void set_report_id_verbosity_hier (string id,
                                                   int verbosity);
 
-  // Function: set_report_severity_id_verbosity_hier
+  // Function -- NODOCS -- set_report_severity_id_verbosity_hier
   //
   // These methods recursively associate the specified verbosity with reports of
   // the given ~severity~, ~id~, or ~severity-id~ pair. A verbosity associated
@@ -1295,18 +1148,18 @@ virtual class uvm_component extends uvm_report_object;
                                                           int verbosity);
 
 
-  // Function: set_report_severity_action_hier
+  // Function -- NODOCS -- set_report_severity_action_hier
 
   extern function void set_report_severity_action_hier (uvm_severity severity,
                                                         uvm_action action);
 
 
-  // Function: set_report_id_action_hier
+  // Function -- NODOCS -- set_report_id_action_hier
 
   extern function void set_report_id_action_hier (string id,
                                                   uvm_action action);
 
-  // Function: set_report_severity_id_action_hier
+  // Function -- NODOCS -- set_report_severity_id_action_hier
   //
   // These methods recursively associate the specified action with reports of
   // the given ~severity~, ~id~, or ~severity-id~ pair. An action associated
@@ -1323,21 +1176,21 @@ virtual class uvm_component extends uvm_report_object;
 
 
 
-  // Function: set_report_default_file_hier
+  // Function -- NODOCS -- set_report_default_file_hier
 
   extern function void set_report_default_file_hier (UVM_FILE file);
 
-  // Function: set_report_severity_file_hier
+  // Function -- NODOCS -- set_report_severity_file_hier
 
   extern function void set_report_severity_file_hier (uvm_severity severity,
                                                       UVM_FILE file);
 
-  // Function: set_report_id_file_hier
+  // Function -- NODOCS -- set_report_id_file_hier
 
   extern function void set_report_id_file_hier (string id,
                                                 UVM_FILE file);
 
-  // Function: set_report_severity_id_file_hier
+  // Function -- NODOCS -- set_report_severity_id_file_hier
   //
   // These methods recursively associate the specified FILE descriptor with
   // reports of the given ~severity~, ~id~, or ~severity-id~ pair. A FILE
@@ -1353,7 +1206,7 @@ virtual class uvm_component extends uvm_report_object;
                                                         UVM_FILE file);
 
 
-  // Function: set_report_verbosity_level_hier
+  // Function -- NODOCS -- set_report_verbosity_level_hier
   //
   // This method recursively sets the maximum verbosity level for reports for
   // this component and all those below it. Any report from this component
@@ -1365,7 +1218,7 @@ virtual class uvm_component extends uvm_report_object;
     extern function void set_report_verbosity_level_hier (int verbosity);
  
 
-  // Function: pre_abort
+  // Function -- NODOCS -- pre_abort
   //
   // This callback is executed when the message system is executing a
   // <UVM_EXIT> action. The exit action causes an immediate termination of
@@ -1382,11 +1235,12 @@ virtual class uvm_component extends uvm_report_object;
   //
   // The pre_abort() callback hooks are called in a bottom-up fashion.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.4.6
   virtual function void pre_abort;
   endfunction
 
   //----------------------------------------------------------------------------
-  // Group: Recording Interface
+  // Group -- NODOCS -- Recording Interface
   //----------------------------------------------------------------------------
   // These methods comprise the component-based transaction recording
   // interface. The methods can be used to record the transactions that
@@ -1396,7 +1250,7 @@ virtual class uvm_component extends uvm_report_object;
   // use-model is determined.
   //----------------------------------------------------------------------------
 
-  // Function: accept_tr
+  // Function -- NODOCS -- accept_tr
   //
   // This function marks the acceptance of a transaction, ~tr~, by this
   // component. Specifically, it performs the following actions:
@@ -1410,19 +1264,21 @@ virtual class uvm_component extends uvm_report_object;
   // - Triggers the component's internal accept_tr event. Any processes waiting
   //   on this event will resume in the next delta cycle. 
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.6.1
   extern function void accept_tr (uvm_transaction tr, time accept_time = 0);
 
 
-  // Function: do_accept_tr
+  // Function -- NODOCS -- do_accept_tr
   //
   // The <accept_tr> method calls this function to accommodate any user-defined
   // post-accept action. Implementations should call super.do_accept_tr to
   // ensure correct operation.
     
+  // @uvm-ieee 1800.2-2017 auto 13.1.6.2
   extern virtual protected function void do_accept_tr (uvm_transaction tr);
 
 
-  // Function: begin_tr
+  // Function -- NODOCS -- begin_tr
   //
   // This function marks the start of a transaction, ~tr~, by this component.
   // Specifically, it performs the following actions:
@@ -1447,42 +1303,46 @@ virtual class uvm_component extends uvm_report_object;
   // well as the interpretation of the arguments ~stream_name~, ~label~, and
   // ~desc~ are vendor specific.
 
-   extern function integer begin_tr (uvm_transaction tr,
+   // @uvm-ieee 1800.2-2017 auto 13.1.6.3
+   extern function int begin_tr (uvm_transaction tr,
                                      string stream_name="main",
                                      string label="",
                                      string desc="",
                                      time begin_time=0,
-                                     integer parent_handle=0);
+                                     int parent_handle=0);
 
-
-  // Function: begin_child_tr
+`ifdef UVM_ENABLE_DEPRECATED_API
+  // Function -- NODOCS -- begin_child_tr
   //
   // This function marks the start of a child transaction, ~tr~, by this
   // component. Its operation is identical to that of <begin_tr>, except that
   // an association is made between this transaction and the provided parent
   // transaction. This association is vendor-specific.
+  // 
+  // This function is deprecated
 
-  extern function integer begin_child_tr (uvm_transaction tr,
-                                          integer parent_handle=0,
+  extern function int begin_child_tr (uvm_transaction tr,
+                                          int parent_handle=0,
                                           string stream_name="main",
                                           string label="",
                                           string desc="",
                                           time begin_time=0);
+`endif //UVM_ENABLE_DEPRECATED_API
 
-
-  // Function: do_begin_tr
+  // Function -- NODOCS -- do_begin_tr
   //
   // The <begin_tr> and <begin_child_tr> methods call this function to
   // accommodate any user-defined post-begin action. Implementations should call
   // super.do_begin_tr to ensure correct operation.
 
   extern virtual protected 
+    // @uvm-ieee 1800.2-2017 auto 13.1.6.4
     function void do_begin_tr (uvm_transaction tr,
                                string stream_name,
-                               integer tr_handle);
+                               int tr_handle);
 
 
-  // Function: end_tr
+  // Function -- NODOCS -- end_tr
   //
   // This function marks the end of a transaction, ~tr~, by this component.
   // Specifically, it performs the following actions:
@@ -1506,22 +1366,24 @@ virtual class uvm_component extends uvm_report_object;
   // The ~free_handle~ bit indicates that this transaction is no longer needed.
   // The implementation of free_handle is vendor-specific.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.6.5
   extern function void end_tr (uvm_transaction tr,
                                time end_time=0,
                                bit free_handle=1);
 
 
-  // Function: do_end_tr
+  // Function -- NODOCS -- do_end_tr
   //
   // The <end_tr> method calls this function to accommodate any user-defined
   // post-end action. Implementations should call super.do_end_tr to ensure
   // correct operation.
 
+  // @uvm-ieee 1800.2-2017 auto 13.1.6.6
   extern virtual protected function void do_end_tr (uvm_transaction tr,
-                                                    integer tr_handle);
+                                                    int tr_handle);
 
 
-  // Function: record_error_tr
+  // Function -- NODOCS -- record_error_tr
   //
   // This function marks an error transaction by a component. Properties of the
   // given uvm_object, ~info~, as implemented in its <uvm_object::do_record> method,
@@ -1535,7 +1397,8 @@ virtual class uvm_component extends uvm_report_object;
   // Interpretation of this handle, as well as the strings ~stream_name~,
   // ~label~, and ~desc~, are vendor-specific.
 
-  extern function integer record_error_tr (string stream_name="main",
+  // @uvm-ieee 1800.2-2017 auto 13.1.6.7
+  extern function int record_error_tr (string stream_name="main",
                                            uvm_object info=null,
                                            string label="error_tr",
                                            string desc="",
@@ -1543,7 +1406,7 @@ virtual class uvm_component extends uvm_report_object;
                                            bit    keep_active=0);
 
 
-  // Function: record_event_tr
+  // Function -- NODOCS -- record_event_tr
   //
   // This function marks an event transaction by a component. 
   //
@@ -1555,38 +1418,24 @@ virtual class uvm_component extends uvm_report_object;
   // The strings for ~stream_name~, ~label~, and ~desc~ are vendor-specific
   // identifiers for the transaction.
 
-  extern function integer record_event_tr (string stream_name="main",
+  // @uvm-ieee 1800.2-2017 auto 13.1.6.8
+  extern function int record_event_tr (string stream_name="main",
                                            uvm_object info=null,
                                            string label="event_tr",
                                            string desc="",
                                            time   event_time=0,
                                            bit    keep_active=0);
 
-  // Function: get_tr_stream
-  // Returns a tr stream with ~this~ component's full name as a scope.
-  //
-  // Streams which are retrieved via this method will be stored internally,
-  // such that later calls to ~get_tr_stream~ will return the same stream
-  // reference.
-  //
-  // The stream can be removed from the internal storage via a call
-  // to <free_tr_stream>.
-  //
-  // Parameters:
-  // name - Name for the stream
-  // stream_type_name - Type name for the stream (Default = "")
+
+  // @uvm-ieee 1800.2-2017 auto 13.1.6.9
   extern virtual function uvm_tr_stream get_tr_stream(string name,
                                                       string stream_type_name="");
 
-  // Function: free_tr_stream
-  // Frees the internal references associated with ~stream~.
-  //
-  // The next call to <get_tr_stream> will result in a newly created
-  // <uvm_tr_stream>.  If the current stream is open (or closed),
-  // then it will be freed.
+
+  // @uvm-ieee 1800.2-2017 auto 13.1.6.10
   extern virtual function void free_tr_stream(uvm_tr_stream stream);
 
-  // Variable: print_enabled
+  // Variable -- NODOCS -- print_enabled
   //
   // This bit determines if this component should automatically be printed as a
   // child of its parent object. 
@@ -1596,13 +1445,23 @@ virtual class uvm_component extends uvm_report_object;
 
   bit print_enabled = 1;
 
-  // Variable: tr_database
+  // Variable -- NODOCS -- tr_database
   //
   // Specifies the <uvm_tr_database> object to use for <begin_tr>
   // and other methods in the <Recording Interface>.  
   // Default is <uvm_coreservice_t::get_default_tr_database>.
   uvm_tr_database tr_database;
+  
+  `ifdef UVM_ENABLE_DEPRECATED_API
   extern virtual function uvm_tr_database m_get_tr_database();
+  `endif // UVM_ENABLE_DEPRECATED_API
+  
+  // @uvm-ieee 1800.2-2017 auto 13.1.6.12
+  extern virtual function uvm_tr_database get_tr_database();
+
+  // @uvm-ieee 1800.2-2017 auto 13.1.6.11
+  extern virtual function void set_tr_database(uvm_tr_database db);
+
 
   //----------------------------------------------------------------------------
   //                     PRIVATE or PSUEDO-PRIVATE members
@@ -1630,9 +1489,12 @@ virtual class uvm_component extends uvm_report_object;
   /*protected*/ bit  m_build_done;
   /*protected*/ int  m_phasing_active;
 
+`ifdef UVM_ENABLE_DEPRECATED_API
   extern                   function void set_int_local(string field_name, 
                                                        uvm_bitstream_t value,
                                                        bit recurse=1);
+`endif // UVM_ENABLE_DEPRECATED_API
+  extern                   function void set_local(uvm_resource_base rsrc) ;
 
   /*protected*/ uvm_component m_parent;
   protected     uvm_component m_children[string];
@@ -1653,20 +1515,17 @@ virtual class uvm_component extends uvm_report_object;
   extern virtual function uvm_object create (string name=""); 
   extern virtual function uvm_object clone  ();
 
-  local uvm_tr_stream m_main_stream;
   local uvm_tr_stream m_streams[string][string];
   local uvm_recorder m_tr_h[uvm_transaction];
-  extern protected function integer m_begin_tr (uvm_transaction tr,
-                                                integer parent_handle=0,
+  extern protected function int m_begin_tr (uvm_transaction tr,
+                                                int parent_handle=0,
                                                 string stream_name="main", string label="",
                                                 string desc="", time begin_time=0);
 
   string m_name;
 
-  const static string type_name = "uvm_component";
-  virtual function string get_type_name();
-    return type_name;
-  endfunction
+  typedef uvm_abstract_component_registry#(uvm_component, "uvm_component") type_id;
+  `uvm_type_name_decl("uvm_component")
 
   protected uvm_event_pool event_pool;
 
@@ -1697,6 +1556,9 @@ virtual class uvm_component extends uvm_report_object;
   // does the pre abort callback hierarchically
   extern /*local*/ function void m_do_pre_abort;
 
+  // produce message for unsupported types from apply_config_settings
+  uvm_resource_base m_unsupported_resource_base = null;
+  extern function void m_unsupported_set_local(uvm_resource_base rsrc);
 
 typedef struct  {
 	string arg;
@@ -1945,8 +1807,7 @@ endfunction
 
 function void uvm_component::m_set_full_name();
   uvm_root top;
-  top = uvm_top;
-  if (m_parent == top || m_parent==null)
+  if ($cast(top, m_parent) || m_parent==null)
     m_name = get_name();
   else 
     m_name = {m_parent.get_full_name(), ".", get_name()};
@@ -2013,7 +1874,6 @@ function void uvm_component::m_extract_name(input string name ,
                                             output string leaf ,
                                             output string remainder );
   int i , len;
-  string extract_str;
   len = name.len();
   
   for( i = 0; i < name.len(); i++ ) begin  
@@ -2309,54 +2169,96 @@ endfunction
 // these are prototypes for the methods to be implemented in user components
 // build_phase() has a default implementation, the others have an empty default
 
+`ifdef UVM_ENABLE_DEPRECATED_API
+  `define M_UVM_OVM_PHASE_WARN_AND_CALL(NAME) \
+    begin \
+      static bit warned; \
+      if (!warned) \
+        `uvm_warning("UVM/DEPRECATED/COMP/OVM_PHASES", {"The library is calling the deprecated uvm_component::", `"NAME`", " method because UVM_ENABLE_DEPRECATED_API is defined.  Usage of this deprecated method by the user may lead to unexpected behavior.  Users should use uvm_component::", `"NAME`", "_phase()."}) \
+      warned = 1; \
+      NAME(); \
+    end
+`endif // UVM_ENABLE_DEPRECATED_API
+
 function void uvm_component::build_phase(uvm_phase phase);
   m_build_done = 1;
-  build();
+`ifdef UVM_ENABLE_DEPRECATED_API
+  `M_UVM_OVM_PHASE_WARN_AND_CALL(build)
+`else // !UVM_ENABLE_DEPRECATED_API
+  if (use_automatic_config())
+    apply_config_settings(print_config_matches);
+`endif // UVM_ENABLED_DEPRECATED_API  
 endfunction
 
+`ifdef UVM_ENABLE_DEPRECATED_API
 // Backward compatibility build function
 
 function void uvm_component::build();
   m_build_done = 1;
-  apply_config_settings(print_config_matches);
-  if(m_phasing_active == 0) begin
-    uvm_report_warning("UVM_DEPRECATED", "build()/build_phase() has been called explicitly, outside of the phasing system. This usage of build is deprecated and may lead to unexpected behavior.");
-  end
-endfunction
+  if (use_automatic_config())
+    apply_config_settings(print_config_matches);
+endfunction // build
+`endif // UVM_ENABLE_DEPRECATED_API
 
 // these phase methods are common to all components in UVM. For backward
 // compatibility, they call the old style name (without the _phse)
 
 function void uvm_component::connect_phase(uvm_phase phase);
-  connect();
+`ifdef UVM_ENABLE_DEPRECATED_API
+  `M_UVM_OVM_PHASE_WARN_AND_CALL(connect)
+`endif // UVM_ENABLE_DEPRECATED_API
   return; 
 endfunction
+
 function void uvm_component::start_of_simulation_phase(uvm_phase phase);
-  start_of_simulation();
+`ifdef UVM_ENABLE_DEPRECATED_API
+  `M_UVM_OVM_PHASE_WARN_AND_CALL(start_of_simulation)
+`endif // UVM_ENABLE_DEPRECATED_API
   return; 
 endfunction
+
 function void uvm_component::end_of_elaboration_phase(uvm_phase phase);
-  end_of_elaboration();
+`ifdef UVM_ENABLE_DEPRECATED_API
+  `M_UVM_OVM_PHASE_WARN_AND_CALL(end_of_elaboration)
+`endif // UVM_ENABLE_DEPRECATED_API
   return; 
 endfunction
+
 task          uvm_component::run_phase(uvm_phase phase);
-  run();
+`ifdef UVM_ENABLE_DEPRECATED_API
+  `M_UVM_OVM_PHASE_WARN_AND_CALL(run)
+`endif // UVM_ENABLE_DEPRECATED_API
   return; 
 endtask
+
 function void uvm_component::extract_phase(uvm_phase phase);
-  extract();
+`ifdef UVM_ENABLE_DEPRECATED_API
+  `M_UVM_OVM_PHASE_WARN_AND_CALL(extract)
+`endif // UVM_ENABLE_DEPRECATED_API
   return; 
 endfunction
+
 function void uvm_component::check_phase(uvm_phase phase);
-  check();
+`ifdef UVM_ENABLE_DEPRECATED_API
+  `M_UVM_OVM_PHASE_WARN_AND_CALL(check)
+`endif // UVM_ENABLE_DEPRECATED_API
   return; 
 endfunction
+
 function void uvm_component::report_phase(uvm_phase phase);
-  report();
+`ifdef UVM_ENABLE_DEPRECATED_API
+  `M_UVM_OVM_PHASE_WARN_AND_CALL(report)
+`endif // UVM_ENABLE_DEPRECATED_API
   return; 
 endfunction
 
+`ifdef UVM_ENABLE_DEPRECATED_API
+  `undef M_UVM_OVM_PHASE_WARN_AND_CALL
+`endif
 
+function void uvm_component::final_phase(uvm_phase phase);         return; endfunction
+
+`ifdef UVM_ENABLE_DEPRECATED_API
 // These are the old style phase names. In order for runtime phase names
 // to not conflict with user names, the _phase postfix was added.
 
@@ -2367,7 +2269,7 @@ task          uvm_component::run();                 return; endtask
 function void uvm_component::extract();             return; endfunction
 function void uvm_component::check();               return; endfunction
 function void uvm_component::report();              return; endfunction
-function void uvm_component::final_phase(uvm_phase phase);         return; endfunction
+`endif // UVM_ENABLE_DEPRECATED_API
 
 // these runtime phase methods are only called if a set_domain() is done
 
@@ -2465,7 +2367,7 @@ function uvm_domain uvm_component::get_domain();
   return m_domain;
 endfunction
 
-
+`ifdef UVM_ENABLE_DEPRECATED_API
 // set_phase_imp
 // -------------
 
@@ -2475,33 +2377,11 @@ function void uvm_component::set_phase_imp(uvm_phase phase, uvm_phase imp, int h
     foreach (m_children[c])
       m_children[c].set_phase_imp(phase,imp,hier);
 endfunction
-
+`endif
 
 //--------------------------
 // phase runtime control API
 //--------------------------
-
-`ifndef UVM_NO_DEPRECATED
-// do_kill_all
-// -----------
-
-function void uvm_component::do_kill_all();
-  foreach(m_children[c])
-    m_children[c].do_kill_all();
-  kill();
-endfunction
-
-
-// kill
-// ----
-
-function void uvm_component::kill();
-    if (m_phase_process != null) begin
-      m_phase_process.kill;
-      m_phase_process = null;
-    end
-endfunction
-`endif
 
 // suspend
 // -------
@@ -2517,59 +2397,6 @@ endtask
 task uvm_component::resume();
    `uvm_warning("COMP/RSUM/UNIMP", "resume() not implemented")
 endtask
-
-
-// status
-//-------
-
-`ifndef UVM_NO_DEPRECATED
-function string uvm_component::status();
-
-  `ifdef UVM_USE_SUSPEND_RESUME
-   `ifdef UVM_USE_PROCESS_STATE
-    process::state ps;
-
-    if(m_phase_process == null)
-      return "<unknown>";
-
-    ps = m_phase_process.status();
-
-    return ps.name();
-  `else
-    if(m_phase_process == null)
-      return "<unknown>";
-
-    case(m_phase_process.status())
-      0: return "FINISHED";
-      1: return "RUNNING";
-      2: return "WAITING";
-      3: return "SUSPENDED";
-      4: return "KILLED";
-      default: return "<unknown>";
-    endcase
-  `endif
-  `endif 
-
-   return "<unknown>";
-   
-endfunction
-
-// stop
-// ----
-
-task uvm_component::stop(string ph_name);
-  return;
-endtask
-
-
-// stop_phase
-// ----------
-
-task uvm_component::stop_phase(uvm_phase phase);
-  stop(phase.get_name());
-  return;
-endtask
-`endif
 
 
 // resolve_bindings
@@ -2603,6 +2430,10 @@ endfunction
 function void uvm_component::accept_tr (uvm_transaction tr,
                                         time accept_time=0);
   uvm_event#(uvm_object) e;
+  
+  if(tr == null)
+    return;
+  
   tr.accept_tr(accept_time);
   do_accept_tr(tr);
   e = event_pool.get("accept_tr");
@@ -2613,42 +2444,70 @@ endfunction
 // begin_tr
 // --------
 
-function integer uvm_component::begin_tr (uvm_transaction tr,
+function int uvm_component::begin_tr (uvm_transaction tr,
                                           string stream_name="main",
                                           string label="",
                                           string desc="",
                                           time begin_time=0,
-                                          integer parent_handle=0);
+                                          int parent_handle=0);
    return m_begin_tr(tr, parent_handle, stream_name, label, desc, begin_time);
 endfunction
 
+`ifdef UVM_ENABLE_DEPRECATED_API
 // begin_child_tr
 // --------------
 
-function integer uvm_component::begin_child_tr (uvm_transaction tr,
-                                                integer parent_handle=0,
+function int uvm_component::begin_child_tr (uvm_transaction tr,
+                                                int parent_handle=0,
                                                 string stream_name="main",
                                                 string label="",
                                                 string desc="",
                                                 time begin_time=0);
+  static bit have_been_warned;
+  if(!have_been_warned) begin
+    uvm_report_warning("UVM/DEPRECATED/COMP/BCT", "The deprecated uvm_component::begin_child_tr method has been called.  Attempting to compile without UVM_ENABLE_DEPRECATED_API defined will fail. Use begin_tr instead");
+    have_been_warned = 1;
+  end
+                                                
   return m_begin_tr(tr, parent_handle, stream_name, label, desc, begin_time);
 endfunction
+`endif // UVM_ENABLE_DEPRECATED_API
 
+`ifdef UVM_ENABLE_DEPRECATED_API     
 // m_get_tr_database
 // ---------------------
    function uvm_tr_database uvm_component::m_get_tr_database();
-      if (tr_database == null) begin
-         uvm_coreservice_t cs = uvm_coreservice_t::get();
-         tr_database = cs.get_default_tr_database();
-      end
-      return tr_database;
+     static bit have_been_warned;
+     if(!have_been_warned) begin
+       `uvm_warning("UVM/DEPRECATED/COMP/M_GET_TR_DB", "uvm_component::m_get_tr_database() is deprecated, use get_tr_database() in its place")
+       have_been_warned = 1;
+     end
+     return get_tr_database();
    endfunction : m_get_tr_database
+`endif // UVM_ENABLE_DEPRECATED_API  
+
+// get_tr_database
+// ---------------------
+   function uvm_tr_database uvm_component::get_tr_database();
+     if (tr_database == null) begin
+       uvm_coreservice_t cs = uvm_coreservice_t::get();
+       tr_database = cs.get_default_tr_database();
+     end
+     return tr_database;
+   endfunction : get_tr_database
+
+// set_tr_database
+// ---------------------
+   function void uvm_component::set_tr_database(uvm_tr_database db);
+      tr_database = db;
+   endfunction : set_tr_database
+ 
    
 // get_tr_stream
 // ------------
 function uvm_tr_stream uvm_component::get_tr_stream( string name,
                                                       string stream_type_name="" );
-   uvm_tr_database db = m_get_tr_database();
+   uvm_tr_database db = get_tr_database();
    if (!m_streams.exists(name) || !m_streams[name].exists(stream_type_name))
      m_streams[name][stream_type_name] = db.open_stream(name, this.get_full_name(), stream_type_name);
    return m_streams[name][stream_type_name];
@@ -2684,8 +2543,8 @@ endfunction : free_tr_stream
 // m_begin_tr
 // ----------
 
-function integer uvm_component::m_begin_tr (uvm_transaction tr,
-                                            integer parent_handle=0,
+function int uvm_component::m_begin_tr (uvm_transaction tr,
+                                            int parent_handle=0,
                                             string stream_name="main",
                                             string label="",
                                             string desc="",
@@ -2694,14 +2553,14 @@ function integer uvm_component::m_begin_tr (uvm_transaction tr,
    string    name;
    string    kind;
    uvm_tr_database db;
-   integer   handle, link_handle;
+   int   handle, link_handle;
    uvm_tr_stream stream;
    uvm_recorder recorder, parent_recorder, link_recorder;
 
    if (tr == null)
      return 0;
 
-   db = m_get_tr_database();
+   db = get_tr_database();
    
    if (parent_handle != 0)
      parent_recorder = uvm_recorder::get_recorder_from_handle(parent_handle);
@@ -2733,13 +2592,10 @@ function integer uvm_component::m_begin_tr (uvm_transaction tr,
      name = tr.get_type_name();
    
    if (uvm_verbosity'(recording_detail) != UVM_NONE) begin
-      if ((stream_name == "") || (stream_name == "main")) begin
-        if (m_main_stream == null)
-           m_main_stream = db.open_stream("main", this.get_full_name(), "TVM");
-         stream = m_main_stream;
-      end
-      else
-        stream = get_tr_stream(stream_name);
+      if (stream_name == "")
+        stream_name = "main";
+
+      stream = get_tr_stream(stream_name, "TVM");
 
       if (stream != null ) begin
          kind = (parent_recorder == null) ? "Begin_No_Parent, Link" : "Begin_End, Link";
@@ -2787,7 +2643,6 @@ function void uvm_component::end_tr (uvm_transaction tr,
                                      bit free_handle=1);
    uvm_event#(uvm_object) e;
    uvm_recorder recorder;
-   uvm_tr_database db = m_get_tr_database();
 
    if (tr == null)
      return;
@@ -2828,7 +2683,7 @@ endfunction
 // record_error_tr
 // ---------------
 
-function integer uvm_component::record_error_tr (string stream_name="main",
+function int uvm_component::record_error_tr (string stream_name="main",
                                                  uvm_object info=null,
                                                  string label="error_tr",
                                                  string desc="",
@@ -2837,22 +2692,18 @@ function integer uvm_component::record_error_tr (string stream_name="main",
    uvm_recorder recorder;
    string etype;
    uvm_tr_stream stream;
-   uvm_tr_database db = m_get_tr_database();
-   integer handle;
+   int handle;
    
    if(keep_active) etype = "Error, Link";
    else etype = "Error";
    
    if(error_time == 0) error_time = $realtime;
 
-   if ((stream_name=="") || (stream_name=="main")) begin
-      if (m_main_stream == null)
-        m_main_stream = tr_database.open_stream("main", this.get_full_name(), "TVM");
-      stream = m_main_stream;
-   end
-   else
-     stream = get_tr_stream(stream_name);
+   if (stream_name == "")
+     stream_name = "main";
 
+   stream = get_tr_stream(stream_name, "TVM");
+   
    handle = 0;
    if (stream != null) begin
 
@@ -2886,7 +2737,7 @@ endfunction
 // record_event_tr
 // ---------------
 
-function integer uvm_component::record_event_tr (string stream_name="main",
+function int uvm_component::record_event_tr (string stream_name="main",
                                                  uvm_object info=null,
                                                  string label="event_tr",
                                                  string desc="",
@@ -2894,22 +2745,18 @@ function integer uvm_component::record_event_tr (string stream_name="main",
                                                  bit    keep_active=0);
    uvm_recorder recorder;
    string etype;
-   integer handle;
+   int handle;
    uvm_tr_stream stream;
-   uvm_tr_database db = m_get_tr_database();
    
   if(keep_active) etype = "Event, Link";
   else etype = "Event";
    
    if(event_time == 0) event_time = $realtime;
    
-   if ((stream_name=="") || (stream_name=="main")) begin
-      if (m_main_stream == null)
-        m_main_stream = tr_database.open_stream("main", this.get_full_name(), "TVM");
-      stream = m_main_stream;
-   end
-   else
-     stream = get_tr_stream(stream_name);
+   if (stream_name == "")
+     stream_name = "main";
+   
+   stream = get_tr_stream(stream_name, "TVM");
 
    handle = 0;
    if (stream != null) begin
@@ -2952,7 +2799,7 @@ endfunction
 
 function void uvm_component::do_begin_tr (uvm_transaction tr,
                                           string stream_name,
-                                          integer tr_handle);
+                                          int tr_handle);
   return;
 endfunction
 
@@ -2961,7 +2808,7 @@ endfunction
 // ---------
 
 function void uvm_component::do_end_tr (uvm_transaction tr,
-                                        integer tr_handle);
+                                        int tr_handle);
   return;
 endfunction
 
@@ -2995,142 +2842,7 @@ function string uvm_component::massage_scope(string scope);
 endfunction
 
 
-// Undocumented struct for storing clone bit along w/
-// object on set_config_object(...) calls
-class uvm_config_object_wrapper;
-   uvm_object obj;
-   bit clone;
-endclass : uvm_config_object_wrapper
-
-
-`ifndef UVM_NO_DEPRECATED
-//
-// set_config_int
-//
-function void uvm_component::set_config_int(string inst_name,
-                                           string field_name,
-                                           uvm_bitstream_t value);
-
-  if (!m_config_deprecated_warned) begin
-     `uvm_warning("UVM/CFG/SET/DPR", "get/set_config_* API has been deprecated. Use uvm_config_db instead.")
-     m_config_deprecated_warned = 1;
-  end
-  uvm_config_int::set(this, inst_name, field_name, value);
-endfunction
-
-//
-// set_config_string
-//
-function void uvm_component::set_config_string(string inst_name,
-                                               string field_name,
-                                               string value);
-
-  if (!m_config_deprecated_warned) begin
-     `uvm_warning("UVM/CFG/SET/DPR", "get/set_config_* API has been deprecated. Use uvm_config_db instead.")
-     m_config_deprecated_warned = 1;
-  end
-  uvm_config_string::set(this, inst_name, field_name, value);
-endfunction
-
-//
-// set_config_object
-//
-function void uvm_component::set_config_object(string inst_name,
-                                               string field_name,
-                                               uvm_object value,
-                                               bit clone = 1);
-  uvm_object tmp;
-  uvm_config_object_wrapper wrapper;
-
-  if (!m_config_deprecated_warned) begin
-     `uvm_warning("UVM/CFG/SET/DPR", "get/set_config_* API has been deprecated. Use uvm_config_db instead.")
-     m_config_deprecated_warned = 1;
-  end
-
-  if(value == null)
-    `uvm_warning("NULLCFG", {"A null object was provided as a ",
-       $sformatf("configuration object for set_config_object(\"%s\",\"%s\")",
-       inst_name, field_name), ". Verify that this is intended."})
-
-  if(clone && (value != null)) begin
-    tmp = value.clone();
-    if(tmp == null) begin
-      uvm_component comp;
-      if ($cast(comp,value)) begin
-        `uvm_error("INVCLNC", {"Clone failed during set_config_object ",
-          "with an object that is a uvm_component. Components cannot be cloned."})
-        return;
-      end
-      else begin
-        `uvm_warning("INVCLN", {"Clone failed during set_config_object, ",
-          "the original reference will be used for configuration. Check that ",
-          "the create method for the object type is defined properly."})
-      end
-    end
-    else
-      value = tmp;
-  end
-
-
-  uvm_config_object::set(this, inst_name, field_name, value);
-
-  wrapper = new;
-  wrapper.obj = value;
-  wrapper.clone = clone;
-  uvm_config_db#(uvm_config_object_wrapper)::set(this, inst_name, field_name, wrapper);
-endfunction
-
-//
-// get_config_int
-//
-function bit uvm_component::get_config_int (string field_name,
-                                            inout uvm_bitstream_t value);
-
-  if (!m_config_deprecated_warned) begin
-     `uvm_warning("UVM/CFG/GET/DPR", "get/set_config_* API has been deprecated. Use uvm_config_db instead.")
-     m_config_deprecated_warned = 1;
-  end
-  return uvm_config_int::get(this, "", field_name, value);
-endfunction
-
-//
-// get_config_string
-//
-function bit uvm_component::get_config_string(string field_name,
-                                              inout string value);
-
-  if (!m_config_deprecated_warned) begin
-     `uvm_warning("UVM/CFG/GET/DPR", "get/set_config_* API has been deprecated. Use uvm_config_db instead.")
-     m_config_deprecated_warned = 1;
-  end
-  return uvm_config_string::get(this, "", field_name, value);
-endfunction
-
-//
-// get_config_object
-//
-//
-// Note that this does not honor the set_config_object clone bit
-function bit uvm_component::get_config_object (string field_name,
-                                               inout uvm_object value,
-                                               input bit clone=1);
-  if (!m_config_deprecated_warned) begin
-     `uvm_warning("UVM/CFG/GET/DPR", "get/set_config_* API has been deprecated. Use uvm_config_db instead.")
-     m_config_deprecated_warned = 1;
-  end
-
-  if(!uvm_config_object::get(this, "", field_name, value)) begin
-    return 0;
-  end
-
-  if(clone && value != null) begin
-    value = value.clone();
-  end
-
-  return 1;
-endfunction
-`endif
-
+`ifdef UVM_ENABLE_DEPRECATED_API
 // check_config_usage
 // ------------------
 
@@ -3146,8 +2858,14 @@ function void uvm_component::check_config_usage ( bit recurse=1 );
   uvm_report_info("CFGNRD"," ::: The following resources have at least one write and no reads :::",UVM_INFO);
   rp.print_resources(rq, 1);
 endfunction
+`endif // UVM_ENABLE_DEPRECATED_API
 
-
+// use_automatic_config
+// --------------------
+function bit uvm_component::use_automatic_config();
+  return 1;
+endfunction      
+   
 // apply_config_settings
 // ---------------------
 
@@ -3156,22 +2874,6 @@ function void uvm_component::apply_config_settings (bit verbose=0);
   uvm_resource_pool rp = uvm_resource_pool::get();
   uvm_queue#(uvm_resource_base) rq;
   uvm_resource_base r;
-  string name;
-  string search_name;
-  int unsigned i;
-  int unsigned j;
-
-  // populate an internal 'field_array' with list of
-  // fields declared with `uvm_field macros (checking
-  // that there aren't any duplicates along the way)
-  __m_uvm_field_automation (null, UVM_CHECK_FIELDS, "");
-
-  // if no declared fields, nothing to do. 
-  if (__m_uvm_status_container.field_array.size() == 0)
-    return;
-
-  if(verbose)
-    uvm_report_info("CFGAPL","applying configuration settings", UVM_NONE);
 
   // The following is VERY expensive. Needs refactoring. Should
   // get config only for the specific field names in 'field_array'.
@@ -3186,79 +2888,15 @@ function void uvm_component::apply_config_settings (bit verbose=0);
   // rq is in precedence order now, so we have to go through in reverse
   // order to do the settings.
   for(int i=rq.size()-1; i>=0; --i) begin
-
     r = rq.get(i);
-    name = r.get_name();
-
-    // does name have brackets [] in it?
-    for(j = 0; j < name.len(); j++)
-      if(name[j] == "[" || name[j] == ".")
-        break;
-
-    // If it does have brackets then we'll use the name
-    // up to the brackets to search __m_uvm_status_container.field_array
-    if(j < name.len())
-      search_name = name.substr(0, j-1);
-    else
-      search_name = name;
-
-    if(!__m_uvm_status_container.field_array.exists(search_name) && 
-       search_name != "recording_detail")
-      continue;
 
     if(verbose)
-      uvm_report_info("CFGAPL",$sformatf("applying configuration to field %s", name),UVM_NONE);
+      uvm_report_info("CFGAPL",$sformatf("applying configuration to field %s", r.get_name()),UVM_NONE);
 
-    begin
-       uvm_resource#(uvm_integral_t) rit;
-       if ($cast(rit, r))
-         set_int_local(name, rit.read(this));
-       else begin
-          uvm_resource#(uvm_bitstream_t) rbs;
-          if($cast(rbs, r))
-            set_int_local(name, rbs.read(this));
-          else begin
-             uvm_resource#(int) ri;
-             if($cast(ri, r))
-               set_int_local(name, ri.read(this));
-             else begin
-                uvm_resource#(int unsigned) riu;
-                if($cast(riu, r))
-                  set_int_local(name, riu.read(this));
-                else begin
-                   uvm_resource#(uvm_active_passive_enum) rap;
-                   if ($cast(rap, r))
-                     set_int_local(name, rap.read(this));
-                   else begin
-                      uvm_resource#(string) rs;
-                      if($cast(rs, r))
-                        set_string_local(name, rs.read(this));
-                      else begin
-                         uvm_resource#(uvm_config_object_wrapper) rcow;
-                         if ($cast(rcow, r)) begin
-                         uvm_config_object_wrapper cow = rcow.read();
-                            set_object_local(name, cow.obj, cow.clone);
-                         end
-                         else begin
-                            uvm_resource#(uvm_object) ro;
-                            if($cast(ro, r)) begin
-                               set_object_local(name, ro.read(this), 0);
-                            end 
-                            else if (verbose) begin
-                               uvm_report_info("CFGAPL", $sformatf("field %s has an unsupported type", name), UVM_NONE);
-                            end
-                         end // else: !if($cast(rcow, r))
-                      end // else: !if($cast(rs, r))
-                   end // else: !if($cast(rap, r))
-                end // else: !if($cast(riu, r))
-             end // else: !if($cast(ri, r))
-          end // else: !if($cast(rbs, r))
-       end // else: !if($cast(rit, r))
-    end
+    set_local(r);
+
   end
 
-  __m_uvm_status_container.field_array.delete();
-  
 endfunction
 
 
@@ -3282,7 +2920,7 @@ function void uvm_component::print_config(bit recurse = 0, audit = 0);
 
 endfunction
 
-
+`ifdef UVM_ENABLE_DEPRECATED_API
 // print_config_settings
 // ---------------------
 
@@ -3291,13 +2929,13 @@ function void uvm_component::print_config_settings (string field="",
                                                     bit recurse=0);
   static bit have_been_warned;
   if(!have_been_warned) begin
-    uvm_report_warning("deprecated", "uvm_component::print_config_settings has been deprecated.  Use print_config() instead");
+    uvm_report_warning("UVM/DEPRECATED/COMP/PCS", "The deprecated uvm_component::print_config_settings method has been called.  Attempting to compile without UVM_ENABLE_DEPRECATED_API defined will fail.  Use uvm_component::print_config() instead.");
     have_been_warned = 1;
   end
 
   print_config(recurse, 1);
 endfunction
-
+`endif // UVM_ENABLE_DEPRECATED_API
 
 // print_config_with_audit
 // -----------------------
@@ -3311,7 +2949,6 @@ endfunction
 // --------
 
 function void uvm_component::do_print(uvm_printer printer);
-  string v;
   super.do_print(printer);
 
   // It is printed only if its value is other than the default (UVM_NONE)
@@ -3329,15 +2966,10 @@ function void uvm_component::do_print(uvm_printer printer);
         $bits(recording_detail), UVM_DEC, , "integral");
     endcase
 
-`ifndef UVM_NO_DEPRECATED
-  if (enable_stop_interrupt != 0) begin
-    printer.print_field_int("enable_stop_interrupt", enable_stop_interrupt,
-                        $bits(enable_stop_interrupt), UVM_BIN, ".", "bit");
-  end
- `endif
 endfunction
 
 
+`ifdef UVM_ENABLE_DEPRECATED_API
 // set_int_local (override)
 // -------------
 
@@ -3354,6 +2986,38 @@ function void uvm_component::set_int_local (string field_name,
 
 endfunction
 
+`endif // UVM_ENABLE_DEPRECATED_API
+
+
+// set_local (override)
+// ---------
+
+function void uvm_component::set_local(uvm_resource_base rsrc) ;
+
+  bit success;
+
+  //set the local properties
+  if((rsrc != null) && (rsrc.get_name() == "recording_detail")) begin
+    `uvm_resource_builtin_int_read(success,
+                                   rsrc,
+                                   recording_detail,
+                                   this)
+  end
+
+  if (!success)
+    super.set_local(rsrc);
+  
+endfunction
+
+
+// m_unsupported_set_local (override)
+// ----------------------
+
+function void uvm_component::m_unsupported_set_local(uvm_resource_base rsrc);
+
+  m_unsupported_resource_base = rsrc;
+endfunction
+
 
 // Internal methods for setting messagin parameters from command line switches
 
@@ -3364,9 +3028,21 @@ typedef class uvm_cmdline_processor;
 // -----------------
 
 function void uvm_component::m_set_cl_msg_args;
+  string s_;
+  process p_;
+	
+  p_=process::self();
+  if(p_!=null) 
+	  s_=p_.get_randstate();
+  else
+	  `uvm_warning("UVM","run_test() invoked from a non process context")
+
   m_set_cl_verb();
   m_set_cl_action();
   m_set_cl_sev();
+  
+  if(p_!=null) 
+	  p_.set_randstate(s_);
 endfunction
 
 
@@ -3383,24 +3059,33 @@ function void uvm_component::m_set_cl_verb;
   uvm_cmdline_processor clp = uvm_cmdline_processor::get_inst();
   uvm_root top;
   uvm_coreservice_t cs;
+	
   cs = uvm_coreservice_t::get();
   top = cs.get_root();
 
-  if(!values.size())
-    void'(uvm_cmdline_proc.get_arg_values("+uvm_set_verbosity=",values));
+  if(first) begin
+	  string t[$];
+	  m_verbosity_setting setting;
+      void'(clp.get_arg_values("+uvm_set_verbosity=",values));
+      foreach(values[i]) begin
+	    args.delete();
+    	uvm_split_string(values[i], ",", args);  
+	   	if(((args.size() == 4) || (args.size() == 5)) &&  (clp.m_convert_verb(args[2], setting.verbosity) == 1)  )
+		   	t.push_back(values[i]);
+	   	else
+		   	uvm_report_warning("UVM/CMDLINE",$sformatf("argument %s not recognized and therefore dropped",values[i]));
+      end
+      
+	  values=t;
+	  first=0;
+  end	
 
   foreach(values[i]) begin
     m_verbosity_setting setting;
     args.delete();
     uvm_split_string(values[i], ",", args);
 
-    // Warning is already issued in uvm_root, so just don't keep it
-    if(first && ( ((args.size() != 4) && (args.size() != 5)) || 
-                  (clp.m_convert_verb(args[2], setting.verbosity) == 0))  )
-    begin
-      values.delete(i);
-    end
-    else begin
+	begin
       setting.comp = args[0];
       setting.id = args[1];
       void'(clp.m_convert_verb(args[2],setting.verbosity));
@@ -3452,8 +3137,6 @@ function void uvm_component::m_set_cl_verb;
       end
     end join_none // fork begin
   end
-
-  first = 0;
 endfunction
 
 // m_set_cl_action
@@ -3467,6 +3150,7 @@ function void uvm_component::m_set_cl_action;
   static bit initialized = 0;
   uvm_severity sev;
   uvm_action action;
+  uvm_cmdline_processor uvm_cmdline_proc = uvm_cmdline_processor::get_inst();
 
   if(!initialized) begin
 	string values[$];
@@ -3538,6 +3222,7 @@ function void uvm_component::m_set_cl_sev;
 
   static bit initialized;
   uvm_severity orig_sev, sev;
+  uvm_cmdline_processor uvm_cmdline_proc = uvm_cmdline_processor::get_inst();
 
   if(!initialized) begin
 	string values[$];
@@ -3600,7 +3285,8 @@ endfunction
 // --------------------------
 
 function void uvm_component::m_apply_verbosity_settings(uvm_phase phase);
-  foreach(m_verbosity_settings[i]) begin
+  int i;
+  while (i < m_verbosity_settings.size()) begin
     if(phase.get_name() == m_verbosity_settings[i].phase) begin
       if( m_verbosity_settings[i].offset == 0 ) begin
           if(m_verbosity_settings[i].id == "_ALL_") 
@@ -3618,13 +3304,15 @@ function void uvm_component::m_apply_verbosity_settings(uvm_phase phase);
             set_report_verbosity_level(setting.verbosity);
           else 
             set_report_id_verbosity(setting.id, setting.verbosity);
-        end join_none;
+        end join_none
         p.set_randstate(p_rand);
       end
       // Remove after use
       m_verbosity_settings.delete(i);
-    end
-  end
+      continue;
+    end // if (phase.get_name() == m_verbosity_settings[i].phase)
+    i++;
+  end // while (i < m_verbosity_settings.size())
 endfunction
 
 

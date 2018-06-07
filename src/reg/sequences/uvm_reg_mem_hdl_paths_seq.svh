@@ -1,7 +1,9 @@
 // 
 // -------------------------------------------------------------
-//    Copyright 2010 Cadence.
-//    Copyright 2011 Mentor Graphics Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2015-2018 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -21,11 +23,11 @@
 //
 
 //
-// TITLE: HDL Paths Checking Test Sequence
+// TITLE -- NODOCS -- HDL Paths Checking Test Sequence
 //
 
 //
-// class: uvm_reg_mem_hdl_paths_seq
+// class -- NODOCS -- uvm_reg_mem_hdl_paths_seq
 //
 // Verify the correctness of HDL paths specified for registers and memories.
 //
@@ -45,8 +47,9 @@
 // does not require any reads/writes to/from the DUT.
 //
 
+// @uvm-ieee 1800.2-2017 auto E.7.1
 class uvm_reg_mem_hdl_paths_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
-    // Variable: abstractions
+    // Variable -- NODOCS -- abstractions
     // If set, check the HDL paths for the specified design abstractions.
     // If empty, check the HDL path for the default design abstraction,
     // as specified with <uvm_reg_block::set_default_hdl_path()>
@@ -56,6 +59,7 @@ class uvm_reg_mem_hdl_paths_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
         `uvm_field_queue_string(abstractions, UVM_DEFAULT)
     `uvm_object_utils_end
     
+    // @uvm-ieee 1800.2-2017 auto E.7.3
     function new(string name="uvm_reg_mem_hdl_paths_seq");
         super.new(name);
     endfunction
@@ -69,7 +73,7 @@ class uvm_reg_mem_hdl_paths_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
 
        `uvm_info("uvm_reg_mem_hdl_paths_seq",
                  {"checking HDL paths for all registers/memories in ",
-                  model.get_full_name()}, UVM_LOW);
+                  model.get_full_name()}, UVM_LOW)
 
        if (abstractions.size() == 0)
           do_block(model, "");
@@ -78,7 +82,7 @@ class uvm_reg_mem_hdl_paths_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
              do_block(model, abstractions[i]);
        end
 
-        `uvm_info("uvm_reg_mem_hdl_paths_seq", "HDL path validation completed ",UVM_LOW);
+        `uvm_info("uvm_reg_mem_hdl_paths_seq", "HDL path validation completed ",UVM_LOW)
         
     endtask: body
 
@@ -138,11 +142,11 @@ class uvm_reg_mem_hdl_paths_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
                 if (!uvm_hdl_read(p_,d))
                     `uvm_error("uvm_reg_mem_hdl_paths_seq",
                                $sformatf("HDL path \"%s\" for register \"%s\" is not readable",
-                                         p_, r.get_full_name()));
+                                         p_, r.get_full_name()))
                 if (!uvm_hdl_check_path(p_))
                     `uvm_error("uvm_reg_mem_hdl_paths_seq",
                                $sformatf("HDL path \"%s\" for register \"%s\" is not accessible",
-                                         p_, r.get_full_name()));
+                                         p_, r.get_full_name()))
             end
         end
     endfunction
@@ -167,7 +171,7 @@ class uvm_reg_mem_hdl_paths_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
                 if(!uvm_hdl_check_path(p_))
                     `uvm_error("uvm_reg_mem_hdl_paths_seq",
                                $sformatf("HDL path \"%s\" for memory \"%s\" is not accessible",
-                                         p_, m.get_full_name()));
+                                         p_, m.get_full_name()))
             end
         end
     endfunction 

@@ -1,9 +1,10 @@
 // 
 //------------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc.
-//   Copyright 2010-2011 Synopsys, Inc.
-//   Copyright 2013      NVIDIA Corporation
+// Copyright 2007-2009 Mentor Graphics Corporation
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2013-2015 NVIDIA Corporation
+// Copyright 2017 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +22,7 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
-// Class: uvm_simple_lock_dap
+// Class -- NODOCS -- uvm_simple_lock_dap
 // Provides a 'Simple Lock' Data Access Policy.
 //
 // The 'Simple Lock' Data Access Policy allows for any number of 'sets',
@@ -46,16 +47,16 @@ class uvm_simple_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    // Lock state
    local bit m_locked;
 
-   // Function: new
+   // Function -- NODOCS -- new
    // Constructor
    function new(string name="unnamed-uvm_simple_lock_dap#(T)");
       super.new(name);
       m_locked = 0;
    endfunction : new
 
-   // Group: Set/Get Interface
+   // Group -- NODOCS -- Set/Get Interface
    
-   // Function: set
+   // Function -- NODOCS -- set
    // Updates the value stored within the DAP.
    //
    // ~set~ will result in an error if the DAP has
@@ -70,7 +71,7 @@ class uvm_simple_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       end
    endfunction : set
 
-   // Function: try_set
+   // Function -- NODOCS -- try_set
    // Attempts to update the value stored within the DAP.
    //
    // ~try_set~ will return a 1 if the value was successfully
@@ -86,14 +87,14 @@ class uvm_simple_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       end
    endfunction : try_set
    
-   // Function: get
+   // Function -- NODOCS -- get
    // Returns the current value stored within the DAP
    //
    virtual  function T get();
       return m_value;
    endfunction : get
 
-   // Function: try_get
+   // Function -- NODOCS -- try_get
    // Retrieves the current value stored within the DAP
    //
    // ~try_get~ will always return 1.
@@ -102,9 +103,9 @@ class uvm_simple_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       return 1;
    endfunction : try_get
 
-   // Group: Locking
+   // Group -- NODOCS -- Locking
 
-   // Function: lock
+   // Function -- NODOCS -- lock
    // Locks the data value
    //
    // The data value cannot be updated via <set> or <try_set> while locked.
@@ -112,14 +113,14 @@ class uvm_simple_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       m_locked = 1;
    endfunction : lock
 
-   // Function: unlock
+   // Function -- NODOCS -- unlock
    // Unlocks the data value
    //
    function void unlock();
       m_locked = 0;
    endfunction : unlock
 
-   // Function: is_locked
+   // Function -- NODOCS -- is_locked
    // Returns the state of the lock.
    //
    // Returns:
@@ -129,7 +130,7 @@ class uvm_simple_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       return m_locked;
    endfunction : is_locked
    
-   // Group: Introspection
+   // Group -- NODOCS -- Introspection
    //
    // The ~uvm_simple_lock_dap~ cannot support the standard UVM
    // instrumentation methods (~copy~, ~clone~, ~pack~ and
@@ -166,7 +167,7 @@ class uvm_simple_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    // Function- do_print
    virtual function void do_print(uvm_printer printer);
       super.do_print(printer);
-      printer.print_int("lock_state", m_locked, $bits(m_locked));
+      printer.print_field("lock_state", m_locked, $bits(m_locked));
       printer.print_generic("value", 
                             `uvm_typename(m_value), 
                             0, 
@@ -175,4 +176,3 @@ class uvm_simple_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    endfunction : do_print
 
 endclass // uvm_simple_lock_dap
-

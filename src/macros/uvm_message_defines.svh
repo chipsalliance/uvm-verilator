@@ -1,7 +1,10 @@
 //----------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2010 Cadence Design Systems, Inc. 
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2010-2013 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2012 AMD
+// Copyright 2014-2015 NVIDIA Corporation
+// Copyright 2014 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -54,7 +57,7 @@
 
 //------------------------------------------------------------------------------
 //
-// Title: Report Macros 
+// Title -- NODOCS -- Report Macros 
 //
 // This set of macros provides wrappers around the uvm_report_* <Reporting> 
 // functions. The macros serve two essential purposes:
@@ -97,11 +100,11 @@
 
 
 //----------------------------------------------------------------------------
-// Group:  Basic Messaging Macros
+// Group -- NODOCS --  Basic Messaging Macros
 //----------------------------------------------------------------------------
 
 
-// MACRO: `uvm_info
+// MACRO -- NODOCS -- `uvm_info
 //
 // Calls uvm_report_info if ~VERBOSITY~ is lower than the configured verbosity of
 // the associated reporter. ~ID~ is given as the message tag and ~MSG~ is given as
@@ -109,6 +112,7 @@
 //
 // |`uvm_info(ID, MSG, VERBOSITY)
 
+// @uvm-ieee 1800.2-2017 auto B.1.1.1
 `define uvm_info(ID, MSG, VERBOSITY) \
    begin \
      if (uvm_report_enabled(VERBOSITY,UVM_INFO,ID)) \
@@ -116,7 +120,7 @@
    end
 
 
-// MACRO: `uvm_warning
+// MACRO -- NODOCS -- `uvm_warning
 //
 // Calls uvm_report_warning with a verbosity of UVM_NONE. The message cannot
 // be turned off using the reporter's verbosity setting, but can be turned off
@@ -126,6 +130,7 @@
 //
 // |`uvm_warning(ID, MSG)
 
+// @uvm-ieee 1800.2-2017 auto B.1.1.2
 `define uvm_warning(ID, MSG) \
    begin \
      if (uvm_report_enabled(UVM_NONE,UVM_WARNING,ID)) \
@@ -133,7 +138,7 @@
    end
 
 
-// MACRO: `uvm_error
+// MACRO -- NODOCS -- `uvm_error
 //
 // Calls uvm_report_error with a verbosity of UVM_NONE. The message cannot
 // be turned off using the reporter's verbosity setting, but can be turned off
@@ -143,6 +148,7 @@
 //
 // |`uvm_error(ID, MSG)
 
+// @uvm-ieee 1800.2-2017 auto B.1.1.3
 `define uvm_error(ID, MSG) \
    begin \
      if (uvm_report_enabled(UVM_NONE,UVM_ERROR,ID)) \
@@ -150,7 +156,7 @@
    end
 
 
-// MACRO: `uvm_fatal
+// MACRO -- NODOCS -- `uvm_fatal
 //
 // Calls uvm_report_fatal with a verbosity of UVM_NONE. The message cannot
 // be turned off using the reporter's verbosity setting, but can be turned off
@@ -160,6 +166,7 @@
 //
 // |`uvm_fatal(ID, MSG)
 
+// @uvm-ieee 1800.2-2017 auto B.1.1.4
 `define uvm_fatal(ID, MSG) \
    begin \
      if (uvm_report_enabled(UVM_NONE,UVM_FATAL,ID)) \
@@ -168,7 +175,7 @@
 
 
 
-// MACRO: `uvm_info_context
+// MACRO -- NODOCS -- `uvm_info_context
 //
 //| `uvm_info_context(ID, MSG, VERBOSITY, RO)
 //
@@ -176,6 +183,7 @@
 // context, or <uvm_report_object>, in which the message is printed be 
 // explicitly supplied as a macro argument.
 
+// @uvm-ieee 1800.2-2017 auto B.1.1.5
 `define uvm_info_context(ID, MSG, VERBOSITY, RO) \
    begin \
      if (RO.uvm_report_enabled(VERBOSITY,UVM_INFO,ID)) \
@@ -183,7 +191,7 @@
    end
 
 
-// MACRO: `uvm_warning_context
+// MACRO -- NODOCS -- `uvm_warning_context
 //
 //| `uvm_warning_context(ID, MSG, RO)
 //
@@ -191,6 +199,7 @@
 // context, or <uvm_report_object>, in which the message is printed be
 // explicitly supplied as a macro argument.
 
+// @uvm-ieee 1800.2-2017 auto B.1.1.6
 `define uvm_warning_context(ID, MSG, RO) \
    begin \
      if (RO.uvm_report_enabled(UVM_NONE,UVM_WARNING,ID)) \
@@ -198,7 +207,7 @@
    end
 
 
-// MACRO: `uvm_error_context
+// MACRO -- NODOCS -- `uvm_error_context
 //
 //| `uvm_error_context(ID, MSG, RO)
 //
@@ -206,6 +215,7 @@
 // context, or <uvm_report_object> in which the message is printed be 
 // explicitly supplied as a macro argument.
 
+// @uvm-ieee 1800.2-2017 auto B.1.1.7
 `define uvm_error_context(ID, MSG, RO) \
    begin \
      if (RO.uvm_report_enabled(UVM_NONE,UVM_ERROR,ID)) \
@@ -213,7 +223,7 @@
    end
 
 
-// MACRO: `uvm_fatal_context
+// MACRO -- NODOCS -- `uvm_fatal_context
 //
 //| `uvm_fatal_context(ID, MSG, RO)
 //
@@ -221,6 +231,7 @@
 // context, or <uvm_report_object>, in which the message is printed be 
 // explicitly supplied as a macro argument.
 
+// @uvm-ieee 1800.2-2017 auto B.1.1.8
 `define uvm_fatal_context(ID, MSG, RO) \
    begin \
      if (RO.uvm_report_enabled(UVM_NONE,UVM_FATAL,ID)) \
@@ -231,7 +242,7 @@
 
 
 //----------------------------------------------------------------------------
-// Group:  Message Trace Macros
+// Group -- NODOCS --  Message Trace Macros
 //----------------------------------------------------------------------------
 
 // MACRO- `uvm_message_begin
@@ -287,7 +298,7 @@
    end
 
 
-// MACRO: `uvm_info_begin
+// MACRO -- NODOCS -- `uvm_info_begin
 //
 // |`uvm_info_begin(ID, MSG, VERBOSITY, RM = __uvm_msg)
 //
@@ -295,7 +306,7 @@
 `define uvm_info_begin(ID, MSG, VERBOSITY, RM = __uvm_msg) \
    `uvm_message_begin(UVM_INFO, ID, MSG, VERBOSITY, `uvm_file, `uvm_line, RM)
 
-// MACRO: `uvm_info_end
+// MACRO -- NODOCS -- `uvm_info_end
 //
 // This macro pair provides the ability to add elements to messages.
 //
@@ -320,7 +331,7 @@
    `uvm_message_end
 
  
-// MACRO: `uvm_warning_begin
+// MACRO -- NODOCS -- `uvm_warning_begin
 //
 // |`uvm_warning_begin(ID, MSG, RM = __uvm_msg)
 //
@@ -328,7 +339,7 @@
 `define uvm_warning_begin(ID, MSG, RM = __uvm_msg) \
    `uvm_message_begin(UVM_WARNING, ID, MSG, UVM_NONE, `uvm_file, `uvm_line, RM)
 
-// MACRO: `uvm_warning_end
+// MACRO -- NODOCS -- `uvm_warning_end
 //
 // This macro pair operates identically to <`uvm_info_begin>/<`uvm_info_end> with
 // exception that the message severity is <UVM_WARNING> and has no verbosity threshold.
@@ -342,7 +353,7 @@
    `uvm_message_end
 
 
-// MACRO: `uvm_error_begin
+// MACRO -- NODOCS -- `uvm_error_begin
 //
 // |`uvm_error_begin(ID, MSG, RM = __uvm_msg)
 //
@@ -351,7 +362,7 @@
    `uvm_message_begin(UVM_ERROR, ID, MSG, UVM_NONE, `uvm_file, `uvm_line, RM)
 
 
-// MACRO: `uvm_error_end
+// MACRO -- NODOCS -- `uvm_error_end
 //
 // This macro pair operates identically to <`uvm_info_begin>/<`uvm_info_end> with
 // exception that the message severity is <UVM_ERROR> and has no verbosity threshold.
@@ -365,7 +376,7 @@
    `uvm_message_end
 
 
-// MACRO: `uvm_fatal_begin
+// MACRO -- NODOCS -- `uvm_fatal_begin
 //
 // |`uvm_fatal_begin(ID, MSG, RM = __uvm_msg)
 //
@@ -374,7 +385,7 @@
    `uvm_message_begin(UVM_FATAL, ID, MSG, UVM_NONE, `uvm_file, `uvm_line, RM)
 
 
-// MACRO: `uvm_fatal_end
+// MACRO -- NODOCS -- `uvm_fatal_end
 //
 // This macro pair operates identically to <`uvm_info_begin>/<`uvm_info_end> with
 // exception that the message severity is <UVM_FATAL> and has no verbosity threshold.
@@ -388,7 +399,7 @@
    `uvm_message_end
 
 
-// MACRO: `uvm_info_context_begin
+// MACRO -- NODOCS -- `uvm_info_context_begin
 //
 // |`uvm_info_context_begin(ID, MSG, UVM_NONE, RO, RM = __uvm_msg)
 //
@@ -397,7 +408,7 @@
    `uvm_message_context_begin(UVM_INFO, ID, MSG, VERBOSITY, `uvm_file, `uvm_line, RO, RM)
 
 
-// MACRO: `uvm_info_context_end
+// MACRO -- NODOCS -- `uvm_info_context_end
 //
 // |`uvm_info_context_end
 //
@@ -410,7 +421,7 @@
    `uvm_message_context_end
 
  
-// MACRO: `uvm_warning_context_begin
+// MACRO -- NODOCS -- `uvm_warning_context_begin
 //
 // |`uvm_warning_context_begin(ID, MSG, RO, RM = __uvm_msg)
 //
@@ -418,7 +429,7 @@
 `define uvm_warning_context_begin(ID, MSG, RO, RM = __uvm_msg) \
    `uvm_message_context_begin(UVM_WARNING, ID, MSG, UVM_NONE, `uvm_file, `uvm_line, RO, RM)
 
-// MACRO: `uvm_warning_context_end
+// MACRO -- NODOCS -- `uvm_warning_context_end
 //
 // |`uvm_warning_context_end
 //
@@ -431,7 +442,7 @@
    `uvm_message_context_end
 
 
-// MACRO: `uvm_error_context_begin
+// MACRO -- NODOCS -- `uvm_error_context_begin
 //
 // |`uvm_error_context_begin(ID, MSG, RO, RM = __uvm_msg)
 //
@@ -440,7 +451,7 @@
    `uvm_message_context_begin(UVM_ERROR, ID, MSG, UVM_NONE, `uvm_file, `uvm_line, RO, RM)
 
 
-// MACRO: `uvm_error_context_end
+// MACRO -- NODOCS -- `uvm_error_context_end
 //
 // |`uvm_error_context_end
 //
@@ -453,7 +464,7 @@
    `uvm_message_context_end
 
 
-// MACRO: `uvm_fatal_context_begin
+// MACRO -- NODOCS -- `uvm_fatal_context_begin
 //
 // |`uvm_fatal_context_begin(ID, MSG, RO, RM = __uvm_msg)
 //
@@ -462,7 +473,7 @@
    `uvm_message_context_begin(UVM_FATAL, ID, MSG, UVM_NONE, `uvm_file, `uvm_line, RO, RM)
 
 
-// MACRO: `uvm_fatal_context_end
+// MACRO -- NODOCS -- `uvm_fatal_context_end
 //
 // |`uvm_fatal_context_end
 //
@@ -476,11 +487,11 @@
 
 
 //----------------------------------------------------------------------------
-// Group:  Message Element Macros
+// Group -- NODOCS --  Message Element Macros
 //----------------------------------------------------------------------------
 
 
-// MACRO: `uvm_message_add_tag
+// MACRO -- NODOCS -- `uvm_message_add_tag
 //
 // |`uvm_message_add_tag(NAME, VALUE, ACTION=(UVM_LOG|UVM_RM_RECORD))
 //
@@ -489,7 +500,7 @@
     __uvm_msg.add_string(NAME, VALUE, ACTION);
 
 
-// MACRO: `uvm_message_add_int
+// MACRO -- NODOCS -- `uvm_message_add_int
 //
 // |`uvm_message_add_int(VAR, RADIX, LABEL = "", ACTION=(UVM_LOG|UVM_RM_RECORD))
 //
@@ -501,7 +512,7 @@
       __uvm_msg.add_int(LABEL, VAR, $bits(VAR), RADIX, ACTION);
 
 
-// MACRO: `uvm_message_add_string
+// MACRO -- NODOCS -- `uvm_message_add_string
 //
 // |`uvm_message_add_string(VAR, LABEL = "", ACTION=(UVM_LOG|UVM_RM_RECORD))
 //
@@ -513,7 +524,7 @@
       __uvm_msg.add_string(LABEL, VAR, ACTION);
 
 
-// MACRO: `uvm_message_add_object
+// MACRO -- NODOCS -- `uvm_message_add_object
 //
 // These macros allow the user to provide elements that are associated with
 // <uvm_report_message>s.  Separate macros are provided such that the

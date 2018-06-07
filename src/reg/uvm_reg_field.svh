@@ -1,9 +1,12 @@
 //
 // -------------------------------------------------------------
-//    Copyright 2004-2009 Synopsys, Inc.
-//    Copyright 2010-2011 Mentor Graphics Corporation
-//    Copyright 2010-2011 Cadence Design Systems, Inc.
-//    Copyright 2013 Semifore, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2012-2014 Semifore
+// Copyright 2004-2018 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2012 Accellera Systems Initiative
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -25,20 +28,11 @@
 typedef class uvm_reg_cbs;
 
 
-//-----------------------------------------------------------------
-// CLASS: uvm_reg_field
-// Field abstraction class
-//
-// A field represents a set of bits that behave consistently
-// as a single entity.
-//
-// A field is contained within a single register, but may
-// have different access policies depending on the address map
-// use the access the register (thus the field).
-//-----------------------------------------------------------------
+
+// @uvm-ieee 1800.2-2017 auto 18.5.1
 class uvm_reg_field extends uvm_object;
 
-   // Variable: value
+   // Variable -- NODOCS -- value
    // Mirrored field value.
    // This value can be sampled in a functional coverage model
    // or constrained when randomized.
@@ -73,42 +67,16 @@ class uvm_reg_field extends uvm_object;
    `uvm_object_utils(uvm_reg_field)
 
    //----------------------
-   // Group: Initialization
+   // Group -- NODOCS -- Initialization
    //----------------------
 
-   // Function: new
-   //
-   // Create a new field instance
-   //
-   // This method should not be used directly.
-   // The ~uvm_reg_field::type_id::create()~ factory method
-   // should be used instead.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.3.1
    extern function new(string name = "uvm_reg_field");
 
 
-   // Function: configure
-   //
-   // Instance-specific configuration
-   //
-   // Specify the ~parent~ register of this field, its
-   // ~size~ in bits, the position of its least-significant bit
-   // within the register relative to the least-significant bit
-   // of the register, its ~access~ policy, volatility,
-   // "HARD" ~reset~ value, 
-   // whether the field value is actually reset
-   // (the ~reset~ value is ignored if ~FALSE~),
-   // whether the field value may be randomized and
-   // whether the field is the only one to occupy a byte lane in the register.
-   //
-   // See <set_access> for a specification of the pre-defined
-   // field access policies.
-   //
-   // If the field access policy is a pre-defined policy and NOT one of
-   // "RW", "WRC", "WRS", "WO", "W1", or "WO1",
-   // the value of ~is_rand~ is ignored and the rand_mode() for the
-   // field instance is turned off since it cannot be written.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.3.2
    extern function void configure(uvm_reg        parent,
                                   int unsigned   size,
                                   int unsigned   lsb_pos,
@@ -121,10 +89,10 @@ class uvm_reg_field extends uvm_object;
 
 
    //---------------------
-   // Group: Introspection
+   // Group -- NODOCS -- Introspection
    //---------------------
 
-   // Function: get_name
+   // Function -- NODOCS -- get_name
    //
    // Get the simple name
    //
@@ -132,7 +100,7 @@ class uvm_reg_field extends uvm_object;
    //
 
 
-   // Function: get_full_name
+   // Function -- NODOCS -- get_full_name
    //
    // Get the hierarchical name
    //
@@ -142,15 +110,13 @@ class uvm_reg_field extends uvm_object;
    extern virtual function string get_full_name();
 
 
-   // Function: get_parent
-   //
-   // Get the parent register
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.4.1
    extern virtual function uvm_reg get_parent();
    extern virtual function uvm_reg get_register();
 
 
-   // Function: get_lsb_pos
+   // Function -- NODOCS -- get_lsb_pos
    //
    // Return the position of the field
    //
@@ -162,88 +128,31 @@ class uvm_reg_field extends uvm_object;
    extern virtual function int unsigned get_lsb_pos();
 
 
-   // Function: get_n_bits
+   // Function -- NODOCS -- get_n_bits
    //
    // Returns the width, in number of bits, of the field. 
    //
    extern virtual function int unsigned get_n_bits();
 
    //
-   // FUNCTION: get_max_size
+   // FUNCTION -- NODOCS -- get_max_size
    // Returns the width, in number of bits, of the largest field. 
    //
    extern static function int unsigned get_max_size();
 
 
-   // Function: set_access
-   //
-   // Modify the access policy of the field
-   //
-   // Modify the access policy of the field to the specified one and
-   // return the previous access policy.
-   //
-   // The pre-defined access policies are as follows.
-   // The effect of a read operation are applied after the current
-   // value of the field is sampled.
-   // The read operation will return the current value,
-   // not the value affected by the read operation (if any).
-   //
-   // "RO"       - W: no effect, R: no effect
-   // "RW"       - W: as-is, R: no effect
-   // "RC"       - W: no effect, R: clears all bits
-   // "RS"       - W: no effect, R: sets all bits
-   // "WRC"      - W: as-is, R: clears all bits
-   // "WRS"      - W: as-is, R: sets all bits
-   // "WC"       - W: clears all bits, R: no effect
-   // "WS"       - W: sets all bits, R: no effect
-   // "WSRC"     - W: sets all bits, R: clears all bits
-   // "WCRS"     - W: clears all bits, R: sets all bits
-   // "W1C"      - W: 1/0 clears/no effect on matching bit, R: no effect
-   // "W1S"      - W: 1/0 sets/no effect on matching bit, R: no effect
-   // "W1T"      - W: 1/0 toggles/no effect on matching bit, R: no effect
-   // "W0C"      - W: 1/0 no effect on/clears matching bit, R: no effect
-   // "W0S"      - W: 1/0 no effect on/sets matching bit, R: no effect
-   // "W0T"      - W: 1/0 no effect on/toggles matching bit, R: no effect
-   // "W1SRC"    - W: 1/0 sets/no effect on matching bit, R: clears all bits
-   // "W1CRS"    - W: 1/0 clears/no effect on matching bit, R: sets all bits
-   // "W0SRC"    - W: 1/0 no effect on/sets matching bit, R: clears all bits
-   // "W0CRS"    - W: 1/0 no effect on/clears matching bit, R: sets all bits
-   // "WO"       - W: as-is, R: error
-   // "WOC"      - W: clears all bits, R: error
-   // "WOS"      - W: sets all bits, R: error
-   // "W1"       - W: first one after ~HARD~ reset is as-is, other W have no effects, R: no effect
-   // "WO1"      - W: first one after ~HARD~ reset is as-is, other W have no effects, R: error
-   // "NOACCESS" - W: no effect, R: no effect
-   //
-   // It is important to remember that modifying the access of a field
-   // will make the register model diverge from the specification
-   // that was used to create it.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.4.6
    extern virtual function string set_access(string mode);
 
 
-   // Function: define_access
-   //
-   // Define a new access policy value
-   //
-   // Because field access policies are specified using string values,
-   // there is no way for SystemVerilog to verify if a specific access
-   // value is valid or not.
-   // To help catch typing errors, user-defined access values
-   // must be defined using this method to avoid begin reported as an
-   // invalid access policy.
-   //
-   // The name of field access policies are always converted to all uppercase.
-   //
-   // Returns TRUE if the new access policy was not previously
-   // defined.
-   // Returns FALSE otherwise but does not issue an error message.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.4.7
    extern static function bit define_access(string name);
    local static bit m_predefined = m_predefine_policies();
    extern local static function bit m_predefine_policies();
  
-   // Function: get_access
+   // Function -- NODOCS -- get_access
    //
    // Get the access policy of the field
    //
@@ -260,223 +169,77 @@ class uvm_reg_field extends uvm_object;
    // (field access of WO, and map access value of RO, etc), the
    // method's return value is NOACCESS.
 
+   // @uvm-ieee 1800.2-2017 auto 18.5.4.5
    extern virtual function string get_access(uvm_reg_map map = null);
 
 
-   // Function: is_known_access
-   //
-   // Check if access policy is a built-in one.
-   //
-   // Returns TRUE if the current access policy of the field,
-   // when written and read through the specified address ~map~,
-   // is a built-in access policy.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.4.8
    extern virtual function bit is_known_access(uvm_reg_map map = null);
 
-   //
-   // Function: set_volatility
-   // Modify the volatility of the field to the specified one.
-   //
-   // It is important to remember that modifying the volatility of a field
-   // will make the register model diverge from the specification
-   // that was used to create it.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.4.9
    extern virtual function void set_volatility(bit volatile);
 
-   //
-   // Function: is_volatile
-   // Indicates if the field value is volatile
-   //
-   // UVM uses the IEEE 1685-2009 IP-XACT definition of "volatility".
-   // If TRUE, the value of the register is not predictable because it
-   // may change between consecutive accesses.
-   // This typically indicates a field whose value is updated by the DUT.
-   // The nature or cause of the change is not specified.
-   // If FALSE, the value of the register is not modified between
-   // consecutive accesses.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.4.10
    extern virtual function bit is_volatile();
 
 
    //--------------
-   // Group: Access
+   // Group -- NODOCS -- Access
    //--------------
 
 
-   // Function: set
-   //
-   // Set the desired value for this field
-   //
-   // It sets the desired value of the field to the specified ~value~
-   // modified by the field access policy.
-   // It does not actually set the value of the field in the design,
-   // only the desired value in the abstraction class.
-   // Use the <uvm_reg::update()> method to update the actual register
-   // with the desired value or the <uvm_reg_field::write()> method
-   // to actually write the field and update its mirrored value.
-   //
-   // The final desired value in the mirror is a function of the field access
-   // policy and the set value, just like a normal physical write operation
-   // to the corresponding bits in the hardware.
-   // As such, this method (when eventually followed by a call to
-   // <uvm_reg::update()>)
-   // is a zero-time functional replacement for the <uvm_reg_field::write()>
-   // method.
-   // For example, the desired value of a read-only field is not modified
-   // by this method and the desired value of a write-once field can only
-   // be set if the field has not yet been
-   // written to using a physical (for example, front-door) write operation.
-   //
-   // Use the <uvm_reg_field::predict()> to modify the mirrored value of
-   // the field.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.2
    extern virtual function void set(uvm_reg_data_t  value,
                                     string          fname = "",
                                     int             lineno = 0);
 
-   // Function: get
-   //
-   // Return the desired value of the field
-   //
-   // It does not actually read the value
-   // of the field in the design, only the desired value
-   // in the abstraction class. Unless set to a different value
-   // using the <uvm_reg_field::set()>, the desired value
-   // and the mirrored value are identical.
-   //
-   // Use the <uvm_reg_field::read()> or <uvm_reg_field::peek()>
-   // method to get the actual field value. 
-   //
-   // If the field is write-only, the desired/mirrored
-   // value is the value last written and assumed
-   // to reside in the bits implementing it.
-   // Although a physical read operation would something different,
-   // the returned value is the actual content.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.1
    extern virtual function uvm_reg_data_t get(string fname = "",
                                               int    lineno = 0);
 
 
-   // Function: get_mirrored_value
-   //
-   // Return the mirrored value of the field
-   //
-   // It does not actually read the value of the field in the design, only the mirrored value
-   // in the abstraction class. 
-   //
-   // If the field is write-only, the desired/mirrored
-   // value is the value last written and assumed
-   // to reside in the bits implementing it.
-   // Although a physical read operation would something different,
-   // the returned value is the actual content.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.3
    extern virtual function uvm_reg_data_t get_mirrored_value(string fname = "",
                                               int    lineno = 0);
 
-   // Function: reset
-   //
-   // Reset the desired/mirrored value for this field.
-   //
-   // It sets the desired and mirror value of the field
-   // to the reset event specified by ~kind~.
-   // If the field does not have a reset value specified for the
-   // specified reset ~kind~ the field is unchanged.
-   //
-   // It does not actually reset the value of the field in the design,
-   // only the value mirrored in the field abstraction class.
-   //
-   // Write-once fields can be modified after
-   // a "HARD" reset operation.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.4
    extern virtual function void reset(string kind = "HARD");
 
 
-   // Function: get_reset
-   //
-   // Get the specified reset value for this field
-   //
-   // Return the reset value for this field
-   // for the specified reset ~kind~.
-   // Returns the current field value is no reset value has been
-   // specified for the specified reset event.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.6
    extern virtual function uvm_reg_data_t get_reset(string kind = "HARD");
 
 
-   // Function: has_reset
-   //
-   // Check if the field has a reset value specified
-   //
-   // Return TRUE if this field has a reset value specified
-   // for the specified reset ~kind~.
-   // If ~delete~ is TRUE, removes the reset value, if any.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.5
    extern virtual function bit has_reset(string kind = "HARD",
                                          bit    delete = 0);
 
 
-   // Function: set_reset
-   //
-   // Specify or modify the reset value for this field
-   //
-   // Specify or modify the reset value for this field corresponding
-   // to the cause specified by ~kind~.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.7
    extern virtual function void set_reset(uvm_reg_data_t value,
                                           string kind = "HARD");
 
 
-   // Function: needs_update
-   //
-   // Check if the abstract model contains different desired and mirrored values.
-   //
-   // If a desired field value has been modified in the abstraction class
-   // without actually updating the field in the DUT,
-   // the state of the DUT (more specifically what the abstraction class
-   // ~thinks~ the state of the DUT is) is outdated.
-   // This method returns TRUE
-   // if the state of the field in the DUT needs to be updated 
-   // to match the desired value.
-   // The mirror values or actual content of DUT field are not modified.
-   // Use the <uvm_reg::update()> to actually update the DUT field.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.8
    extern virtual function bit needs_update();
 
 
-   // Task: write
-   //
-   // Write the specified value in this field
-   //
-   // Write ~value~ in the DUT field that corresponds to this
-   // abstraction class instance using the specified access
-   // ~path~. 
-   // If the register containing this field is mapped in more
-   //  than one address map, 
-   // an address ~map~ must be
-   // specified if a physical access is used (front-door access).
-   // If a back-door access path is used, the effect of writing
-   // the field through a physical access is mimicked. For
-   // example, read-only bits in the field will not be written.
-   //
-   // The mirrored value will be updated using the <uvm_reg_field::predict()>
-   // method.
-   //
-   // If a front-door access is used, and
-   // if the field is the only field in a byte lane and
-   // if the physical interface corresponding to the address map used
-   // to access the field support byte-enabling,
-   // then only the field is written.
-   // Otherwise, the entire register containing the field is written,
-   // and the mirrored values of the other fields in the same register
-   // are used in a best-effort not to modify their value.
-   //
-   // If a backdoor access is used, a peek-modify-poke process is used.
-   // in a best-effort not to modify the value of the other fields in the
-   // register.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.9
    extern virtual task write (output uvm_status_e       status,
                               input  uvm_reg_data_t     value,
-                              input  uvm_path_e         path = UVM_DEFAULT_PATH,
+                              input  uvm_door_e         path = UVM_DEFAULT_DOOR,
                               input  uvm_reg_map        map = null,
                               input  uvm_sequence_base  parent = null,
                               input  int                prior = -1,
@@ -485,38 +248,11 @@ class uvm_reg_field extends uvm_object;
                               input  int                lineno = 0);
 
 
-   // Task: read
-   //
-   // Read the current value from this field
-   //
-   // Read and return ~value~ from the DUT field that corresponds to this
-   // abstraction class instance using the specified access
-   // ~path~. 
-   // If the register containing this field is mapped in more
-   // than one address map, an address ~map~ must be
-   // specified if a physical access is used (front-door access).
-   // If a back-door access path is used, the effect of reading
-   // the field through a physical access is mimicked. For
-   // example, clear-on-read bits in the field will be set to zero.
-   //
-   // The mirrored value will be updated using the <uvm_reg_field::predict()>
-   // method.
-   //
-   // If a front-door access is used, and
-   // if the field is the only field in a byte lane and
-   // if the physical interface corresponding to the address map used
-   // to access the field support byte-enabling,
-   // then only the field is read.
-   // Otherwise, the entire register containing the field is read,
-   // and the mirrored values of the other fields in the same register
-   // are updated.
-   //
-   // If a backdoor access is used, the entire containing register is peeked
-   // and the mirrored value of the other fields in the register is updated.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.10
    extern virtual task read  (output uvm_status_e       status,
                               output uvm_reg_data_t     value,
-                              input  uvm_path_e         path = UVM_DEFAULT_PATH,
+                              input  uvm_door_e         path = UVM_DEFAULT_DOOR,
                               input  uvm_reg_map        map = null,
                               input  uvm_sequence_base  parent = null,
                               input  int                prior = -1,
@@ -525,19 +261,8 @@ class uvm_reg_field extends uvm_object;
                               input  int                lineno = 0);
                
 
-   // Task: poke
-   //
-   // Deposit the specified value in this field
-   //
-   // Deposit the value in the DUT field corresponding to this
-   // abstraction class instance, as-is, using a back-door access.
-   // A peek-modify-poke process is used
-   // in a best-effort not to modify the value of the other fields in the
-   // register.
-   //
-   // The mirrored value will be updated using the <uvm_reg_field::predict()>
-   // method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.11
    extern virtual task poke  (output uvm_status_e       status,
                               input  uvm_reg_data_t     value,
                               input  string             kind = "",
@@ -547,21 +272,8 @@ class uvm_reg_field extends uvm_object;
                               input  int                lineno = 0);
 
 
-   // Task: peek
-   //
-   // Read the current value from this field
-   //
-   // Sample the value in the DUT field corresponding to this
-   // abstraction class instance using a back-door access.
-   // The field value is sampled, not modified.
-   //
-   // Uses the HDL path for the design abstraction specified by ~kind~.
-   //
-   // The entire containing register is peeked
-   // and the mirrored value of the other fields in the register
-   // are updated using the <uvm_reg_field::predict()> method.
-   //
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.12
    extern virtual task peek  (output uvm_status_e       status,
                               output uvm_reg_data_t     value,
                               input  string             kind = "",
@@ -571,33 +283,11 @@ class uvm_reg_field extends uvm_object;
                               input  int                lineno = 0);
                
 
-   // Task: mirror
-   //
-   // Read the field and update/check its mirror value
-   //
-   // Read the field and optionally compared the readback value
-   // with the current mirrored value if ~check~ is <UVM_CHECK>.
-   // The mirrored value will be updated using the <predict()>
-   // method based on the readback value.
-   //
-   // The ~path~ argument specifies whether to mirror using 
-   // the  <UVM_FRONTDOOR> (<read>) or 
-   // <UVM_BACKDOOR> (<peek()>).
-   //
-   // If ~check~ is specified as <UVM_CHECK>,
-   // an error message is issued if the current mirrored value
-   // does not match the readback value, unless <set_compare> was used
-   // disable the check.
-   //
-   // If the containing register is mapped in multiple address maps and physical
-   // access is used (front-door access), an address ~map~ must be specified.
-   // For write-only fields, their content is mirrored and optionally
-   // checked only if a UVM_BACKDOOR
-   // access path is used to read the field. 
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.13
    extern virtual task mirror(output uvm_status_e      status,
                               input  uvm_check_e       check = UVM_NO_CHECK,
-                              input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                              input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                               input  uvm_reg_map       map = null,
                               input  uvm_sequence_base parent = null,
                               input  int               prior = -1,
@@ -606,62 +296,28 @@ class uvm_reg_field extends uvm_object;
                               input  int               lineno = 0);
 
 
-   // Function: set_compare
-   //
-   // Sets the compare policy during a mirror update. 
-   // The field value is checked against its mirror only when both the
-   // ~check~ argument in <uvm_reg_block::mirror>, <uvm_reg::mirror>,
-   // or <uvm_reg_field::mirror> and the compare policy for the
-   // field is <UVM_CHECK>.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.15
    extern function void set_compare(uvm_check_e check=UVM_CHECK);
 
 
-   // Function: get_compare
-   //
-   // Returns the compare policy for this field.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.14
    extern function uvm_check_e get_compare();
 
    
-   // Function: is_indv_accessible
-   //
-   // Check if this field can be written individually, i.e. without
-   // affecting other fields in the containing register.
-   //
-   extern function bit is_indv_accessible (uvm_path_e  path,
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.16
+   extern function bit is_indv_accessible (uvm_door_e  path,
                                            uvm_reg_map local_map);
 
 
-   // Function: predict
-   //
-   // Update the mirrored and desired value for this field.
-   //
-   // Predict the mirror and desired value of the field based on the specified
-   // observed ~value~ on a bus using the specified address ~map~.
-   //
-   // If ~kind~ is specified as <UVM_PREDICT_READ>, the value
-   // was observed in a read transaction on the specified address ~map~ or
-   // backdoor (if ~path~ is <UVM_BACKDOOR>).
-   // If ~kind~ is specified as <UVM_PREDICT_WRITE>, the value
-   // was observed in a write transaction on the specified address ~map~ or
-   // backdoor (if ~path~ is <UVM_BACKDOOR>).
-   // If ~kind~ is specified as <UVM_PREDICT_DIRECT>, the value
-   // was computed and is updated as-is, without regard to any access policy.
-   // For example, the mirrored value of a read-only field is modified
-   // by this method if ~kind~ is specified as <UVM_PREDICT_DIRECT>.
-   //
-   // This method does not allow an update of the mirror (or desired)
-   // when the register containing this field is busy executing
-   // a transaction because the results are unpredictable and
-   // indicative of a race condition in the testbench.
-   //
-   // Returns TRUE if the prediction was successful.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.5.17
    extern function bit predict (uvm_reg_data_t    value,
                                 uvm_reg_byte_en_t be = -1,
                                 uvm_predict_e     kind = UVM_PREDICT_DIRECT,
-                                uvm_path_e        path = UVM_FRONTDOOR,
+                                uvm_door_e        path = UVM_FRONTDOOR,
                                 uvm_reg_map       map = null,
                                 string            fname = "",
                                 int               lineno = 0);
@@ -678,8 +334,7 @@ class uvm_reg_field extends uvm_object;
   
    /*local*/
    extern function bit Xcheck_accessX (input uvm_reg_item rw,
-                                       output uvm_reg_map_info map_info,
-                                       input string caller);
+                                       output uvm_reg_map_info map_info);
 
    extern virtual task do_write(uvm_reg_item rw);
    extern virtual task do_read(uvm_reg_item rw);
@@ -694,77 +349,29 @@ class uvm_reg_field extends uvm_object;
 
 
    //-----------------
-   // Group: Callbacks
+   // Group -- NODOCS -- Callbacks
    //-----------------
 
    `uvm_register_cb(uvm_reg_field, uvm_reg_cbs)
 
 
-   // Task: pre_write
-   //
-   // Called before field write.
-   //
-   // If the specified data value, access ~path~ or address ~map~ are modified,
-   // the updated data value, access path or address map will be used
-   // to perform the register operation.
-   // If the ~status~ is modified to anything other than <UVM_IS_OK>,
-   // the operation is aborted.
-   //
-   // The field callback methods are invoked after the callback methods
-   // on the containing register.
-   // The registered callback methods are invoked after the invocation
-   // of this method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.6.1
    virtual task pre_write  (uvm_reg_item rw); endtask
 
 
-   // Task: post_write
-   //
-   // Called after field write.
-   //
-   // If the specified ~status~ is modified,
-   // the updated status will be
-   // returned by the register operation.
-   //
-   // The field callback methods are invoked after the callback methods
-   // on the containing register.
-   // The registered callback methods are invoked before the invocation
-   // of this method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.6.2
    virtual task post_write (uvm_reg_item rw); endtask
 
 
-   // Task: pre_read
-   //
-   // Called before field read.
-   //
-   // If the access ~path~ or address ~map~ in the ~rw~ argument are modified,
-   // the updated access path or address map will be used to perform
-   // the register operation.
-   // If the ~status~ is modified to anything other than <UVM_IS_OK>,
-   // the operation is aborted.
-   //
-   // The field callback methods are invoked after the callback methods
-   // on the containing register.
-   // The registered callback methods are invoked after the invocation
-   // of this method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.6.3
    virtual task pre_read (uvm_reg_item rw); endtask
 
 
-   // Task: post_read
-   //
-   // Called after field read.
-   //
-   // If the specified readback data or~status~ in the ~rw~ argument is
-   // modified, the updated readback data or status will be
-   // returned by the register operation.
-   //
-   // The field callback methods are invoked after the callback methods
-   // on the containing register.
-   // The registered callback methods are invoked before the invocation
-   // of this method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.5.6.4
    virtual task post_read  (uvm_reg_item rw); endtask
 
 
@@ -805,7 +412,7 @@ function void uvm_reg_field::configure(uvm_reg        parent,
    m_parent = parent;
    if (size == 0) begin
       `uvm_error("RegModel",
-         $sformatf("Field \"%s\" cannot have 0 bits", get_full_name()));
+         $sformatf("Field \"%s\" cannot have 0 bits", get_full_name()))
       size = 1;
    end
 
@@ -942,13 +549,19 @@ function string uvm_reg_field::get_access(uvm_reg_map map = null);
 
      "WO":
        case (field_access)
-         "RW",
-         "WO": field_access = "WO";
-         default: begin
-            field_access = "NOACCESS";
-         end
-
+	     "RW","WRC","WRS" : field_access = "WO";
+	     "W1SRC" : field_access = "W1S";
+	     "W0SRC": field_access = "W0S";
+	     "W1CRS": field_access = "W1C";
+	     "W0CRS": field_access = "W0C";
+		 "WCRS": field_access = "WC";
+	     "W1" : field_access = "W1";
+	     "WO1" : field_access = "WO1";
+	     "WSRC" : field_access = "WS";
+         "RO","RC","RS": field_access = "NOACCESS";
          // No change for the other modes
+         //         "WO","WC","WS","W1C","W1S","W0C","W0S","W0T","W1" : null;
+         
        endcase
 
      default:
@@ -1077,7 +690,7 @@ function uvm_reg_data_t uvm_reg_field::XpredictX (uvm_reg_data_t cur_val,
      default: return wr_val;
    endcase
 
-   `uvm_fatal("RegModel", "uvm_reg_field::XpredictX(): Internal error");
+   `uvm_fatal("RegModel", "uvm_reg_field::XpredictX(): Internal error")
    return 0;
 endfunction: XpredictX
 
@@ -1088,7 +701,7 @@ endfunction: XpredictX
 function bit uvm_reg_field::predict (uvm_reg_data_t    value,
                                      uvm_reg_byte_en_t be = -1,
                                      uvm_predict_e     kind = UVM_PREDICT_DIRECT,
-                                     uvm_path_e        path = UVM_FRONTDOOR,
+                                     uvm_door_e        path = UVM_FRONTDOOR,
                                      uvm_reg_map       map = null,
                                      string            fname = "",
                                      int               lineno = 0);
@@ -1249,7 +862,7 @@ function void uvm_reg_field::set(uvm_reg_data_t  value,
    if (value >> m_size) begin
       `uvm_warning("RegModel",
          $sformatf("Specified value (0x%h) greater than field \"%s\" size (%0d bits)",
-             value, get_name(), m_size));
+             value, get_name(), m_size))
       value &= mask;
    end
 
@@ -1375,13 +988,12 @@ typedef class uvm_reg_map_info;
 // Xcheck_accessX
 
 function bit uvm_reg_field::Xcheck_accessX(input uvm_reg_item rw,
-                                           output uvm_reg_map_info map_info,
-                                           input string caller);
+                                           output uvm_reg_map_info map_info);
 
                         
-   if (rw.path == UVM_DEFAULT_PATH) begin
+   if (rw.path == UVM_DEFAULT_DOOR) begin
      uvm_reg_block blk = m_parent.get_block();
-     rw.path = blk.get_default_path();
+     rw.path = blk.get_default_door();
    end
 
    if (rw.path == UVM_BACKDOOR) begin
@@ -1397,7 +1009,7 @@ function bit uvm_reg_field::Xcheck_accessX(input uvm_reg_item rw,
 
    if (rw.path != UVM_BACKDOOR) begin
 
-     rw.local_map = m_parent.get_local_map(rw.map,caller);
+     rw.local_map = m_parent.get_local_map(rw.map);
 
      if (rw.local_map == null) begin
         `uvm_error(get_type_name(), 
@@ -1430,7 +1042,7 @@ endfunction
 
 task uvm_reg_field::write(output uvm_status_e       status,
                           input  uvm_reg_data_t     value,
-                          input  uvm_path_e         path = UVM_DEFAULT_PATH,
+                          input  uvm_door_e         path = UVM_DEFAULT_DOOR,
                           input  uvm_reg_map        map = null,
                           input  uvm_sequence_base  parent = null,
                           input  int                prior = -1,
@@ -1472,7 +1084,7 @@ task uvm_reg_field::do_write(uvm_reg_item rw);
    m_fname  = rw.fname;
    m_lineno = rw.lineno;
 
-   if (!Xcheck_accessX(rw,map_info,"write()"))
+   if (!Xcheck_accessX(rw,map_info))
      return;
 
    m_write_in_progress = 1'b1;
@@ -1528,7 +1140,7 @@ task uvm_reg_field::do_write(uvm_reg_item rw);
       m_parent.do_write(rw);
 
       if (bad_side_effect) begin
-         `uvm_warning("RegModel", $sformatf("Writing field \"%s\" will cause unintended side effects in adjoining Write-to-Clear or Write-to-Set fields in the same register", this.get_full_name()));
+         `uvm_warning("RegModel", $sformatf("Writing field \"%s\" will cause unintended side effects in adjoining Write-to-Clear or Write-to-Set fields in the same register", this.get_full_name()))
       end
    end
    else begin
@@ -1578,7 +1190,7 @@ endtask: do_write
 
 task uvm_reg_field::read(output uvm_status_e       status,
                          output uvm_reg_data_t     value,
-                         input  uvm_path_e         path = UVM_DEFAULT_PATH,
+                         input  uvm_door_e         path = UVM_DEFAULT_DOOR,
                          input  uvm_reg_map        map = null,
                          input  uvm_sequence_base  parent = null,
                          input  int                prior = -1,
@@ -1620,7 +1232,7 @@ task uvm_reg_field::do_read(uvm_reg_item rw);
    m_lineno = rw.lineno;
    m_read_in_progress = 1'b1;
   
-   if (!Xcheck_accessX(rw,map_info,"read()"))
+   if (!Xcheck_accessX(rw,map_info))
      return;
 
 `ifdef UVM_REG_NO_INDIVIDUAL_FIELD_ACCESS
@@ -1709,7 +1321,7 @@ endtask: do_read
 
 // is_indv_accessible
 
-function bit uvm_reg_field::is_indv_accessible(uvm_path_e  path,
+function bit uvm_reg_field::is_indv_accessible(uvm_door_e  path,
                                                uvm_reg_map local_map);
    if (path == UVM_BACKDOOR) begin
       `uvm_warning("RegModel",
@@ -1888,7 +1500,7 @@ endtask: peek
 
 task uvm_reg_field::mirror(output uvm_status_e      status,
                            input  uvm_check_e       check = UVM_NO_CHECK,
-                           input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                           input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                            input  uvm_reg_map       map = null,
                            input  uvm_sequence_base parent = null,
                            input  int               prior = -1,
@@ -2009,4 +1621,3 @@ endfunction
 function void uvm_reg_field::do_unpack (uvm_packer packer);
   `uvm_warning("RegModel","RegModel field cannot be unpacked")
 endfunction
-

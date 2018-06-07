@@ -1,8 +1,8 @@
 //
 //-----------------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2010 Cadence Design Systems, Inc. 
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2015-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -22,7 +22,7 @@
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_scoreboard
+// CLASS -- NODOCS -- uvm_scoreboard
 //
 // The uvm_scoreboard virtual class should be used as the base class for 
 // user-defined scoreboards.
@@ -33,9 +33,12 @@
 // added to uvm_scoreboard in the future.
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 13.6.1
 virtual class uvm_scoreboard extends uvm_component;
 
-  // Function: new
+  `uvm_component_abstract_utils(uvm_scoreboard)
+  
+  // Function -- NODOCS -- new
   //
   // Creates and initializes an instance of this class using the normal
   // constructor arguments for <uvm_component>: ~name~ is the name of the
@@ -45,11 +48,4 @@ virtual class uvm_scoreboard extends uvm_component;
     super.new(name, parent);
   endfunction
 
-  const static string type_name = "uvm_scoreboard";
-
-  virtual function string get_type_name ();
-    return type_name;
-  endfunction
-
 endclass
-

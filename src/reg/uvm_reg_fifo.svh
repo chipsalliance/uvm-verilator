@@ -1,6 +1,9 @@
 //
 // -------------------------------------------------------------
-//    Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2014-2018 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +24,7 @@
 
 
 //------------------------------------------------------------------------------
-// Class: uvm_reg_fifo
+// Class -- NODOCS -- uvm_reg_fifo
 //
 // This special register models a DUT FIFO accessed via write/read,
 // where writes push to the FIFO and reads pop from it.
@@ -32,13 +35,14 @@
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 18.8.1
 class uvm_reg_fifo extends uvm_reg;
 
     local uvm_reg_field value;
     local int m_set_cnt;
     local int unsigned m_size;
 
-    // Variable: fifo
+    // Variable -- NODOCS -- fifo
     //
     // The abstract representation of the FIFO. Constrained
     // to be no larger than the size parameter. It is public
@@ -52,14 +56,11 @@ class uvm_reg_fifo extends uvm_reg;
 
 
     //----------------------
-    // Group: Initialization
+    // Group -- NODOCS -- Initialization
     //----------------------
 
-    // Function: new
-    //
-    // Creates an instance of a FIFO register having ~size~ elements of
-    // ~n_bits~ each.
-    //
+
+    // @uvm-ieee 1800.2-2017 auto 18.8.3.1
     function new(string name = "reg_fifo",
                  int unsigned size,
                  int unsigned n_bits,
@@ -80,23 +81,18 @@ class uvm_reg_fifo extends uvm_reg;
     endfunction
 
 
-    // Function: set_compare
-    //
-    // Sets the compare policy during a mirror (read) of the DUT FIFO. 
-    // The DUT read value is checked against its mirror only when both the
-    // ~check~ argument in the <mirror()> call and the compare policy
-    // for the field is <UVM_CHECK>.
-    //
+
+    // @uvm-ieee 1800.2-2017 auto 18.8.3.2
     function void set_compare(uvm_check_e check=UVM_CHECK);
        value.set_compare(check);
     endfunction
 
 
     //---------------------
-    // Group: Introspection
+    // Group -- NODOCS -- Introspection
     //---------------------
 
-    // Function: size
+    // Function -- NODOCS -- size
     //
     // The number of entries currently in the FIFO.
     //
@@ -105,7 +101,7 @@ class uvm_reg_fifo extends uvm_reg;
     endfunction
 
 
-    // Function: capacity
+    // Function -- NODOCS -- capacity
     //
     // The maximum number of entries, or depth, of the FIFO.
 
@@ -115,10 +111,10 @@ class uvm_reg_fifo extends uvm_reg;
 
 
     //--------------
-    // Group: Access
+    // Group -- NODOCS -- Access
     //--------------
 
-    //  Function: write
+    //  Function -- NODOCS -- write
     // 
     //  Pushes the given value to the DUT FIFO. If auto-prediction is enabled,
     //  the written value is also pushed to the abstract FIFO before the
@@ -131,19 +127,14 @@ class uvm_reg_fifo extends uvm_reg;
     //  either prediction mode.
 
 
-    //  Function: read
+    //  Function -- NODOCS -- read
     //
     //  Reads the next value out of the DUT FIFO. If auto-prediction is
     //  enabled, the frontmost value in abstract FIFO is popped.
 
 
-    // Function: set
-    //
-    // Pushes the given value to the abstract FIFO. You may call this
-    // method several times before an <update()> as a means of preloading
-    // the DUT FIFO. Calls to ~set()~ to a full FIFO are ignored. You
-    // must call <update()> to update the DUT FIFO with your set values.
-    //
+
+    // @uvm-ieee 1800.2-2017 auto 18.8.5.2
     virtual function void set(uvm_reg_data_t  value,
                               string          fname = "",
                               int             lineno = 0);
@@ -158,15 +149,10 @@ class uvm_reg_fifo extends uvm_reg;
     endfunction
     
 
-    // Function: update
-    //
-    // Pushes (writes) all values preloaded using <set()> to the DUT.
-    // You must ~update~ after ~set~ before any blocking statements,
-    // else other reads/writes to the DUT FIFO may cause the mirror to
-    // become out of sync with the DUT.
-    //
+
+    // @uvm-ieee 1800.2-2017 auto 18.8.5.7
     virtual task update(output uvm_status_e      status,
-                        input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                        input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                         input  uvm_reg_map       map = null,
                         input  uvm_sequence_base parent = null,
                         input  int               prior = -1,
@@ -188,7 +174,7 @@ class uvm_reg_fifo extends uvm_reg;
     endtask
 
 
-    // Function: mirror
+    // Function -- NODOCS -- mirror
     //
     // Reads the next value out of the DUT FIFO. If auto-prediction is
     // enabled, the frontmost value in abstract FIFO is popped. If 
@@ -196,18 +182,15 @@ class uvm_reg_fifo extends uvm_reg;
     // <set_compare()>.
 
 
-    // Function: get
-    //
-    // Returns the next value from the abstract FIFO, but does not pop it.
-    // Used to get the expected value in a <mirror()> operation.
-    //
+
+    // @uvm-ieee 1800.2-2017 auto 18.8.5.1
     virtual function uvm_reg_data_t get(string fname="", int lineno=0);
        //return fifo.pop_front();
        return fifo[0];
     endfunction
 
 
-    // Function: do_predict
+    // Function -- NODOCS -- do_predict
     //
     // Updates the abstract (mirror) FIFO based on <write()> and
     // <read()> operations.  When auto-prediction is on, this method
@@ -260,9 +243,9 @@ class uvm_reg_fifo extends uvm_reg;
     endfunction
 
 
-    // Group: Special Overrides
+    // Group -- NODOCS -- Special Overrides
 
-    // Task: pre_write
+    // Task -- NODOCS -- pre_write
     //
     // Special pre-processing for a <write()> or <update()>.
     // Called as a result of a <write()> or <update()>. It is an error to
@@ -285,7 +268,7 @@ class uvm_reg_fifo extends uvm_reg;
     endtask
 
 
-    // Task: pre_read
+    // Task -- NODOCS -- pre_read
     //
     // Special post-processing for a <write()> or <update()>.
     // Aborts the operation if the internal FIFO is empty. If in your application
@@ -307,4 +290,3 @@ class uvm_reg_fifo extends uvm_reg;
     endfunction
 
 endclass
-

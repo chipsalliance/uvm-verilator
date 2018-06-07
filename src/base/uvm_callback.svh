@@ -1,7 +1,11 @@
 //----------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2010 Cadence Design Systems, Inc.
-//   Copyright 2010-2011 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2010 AMD
+// Copyright 2012-2018 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2012 Accellera Systems Initiative
+// Copyright 2010-2014 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,11 +25,8 @@
 
 `include "uvm_macros.svh"
 
-`ifndef UVM_CALLBACK_SVH
-`define UVM_CALLBACK_SVH
-
 //------------------------------------------------------------------------------
-// Title: Callbacks Classes
+// Title -- NODOCS -- Callbacks Classes
 //
 // This section defines the classes used for callback registration, management,
 // and user-defined callbacks.
@@ -136,7 +137,7 @@ class uvm_callbacks_base extends uvm_object;
   //work down the class hierarchy. If any class returns true then
   //the pair is legal.
   function bit check_registration(uvm_object obj, uvm_callback cb);
-    this_type st, dt;
+    this_type dt;
 
     if (m_is_registered(obj,cb))
       return 1;
@@ -320,7 +321,6 @@ class uvm_typed_callbacks#(type T=uvm_object) extends uvm_callbacks_base;
 
   static function void display(T obj=null);
     T me;
-    super_type ib = m_t_inst;
     string cbq[$];
     string inst_q[$];
     string mode_q[$];
@@ -436,7 +436,7 @@ endclass
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_callbacks #(T,CB)
+// CLASS -- NODOCS -- uvm_callbacks #(T,CB)
 //
 // The ~uvm_callbacks~ class provides a base class for implementing callbacks,
 // which are typically used to modify or augment component behavior without
@@ -466,16 +466,17 @@ endclass
 // provided in an example included in the kit.
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 10.7.2.1
 class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
     extends uvm_typed_callbacks#(T);
 
-  // Parameter: T
+  // Parameter -- NODOCS -- T
   //
   // This type parameter specifies the base object type with which the
   // <CB> callback objects will be registered. This object must be
   // a derivative of ~uvm_object~.
 
-  // Parameter: CB
+  // Parameter -- NODOCS -- CB
   //
   // This type parameter specifies the base callback type that will be
   // managed by this callback class. The callback type is typically a
@@ -496,7 +497,6 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
 
   static string m_typename;
   static string m_cb_typename;
-  static uvm_report_object reporter = new("cb_tracer");
   static uvm_callbacks#(T,uvm_callback) m_base_inst;
 
   bit m_registered;
@@ -569,9 +569,9 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
     return($cast(this_cb,cb));
   endfunction
 
-  // Group: Add/delete interface
+  // Group -- NODOCS -- Add/delete interface
 
-  // Function: add
+  // Function -- NODOCS -- add
   //
   // Registers the given callback object, ~cb~, with the given
   // ~obj~ handle. The ~obj~ handle can be ~null~, which allows 
@@ -587,6 +587,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   //| uvm_callbacks#(my_comp)::add(comp_a, cb);
   //| uvm_callbacks#(my_comp, my_callback)::add(comp_a,cb);
 
+  // @uvm-ieee 1800.2-2017 auto 10.7.2.3.1
   static function void add(T obj, uvm_callback cb, uvm_apprepend ordering=UVM_APPEND);
     uvm_queue#(uvm_callback) q;
     string nm,tnm; 
@@ -695,7 +696,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
     end
   endfunction
 
-  // Function: add_by_name
+  // Function -- NODOCS -- add_by_name
   //
   // Registers the given callback object, ~cb~, with one or more uvm_components.
   // The components must already exist and must be type T or a derivative. As
@@ -703,6 +704,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   // the component hierarchy to start the search for ~name~. See <uvm_root::find_all>
   // for more details on searching by name.
 
+  // @uvm-ieee 1800.2-2017 auto 10.7.2.3.2
   static function void add_by_name(string name,
                                    uvm_callback cb,
                                    uvm_component root,
@@ -735,7 +737,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   endfunction
 
 
-  // Function: delete
+  // Function -- NODOCS -- delete
   //
   // Deletes the given callback object, ~cb~, from the queue associated with
   //  the given ~obj~ handle. The ~obj~ handle can be ~null~, which allows
@@ -748,6 +750,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   //| uvm_callbacks#(my_comp)::delete(comp_a, cb);
   //| uvm_callbacks#(my_comp, my_callback)::delete(comp_a,cb);
 
+  // @uvm-ieee 1800.2-2017 auto 10.7.2.3.3
   static function void delete(T obj, uvm_callback cb);
     uvm_object b_obj = obj;
     uvm_queue#(uvm_callback) q;
@@ -779,7 +782,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   endfunction
 
 
-  // Function: delete_by_name
+  // Function -- NODOCS -- delete_by_name
   //
   // Removes the given callback object, ~cb~, associated with one or more 
   // uvm_component callback queues. As with <delete> the CB parameter is 
@@ -787,6 +790,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   // the search for ~name~. See <uvm_root::find_all> for more details on searching 
   // by name.
 
+  // @uvm-ieee 1800.2-2017 auto 10.7.2.3.4
   static function void delete_by_name(string name, uvm_callback cb,
      uvm_component root);
     uvm_component cq[$];
@@ -811,9 +815,8 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
     end
   endfunction
 
-
   //--------------------------
-  // Group: Iterator Interface
+  // Group -- NODOCS -- Iterator Interface
   //--------------------------
   //
   // This set of functions provide an iterator interface for callback queues. A facade
@@ -834,7 +837,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   endfunction
 
 
-  // Function: get_first
+  // Function -- NODOCS -- get_first
   //
   // Returns the first enabled callback of type CB which resides in the queue for ~obj~.
   // If ~obj~ is ~null~ then the typewide queue for T is searched. ~itr~ is the iterator;
@@ -846,6 +849,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   // The iterator class <uvm_callback_iter> may be used as an alternative, simplified,
   // iterator interface.
 
+  // @uvm-ieee 1800.2-2017 auto 10.7.2.4.1
   static function CB get_first (ref int itr, input T obj);
     uvm_queue#(uvm_callback) q;
     CB cb;
@@ -857,7 +861,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
     return null;
   endfunction
 
-  // Function: get_last
+  // Function -- NODOCS -- get_last
   //
   // Returns the last enabled callback of type CB which resides in the queue for ~obj~.
   // If ~obj~ is ~null~ then the typewide queue for T is searched. ~itr~ is the iterator;
@@ -869,6 +873,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   // The iterator class <uvm_callback_iter> may be used as an alternative, simplified,
   // iterator interface.
 
+  // @uvm-ieee 1800.2-2017 auto 10.7.2.4.2
   static function CB get_last (ref int itr, input T obj);
     uvm_queue#(uvm_callback) q;
     CB cb;
@@ -881,7 +886,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   endfunction
 
 
-  // Function: get_next
+  // Function -- NODOCS -- get_next
   //
   // Returns the next enabled callback of type CB which resides in the queue for ~obj~,
   // using ~itr~ as the starting point. If ~obj~ is ~null~ then the typewide queue for T
@@ -895,6 +900,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   // The iterator class <uvm_callback_iter> may be used as an alternative, simplified,
   // iterator interface.
 
+  // @uvm-ieee 1800.2-2017 auto 10.7.2.4.3
   static function CB get_next (ref int itr, input T obj);
     uvm_queue#(uvm_callback) q;
     CB cb;
@@ -907,7 +913,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   endfunction
 
 
-  // Function: get_prev
+  // Function -- NODOCS -- get_prev
   //
   // Returns the previous enabled callback of type CB which resides in the queue for ~obj~,
   // using ~itr~ as the starting point. If ~obj~ is ~null~ then the typewide queue for T
@@ -921,6 +927,7 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   // The iterator class <uvm_callback_iter> may be used as an alternative, simplified,
   // iterator interface.
 
+  // @uvm-ieee 1800.2-2017 auto 10.7.2.4.4
   static function CB get_prev (ref int itr, input T obj);
     uvm_queue#(uvm_callback) q;
     CB cb;
@@ -933,11 +940,55 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   endfunction
 
 
+  // Function: get_all
+  // Populates the end of the ~all_callbacks~ queue with the list of all registered callbacks
+  // for ~obj~ (whether they are enabled or disabled).
+  //
+  // If ~obj~ is ~null~, then ~all_callbacks~ shall be populated with all registered typewide
+  // callbacks.  If ~obj~ is not ~null~, then ~all_callbacks~ shall be populated with both
+  // the typewide and instance callbacks (if any) registered for ~obj~.
+  //
+  // NOTE: This API contradicts the definition provided in section 10.7.2.5 of the P1800.2-2017
+  //       LRM.  Details on the reasoning behind the change can be found at
+  //       <https://accellera.mantishub.io/view.php?id=6377>.
+  //
+  //| static function void get_all( ref CB all_callbacks[$], input T obj=null );
+
+  // @uvm-ieee 1800.2-2017 auto 10.7.2.5
+  static function void get_all ( ref CB all_callbacks[$], input T obj=null );
+    uvm_queue#(uvm_callback) q;
+    CB cb;
+    CB callbacks_to_append[$];
+    CB unique_callbacks_to_append[$];
+
+    void'( get() );
+
+    if ((obj == null) || (!m_pool.exists(obj))) begin
+      // Only typewide callbacks exist
+      for (int qi=0; qi<m_t_inst.m_tw_cb_q.size(); ++qi) 
+	if ($cast(cb, m_t_inst.m_tw_cb_q.get(qi)))
+	  callbacks_to_append.push_back( cb );
+    end
+    else begin
+      // No need to do anything special with typewide,
+      // as they're present in the instance queue.
+      q = m_pool.get(obj);
+      for (int qi=0; qi < q.size(); qi++)
+	if ($cast(cb, q.get( qi )))
+	  callbacks_to_append.push_back( cb );
+    end
+
+    // Now remove duplicates and append the final list to all_callbacks.
+    unique_callbacks_to_append = callbacks_to_append.unique( cb_ ) with ( cb_.get_inst_id );
+    all_callbacks = { all_callbacks, unique_callbacks_to_append };
+  endfunction
+
+
   //-------------
-  // Group: Debug
+  // Group -- NODOCS -- Debug
   //-------------
 
-  // Function: display
+  // Function -- NODOCS -- display
   //
   // This function displays callback information for ~obj~. If ~obj~ is
   // ~null~, then it displays callback information for all objects
@@ -990,9 +1041,9 @@ class uvm_derived_callbacks#(type T=uvm_object, type ST=uvm_object, type CB=uvm_
 
   static function bit register_super_type(string tname="", sname="");
     this_user_type u_inst = this_user_type::get();
-    this_type      inst = this_type::get();
     uvm_callbacks_base s_obj;
 
+    void'(this_type::get()); // make sure it exists
     this_user_type::m_t_inst.m_typename = tname;
 
     if(sname != "") m_s_typeid.typename = sname;
@@ -1018,7 +1069,7 @@ endclass
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_callback_iter
+// CLASS -- NODOCS -- uvm_callback_iter
 //
 //------------------------------------------------------------------------------
 // The ~uvm_callback_iter~ class is an iterator class for iterating over
@@ -1034,70 +1085,77 @@ endclass
 // callbacks and executing the callback methods.
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto D.1.1
 class uvm_callback_iter#(type T = uvm_object, type CB = uvm_callback);
 
    local int m_i;
    local T   m_obj;
    local CB  m_cb;
 
-   // Function: new
+   // Function -- NODOCS -- new
    //
    // Creates a new callback iterator object. It is required that the object
    // context be provided.
 
+   // @uvm-ieee 1800.2-2017 auto D.1.2.1
    function new(T obj);
       m_obj = obj;
    endfunction
 
-   // Function: first
+   // Function -- NODOCS -- first
    //
    // Returns the first valid (enabled) callback of the callback type (or
    // a derivative) that is in the queue of the context object. If the
    // queue is empty then ~null~ is returned.
 
+   // @uvm-ieee 1800.2-2017 auto D.1.2.2
    function CB first();
       m_cb = uvm_callbacks#(T,CB)::get_first(m_i, m_obj);
       return m_cb;
    endfunction
 
-   // Function: last
+   // Function -- NODOCS -- last
    //
    // Returns the last valid (enabled) callback of the callback type (or
    // a derivative) that is in the queue of the context object. If the
    // queue is empty then ~null~ is returned.
 
+   // @uvm-ieee 1800.2-2017 auto D.1.2.3
    function CB last();
       m_cb = uvm_callbacks#(T,CB)::get_last(m_i, m_obj);
       return m_cb;
    endfunction
 
-   // Function: next
+   // Function -- NODOCS -- next
    //
    // Returns the next valid (enabled) callback of the callback type (or
    // a derivative) that is in the queue of the context object. If there
    // are no more valid callbacks in the queue, then ~null~ is returned.
 
+   // @uvm-ieee 1800.2-2017 auto D.1.2.4
    function CB next();
       m_cb = uvm_callbacks#(T,CB)::get_next(m_i, m_obj);
       return m_cb;
    endfunction
 
-   // Function: prev
+   // Function -- NODOCS -- prev
    //
    // Returns the previous valid (enabled) callback of the callback type (or
    // a derivative) that is in the queue of the context object. If there
    // are no more valid callbacks in the queue, then ~null~ is returned.
 
+   // @uvm-ieee 1800.2-2017 auto D.1.2.5
    function CB prev();
       m_cb = uvm_callbacks#(T,CB)::get_prev(m_i, m_obj);
       return m_cb;
    endfunction
 
-   // Function: get_cb
+   // Function -- NODOCS -- get_cb
    //
    // Returns the last callback accessed via a first() or next()
    // call. 
 
+   // @uvm-ieee 1800.2-2017 auto D.1.2.6
    function CB get_cb();
       return m_cb;
    endfunction
@@ -1121,7 +1179,7 @@ endclass
 
 
 //------------------------------------------------------------------------------
-// CLASS: uvm_callback
+// CLASS -- NODOCS -- uvm_callback
 //
 // The ~uvm_callback~ class is the base class for user-defined callback classes.
 // Typically, the component developer defines an application-specific callback
@@ -1137,25 +1195,27 @@ endclass
 // no restrictions.
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 10.7.1.1
 class uvm_callback extends uvm_object;
-
-  static uvm_report_object reporter = new("cb_tracer");
-
   protected bit m_enabled = 1;
 
-  // Function: new
+  `uvm_object_utils(uvm_callback)
+  
+  // Function -- NODOCS -- new
   //
   // Creates a new uvm_callback object, giving it an optional ~name~.
 
+  // @uvm-ieee 1800.2-2017 auto 10.7.1.2.1
   function new(string name="uvm_callback");
     super.new(name);
   endfunction
 
 
-  // Function: callback_mode
+  // Function -- NODOCS -- callback_mode
   //
   // Enable/disable callbacks (modeled like rand_mode and constraint_mode).
 
+  // @uvm-ieee 1800.2-2017 auto 10.7.1.2.2
   function bit callback_mode(int on=-1);
     if(on == 0 || on == 1) begin
       `uvm_cb_trace_noobj(this,$sformatf("Setting callback mode for %s to %s",
@@ -1171,28 +1231,14 @@ class uvm_callback extends uvm_object;
   endfunction
 
 
-  // Function: is_enabled
+  // Function -- NODOCS -- is_enabled
   //
   // Returns 1 if the callback is enabled, 0 otherwise.
 
+  // @uvm-ieee 1800.2-2017 auto 10.7.1.2.3
   function bit is_enabled();
     return callback_mode();
   endfunction
 
-  static string type_name = "uvm_callback";
-
-
-  // Function: get_type_name
-  //
-  // Returns the type name of this callback object.
-
-  virtual function string get_type_name();
-     return type_name;
-  endfunction
-
 endclass
-
-
-`endif // UVM_CALLBACK_SVH
-
 

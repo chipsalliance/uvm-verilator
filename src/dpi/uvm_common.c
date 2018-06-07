@@ -1,7 +1,9 @@
 //----------------------------------------------------------------------
-//   Copyright 2010 Synopsys, Inc.
-//   Copyright 2011 Mentor Graphics Corporation
-//   Copyright 2013 NVIDIA Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010-2013 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2013 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -23,7 +25,7 @@
 
 extern void m__uvm_report_dpi(int,const char*,const char*,int,const char*, int);
 
-#if defined(INCA) || defined(NCSC)
+#if defined(XCELIUM) || defined(NCSC)
 const static char* uvm_package_scope_name = "uvm_pkg::";
 #else
 const static char* uvm_package_scope_name = "uvm_pkg";

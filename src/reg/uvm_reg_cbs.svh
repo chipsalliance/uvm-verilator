@@ -1,8 +1,11 @@
 //
 // -------------------------------------------------------------
-//    Copyright 2004-2009 Synopsys, Inc.
-//    Copyright 2010 Mentor Graphics Corporation
-//    Copyright 2010 Cadence Design Systems, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2004-2018 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2014 Cisco Systems, Inc.
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -26,7 +29,7 @@ typedef class uvm_mem;
 typedef class uvm_reg_backdoor;
 
 //------------------------------------------------------------------------------
-// Title: Register Callbacks
+// Title -- NODOCS -- Register Callbacks
 //
 // This section defines the base class used for all register callback
 // extensions. It also includes pre-defined callback extensions for use on
@@ -35,232 +38,63 @@ typedef class uvm_reg_backdoor;
 
 
 //------------------------------------------------------------------------------
-// Class: uvm_reg_cbs
+// Class -- NODOCS -- uvm_reg_cbs
 //
 // Facade class for field, register, memory and backdoor
 // access callback methods. 
 //------------------------------------------------------------------------------
 
-virtual class uvm_reg_cbs extends uvm_callback;
+// @uvm-ieee 1800.2-2017 auto 18.11.1
+class uvm_reg_cbs extends uvm_callback;
 
+   `uvm_object_utils(uvm_reg_cbs)
+
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.2.1
    function new(string name = "uvm_reg_cbs");
       super.new(name);
    endfunction
 
 
-   // Task: pre_write
-   //
-   // Called before a write operation.
-   //
-   // All registered ~pre_write~ callback methods are invoked after the
-   // invocation of the ~pre_write~ method of associated object (<uvm_reg>,
-   // <uvm_reg_field>, <uvm_mem>, or <uvm_reg_backdoor>). If the element being
-   // written is a <uvm_reg>, all ~pre_write~ callback methods are invoked
-   // before the contained <uvm_reg_fields>. 
-   //
-   // Backdoor - <uvm_reg_backdoor::pre_write>,
-   //            <uvm_reg_cbs::pre_write> cbs for backdoor.
-   //
-   // Register - <uvm_reg::pre_write>,
-   //            <uvm_reg_cbs::pre_write> cbs for reg,
-   //            then foreach field:
-   //              <uvm_reg_field::pre_write>, 
-   //              <uvm_reg_cbs::pre_write> cbs for field
-   //
-   // RegField - <uvm_reg_field::pre_write>,
-   //            <uvm_reg_cbs::pre_write> cbs for field
-   //
-   // Memory   - <uvm_mem::pre_write>,
-   //            <uvm_reg_cbs::pre_write> cbs for mem
-   //
-   // The ~rw~ argument holds information about the operation.
-   //
-   // - Modifying the ~value~ modifies the actual value written.
-   //
-   // - For memories, modifying the ~offset~ modifies the offset
-   //   used in the operation.
-   //
-   // - For non-backdoor operations, modifying the access ~path~ or
-   //   address ~map~ modifies the actual path or map used in the
-   //   operation.
-   //
-   // If the ~rw.status~ is modified to anything other than <UVM_IS_OK>,
-   // the operation is aborted.
-   //
-   // See <uvm_reg_item> for details on ~rw~ information.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.2.2
    virtual task pre_write(uvm_reg_item rw); endtask
 
 
-   // Task: post_write
-   //
-   // Called after a write operation.
-   //
-   // All registered ~post_write~ callback methods are invoked before the
-   // invocation of the ~post_write~ method of the associated object (<uvm_reg>,
-   // <uvm_reg_field>, <uvm_mem>, or <uvm_reg_backdoor>). If the element being
-   // written is a <uvm_reg>, all ~post_write~ callback methods are invoked
-   // before the contained <uvm_reg_fields>. 
-   //
-   // Summary of callback order:
-   //
-   // Backdoor - <uvm_reg_cbs::post_write> cbs for backdoor,
-   //            <uvm_reg_backdoor::post_write>
-   //
-   // Register - <uvm_reg_cbs::post_write> cbs for reg,
-   //            <uvm_reg::post_write>,
-   //            then foreach field:
-   //              <uvm_reg_cbs::post_write> cbs for field,
-   //              <uvm_reg_field::post_read>
-   //
-   // RegField - <uvm_reg_cbs::post_write> cbs for field,
-   //            <uvm_reg_field::post_write>
-   //
-   // Memory   - <uvm_reg_cbs::post_write> cbs for mem,
-   //            <uvm_mem::post_write>
-   //
-   // The ~rw~ argument holds information about the operation.
-   //
-   // - Modifying the ~status~ member modifies the returned status.
-   //
-   // - Modifying the ~value~ or ~offset~ members has no effect, as
-   //   the operation has already completed.
-   //
-   // See <uvm_reg_item> for details on ~rw~ information.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.2.3
    virtual task post_write(uvm_reg_item rw); endtask
 
 
-   // Task: pre_read
-   //
-   // Callback called before a read operation.
-   //
-   // All registered ~pre_read~ callback methods are invoked after the
-   // invocation of the ~pre_read~ method of associated object (<uvm_reg>,
-   // <uvm_reg_field>, <uvm_mem>, or <uvm_reg_backdoor>). If the element being
-   // read is a <uvm_reg>, all ~pre_read~ callback methods are invoked before
-   // the contained <uvm_reg_fields>. 
-   //
-   // Backdoor - <uvm_reg_backdoor::pre_read>,
-   //            <uvm_reg_cbs::pre_read> cbs for backdoor
-   //
-   // Register - <uvm_reg::pre_read>,
-   //            <uvm_reg_cbs::pre_read> cbs for reg,
-   //            then foreach field:
-   //              <uvm_reg_field::pre_read>,
-   //              <uvm_reg_cbs::pre_read> cbs for field
-   //
-   // RegField - <uvm_reg_field::pre_read>,
-   //            <uvm_reg_cbs::pre_read> cbs for field
-   //
-   // Memory   - <uvm_mem::pre_read>,
-   //            <uvm_reg_cbs::pre_read> cbs for mem
-   //
-   // The ~rw~ argument holds information about the operation.
-   //
-   // - The ~value~ member of ~rw~ is not used has no effect if modified.
-   //
-   // - For memories, modifying the ~offset~ modifies the offset
-   //   used in the operation.
-   //
-   // - For non-backdoor operations, modifying the access ~path~ or
-   //   address ~map~ modifies the actual path or map used in the
-   //   operation.
-   //
-   // If the ~rw.status~ is modified to anything other than <UVM_IS_OK>,
-   // the operation is aborted.
-   //
-   // See <uvm_reg_item> for details on ~rw~ information.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.2.4
    virtual task pre_read(uvm_reg_item rw); endtask
 
 
-   // Task: post_read
-   //
-   // Callback called after a read operation.
-   //
-   // All registered ~post_read~ callback methods are invoked before the
-   // invocation of the ~post_read~ method of the associated object (<uvm_reg>,
-   // <uvm_reg_field>, <uvm_mem>, or <uvm_reg_backdoor>). If the element being read
-   // is a <uvm_reg>, all ~post_read~ callback methods are invoked before the
-   // contained <uvm_reg_fields>. 
-   //
-   // Backdoor - <uvm_reg_cbs::post_read> cbs for backdoor,
-   //            <uvm_reg_backdoor::post_read>
-   //
-   // Register - <uvm_reg_cbs::post_read> cbs for reg,
-   //            <uvm_reg::post_read>,
-   //            then foreach field:
-   //              <uvm_reg_cbs::post_read> cbs for field,
-   //              <uvm_reg_field::post_read>
-   //
-   // RegField - <uvm_reg_cbs::post_read> cbs for field,
-   //            <uvm_reg_field::post_read>
-   //
-   // Memory   - <uvm_reg_cbs::post_read> cbs for mem,
-   //            <uvm_mem::post_read>
-   //
-   // The ~rw~ argument holds information about the operation.
-   //
-   // - Modifying the readback ~value~ or ~status~ modifies the actual
-   //   returned value and status.
-   //
-   // - Modifying the ~value~ or ~offset~ members has no effect, as
-   //   the operation has already completed.
-   //
-   // See <uvm_reg_item> for details on ~rw~ information.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.2.5
    virtual task post_read(uvm_reg_item rw); endtask
 
 
-   // Task: post_predict
-   //
-   // Called by the <uvm_reg_field::predict()> method
-   // after a successful UVM_PREDICT_READ or UVM_PREDICT_WRITE prediction.
-   //
-   // ~previous~ is the previous value in the mirror and
-   // ~value~ is the latest predicted value. Any change to ~value~ will
-   // modify the predicted mirror value.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.2.6
    virtual function void post_predict(input uvm_reg_field  fld,
                                       input uvm_reg_data_t previous,
                                       inout uvm_reg_data_t value,
                                       input uvm_predict_e  kind,
-                                      input uvm_path_e     path,
+                                      input uvm_door_e     path,
                                       input uvm_reg_map    map);
    endfunction
 
 
-   // Function: encode
-   //
-   // Data encoder
-   //
-   // The registered callback methods are invoked in order of registration
-   // after all the ~pre_write~ methods have been called.
-   // The encoded data is passed through each invocation in sequence.
-   // This allows the ~pre_write~ methods to deal with clear-text data.
-   //
-   // By default, the data is not modified.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.2.7
    virtual function void encode(ref uvm_reg_data_t data[]);
    endfunction
 
 
-   // Function: decode
-   //
-   // Data decode
-   //
-   // The registered callback methods are invoked in ~reverse order~
-   // of registration before all the ~post_read~ methods are called.
-   // The decoded data is passed through each invocation in sequence.
-   // This allows the ~post_read~ methods to deal with clear-text data.
-   //
-   // The reversal of the invocation order is to allow the decoding
-   // of the data to be performed in the opposite order of the encoding
-   // with both operations specified in the same callback extension.
-   // 
-   // By default, the data is not modified.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.2.8
    virtual function void decode(ref uvm_reg_data_t data[]);
    endfunction
 
@@ -270,103 +104,106 @@ endclass
 
 
 //------------------
-// Section: Typedefs
+// Section -- NODOCS -- Typedefs
 //------------------
 
 
-// Type: uvm_reg_cb
+// Type -- NODOCS -- uvm_reg_cb
 //
 // Convenience callback type declaration for registers
 //
 // Use this declaration to register the register callbacks rather than
 // the more verbose parameterized class
 //
-typedef uvm_callbacks#(uvm_reg, uvm_reg_cbs) uvm_reg_cb;
+typedef uvm_callbacks#(uvm_reg, uvm_reg_cbs) uvm_reg_cb /* @uvm-ieee 1800.2-2017 auto D.4.6.1*/   ;
 
 
-// Type: uvm_reg_cb_iter
+// Type -- NODOCS -- uvm_reg_cb_iter
 //
 // Convenience callback iterator type declaration for registers
 //
 // Use this declaration to iterate over registered register callbacks
 // rather than the more verbose parameterized class
 //
-typedef uvm_callback_iter#(uvm_reg, uvm_reg_cbs) uvm_reg_cb_iter;
+typedef uvm_callback_iter#(uvm_reg, uvm_reg_cbs) uvm_reg_cb_iter /* @uvm-ieee 1800.2-2017 auto D.4.6.2*/   ;
 
 
-// Type: uvm_reg_bd_cb
+// Type -- NODOCS -- uvm_reg_bd_cb
 //
 // Convenience callback type declaration for backdoor
 //
 // Use this declaration to register register backdoor callbacks rather than
 // the more verbose parameterized class
 //
-typedef uvm_callbacks#(uvm_reg_backdoor, uvm_reg_cbs) uvm_reg_bd_cb;
+typedef uvm_callbacks#(uvm_reg_backdoor, uvm_reg_cbs) uvm_reg_bd_cb /* @uvm-ieee 1800.2-2017 auto D.4.6.3*/   ;
 
 
-// Type: uvm_reg_bd_cb_iter
+// Type -- NODOCS -- uvm_reg_bd_cb_iter
 // Convenience callback iterator type declaration for backdoor
 //
 // Use this declaration to iterate over registered register backdoor callbacks
 // rather than the more verbose parameterized class
 //
 
-typedef uvm_callback_iter#(uvm_reg_backdoor, uvm_reg_cbs) uvm_reg_bd_cb_iter;
+typedef uvm_callback_iter#(uvm_reg_backdoor, uvm_reg_cbs) uvm_reg_bd_cb_iter /* @uvm-ieee 1800.2-2017 auto D.4.6.4*/   ;
 
 
-// Type: uvm_mem_cb
+// Type -- NODOCS -- uvm_mem_cb
 //
 // Convenience callback type declaration for memories
 //
 // Use this declaration to register memory callbacks rather than
 // the more verbose parameterized class
 //
-typedef uvm_callbacks#(uvm_mem, uvm_reg_cbs) uvm_mem_cb;
+typedef uvm_callbacks#(uvm_mem, uvm_reg_cbs) uvm_mem_cb /* @uvm-ieee 1800.2-2017 auto D.4.6.5*/   ;
 
 
-// Type: uvm_mem_cb_iter
+// Type -- NODOCS -- uvm_mem_cb_iter
 //
 // Convenience callback iterator type declaration for memories
 //
 // Use this declaration to iterate over registered memory callbacks
 // rather than the more verbose parameterized class
 //
-typedef uvm_callback_iter#(uvm_mem, uvm_reg_cbs) uvm_mem_cb_iter;
+typedef uvm_callback_iter#(uvm_mem, uvm_reg_cbs) uvm_mem_cb_iter /* @uvm-ieee 1800.2-2017 auto D.4.6.6*/   ;
 
 
-// Type: uvm_reg_field_cb
+// Type -- NODOCS -- uvm_reg_field_cb
 //
 // Convenience callback type declaration for fields
 //
 // Use this declaration to register field callbacks rather than
 // the more verbose parameterized class
 //
-typedef uvm_callbacks#(uvm_reg_field, uvm_reg_cbs) uvm_reg_field_cb;
+typedef uvm_callbacks#(uvm_reg_field, uvm_reg_cbs) uvm_reg_field_cb /* @uvm-ieee 1800.2-2017 auto D.4.6.7*/   ;
 
 
-// Type: uvm_reg_field_cb_iter
+// Type -- NODOCS -- uvm_reg_field_cb_iter
 //
 // Convenience callback iterator type declaration for fields
 //
 // Use this declaration to iterate over registered field callbacks
 // rather than the more verbose parameterized class
 //
-typedef uvm_callback_iter#(uvm_reg_field, uvm_reg_cbs) uvm_reg_field_cb_iter;
+typedef uvm_callback_iter#(uvm_reg_field, uvm_reg_cbs) uvm_reg_field_cb_iter /* @uvm-ieee 1800.2-2017 auto D.4.6.8*/   ;
 
 
 //-----------------------------
-// Group: Predefined Extensions
+// Group -- NODOCS -- Predefined Extensions
 //-----------------------------
 
 //------------------------------------------------------------------------------
-// Class: uvm_reg_read_only_cbs
+// Class -- NODOCS -- uvm_reg_read_only_cbs
 //
 // Pre-defined register callback method for read-only registers
 // that will issue an error if a write() operation is attempted.
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 18.11.4.1
 class uvm_reg_read_only_cbs extends uvm_reg_cbs;
+// SEE MANTIS 6040. This is supposed to be Virtual, but cannot since an instance is 
+// created.  leaving NON virtual for now. 
 
    function new(string name = "uvm_reg_read_only_cbs");
       super.new(name);
@@ -375,10 +212,8 @@ class uvm_reg_read_only_cbs extends uvm_reg_cbs;
    `uvm_object_utils(uvm_reg_read_only_cbs)
 
    
-   // Function: pre_write
-   //
-   // Produces an error message and sets status to <UVM_NOT_OK>.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.4.2.1
    virtual task pre_write(uvm_reg_item rw);
       string name = rw.element.get_full_name();
       
@@ -394,7 +229,7 @@ class uvm_reg_read_only_cbs extends uvm_reg_cbs;
       end
       
       `uvm_error("UVM/REG/READONLY",
-                 {name, " is read-only. Cannot call write() method."});
+                 {name, " is read-only. Cannot call write() method."})
 
       rw.status = UVM_NOT_OK;
    endtask
@@ -406,10 +241,8 @@ class uvm_reg_read_only_cbs extends uvm_reg_cbs;
    endfunction
 
 
-   // Function: add
-   //
-   // Add this callback to the specified register and its contained fields.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.4.2.2
    static function void add(uvm_reg rg);
       uvm_reg_field flds[$];
       
@@ -421,10 +254,8 @@ class uvm_reg_read_only_cbs extends uvm_reg_cbs;
    endfunction
 
 
-   // Function: remove
-   //
-   // Remove this callback from the specified register and its contained fields.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.4.2.3
    static function void remove(uvm_reg rg);
       uvm_reg_cb_iter cbs = new(rg);
       uvm_reg_field flds[$];
@@ -445,25 +276,28 @@ endclass
 
 
 //------------------------------------------------------------------------------
-// Class: uvm_reg_write_only_cbs
+// Class -- NODOCS -- uvm_reg_write_only_cbs
 //
 // Pre-defined register callback method for write-only registers
 // that will issue an error if a read() operation is attempted.
 //
 //------------------------------------------------------------------------------
 
-class uvm_reg_write_only_cbs extends uvm_reg_cbs;
 
+// @uvm-ieee 1800.2-2017 auto 18.11.5.1
+class uvm_reg_write_only_cbs extends uvm_reg_cbs;
+// SEE MANTIS 6040. This is supposed to be Virtual, but cannot since an instance is 
+// created.  leaving NON virtual for now. 
+
+   // @uvm-ieee 1800.2-2017 auto 18.1.2.1
    function new(string name = "uvm_reg_write_only_cbs");
       super.new(name);
    endfunction
 
    `uvm_object_utils(uvm_reg_write_only_cbs)
    
-   // Function: pre_read
-   //
-   // Produces an error message and sets status to <UVM_NOT_OK>.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.5.2.1
    virtual task pre_read(uvm_reg_item rw);
       string name = rw.element.get_full_name();
       
@@ -479,7 +313,7 @@ class uvm_reg_write_only_cbs extends uvm_reg_cbs;
       end
       
       `uvm_error("UVM/REG/WRTEONLY",
-                 {name, " is write-only. Cannot call read() method."});
+                 {name, " is write-only. Cannot call read() method."})
 
       rw.status = UVM_NOT_OK;
    endtask
@@ -491,10 +325,8 @@ class uvm_reg_write_only_cbs extends uvm_reg_cbs;
    endfunction
 
 
-   // Function: add
-   //
-   // Add this callback to the specified register and its contained fields.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.5.2.2
    static function void add(uvm_reg rg);
       uvm_reg_field flds[$];
       
@@ -506,10 +338,8 @@ class uvm_reg_write_only_cbs extends uvm_reg_cbs;
    endfunction
 
 
-   // Function: remove
-   //
-   // Remove this callback from the specified register and its contained fields.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.11.5.2.3
    static function void remove(uvm_reg rg);
       uvm_reg_cb_iter cbs = new(rg);
       uvm_reg_field flds[$];

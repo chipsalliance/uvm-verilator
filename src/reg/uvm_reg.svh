@@ -1,8 +1,13 @@
 //
 // -------------------------------------------------------------
-//    Copyright 2004-2009 Synopsys, Inc.
-//    Copyright 2010-2011 Mentor Graphics Corporation
-//    Copyright 2010-2011 Cadence Design Systems, Inc.
+// Copyright 2010-2012 Mentor Graphics Corporation
+// Copyright 2011-2014 Semifore
+// Copyright 2018 Intel Corporation
+// Copyright 2004-2018 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010 AMD
+// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2012 Accellera Systems Initiative
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -24,17 +29,9 @@
 typedef class uvm_reg_cbs;
 typedef class uvm_reg_frontdoor;
 
-//-----------------------------------------------------------------
-// CLASS: uvm_reg
-// Register abstraction base class
-//
-// A register represents a set of fields that are accessible
-// as a single entity.
-//
-// A register may be mapped to one or more address maps,
-// each with different access rights and policy.
-//-----------------------------------------------------------------
-virtual class uvm_reg extends uvm_object;
+
+// @uvm-ieee 1800.2-2017 auto 18.4.1
+class uvm_reg extends uvm_object;
 
    local bit               m_locked;
    local uvm_reg_block     m_parent;
@@ -62,60 +59,25 @@ virtual class uvm_reg extends uvm_object;
        #(uvm_queue #(uvm_hdl_path_concat)) m_hdl_paths_pool;
 
    //----------------------
-   // Group: Initialization
+   // Group -- NODOCS -- Initialization
    //----------------------
 
-   // Function: new
-   //
-   // Create a new instance and type-specific configuration
-   //
-   // Creates an instance of a register abstraction class with the specified
-   // name.
-   //
-   // ~n_bits~ specifies the total number of bits in the register.
-   // Not all bits need to be implemented.
-   // This value is usually a multiple of 8.
-   //
-   // ~has_coverage~ specifies which functional coverage models are present in
-   // the extension of the register abstraction class.
-   // Multiple functional coverage models may be specified by adding their
-   // symbolic names, as defined by the <uvm_coverage_model_e> type.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.2.1
    extern function new (string name="",
                         int unsigned n_bits,
                         int has_coverage);
 
 
-   // Function: configure
-   //
-   // Instance-specific configuration
-   //
-   // Specify the parent block of this register.
-   // May also set a parent register file for this register,
-   //
-   // If the register is implemented in a single HDL variable,
-   // its name is specified as the ~hdl_path~.
-   // Otherwise, if the register is implemented as a concatenation
-   // of variables (usually one per field), then the HDL path
-   // must be specified using the <add_hdl_path()> or
-   // <add_hdl_path_slice> method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.2.2
    extern function void configure (uvm_reg_block blk_parent,
                                    uvm_reg_file regfile_parent = null,
                                    string hdl_path = "");
 
 
-   // Function: set_offset
-   //
-   // Modify the offset of the register
-   //
-   // The offset of a register within an address map is set using the
-   // <uvm_reg_map::add_reg()> method.
-   // This method is used to modify that offset dynamically.
-   //  
-   // Modifying the offset of a register will make the register model
-   // diverge from the specification that was used to create it.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.2.3
    extern virtual function void set_offset (uvm_reg_map    map,
                                             uvm_reg_addr_t offset,
                                             bit            unmapped = 0);
@@ -127,19 +89,25 @@ virtual class uvm_reg extends uvm_object;
 
    /*local*/ extern function void   Xlock_modelX;
 
+	// remove the knowledge that the register resides in the map from the register instance
+	// @uvm-ieee 1800.2-2017 auto 18.4.2.5
+	virtual function void unregister(uvm_reg_map map);
+		m_maps.delete(map);
+	endfunction
+	
 
    //---------------------
-   // Group: Introspection
+   // Group -- NODOCS -- Introspection
    //---------------------
 
-   // Function: get_name
+   // Function -- NODOCS -- get_name
    //
    // Get the simple name
    //
    // Return the simple object name of this register.
    //
 
-   // Function: get_full_name
+   // Function -- NODOCS -- get_full_name
    //
    // Get the hierarchical name
    //
@@ -149,78 +117,49 @@ virtual class uvm_reg extends uvm_object;
    extern virtual function string get_full_name();
 
 
-   // Function: get_parent
-   //
-   // Get the parent block
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.3.1
    extern virtual function uvm_reg_block get_parent ();
    extern virtual function uvm_reg_block get_block  ();
 
 
-   // Function: get_regfile
-   //
-   // Get the parent register file
-   //
-   // Returns ~null~ if this register is instantiated in a block.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.3.2
    extern virtual function uvm_reg_file get_regfile ();
 
 
-   // Function: get_n_maps
-   //
-   // Returns the number of address maps this register is mapped in
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.3.3
    extern virtual function int get_n_maps ();
 
 
-   // Function: is_in_map
-   //
-   // Returns 1 if this register is in the specified address ~map~
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.3.4
    extern function bit is_in_map (uvm_reg_map map);
 
 
-   // Function: get_maps
-   //
-   // Returns all of the address ~maps~ where this register is mapped
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.3.5
    extern virtual function void get_maps (ref uvm_reg_map maps[$]);
 
 
-   /*local*/ extern virtual function uvm_reg_map get_local_map   (uvm_reg_map map,
-                                                                  string caller = "");
-   /*local*/ extern virtual function uvm_reg_map get_default_map (string caller = "");
+   /*local*/ extern virtual function uvm_reg_map get_local_map   (uvm_reg_map map);
+   /*local*/ extern virtual function uvm_reg_map get_default_map ();
 
 
-   // Function: get_rights
-   //
-   // Returns the accessibility ("RW, "RO", or "WO") of this register in the given ~map~.
-   //
-   // If no address map is specified and the register is mapped in only one
-   // address map, that address map is used. If the register is mapped
-   // in more than one address map, the default address map of the
-   // parent block is used.
-   //
-   // Whether a register field can be read or written depends on both the field's
-   // configured access policy (refer to <uvm_reg_field::configure>) and the register's
-   // accessibility rights in the map being used to access the field. 
-   //
-   // If an address map is specified and
-   // the register is not mapped in the specified
-   // address map, an error message is issued
-   // and "RW" is returned. 
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.3.6
    extern virtual function string get_rights (uvm_reg_map map = null);
 
 
-   // Function: get_n_bits
+   // Function -- NODOCS -- get_n_bits
    //
    // Returns the width, in bits, of this register.
    //
    extern virtual function int unsigned get_n_bits ();
 
 
-   // Function: get_n_bytes
+   // Function -- NODOCS -- get_n_bytes
    //
    // Returns the width, in bytes, of this register. Rounds up to
    // next whole byte if register is not a multiple of 8.
@@ -228,202 +167,77 @@ virtual class uvm_reg extends uvm_object;
    extern virtual function int unsigned get_n_bytes();
 
 
-   // Function: get_max_size
+   // Function -- NODOCS -- get_max_size
    //
    // Returns the maximum width, in bits, of all registers. 
    //
    extern static function int unsigned get_max_size();
 
 
-   // Function: get_fields
-   //
-   // Return the fields in this register
-   //
-   // Fills the specified array with the abstraction class
-   // for all of the fields contained in this register.
-   // Fields are ordered from least-significant position to most-significant
-   // position within the register. 
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.3.10
    extern virtual function void get_fields (ref uvm_reg_field fields[$]);
 
 
-   // Function: get_field_by_name
-   //
-   // Return the named field in this register
-   //
-   // Finds a field with the specified name in this register
-   // and returns its abstraction class.
-   // If no fields are found, returns ~null~.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.3.11
    extern virtual function uvm_reg_field get_field_by_name(string name);
 
 
    /*local*/ extern function string Xget_fields_accessX(uvm_reg_map map);
 
 
-   // Function: get_offset
-   //
-   // Returns the offset of this register
-   //
-   // Returns the offset of this register in an address ~map~.
-   //
-   // If no address map is specified and the register is mapped in only one
-   // address map, that address map is used. If the register is mapped
-   // in more than one address map, the default address map of the
-   // parent block is used.
-   //
-   // If an address map is specified and
-   // the register is not mapped in the specified
-   // address map, an error message is issued.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.3.12
    extern virtual function uvm_reg_addr_t get_offset (uvm_reg_map map = null);
 
 
-   // Function: get_address
-   //
-   // Returns the base external physical address of this register
-   //
-   // Returns the base external physical address of this register
-   // if accessed through the specified address ~map~.
-   //
-   // If no address map is specified and the register is mapped in only one
-   // address map, that address map is used. If the register is mapped
-   // in more than one address map, the default address map of the
-   // parent block is used.
-   //
-   // If an address map is specified and
-   // the register is not mapped in the specified
-   // address map, an error message is issued.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.3.13
    extern virtual function uvm_reg_addr_t get_address (uvm_reg_map map = null);
 
 
-   // Function: get_addresses
-   //
-   // Identifies the external physical address(es) of this register
-   //
-   // Computes all of the external physical addresses that must be accessed
-   // to completely read or write this register. The addressed are specified in
-   // little endian order.
-   // Returns the number of bytes transferred on each access.
-   //
-   // If no address map is specified and the register is mapped in only one
-   // address map, that address map is used. If the register is mapped
-   // in more than one address map, the default address map of the
-   // parent block is used.
-   //
-   // If an address map is specified and
-   // the register is not mapped in the specified
-   // address map, an error message is issued.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.3.14
    extern virtual function int get_addresses (uvm_reg_map map = null,
                                               ref uvm_reg_addr_t addr[]);
 
 
 
    //--------------
-   // Group: Access
+   // Group -- NODOCS -- Access
    //--------------
 
 
-   // Function: set
-   //
-   // Set the desired value for this register
-   //
-   // Sets the desired value of the fields in the register
-   // to the specified value. Does not actually
-   // set the value of the register in the design,
-   // only the desired value in its corresponding
-   // abstraction class in the RegModel model.
-   // Use the <uvm_reg::update()> method to update the
-   // actual register with the mirrored value or
-   // the <uvm_reg::write()> method to set
-   // the actual register and its mirrored value.
-   //
-   // Unless this method is used, the desired value is equal to
-   // the mirrored value.
-   //
-   // Refer <uvm_reg_field::set()> for more details on the effect
-   // of setting mirror values on fields with different
-   // access policies.
-   //
-   // To modify the mirrored field values to a specific value,
-   // and thus use the mirrored as a scoreboard for the register values
-   // in the DUT, use the <uvm_reg::predict()> method. 
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.2
    extern virtual function void set (uvm_reg_data_t  value,
                                      string          fname = "",
                                      int             lineno = 0);
 
 
-   // Function: get
-   //
-   // Return the desired value of the fields in the register.
-   //
-   // Does not actually read the value
-   // of the register in the design, only the desired value
-   // in the abstraction class. Unless set to a different value
-   // using the <uvm_reg::set()>, the desired value
-   // and the mirrored value are identical.
-   //
-   // Use the <uvm_reg::read()> or <uvm_reg::peek()>
-   // method to get the actual register value. 
-   //
-   // If the register contains write-only fields, the desired/mirrored
-   // value for those fields are the value last written and assumed
-   // to reside in the bits implementing these fields.
-   // Although a physical read operation would something different
-   // for these fields,
-   // the returned value is the actual content.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.1
    extern virtual function uvm_reg_data_t  get(string  fname = "",
                                                int     lineno = 0);
 
-   // Function: get_mirrored_value
-   //
-   // Return the mirrored value of the fields in the register.
-   //
-   // Does not actually read the value
-   // of the register in the design
-   //
-   // If the register contains write-only fields, the desired/mirrored
-   // value for those fields are the value last written and assumed
-   // to reside in the bits implementing these fields.
-   // Although a physical read operation would something different
-   // for these fields, the returned value is the actual content.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.3
    extern virtual function uvm_reg_data_t  get_mirrored_value(string  fname = "",
                                                int     lineno = 0);
 
 
-   // Function: needs_update
-   //
-   // Returns 1 if any of the fields need updating
-   //
-   // See <uvm_reg_field::needs_update()> for details.
-   // Use the <uvm_reg::update()> to actually update the DUT register.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.4
    extern virtual function bit needs_update(); 
 
 
-   // Function: reset
-   //
-   // Reset the desired/mirrored value for this register.
-   //
-   // Sets the desired and mirror value of the fields in this register
-   // to the reset value for the specified reset ~kind~.
-   // See <uvm_reg_field.reset()> for more details.
-   //
-   // Also resets the semaphore that prevents concurrent access
-   // to the register.
-   // This semaphore must be explicitly reset if a thread accessing
-   // this register array was killed in before the access
-   // was completed
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.5
    extern virtual function void reset(string kind = "HARD");
 
 
-   // Function: get_reset
+   // Function -- NODOCS -- get_reset
    //
    // Get the specified reset value for this register
    //
@@ -431,20 +245,17 @@ virtual class uvm_reg extends uvm_object;
    // for the specified reset ~kind~.
    //
    extern virtual function uvm_reg_data_t
+                             // @uvm-ieee 1800.2-2017 auto 18.4.4.6
                              get_reset(string kind = "HARD");
 
 
-   // Function: has_reset
-   //
-   // Check if any field in the register has a reset value specified
-   // for the specified reset ~kind~.
-   // If ~delete~ is TRUE, removes the reset value, if any.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.7
    extern virtual function bit has_reset(string kind = "HARD",
                                          bit    delete = 0);
 
 
-   // Function: set_reset
+   // Function -- NODOCS -- set_reset
    //
    // Specify or modify the reset value for this register
    //
@@ -452,30 +263,17 @@ virtual class uvm_reg extends uvm_object;
    // corresponding to the cause specified by ~kind~.
    //
    extern virtual function void
+                       // @uvm-ieee 1800.2-2017 auto 18.4.4.8
                        set_reset(uvm_reg_data_t value,
                                  string         kind = "HARD");
 
 
-   // Task: write
-   //
-   // Write the specified value in this register
-   //
-   // Write ~value~ in the DUT register that corresponds to this
-   // abstraction class instance using the specified access
-   // ~path~. 
-   // If the register is mapped in more than one address map, 
-   // an address ~map~ must be
-   // specified if a physical access is used (front-door access).
-   // If a back-door access path is used, the effect of writing
-   // the register through a physical access is mimicked. For
-   // example, read-only bits in the registers will not be written.
-   //
-   // The mirrored value will be updated using the <uvm_reg::predict()>
-   // method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.9
+   // @uvm-ieee 1800.2-2017 auto 18.8.5.3
    extern virtual task write(output uvm_status_e      status,
                              input  uvm_reg_data_t    value,
-                             input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                             input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                              input  uvm_reg_map       map = null,
                              input  uvm_sequence_base parent = null,
                              input  int               prior = -1,
@@ -484,26 +282,12 @@ virtual class uvm_reg extends uvm_object;
                              input  int               lineno = 0);
 
 
-   // Task: read
-   //
-   // Read the current value from this register
-   //
-   // Read and return ~value~ from the DUT register that corresponds to this
-   // abstraction class instance using the specified access
-   // ~path~. 
-   // If the register is mapped in more than one address map, 
-   // an address ~map~ must be
-   // specified if a physical access is used (front-door access).
-   // If a back-door access path is used, the effect of reading
-   // the register through a physical access is mimicked. For
-   // example, clear-on-read bits in the registers will be set to zero.
-   //
-   // The mirrored value will be updated using the <uvm_reg::predict()>
-   // method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.10
+   // @uvm-ieee 1800.2-2017 auto 18.8.5.4
    extern virtual task read(output uvm_status_e      status,
                             output uvm_reg_data_t    value,
-                            input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                            input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                             input  uvm_reg_map       map = null,
                             input  uvm_sequence_base parent = null,
                             input  int               prior = -1,
@@ -512,18 +296,10 @@ virtual class uvm_reg extends uvm_object;
                             input  int               lineno = 0);
 
 
-   // Task: poke
-   //
-   // Deposit the specified value in this register
-   //
-   // Deposit the value in the DUT register corresponding to this
-   // abstraction class instance, as-is, using a back-door access.
-   //
-   // Uses the HDL path for the design abstraction specified by ~kind~.
-   //
-   // The mirrored value will be updated using the <uvm_reg::predict()>
-   // method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.11
+   // @uvm-ieee 1800.2-2017 auto 18.8.5.5
+   // @uvm-ieee 1800.2-2017 auto 18.8.5.6
    extern virtual task poke(output uvm_status_e      status,
                             input  uvm_reg_data_t    value,
                             input  string            kind = "",
@@ -533,19 +309,8 @@ virtual class uvm_reg extends uvm_object;
                             input  int               lineno = 0);
 
 
-   // Task: peek
-   //
-   // Read the current value from this register
-   //
-   // Sample the value in the DUT register corresponding to this
-   // abstraction class instance using a back-door access.
-   // The register value is sampled, not modified.
-   //
-   // Uses the HDL path for the design abstraction specified by ~kind~.
-   //
-   // The mirrored value will be updated using the <uvm_reg::predict()>
-   // method.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.12
    extern virtual task peek(output uvm_status_e      status,
                             output uvm_reg_data_t    value,
                             input  string            kind = "",
@@ -555,24 +320,10 @@ virtual class uvm_reg extends uvm_object;
                             input  int               lineno = 0);
 
 
-   // Task: update
-   //
-   // Updates the content of the register in the design to match the
-   // desired value
-   //
-   // This method performs the reverse
-   // operation of <uvm_reg::mirror()>.
-   // Write this register if the DUT register is out-of-date with the
-   // desired/mirrored value in the abstraction class, as determined by
-   // the <uvm_reg::needs_update()> method.
-   //
-   // The update can be performed using the using the physical interfaces
-   // (frontdoor) or <uvm_reg::poke()> (backdoor) access.
-   // If the register is mapped in multiple address maps and physical access
-   // is used (front-door), an address ~map~ must be specified.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.13
    extern virtual task update(output uvm_status_e      status,
-                              input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                              input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                               input  uvm_reg_map       map = null,
                               input  uvm_sequence_base parent = null,
                               input  int               prior = -1,
@@ -581,34 +332,12 @@ virtual class uvm_reg extends uvm_object;
                               input  int               lineno = 0);
 
 
-   // Task: mirror
-   //
-   // Read the register and update/check its mirror value
-   //
-   // Read the register and optionally compared the readback value
-   // with the current mirrored value if ~check~ is <UVM_CHECK>.
-   // The mirrored value will be updated using the <uvm_reg::predict()>
-   // method based on the readback value.
-   //
-   // The mirroring can be performed using the physical interfaces (frontdoor)
-   // or <uvm_reg::peek()> (backdoor).
-   //
-   // If ~check~ is specified as UVM_CHECK,
-   // an error message is issued if the current mirrored value
-   // does not match the readback value. Any field whose check has been
-   // disabled with <uvm_reg_field::set_compare()> will not be considered
-   // in the comparison. 
-   //
-   // If the register is mapped in multiple address maps and physical
-   // access is used (front-door access), an address ~map~ must be specified.
-   // If the register contains
-   // write-only fields, their content is mirrored and optionally
-   // checked only if a UVM_BACKDOOR
-   // access path is used to read the register. 
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.14
+   // @uvm-ieee 1800.2-2017 auto 18.8.5.8
    extern virtual task mirror(output uvm_status_e      status,
                               input uvm_check_e        check  = UVM_NO_CHECK,
-                              input uvm_path_e         path = UVM_DEFAULT_PATH,
+                              input uvm_door_e         path = UVM_DEFAULT_DOOR,
                               input uvm_reg_map        map = null,
                               input uvm_sequence_base  parent = null,
                               input int                prior = -1,
@@ -617,31 +346,20 @@ virtual class uvm_reg extends uvm_object;
                               input int                lineno = 0);
 
 
-   // Function: predict
-   //
-   // Update the mirrored and desired value for this register.
-   //
-   // Predict the mirror (and desired) value of the fields in the register
-   // based on the specified observed ~value~ on a specified address ~map~,
-   // or based on a calculated value.
-   // See <uvm_reg_field::predict()> for more details.
-   //
-   // Returns TRUE if the prediction was successful for each field in the
-   // register.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.15
+   // @uvm-ieee 1800.2-2017 auto 18.8.5.9
    extern virtual function bit predict (uvm_reg_data_t    value,
                                         uvm_reg_byte_en_t be = -1,
                                         uvm_predict_e     kind = UVM_PREDICT_DIRECT,
-                                        uvm_path_e        path = UVM_FRONTDOOR,
+                                        uvm_door_e        path = UVM_FRONTDOOR,
                                         uvm_reg_map       map = null,
                                         string            fname = "",
                                         int               lineno = 0);
 
 
-   // Function: is_busy
-   //
-   // Returns 1 if register is currently being read or written.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.4.16
    extern function bit is_busy();
 
 
@@ -650,7 +368,7 @@ virtual class uvm_reg extends uvm_object;
 
    /*local*/ extern task XreadX (output uvm_status_e      status,
                                  output uvm_reg_data_t    value,
-                                 input  uvm_path_e        path,
+                                 input  uvm_door_e        path,
                                  input  uvm_reg_map       map,
                                  input  uvm_sequence_base parent = null,
                                  input  int               prior = -1,
@@ -662,8 +380,7 @@ virtual class uvm_reg extends uvm_object;
 
    /*local*/ extern virtual function bit Xcheck_accessX
                                 (input uvm_reg_item rw,
-                                 output uvm_reg_map_info map_info,
-                                 input string caller);
+                                 output uvm_reg_map_info map_info);
 
    /*local*/ extern function bit Xis_locked_by_fieldX();
 
@@ -681,135 +398,52 @@ virtual class uvm_reg extends uvm_object;
                                  uvm_predict_e     kind = UVM_PREDICT_DIRECT,
                                  uvm_reg_byte_en_t be = -1);
    //-----------------
-   // Group: Frontdoor
+   // Group -- NODOCS -- Frontdoor
    //-----------------
 
-   // Function: set_frontdoor
-   //
-   // Set a user-defined frontdoor for this register
-   //
-   // By default, registers are mapped linearly into the address space
-   // of the address maps that instantiate them.
-   // If registers are accessed using a different mechanism,
-   // a user-defined access
-   // mechanism must be defined and associated with
-   // the corresponding register abstraction class
-   //
-   // If the register is mapped in multiple address maps, an address ~map~
-   // must be specified.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.5.2
    extern function void set_frontdoor(uvm_reg_frontdoor ftdr,
                                       uvm_reg_map       map = null,
                                       string            fname = "",
                                       int               lineno = 0);
 
 
-   // Function: get_frontdoor
-   //
-   // Returns the user-defined frontdoor for this register
-   //
-   // If ~null~, no user-defined frontdoor has been defined.
-   // A user-defined frontdoor is defined
-   // by using the <uvm_reg::set_frontdoor()> method. 
-   //
-   // If the register is mapped in multiple address maps, an address ~map~
-   // must be specified.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.5.1
    extern function uvm_reg_frontdoor get_frontdoor(uvm_reg_map map = null);
 
 
    //----------------
-   // Group: Backdoor
+   // Group -- NODOCS -- Backdoor
    //----------------
 
 
-   // Function: set_backdoor
-   //
-   // Set a user-defined backdoor for this register
-   //
-   // By default, registers are accessed via the built-in string-based
-   // DPI routines if an HDL path has been specified using the
-   // <uvm_reg::configure()> or <uvm_reg::add_hdl_path()> method.
-   //
-   // If this default mechanism is not suitable (e.g. because
-   // the register is not implemented in pure SystemVerilog)
-   // a user-defined access
-   // mechanism must be defined and associated with
-   // the corresponding register abstraction class
-   //
-   // A user-defined backdoor is required if active update of the
-   // mirror of this register abstraction class, based on observed
-   // changes of the corresponding DUT register, is used.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.2
    extern function void set_backdoor(uvm_reg_backdoor bkdr,
                                      string          fname = "",
                                      int             lineno = 0);
    
    
-   // Function: get_backdoor
-   //
-   // Returns the user-defined backdoor for this register
-   //
-   // If ~null~, no user-defined backdoor has been defined.
-   // A user-defined backdoor is defined
-   // by using the <uvm_reg::set_backdoor()> method. 
-   //
-   // If ~inherited~ is TRUE, returns the backdoor of the parent block
-   // if none have been specified for this register.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.1
    extern function uvm_reg_backdoor get_backdoor(bit inherited = 1);
 
 
-   // Function: clear_hdl_path
-   //
-   // Delete HDL paths
-   //
-   // Remove any previously specified HDL path to the register instance
-   // for the specified design abstraction.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.3
    extern function void clear_hdl_path (string kind = "RTL");
 
 
-   // Function: add_hdl_path
-   //
-   // Add an HDL path
-   //
-   // Add the specified HDL path to the register instance for the specified
-   // design abstraction. This method may be called more than once for the
-   // same design abstraction if the register is physically duplicated
-   // in the design abstraction
-   //
-   // For example, the following register
-   //
-   //|        1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0
-   //| Bits:  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
-   //|       +-+---+-------------+---+-------+
-   //|       |A|xxx|      B      |xxx|   C   |
-   //|       +-+---+-------------+---+-------+
-   //
-   // would be specified using the following literal value:
-   //
-   //| add_hdl_path('{ '{"A_reg", 15, 1},
-   //|                 '{"B_reg",  6, 7},
-   //|                 '{'C_reg",  0, 4} } );
-   //
-   // If the register is implemented using a single HDL variable,
-   // The array should specify a single slice with its ~offset~ and ~size~
-   // specified as -1. For example:
-   //
-   //| r1.add_hdl_path('{ '{"r1", -1, -1} });
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.4
    extern function void add_hdl_path (uvm_hdl_path_slice slices[],
                                       string kind = "RTL");
 
 
-   // Function: add_hdl_path_slice
-   //
-   // Append the specified HDL slice to the HDL path of the register instance
-   // for the specified design abstraction.
-   // If ~first~ is TRUE, starts the specification of a duplicate
-   // HDL implementation of the register.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.5
    extern function void add_hdl_path_slice(string name,
                                            int offset,
                                            int size,
@@ -817,253 +451,93 @@ virtual class uvm_reg extends uvm_object;
                                            string kind = "RTL");
 
 
-   // Function: has_hdl_path
-   //
-   // Check if a HDL path is specified
-   //
-   // Returns TRUE if the register instance has a HDL path defined for the
-   // specified design abstraction. If no design abstraction is specified,
-   // uses the default design abstraction specified for the parent block.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.6
    extern function bit has_hdl_path (string kind = "");
 
 
-   // Function:  get_hdl_path
-   //
-   // Get the incremental HDL path(s)
-   //
-   // Returns the HDL path(s) defined for the specified design abstraction
-   // in the register instance.
-   // Returns only the component of the HDL paths that corresponds to
-   // the register, not a full hierarchical path
-   //
-   // If no design abstraction is specified, the default design abstraction
-   // for the parent block is used.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.7
    extern function void get_hdl_path (ref uvm_hdl_path_concat paths[$],
                                       input string kind = "");
 
 
-   // Function:  get_hdl_path_kinds
-   //
-   // Get design abstractions for which HDL paths have been defined
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.8
    extern function void get_hdl_path_kinds (ref string kinds[$]);
 
 
-   // Function:  get_full_hdl_path
-   //
-   // Get the full hierarchical HDL path(s)
-   //
-   // Returns the full hierarchical HDL path(s) defined for the specified
-   // design abstraction in the register instance.
-   // There may be more than one path returned even
-   // if only one path was defined for the register instance, if any of the
-   // parent components have more than one path defined for the same design
-   // abstraction
-   //
-   // If no design abstraction is specified, the default design abstraction
-   // for each ancestor block is used to get each incremental path.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.9
    extern function void get_full_hdl_path (ref uvm_hdl_path_concat paths[$],
                                            input string kind = "",
                                            input string separator = ".");
 
 
-   // Function: backdoor_read
-   //
-   // User-define backdoor read access
-   //
-   // Override the default string-based DPI backdoor access read
-   // for this register type.
-   // By default calls <uvm_reg::backdoor_read_func()>.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.10
    extern virtual task backdoor_read(uvm_reg_item rw);
 
 
-   // Function: backdoor_write
-   //
-   // User-defined backdoor read access
-   //
-   // Override the default string-based DPI backdoor access write
-   // for this register type.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.11
    extern virtual task backdoor_write(uvm_reg_item rw);
 
 
-   // Function: backdoor_read_func
-   //
-   // User-defined backdoor read access
-   //
-   // Override the default string-based DPI backdoor access read
-   // for this register type.
-   //
+
    extern virtual function uvm_status_e backdoor_read_func(uvm_reg_item rw);
 
 
-   // Function: backdoor_watch
-   //
-   // User-defined DUT register change monitor
-   //
-   // Watch the DUT register corresponding to this abstraction class
-   // instance for any change in value and return when a value-change occurs.
-   // This may be implemented a string-based DPI access if the simulation
-   // tool provide a value-change callback facility. Such a facility does
-   // not exists in the standard SystemVerilog DPI and thus no
-   // default implementation for this method can be provided.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.6.12
    virtual task  backdoor_watch(); endtask
 
 
    //----------------
-   // Group: Coverage
+   // Group -- NODOCS -- Coverage
    //----------------
 
-   // Function: include_coverage
-   //
-   // Specify which coverage model that must be included in
-   // various block, register or memory abstraction class instances.
-   //
-   // The coverage models are specified by OR'ing or adding the
-   // <uvm_coverage_model_e> coverage model identifiers corresponding to the
-   // coverage model to be included.
-   //
-   // The scope specifies a hierarchical name or pattern identifying
-   // a block, memory or register abstraction class instances.
-   // Any block, memory or register whose full hierarchical name
-   // matches the specified scope will have the specified functional
-   // coverage models included in them.
-   //
-   // The scope can be specified as a POSIX regular expression
-   // or simple pattern.
-   // See <uvm_resource_base::Scope Interface> for more details.
-   //
-   //| uvm_reg::include_coverage("*", UVM_CVR_ALL);
-   //
-   // The specification of which coverage model to include in
-   // which abstraction class is stored in a <uvm_reg_cvr_t> resource in the
-   // <uvm_resource_db> resource database,
-   // in the "uvm_reg::" scope namespace.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.7.1
    extern static function void include_coverage(string scope,
                                                 uvm_reg_cvr_t models,
                                                 uvm_object accessor = null);
 
-   // Function: build_coverage
-   //
-   // Check if all of the specified coverage models must be built.
-   //
-   // Check which of the specified coverage model must be built
-   // in this instance of the register abstraction class,
-   // as specified by calls to <uvm_reg::include_coverage()>.
-   //
-   // Models are specified by adding the symbolic value of individual
-   // coverage model as defined in <uvm_coverage_model_e>.
-   // Returns the sum of all coverage models to be built in the
-   // register model.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.7.2
    extern protected function uvm_reg_cvr_t build_coverage(uvm_reg_cvr_t models);
 
 
-   // Function: add_coverage
-   //
-   // Specify that additional coverage models are available.
-   //
-   // Add the specified coverage model to the coverage models
-   // available in this class.
-   // Models are specified by adding the symbolic value of individual
-   // coverage model as defined in <uvm_coverage_model_e>.
-   //
-   // This method shall be called only in the constructor of
-   // subsequently derived classes.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.7.3
    extern virtual protected function void add_coverage(uvm_reg_cvr_t models);
 
 
-   // Function: has_coverage
-   //
-   // Check if register has coverage model(s)
-   //
-   // Returns TRUE if the register abstraction class contains a coverage model
-   // for all of the models specified.
-   // Models are specified by adding the symbolic value of individual
-   // coverage model as defined in <uvm_coverage_model_e>.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.7.4
    extern virtual function bit has_coverage(uvm_reg_cvr_t models);
 
 
-   // Function: set_coverage
-   //
-   // Turns on coverage measurement.
-   //
-   // Turns the collection of functional coverage measurements on or off
-   // for this register.
-   // The functional coverage measurement is turned on for every
-   // coverage model specified using <uvm_coverage_model_e> symbolic
-   // identifiers.
-   // Multiple functional coverage models can be specified by adding
-   // the functional coverage model identifiers.
-   // All other functional coverage models are turned off.
-   // Returns the sum of all functional
-   // coverage models whose measurements were previously on.
-   //
-   // This method can only control the measurement of functional
-   // coverage models that are present in the register abstraction classes,
-   // then enabled during construction.
-   // See the <uvm_reg::has_coverage()> method to identify
-   // the available functional coverage models.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.7.6
    extern virtual function uvm_reg_cvr_t set_coverage(uvm_reg_cvr_t is_on);
 
 
-   // Function: get_coverage
-   //
-   // Check if coverage measurement is on.
-   //
-   // Returns TRUE if measurement for all of the specified functional
-   // coverage models are currently on.
-   // Multiple functional coverage models can be specified by adding the
-   // functional coverage model identifiers.
-   //
-   // See <uvm_reg::set_coverage()> for more details. 
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.7.5
    extern virtual function bit get_coverage(uvm_reg_cvr_t is_on);
 
 
-   // Function: sample
-   //
-   // Functional coverage measurement method
-   //
-   // This method is invoked by the register abstraction class
-   // whenever it is read or written with the specified ~data~
-   // via the specified address ~map~.
-   // It is invoked after the read or write operation has completed
-   // but before the mirror has been updated.
-   //
-   // Empty by default, this method may be extended by the
-   // abstraction class generator to perform the required sampling
-   // in any provided functional coverage model.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.7.7
    protected virtual function void sample(uvm_reg_data_t  data,
                                           uvm_reg_data_t  byte_en,
                                           bit             is_read,
                                           uvm_reg_map     map);
    endfunction
 
-   // Function: sample_values
-   //
-   // Functional coverage measurement method for field values
-   //
-   // This method is invoked by the user
-   // or by the <uvm_reg_block::sample_values()> method of the parent block
-   // to trigger the sampling
-   // of the current field values in the
-   // register-level functional coverage model.
-   //
-   // This method may be extended by the
-   // abstraction class generator to perform the required sampling
-   // in any provided field-value functional coverage model.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.7.8
    virtual function void sample_values();
    endfunction
 
@@ -1076,76 +550,28 @@ virtual class uvm_reg extends uvm_object;
 
 
    //-----------------
-   // Group: Callbacks
+   // Group -- NODOCS -- Callbacks
    //-----------------
    `uvm_register_cb(uvm_reg, uvm_reg_cbs)
    
 
-   // Task: pre_write
-   //
-   // Called before register write.
-   //
-   // If the specified data value, access ~path~ or address ~map~ are modified,
-   // the updated data value, access path or address map will be used
-   // to perform the register operation.
-   // If the ~status~ is modified to anything other than <UVM_IS_OK>,
-   // the operation is aborted.
-   //
-   // The registered callback methods are invoked after the invocation
-   // of this method.
-   // All register callbacks are executed before the corresponding
-   // field callbacks
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.8.1
    virtual task pre_write(uvm_reg_item rw); endtask
 
 
-   // Task: post_write
-   //
-   // Called after register write.
-   //
-   // If the specified ~status~ is modified,
-   // the updated status will be
-   // returned by the register operation.
-   //
-   // The registered callback methods are invoked before the invocation
-   // of this method.
-   // All register callbacks are executed before the corresponding
-   // field callbacks
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.8.2
    virtual task post_write(uvm_reg_item rw); endtask
 
 
-   // Task: pre_read
-   //
-   // Called before register read.
-   //
-   // If the specified access ~path~ or address ~map~ are modified,
-   // the updated access path or address map will be used to perform
-   // the register operation.
-   // If the ~status~ is modified to anything other than <UVM_IS_OK>,
-   // the operation is aborted.
-   //
-   // The registered callback methods are invoked after the invocation
-   // of this method.
-   // All register callbacks are executed before the corresponding
-   // field callbacks
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.8.3
    virtual task pre_read(uvm_reg_item rw); endtask
 
 
-   // Task: post_read
-   //
-   // Called after register read.
-   //
-   // If the specified readback data or ~status~ is modified,
-   // the updated readback data or status will be
-   // returned by the register operation.
-   //
-   // The registered callback methods are invoked before the invocation
-   // of this method.
-   // All register callbacks are executed before the corresponding
-   // field callbacks
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.4.8.4
    virtual task post_read(uvm_reg_item rw); endtask
 
 
@@ -1170,7 +596,7 @@ endclass: uvm_reg
 function uvm_reg::new(string name="", int unsigned n_bits, int has_coverage);
    super.new(name);
    if (n_bits == 0) begin
-      `uvm_error("RegModel", $sformatf("Register \"%s\" cannot have 0 bits", get_name()));
+      `uvm_error("RegModel", $sformatf("Register \"%s\" cannot have 0 bits", get_name()))
       n_bits = 1;
    end
    m_n_bits      = n_bits;
@@ -1213,11 +639,11 @@ function void uvm_reg::add_field(uvm_reg_field field);
    int idx;
    
    if (m_locked) begin
-      `uvm_error("RegModel", "Cannot add field to locked register model");
+      `uvm_error("RegModel", "Cannot add field to locked register model")
       return;
    end
 
-   if (field == null) `uvm_fatal("RegModel", "Attempting to register NULL field");
+   if (field == null) `uvm_fatal("RegModel", "Attempting to register NULL field")
 
    // Store fields in LSB to MSB order
    offset = field.get_lsb_pos();
@@ -1242,7 +668,7 @@ function void uvm_reg::add_field(uvm_reg_field field);
    if (m_n_used_bits > m_n_bits) begin
       `uvm_error("RegModel",
          $sformatf("Fields use more bits (%0d) than available in register \"%s\" (%0d)",
-            m_n_used_bits, get_name(), m_n_bits));
+            m_n_used_bits, get_name(), m_n_bits))
    end
 
    // Check if there are overlapping fields
@@ -1251,7 +677,7 @@ function void uvm_reg::add_field(uvm_reg_field field);
           m_fields[idx-1].get_n_bits() > offset) begin
          `uvm_error("RegModel", $sformatf("Field %s overlaps field %s in register \"%s\"",
                                         m_fields[idx-1].get_name(),
-                                        field.get_name(), get_name()));
+                                        field.get_name(), get_name()))
       end
    end
    if (idx < m_fields.size()-1) begin
@@ -1260,7 +686,7 @@ function void uvm_reg::add_field(uvm_reg_field field);
          `uvm_error("RegModel", $sformatf("Field %s overlaps field %s in register \"%s\"",
                                         field.get_name(),
                                         m_fields[idx+1].get_name(),
-                                      get_name()));
+                                      get_name()))
       end
    end
 endfunction: add_field
@@ -1288,7 +714,7 @@ function void uvm_reg::set_frontdoor(uvm_reg_frontdoor ftdr,
    uvm_reg_map_info map_info;
    ftdr.fname = m_fname;
    ftdr.lineno = m_lineno;
-   map = get_local_map(map, "set_frontdoor()");
+   map = get_local_map(map);
    if (map == null)
      return;
    map_info = map.get_reg_map_info(this);
@@ -1304,7 +730,7 @@ endfunction: set_frontdoor
 
 function uvm_reg_frontdoor uvm_reg::get_frontdoor(uvm_reg_map map = null);
    uvm_reg_map_info map_info;
-   map = get_local_map(map, "get_frontdoor()");
+   map = get_local_map(map);
    if (map == null)
      return null;
    map_info = map.get_reg_map_info(this);
@@ -1321,7 +747,7 @@ function void uvm_reg::set_backdoor(uvm_reg_backdoor bkdr,
    bkdr.lineno = lineno;
    if (m_backdoor != null &&
        m_backdoor.has_update_threads()) begin
-      `uvm_warning("RegModel", "Previous register backdoor still has update threads running. Backdoors with active mirroring should only be set before simulation starts.");
+      `uvm_warning("RegModel", "Previous register backdoor still has update threads running. Backdoors with active mirroring should only be set before simulation starts.")
    end
    m_backdoor = bkdr;
 endfunction: set_backdoor
@@ -1524,7 +950,7 @@ function void uvm_reg::set_offset (uvm_reg_map    map,
       return;
    end
 
-   map = get_local_map(map,"set_offset()");
+   map = get_local_map(map);
 
    if (map == null)
      return;
@@ -1617,7 +1043,7 @@ endfunction
 
 // get_local_map
 
-function uvm_reg_map uvm_reg::get_local_map(uvm_reg_map map, string caller="");
+function uvm_reg_map uvm_reg::get_local_map(uvm_reg_map map);
    if (map == null)
      return get_default_map();
    if (m_maps.exists(map))
@@ -1633,8 +1059,7 @@ function uvm_reg_map uvm_reg::get_local_map(uvm_reg_map map, string caller="");
      end
    end
    `uvm_warning("RegModel", 
-       {"Register '",get_full_name(),"' is not contained within map '",map.get_full_name(),"'",
-        (caller == "" ? "": {" (called from ",caller,")"}) })
+       {"Register '",get_full_name(),"' is not contained within map '",map.get_full_name(),"'"})
    return null;
 endfunction
 
@@ -1642,13 +1067,12 @@ endfunction
 
 // get_default_map
 
-function uvm_reg_map uvm_reg::get_default_map(string caller="");
+function uvm_reg_map uvm_reg::get_default_map();
 
    // if reg is not associated with any map, return ~null~
    if (m_maps.num() == 0) begin
       `uvm_warning("RegModel", 
-        {"Register '",get_full_name(),"' is not registered with any map",
-         (caller == "" ? "": {" (called from ",caller,")"})})
+        {"Register '",get_full_name(),"' is not registered with any map"})
       return null;
    end
 
@@ -1665,7 +1089,7 @@ function uvm_reg_map uvm_reg::get_default_map(string caller="");
      uvm_reg_block blk = map.get_parent();
      uvm_reg_map default_map = blk.get_default_map();
      if (default_map != null) begin
-       uvm_reg_map local_map = get_local_map(default_map,"get_default_map()");
+       uvm_reg_map local_map = get_local_map(default_map);
        if (local_map != null)
          return local_map;
      end
@@ -1688,7 +1112,7 @@ function string uvm_reg::get_rights(uvm_reg_map map = null);
 
    uvm_reg_map_info info;
 
-   map = get_local_map(map,"get_rights()");
+   map = get_local_map(map);
 
    if (map == null)
      return "RW";
@@ -1714,7 +1138,7 @@ function uvm_reg_addr_t uvm_reg::get_offset(uvm_reg_map map = null);
    uvm_reg_map_info map_info;
    uvm_reg_map orig_map = map;
 
-   map = get_local_map(map,"get_offset()");
+   map = get_local_map(map);
 
    if (map == null)
      return -1;
@@ -1738,10 +1162,9 @@ endfunction
 function int uvm_reg::get_addresses(uvm_reg_map map=null, ref uvm_reg_addr_t addr[]);
 
    uvm_reg_map_info map_info;
-   uvm_reg_map system_map;
    uvm_reg_map orig_map = map;
 
-   map = get_local_map(map,"get_addresses()");
+   map = get_local_map(map);
 
    if (map == null)
      return -1;
@@ -1756,7 +1179,6 @@ function int uvm_reg::get_addresses(uvm_reg_map map=null, ref uvm_reg_addr_t add
    end
  
    addr = map_info.addr;
-   system_map = map.get_root_map();
    return map.get_n_bytes();
 
 endfunction
@@ -1940,7 +1362,7 @@ endfunction: set
 function bit uvm_reg::predict (uvm_reg_data_t    value,
                                uvm_reg_byte_en_t be = -1,
                                uvm_predict_e     kind = UVM_PREDICT_DIRECT,
-                               uvm_path_e        path = UVM_FRONTDOOR,
+                               uvm_door_e        path = UVM_FRONTDOOR,
                                uvm_reg_map       map = null,
                                string            fname = "",
                                int               lineno = 0);
@@ -2087,7 +1509,7 @@ endfunction: needs_update
 // update
 
 task uvm_reg::update(output uvm_status_e      status,
-                     input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                     input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                      input  uvm_reg_map       map = null,
                      input  uvm_sequence_base parent = null,
                      input  int               prior = -1,
@@ -2115,7 +1537,7 @@ endtask: update
 
 task uvm_reg::write(output uvm_status_e      status,
                     input  uvm_reg_data_t    value,
-                    input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                    input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                     input  uvm_reg_map       map = null,
                     input  uvm_sequence_base parent = null,
                     input  int               prior = -1,
@@ -2163,7 +1585,7 @@ task uvm_reg::do_write (uvm_reg_item rw);
    m_fname  = rw.fname;
    m_lineno = rw.lineno;
 
-   if (!Xcheck_accessX(rw,map_info,"write()"))
+   if (!Xcheck_accessX(rw,map_info))
      return;
 
    XatomicX(1);
@@ -2220,6 +1642,11 @@ task uvm_reg::do_write (uvm_reg_item rw);
       UVM_BACKDOOR: begin
          uvm_reg_data_t final_val;
          uvm_reg_backdoor bkdr = get_backdoor();
+  
+         if (rw.map != null)
+           rw.local_map = rw.map;
+         else 
+           rw.local_map = get_default_map();
 
          value = rw.value[0];
 
@@ -2249,12 +1676,19 @@ task uvm_reg::do_write (uvm_reg_item rw);
          rw.kind = UVM_WRITE;
          rw.value[0] = final_val;
 
-         if (bkdr != null)
+        if (get_rights(rw.local_map) inside {"RW", "WO"}) begin
+          if (bkdr != null)
            bkdr.write(rw);
-         else
+          else
            backdoor_write(rw);
 
-         do_predict(rw, UVM_PREDICT_WRITE);
+          do_predict(rw, UVM_PREDICT_WRITE);
+        end
+        else begin
+           rw.status = UVM_NOT_OK;
+        end
+        
+      
       end
 
       UVM_FRONTDOOR: begin
@@ -2346,7 +1780,7 @@ endtask: do_write
 
 task uvm_reg::read(output uvm_status_e      status,
                    output uvm_reg_data_t    value,
-                   input  uvm_path_e        path = UVM_DEFAULT_PATH,
+                   input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                    input  uvm_reg_map       map = null,
                    input  uvm_sequence_base parent = null,
                    input  int               prior = -1,
@@ -2363,7 +1797,7 @@ endtask: read
 
 task uvm_reg::XreadX(output uvm_status_e      status,
                      output uvm_reg_data_t    value,
-                     input  uvm_path_e        path,
+                     input  uvm_door_e        path,
                      input  uvm_reg_map       map,
                      input  uvm_sequence_base parent = null,
                      input  int               prior = -1,
@@ -2406,7 +1840,7 @@ task uvm_reg::do_read(uvm_reg_item rw);
    m_fname   = rw.fname;
    m_lineno  = rw.lineno;
    
-   if (!Xcheck_accessX(rw,map_info,"read()"))
+   if (!Xcheck_accessX(rw,map_info))
      return;
 
    m_read_in_progress = 1'b1;
@@ -2445,14 +1879,26 @@ task uvm_reg::do_read(uvm_reg_item rw);
       UVM_BACKDOOR: begin
          uvm_reg_backdoor bkdr = get_backdoor();
 
-         uvm_reg_map map = uvm_reg_map::backdoor();
+         uvm_reg_map map;  // = uvm_reg_map::backdoor();
+         if (rw.map != null)
+            rw.local_map = rw.map;
+         else
+            rw.local_map = get_default_map();  
+         
+         map = rw.local_map;
+          
          if (map.get_check_on_read()) exp = get();
    
-         if (bkdr != null)
-           bkdr.read(rw);
-         else
-           backdoor_read(rw);
-
+         if (get_rights(rw.local_map) inside {"RW", "RO"}) begin
+           if (bkdr != null)
+             bkdr.read(rw);
+           else
+             backdoor_read(rw);
+         end
+         else begin
+             rw.status = UVM_NOT_OK;
+         end
+         
          value = rw.value[0];
 
          // Need to clear RC fields, set RS fields and mask WO fields
@@ -2461,7 +1907,8 @@ task uvm_reg::do_read(uvm_reg_item rw);
             uvm_reg_data_t wo_mask;
 
             foreach (m_fields[i]) begin
-               string acc = m_fields[i].get_access(uvm_reg_map::backdoor());
+              // string acc = m_fields[i].get_access(uvm_reg_map::backdoor());
+               string acc = m_fields[i].get_access(rw.local_map);
                if (acc == "RC" ||
                    acc == "WRC" ||
                    acc == "WSRC" ||
@@ -2487,6 +1934,8 @@ task uvm_reg::do_read(uvm_reg_item rw);
                end
             end
 
+           if (get_rights(rw.local_map) inside {"RW", "RO"}) begin
+
             if (value != rw.value[0]) begin
               uvm_reg_data_t saved;
               saved = rw.value[0];
@@ -2506,6 +1955,11 @@ task uvm_reg::do_read(uvm_reg_item rw);
             end
        
             do_predict(rw, UVM_PREDICT_READ);
+           end
+           else begin
+              rw.status = UVM_NOT_OK;
+           end
+        
          end
       end
 
@@ -2602,12 +2056,11 @@ endtask: do_read
 // Xcheck_accessX
 
 function bit uvm_reg::Xcheck_accessX (input uvm_reg_item rw,
-                                      output uvm_reg_map_info map_info,
-                                      input string caller);
+                                      output uvm_reg_map_info map_info);
 
 
-   if (rw.path == UVM_DEFAULT_PATH)
-     rw.path = m_parent.get_default_path();
+   if (rw.path == UVM_DEFAULT_DOOR)
+     rw.path = m_parent.get_default_door();
 
    if (rw.path == UVM_BACKDOOR) begin
       if (get_backdoor() == null && !has_hdl_path()) begin
@@ -2616,14 +2069,20 @@ function bit uvm_reg::Xcheck_accessX (input uvm_reg_item rw,
             "' . Using frontdoor instead."})
          rw.path = UVM_FRONTDOOR;
       end
-      else
-        rw.map = uvm_reg_map::backdoor();
+      else if (rw.map == null) begin
+        uvm_reg_map  bkdr_map = get_default_map();
+        if (bkdr_map != null)
+            rw.map = bkdr_map;
+        else
+            rw.map = uvm_reg_map::backdoor();
+      end
+      
    end
 
 
    if (rw.path != UVM_BACKDOOR) begin
 
-     rw.local_map = get_local_map(rw.map,caller);
+     rw.local_map = get_local_map(rw.map);
 
      if (rw.local_map == null) begin
         `uvm_error(get_type_name(), 
@@ -2681,8 +2140,8 @@ task  uvm_reg::backdoor_write(uvm_reg_item rw);
   foreach (paths[i]) begin
      uvm_hdl_path_concat hdl_concat = paths[i];
      foreach (hdl_concat.slices[j]) begin
-        `uvm_info("RegMem", {"backdoor_write to ",
-                  hdl_concat.slices[j].path},UVM_DEBUG)
+        `uvm_info("RegMem", $sformatf("backdoor_write to %s",
+                  hdl_concat.slices[j].path),UVM_DEBUG)
 
         if (hdl_concat.slices[j].offset < 0) begin
            ok &= uvm_hdl_deposit(hdl_concat.slices[j].path,rw.value[0]);
@@ -2718,8 +2177,8 @@ function uvm_status_e uvm_reg::backdoor_read_func(uvm_reg_item rw);
      uvm_hdl_path_concat hdl_concat = paths[i];
      val = 0;
      foreach (hdl_concat.slices[j]) begin
-        `uvm_info("RegMem", {"backdoor_read from %s ",
-               hdl_concat.slices[j].path},UVM_DEBUG)
+        `uvm_info("RegMem", $sformatf("backdoor_read from %s ",
+               hdl_concat.slices[j].path),UVM_DEBUG)
 
         if (hdl_concat.slices[j].offset < 0) begin
            ok &= uvm_hdl_read(hdl_concat.slices[j].path,val);
@@ -2747,11 +2206,11 @@ function uvm_status_e uvm_reg::backdoor_read_func(uvm_reg_item rw);
         `uvm_error("RegModel", $sformatf("Backdoor read of register %s with multiple HDL copies: values are not the same: %0h at path '%s', and %0h at path '%s'. Returning first value.",
                get_full_name(),
                rw.value[0], uvm_hdl_concat2string(paths[0]),
-               val, uvm_hdl_concat2string(paths[i]))); 
+               val, uvm_hdl_concat2string(paths[i])))
         return UVM_NOT_OK;
       end
       `uvm_info("RegMem", 
-         $sformatf("returned backdoor value 0x%0x",rw.value[0]),UVM_DEBUG);
+         $sformatf("returned backdoor value 0x%0x",rw.value[0]),UVM_DEBUG)
       
   end
 
@@ -2808,7 +2267,7 @@ task uvm_reg::poke(output uvm_status_e      status,
    status = rw.status;
 
    `uvm_info("RegModel", $sformatf("Poked register \"%s\": 'h%h",
-                              get_full_name(), value),UVM_HIGH);
+                              get_full_name(), value),UVM_HIGH)
 
    do_predict(rw, UVM_PREDICT_WRITE);
 
@@ -2836,7 +2295,7 @@ task uvm_reg::peek(output uvm_status_e      status,
    if (bkdr == null && !has_hdl_path(kind)) begin
       `uvm_error("RegModel",
         $sformatf("No backdoor access available to peek register \"%s\"",
-                  get_full_name()));
+                  get_full_name()))
       status = UVM_NOT_OK;
       return;
    end
@@ -2865,7 +2324,7 @@ task uvm_reg::peek(output uvm_status_e      status,
    value = rw.value[0];
 
    `uvm_info("RegModel", $sformatf("Peeked register \"%s\": 'h%h",
-                          get_full_name(), value),UVM_HIGH);
+                          get_full_name(), value),UVM_HIGH)
 
    do_predict(rw, UVM_PREDICT_READ);
 
@@ -2879,22 +2338,20 @@ function bit uvm_reg::do_check(input uvm_reg_data_t expected,
                                input uvm_reg_data_t actual,
                                uvm_reg_map          map);
 
-   uvm_reg_data_t  dc = 0;
+   uvm_reg_data_t  valid_bits_mask = 0; // elements 1 indicating bit we care about
 
    foreach(m_fields[i]) begin
       string acc = m_fields[i].get_access(map);
       acc = acc.substr(0, 1);
-      if (m_fields[i].get_compare() == UVM_NO_CHECK ||
-          acc == "WO") begin
-         dc |= ((1 << m_fields[i].get_n_bits())-1)
-            << m_fields[i].get_lsb_pos();
+      if (!(m_fields[i].get_compare() == UVM_NO_CHECK ||acc == "WO")) begin
+         valid_bits_mask |= ((1 << m_fields[i].get_n_bits())-1)<< m_fields[i].get_lsb_pos();
       end
    end
 
-   if ((actual|dc) === (expected|dc)) return 1;
+   if ((actual&valid_bits_mask) === (expected&valid_bits_mask)) return 1;
    
-   `uvm_error("RegModel", $sformatf("Register \"%s\" value read from DUT (0x%h) does not match mirrored value (0x%h)",
-                                    get_full_name(), actual, (expected ^ ('x & dc))));
+   `uvm_error("RegModel", $sformatf("Register \"%s\" value read from DUT (0x%h) does not match mirrored value (0x%h) (valid bit mask = 0x%h)",
+                                    get_full_name(), actual, expected,valid_bits_mask))
                                      
    foreach(m_fields[i]) begin
       string acc = m_fields[i].get_access(map);
@@ -2926,7 +2383,7 @@ endfunction
 
 task uvm_reg::mirror(output uvm_status_e       status,
                      input  uvm_check_e        check = UVM_NO_CHECK,
-                     input  uvm_path_e         path = UVM_DEFAULT_PATH,
+                     input  uvm_door_e         path = UVM_DEFAULT_DOOR,
                      input  uvm_reg_map        map = null,
                      input  uvm_sequence_base  parent = null,
                      input  int                prior = -1,
@@ -2942,13 +2399,13 @@ task uvm_reg::mirror(output uvm_status_e       status,
    m_lineno = lineno;
 
 
-   if (path == UVM_DEFAULT_PATH)
-     path = m_parent.get_default_path();
+   if (path == UVM_DEFAULT_DOOR)
+     path = m_parent.get_default_door();
 
    if (path == UVM_BACKDOOR && (bkdr != null || has_hdl_path()))
      map = uvm_reg_map::backdoor();
    else
-     map = get_local_map(map, "read()");
+     map = get_local_map(map);
 
    if (map == null)
      return;
@@ -3097,5 +2554,3 @@ endfunction
 function void uvm_reg::do_unpack (uvm_packer packer);
   `uvm_warning("RegModel","RegModel registers cannot be unpacked")
 endfunction
-
-

@@ -1,8 +1,10 @@
 //
 //----------------------------------------------------------------------
-//   Copyright 2007-2011 Mentor Graphics Corporation
-//   Copyright 2007-2011 Cadence Design Systems, Inc.
-//   Copyright 2010 Synopsys, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -22,14 +24,14 @@
 
 
 //------------------------------------------------------------------------------
-// Title: TLM Channel Classes
+// Title -- NODOCS -- TLM Channel Classes
 //------------------------------------------------------------------------------
 // This section defines built-in TLM channel classes.
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_tlm_req_rsp_channel #(REQ,RSP)
+// CLASS -- NODOCS -- uvm_tlm_req_rsp_channel #(REQ,RSP)
 //
 // The uvm_tlm_req_rsp_channel contains a request FIFO of type ~REQ~ and a response
 // FIFO of type ~RSP~. These FIFOs can be of any size. This channel is
@@ -43,13 +45,15 @@
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 12.2.9.1.1
 class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_component;
 
   typedef uvm_tlm_req_rsp_channel #(REQ, RSP) this_type;
 
-  const static string type_name = "uvm_tlm_req_rsp_channel #(REQ,RSP)";
+  `uvm_component_param_utils(uvm_tlm_req_rsp_channel#(REQ,RSP))
+  `uvm_type_name_decl("uvm_tlm_req_rsp_channel #(REQ,RSP)")
 
-  // Port: put_request_export
+  // Port -- NODOCS -- put_request_export
   //
   // The put_export provides both the blocking and non-blocking put interface
   // methods to the request FIFO:
@@ -64,7 +68,7 @@ class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_componen
   uvm_put_export #(REQ) put_request_export;
 
 
-  // Port: get_peek_response_export
+  // Port -- NODOCS -- get_peek_response_export
   //
   // The get_peek_response_export provides all the blocking and non-blocking get
   // and peek interface methods to the response FIFO:
@@ -82,7 +86,7 @@ class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_componen
   uvm_get_peek_export #(RSP) get_peek_response_export;
 
 
-  // Port: get_peek_request_export
+  // Port -- NODOCS -- get_peek_request_export
   //
   // The get_peek_export provides all the blocking and non-blocking get and peek
   // interface methods to the response FIFO:
@@ -101,7 +105,7 @@ class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_componen
   uvm_get_peek_export #(REQ) get_peek_request_export;
 
 
-  // Port: put_response_export
+  // Port -- NODOCS -- put_response_export
   //
   // The put_export provides both the blocking and non-blocking put interface
   // methods to the response FIFO:
@@ -116,7 +120,7 @@ class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_componen
   uvm_put_export #(RSP) put_response_export;
 
 
-  // Port: request_ap
+  // Port -- NODOCS -- request_ap
   //
   // Transactions passed via ~put~ or ~try_put~ (via any port connected to the
   // put_request_export) are sent out this port via its write method.
@@ -128,7 +132,7 @@ class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_componen
   uvm_analysis_port #(REQ) request_ap;
 
 
-  // Port: response_ap
+  // Port -- NODOCS -- response_ap
   //
   // Transactions passed via ~put~ or ~try_put~ (via any port connected to the
   // put_response_export) are sent out this port via its write method.
@@ -140,7 +144,7 @@ class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_componen
   uvm_analysis_port   #(RSP) response_ap;
 
 
-  // Port: master_export
+  // Port -- NODOCS -- master_export
   //
   // Exports a single interface that allows a master to put requests and get or
   // peek responses. It is a combination of the put_request_export and
@@ -149,7 +153,7 @@ class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_componen
   uvm_master_imp #(REQ, RSP, this_type, uvm_tlm_fifo #(REQ), uvm_tlm_fifo #(RSP)) master_export;
 
 
-  // Port: slave_export
+  // Port -- NODOCS -- slave_export
   //
   // Exports a single interface that allows a slave to get or peek requests and
   // to put responses. It is a combination of the get_peek_request_export
@@ -192,7 +196,7 @@ class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_componen
   protected uvm_tlm_fifo #(RSP) m_response_fifo;
 
 
-  // Function: new
+  // Function -- NODOCS -- new
   //
   // The ~name~ and ~parent~ are the standard <uvm_component> constructor arguments.
   // The ~parent~ must be ~null~ if this component is defined within a static
@@ -200,6 +204,7 @@ class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_componen
   // arguments specify the request and response FIFO sizes, which have default
   // values of 1.
 
+  // @uvm-ieee 1800.2-2017 auto 12.2.9.1.11
   function new (string name, uvm_component parent=null, 
                 int request_fifo_size=1,
                 int response_fifo_size=1);
@@ -268,30 +273,12 @@ class uvm_tlm_req_rsp_channel #(type REQ=int, type RSP=REQ) extends uvm_componen
     nonblocking_slave_export  = slave_export;
   endfunction
   
-  // get_type_name
-  // -------------
-
-  function string get_type_name ();
-    return type_name;
-  endfunction
-
-
-  // create
-  // ------
-  
-  function uvm_object create (string name=""); 
-    this_type v;
-    v=new(name);
-    return v;
-  endfunction
-
-
 endclass
 
 
 //------------------------------------------------------------------------------
 //
-// CLASS: uvm_tlm_transport_channel #(REQ,RSP)
+// CLASS -- NODOCS -- uvm_tlm_transport_channel #(REQ,RSP)
 //
 // A uvm_tlm_transport_channel is a <uvm_tlm_req_rsp_channel #(REQ,RSP)> that implements
 // the transport interface. It is useful when modeling a non-pipelined bus at
@@ -301,12 +288,16 @@ endclass
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2017 auto 12.2.9.2.1
 class uvm_tlm_transport_channel #(type REQ=int, type RSP=REQ) 
                                      extends uvm_tlm_req_rsp_channel #(REQ, RSP);
 
+  `uvm_component_param_utils(uvm_tlm_transport_channel#(REQ,RSP))
+  `uvm_type_name_decl("uvm_tlm_transport_channel #(REQ,RSP)")
+  
   typedef uvm_tlm_transport_channel #(REQ, RSP) this_type;
 
-  // Port: transport_export
+  // Port -- NODOCS -- transport_export
   //
   // The put_export provides both the blocking and non-blocking transport
   // interface methods to the response FIFO:
@@ -321,23 +312,26 @@ class uvm_tlm_transport_channel #(type REQ=int, type RSP=REQ)
   uvm_transport_imp #(REQ, RSP, this_type) transport_export;
 
 
-  // Function: new
+  // Function -- NODOCS -- new
   //
   // The ~name~ and ~parent~ are the standard <uvm_component> constructor
   // arguments. The ~parent~ must be ~null~ if this component is defined within a
   // statically elaborated construct such as a module, program block, or
   // interface.
 
+  // @uvm-ieee 1800.2-2017 auto 12.2.9.2.3
   function new (string name, uvm_component parent=null);
     super.new(name, parent, 1, 1);
     transport_export = new("transport_export", this);
   endfunction
 
+  // @uvm-ieee 1800.2-2017 auto 12.2.9.2.2
   task transport (REQ request, output RSP response );
     this.m_request_fifo.put( request );
     this.m_response_fifo.get( response );
   endtask
 
+  // @uvm-ieee 1800.2-2017 auto 12.2.9.2.2
   function bit nb_transport (REQ req, output RSP rsp );
     if(this.m_request_fifo.try_put(req)) 
       return this.m_response_fifo.try_get(rsp);

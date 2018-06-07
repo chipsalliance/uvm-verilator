@@ -1,5 +1,11 @@
 //------------------------------------------------------------
-//   Copyright 2007-2010 Mentor Graphics Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2015 Analog Devices, Inc.
+// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2014-2015 NVIDIA Corporation
+// Copyright 2014 Cisco Systems, Inc.
+// Copyright 2012 Accellera Systems Initiative
 //   All Rights Reserved Worldwide
 //   
 //   Licensed under the Apache License, Version 2.0 (the
@@ -17,7 +23,7 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------
 
-// TITLE: UVM HDL Backdoor Access support routines.
+// TITLE -- NODOCS -- UVM HDL Backdoor Access support routines.
 //
 // These routines provide an interface to the DPI/PLI
 // implementation of backdoor access used by registers.
@@ -33,11 +39,12 @@
 
 
 `ifndef UVM_HDL_MAX_WIDTH
+// @uvm-ieee 1800.2-2017 auto 19.6.1
 `define UVM_HDL_MAX_WIDTH 1024
 `endif
 
 /* 
- * VARIABLE: UVM_HDL_MAX_WIDTH
+ * VARIABLE -- NODOCS -- UVM_HDL_MAX_WIDTH
  * Sets the maximum size bit vector for backdoor access. 
  * This parameter will be looked up by the 
  * DPI-C code using:
@@ -52,14 +59,14 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
                             
 `ifndef UVM_HDL_NO_DPI
 
-  // Function: uvm_hdl_check_path
+  // Function -- NODOCS -- uvm_hdl_check_path
   //
   // Checks that the given HDL ~path~ exists. Returns 0 if NOT found, 1 otherwise.
   //
   import "DPI-C" context function int uvm_hdl_check_path(string path);
 
 
-  // Function: uvm_hdl_deposit
+  // Function -- NODOCS -- uvm_hdl_deposit
   //
   // Sets the given HDL ~path~ to the specified ~value~.
   // Returns 1 if the call succeeded, 0 otherwise.
@@ -67,14 +74,14 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   import "DPI-C" context function int uvm_hdl_deposit(string path, uvm_hdl_data_t value);
 
 
-  // Function: uvm_hdl_force
+  // Function -- NODOCS -- uvm_hdl_force
   //
   // Forces the ~value~ on the given ~path~. Returns 1 if the call succeeded, 0 otherwise.
   //
   import "DPI-C" context function int uvm_hdl_force(string path, uvm_hdl_data_t value);
 
 
-  // Function: uvm_hdl_force_time
+  // Function -- NODOCS -- uvm_hdl_force_time
   //
   // Forces the ~value~ on the given ~path~ for the specified amount of ~force_time~.
   // If ~force_time~ is 0, <uvm_hdl_deposit> is called.
@@ -92,7 +99,7 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   endtask
 
 
-  // Function: uvm_hdl_release_and_read
+  // Function -- NODOCS -- uvm_hdl_release_and_read
   //
   // Releases a value previously set with <uvm_hdl_force>.
   // Returns 1 if the call succeeded, 0 otherwise. ~value~ is set to
@@ -105,7 +112,7 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   import "DPI-C" context function int uvm_hdl_release_and_read(string path, inout uvm_hdl_data_t value);
 
 
-  // Function: uvm_hdl_release
+  // Function -- NODOCS -- uvm_hdl_release
   //
   // Releases a value previously set with <uvm_hdl_force>.
   // Returns 1 if the call succeeded, 0 otherwise.
@@ -113,7 +120,7 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   import "DPI-C" context function int uvm_hdl_release(string path);
 
 
-  // Function: uvm_hdl_read()
+  // Function -- NODOCS -- uvm_hdl_read()
   //
   // Gets the value at the given ~path~.
   // Returns 1 if the call succeeded, 0 otherwise.
