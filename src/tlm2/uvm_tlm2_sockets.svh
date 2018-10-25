@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------
 // Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2015-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
@@ -21,7 +21,7 @@
 //----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
-// Title -- NODOCS -- TLM Sockets
+// Title -- NODOCS -- UVM TLM Sockets
 //
 // Each uvm_tlm_*_socket class is derived from a corresponding
 // uvm_tlm_*_socket_base class.  The base class contains most of the

@@ -672,9 +672,36 @@ parameter UVM_FILE UVM_STDIN  = 32'h8000_0000;
 parameter UVM_FILE UVM_STDOUT = 32'h8000_0001;
 parameter UVM_FILE UVM_STDERR = 32'h8000_0002;
 
+// Type: uvm_core_state
+// Implementation of the uvm_core_state enumeration, as defined
+// in section F.2.10 of 1800.2-2017.
+//
+// *Note:* In addition to the states defined in section F.2.10,
+// this implementation includes the following additional states.
+//
+// UVM_CORE_PRE_INIT - The <uvm_init> method has been invoked at least
+//                     once, however the core service has yet to be
+//                     determined/assigned.  Additional calls to uvm_init
+//                     while in this state will result in a fatal message
+//                     being generated, as the library can not determine
+//                     the correct core service.
+//
+// UVM_CORE_INITIALIZING - The <uvm_init> method has been called at least
+//                         once, and the core service has been determined.
+//                         Once in this state, it is safe to query
+//                         <uvm_coreservice_t::get>.
+//
+// UVM_CORE_POST_INIT - Included for consistency, this is equivalent to
+//                      ~UVM_CORE_INITIALIZED~ in 1800.2-2017.
+//
+// @uvm-contrib Potential contribution to 1800.2
+
+// @uvm-ieee 1800.2-2017 manual F.2.10  
 typedef enum {
 	UVM_CORE_UNINITIALIZED,
-	UVM_CORE_INITIALIZED,
+        UVM_CORE_PRE_INIT,
+        UVM_CORE_INITIALIZING,
+	UVM_CORE_INITIALIZED, // UVM_CORE_POST_INIT
 	UVM_CORE_PRE_RUN,
 	UVM_CORE_RUNNING,
 	UVM_CORE_POST_RUN,
@@ -684,6 +711,7 @@ typedef enum {
 } uvm_core_state;
 
 uvm_core_state m_uvm_core_state = UVM_CORE_UNINITIALIZED;
+parameter uvm_core_state UVM_CORE_POST_INIT = UVM_CORE_INITIALIZED;
 
 typedef class uvm_object_wrapper;
 uvm_object_wrapper uvm_deferred_init[$];

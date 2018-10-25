@@ -49,6 +49,7 @@ typedef class uvm_text_tr_stream;
 // into a textual log file.
 //
 //
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
    
 class uvm_text_tr_database extends uvm_tr_database;
 
@@ -66,6 +67,9 @@ class uvm_text_tr_database extends uvm_tr_database;
    //
    // Parameters:
    // name - Instance name
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+  
    function new(string name="unnamed-uvm_text_tr_database");
       super.new(name);
 
@@ -85,6 +89,9 @@ class uvm_text_tr_database extends uvm_tr_database;
    //
    // This will also lock the ~file_name~, so that it cannot be
    // modified while the connection is open.
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
    protected virtual function bit do_open_db();
       if (m_file == 0) begin
          m_file = $fopen(m_filename_dap.get(), "a+");
@@ -103,6 +110,8 @@ class uvm_text_tr_database extends uvm_tr_database;
    // if it is currently opened.
    //
    // This unlocks the ~file_name~, allowing it to be modified again.
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
    protected virtual function bit do_close_db();
       if (m_file != 0) begin
          fork // Needed because $fclose is a task
@@ -118,6 +127,8 @@ class uvm_text_tr_database extends uvm_tr_database;
    // database.
    //
    // Text-Backend implementation of <uvm_tr_database::open_stream>
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
    protected virtual function uvm_tr_stream do_open_stream(string name,
                                                            string scope,
                                                            string type_name);
@@ -129,6 +140,8 @@ class uvm_text_tr_database extends uvm_tr_database;
    // Establishes a ~link~ between two elements in the database
    //
    // Text-Backend implementation of <uvm_tr_database::establish_link>.
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
    protected virtual function void do_establish_link(uvm_link_base link);
       uvm_recorder r_lhs, r_rhs;
       uvm_object lhs = link.get_lhs();
@@ -170,6 +183,8 @@ class uvm_text_tr_database extends uvm_tr_database;
    // The ~set_file_name~ method can only be called prior to ~open_db~.
    //
    // By default, the database will use a file named "tr_db.log".
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
    function void set_file_name(string filename);
       if (filename == "") begin
         `uvm_warning("UVM/TXT_DB/EMPTY_NAME",

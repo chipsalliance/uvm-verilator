@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------
 // Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2014 Intel Corporation
-// Copyright 2013 Synopsys, Inc.
+// Copyright 2013-2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2011 AMD
-// Copyright 2015 NVIDIA Corporation
+// Copyright 2015-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -24,9 +24,9 @@
 
 //-----------------------------------------------------------------------------
 //
-// Title -- NODOCS -- TLM Implementation Port Declaration Macros
+// Title -- NODOCS -- UVM TLM Implementation Port Declaration Macros
 //
-// The TLM implementation declaration macros provide a way for components
+// The UVM TLM implementation declaration macros provide a way for components
 // to provide multiple implementation ports of the same implementation 
 // interface. When an implementation port is defined using the built-in
 // set of imps, there must be exactly one implementation of the interface.

@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------
 // Copyright 2010-2011 Mentor Graphics Corporation
 // Copyright 2014 Semifore
-// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2015 NVIDIA Corporation
+// Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -22,12 +22,12 @@
 //----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
-// Title -- NODOCS -- TLM2 imps (interface implementations)
+// Title -- NODOCS -- UVM TLM 2 imps (interface implementations)
 //
-// This section defines the implementation classes for connecting TLM2
+// This section defines the implementation classes for connecting UVM TLM 2
 // interfaces.
 //
-// TLM imps bind a TLM interface with the object that contains the
+// UVM TLM imps bind a UVM TLM interface with the object that contains the
 // interface implementation.
 // In addition to the transaction type and the phase type, the imps 
 // are parameterized with the type of the object that will provide the
@@ -53,7 +53,7 @@
 // to nb_transport_bw() within <`UVM_TLM_NB_TRANSPORT_BW_IMP> or a return from this 
 // or subsequent call to nb_transport_fw().
 //
-// See <TLM2 Interfaces, Ports, Exports and Transport Interfaces Subset>
+// See <UVM TLM 2 Interfaces, Ports, Exports and Transport Interfaces Subset>
 // for more details on the semantics and rules of the nonblocking
 // transport interface.
    

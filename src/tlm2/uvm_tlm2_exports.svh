@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
 // Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2015 NVIDIA Corporation
+// Copyright 2015-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +21,7 @@
 //----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
-// Title -- NODOCS -- TLM2 Export Classes
+// Title -- NODOCS -- UVM TLM 2 Export Classes
 //
 // This section defines the export classes for connecting TLM2
 // interfaces.

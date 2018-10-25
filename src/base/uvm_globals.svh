@@ -297,35 +297,99 @@ function uvm_core_state get_core_state();
 		return m_uvm_core_state;
 endfunction
 
+// Function: uvm_init
+// Implementation of uvm_init, as defined in section
+// F.3.1.3 in 1800.2-2017.
+//
+// *Note:* The LRM states that subsequent calls to <uvm_init> after
+// the first are silently ignored, however there are scenarios wherein
+// the implementation breaks this requirement.
+//
+// If the core state (see <get_core_state>) is ~UVM_CORE_PRE_INIT~ when <uvm_init>,
+// is called, then the library can not determine the appropriate core service.  As
+// such, the default core service will be constructed and a fatal message
+// shall be generated.
+//
+// If the core state is past ~UVM_CORE_PRE_INIT~, and ~cs~ is a non-null core 
+// service instance different than the value passed to the first <uvm_init> call, 
+// then the library will generate a warning message to alert the user that this 
+// call to <uvm_init> is being ignored.
+//
+// @uvm-contrib This API represents a potential contribution to IEEE 1800.2
+  
 // @uvm-ieee 1800.2-2017 auto F.3.1.3
 function void uvm_init(uvm_coreservice_t cs=null);
-	uvm_coreservice_t dcs;
-	static bit uvm_init_active;
-   
-	if(get_core_state()!=UVM_CORE_UNINITIALIZED || uvm_init_active) begin
-		`uvm_info("UVM/INIT/MULTI","uvm core already initialized, skipping uvm_init()",UVM_DEBUG)
-		return;
-	end
-		
-	if(cs!=null)
-		dcs=cs;
-	else begin
-		uvm_default_coreservice_t ncs;
-		ncs=new();
-		dcs=ncs;
-	end	
-	uvm_coreservice_t::set(dcs);
-	uvm_init_active=1;
+  uvm_default_coreservice_t dcs;
+  
+  if(get_core_state()!=UVM_CORE_UNINITIALIZED) begin
+    if (get_core_state() == UVM_CORE_PRE_INIT) begin
+      // If we're in this state, something very strange has happened.
+      // We've called uvm_init, and it is actively assigning the
+      // core service, but the core service isn't actually set yet.
+      // This means that either the library messed something up, or
+      // we have a race occurring between two threads.  Either way, 
+      // this is non-recoverable.  We're going to setup using the default
+      // core service, and immediately fatal out.
+      dcs = new();
+      uvm_coreservice_t::set(dcs);
+      `uvm_fatal("UVM/INIT/MULTI", "Non-recoverable race during uvm_init")
+    end
+    else begin
+      // After PRE_INIT, we can check to see if this is worth reporting
+      // as a warning.  We only report it if the value for ~cs~ is _not_
+      // the current core service, and ~cs~ is not null.
+      uvm_coreservice_t actual;
+      actual = uvm_coreservice_t::get();
+      if ((cs != actual) && (cs != null))
+        `uvm_warning("UVM/INIT/MULTI", "uvm_init() called after library has already completed initialization, subsequent calls are ignored!")
+    end
+    return;
+  end
+  m_uvm_core_state=UVM_CORE_PRE_INIT;
 
-	foreach(uvm_deferred_init[idx]) begin
-	   uvm_deferred_init[idx].initialize();
-	end
-	
-	uvm_deferred_init.delete();
-	
-	void'(uvm_root::get());
-	
-	m_uvm_core_state=UVM_CORE_INITIALIZED;
+  // We control the implementation of uvm_default_coreservice_t::new
+  // and uvm_coreservice_t::set (which is undocumented).  As such,
+  // we guarantee that they will not trigger any calls to uvm_init.
+  if(cs == null) begin
+    dcs = new();
+    cs = dcs;
+  end
+  uvm_coreservice_t::set(cs);
+
+  // After this point, it should be safe to query the
+  // corservice for anything.  We're not done with
+  // initialization, but the coreservice (and the
+  // various elements it controls) are 'stable'.
+  //
+  // Note that a user could have something silly
+  // in their own space, like a specialization of
+  // uvm_root with a constructor that relies on a
+  // specialization of uvm_factory with a
+  // constructor that relies on the specialized
+  // root being constructed...  but there's not
+  // really anything that can be done about that.
+  m_uvm_core_state=UVM_CORE_INITIALIZING;
+  
+  foreach(uvm_deferred_init[idx]) begin
+    uvm_deferred_init[idx].initialize();
+  end
+  
+  uvm_deferred_init.delete();
+  
+  begin
+    uvm_root top;
+    top = uvm_root::get();
+    // These next calls were moved to uvm_init from uvm_root,
+    // because they could emit messages, resulting in the
+    // report server being queried, which causes uvm_init.
+    top.report_header();
+    top.m_check_uvm_field_flag_size();
+    // This sets up the global verbosity. Other command line args may
+    // change individual component verbosity.
+    top.m_check_verbosity();
+  end
+    
+  m_uvm_core_state=UVM_CORE_INITIALIZED;
 endfunction
 
 //----------------------------------------------------------------------------
@@ -350,6 +414,7 @@ endfunction
 // process only after allowing other processes any number of delta cycles (#0) 
 // to settle out.
 //
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 //----------------------------------------------------------------------------
 
 task uvm_wait_for_nba_region;

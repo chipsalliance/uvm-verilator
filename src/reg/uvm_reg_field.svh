@@ -2,6 +2,7 @@
 // -------------------------------------------------------------
 // Copyright 2010-2011 Mentor Graphics Corporation
 // Copyright 2012-2014 Semifore
+// Copyright 2018 Qualcomm, Inc.
 // Copyright 2004-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
@@ -427,9 +428,6 @@ function void uvm_reg_field::configure(uvm_reg        parent,
 
    if (has_reset)
       set_reset(reset);
-   else
-      uvm_resource_db#(bit)::set({"REG::", get_full_name()},
-                                 "NO_REG_HW_RESET_TEST", 1);
 
    m_parent.add_field(this);
 

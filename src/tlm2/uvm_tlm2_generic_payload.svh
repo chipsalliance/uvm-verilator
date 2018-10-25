@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------
 // Copyright 2010-2012 Mentor Graphics Corporation
 // Copyright 2014 Semifore
-// Copyright 2010-2012 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2013-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
@@ -22,7 +22,7 @@
 //----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
-// Title -- NODOCS -- TLM Generic Payload & Extensions
+// Title -- NODOCS -- UVM TLM Generic Payload & Extensions
 //----------------------------------------------------------------------
 // The Generic Payload transaction represents a generic 
 // bus read/write access. It is used as the default transaction in
@@ -465,6 +465,9 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
   // to those of ~rhs~.  All fields are compared, however if byte 
   // enables are being used, then non-enabled bytes of data are
   // skipped.
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
+  
   function bit do_compare(uvm_object rhs, uvm_comparer comparer);
     uvm_tlm_generic_payload gp;
     do_compare = super.do_compare(rhs, comparer);
@@ -548,6 +551,9 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
   // and <m_byte_enable>.
   //
   // Note: The extensions are not packed.
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
+  
   function void do_pack(uvm_packer packer);
     super.do_pack(packer);
     if (m_length > m_data.size())
@@ -581,6 +587,8 @@ class uvm_tlm_generic_payload extends uvm_sequence_item;
   // existing array allocations are kept.
   //
   // Note: The extensions are not unpacked.
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
   function void do_unpack(uvm_packer packer);
     super.do_unpack(packer);
     `uvm_unpack_intN  (m_address,64)
@@ -1041,7 +1049,7 @@ endclass
 //----------------------------------------------------------------------
 // Class -- NODOCS -- uvm_tlm_extension
 //
-// TLM extension class. The class is parameterized with arbitrary type
+// UVM TLM extension class. The class is parameterized with arbitrary type
 // which represents the type of the extension. An instance of the
 // generic payload can contain one extension object of each type; it
 // cannot contain two instances of the same extension type.
@@ -1085,7 +1093,7 @@ class uvm_tlm_extension #(type T=int) extends uvm_tlm_extension_base;
 
    // Function -- NODOCS -- ID()
    //
-   // Return the unique ID of this TLM extension type.
+   // Return the unique ID of this UVM TLM extension type.
    // This method is used to identify the type of the extension to retrieve
    // from a <uvm_tlm_generic_payload> instance,
    // using the <uvm_tlm_generic_payload::get_extension()> method.

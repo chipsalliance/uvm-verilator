@@ -37,16 +37,16 @@
 
 `ifdef UVM_EMPTY_MACROS
 
-`define uvm_field_utils_begin(T) 
-`define uvm_field_utils_end 
-`define uvm_object_utils(T) 
-`define uvm_object_param_utils(T) 
-`define uvm_object_utils_begin(T) 
-`define uvm_object_param_utils_begin(T) 
-`define uvm_object_abstract_utils(T) 
-`define uvm_object_abstract_param_utils(T) 
-`define uvm_object_abstract_utils_begin(T) 
-`define uvm_object_abstract_param_utils_begin(T) 
+`define uvm_field_utils_begin(T)
+`define uvm_field_utils_end
+`define uvm_object_utils(T)
+`define uvm_object_param_utils(T)
+`define uvm_object_utils_begin(T)
+`define uvm_object_param_utils_begin(T)
+`define uvm_object_abstract_utils(T)
+`define uvm_object_abstract_param_utils(T)
+`define uvm_object_abstract_utils_begin(T)
+`define uvm_object_abstract_param_utils_begin(T)
 `define uvm_object_abstract_utils_end
 `define uvm_component_utils(T)
 `define uvm_component_param_utils(T)
@@ -57,41 +57,41 @@
 `define uvm_component_abstract_utils_begin(T)
 `define uvm_component_abstract_param_utils_begin(T)
 `define uvm_component_utils_end
-`define uvm_field_int(ARG,FLAG)
-`define uvm_field_real(ARG,FLAG)
-`define uvm_field_enum(T,ARG,FLAG)
-`define uvm_field_object(ARG,FLAG)
-`define uvm_field_event(ARG,FLAG)
-`define uvm_field_string(ARG,FLAG)
-`define uvm_field_array_enum(ARG,FLAG)
-`define uvm_field_array_int(ARG,FLAG)
-`define uvm_field_sarray_int(ARG,FLAG)
-`define uvm_field_sarray_enum(ARG,FLAG)
-`define uvm_field_array_object(ARG,FLAG)
-`define uvm_field_sarray_object(ARG,FLAG)
-`define uvm_field_array_string(ARG,FLAG)
-`define uvm_field_sarray_string(ARG,FLAG)
-`define uvm_field_queue_enum(ARG,FLAG)
-`define uvm_field_queue_int(ARG,FLAG)
-`define uvm_field_queue_object(ARG,FLAG)
-`define uvm_field_queue_string(ARG,FLAG)
-`define uvm_field_aa_int_string(ARG, FLAG)
-`define uvm_field_aa_string_string(ARG, FLAG)
-`define uvm_field_aa_object_string(ARG, FLAG)
-`define uvm_field_aa_int_int(ARG, FLAG)
-`define uvm_field_aa_int_int(ARG, FLAG)
-`define uvm_field_aa_int_int_unsigned(ARG, FLAG)
-`define uvm_field_aa_int_integer(ARG, FLAG)
-`define uvm_field_aa_int_integer_unsigned(ARG, FLAG)
-`define uvm_field_aa_int_byte(ARG, FLAG)
-`define uvm_field_aa_int_byte_unsigned(ARG, FLAG)
-`define uvm_field_aa_int_shortint(ARG, FLAG)
-`define uvm_field_aa_int_shortint_unsigned(ARG, FLAG)
-`define uvm_field_aa_int_longint(ARG, FLAG)
-`define uvm_field_aa_int_longint_unsigned(ARG, FLAG)
-`define uvm_field_aa_int_key(KEY, ARG, FLAG)
-`define uvm_field_aa_string_int(ARG, FLAG)
-`define uvm_field_aa_object_int(ARG, FLAG)
+`define uvm_field_int(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_real(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_enum(T,ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_object(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_event(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_string(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_array_enum(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_array_int(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_sarray_int(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_sarray_enum(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_array_object(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_sarray_object(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_array_string(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_sarray_string(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_queue_enum(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_queue_int(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_queue_object(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_queue_string(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_string(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_string_string(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_object_string(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_int(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_int(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_int_unsigned(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_integer(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_integer_unsigned(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_byte(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_byte_unsigned(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_shortint(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_shortint_unsigned(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_longint(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_longint_unsigned(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_int_key(KEY, ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_string_int(ARG,FLAG=UVM_DEFAULT)
+`define uvm_field_aa_object_int(ARG,FLAG=UVM_DEFAULT)
 
 `else
 
@@ -99,7 +99,7 @@
 //
 // Title -- NODOCS -- Utility and Field Macros for Components and Objects
 //
-// Group -- NODOCS -- Utility Macros 
+// Group -- NODOCS -- Utility Macros
 //
 // The ~utils~ macros define the infrastructure needed to enable the
 // object/component for correct factory operation. See <`uvm_object_utils> and
@@ -112,7 +112,7 @@
 // Below is an example usage of the ~utils~ macro for a user-defined object.
 //
 //|  class mydata extends uvm_object;
-//| 
+//|
 //|     `uvm_object_utils(mydata)
 //|
 //|     // declare data properties
@@ -123,10 +123,10 @@
 //|
 //|  endclass
 //
-// Below is an example usage of a ~utils~ macro for a user-defined component. 
+// Below is an example usage of a ~utils~ macro for a user-defined component.
 //
 //|  class my_comp extends uvm_component;
-//| 
+//|
 //|     `uvm_component_utils(my_comp)
 //|
 //|     // declare data properties
@@ -156,21 +156,32 @@
 
 // MACRO -- NODOCS -- `uvm_field_utils_end
 //
-// These macros form a block in which `uvm_field_* macros can be placed. 
+// These macros form a block in which `uvm_field_* macros can be placed.
 // Used as
 //
 //|  `uvm_field_utils_begin(TYPE)
 //|    `uvm_field_* macros here
 //|  `uvm_field_utils_end
 //
-// 
+//
 // These macros do ~not~ perform factory registration nor implement the
 // ~get_type_name~ and ~create~ methods. Use this form when you need custom
 // implementations of these two methods, or when you are setting up field macros
 // for an abstract class (i.e. virtual class).
 
+// Implementation Note:  The `uvm_field_utils_begin macro creates a new local
+// function "__m_uvm_execute_field_op", which has a similar signature to 
+// <do_execute_op>, but the arguments are named differently so as to prevent
+// potential collisions with field names.  For example, if the user had a
+// field named "op", then that could collide with the "op" argument of the
+// <do_execute_op> method.
+
 `define uvm_field_utils_begin(T)                                                \
 function void do_execute_op( uvm_field_op op );                                 \
+  super.do_execute_op(op);                                                      \
+  __m_uvm_execute_field_op(op);                                                 \
+endfunction : do_execute_op                                                     \
+function void __m_uvm_execute_field_op( uvm_field_op __local_op__ );            \
    uvm_field_flag_t local_op_type__; /* Used to avoid re-querying */            \
    T local_rhs__; /* Used for $casting copy and compare */                      \
    uvm_resource_base local_rsrc__; /* Used for UVM_SET ops */                   \
@@ -181,35 +192,33 @@ function void do_execute_op( uvm_field_op op );                                 
    int local_size__; /* Used when unpacking size values */                      \
    /* All possible policy classes */                                            \
    /* Using the same name as the do_* methods, allows macro reuse */            \
-   uvm_printer printer;                                                         \
-   uvm_comparer comparer;                                                       \
-   uvm_recorder recorder;                                                       \
-   uvm_packer packer;                                                           \
-   uvm_copier copier;                                                           \
-   /* Base class first */                                                       \
-   super.do_execute_op(op);                                                     \
-   void'($cast(local_rhs__, op.get_rhs()));                                     \
-   if (($cast(local_rsrc__, op.get_rhs())) &&                                   \
+   uvm_printer __local_printer__;                                               \
+   uvm_comparer __local_comparer__;                                             \
+   uvm_recorder __local_recorder__;                                             \
+   uvm_packer __local_packer__;                                                 \
+   uvm_copier __local_copier__;                                                 \
+   void'($cast(local_rhs__, __local_op__.get_rhs()));                           \
+   if (($cast(local_rsrc__, __local_op__.get_rhs())) &&                         \
        (local_rsrc__ != null))                                                  \
      local_rsrc_name__ = local_rsrc__.get_name();                               \
-   local_op_type__ = op.get_op_type();                                          \
-   case (local_op_type__)                                                      \
+   local_op_type__ = __local_op__.get_op_type();                                \
+   case (local_op_type__)                                                       \
      UVM_PRINT: begin                                                           \
-       $cast(printer, op.get_policy());                                         \
+       $cast(__local_printer__, __local_op__.get_policy());                     \
      end                                                                        \
      UVM_COMPARE: begin                                                         \
        if (local_rhs__ == null) return;                                         \
-       $cast(comparer, op.get_policy());                                        \
+       $cast(__local_comparer__, __local_op__.get_policy());                    \
      end                                                                        \
      UVM_RECORD: begin                                                          \
-       $cast(recorder, op.get_policy());                                        \
+       $cast(__local_recorder__, __local_op__.get_policy());                    \
      end                                                                        \
      UVM_PACK, UVM_UNPACK: begin                                                \
-       $cast(packer, op.get_policy());                                          \
+       $cast(__local_packer__, __local_op__.get_policy());                      \
      end                                                                        \
      UVM_COPY: begin                                                            \
        if (local_rhs__ == null) return;                                         \
-       $cast(copier, op.get_policy());                                          \
+       $cast(__local_copier__, __local_op__.get_policy());                      \
      end                                                                        \
      UVM_SET: begin                                                             \
        if (local_rsrc__ == null) return;                                        \
@@ -217,9 +226,9 @@ function void do_execute_op( uvm_field_op op );                                 
      default:                                                                   \
        return; /* unknown op, just return */                                    \
    endcase                                                                      \
-   
+
 `define uvm_field_utils_end \
-endfunction 
+endfunction : __m_uvm_execute_field_op
 
 
 // MACRO -- NODOCS -- `uvm_object_utils
@@ -234,21 +243,21 @@ endfunction
 //
 // <uvm_object>-based class declarations may contain one of the above forms of
 // utility macros.
-// 
+//
 // For simple objects with no field macros, use
 //
 //|  `uvm_object_utils(TYPE)
-//    
+//
 // For simple objects with field macros, use
 //
 //|  `uvm_object_utils_begin(TYPE)
 //|    `uvm_field_* macro invocations here
 //|  `uvm_object_utils_end
-//    
+//
 // For parameterized objects with no field macros, use
 //
 //|  `uvm_object_param_utils(TYPE)
-//    
+//
 // For parameterized objects, with field macros, use
 //
 //|  `uvm_object_param_utils_begin(TYPE)
@@ -294,7 +303,7 @@ endfunction
 
 `define uvm_object_utils_begin(T) \
   `uvm_object_utils(T) \
-  `uvm_field_utils_begin(T) 
+  `uvm_field_utils_begin(T)
 
 `define uvm_object_param_utils_begin(T) \
   `uvm_object_param_utils(T) \
@@ -310,11 +319,11 @@ endfunction
 `define uvm_object_abstract_utils_begin(T) \
   `uvm_object_abstract_utils(T) \
   `uvm_field_utils_begin(T)
-       
+
 `define uvm_object_abstract_param_utils_begin(T) \
   `uvm_object_abstract_param_utils(T) \
-  `uvm_field_utils_begin(T) 
-       
+  `uvm_field_utils_begin(T)
+
 `define uvm_object_utils_end \
   `uvm_field_utils_end
 
@@ -386,14 +395,14 @@ endfunction
 `define uvm_component_param_utils(T) \
    `m_uvm_component_registry_param(T) \
 
-   
+
 `define uvm_component_utils_begin(T) \
    `uvm_component_utils(T) \
-   `uvm_field_utils_begin(T) 
+   `uvm_field_utils_begin(T)
 
 `define uvm_component_param_utils_begin(T) \
    `uvm_component_param_utils(T) \
-   `uvm_field_utils_begin(T) 
+   `uvm_field_utils_begin(T)
 
 `define uvm_component_abstract_utils(T) \
    `m_uvm_component_abstract_registry_internal(T,T) \
@@ -402,14 +411,14 @@ endfunction
 `define uvm_component_abstract_param_utils(T) \
    `m_uvm_component_abstract_registry_param(T) \
 
-   
+
 `define uvm_component_abstract_utils_begin(T) \
    `uvm_component_abstract_utils(T) \
-   `uvm_field_utils_begin(T) 
+   `uvm_field_utils_begin(T)
 
 `define uvm_component_abstract_param_utils_begin(T) \
    `uvm_component_abstract_param_utils(T) \
-   `uvm_field_utils_begin(T) 
+   `uvm_field_utils_begin(T)
 
 `define uvm_component_utils_end \
   `uvm_field_utils_end
@@ -433,7 +442,7 @@ endfunction
    endfunction \
    virtual function uvm_object_wrapper get_object_type(); \
      return type_id::get(); \
-   endfunction 
+   endfunction
 
 
 // MACRO -- NODOCS -- `uvm_component_registry
@@ -454,7 +463,11 @@ endfunction
    endfunction \
    virtual function uvm_object_wrapper get_object_type(); \
      return type_id::get(); \
-   endfunction 
+   endfunction
+
+
+`define uvm_declare_type_alias(TYPE,NAME,SFX=) \
+  static bit m__alias_declared``SFX = TYPE::type_id::set_type_alias(NAME);
 
 
 // uvm_new_func
@@ -494,10 +507,10 @@ endfunction
 // This is unsafe, as static initialization can cause races
 // to occur.  When running without <`UVM_ENABLE_DEPRECATED_API>,
 // the implementation is an static initialization safe function:
-//| static function string type_name(); 
-//|   return TNAME_STRING; 
+//| static function string type_name();
+//|   return TNAME_STRING;
 //| endfunction : type_name
-// 
+//
 `ifdef UVM_ENABLE_DEPRECATED_API
  `define uvm_type_name_decl(TNAME_STRING) \
      const static string type_name = TNAME_STRING; \
@@ -513,7 +526,8 @@ endfunction
        return TNAME_STRING; \
      endfunction : get_type_name
 `endif // !`ifdef UVM_ENABLE_DEPRECATED_API
-     
+
+
 // m_uvm_object_registry_internal
 // ------------------------------
 
@@ -526,7 +540,7 @@ endfunction
    endfunction \
    virtual function uvm_object_wrapper get_object_type(); \
      return type_id::get(); \
-   endfunction 
+   endfunction
 
 
 // m_uvm_object_registry_param
@@ -539,7 +553,7 @@ endfunction
    endfunction \
    virtual function uvm_object_wrapper get_object_type(); \
      return type_id::get(); \
-   endfunction 
+   endfunction
 
 // m_uvm_object_abstract_registry_internal
 // ---------------------------------------
@@ -553,7 +567,7 @@ endfunction
    endfunction \
    virtual function uvm_object_wrapper get_object_type(); \
      return type_id::get(); \
-   endfunction 
+   endfunction
 
 
 // m_uvm_object_abstract_registry_param
@@ -566,7 +580,7 @@ endfunction
    endfunction \
    virtual function uvm_object_wrapper get_object_type(); \
      return type_id::get(); \
-   endfunction 
+   endfunction
 
 
 // m_uvm_component_registry_internal
@@ -637,15 +651,15 @@ endfunction
 // `uvm_*_utils_end macro blocks to form "automatic" implementations of the
 // core data methods: copy, compare, pack, unpack, record, print, and sprint.
 //
-// By using the macros, you do not have to implement any of the do_* methods 
+// By using the macros, you do not have to implement any of the do_* methods
 // inherited from <uvm_object>. However, be aware that the field macros expand
 // into general inline code that is not as run-time efficient nor as flexible
-// as direct implementations of the do_* methods. 
+// as direct implementations of the do_* methods.
 //
-// Below is an example usage of the field macros for a sequence item. 
+// Below is an example usage of the field macros for a sequence item.
 //
 //|  class my_trans extends uvm_sequence_item;
-//| 
+//|
 //|    cmd_t  cmd;
 //|    int    addr;
 //|    int    data[$];
@@ -669,7 +683,7 @@ endfunction
 // Below is an example usage of the field macros for a component.
 //
 //|  class my_comp extends uvm_component;
-//| 
+//|
 //|    my_comp_cfg  cfg;
 //|
 //|    `uvm_component_utils_begin(my_comp)
@@ -703,10 +717,10 @@ endfunction
 // same bit is not added more than once).
 //
 //   UVM_ALL_ON     - Set all operations on.
-//   UVM_DEFAULT    - This is the recommended set of flags to pass 
+//   UVM_DEFAULT    - This is the recommended set of flags to pass
 //                      to the field macros.  Currently, it enables
 //                      all of the operations, making it functionally
-//                      identical to ~UVM_ALL_ON~.  In the future 
+//                      identical to ~UVM_ALL_ON~.  In the future
 //                      however, additional flags could be added with
 //                      a recommended default value of ~off~.
 //
@@ -740,12 +754,12 @@ endfunction
 //   specified.
 //
 // A UVM component should ~not~ be specified using the `uvm_field_object macro
-// unless its flag includes UVM_REFERENCE.  Otherwise, the field macro will 
+// unless its flag includes UVM_REFERENCE.  Otherwise, the field macro will
 // implement deep copy, which is an illegal operation for uvm_components.
 // You will get a FATAL error if you tried to copy or clone an object containing
 // a component handle that was registered with a field macro without the
 // UVM_REFERENCE flag. You will also get duplicate entries when printing
-// component topology, as this functionality is already provided by UVM. 
+// component topology, as this functionality is already provided by UVM.
 //------------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
@@ -761,7 +775,7 @@ endfunction
 `define m_uvm_field_radix(FLAG) uvm_radix_enum'((FLAG)&(UVM_RADIX))
 
 `define m_uvm_field_recursion(FLAG) uvm_recursion_policy_enum'((FLAG)&(UVM_RECURSION))
-     
+
 `define m_uvm_field_begin(ARG, FLAG) \
   begin \
     case (local_op_type__)
@@ -769,7 +783,7 @@ endfunction
 `define m_uvm_field_end(ARG) \
     endcase \
   end
-     
+
 
 `define m_uvm_field_op_begin(OP, FLAG) \
 UVM_``OP: \
@@ -777,38 +791,39 @@ UVM_``OP: \
 
 `define m_uvm_field_op_end(OP) \
   end
-   
+
 // MACRO -- NODOCS -- `uvm_field_int
 //
 // Implements the data operations for any packed integral property.
 //
-//|  `uvm_field_int(ARG,FLAG)
+//|  `uvm_field_int(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is an integral property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-`define uvm_field_int(ARG,FLAG) \
+`define uvm_field_int(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+      `uvm_compare_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG), __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_int(ARG) \
+      `uvm_pack_int(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_int(ARG) \
+      `uvm_unpack_int(ARG, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
       `uvm_record_int(`"ARG`", \
                       ARG, \
                       $bits(ARG), \
-                      `m_uvm_field_radix(FLAG)) \
+                      `m_uvm_field_radix(FLAG), \
+                      __local_recorder__) \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_int(ARG, $bits(ARG), `m_uvm_field_radix(FLAG)) \
+      `uvm_print_int(ARG, $bits(ARG), `m_uvm_field_radix(FLAG),,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -825,32 +840,32 @@ UVM_``OP: \
 //
 // Implements the data operations for a <uvm_object>-based property.
 //
-//|  `uvm_field_object(ARG,FLAG)
+//|  `uvm_field_object(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is an object property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-`define uvm_field_object(ARG,FLAG) \
+`define uvm_field_object(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
-      `uvm_copy_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+      `uvm_copy_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG), __local_copier__) \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+      `uvm_compare_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG), __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
       if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
-        `uvm_pack_object(ARG) \
+        `uvm_pack_object(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
       if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
-        `uvm_unpack_object(ARG) \
+        `uvm_unpack_object(ARG, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      recorder.record_object(`"ARG`", ARG); \
+      __local_recorder__.record_object(`"ARG`", ARG); \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_object(ARG, `m_uvm_field_recursion(FLAG)) \
+      `uvm_print_object(ARG, `m_uvm_field_recursion(FLAG),__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -879,30 +894,30 @@ UVM_``OP: \
 //
 // Implements the data operations for a string property.
 //
-//|  `uvm_field_string(ARG,FLAG)
+//|  `uvm_field_string(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is a string property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-`define uvm_field_string(ARG,FLAG) \
+`define uvm_field_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_string(ARG, local_rhs__.ARG) \
+      `uvm_compare_string(ARG, local_rhs__.ARG, __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_string(ARG) \
+      `uvm_pack_string(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_string(ARG) \
+      `uvm_unpack_string(ARG, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_string(`"ARG`", ARG) \
+      `uvm_record_string(`"ARG`", ARG, __local_recorder__) \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      printer.print_string(`"ARG`", ARG); \
+      __local_printer__.print_string(`"ARG`", ARG); \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -918,37 +933,37 @@ UVM_``OP: \
 
 
 // MACRO -- NODOCS -- `uvm_field_enum
-// 
+//
 // Implements the data operations for an enumerated property.
 //
-//|  `uvm_field_enum(T,ARG,FLAG)
+//|  `uvm_field_enum(T,ARG,FLAG=UVM_DEFAULT)
 //
 // ~T~ is an enumerated _type_, ~ARG~ is an instance of that type, and
 // ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-`define uvm_field_enum(T,ARG,FLAG) \
+`define uvm_field_enum(T,ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_enum(ARG, local_rhs__.ARG, T) \
+      `uvm_compare_enum(ARG, local_rhs__.ARG, T, __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_enum(ARG) \
+      `uvm_pack_enum(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_enum(ARG, T) \
+      `uvm_unpack_enum(ARG, T, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_enum(`"ARG`", ARG, T) \
+      `uvm_record_enum(`"ARG`", ARG, T, __local_recorder__) \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
       if (`m_uvm_field_radix(FLAG) inside {UVM_NORADIX, UVM_ENUM, UVM_STRING}) \
-        `uvm_print_enum(T, ARG) \
+        `uvm_print_enum(T, ARG,__local_printer__) \
       else \
-        `uvm_print_int(ARG, $bits(ARG), `m_uvm_field_radix(FLAG)) \
+        `uvm_print_int(ARG, $bits(ARG), `m_uvm_field_radix(FLAG),T,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -967,30 +982,30 @@ UVM_``OP: \
 //
 // Implements the data operations for any real property.
 //
-//|  `uvm_field_real(ARG,FLAG)
+//|  `uvm_field_real(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is an real property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-`define uvm_field_real(ARG,FLAG) \
+`define uvm_field_real(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_real(ARG, local_rhs__.ARG) \
+      `uvm_compare_real(ARG, local_rhs__.ARG, __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_real(ARG) \
+      `uvm_pack_real(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_real(ARG) \
+      `uvm_unpack_real(ARG, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_real(`"ARG`", ARG) \
+      `uvm_record_real(`"ARG`", ARG, __local_recorder__) \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      printer.print_real(`"ARG`", ARG); \
+      __local_printer__.print_real(`"ARG`", ARG); \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1004,22 +1019,22 @@ UVM_``OP: \
   `m_uvm_field_end(ARG)
 
 // MACRO -- NODOCS -- `uvm_field_event
-//   
+//
 // Implements the data operations for an event property.
 //
-//|  `uvm_field_event(ARG,FLAG)
+//|  `uvm_field_event(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is an event property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-`define uvm_field_event(ARG,FLAG) \
+`define uvm_field_event(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `m_uvm_compare_begin(ARG, local_rhs__.ARG) \
-        comparer.print_msg({`"ARG`", " event miscompare"}); \
+      `m_uvm_compare_begin(ARG, local_rhs__.ARG, __local_comparer__) \
+        __local_comparer__.print_msg({`"ARG`", " event miscompare"}); \
       `m_uvm_compare_end \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
@@ -1029,7 +1044,7 @@ UVM_``OP: \
     `m_uvm_field_op_begin(RECORD,FLAG) \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      printer.print_generic(`"ARG`", "event", -1, ""); \
+      __local_printer__.print_generic(`"ARG`", "event", -1, ""); \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
     `m_uvm_field_op_end(SET) \
@@ -1038,7 +1053,7 @@ UVM_``OP: \
 
 //-----------------------------------------------------------------------------
 // Group -- NODOCS -- `uvm_field_sarray_* macros
-//                            
+//
 // Macros that implement data operations for one-dimensional static array
 // properties.
 //-----------------------------------------------------------------------------
@@ -1048,35 +1063,36 @@ UVM_``OP: \
 // Implements the data operations for a one-dimensional static array of
 // integrals.
 //
-//|  `uvm_field_sarray_int(ARG,FLAG)
+//|  `uvm_field_sarray_int(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is a one-dimensional static array of integrals, and ~FLAG~
 // is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-`define uvm_field_sarray_int(ARG,FLAG) \
+`define uvm_field_sarray_int(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      if ((comparer.physical&&((FLAG)&UVM_PHYSICAL))|| \
-          (comparer.abstract&&((FLAG)&UVM_ABSTRACT))|| \
+      if ((__local_comparer__.physical&&((FLAG)&UVM_PHYSICAL))|| \
+          (__local_comparer__.abstract&&((FLAG)&UVM_ABSTRACT))|| \
           (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT))) \
-        `uvm_compare_sarray_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+        `uvm_compare_sarray_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG), __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_sarray(ARG) \
+      `uvm_pack_sarray(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_sarray(ARG) \
+      `uvm_unpack_sarray(ARG, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_qda_int(ARG, `m_uvm_field_radix(FLAG))  \
+      `uvm_record_qda_int(ARG, `m_uvm_field_radix(FLAG), __local_recorder__)  \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
       `uvm_print_sarray_int(ARG, \
-                            `m_uvm_field_radix(FLAG)) \
+                            `m_uvm_field_radix(FLAG),, \
+                            __local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1088,7 +1104,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           int local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -1118,40 +1134,40 @@ UVM_``OP: \
 // Implements the data operations for a one-dimensional static array of
 // <uvm_object>-based objects.
 //
-//|  `uvm_field_sarray_object(ARG,FLAG)
+//|  `uvm_field_sarray_object(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is a one-dimensional static array of <uvm_object>-based objects,
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-`define uvm_field_sarray_object(ARG,FLAG) \
+`define uvm_field_sarray_object(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       foreach(ARG[i]) begin \
-        `uvm_copy_object(ARG[i], local_rhs__.ARG[i], `m_uvm_field_recursion(FLAG)) \
+        `uvm_copy_object(ARG[i], local_rhs__.ARG[i], `m_uvm_field_recursion(FLAG), __local_copier__) \
       end \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      if ((comparer.physical&&((FLAG)&UVM_PHYSICAL))|| \
-          (comparer.abstract&&((FLAG)&UVM_ABSTRACT))|| \
+      if ((__local_comparer__.physical&&((FLAG)&UVM_PHYSICAL))|| \
+          (__local_comparer__.abstract&&((FLAG)&UVM_ABSTRACT))|| \
           (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT))) \
-        `uvm_compare_sarray_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+        `uvm_compare_sarray_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG), __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
       if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
         foreach(ARG[i])  \
-          `uvm_pack_object(ARG[i]) \
+          `uvm_pack_object(ARG[i], __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
       if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
         foreach(ARG[i])  \
-          `uvm_unpack_object(ARG[i]) \
+          `uvm_unpack_object(ARG[i], __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_qda_object(ARG) \
+      `uvm_record_qda_object(ARG, __local_recorder__) \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_sarray_object(ARG, `m_uvm_field_recursion(FLAG)) \
+      `uvm_print_sarray_object(ARG, `m_uvm_field_recursion(FLAG), __local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1163,7 +1179,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           int local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -1197,7 +1213,7 @@ UVM_``OP: \
         end \
       end \
     `m_uvm_field_op_end(SET) \
-  `m_uvm_field_end(ARG)   
+  `m_uvm_field_end(ARG)
 
 
 // MACRO -- NODOCS -- `uvm_field_sarray_string
@@ -1205,35 +1221,35 @@ UVM_``OP: \
 // Implements the data operations for a one-dimensional static array of
 // strings.
 //
-//|  `uvm_field_sarray_string(ARG,FLAG)
+//|  `uvm_field_sarray_string(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is a one-dimensional static array of strings, and ~FLAG~ is a bitwise
 // OR of one or more flag settings as described in <Field Macros> above.
 
-`define uvm_field_sarray_string(ARG,FLAG) \
+`define uvm_field_sarray_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      if ((comparer.physical&&((FLAG)&UVM_PHYSICAL))|| \
-          (comparer.abstract&&((FLAG)&UVM_ABSTRACT))|| \
+      if ((__local_comparer__.physical&&((FLAG)&UVM_PHYSICAL))|| \
+          (__local_comparer__.abstract&&((FLAG)&UVM_ABSTRACT))|| \
           (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT))) \
-        `uvm_compare_sarray_string(ARG, local_rhs__.ARG) \
+        `uvm_compare_sarray_string(ARG, local_rhs__.ARG, __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
       foreach(ARG[i]) \
-        `uvm_pack_string(ARG[i]) \
+        `uvm_pack_string(ARG[i], __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
       foreach(ARG[i]) \
-       `uvm_unpack_string(ARG[i]) \
+       `uvm_unpack_string(ARG[i], __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_qda_string(ARG)  \
+      `uvm_record_qda_string(ARG, __local_recorder__)  \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_sarray_string(ARG) \
+      `uvm_print_sarray_string(ARG,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1245,7 +1261,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           int local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -1268,7 +1284,7 @@ UVM_``OP: \
         end \
       end \
     `m_uvm_field_op_end(SET) \
-  `m_uvm_field_end(ARG)  
+  `m_uvm_field_end(ARG)
 
 
 // MACRO -- NODOCS -- `uvm_field_sarray_enum
@@ -1276,36 +1292,36 @@ UVM_``OP: \
 // Implements the data operations for a one-dimensional static array of
 // enums.
 //
-//|  `uvm_field_sarray_enum(T,ARG,FLAG)
+//|  `uvm_field_sarray_enum(T,ARG,FLAG=UVM_DEFAULT)
 //
 // ~T~ is a one-dimensional dynamic array of enums _type_, ~ARG~ is an
 // instance of that type, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
-`define uvm_field_sarray_enum(T,ARG,FLAG) \
+`define uvm_field_sarray_enum(T,ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      if ((comparer.physical&&((FLAG)&UVM_PHYSICAL))|| \
-          (comparer.abstract&&((FLAG)&UVM_ABSTRACT))|| \
+      if ((__local_comparer__.physical&&((FLAG)&UVM_PHYSICAL))|| \
+          (__local_comparer__.abstract&&((FLAG)&UVM_ABSTRACT))|| \
           (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT))) \
-        `uvm_compare_sarray_enum(ARG, local_rhs__.ARG, T) \
+        `uvm_compare_sarray_enum(ARG, local_rhs__.ARG, T, __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
       foreach (ARG[i]) \
-        `uvm_pack_enumN(ARG[i], $bits(T)) \
+        `uvm_pack_enumN(ARG[i], $bits(T), __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
       foreach (ARG[i]) \
-        `uvm_unpack_enumN(ARG[i], $bits(T), T) \
+        `uvm_unpack_enumN(ARG[i], $bits(T), T, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_qda_enum(ARG, T)  \
+      `uvm_record_qda_enum(ARG, T, __local_recorder__)  \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_sarray_enum(T, ARG) \
+      `uvm_print_sarray_enum(T, ARG ,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1317,7 +1333,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           int local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -1340,7 +1356,7 @@ UVM_``OP: \
         end \
       end \
     `m_uvm_field_op_end(SET) \
-  `m_uvm_field_end(ARG)  
+  `m_uvm_field_end(ARG)
 
 
 //-----------------------------------------------------------------------------
@@ -1351,14 +1367,14 @@ UVM_``OP: \
 //
 // Implementation note:
 // lines flagged with empty multi-line comments, /**/, are not needed or need
-// to be different for fixed arrays, which cannot be resized. Fixed arrays 
+// to be different for fixed arrays, which cannot be resized. Fixed arrays
 // do not need to pack/unpack their size either, because their size is known;
 // wouldn't hurt though if it allowed code consolidation. Unpacking would
 // necessarily be different. */
-// 
+//
 //-----------------------------------------------------------------------------
 
-             
+
 // m_uvm_QUEUE_resize
 // ------------------
 
@@ -1372,34 +1388,34 @@ UVM_``OP: \
 // ------------------
 
 `define m_uvm_da_resize(ARG, SZ) \
-  if (ARG.size() != SZ) ARG = new[SZ](ARG); 
+  if (ARG.size() != SZ) ARG = new[SZ](ARG);
 
 
 // m_uvm_field_qda_int
 // -------------------
 
-`define m_uvm_field_qda_int(TYPE,ARG,FLAG) \
+`define m_uvm_field_qda_int(TYPE,ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      if ((comparer.physical&&((FLAG)&UVM_PHYSICAL))|| \
-          (comparer.abstract&&((FLAG)&UVM_ABSTRACT))|| \
+      if ((__local_comparer__.physical&&((FLAG)&UVM_PHYSICAL))|| \
+          (__local_comparer__.abstract&&((FLAG)&UVM_ABSTRACT))|| \
           (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT))) \
-        `uvm_compare_qda_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+        `uvm_compare_qda_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG), __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_``TYPE``(ARG) \
+      `uvm_pack_``TYPE``(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_``TYPE``(ARG) \
+      `uvm_unpack_``TYPE``(ARG, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_qda_int(ARG, `m_uvm_field_radix(FLAG)) \
+      `uvm_record_qda_int(ARG, `m_uvm_field_radix(FLAG), __local_recorder__) \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_qda_int(TYPE, ARG, `m_uvm_field_radix(FLAG)) \
+      `uvm_print_qda_int(TYPE, ARG, `m_uvm_field_radix(FLAG),,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1416,7 +1432,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           int local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -1452,16 +1468,16 @@ UVM_``OP: \
 // Implements the data operations for a one-dimensional dynamic array of
 // integrals.
 //
-//|  `uvm_field_array_int(ARG,FLAG)
+//|  `uvm_field_array_int(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is a one-dimensional dynamic array of integrals,
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-`define uvm_field_array_int(ARG,FLAG) \
-   `m_uvm_field_qda_int(da,ARG,FLAG) 
+`define uvm_field_array_int(ARG,FLAG=UVM_DEFAULT) \
+   `m_uvm_field_qda_int(da,ARG,FLAG)
 
-`define m_uvm_field_qda_object(TYPE,ARG,FLAG) \
+`define m_uvm_field_qda_object(TYPE,ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       if ((`m_uvm_field_recursion(FLAG) == UVM_REFERENCE) || !local_rhs__.ARG.size()) \
@@ -1469,31 +1485,31 @@ UVM_``OP: \
       else begin \
         `m_uvm_``TYPE``_resize(ARG, local_rhs__.ARG.size()) \
         foreach (ARG[i]) \
-          `uvm_copy_object(ARG[i], local_rhs__.ARG[i], `m_uvm_field_recursion(FLAG)) \
+          `uvm_copy_object(ARG[i], local_rhs__.ARG[i], `m_uvm_field_recursion(FLAG), __local_copier__) \
       end \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      if ((comparer.physical&&((FLAG)&UVM_PHYSICAL))|| \
-          (comparer.abstract&&((FLAG)&UVM_ABSTRACT))|| \
+      if ((__local_comparer__.physical&&((FLAG)&UVM_PHYSICAL))|| \
+          (__local_comparer__.abstract&&((FLAG)&UVM_ABSTRACT))|| \
           (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT))) \
-        `uvm_compare_qda_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+        `uvm_compare_qda_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG), __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      packer.pack_field_int(ARG.size(), 32); \
+      __local_packer__.pack_field_int(ARG.size(), 32); \
       foreach (ARG[i]) \
-        `uvm_pack_object(ARG[i]) \
+        `uvm_pack_object(ARG[i], __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      local_size__ = packer.unpack_field_int(32); \
+      local_size__ = __local_packer__.unpack_field_int(32); \
       `m_uvm_``TYPE``_resize(ARG, local_size__); \
       foreach (ARG[i]) \
-        `uvm_unpack_object(ARG[i]) \
+        `uvm_unpack_object(ARG[i], __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_qda_object(ARG) \
+      `uvm_record_qda_object(ARG, __local_recorder__) \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_qda_object(TYPE, ARG, `m_uvm_field_recursion(FLAG)) \
+      `uvm_print_qda_object(TYPE, ARG, `m_uvm_field_recursion(FLAG),__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1510,7 +1526,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           int local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -1554,57 +1570,57 @@ UVM_``OP: \
 // Implements the data operations for a one-dimensional dynamic array
 // of <uvm_object>-based objects.
 //
-//|  `uvm_field_array_object(ARG,FLAG)
+//|  `uvm_field_array_object(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is a one-dimensional dynamic array of <uvm_object>-based objects,
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-`define uvm_field_array_object(ARG,FLAG) \
+`define uvm_field_array_object(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_object(da,ARG,FLAG)
 
 
 
 // MACRO -- NODOCS -- `uvm_field_array_string
 //
-// Implements the data operations for a one-dimensional dynamic array 
+// Implements the data operations for a one-dimensional dynamic array
 // of strings.
 //
-//|  `uvm_field_array_string(ARG,FLAG)
+//|  `uvm_field_array_string(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is a one-dimensional dynamic array of strings, and ~FLAG~ is a bitwise
 // OR of one or more flag settings as described in <Field Macros> above.
 
-`define uvm_field_array_string(ARG,FLAG) \
+`define uvm_field_array_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_string(da,ARG,FLAG)
 
-`define m_uvm_field_qda_string(TYPE,ARG,FLAG) \
+`define m_uvm_field_qda_string(TYPE,ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      if ((comparer.physical&&((FLAG)&UVM_PHYSICAL))|| \
-          (comparer.abstract&&((FLAG)&UVM_ABSTRACT))|| \
+      if ((__local_comparer__.physical&&((FLAG)&UVM_PHYSICAL))|| \
+          (__local_comparer__.abstract&&((FLAG)&UVM_ABSTRACT))|| \
           (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT))) \
-        `uvm_compare_qda_string(ARG, local_rhs__.ARG) \
+        `uvm_compare_qda_string(ARG, local_rhs__.ARG, __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-       packer.pack_field_int(ARG.size(), 32); \
+       __local_packer__.pack_field_int(ARG.size(), 32); \
        foreach (ARG[i]) \
-         `uvm_pack_string(ARG[i]) \
+         `uvm_pack_string(ARG[i], __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      local_size__ = packer.unpack_field_int(32); \
+      local_size__ = __local_packer__.unpack_field_int(32); \
       `m_uvm_``TYPE``_resize(ARG, local_size__) \
       foreach (ARG[i]) \
-        `uvm_unpack_string(ARG[i]) \
+        `uvm_unpack_string(ARG[i], __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_qda_string(ARG) \
+      `uvm_record_qda_string(ARG, __local_recorder__) \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_qda_string(TYPE, ARG) \
+      `uvm_print_qda_string(TYPE, ARG,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1621,7 +1637,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           int local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -1657,42 +1673,42 @@ UVM_``OP: \
 // Implements the data operations for a one-dimensional dynamic array of
 // enums.
 //
-//|  `uvm_field_array_enum(T,ARG,FLAG)
+//|  `uvm_field_array_enum(T,ARG,FLAG=UVM_DEFAULT)
 //
 // ~T~ is a one-dimensional dynamic array of enums _type_,
 // ~ARG~ is an instance of that type, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-`define uvm_field_array_enum(T,ARG,FLAG) \
-  `m_field_qda_enum(da,T,ARG,FLAG) 
+`define uvm_field_array_enum(T,ARG,FLAG=UVM_DEFAULT) \
+  `m_field_qda_enum(da,T,ARG,FLAG)
 
-`define m_field_qda_enum(TYPE,T,ARG,FLAG) \
+`define m_field_qda_enum(TYPE,T,ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      if ((comparer.physical&&((FLAG)&UVM_PHYSICAL))|| \
-          (comparer.abstract&&((FLAG)&UVM_ABSTRACT))|| \
+      if ((__local_comparer__.physical&&((FLAG)&UVM_PHYSICAL))|| \
+          (__local_comparer__.abstract&&((FLAG)&UVM_ABSTRACT))|| \
           (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT))) \
-        `uvm_compare_qda_enum(ARG, local_rhs__.ARG, T) \
+        `uvm_compare_qda_enum(ARG, local_rhs__.ARG, T, __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-       packer.pack_field_int(ARG.size(), 32); \
+       __local_packer__.pack_field_int(ARG.size(), 32); \
        foreach (ARG[i]) \
-         `uvm_pack_enumN(ARG[i], $bits(T)) \
+         `uvm_pack_enumN(ARG[i], $bits(T), __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      local_size__ = packer.unpack_field_int(32); \
+      local_size__ = __local_packer__.unpack_field_int(32); \
       `m_uvm_``TYPE``_resize(ARG, local_size__) \
       foreach (ARG[i]) \
-        `uvm_unpack_enumN(ARG[i], $bits(T), T) \
+        `uvm_unpack_enumN(ARG[i], $bits(T), T, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_qda_enum(ARG, T) \
+      `uvm_record_qda_enum(ARG, T, __local_recorder__) \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_qda_enum(TYPE, T, ARG) \
+      `uvm_print_qda_enum(TYPE, T, ARG,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1709,7 +1725,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           int local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -1751,26 +1767,26 @@ UVM_``OP: \
 //
 // Implements the data operations for a queue of integrals.
 //
-//|  `uvm_field_queue_int(ARG,FLAG)
+//|  `uvm_field_queue_int(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is a one-dimensional queue of integrals,
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-`define uvm_field_queue_int(ARG,FLAG) \
+`define uvm_field_queue_int(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_int(queue,ARG,FLAG)
 
 // MACRO -- NODOCS -- `uvm_field_queue_object
 //
 // Implements the data operations for a queue of <uvm_object>-based objects.
 //
-//|  `uvm_field_queue_object(ARG,FLAG)
+//|  `uvm_field_queue_object(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is a one-dimensional queue of <uvm_object>-based objects,
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-`define uvm_field_queue_object(ARG,FLAG) \
+`define uvm_field_queue_object(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_object(queue,ARG,FLAG)
 
 
@@ -1778,12 +1794,12 @@ UVM_``OP: \
 //
 // Implements the data operations for a queue of strings.
 //
-//|  `uvm_field_queue_string(ARG,FLAG)
+//|  `uvm_field_queue_string(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is a one-dimensional queue of strings, and ~FLAG~ is a bitwise
 // OR of one or more flag settings as described in <Field Macros> above.
 
-`define uvm_field_queue_string(ARG,FLAG) \
+`define uvm_field_queue_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_string(queue,ARG,FLAG)
 
 
@@ -1791,13 +1807,13 @@ UVM_``OP: \
 //
 // Implements the data operations for a one-dimensional queue of enums.
 //
-//|  `uvm_field_queue_enum(T,ARG,FLAG)
+//|  `uvm_field_queue_enum(T,ARG,FLAG=UVM_DEFAULT)
 //
 // ~T~ is a queue of enums _type_, ~ARG~ is an instance of that type,
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described
 // in <Field Macros> above.
 
-`define uvm_field_queue_enum(T,ARG,FLAG) \
+`define uvm_field_queue_enum(T,ARG,FLAG=UVM_DEFAULT) \
   `m_field_qda_enum(queue,T,ARG,FLAG)
 
 
@@ -1814,28 +1830,28 @@ UVM_``OP: \
 // Implements the data operations for an associative array of integrals indexed
 // by ~string~.
 //
-//|  `uvm_field_aa_int_string(ARG,FLAG)
+//|  `uvm_field_aa_int_string(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of integrals
 // with string key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-`define uvm_field_aa_int_string(ARG, FLAG) \
+`define uvm_field_aa_int_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_aa_int_string(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+      `uvm_compare_aa_int_string(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG), __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_aa_int_string(ARG) \
+      `uvm_pack_aa_int_string(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_aa_int_string(ARG) \
+      `uvm_unpack_aa_int_string(ARG, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_aa_int_string(ARG, `m_uvm_field_radix(FLAG)) \
+      `uvm_print_aa_int_string(ARG, `m_uvm_field_radix(FLAG), int, __local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1847,7 +1863,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                          local_rsrc_name__.len()-1); \
+                                                          local_rsrc_name__.len()-2); \
           `uvm_resource_builtin_int_read(local_success__, \
                                          local_rsrc__, \
                                          ARG[local_index__], \
@@ -1863,30 +1879,30 @@ UVM_``OP: \
 // Implements the data operations for an associative array of <uvm_object>-based
 // objects indexed by ~string~.
 //
-//|  `uvm_field_aa_object_string(ARG,FLAG)
+//|  `uvm_field_aa_object_string(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of objects
 // with string key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-`define uvm_field_aa_object_string(ARG, FLAG) \
+`define uvm_field_aa_object_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
-      ARG = local_rhs__.ARG; \
+      `uvm_copy_aa_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG), __local_copier__) \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_aa_object_string(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+      `uvm_compare_aa_object_string(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG), __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
       if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
-        `uvm_pack_aa_object_string(ARG) \
+        `uvm_pack_aa_object_string(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
       if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
-      `uvm_unpack_aa_object_string(ARG) \
+      `uvm_unpack_aa_object_string(ARG, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_aa_object_string(ARG, `m_uvm_field_recursion(FLAG)) \
+      `uvm_print_aa_object_string(ARG, `m_uvm_field_recursion(FLAG),__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1898,7 +1914,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                          local_rsrc_name__.len()-1); \
+                                                          local_rsrc_name__.len()-2); \
           `uvm_resource_read(local_success__, \
                              local_rsrc__, \
                              uvm_object, \
@@ -1927,28 +1943,28 @@ UVM_``OP: \
 // Implements the data operations for an associative array of strings indexed
 // by ~string~.
 //
-//|  `uvm_field_aa_string_string(ARG,FLAG)
+//|  `uvm_field_aa_string_string(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of strings
 // with string key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-`define uvm_field_aa_string_string(ARG, FLAG) \
+`define uvm_field_aa_string_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_aa_string_string(ARG, local_rhs__.ARG) \
+      `uvm_compare_aa_string_string(ARG, local_rhs__.ARG, __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_aa_string_string(ARG) \
+      `uvm_pack_aa_string_string(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_aa_string_string(ARG) \
+      `uvm_unpack_aa_string_string(ARG, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_aa_string_string(ARG) \
+      `uvm_print_aa_string_string(ARG,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -1960,7 +1976,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                          local_rsrc_name__.len()-1); \
+                                                          local_rsrc_name__.len()-2); \
           `uvm_resource_read(local_success__, \
                              local_rsrc__, \
                              string, \
@@ -1985,68 +2001,34 @@ UVM_``OP: \
 // Implements the data operations for an associative array of <uvm_object>-based
 // objects indexed by the ~int~ data type.
 //
-//|  `uvm_field_aa_object_int(ARG,FLAG)
+//|  `uvm_field_aa_object_int(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of objects
 // with ~int~ key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-`define uvm_field_aa_object_int(ARG, FLAG) \
-  `m_uvm_field_begin(ARG, FLAG) \
-    `m_uvm_field_op_begin(COPY,FLAG) \
-      ARG = local_rhs__.ARG; \
-    `m_uvm_field_op_end(COPY) \
-    `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_aa_object_int(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
-    `m_uvm_field_op_end(COMPARE) \
-    `m_uvm_field_op_begin(PACK,FLAG) \
-      /* Unsupported, unpacking needs explicit index width */ \
-    `m_uvm_field_op_end(PACK) \
-    `m_uvm_field_op_begin(UNPACK,FLAG) \
-      /* Unsupported, unpacking needs explicit index width */ \
-    `m_uvm_field_op_end(UNPACK) \
-    `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_aa_object_int(ARG, `m_uvm_field_recursion(FLAG)) \
-    `m_uvm_field_op_end(PRINT) \
-    `m_uvm_field_op_begin(SET,FLAG) \
-      if(local_rsrc_name__ == `"ARG`") begin \
-         `uvm_warning("UVM/FIELDS/AA_SIZE", $sformatf("Associative array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
-      end \
-      else begin \
-        string local_name__ = {`"ARG`", "["}; \
-        if (local_rsrc_name__.len() && \
-            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
-            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
-          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
-          `uvm_warning("UVM/FIELDS/AA_INT_SET", $sformatf("Can't set '%s.%s[%s]' of unknown index type", \
-                                                          get_full_name(), \
-                                                          `"ARG`", \
-                                                          local_index_str__)) \
-        end \
-      end \
-    `m_uvm_field_op_end(SET) \
-  `m_uvm_field_end(ARG)
-
+`define uvm_field_aa_object_int(ARG,FLAG=UVM_DEFAULT) \
+  `uvm_field_aa_object_key(int, ARG, FLAG)
+     
 // Not LRM, but supports packing + configuration
-`define uvm_field_aa_object_key(KEY, ARG, FLAG) \
+`define uvm_field_aa_object_key(KEY, ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
-      ARG = local_rhs__.ARG; \
+      `uvm_copy_aa_object(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG), __local_copier__) \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_aa_object_int(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+      `uvm_compare_aa_object_int(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG), __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
       if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
-        `uvm_pack_aa_object_intN(ARG, $bits(KEY)) \
+        `uvm_pack_aa_object_intN(ARG, $bits(KEY), __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
       if (`m_uvm_field_recursion(FLAG) != UVM_REFERENCE) \
-        `uvm_unpack_aa_object_intN(ARG, $bits(KEY)) \
+        `uvm_unpack_aa_object_intN(ARG, $bits(KEY), __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_aa_object_int(ARG, `m_uvm_field_recursion(FLAG), KEY) \
+      `uvm_print_aa_object_int(ARG, `m_uvm_field_recursion(FLAG), KEY,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -2058,7 +2040,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           KEY local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -2086,56 +2068,23 @@ UVM_``OP: \
   `m_uvm_field_end(ARG)
 
 // Not LRM, oversight?
-`define uvm_field_aa_string_int(ARG, FLAG) \
-  `m_uvm_field_begin(ARG, FLAG) \
-    `m_uvm_field_op_begin(COPY,FLAG) \
-      ARG = local_rhs__.ARG; \
-    `m_uvm_field_op_end(COPY) \
-    `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_aa_string_int(ARG, local_rhs__.ARG) \
-    `m_uvm_field_op_end(COMPARE) \
-    `m_uvm_field_op_begin(PACK,FLAG) \
-      /* Unsupported, unpacking requires explicit data width */ \
-    `m_uvm_field_op_end(PACK) \
-    `m_uvm_field_op_begin(UNPACK,FLAG) \
-      /* Unsupported, unpacking requires explicit data width */ \
-    `m_uvm_field_op_end(UNPACK) \
-    `m_uvm_field_op_begin(PRINT,FLAG) \
-      /* TODO */ \
-    `m_uvm_field_op_end(PRINT) \
-    `m_uvm_field_op_begin(SET,FLAG) \
-      if(local_rsrc_name__ == `"ARG`") begin \
-         `uvm_warning("UVM/FIELDS/AA_SIZE", $sformatf("Associative array '%s.%s' cannot be resized via configuration.",  get_full_name(), `"ARG`") ) \
-      end \
-      else begin \
-        string local_name__ = {`"ARG`", "["}; \
-        if (local_rsrc_name__.len() && \
-            local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
-            local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
-          string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-          `uvm_warning("UVM/FIELDS/AA_INT_SET", $sformatf("Can't set '%s.%s[%s]' of unknown index type", \
-                                                          get_full_name(), \
-                                                          `"ARG`", \
-                                                          local_index_str__)) \
-        end \
-      end \
-    `m_uvm_field_op_end(SET) \
-  `m_uvm_field_end(ARG)
+`define uvm_field_aa_string_int(ARG,FLAG=UVM_DEFAULT) \
+  `uvm_field_aa_string_key(int, ARG, FLAG)
 
 // Not LRM, but supports packing + configuration
-`define uvm_field_aa_string_key(KEY, ARG, FLAG) \
+`define uvm_field_aa_string_key(KEY, ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_aa_string_int(ARG, local_rhs__.ARG, `m_uvm_field_recursion(FLAG)) \
+      `uvm_compare_aa_string_int(ARG, local_rhs__.ARG, __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_aa_string_intN(ARG, $bits(KEY)) \
+      `uvm_pack_aa_string_intN(ARG, $bits(KEY), __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_aa_string_intN(ARG, $bits(KEY)) \
+      `uvm_unpack_aa_string_intN(ARG, $bits(KEY), __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
       /* TODO */ \
@@ -2150,7 +2099,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           KEY local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -2171,13 +2120,13 @@ UVM_``OP: \
 // Implements the data operations for an associative array of integral
 // types indexed by the ~int~ data type.
 //
-//|  `uvm_field_aa_int_int(ARG,FLAG)
+//|  `uvm_field_aa_int_int(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of integrals
 // with ~int~ key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-`define uvm_field_aa_int_int(ARG, FLAG) \
+`define uvm_field_aa_int_int(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(int, ARG, FLAG) \
 
 
@@ -2186,13 +2135,13 @@ UVM_``OP: \
 // Implements the data operations for an associative array of integral
 // types indexed by the ~int unsigned~ data type.
 //
-//|  `uvm_field_aa_int_int_unsigned(ARG,FLAG)
+//|  `uvm_field_aa_int_int_unsigned(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of integrals
 // with ~int unsigned~ key, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
-`define uvm_field_aa_int_int_unsigned(ARG, FLAG) \
+`define uvm_field_aa_int_int_unsigned(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(int unsigned, ARG, FLAG)
 
 
@@ -2201,13 +2150,13 @@ UVM_``OP: \
 // Implements the data operations for an associative array of integral
 // types indexed by the ~integer~ data type.
 //
-//|  `uvm_field_aa_int_integer(ARG,FLAG)
+//|  `uvm_field_aa_int_integer(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of integrals
 // with ~integer~ key, and ~FLAG~ is a bitwise OR of one or more flag settings
 // as described in <Field Macros> above.
 
-`define uvm_field_aa_int_integer(ARG, FLAG) \
+`define uvm_field_aa_int_integer(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(integer, ARG, FLAG)
 
 
@@ -2216,13 +2165,13 @@ UVM_``OP: \
 // Implements the data operations for an associative array of integral
 // types indexed by the ~integer unsigned~ data type.
 //
-//|  `uvm_field_aa_int_integer_unsigned(ARG,FLAG)
+//|  `uvm_field_aa_int_integer_unsigned(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of integrals
-// with ~integer unsigned~ key, and ~FLAG~ is a bitwise OR of one or more 
+// with ~integer unsigned~ key, and ~FLAG~ is a bitwise OR of one or more
 // flag settings as described in <Field Macros> above.
 
-`define uvm_field_aa_int_integer_unsigned(ARG, FLAG) \
+`define uvm_field_aa_int_integer_unsigned(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(integer unsigned, ARG, FLAG)
 
 
@@ -2231,13 +2180,13 @@ UVM_``OP: \
 // Implements the data operations for an associative array of integral
 // types indexed by the ~byte~ data type.
 //
-//|  `uvm_field_aa_int_byte(ARG,FLAG)
+//|  `uvm_field_aa_int_byte(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of integrals
 // with ~byte~ key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-`define uvm_field_aa_int_byte(ARG, FLAG) \
+`define uvm_field_aa_int_byte(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(byte, ARG, FLAG)
 
 
@@ -2246,13 +2195,13 @@ UVM_``OP: \
 // Implements the data operations for an associative array of integral
 // types indexed by the ~byte unsigned~ data type.
 //
-//|  `uvm_field_aa_int_byte_unsigned(ARG,FLAG)
+//|  `uvm_field_aa_int_byte_unsigned(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of integrals
 // with ~byte unsigned~ key, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
-`define uvm_field_aa_int_byte_unsigned(ARG, FLAG) \
+`define uvm_field_aa_int_byte_unsigned(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(byte unsigned, ARG, FLAG)
 
 
@@ -2261,13 +2210,13 @@ UVM_``OP: \
 // Implements the data operations for an associative array of integral
 // types indexed by the ~shortint~ data type.
 //
-//|  `uvm_field_aa_int_shortint(ARG,FLAG)
+//|  `uvm_field_aa_int_shortint(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of integrals
 // with ~shortint~ key, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
-`define uvm_field_aa_int_shortint(ARG, FLAG) \
+`define uvm_field_aa_int_shortint(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(shortint, ARG, FLAG)
 
 
@@ -2276,13 +2225,13 @@ UVM_``OP: \
 // Implements the data operations for an associative array of integral
 // types indexed by the ~shortint unsigned~ data type.
 //
-//|  `uvm_field_aa_int_shortint_unsigned(ARG,FLAG)
+//|  `uvm_field_aa_int_shortint_unsigned(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of integrals
 // with ~shortint unsigned~ key, and ~FLAG~ is a bitwise OR of one or more
 // flag settings as described in <Field Macros> above.
 
-`define uvm_field_aa_int_shortint_unsigned(ARG, FLAG) \
+`define uvm_field_aa_int_shortint_unsigned(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(shortint unsigned, ARG, FLAG)
 
 
@@ -2291,13 +2240,13 @@ UVM_``OP: \
 // Implements the data operations for an associative array of integral
 // types indexed by the ~longint~ data type.
 //
-//|  `uvm_field_aa_int_longint(ARG,FLAG)
+//|  `uvm_field_aa_int_longint(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of integrals
 // with ~longint~ key, and ~FLAG~ is a bitwise OR of one or more flag settings
 // as described in <Field Macros> above.
 
-`define uvm_field_aa_int_longint(ARG, FLAG) \
+`define uvm_field_aa_int_longint(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(longint, ARG, FLAG)
 
 
@@ -2306,43 +2255,43 @@ UVM_``OP: \
 // Implements the data operations for an associative array of integral
 // types indexed by the ~longint unsigned~ data type.
 //
-//|  `uvm_field_aa_int_longint_unsigned(ARG,FLAG)
+//|  `uvm_field_aa_int_longint_unsigned(ARG,FLAG=UVM_DEFAULT)
 //
 // ~ARG~ is the name of a property that is an associative array of integrals
 // with ~longint unsigned~ key, and ~FLAG~ is a bitwise OR of one or more
 // flag settings as described in <Field Macros> above.
 
-`define uvm_field_aa_int_longint_unsigned(ARG, FLAG) \
+`define uvm_field_aa_int_longint_unsigned(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(longint unsigned, ARG, FLAG)
 
 
 // MACRO -- NODOCS -- `uvm_field_aa_int_key
 //
 // Implements the data operations for an associative array of integral
-// types indexed by any integral key data type. 
+// types indexed by any integral key data type.
 //
-//|  `uvm_field_aa_int_key(KEY,ARG,FLAG)
+//|  `uvm_field_aa_int_key(KEY,ARG,FLAG=UVM_DEFAULT)
 //
-// ~KEY~ is the data type of the integral key, ~ARG~ is the name of a property 
-// that is an associative array of integrals, and ~FLAG~ is a bitwise OR of one 
+// ~KEY~ is the data type of the integral key, ~ARG~ is the name of a property
+// that is an associative array of integrals, and ~FLAG~ is a bitwise OR of one
 // or more flag settings as described in <Field Macros> above.
 
-`define uvm_field_aa_int_key(KEY, ARG, FLAG) \
+`define uvm_field_aa_int_key(KEY, ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_aa_int_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+      `uvm_compare_aa_int_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG), __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_aa_int_intN(ARG, $bits(KEY)) \
+      `uvm_pack_aa_int_intN(ARG, $bits(KEY), __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_aa_int_intN(ARG, $bits(KEY)) \
+      `uvm_unpack_aa_int_intN(ARG, $bits(KEY), __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_aa_int_int(ARG, `m_uvm_field_radix(FLAG), , KEY) \
+      `uvm_print_aa_int_int(ARG, `m_uvm_field_radix(FLAG), , KEY,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -2354,7 +2303,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           KEY local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -2374,30 +2323,30 @@ UVM_``OP: \
 // MACRO -- NODOCS -- `uvm_field_aa_int_enumkey
 //
 // Implements the data operations for an associative array of integral
-// types indexed by any enumeration key data type. 
+// types indexed by any enumeration key data type.
 //
-//|  `uvm_field_aa_int_enumkey(KEY, ARG,FLAG)
+//|  `uvm_field_aa_int_enumkey(KEY, ARG,FLAG=UVM_DEFAULT)
 //
-// ~KEY~ is the enumeration type of the key, ~ARG~ is the name of a property 
-// that is an associative array of integrals, and ~FLAG~ is a bitwise OR of one 
+// ~KEY~ is the enumeration type of the key, ~ARG~ is the name of a property
+// that is an associative array of integrals, and ~FLAG~ is a bitwise OR of one
 // or more flag settings as described in <Field Macros> above.
 
-`define uvm_field_aa_int_enumkey(KEY, ARG, FLAG) \
+`define uvm_field_aa_int_enumkey(KEY, ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      `uvm_compare_aa_int_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG)) \
+      `uvm_compare_aa_int_int(ARG, local_rhs__.ARG, `m_uvm_field_radix(FLAG), __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_aa_int_enum(ARG, KEY) \
+      `uvm_pack_aa_int_enum(ARG, KEY, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_aa_int_enum(ARG, KEY) \
+      `uvm_unpack_aa_int_enum(ARG, KEY, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_aa_int_enum(KEY, ARG, `m_uvm_field_radix(FLAG)) \
+      `uvm_print_aa_int_enum(KEY, ARG, `m_uvm_field_radix(FLAG),,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -2409,7 +2358,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           KEY local_index__; \
           bit[$bits(KEY)-1:0] local_bit_index__; \
           /* TODO: Non-decimal indexes */ \
@@ -2428,28 +2377,28 @@ UVM_``OP: \
   `m_uvm_field_end(ARG)
 
 //-- Field Macros for arrays of real (Non-LRM enhancement)
-`define uvm_field_sarray_real(ARG,FLAG) \
+`define uvm_field_sarray_real(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      if ((comparer.physical&&((FLAG)&UVM_PHYSICAL))|| \
-          (comparer.abstract&&((FLAG)&UVM_ABSTRACT))|| \
+      if ((__local_comparer__.physical&&((FLAG)&UVM_PHYSICAL))|| \
+          (__local_comparer__.abstract&&((FLAG)&UVM_ABSTRACT))|| \
           (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT))) \
-        `uvm_compare_sarray_real(ARG, local_rhs__.ARG) \
+        `uvm_compare_sarray_real(ARG, local_rhs__.ARG, __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_sarray_real(ARG) \
+      `uvm_pack_sarray_real(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_sarray_real(ARG) \
+      `uvm_unpack_sarray_real(ARG, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_qda_real(ARG)  \
+      `uvm_record_qda_real(ARG, __local_recorder__)  \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_sarray_real(ARG) \
+      `uvm_print_sarray_real(ARG,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -2461,7 +2410,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           int local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -2488,28 +2437,28 @@ UVM_``OP: \
 // m_uvm_field_qda_real
 // -------------------
 
-`define m_uvm_field_qda_real(TYPE,ARG,FLAG) \
+`define m_uvm_field_qda_real(TYPE,ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
       ARG = local_rhs__.ARG; \
     `m_uvm_field_op_end(COPY) \
     `m_uvm_field_op_begin(COMPARE,FLAG) \
-      if ((comparer.physical&&((FLAG)&UVM_PHYSICAL))|| \
-          (comparer.abstract&&((FLAG)&UVM_ABSTRACT))|| \
+      if ((__local_comparer__.physical&&((FLAG)&UVM_PHYSICAL))|| \
+          (__local_comparer__.abstract&&((FLAG)&UVM_ABSTRACT))|| \
           (!((FLAG)&UVM_PHYSICAL) && !((FLAG)&UVM_ABSTRACT))) \
-        `uvm_compare_qda_real(ARG, local_rhs__.ARG) \
+        `uvm_compare_qda_real(ARG, local_rhs__.ARG, __local_comparer__) \
     `m_uvm_field_op_end(COMPARE) \
     `m_uvm_field_op_begin(PACK,FLAG) \
-      `uvm_pack_``TYPE``_real(ARG) \
+      `uvm_pack_``TYPE``_real(ARG, __local_packer__) \
     `m_uvm_field_op_end(PACK) \
     `m_uvm_field_op_begin(UNPACK,FLAG) \
-      `uvm_unpack_``TYPE``_real(ARG) \
+      `uvm_unpack_``TYPE``_real(ARG, __local_packer__) \
     `m_uvm_field_op_end(UNPACK) \
     `m_uvm_field_op_begin(RECORD,FLAG) \
-      `uvm_record_qda_real(ARG) \
+      `uvm_record_qda_real(ARG, __local_recorder__) \
     `m_uvm_field_op_end(RECORD) \
     `m_uvm_field_op_begin(PRINT,FLAG) \
-      `uvm_print_qda_real(TYPE, ARG) \
+      `uvm_print_qda_real(TYPE, ARG,__local_printer__) \
     `m_uvm_field_op_end(PRINT) \
     `m_uvm_field_op_begin(SET,FLAG) \
       if(local_rsrc_name__ == `"ARG`") begin \
@@ -2526,7 +2475,7 @@ UVM_``OP: \
             local_rsrc_name__[local_rsrc_name__.len()-1] == "]" && \
             local_rsrc_name__.substr(0, local_name__.len()-1) == local_name__) begin \
           string local_index_str__ = local_rsrc_name__.substr(local_name__.len(), \
-                                                              local_rsrc_name__.len()-1); \
+                                                              local_rsrc_name__.len()-2); \
           int local_index__; \
           /* TODO: Non-decimal indexes */ \
           int local_code__ = $sscanf(local_index_str__, "%d", local_index__); \
@@ -2556,12 +2505,12 @@ UVM_``OP: \
     `m_uvm_field_op_end(SET) \
   `m_uvm_field_end(ARG)
 
-`define uvm_field_array_real(ARG,FLAG) \
+`define uvm_field_array_real(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_real(da,ARG,FLAG)
 
-`define uvm_field_queue_real(ARG,FLAG) \
+`define uvm_field_queue_real(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_real(queue,ARG,FLAG)
-                                                              
+
 `endif // !`ifdef UVM_EMPTY_MACROS
-                                                              
+
 `endif  // UVM_OBJECT_DEFINES_SVH

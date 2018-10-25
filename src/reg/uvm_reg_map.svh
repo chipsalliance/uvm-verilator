@@ -1261,12 +1261,13 @@ endfunction
 // otherwise the memory access is 'packed' 
 // 
 // same as get_physical_addresses() but stops at the specified map
-function int uvm_reg_map::get_physical_addresses_to_map(uvm_reg_addr_t     base_addr,
-		uvm_reg_addr_t     mem_offset,
-		int unsigned       n_bytes,  // number of bytes
-		ref uvm_reg_addr_t addr[],
-		input uvm_reg_map parent_map,
-		ref int unsigned byte_offset,
+function int uvm_reg_map::get_physical_addresses_to_map(
+		uvm_reg_addr_t     base_addr, // in terms of the local map aub
+		uvm_reg_addr_t     mem_offset, // in terms of memory words
+		int unsigned       n_bytes,  // number of bytes for the memory stream
+		ref uvm_reg_addr_t addr[], // out: set of addresses required for memory stream in local map aub
+		input uvm_reg_map parent_map, // desired target map
+		ref int unsigned byte_offset, // leading byte offset (due to shifting within address words)
 		input uvm_mem mem=null
 		);
 
@@ -1275,24 +1276,30 @@ function int uvm_reg_map::get_physical_addresses_to_map(uvm_reg_addr_t     base_
 	uvm_reg_addr_t  local_addr[];
 	uvm_reg_addr_t lbase_addr;
 
-//	`uvm_info("UVM/REG/ADDR",$sformatf("this=%p enter base=%0x mem_offset=%0d request=%0dbytes byte_enable=%0d byte-offset=%0d",
-//		this,base_addr,mem_offset,n_bytes,m_byte_addressing,byte_offset),UVM_DEBUG)
+//	`uvm_info("RegModel",$sformatf("this=%p enter base=0x%0x mem_offset=0x%0d request=%0dbytes byte_enable=%0d byte-offset=%0d",
+//		this,base_addr,mem_offset,n_bytes,m_byte_addressing,byte_offset),UVM_HIGH)
 
-//	`uvm_info("UVM/REG/ADDR",$sformatf("addressUnitBits=%0d busWidthBits=%0d",get_addr_unit_bytes()*8,bus_width*8),UVM_DEBUG)
+//	`uvm_info("RegModel",$sformatf("addressUnitBits=%0d busWidthBits=%0d",get_addr_unit_bytes()*8,bus_width*8),UVM_HIGH)
 
 	up_map = get_parent_map();
 	lbase_addr = up_map==null ?  get_base_addr(UVM_NO_HIER): up_map.get_submap_offset(this);
-//	`uvm_info("UVM/REG/ADDR",$sformatf("lbase =%0x",lbase_addr),UVM_DEBUG)
+//	`uvm_info("RegModel",$sformatf("lbase =0x%0x",lbase_addr),UVM_HIGH)
 
 	if(up_map!=parent_map) begin
 			uvm_reg_addr_t lb;
 			// now just translate first address and request same number of bytes
 			// may need to adjust addr,n_bytes if base_addr*AUB is not a multiple of upmap.AUB
 			// addr=5,aub=8 and up.aub=16 and n_bytes=1 which is translated addr=2,n_bytes=2
-			uvm_reg_addr_t laddr=lbase_addr + base_addr*get_addr_unit_bytes()/up_map.get_addr_unit_bytes();
-			lb = (base_addr*get_addr_unit_bytes()) % up_map.get_addr_unit_bytes(); // byte offset of local address in terms of parent addresses
-			byte_offset += lb;
-		
+			uvm_reg_addr_t laddr;
+			begin
+				// adjust base_addr to find the base of memword(mem_offset)
+				if(mem_offset) begin
+					base_addr+=mem_offset*mem.get_n_bytes()/get_addr_unit_bytes();
+				end
+				laddr=lbase_addr + base_addr*get_addr_unit_bytes()/up_map.get_addr_unit_bytes(); // start address in terms of the upper map
+				lb = (base_addr*get_addr_unit_bytes()) % up_map.get_addr_unit_bytes(); // potential byte offset on top of the start address in the upper map
+				byte_offset += lb; // accumulate!
+			end	
 			return up_map.get_physical_addresses_to_map(laddr, 0, n_bytes+lb, addr,parent_map,byte_offset);
 	end else begin
 			uvm_reg_addr_t lbase_addr2;

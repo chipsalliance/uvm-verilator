@@ -41,6 +41,8 @@ typedef struct {
 } uvm_printer_row_info;
 `endif
 
+// File: uvm_printer
+  
 // @uvm-ieee 1800.2-2017 auto 16.2.1
 virtual class uvm_printer extends uvm_policy;
 
@@ -449,6 +451,8 @@ endclass : uvm_printer_element_proxy
 //|  ---------------------------------------------------
 //
 //------------------------------------------------------------------------------
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
 // @uvm-ieee 1800.2-2017 auto 16.2.10.1
 class uvm_table_printer extends uvm_printer;
@@ -477,10 +481,16 @@ class uvm_table_printer extends uvm_printer;
   extern static function void set_default(uvm_table_printer printer) ;
 
   // Function: get_default
+  // Implementation of uvm_table_printer::get_default as defined in
+  // section 16.2.10.2.3 of 1800.2-2017.
+  //
+  // *Note:*
   // The library implements get_default as described in IEEE 1800.2-2017
   // with the exception that this implementation will instance a
-  // uvm_line_printer if the most recent call to set_default() used an
+  // uvm_table_printer if the most recent call to set_default() used an
   // argument value of null.
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
 
   // @uvm-ieee 1800.2-2017 auto 16.2.10.2.4
   extern static function uvm_table_printer get_default() ;
@@ -549,10 +559,16 @@ class uvm_tree_printer extends uvm_printer;
   extern static function void set_default(uvm_tree_printer printer) ;
 
   // Function: get_default
+  // Implementation of uvm_tree_printer::get_default as defined in
+  // section 16.2.11.2.4 of 1800.2-2017.
+  //
+  // *Note:*
   // The library implements get_default as described in IEEE 1800.2-2017
   // with the exception that this implementation will instance a
   // uvm_tree_printer if the most recent call to set_default() used an
   // argument value of null.
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
 
   // @uvm-ieee 1800.2-2017 auto 16.2.11.2.4
   extern static function uvm_tree_printer get_default() ;
@@ -613,12 +629,17 @@ class uvm_line_printer extends uvm_tree_printer;
   extern static function void set_default(uvm_line_printer printer) ;
 
   // Function: get_default
+  // Implementation of uvm_line_printer::get_default as defined in
+  // section 16.2.12.2.3 of 1800.2-2017.
+  //
+  // *Note:*
   // The library implements get_default as described in IEEE 1800.2-2017
   // with the exception that this implementation will instance a
   // uvm_line_printer if the most recent call to set_default() used an
   // argument value of null.
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
 
-  // @uvm-ieee 1800.2-2017 auto 16.2.12.2.4
   // @uvm-ieee 1800.2-2017 auto 16.2.2.3
   extern static function uvm_line_printer get_default() ;
 
@@ -1863,6 +1884,9 @@ endfunction
 
 function void uvm_line_printer::set_separators(string separators) ;
    m_uvm_printer_knobs _knobs = get_knobs();
+   if (separators.len() < 2) begin
+     `uvm_error("UVM/PRINT/SHORT_SEP",$sformatf("Bad call: set_separators(%s) (Argument must have at least 2 characters)",separators))
+   end
    _knobs.separator = separators ;
 endfunction
 function string uvm_line_printer::get_separators() ;

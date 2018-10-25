@@ -2,7 +2,7 @@
 //------------------------------------------------------------------------------
 // Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2014 Semifore
-// Copyright 2014 Synopsys, Inc.
+// Copyright 2014-2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
@@ -33,13 +33,13 @@ endclass
 //
 // CLASS -- NODOCS -- uvm_tlm_fifo_base #(T)
 //
-// This class is the base for <uvm_tlm_fifo#(T)>. It defines the TLM exports 
+// This class is the base for <uvm_tlm_fifo#(T)>. It defines the UVM TLM exports 
 // through which all transaction-based FIFO operations occur. It also defines
 // default implementations for each interface method provided by these exports.
 //
 // The interface methods provided by the <put_export> and the <get_peek_export>
-// are defined and described by <uvm_tlm_if_base #(T1,T2)>.  See the TLM Overview
-// section for a general discussion of TLM interface definition and usage.
+// are defined and described by <uvm_tlm_if_base #(T1,T2)>.  See the UVM TLM Overview
+// section 12.1 for a general discussion of UVM TLM interface definition and usage.
 //
 // Parameter type
 //

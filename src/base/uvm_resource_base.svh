@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
 // Copyright 2018 Cadence Design Systems, Inc.
 // Copyright 2018 NVIDIA Corporation
-// Copyright 2017 Cisco Systems, Inc.
-// Copyright 2017 Verific
+// Copyright 2017-2018 Cisco Systems, Inc.
+// Copyright 2017-2018 Verific
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -399,7 +399,7 @@ virtual class uvm_resource_base extends uvm_object;
   
   
   //-------------------
-  // Group -- NODOCS -- Audit Trail
+  // Group: Audit Trail
   //-------------------
   //
   // To find out what is happening as the simulation proceeds, an audit 
@@ -429,7 +429,12 @@ virtual class uvm_resource_base extends uvm_object;
   //
   // Auditing is controlled through the <uvm_resource_options> class.
 
-  // function: record_read_access
+  // Function: record_read_access
+  //
+  // Record the read access information for this resource for debug purposes.
+  // This information is used by <print_accessors> function.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
   function void record_read_access(uvm_object accessor = null);
 
@@ -465,7 +470,12 @@ virtual class uvm_resource_base extends uvm_object;
 
   endfunction
 
-  // function: record_write_access
+  // Function: record_write_access
+  //
+  // Record the write access information for this resource for debug purposes.
+  // This information is used by <print_accessors> function.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
   function void record_write_access(uvm_object accessor = null);
 
@@ -494,8 +504,12 @@ virtual class uvm_resource_base extends uvm_object;
 
   // Function: print_accessors
   //
-  // Dump the access records for this resource
+  // Print the read/write access history of the resource, using the accessor 
+  // argument <accessor> which is passed to the <uvm_resource#(T)::read> 
+  // and <uvm_resource#(T)::write> 
   //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
   virtual function void print_accessors();
 
     string str;

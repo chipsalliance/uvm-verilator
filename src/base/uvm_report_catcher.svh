@@ -1,12 +1,12 @@
 // $Id: uvm_report_catcher.svh,v 1.1.2.10 2010/04/09 15:03:25 janick Exp $
 //------------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2007-2018 Mentor Graphics Corporation
 // Copyright 2014 Semifore
 // Copyright 2018 Intel Corporation
 // Copyright 2010-2013 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2012 AMD
-// Copyright 2013-2017 NVIDIA Corporation
+// Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2014 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -44,72 +44,16 @@ class sev_id_struct;
   bit is_on ;
 endclass
 
+// TITLE: Report Catcher
+//
+// Contains debug methods in the Accellera UVM implementation not documented
+// in the IEEE 1800.2-2017 LRM
+
+
 //------------------------------------------------------------------------------
 //
-// CLASS -- NODOCS -- uvm_report_catcher
+// CLASS: uvm_report_catcher
 //
-// The uvm_report_catcher is used to catch messages issued by the uvm report
-// server. Catchers are
-// uvm_callbacks#(<uvm_report_object>,uvm_report_catcher) objects,
-// so all facilities in the <uvm_callback> and <uvm_callbacks#(T,CB)>
-// classes are available for registering catchers and controlling catcher
-// state.
-// The uvm_callbacks#(<uvm_report_object>,uvm_report_catcher) class is
-// aliased to ~uvm_report_cb~ to make it easier to use.
-// Multiple report catchers can be 
-// registered with a report object. The catchers can be registered as default 
-// catchers which catch all reports on all <uvm_report_object> reporters,
-// or catchers can be attached to specific report objects (i.e. components). 
-//
-// User extensions of <uvm_report_catcher> must implement the <catch> method in 
-// which the action to be taken on catching the report is specified. The catch 
-// method can return ~CAUGHT~, in which case further processing of the report is 
-// immediately stopped, or return ~THROW~ in which case the (possibly modified) report 
-// is passed on to other registered catchers. The catchers are processed in the order 
-// in which they are registered.
-//
-// On catching a report, the <catch> method can modify the severity, id, action,
-// verbosity or the report string itself before the report is finally issued by
-// the report server. The report can be immediately issued from within the catcher 
-// class by calling the <issue> method.
-//
-// The catcher maintains a count of all reports with FATAL,ERROR or WARNING severity
-// and a count of all reports with FATAL, ERROR or WARNING severity whose severity
-// was lowered. These statistics are reported in the summary of the <uvm_report_server>.
-//
-// This example shows the basic concept of creating a report catching
-// callback and attaching it to all messages that get emitted:
-//
-//| class my_error_demoter extends uvm_report_catcher;
-//|   function new(string name="my_error_demoter");
-//|     super.new(name);
-//|   endfunction
-//|   //This example demotes "MY_ID" errors to an info message
-//|   function action_e catch();
-//|     if(get_severity() == UVM_ERROR && get_id() == "MY_ID")
-//|       set_severity(UVM_INFO);
-//|     return THROW;
-//|   endfunction
-//| endclass
-//|
-//| my_error_demoter demoter = new;
-//| initial begin
-//|  // Catchers are callbacks on report objects (components are report 
-//|  // objects, so catchers can be attached to components).
-//|
-//|  // To affect all reporters, use ~null~ for the object
-//|  uvm_report_cb::add(null, demoter); 
-//|
-//|  // To affect some specific object use the specific reporter
-//|  uvm_report_cb::add(mytest.myenv.myagent.mydriver, demoter);
-//|
-//|  // To affect some set of components (any "*driver" under mytest.myenv)
-//|  // using the component name
-//|  uvm_report_cb::add_by_name("*driver", demoter, mytest.myenv);
-//| end
-//
-//
-//------------------------------------------------------------------------------
 
 // @uvm-ieee 1800.2-2017 auto 6.6.1
 virtual class uvm_report_catcher extends uvm_callback;
@@ -396,12 +340,13 @@ virtual class uvm_report_catcher extends uvm_callback;
   endfunction
 `endif 
 
-  // Function -- NODOCS -- print_catcher
+  // Function: print_catcher
   //
-  // Prints information about all of the report catchers that are 
-  // registered. For finer grained detail, the <uvm_callbacks #(T,CB)::display>
-  // method can be used by calling uvm_report_cb::display(<uvm_report_object>).
-
+  // Prints debug information about all of the typewide report catchers that are 
+  // registered.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+  
   static function void print_catcher(UVM_FILE file = 0);
 	  string msg;
 	  string enabled;
@@ -426,13 +371,15 @@ virtual class uvm_report_catcher extends uvm_callback;
 	  `uvm_info_context("UVM/REPORT/CATCHER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_LOW,uvm_root::get())
   endfunction
   
-  // Funciton: debug_report_catcher
+  // Function: debug_report_catcher
   //
-  // Turn on report catching debug information. ~what~ is a bitwise AND of
-  // * DO_NOT_CATCH  -- forces catch to be ignored so that all catchers see the
+  // Turn on report catching debug information. bits[1:0] of ~what~ enable debug features
+  // * bit 0 - when set to 1 -- forces catch to be ignored so that all catchers see the
   //   the reports.
-  // * DO_NOT_MODIFY -- forces the message to remain unchanged
-
+  // * bit 1 - when set to 1 -- forces the message to remain unchanged
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+  
   static function void debug_report_catcher(int what= 0);
     m_debug_flags = what;
   endfunction        

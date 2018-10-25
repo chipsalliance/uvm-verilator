@@ -342,6 +342,7 @@ typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper /* @uvm-ieee 1800.
 // retrieving options that control the behavior of the 
 // configuration DB facility.
 //
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 //----------------------------------------------------------------------
 class uvm_config_db_options;
    
@@ -355,6 +356,9 @@ class uvm_config_db_options;
   // the accesses. Tracing is off by default.
   //
   // This method is implicitly called by the ~+UVM_CONFIG_DB_TRACE~.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
 
   static function void turn_on_tracing();
      if (!ready) init();
@@ -364,6 +368,9 @@ class uvm_config_db_options;
   // Function: turn_off_tracing
   //
   // Turn tracing off for the configuration database.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
 
   static function void turn_off_tracing();
      if (!ready) init();
@@ -373,6 +380,9 @@ class uvm_config_db_options;
   // Function: is_tracing
   //
   // Returns 1 if the tracing facility is on and 0 if it is off.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
 
   static function bit is_tracing();
     if (!ready) init();

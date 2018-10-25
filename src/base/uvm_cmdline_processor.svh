@@ -1,8 +1,8 @@
 //
 //------------------------------------------------------------------------------
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2010-2012 AMD
-// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010-2018 AMD
+// Copyright 2010-2018 Mentor Graphics Corporation
 // Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2015 Analog Devices, Inc.
@@ -30,6 +30,50 @@ class uvm_cmd_line_verb;
   uvm_verbosity verb;
   int exec_time;
 endclass
+
+// TITLE: Command Line Debug
+//
+// Debug command line plusargs that are available in the Accellera reference implementation
+// but not documented in the IEEE UVM 1800.2-2017 LRM
+//
+
+// Variable: +UVM_DUMP_CMDLINE_ARGS
+//
+// ~+UVM_DUMP_CMDLINE_ARGS~ allows the user to dump all command line arguments to the
+// reporting mechanism.  The output in is tree format.
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+
+// Variable: +UVM_PHASE_TRACE
+//
+// ~+UVM_PHASE_TRACE~ turns on tracing of phase executions.
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+// Variable: +UVM_OBJECTION_TRACE
+//
+// ~+UVM_OBJECTION_TRACE~ turns on tracing of objection activity.
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+// Variable: +UVM_RESOURCE_DB_TRACE
+//
+// ~+UVM_RESOURCE_DB_TRACE~ turns on tracing of resource DB accesses.
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+// Variable: +UVM_CONFIG_DB_TRACE
+//
+// ~+UVM_CONFIG_DB_TRACE~ turns on tracing of configuration DB accesses.
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+
+// @uvm-ieee 1800.2-2017 auto G.1
+typedef class uvm_cmdline_processor;
+uvm_cmdline_processor uvm_cmdline_proc;
+
 
 // Class -- NODOCS -- uvm_cmdline_processor
 //
@@ -62,6 +106,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   static function uvm_cmdline_processor get_inst();
     if(m_inst == null) 
       m_inst = new("uvm_cmdline_proc");
+      uvm_cmdline_proc = m_inst;
     return m_inst;
   endfunction
 
@@ -274,5 +319,8 @@ class uvm_cmdline_processor extends uvm_report_object;
       default      : begin                         return 0; end
     endcase
   endfunction
+  
+
 
 endclass
+

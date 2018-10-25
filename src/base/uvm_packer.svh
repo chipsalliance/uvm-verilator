@@ -2,11 +2,12 @@
 //------------------------------------------------------------------------------
 // Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2014 Semifore
+// Copyright 2018 Qualcomm, Inc.
 // Copyright 2014 Intel Corporation
 // Copyright 2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2013-2018 NVIDIA Corporation
-// Copyright 2017 Cisco Systems, Inc.
+// Copyright 2017-2018 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -39,11 +40,19 @@
 
 typedef bit signed [(`UVM_PACKER_MAX_BYTES*8)-1:0] uvm_pack_bitstream_t;
 
+// Class: uvm_packer
+// Implementation of uvm_packer, as defined in section
+// 16.5.1 of 1800.2-2017
+
 // @uvm-ieee 1800.2-2017 auto 16.5.1
 class uvm_packer extends uvm_policy;
 
    // @uvm-ieee 1800.2-2017 auto 16.5.2.3
    `uvm_object_utils(uvm_packer)
+
+    uvm_factory m_factory;	
+    local uvm_object m_object_references[int];
+   
 
   // Function: set_packed_*
   // Implementation of P1800.2 16.5.3.1
@@ -59,6 +68,8 @@ class uvm_packer extends uvm_policy;
   //| virtual function void set_packed_bytes( ref byte unsigned stream[] );
   //| virtual function void set_packed_ints( ref int unsigned stream[] );
   //| virtual function void set_packed_longints( ref longint unsigned stream[] );
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
    
   // @uvm-ieee 1800.2-2017 auto 16.5.3.1
   extern virtual function void set_packed_bits (ref bit unsigned stream[]);
@@ -86,6 +97,8 @@ class uvm_packer extends uvm_policy;
   //| virtual function void get_packed_bytes( ref byte unsigned stream[] );
   //| virtual function void get_packed_ints( ref int unsigned stream[] );
   //| virtual function void get_packed_longints( ref longint unsigned stream[] );
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
    
   // @uvm-ieee 1800.2-2017 auto 16.5.3.2
   extern virtual function void get_packed_bits (ref bit unsigned stream[]);
@@ -204,6 +217,10 @@ class uvm_packer extends uvm_policy;
 
   // @uvm-ieee 1800.2-2017 auto 16.5.4.2
   extern virtual function void pack_object (uvm_object value);
+  
+  extern virtual function void pack_object_with_meta (uvm_object value);
+  
+  extern virtual function void pack_object_wrapper (uvm_object_wrapper value);
 
 
   //------------------//
@@ -225,6 +242,7 @@ class uvm_packer extends uvm_policy;
   extern virtual function bit is_null ();
 
 
+  extern virtual function bit is_object_wrapper();
   // Function -- NODOCS -- unpack_field
   //
   // Unpacks bits from the pack array and returns the bit-stream that was
@@ -303,6 +321,10 @@ class uvm_packer extends uvm_policy;
 
   // @uvm-ieee 1800.2-2017 auto 16.5.4.4
   extern virtual function void unpack_object (uvm_object value);
+  
+  extern virtual function void unpack_object_with_meta (inout uvm_object value);
+
+  extern virtual function uvm_object_wrapper unpack_object_wrapper();
 
 
   // Function -- NODOCS -- get_packed_size
@@ -375,7 +397,7 @@ class uvm_packer extends uvm_policy;
   //|    d.pack(bits);  // 'b0010110001001000
   //|  end
 
-  bit big_endian = 1;
+  bit big_endian = 0;
 `endif
 
   // variables and methods primarily for internal use
@@ -392,7 +414,6 @@ class uvm_packer extends uvm_policy;
 
   uvm_pack_bitstream_t m_bits;
 
-  extern virtual function void unpack_object_ext  (inout uvm_object value);
 
 `ifdef UVM_ENABLE_DEPRECATED_API
   extern virtual function bit  unsigned get_bit  (int unsigned index);
@@ -456,7 +477,7 @@ endfunction
 // ---------------
 
 function int uvm_packer::get_packed_size();
-  return m_pack_iter-m_unpack_iter;
+  return m_pack_iter - m_unpack_iter;
 endfunction
 
 
@@ -488,6 +509,9 @@ function void uvm_packer::flush();
   m_pack_iter = 64;
   m_unpack_iter = 64;
   m_bits       = 0;
+  m_object_references.delete();
+  m_object_references[0] = null;
+  m_factory = null;
   super.flush();
 endfunction : flush
 
@@ -670,7 +694,49 @@ function void uvm_packer::pack_object(uvm_object value);
   void'(pop_active_object());
 endfunction
 
+// Function: pack_object_with_meta
+// Packs ~obj~ into the packer data stream, such that
+// it can be unpacked via an associated <unpack_object_with_meta>
+// call.
+//
+// Unlike <pack_object>, the pack_object_with_meta method keeps track
+// of what objects have already been packed in this call chain.  The
+// first time an object is passed to pack_object_with_meta after a
+// call to <flush>, the object is assigned a unique id.  Subsequent
+// calls to pack_object_with_meta will only add the unique id to the
+// stream.  This allows structural information to be maintained through
+// pack/unpack operations.
+//
+// Note: pack_object_with_meta is not compatible with <unpack_object>
+// and <is_null>.  The object can only be unpacked via 
+// <unpack_object_with_meta>.
+//
+// @uvm-contrib This API is being considered for potential contribution to 1800.2
+function void uvm_packer::pack_object_with_meta(uvm_object value);
+  int reference_id;
+  foreach(m_object_references[i]) begin
+    if (m_object_references[i] == value) begin
+      pack_field_int(i,32);
+      return;
+    end
+  end
   
+  // Size will always be >0 because 0 is the null
+  reference_id = m_object_references.size();
+  pack_field_int(reference_id,32);
+  m_object_references[reference_id] = value;
+  pack_object_wrapper(value.get_object_type());
+
+  pack_object(value); 
+endfunction
+
+
+function void uvm_packer::pack_object_wrapper(uvm_object_wrapper value);
+  string type_name;
+  if (value != null) begin 
+    pack_string(value.get_type_name());
+  end
+endfunction   
 // pack_real
 // ---------
 
@@ -848,12 +914,12 @@ function bit uvm_packer::is_null();
     return (m_bits[m_unpack_iter+:4]==0);
 endfunction
 
+
+function bit uvm_packer::is_object_wrapper();
+    return (m_bits[m_unpack_iter+:4]==1);
+endfunction
 // unpack_object
 // -------------
-
-function void uvm_packer::unpack_object_ext(inout uvm_object value);
-  unpack_object(value);
-endfunction
 
 function void uvm_packer::unpack_object(uvm_object value);
   uvm_field_op field_op;
@@ -885,6 +951,61 @@ function void uvm_packer::unpack_object(uvm_object value);
 
 endfunction
 
+// Function: unpack_object_with_meta
+// Unpacks an object which was packed into the packer data
+// stream using <pack_object_with_meta>.
+//
+// Unlike <unpack_object>, the unpack_object_with_meta method keeps track
+// of what objects have already been unpacked in this call chain.  If the
+// packed object was null, then ~value~ is set to null.  Otherwise, if this
+// is the first time the object's unique id  
+// has been encountered since a call to <flush>,
+// then unpack_object_with_meta checks ~value~ to determine if it is the
+// correct type.  If it is not the correct type, or if ~value~ is null, 
+// then the packer shall create a new object instance for the unpack operation, 
+// using the data provided by <pack_object_with_meta>. If ~value~ is of the 
+// correct type, then it is used as the object instance for the unpack operation.
+// Subsequent calls to unpack_object_with_meta for this unique id shall
+// simply set ~value~ to this object instance.
+//
+// Note: unpack_object_with_meta is not compatible with <pack_object>
+// or <is_null>.  The object must have been packed via
+// <pack_object_with_meta>.
+//
+// @uvm-contrib This API is being considered for potential contribution to 1800.2
+function void uvm_packer::unpack_object_with_meta(inout uvm_object value);
+  int reference_id; 
+  reference_id = unpack_field_int(32);
+  if (m_object_references.exists(reference_id)) begin
+    value = m_object_references[reference_id];
+    return;
+  end
+  else begin
+    uvm_object_wrapper __wrapper = unpack_object_wrapper();
+    if ((__wrapper != null) && 
+        ((value == null) || (value.get_object_type() != __wrapper))) begin 
+      value = __wrapper.create_object("");
+      if (value == null) begin
+        value = __wrapper.create_component("",null);
+      end
+    end 
+  end
+  m_object_references[reference_id] = value;
+  unpack_object(value);
+endfunction
+
+
+function uvm_object_wrapper uvm_packer::unpack_object_wrapper();
+  string type_name;
+  type_name = unpack_string();
+  if (m_factory == null)
+    m_factory = uvm_factory::get();
+  if (m_factory.is_type_name_registered(type_name)) begin
+    return m_factory.find_wrapper_by_name(type_name);
+  end
+  return null;
+
+endfunction
   
 // unpack_real
 // -----------

@@ -2,7 +2,7 @@
 // Copyright 2009-2018 Mentor Graphics Corporation
 // Copyright 2010-2011 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013 NVIDIA Corporation
+// Copyright 2013-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -57,7 +57,7 @@ static int uvm_hdl_max_width()
 #define MTI_RELEASE_SIGNAL ((mtiForceTypeT)(-1))
 
 /*
- * FUNCTION: uvm_is_vhdl_path
+ * FUNCTION -- NODOCS -- uvm_is_vhdl_path
  *
  * Given a string path, use the FLI to find the named signal.
  * Strip off any bit select applied to a vector
@@ -109,7 +109,7 @@ int uvm_is_vhdl_path(char *path) {
 
 
 /*
- * FUNCTION: string_to_vecval
+ * FUNCTION -- NODOCS -- string_to_vecval
  *
  * Given a string, and the number of bits,
  * set the Verilog aval/bval in 'value'.
@@ -155,7 +155,7 @@ string_to_vecval(char *s, int nbits, p_vpi_vecval value)
 }
 
 /*
- * FUNCTION: vecval_to_string
+ * FUNCTION -- NODOCS -- vecval_to_string
  *
  * Given a vecval (logic verilog type), return
  * a string representation. The returned
@@ -220,7 +220,7 @@ vecval_to_string(int nbits, p_vpi_vecval value)
 }
 
 /*
- * FUNCTION: string2vhdl_array_of_int
+ * FUNCTION -- NODOCS -- string2vhdl_array_of_int
  *
  * Given a string of '0', '1', 'x', 'z', convert
  * that to a VHDL array of ints.
@@ -252,7 +252,7 @@ string2vhdl_array_of_int(mtiInt32T *array,
 }
 
 /*
- * FUNCTION: string2vhdl_array_of_char
+ * FUNCTION -- NODOCS -- string2vhdl_array_of_char
  *
  * Given a string of '0', '1', 'x', 'z', convert
  * that to a VHDL array of ints.
@@ -279,7 +279,7 @@ string2vhdl_array_of_char(char *array, unsigned int elements, char *s)
 
 
 /*
- * FUNCTION: vhdl_array_of_char2string
+ * FUNCTION -- NODOCS -- vhdl_array_of_char2string
  *
  * Given an array of VHDL values, convert them
  * to a string of '0', '1', 'x' or 'z'.
@@ -307,7 +307,7 @@ vhdl_array_of_char2string(char *array, int elements)
 }
 
 /*
- * FUNCTION: vhdl_array_of_int2string
+ * FUNCTION -- NODOCS -- vhdl_array_of_int2string
  *
  * Given an array of VHDL values, convert them
  * to a string of '0', '1', 'x' or 'z'.
@@ -336,7 +336,7 @@ vhdl_array_of_int2string(int *array, int elements)
 
 
 /*
- * FUNCTION: uvm_register_get_vhdl
+ * FUNCTION -- NODOCS -- uvm_register_get_vhdl
  *
  * Used to get the value of a VHDL signal, and return
  * the value as a Verilog aval/bval pair.
@@ -461,7 +461,7 @@ int uvm_register_get_vhdl(char *path, p_vpi_vecval value)
 }
 
 /*
- * FUNCTION: uvm_register_set_vhdl
+ * FUNCTION -- NODOCS -- uvm_register_set_vhdl
  *
  * Used to set the value of a VHDL signal, given
  * the value as a Verilog aval/bval pair.

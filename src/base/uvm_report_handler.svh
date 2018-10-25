@@ -5,7 +5,7 @@
 // Copyright 2010-2014 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2012 AMD
-// Copyright 2013-2017 NVIDIA Corporation
+// Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2011 Cypress Semiconductor Corp.
 // Copyright 2012 Accellera Systems Initiative

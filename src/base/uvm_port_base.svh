@@ -1,13 +1,13 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2007-2018 Mentor Graphics Corporation
 // Copyright 2015 Analog Devices, Inc.
 // Copyright 2014 Semifore
 // Copyright 2014 Intel Corporation
-// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2014-2017 NVIDIA Corporation
+// Copyright 2014-2018 NVIDIA Corporation
 // Copyright 2012-2017 Cisco Systems, Inc.
 // Copyright 2017 Verific
 //   All Rights Reserved Worldwide
@@ -31,16 +31,24 @@ const string s_connection_warning_id = "Connection Warning";
 const string s_spaces = "                       ";
 
 typedef class uvm_port_component_base;
-typedef uvm_port_component_base uvm_port_list[string];
 
 
-// TITLE -- NODOCS -- Port Base Classes
+// TITLE: Port Base Classes
 //
 
+
+//
+// CLASS: uvm_port_list
+//
+// Associative array of uvm_port_component_base class handles, indexed by string
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+typedef uvm_port_component_base uvm_port_list[string];
 
 //------------------------------------------------------------------------------
 //
-// CLASS -- NODOCS -- uvm_port_component_base
+// CLASS: uvm_port_component_base
 //
 //------------------------------------------------------------------------------
 // This class defines an interface for obtaining a port's connectivity lists
@@ -49,6 +57,8 @@ typedef uvm_port_component_base uvm_port_list[string];
 //
 // Each port's full name and type name can be retrieved using ~get_full_name~ 
 // and ~get_type_name~ methods inherited from <uvm_component>.
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 //------------------------------------------------------------------------------
 
 virtual class uvm_port_component_base extends uvm_component;
@@ -56,6 +66,16 @@ virtual class uvm_port_component_base extends uvm_component;
   function new (string name, uvm_component parent);
     super.new(name,parent);
   endfunction
+
+  // Function: get_connected_to
+  //
+  // For a port or export type, this function fills ~list~ with all
+  // of the ports, exports and implementations that this port is
+  // connected to.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+  pure virtual function void get_connected_to(ref uvm_port_list list);
 
   // Function -- NODOCS -- is_port
   //
@@ -85,13 +105,15 @@ endclass
 
 //------------------------------------------------------------------------------
 //
-// CLASS -- NODOCS -- uvm_port_component #(PORT)
+// CLASS: uvm_port_component #(PORT)
 //
 //------------------------------------------------------------------------------
-// See description of <uvm_port_component_base> for information about this class
+// This implementation of uvm_port_component class from IEEE 1800.2 declares all the
+// API described in the LRM, plus it inherits from uvm_port_component_base for the
+// purpose of providing the get_connected_to() method.
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 //------------------------------------------------------------------------------
-
-
 class uvm_port_component #(type PORT=uvm_object) extends uvm_port_component_base;
   
   PORT m_port;
@@ -118,6 +140,21 @@ class uvm_port_component #(type PORT=uvm_object) extends uvm_port_component_base
 
   function PORT get_port();
     return m_port;
+  endfunction
+
+  // Function: get_connected_to
+  //
+  // Implementation of the pure function declared in uvm_port_component_base
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+  virtual function void get_connected_to(ref uvm_port_list list);
+    PORT list1[string];
+    m_port.get_connected_to(list1);
+    list.delete();
+    foreach(list1[name]) begin
+      list[name] = list1[name].get_comp();
+    end
   endfunction
 
   function bit is_port ();
@@ -150,9 +187,8 @@ endclass
 //
 //   IF  - The interface type implemented by the subtype to this base port
 //
-// The UVM provides a complete set of ports, exports, and imps for the OSCI-
-// standard TLM interfaces. They can be found in the ../src/tlm/ directory.
-// For the TLM interfaces, the IF parameter is always <uvm_tlm_if_base #(T1,T2)>.
+// The UVM provides a complete set of ports, exports, and imps to enable transaction-level communication between entities.
+// They can be found in the ../src/tlm*/ directory. See Section 12.1 of the IEEE Spec for details.
 //
 // Just before <uvm_component::end_of_elaboration_phase>, an internal
 // <uvm_component::resolve_bindings> process occurs, after which each port and
@@ -264,13 +300,15 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
   endfunction
 
 
-  // Function -- NODOCS -- get_comp
+  // Function: get_comp
   //
   // Returns a handle to the internal proxy component representing this port.
   //
   // Ports are considered components. However, they do not inherit
   // <uvm_component>. Instead, they contain an instance of
   // <uvm_port_component #(PORT)> that serves as a proxy to this port.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
   virtual function uvm_port_component_base get_comp();
     return m_comp;
@@ -495,6 +533,9 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
   //
   // This method must not be called before the end_of_elaboration phase, as port
   // connections are not resolved until then.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
 
   function void debug_connected_to (int level=0, int max_level=-1);
     int sz, num, curr_num;
@@ -559,6 +600,9 @@ virtual class uvm_port_base #(type IF=uvm_void) extends IF;
   //
   // This method must not be called before the end_of_elaboration phase, as port
   // connections are not resolved until then.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
 
   function void debug_provided_to  (int level=0, int max_level=-1);
     string nm;

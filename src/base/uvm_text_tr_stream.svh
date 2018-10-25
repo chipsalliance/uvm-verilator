@@ -2,6 +2,7 @@
 //-----------------------------------------------------------------------------
 // Copyright 2007-2009 Mentor Graphics Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2018 NVIDIA Corporation
 // Copyright 2017 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -29,6 +30,7 @@
 // <uvm_text_tr_database>.  
 //
 //                     
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
 class uvm_text_tr_stream extends uvm_tr_stream;
 
@@ -53,6 +55,7 @@ class uvm_text_tr_stream extends uvm_tr_stream;
    // Function: do_open
    // Callback triggered via <uvm_tr_database::open_stream>.
    //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
    protected virtual function void do_open(uvm_tr_database db,
                                            string scope,
                                            string stream_type_name);
@@ -69,6 +72,8 @@ class uvm_text_tr_stream extends uvm_tr_stream;
 
    // Function: do_close
    // Callback triggered via <uvm_tr_stream::close>.
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
    protected virtual function void do_close();
       if (m_text_db.open_db())
         $fdisplay(m_text_db.m_file,
@@ -83,6 +88,7 @@ class uvm_text_tr_stream extends uvm_tr_stream;
    // Function: do_free
    // Callback triggered via <uvm_tr_stream::free>.
    //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
    protected virtual function void do_free();
       if (m_text_db.open_db())
         $fdisplay(m_text_db.m_file, 
@@ -100,6 +106,8 @@ class uvm_text_tr_stream extends uvm_tr_stream;
    // Marks the beginning of a new record in the stream
    //
    // Text-backend specific implementation.
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
    protected virtual function uvm_recorder do_open_recorder(string name,
                                                            time   open_time,
                                                            string type_name);

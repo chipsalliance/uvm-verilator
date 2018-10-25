@@ -1,13 +1,13 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2007-2018 Mentor Graphics Corporation
 // Copyright 2015 Analog Devices, Inc.
 // Copyright 2014 Semifore
-// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2013 Verilab
 // Copyright 2010-2012 AMD
-// Copyright 2014-2017 NVIDIA Corporation
+// Copyright 2014-2018 NVIDIA Corporation
 // Copyright 2014-2017 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -236,8 +236,8 @@ endclass
 //
 // CLASS: uvm_default_report_server
 //
-// Default implementation of the UVM report server.  The library implements
-// the following public API in addition to what is documented in IEEE 1800.2.
+// Default implementation of the UVM report server, as defined in section
+// 6.5.2 of 1800.2-2017
 //
 
 // @uvm-ieee 1800.2-2017 auto 6.5.2
@@ -256,6 +256,7 @@ class uvm_default_report_server extends uvm_report_server;
   //
   // A flag to enable report count summary for each ID
   //
+  // @uvm-accellera This API is specific to the Accellera implementation, and is not being considered for contribution to 1800.2
   bit enable_report_id_count_summary=1;
 
 
@@ -263,6 +264,7 @@ class uvm_default_report_server extends uvm_report_server;
   //
   // A flag to force recording of all messages (add UVM_RM_RECORD action)
   //
+  // @uvm-accellera This API is specific to the Accellera implementation, and is not being considered for contribution to 1800.2
   bit record_all_messages = 0;
 
   
@@ -272,6 +274,7 @@ class uvm_default_report_server extends uvm_report_server;
   // 
   // "UVM_INFO(UVM_MEDIUM) file.v(3) @ 60: reporter [ID0] Message 0"
   //
+  // @uvm-accellera This API is specific to the Accellera implementation, and is not being considered for contribution to 1800.2
   bit show_verbosity = 0;
 
 
@@ -693,13 +696,72 @@ class uvm_default_report_server extends uvm_report_server;
   endfunction
 
 
-  // Function --NODOCS-- compose_report_message
+  // Function: compose_report_message
   //
   // Constructs the actual string sent to the file or command line
-  // from the severity, component name, report id, and the message itself. 
+  // from the report message. 
   //
-  // Expert users can overload this method to customize report formatting.
-
+  // The return value is constructed by concatenating the following strings in order,
+  // with spaces between.
+  //
+  //   Severity and verbosity - If <show_verbosity> is '1', then this value is the concatenation
+  //                            of {S1,"(",S2,")"}, where ~S1~ is the severity of the message as
+  //                            returned by <uvm_report_message::get_severity>, and ~S2~ is the
+  //                            verbosity of the message, as returned by <uvm_report_message::get_verbosity>.
+  //                            If <show_verbosity> is '0', then this value is simply the severity
+  //                            of the message.
+  //
+  //   File name and line - If <uvm_report_message::get_filename> returns an empty string (""), 
+  //                        then this value is the empty string ("").  Otherwise
+  //                        this string is formatted as "%s(%0d)", where ~%s~ is the file
+  //                        name, and ~%0d~ is the line number.
+  //
+  //   Timestamp - This value is the concatenation of {"@",TIME,":"}, where ~TIME~ is determined by formatting 
+  //               ~$time~ as "%0t".  Note that ~$time~ is being resolved inside of the <uvm_pkg> scope.
+  //
+  //   Full report context - If <uvm_report_message::get_context>, returns an empty string (""), then 
+  //                         this value is the full name of the report object returned by 
+  //                         <uvm_report_message::get_report_object>.  Otherwise this
+  //                         value is the the concatenation of {S1,"@@",S2}, where ~S1~ is the full
+  //                         name of the report object for the message, and ~S2~ is
+  //                         the context string.
+  //
+  //   ID - The concatenation of {"[", ID, "]"}, where ~ID~ is the return value of  <uvm_report_message::get_id>.
+  //
+  //   Message - The message string, as determined by <uvm_report_message::get_message>
+  //
+  //   Terminator - If <show_terminator> is '1', then the terminator string is {"-", SEV}, where ~SEV~ is 
+  //                the severity as determined by <uvm_report_message::get_severity>.  If show_terminator is 
+  //                '0', then this is the empty string ("").
+  //   
+  //For example, the following report messages...
+  //|   `uvm_info("Example", "Info message", UVM_LOW) 
+  //|   uvm_report_info("Example", "No file/line");
+  //|   uvm_report_info("Example", "With context", UVM_LOW, 
+  //|                   "demo_pkg.sv", 57, "example_context");
+  //|
+  //|   // show_verbosity = 1
+  //|   `uvm_info("Example", "With verbosity", UVM_LOW)
+  //|   // show_terminator = 1
+  //|   `uvm_info("Example", "With terminator", UvM_LOW)
+  //|   // show_verbosity = 1, show_terminator = 1
+  //|   `uvm_info("Example", "With both", UVM_NONE)
+  // 
+  //...result in the output below
+  //|
+  //|  UVM_INFO demo_pkg.sv(55) @ 0: uvm_test_top [Example] Info message
+  //|  UVM_INFO @ 0: uvm_test_top [Example] No file/line
+  //|  UVM_INFO demo_pkg.sv(57) @ 0: uvm_test_top@@example_context [Example] With context
+  //|
+  //|  // show_verbosity = 1
+  //|  UVM_INFO(UVM_LOW) demo_pkg.sv(60) @ 0: uvm_test_top [Example] Info message
+  //|  // show_terminator = 1
+  //|  UVM_INFO demo_pkg.sv(62) @ 0: uvm_test_top [Example] Info message -UVM_INFO
+  //|  // show_verbosity = 1, show_terminator = 1
+  //|  UVM_INFO(UVM_NONE) demo_pkg.sv(64) @ 0: uvm_test_top [Example] With both -UVM_INFO
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+  
   virtual function string compose_report_message(uvm_report_message report_message,
                                                  string report_object_name = "");
 
@@ -799,7 +861,7 @@ class uvm_default_report_server extends uvm_report_server;
         q.push_back($sformatf("[%s] %5d\n", id, m_id_count[id]));
     end
 
-    `uvm_info("UVM/REPORT/SERVER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_LOW)
+    `uvm_info("UVM/REPORT/SERVER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_NONE)
   endfunction
 
 endclass

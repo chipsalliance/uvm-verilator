@@ -37,10 +37,10 @@ endclass : uvm_sequence_process_wrapper
 
 //------------------------------------------------------------------------------
 //
-// CLASS -- NODOCS -- uvm_sequencer_base
+// CLASS: uvm_sequencer_base
 //
-// Controls the flow of sequences, which generate the stimulus (sequence item
-// transactions) that is passed on to drivers for execution.
+// The library implements some public API beyond what is documented
+// in 1800.2.  It also modifies some API described erroneously in 1800.2.
 //
 //------------------------------------------------------------------------------
 `ifndef UVM_ENABLE_DEPRECATED_API
@@ -221,12 +221,14 @@ class uvm_sequencer_base extends uvm_component;
 
   // Function: unlock
   //
+  //| extern virtual function void unlock(uvm_sequence_base sequence_ptr);
+  //
   // Implementation of unlock, as defined in P1800.2-2017 section 15.3.2.12.
   // 
   // NOTE: unlock is documented in error as a virtual task, whereas it is 
   // implemented as a virtual function.
   //
-  //| extern virtual function void unlock(uvm_sequence_base sequence_ptr);
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
 
   // @uvm-ieee 1800.2-2017 auto 15.3.2.12
   extern virtual function void unlock(uvm_sequence_base sequence_ptr);
@@ -234,12 +236,14 @@ class uvm_sequencer_base extends uvm_component;
 
   // Function: ungrab
   //
+  //| extern virtual function void ungrab(uvm_sequence_base sequence_ptr);
+  //
   // Implementation of ungrab, as defined in P1800.2-2017 section 15.3.2.13.
   // 
   // NOTE: ungrab is documented in error as a virtual task, whereas it is 
   // implemented as a virtual function.
   //
-  //| extern virtual function void ungrab(uvm_sequence_base sequence_ptr);
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
 
   // @uvm-ieee 1800.2-2017 auto 15.3.2.13
   extern virtual function void  ungrab(uvm_sequence_base sequence_ptr);
@@ -355,6 +359,16 @@ class uvm_sequencer_base extends uvm_component;
 
   int m_is_relevant_completed;
 
+`ifdef UVM_DISABLE_RECORDING
+   `define UVM_DISABLE_AUTO_ITEM_RECORDING
+`endif
+
+// Macro: UVM_DISABLE_AUTO_ITEM_RECORDING
+// Performs the same function as the 1800.2 define UVM_DISABLE_RECORDING,
+// globally turning off automatic item recording when defined by the user.  
+// Provided for backward compatibility.
+//
+// @uvm-contrib This API is being considered for potential contribution to 1800.2
 
 `ifdef UVM_DISABLE_AUTO_ITEM_RECORDING
   local bit m_auto_item_recording = 0;
@@ -369,13 +383,14 @@ class uvm_sequencer_base extends uvm_component;
   //
   // Disables auto_item_recording
   // 
-  // This function is the actual implementation of the 
+  // This function is the implementation of the 
   // uvm_sqr_if_base::disable_auto_item_recording() method detailed in
   // IEEE1800.2 section 15.2.1.2.10
   // 
   // This function is implemented here to allow <uvm_push_sequencer#(REQ,RSP)>
   // and <uvm_push_driver#(REQ,RSP)> access to the call.
   //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
   virtual function void disable_auto_item_recording();
     m_auto_item_recording = 0;
   endfunction
@@ -385,13 +400,14 @@ class uvm_sequencer_base extends uvm_component;
   // Returns 1 is auto_item_recording is enabled,
   // otherwise 0
   // 
-  // This function is the actual implementation of the 
+  // This function is the implementation of the 
   // uvm_sqr_if_base::is_auto_item_recording_enabled() method detailed in
   // IEEE1800.2 section 15.2.1.2.11
   // 
   // This function is implemented here to allow <uvm_push_sequencer#(REQ,RSP)>
   // and <uvm_push_driver#(REQ,RSP)> access to the call.
   //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
   virtual function bit is_auto_item_recording_enabled();
     return m_auto_item_recording;
   endfunction

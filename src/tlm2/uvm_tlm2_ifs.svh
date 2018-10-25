@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------
 // Copyright 2010-2011 Mentor Graphics Corporation
 // Copyright 2014 Semifore
-// Copyright 2010-2017 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2015 NVIDIA Corporation
+// Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +21,7 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
-// File -- NODOCS -- TLM2 Types
+// File -- NODOCS -- UVM TLM 2 Types
 typedef class uvm_time;
 
 // Enum -- NODOCS -- uvm_tlm_phase_e 
@@ -62,13 +62,13 @@ typedef enum
 
 // MACRO -- NODOCS -- `UVM_TLM_TASK_ERROR
 //
-// Defines Not-Yet-Implemented TLM tasks
+// Defines Not-Yet-Implemented UVM TLM tasks
 `define UVM_TLM_TASK_ERROR "TLM-2 interface task not implemented"
 
 // MACRO -- NODOCS -- `UVM_TLM_FUNCTION_ERROR
 //
-// Defines Not-Yet-Implemented TLM functions
-`define UVM_TLM_FUNCTION_ERROR "TLM-2 interface function not implemented"
+// Defines Not-Yet-Implemented UVM TLM functions
+`define UVM_TLM_FUNCTION_ERROR "UVM TLM 2 interface function not implemented"
 
 //
 // Class -- NODOCS -- uvm_tlm_if

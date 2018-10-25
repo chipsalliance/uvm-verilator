@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
 // Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2015 NVIDIA Corporation
+// Copyright 2015-2018 NVIDIA Corporation
 // Copyright 2014 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -22,9 +22,9 @@
 //----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
-// Title -- NODOCS -- TLM2 ports
+// Title -- NODOCS -- UVM TLM 2 ports
 //
-// The following defines TLM2 port classes.
+// The following defines UVM TLM 2 port classes.
 //
 //----------------------------------------------------------------------
 

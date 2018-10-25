@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
 // Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2011-2018 Cadence Design Systems, Inc.
-// Copyright 2015 NVIDIA Corporation
+// Copyright 2015-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +21,7 @@
 //----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
-// Title -- NODOCS -- TLM Socket Base Classes
+// Title -- NODOCS -- UVM TLM Socket Base Classes
 //
 // A collection of base classes, one for each socket type.  The reason
 // for having a base class for each socket is that all the socket (base)
@@ -30,7 +30,7 @@
 // visible.
 //
 // Termination Sockets - A termination socket must be the terminus
-// of every TLM path.  A transaction originates with an initiator socket
+// of every UVM TLM path.  A transaction originates with an initiator socket
 // and ultimately ends up in a target socket.  There may be zero or more
 // pass-through sockets between initiator and target.
 //

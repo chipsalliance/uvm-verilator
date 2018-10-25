@@ -142,6 +142,11 @@
 class uvm_sequence_base extends uvm_sequence_item;
   `uvm_object_utils(uvm_sequence_base)
 `else
+// Class: uvm_sequence_base
+// Implementation of uvm_sequence_base, as defined in section
+// 14.2.1 of 1800.2-2017.
+//
+  
 // @uvm-ieee 1800.2-2017 auto 14.2.1
 virtual class uvm_sequence_base extends uvm_sequence_item;
   `uvm_object_abstract_utils(uvm_sequence_base)
@@ -855,6 +860,8 @@ virtual class uvm_sequence_base extends uvm_sequence_item;
   // LRM as a non-virtual function, whereas it is implemented as a virtual function
   //
   // | virtual function void do_kill()
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
   
   // @uvm-ieee 1800.2-2017 auto 14.2.5.12
   virtual function void do_kill();

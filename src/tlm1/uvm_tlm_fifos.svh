@@ -2,7 +2,7 @@
 //------------------------------------------------------------------------------
 // Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2014 Semifore
-// Copyright 2010 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
@@ -26,7 +26,7 @@ typedef class uvm_tlm_event;
 
 //------------------------------------------------------------------------------
 //
-// Title -- NODOCS -- TLM FIFO Classes
+// Title -- NODOCS -- UVM TLM FIFO Classes
 //
 // This section defines TLM-based FIFO classes. 
 //

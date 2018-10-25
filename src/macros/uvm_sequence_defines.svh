@@ -98,8 +98,10 @@
 
 // @uvm-ieee 1800.2-2017 auto B.3.1.4
 `define uvm_do(SEQ_OR_ITEM, SEQR=get_sequencer(), PRIORITY=-1, CONSTRAINTS={}) \
+  begin \
   `uvm_create(SEQ_OR_ITEM, SEQR) \
-  `uvm_rand_send(SEQ_OR_ITEM, PRIORITY, CONSTRAINTS)
+  `uvm_rand_send(SEQ_OR_ITEM, PRIORITY, CONSTRAINTS) \
+  end
 
 
 //-----------------------------------------------------------------------------

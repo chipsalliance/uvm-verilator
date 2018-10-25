@@ -26,7 +26,7 @@
 `include "uvm_macros.svh"
 
 //------------------------------------------------------------------------------
-// Title -- NODOCS -- Callbacks Classes
+// Title: Callbacks Classes
 //
 // This section defines the classes used for callback registration, management,
 // and user-defined callbacks.
@@ -466,6 +466,13 @@ endclass
 // provided in an example included in the kit.
 //------------------------------------------------------------------------------
 
+// Class: uvm_callbacks#(T, CB)
+// Implementation of uvm_callbacks#(T,CB) class, as defined in
+// section 10.7.2.1.
+//
+// | class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
+//
+  
 // @uvm-ieee 1800.2-2017 auto 10.7.2.1
 class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
     extends uvm_typed_callbacks#(T);
@@ -949,10 +956,11 @@ class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
   // the typewide and instance callbacks (if any) registered for ~obj~.
   //
   // NOTE: This API contradicts the definition provided in section 10.7.2.5 of the P1800.2-2017
-  //       LRM.  Details on the reasoning behind the change can be found at
-  //       <https://accellera.mantishub.io/view.php?id=6377>.
+  //       LRM.  See DEVIATIONS.md for additional details.
   //
   //| static function void get_all( ref CB all_callbacks[$], input T obj=null );
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
 
   // @uvm-ieee 1800.2-2017 auto 10.7.2.5
   static function void get_all ( ref CB all_callbacks[$], input T obj=null );

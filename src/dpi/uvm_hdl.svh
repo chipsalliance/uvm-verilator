@@ -3,7 +3,7 @@
 // Copyright 2015 Analog Devices, Inc.
 // Copyright 2010 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2015 NVIDIA Corporation
+// Copyright 2014-2018 NVIDIA Corporation
 // Copyright 2014 Cisco Systems, Inc.
 // Copyright 2012 Accellera Systems Initiative
 //   All Rights Reserved Worldwide

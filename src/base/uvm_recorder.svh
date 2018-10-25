@@ -403,9 +403,13 @@ virtual class uvm_recorder extends uvm_policy;
          return;
       end
 
-      push_active_object(value);
-      do_record_object(name, value);
-      void'(pop_active_object());
+      if (value == null)
+        do_record_object(name, value);
+      else begin
+        push_active_object(value);
+        do_record_object(name, value);
+        void'(pop_active_object());
+      end
    endfunction : record_object
 
 
@@ -636,7 +640,8 @@ endclass // uvm_recorder
 // The ~uvm_text_recorder~ is the default recorder implementation for the
 // <uvm_text_tr_database>.
 //
-
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+  
 class uvm_text_recorder extends uvm_recorder;
 
    `uvm_object_utils(uvm_text_recorder)
@@ -856,13 +861,15 @@ class uvm_text_recorder extends uvm_recorder;
    // Group: Implementation Specific API
    
    // Function: write_attribute
-   // Outputs an integral attribute to the textual log
+   // Outputs a <uvm_bitstream_t> attribute to the textual log.
    //
    // Parameters:
    // nm - Name of the attribute
-   // value - Value
+   // value - Value 
    // radix - Radix of the output
    // numbits - number of valid bits
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
    function void write_attribute(string nm,
                                  uvm_bitstream_t value,
                                  uvm_radix_enum radix,
@@ -880,13 +887,15 @@ class uvm_text_recorder extends uvm_recorder;
    endfunction : write_attribute
 
    // Function: write_attribute_int
-   // Outputs an integral attribute to the textual log
+   // Outputs an <uvm_integral_t> attribute to the textual log
    //
    // Parameters:
    // nm - Name of the attribute
    // value - Value
    // radix - Radix of the output
    // numbits - number of valid bits
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
    function void write_attribute_int(string  nm,
                                      uvm_integral_t value,
                                      uvm_radix_enum radix,

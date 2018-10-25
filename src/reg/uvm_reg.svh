@@ -2085,11 +2085,14 @@ function bit uvm_reg::Xcheck_accessX (input uvm_reg_item rw,
      rw.local_map = get_local_map(rw.map);
 
      if (rw.local_map == null) begin
-        `uvm_error(get_type_name(), 
-           {"No transactor available to physically access register on map '",
-            rw.map.get_full_name(),"'"})
-        rw.status = UVM_NOT_OK;
-        return 0;
+       if (rw.map == null)
+         `uvm_error(get_type_name(), "Unable to physically access register with null map")
+       else
+         `uvm_error(get_type_name(), 
+                    {"No transactor available to physically access register on map '",
+                     rw.map.get_full_name(),"'"})
+       rw.status = UVM_NOT_OK;
+       return 0;
      end
 
      map_info = rw.local_map.get_reg_map_info(this);

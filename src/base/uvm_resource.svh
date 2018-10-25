@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------
 // Copyright 2010-2011 Paradigm Works
-// Copyright 2010-2014 Mentor Graphics Corporation
+// Copyright 2010-2018 Mentor Graphics Corporation
 // Copyright 2015 Analog Devices, Inc.
 // Copyright 2014 Semifore
 // Copyright 2017 Intel Corporation
@@ -46,6 +46,8 @@ class get_t;
 endclass
 
 typedef class uvm_tree_printer ;
+
+// Title: Resources
 
 //----------------------------------------------------------------------
 // Class -- NODOCS -- uvm_resource_pool
@@ -257,7 +259,7 @@ class uvm_resource_pool;
   function void set_override(uvm_resource_base rsrc, string scope = "");
      string s = scope;
 `ifdef UVM_ENABLE_DEPRECATED_API
-     if ((scope == "") && rsrc) s = rsrc.get_scope();
+     if ((scope == "") && (rsrc != null)) s = rsrc.get_scope();
 `endif //UVM_ENABLE_DEPRECATED_API
      set_scope(rsrc, s);
      set_priority(rsrc, uvm_resource_types::PRI_HIGH);
@@ -275,7 +277,7 @@ class uvm_resource_pool;
   function void set_name_override(uvm_resource_base rsrc, string scope = "");
     string s = scope;
 `ifdef UVM_ENABLE_DEPRECATED_API
-    if ((scope == "") && rsrc) s = rsrc.get_scope();
+    if ((scope == "") && (rsrc != null)) s = rsrc.get_scope();
 `endif //UVM_ENABLE_DEPRECATED_API
     set_scope(rsrc, s);
     set_priority_name(rsrc, uvm_resource_types::PRI_HIGH);
@@ -293,7 +295,7 @@ class uvm_resource_pool;
   function void set_type_override(uvm_resource_base rsrc, string scope = "");
     string s = scope;
 `ifdef UVM_ENABLE_DEPRECATED_API
-    if ((scope == "") && rsrc) s = rsrc.get_scope();
+    if ((scope == "") && (rsrc != null)) s = rsrc.get_scope();
 `endif //UVM_ENABLE_DEPRECATED_API
     set_scope(rsrc, s);
     set_priority_type(rsrc, uvm_resource_types::PRI_HIGH);
@@ -1110,10 +1112,9 @@ class uvm_resource_pool;
 endclass
 
 //----------------------------------------------------------------------
-// Class -- NODOCS -- uvm_resource #(T)
-//
-// Parameterized resource.  Provides essential access methods to read
-// from and write to the resource database. 
+// Class: uvm_resource #(T)
+// Implementation of uvm_resource#(T) as defined in section C.2.5.1 of
+// 1800.2-2017.
 //----------------------------------------------------------------------
 
 // @uvm-ieee 1800.2-2017 auto C.2.5.1
@@ -1313,11 +1314,17 @@ class uvm_resource #(type T=int) extends uvm_resource_base;
   // If either of these functions is used in an incorrect type context
   // the compiler will complain.
 
-  // Function -- NODOCS -- read
+  // Function: read
   //
-  // Return the object stored in the resource container.  If an ~accessor~
-  // object is supplied then also update the accessor record for this
-  // resource.
+  //| function T read(uvm_object accessor = null);
+  //
+  // This function is the implementation of the uvm_resource#(T)::read 
+  // method detailed in IEEE1800.2-2017 section C.2.5.4.1
+  //
+  // It calls uvm_resource_base::record_read_access before returning the value.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
 
   // @uvm-ieee 1800.2-2017 auto C.2.5.4.1
   function T read(uvm_object accessor = null);
@@ -1325,18 +1332,17 @@ class uvm_resource #(type T=int) extends uvm_resource_base;
     return val;
   endfunction
 
-  // Function -- NODOCS -- write
-  // Modify the object stored in this resource container.  If the
-  // resource is read-only then issue an error message and return
-  // without modifying the object in the container.  If the resource is
-  // not read-only and an ~accessor~ object has been supplied then also
-  // update the accessor record.  Lastly, replace the object value in
-  // the container with the value supplied as the argument, ~t~, and
-  // release any processes blocked on
-  // <uvm_resource_base::wait_modified>.  If the value to be written is
-  // the same as the value already present in the resource then the
-  // write is not done.  That also means that the accessor record is not
-  // updated and the modified bit is not set.
+  // Function: write
+  //
+  //| function void write(T t, uvm_object accessor = null);
+  //
+  // This function is the implementation of the uvm_resource#(T)::write 
+  // method detailed in IEEE1800.2-2017 section C.2.5.4.2
+  //
+  // It calls uvm_resource_base::record_write_access before writing the value.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
 
   // @uvm-ieee 1800.2-2017 auto C.2.5.4.2
   function void write(T t, uvm_object accessor = null);

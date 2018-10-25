@@ -6,7 +6,7 @@
 // Copyright 2018 Intel Corporation
 // Copyright 2010-2014 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2011-2012 AMD
+// Copyright 2011-2018 AMD
 // Copyright 2012-2018 Cisco Systems, Inc.
 // Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2012 Accellera Systems Initiative
@@ -839,11 +839,11 @@ virtual class uvm_component extends uvm_report_object;
                                               bit recurse=0);
 `endif // UVM_ENABLE_DEPRECATED_API
    
-  // Function -- NODOCS -- print_config
+  // Function: print_config
   //
-  // Print_config_settings prints all configuration information for this
+  // Print_config prints all configuration information for this
   // component, as set by previous calls to <uvm_config_db::set()> and exports to
-  // the resources pool.  The settings are printing in the order of
+  // the resources pool.  The settings are printed in the order of
   // their precedence.
   //
   // If ~recurse~ is set, then configuration information for all
@@ -851,6 +851,8 @@ virtual class uvm_component extends uvm_report_object;
   //
   // if ~audit~ is set then the audit trail for each resource is printed
   // along with the resource name and value
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
   extern function void print_config(bit recurse = 0, bit audit = 0);
 
@@ -865,10 +867,13 @@ virtual class uvm_component extends uvm_report_object;
 
   extern function void print_config_with_audit(bit recurse = 0);
 
-  // Variable -- NODOCS -- print_config_matches
+  // Variable: print_config_matches
   //
   // Setting this static variable causes uvm_config_db::get() to print info about
   // matching configuration settings as they are being applied.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
 
   static bit print_config_matches;
 

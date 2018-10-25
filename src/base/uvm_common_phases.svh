@@ -5,6 +5,7 @@
 // Copyright 2014-2018 NVIDIA Corporation
 // Copyright 2013 Cisco Systems, Inc.
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -97,8 +98,8 @@ endclass
 //   but some "delta cycles" may have occurred.
 //
 // Typical Uses:
-// - Connect TLM ports and exports.
-// - Connect TLM initiator sockets and target sockets.
+// - Connect UVM TLM ports and exports.
+// - Connect UVM TLM initiator sockets and target sockets.
 // - Connect register model to adapter components.
 // - Setup explicit phase domains.
 //

@@ -2,7 +2,7 @@
 //----------------------------------------------------------------------
 // Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2014 Semifore
-// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
@@ -24,9 +24,9 @@
 
 
 //------------------------------------------------------------------------------
-// Title -- NODOCS -- TLM Channel Classes
+// Title -- NODOCS -- UVM TLM Channel Classes
 //------------------------------------------------------------------------------
-// This section defines built-in TLM channel classes.
+// This section defines built-in UVM TLM channel classes.
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------

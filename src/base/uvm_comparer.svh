@@ -3,6 +3,7 @@
 // Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2017-2018 Cisco Systems, Inc.
+// Copyright 2018 Qualcomm, Inc.
 // Copyright 2014 Intel Corporation
 // Copyright 2013-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
@@ -463,18 +464,24 @@ class uvm_comparer extends uvm_policy;
         `uvm_warning("UVM/COPIER/LOOP", {"Possible loop when comparing '", 
                                          lhs.get_full_name(), "' to '", rhs.get_full_name(), "'"})
     
-      // Check typename
-      // Implemented as if Mantis 6602 was accepted
-      if (check_type && (lhs.get_type_name() != rhs.get_type_name())) begin
-        print_msg({"type: lhs = \"", lhs.get_type_name(), "\" : rhs = \"", rhs.get_type_name(), "\""});
-      end
 
       push_active_object(lhs);
       m_recur_states[lhs][rhs][get_recursion_policy()]  = '{uvm_policy::STARTED,0};
-    
+      old_result = get_result();
+
+      // Check typename
+      // Implemented as if Mantis 6602 was accepted
+      if (get_check_type() && (lhs.get_object_type() != rhs.get_object_type())) begin
+        if(lhs.get_type_name() != rhs.get_type_name()) begin
+          print_msg({"type: lhs = \"", lhs.get_type_name(), "\" : rhs = \"", rhs.get_type_name(), "\""});
+        end
+        else begin
+          print_msg({"get_object_type() for ",lhs.get_name()," does not match get_object_type() for ",rhs.get_name()}); 
+        end  
+      end
+
       field_op = uvm_field_op::m_get_available_op();
       field_op.set(UVM_COMPARE,this,rhs);
-      old_result = get_result();
       lhs.do_execute_op(field_op);
       if (field_op.user_hook_enabled()) begin
         ret_val = lhs.do_compare(rhs,this);
@@ -485,8 +492,6 @@ class uvm_comparer extends uvm_policy;
       // in the result count.
       if (ret_val && (get_result() > old_result))
         ret_val = 0;
-      else
-        ret_val = 1;
 
       // Save off the comparison result
       m_recur_states[lhs][rhs][get_recursion_policy()]  = '{uvm_policy::FINISHED,ret_val};

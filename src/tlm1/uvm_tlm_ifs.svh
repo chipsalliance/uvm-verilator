@@ -1,9 +1,9 @@
 //
 //-----------------------------------------------------------------------------
 // Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2014 Synopsys, Inc.
+// Copyright 2014-2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2015 NVIDIA Corporation
+// Copyright 2015-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,18 +21,18 @@
 //   permissions and limitations under the License.
 //-----------------------------------------------------------------------------
 
-`define UVM_TASK_ERROR "TLM interface task not implemented"
-`define UVM_FUNCTION_ERROR "TLM interface function not implemented"
+`define UVM_TASK_ERROR "UVM TLM interface task not implemented"
+`define UVM_FUNCTION_ERROR "UVM TLM interface function not implemented"
 
 //-----------------------------------------------------------------------------
 //
 // CLASS -- NODOCS -- uvm_tlm_if_base #(T1,T2)
 //
-// This class declares all of the methods of the TLM API.
+// This class declares all of the methods of the UVM TLM API.
 //
 // Various subsets of these methods are combined to form primitive TLM
 // interfaces, which are then paired in various ways to form more abstract
-// "combination" TLM interfaces. Components that require a particular interface
+// "combination" UVM TLM interfaces. Components that require a particular interface
 // use ports to convey that requirement. Components that provide a particular
 // interface use exports to convey its availability.
 //
@@ -41,7 +41,7 @@
 // compatible input ports. The difference is that UVM ports and exports bind
 // interfaces (groups of methods), not signals and wires. The methods of the
 // interfaces so bound pass data as whole transactions (e.g. objects).
-// The set of primitive and combination TLM interfaces afford many choices for
+// The set of primitive and combination UVM TLM interfaces afford many choices for
 // designing components that communicate at the transaction level.
 // 
 //-----------------------------------------------------------------------------

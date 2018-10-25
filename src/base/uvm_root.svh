@@ -2,7 +2,7 @@
 //------------------------------------------------------------------------------
 // Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2014 Semifore
-// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2012 AMD
 // Copyright 2012-2018 NVIDIA Corporation
@@ -71,7 +71,19 @@
 typedef class uvm_cmdline_processor;
 typedef class uvm_component_proxy;
 typedef class uvm_top_down_visitor_adapter;
+typedef class uvm_report_message;
+typedef class uvm_report_object;
+typedef class uvm_report_handler;
+typedef class uvm_default_report_server;
+  
+// Class: uvm_root
+// 
+//| class uvm_root extends uvm_component
+//
+// Implementation of the uvm_root class, as defined
+// in 1800.2-2017 Section F.7
 
+//@uvm-ieee 1800.2-2017 manual F.7
 class uvm_root extends uvm_component;
 
 	// Function -- NODOCS -- get()
@@ -237,6 +249,28 @@ class uvm_root extends uvm_component;
 
 	bit  enable_print_topology = 0;
 
+    
+	// Function: set_enable_print_topology
+	//
+	//| function void set_enable_print_topology (bit enable)
+	//
+	// Sets the variable to enable printing the entire testbench topology just after completion
+	// of the end_of_elaboration phase.
+        //
+        // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+	extern function void set_enable_print_topology  (bit enable);
+		
+	// Function: get_enable_print_topology
+	//
+	//| function bit get_enable_print_topology()
+	//
+	// Gets the variable to enable printing the entire testbench topology just after completion.
+        //
+        // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+	extern function bit get_enable_print_topology  ();
+
 
 	// Variable- phase_timeout
 	//
@@ -293,16 +327,8 @@ class uvm_root extends uvm_component;
 
 	bit m_phase_all_done;
 
-	// internal function not to be used
-	// get the initialized singleton instance of uvm_root
-	static function uvm_root m_uvm_get_root();
-		if (m_inst == null) begin
-			m_inst = new();
-			// void'(uvm_domain::get_common_domain());
-			m_inst.m_domain = uvm_domain::get_uvm_domain();
-		end
-		return m_inst;
-	endfunction
+        extern static function uvm_root m_uvm_get_root();
+          
 
 	static local bit m_relnotes_done=0;
 
@@ -333,36 +359,54 @@ function uvm_root uvm_root::get();
 	return cs.get_root();
 endfunction
 
-
 // new
 // ---
 
 function uvm_root::new();
-  static bit first_call = 1;
+  uvm_report_handler rh;
   super.new("__top__", null);
 
-	m_rh.set_name("reporter");
+  // For error reporting purposes, we need to construct this first.
+  rh = new("reporter");
+  set_report_handler(rh);
 
-  if (!first_call)
-    `uvm_fatal("UVM/ROOT/MULTI", "Only one instance of uvm_root allowed!")
-  first_call = 0;
-
-  clp = uvm_cmdline_processor::get_inst();
-
-	report_header();
-
-	m_check_uvm_field_flag_size();
-
-	// This sets up the global verbosity. Other command line args may
-	// change individual component verbosity.
-	m_check_verbosity();
-
+  // Checking/Setting this here makes it much harder to
+  // trick uvm_init into infinite recursions
+  if (m_inst != null) begin
+    `uvm_fatal_context("UVM/ROOT/MULTI",
+                       "Attempting to construct multiple roots",
+                       m_inst)
+    return;
+  end
+  m_inst = this;
 `ifdef UVM_ENABLE_DEPRECATED_API
    uvm_top = this; 
 `endif
 
+  clp = uvm_cmdline_processor::get_inst();
+
 endfunction
 
+// m_uvm_get_root
+// internal function not to be used
+// get the initialized singleton instance of uvm_root
+function uvm_root uvm_root::m_uvm_get_root();
+  if (m_inst == null) begin
+    uvm_root top;
+    top = new();
+    
+    if (top != m_inst)
+      // Something very, very bad has happened and
+      // we already fatal'd.  Throw out the garbage
+      // root.
+      return null;
+    
+    top.m_domain = uvm_domain::get_uvm_domain();
+  end
+  return m_inst;
+endfunction
+
+  
 function void uvm_root::report_header(UVM_FILE file = 0);
 	string q[$];
 	uvm_report_server srvr;
@@ -374,18 +418,23 @@ function void uvm_root::report_header(UVM_FILE file = 0);
 
 	if (clp.get_arg_matches("+UVM_NO_RELNOTES", args)) return;
 
+	if (!m_relnotes_done) begin
+	  q.push_back("\n  ***********       IMPORTANT RELEASE NOTES         ************\n");
+	  m_relnotes_done = 1;
+
+  	  q.push_back("\n  This implementation of the UVM Library deviates from the 1800.2-2017\n");
+	  q.push_back("  standard.  See the DEVIATIONS.md file contained in the release\n");
+	  q.push_back("  for more details.\n");
+          
 `ifdef UVM_ENABLE_DEPRECATED_API
 
-	if (!m_relnotes_done) begin
-		q.push_back("\n  ***********       IMPORTANT RELEASE NOTES         ************\n");
-		m_relnotes_done = 1;
-	end
-	q.push_back("\n  You are using a version of the UVM library that has been compiled\n");
-	q.push_back("  with `UVM_ENABLE_DEPRECATED_API defined.\n");
-	q.push_back("  See https://accellera.mantishub.io/view.php?id=5072 for more details.\n");
+	  q.push_back("\n  You are using a version of the UVM library that has been compiled\n");
+	  q.push_back("  with `UVM_ENABLE_DEPRECATED_API defined.\n");
+	  q.push_back("  See https://accellera.mantishub.io/view.php?id=5072 for more details.\n");
    
 `endif
 
+	end // !m_relnotes_done
 
 	q.push_back("\n----------------------------------------------------------------\n");
 	q.push_back({uvm_revision_string(),"\n"});
@@ -1091,3 +1140,15 @@ task uvm_root::run_phase (uvm_phase phase);
 				"run_test(), and pre-run user defined phases may not consume ",
 				"simulation time before the start of the run phase."})
 endtask
+
+
+// Debug accessor methods to access enable_print_topology
+function void uvm_root::set_enable_print_topology  (bit enable);
+	enable_print_topology = enable;
+	
+endfunction
+
+// Debug accessor methods to access enable_print_topology
+function bit uvm_root::get_enable_print_topology();
+	return enable_print_topology;
+endfunction

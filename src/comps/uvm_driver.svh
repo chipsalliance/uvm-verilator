@@ -85,4 +85,8 @@ class uvm_driver #(type REQ=uvm_sequence_item,
     seq_item_prod_if = seq_item_port;
   endfunction // new
 
+  virtual function void end_of_elaboration_phase(uvm_phase phase);
+	  if(seq_item_port.size<1)
+		  `uvm_warning("DRVCONNECT","the driver is not connected to a sequencer via the standard mechanisms enabled by connect()")
+  endfunction
 endclass

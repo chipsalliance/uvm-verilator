@@ -34,6 +34,29 @@
 `ifndef UVM_RECORDER_DEFINES_SVH
 `define UVM_RECORDER_DEFINES_SVH
 
+// Group: Recording Macros
+//
+// The recording macros are implemented as described in section B.2.3 of the
+// 1800.2 specification.
+//
+// The Accellera implementation adds an additional ~RECORDER~ argument to 
+// these macros with a default value of 'recorder'.  This allows the macros
+// to be used in environments with alternative recorder names.
+//
+// For example, <`uvm_record_string> is defined in the LRM as
+// | `define uvm_record_string(NAME,VALUE)
+//
+// Whereas the implementation is
+// | `define uvm_record_string(NAME,VALUE,RECORDER=recorder)
+//
+// This allows for usage such as
+// | function void record_foo( uvm_packer other_recorder );
+// |   `uvm_record_string("foo", foo, other_recorder)
+// | endfunction : record_foo
+//
+// @uvm-contrib This API is being considered for potential contribution to 1800.2
+
+
 // Macro -- NODOCS -- `uvm_record_attribute
 //
 // Vendor-independent macro to hide tool-specific interface for
@@ -51,12 +74,12 @@
 
 `ifndef uvm_record_attribute
  `ifdef QUESTA
-    `define uvm_record_attribute(TR_HANDLE,NAME,VALUE) \
+    `define uvm_record_attribute(TR_HANDLE,NAME,VALUE,RECORDER=recorder) \
       $add_attribute(TR_HANDLE,VALUE,NAME);
   `else
     // @uvm-ieee 1800.2-2017 auto B.2.3.1
-    `define uvm_record_attribute(TR_HANDLE,NAME,VALUE) \
-      recorder.record_generic(NAME, $sformatf("%p", VALUE)); 
+    `define uvm_record_attribute(TR_HANDLE,NAME,VALUE,RECORDER=recorder) \
+      RECORDER.record_generic(NAME, $sformatf("%p", VALUE)); 
   `endif
 `endif
 
@@ -74,15 +97,15 @@
 
 `ifndef uvm_record_int
   // @uvm-ieee 1800.2-2017 auto B.2.3.2
-  `define uvm_record_int(NAME,VALUE,SIZE,RADIX = UVM_NORADIX) \
-    if (recorder != null && recorder.is_open()) begin \
-      if (recorder.use_record_attribute()) \
-        `uvm_record_attribute(recorder.get_record_attribute_handle(),NAME,VALUE) \
+  `define uvm_record_int(NAME,VALUE,SIZE,RADIX = UVM_NORADIX,RECORDER=recorder) \
+    if (RECORDER != null && RECORDER.is_open()) begin \
+      if (RECORDER.use_record_attribute()) \
+        `uvm_record_attribute(RECORDER.get_record_attribute_handle(),NAME,VALUE,RECORDER) \
       else \
         if (SIZE > 64) \
-          recorder.record_field(NAME, VALUE, SIZE, RADIX); \
+          RECORDER.record_field(NAME, VALUE, SIZE, RADIX); \
         else \
-          recorder.record_field_int(NAME, VALUE, SIZE, RADIX); \
+          RECORDER.record_field_int(NAME, VALUE, SIZE, RADIX); \
     end
 `endif
 
@@ -100,12 +123,12 @@
 
 `ifndef uvm_record_string
   // @uvm-ieee 1800.2-2017 auto B.2.3.3
-  `define uvm_record_string(NAME,VALUE) \
-    if (recorder != null && recorder.is_open()) begin \
-      if (recorder.use_record_attribute()) \
-        `uvm_record_attribute(recorder.get_record_attribute_handle(),NAME,VALUE) \
+  `define uvm_record_string(NAME,VALUE,RECORDER=recorder) \
+    if (RECORDER != null && RECORDER.is_open()) begin \
+      if (RECORDER.use_record_attribute()) \
+        `uvm_record_attribute(RECORDER.get_record_attribute_handle(),NAME,VALUE,RECORDER) \
       else \
-        recorder.record_string(NAME,VALUE); \
+        RECORDER.record_string(NAME,VALUE); \
     end
 `endif
 
@@ -122,12 +145,12 @@
 //
 `ifndef uvm_record_time
   // @uvm-ieee 1800.2-2017 auto B.2.3.4
-  `define uvm_record_time(NAME,VALUE) \
-    if (recorder != null && recorder.is_open()) begin \
-      if (recorder.use_record_attribute()) \
-        `uvm_record_attribute(recorder.get_record_attribute_handle(),NAME,VALUE) \
+  `define uvm_record_time(NAME,VALUE,RECORDER=recorder) \
+    if (RECORDER != null && RECORDER.is_open()) begin \
+      if (RECORDER.use_record_attribute()) \
+        `uvm_record_attribute(RECORDER.get_record_attribute_handle(),NAME,VALUE,RECORDER) \
       else \
-         recorder.record_time(NAME,VALUE); \
+         RECORDER.record_time(NAME,VALUE); \
     end
 `endif
 
@@ -145,61 +168,61 @@
 //
 `ifndef uvm_record_real
   // @uvm-ieee 1800.2-2017 auto B.2.3.5
-  `define uvm_record_real(NAME,VALUE) \
-    if (recorder != null && recorder.is_open()) begin \
-      if (recorder.use_record_attribute()) \
-        `uvm_record_attribute(recorder.get_record_attribute_handle(),NAME,VALUE) \
+  `define uvm_record_real(NAME,VALUE,RECORDER=recorder) \
+    if (RECORDER != null && RECORDER.is_open()) begin \
+      if (RECORDER.use_record_attribute()) \
+        `uvm_record_attribute(RECORDER.get_record_attribute_handle(),NAME,VALUE,RECORDER) \
       else \
-        recorder.record_field_real(NAME,VALUE); \
+        RECORDER.record_field_real(NAME,VALUE); \
     end
 `endif
 
 // @uvm-ieee 1800.2-2017 auto B.2.3.6
-`define uvm_record_field(NAME,VALUE) \
-   if (recorder != null && recorder.is_open()) begin \
-     if (recorder.use_record_attribute()) begin \
-       `uvm_record_attribute(recorder.get_record_attribute_handle(),NAME,VALUE) \
+`define uvm_record_field(NAME,VALUE,RECORDER=recorder) \
+   if (RECORDER != null && RECORDER.is_open()) begin \
+     if (RECORDER.use_record_attribute()) begin \
+       `uvm_record_attribute(RECORDER.get_record_attribute_handle(),NAME,VALUE,RECORDER) \
      end \
      else \
-       recorder.record_generic(NAME, $sformatf("%p", VALUE)); \
+       RECORDER.record_generic(NAME, $sformatf("%p", VALUE)); \
    end
 
-`define uvm_record_enum(NAME,VALUE,TYPE) \
-  if (recorder != null && recorder.is_open()) begin \
-    if (recorder.use_record_attribute()) begin \
-       `uvm_record_attribute(recorder.get_record_attribute_handle(),NAME,VALUE) \
+`define uvm_record_enum(NAME,VALUE,TYPE,RECORDER=recorder) \
+  if (RECORDER != null && RECORDER.is_open()) begin \
+    if (RECORDER.use_record_attribute()) begin \
+       `uvm_record_attribute(RECORDER.get_record_attribute_handle(),NAME,VALUE,RECORDER) \
     end \
     else begin \
       if (VALUE.name() == "") \
-        recorder.record_generic(NAME, $sformatf("%0d", VALUE), `"TYPE`"); \
+        RECORDER.record_generic(NAME, $sformatf("%0d", VALUE), `"TYPE`"); \
       else \
-        recorder.record_generic(NAME, VALUE.name(), `"TYPE`"); \
+        RECORDER.record_generic(NAME, VALUE.name(), `"TYPE`"); \
     end \
  end
 
 // uvm_record_qda_int
 // ------------------
 
-`define uvm_record_qda_int(ARG, RADIX) \
+`define uvm_record_qda_int(ARG, RADIX,RECORDER=recorder) \
   begin \
     int sz__ = $size(ARG); \
     if(sz__ == 0) begin \
-      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC) \
+      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC,RECORDER) \
     end \
     else if(sz__ < 10) begin \
       foreach(ARG[i]) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_int(nm__, ARG[i], $bits(ARG[i]), RADIX) \
+        `uvm_record_int(nm__, ARG[i], $bits(ARG[i]), RADIX, RECORDER) \
       end \
     end \
     else begin \
       for(int i=0; i<5; ++i) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_int(nm__, ARG[i], $bits(ARG[i]), RADIX) \
+        `uvm_record_int(nm__, ARG[i], $bits(ARG[i]), RADIX, RECORDER) \
       end \
       for(int i=sz__-5; i<sz__; ++i) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_int(nm__, ARG[i], $bits(ARG[i]), RADIX) \
+        `uvm_record_int(nm__, ARG[i], $bits(ARG[i]), RADIX, RECORDER) \
       end \
     end \
   end 
@@ -207,26 +230,26 @@
 // uvm_record_qda_object
 // ---------------------
 
-`define uvm_record_qda_object(ARG) \
+`define uvm_record_qda_object(ARG,RECORDER=recorder) \
   begin \
     int sz__ = $size(ARG); \
     if(sz__ == 0) begin \
-      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC) \
+      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC, RECORDER) \
     end \
     else if(sz__ < 10) begin \
       foreach(ARG[i]) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        recorder.record_object(nm__, ARG[i]); \
+        RECORDER.record_object(nm__, ARG[i]); \
       end \
     end \
     else begin \
       for(int i=0; i<5; ++i) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        recorder.record_object(nm__, ARG[i]); \
+        RECORDER.record_object(nm__, ARG[i]); \
       end \
       for(int i=sz__-5; i<sz__; ++i) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        recorder.record_object(nm__, ARG[i]); \
+        RECORDER.record_object(nm__, ARG[i]); \
       end \
     end \
   end
@@ -234,26 +257,26 @@
 // uvm_record_qda_enum
 // --------------------
 
-`define uvm_record_qda_enum(ARG, T) \
+`define uvm_record_qda_enum(ARG, T,RECORDER=recorder) \
   begin \
     int sz__ = $size(ARG); \
     if(sz__ == 0) begin \
-      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC) \
+      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC, RECORDER) \
     end \
     else if(sz__ < 10) begin \
       foreach(ARG[i]) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_enum(nm__, ARG[i], T) \
+        `uvm_record_enum(nm__, ARG[i], T, RECORDER) \
       end \
     end \
     else begin \
       for(int i=0; i<5; ++i) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_enum(nm__, ARG[i], T) \
+        `uvm_record_enum(nm__, ARG[i], T, RECORDER) \
       end \
       for(int i=sz__-5; i<sz__; ++i) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_enum(nm__, ARG[i], T) \
+        `uvm_record_enum(nm__, ARG[i], T, RECORDER) \
       end \
     end \
   end
@@ -261,29 +284,29 @@
 // uvm_record_qda_string
 // ---------------------
 
-`define uvm_record_qda_string(ARG) \
+`define uvm_record_qda_string(ARG,RECORDER=recorder) \
   begin \
     int sz__; \
     /* workaround for sarray string + $size */ \
     foreach (ARG[i]) \
       sz__ = i; \
     if(sz__ == 0) begin \
-      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC) \
+      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC, RECORDER) \
     end \
     else if(sz__ < 10) begin \
       foreach(ARG[i]) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_string(nm__, ARG[i]) \
+        `uvm_record_string(nm__, ARG[i], RECORDER) \
       end \
     end \
     else begin \
       for(int i=0; i<5; ++i) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_string(nm__, ARG[i]) \
+        `uvm_record_string(nm__, ARG[i], RECORDER) \
       end \
       for(int i=sz__-5; i<sz__; ++i) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_string(nm__, ARG[i]) \
+        `uvm_record_string(nm__, ARG[i], RECORDER) \
       end \
     end \
   end
@@ -291,29 +314,29 @@
 // uvm_record_qda_real
 // ---------------------
 
-`define uvm_record_qda_real(ARG) \
+`define uvm_record_qda_real(ARG,RECORDER=recorder) \
   begin \
     int sz__; \
     /* workaround for sarray real + $size */ \
     foreach (ARG[i]) \
       sz__ = i; \
     if(sz__ == 0) begin \
-      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC) \
+      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC, RECORDER) \
     end \
     else if(sz__ < 10) begin \
       foreach(ARG[i]) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_real(nm__, ARG[i]) \
+        `uvm_record_real(nm__, ARG[i], RECORDER) \
       end \
     end \
     else begin \
       for(int i=0; i<5; ++i) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_real(nm__, ARG[i]) \
+        `uvm_record_real(nm__, ARG[i], RECORDER) \
       end \
       for(int i=sz__-5; i<sz__; ++i) begin \
         string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        `uvm_record_real(nm__, ARG[i]) \
+        `uvm_record_real(nm__, ARG[i], RECORDER) \
       end \
     end \
   end

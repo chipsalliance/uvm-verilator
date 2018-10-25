@@ -1,6 +1,6 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2007-2018 Mentor Graphics Corporation
 // Copyright 2014 Semifore
 // Copyright 2017 Intel Corporation
 // Copyright 2010-2014 Synopsys, Inc.
@@ -301,13 +301,6 @@ function string uvm_integral_to_string (uvm_integral_t value, int size,
     default:      return $sformatf("%0s%0x", radix_str, value);
   endcase
 endfunction
-
-// Backwards compat
-function string uvm_vector_to_string(uvm_bitstream_t value, int size,
-                                     uvm_radix_enum radix=UVM_NORADIX,
-                                     string radix_str="");
-   return uvm_bitstream_to_string(value,size,radix,radix_str);
-endfunction // uvm_vector_to_string
    
 // Function- uvm_get_array_index_int
 //

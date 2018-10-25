@@ -47,6 +47,12 @@ typedef class uvm_resource_db_options;
 typedef class uvm_cmdline_processor;
 
 
+// Class: uvm_resource_db
+// Implementation of uvm_resource_db, as defined in section
+// C.3.2.1 of 1800.2-2017.
+//
+//| class uvm_resource_db#(type T=uvm_object)
+  
 // @uvm-ieee 1800.2-2017 auto C.3.2.1
 class uvm_resource_db #(type T=uvm_object);
 
@@ -252,15 +258,18 @@ class uvm_resource_db #(type T=uvm_object);
   // for an implementation to use for debug purposes only; its value shall have no functional effect on outcome
   // of this method.
   //
-  // *This function deviates from IEEE 1800.2-2017 LRM as it defines the <val> argument as inout, whereas the*
-  // *LRM defines it as an output.* 
+  // *Note:*  This function deviates from IEEE 1800.2-2017 LRM as it defines the ~val~ argument as inout, 
+  // whereas the LRM defines it as an output.
   //
   //|   static function bit read_by_name(input string scope,
-  //|                                 input string name,
-  //|                                 inout T val, input uvm_object accessor = null);
+  //|                                    input string name,
+  //|                                    inout T val, 
+  //|                                    input uvm_object accessor = null);
   //
   //  The implementation treats the argument as inout for cases where a read may fail 
-  //  and the value will not change from its original supplied value,
+  //  and the value will not change from its original supplied value.
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
 
   // @uvm-ieee 1800.2-2017 auto C.3.2.2.6
   static function bit read_by_name(input string scope,
@@ -288,15 +297,17 @@ class uvm_resource_db #(type T=uvm_object);
   // available for an implementation to use for debug purposes only; its value shall have no functional effect on
   // outcome of this method.
   // 
-  // *This function deviates from IEEE 1800.2-2017 LRM as it defines the <val> argument as inout, whereas the*
-  // *LRM defines it as an output.* 
+  // *Note:* This function deviates from IEEE 1800.2-2017 LRM as it defines the <val> argument as inout, whereas the
+  // LRM defines it as an output.
   //
   //|    static function bit read_by_type(input string scope,
-  //|                                 inout T val,
-  //|                                 input uvm_object accessor = null);
+  //|                                     inout T val,
+  //|                                     input uvm_object accessor = null);
   //
   // The implementation treats the argument as inout for cases where a read may fail 
-  // and the value will not change from its original supplied value,
+  // and the value will not change from its original supplied value.
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
 
   // @uvm-ieee 1800.2-2017 auto C.3.2.2.7
   static function bit read_by_type(input string scope,

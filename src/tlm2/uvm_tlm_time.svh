@@ -2,7 +2,7 @@
 // Copyright 2011-2014 Mentor Graphics Corporation
 // Copyright 2014 Semifore
 // Copyright 2014 Intel Corporation
-// Copyright 2010-2017 Synopsys, Inc.
+// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2011-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
