@@ -1,6 +1,6 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010-2020 Mentor Graphics Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2018 NVIDIA Corporation
@@ -212,7 +212,7 @@ class uvm_reg_fifo extends uvm_reg;
 
       super.do_predict(rw,kind,be);
 
-      if (rw.status == UVM_NOT_OK)
+      if (rw.get_status() ==UVM_NOT_OK)
         return;
 
       case (kind)
@@ -226,7 +226,7 @@ class uvm_reg_fifo extends uvm_reg;
 
         UVM_PREDICT_READ:
         begin
-           uvm_reg_data_t value = rw.value[0] & ((1 << get_n_bits())-1);
+           uvm_reg_data_t value = rw.get_value(0) & ((1 << get_n_bits())-1);
            uvm_reg_data_t mirror_val;
            if (fifo.size() == 0) begin
              return;
@@ -257,12 +257,12 @@ class uvm_reg_fifo extends uvm_reg;
     virtual task pre_write(uvm_reg_item rw);
       if (m_set_cnt && !m_update_in_progress) begin
         `uvm_error("Needs Update","Must call update() after set() and before write()")
-        rw.status = UVM_NOT_OK;
+        rw.set_status(UVM_NOT_OK);
         return;
       end
       if (fifo.size() >= m_size && !m_update_in_progress) begin
         `uvm_error("FIFO Full","Write to full FIFO ignored")
-        rw.status = UVM_NOT_OK;
+        rw.set_status(UVM_NOT_OK);
         return;
       end
     endtask
@@ -279,7 +279,7 @@ class uvm_reg_fifo extends uvm_reg;
     virtual task pre_read(uvm_reg_item rw);
       // abort if fifo empty
       if (fifo.size() == 0) begin
-        rw.status = UVM_NOT_OK;
+        rw.set_status(UVM_NOT_OK);
         return;
       end
     endtask

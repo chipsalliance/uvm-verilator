@@ -1,6 +1,6 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010-2020 Mentor Graphics Corporation
 // Copyright 2012-2014 Semifore
 // Copyright 2018 Qualcomm, Inc.
 // Copyright 2004-2018 Synopsys, Inc.
@@ -704,13 +704,13 @@ function bit uvm_reg_field::predict (uvm_reg_data_t    value,
                                      string            fname = "",
                                      int               lineno = 0);
   uvm_reg_item rw = new;
-  rw.value[0] = value;
-  rw.path = path;
-  rw.map = map;
-  rw.fname = fname;
-  rw.lineno = lineno;
+  rw.set_value(value,0);
+  rw.set_door(path);
+  rw.set_map(map);
+  rw.set_fname(fname);
+  rw.set_line(lineno);
   do_predict(rw, kind, be);
-  predict = (rw.status == UVM_NOT_OK) ? 0 : 1;
+  predict = (rw.get_status() == UVM_NOT_OK) ? 0 : 1;
 endfunction: predict
 
 
@@ -720,17 +720,17 @@ function void uvm_reg_field::do_predict(uvm_reg_item      rw,
                                         uvm_predict_e     kind = UVM_PREDICT_DIRECT,
                                         uvm_reg_byte_en_t be = -1);
    
-   uvm_reg_data_t field_val = rw.value[0] & ((1 << m_size)-1);
+   uvm_reg_data_t field_val = rw.get_value(0) & ((1 << m_size)-1);
 
-   if (rw.status != UVM_NOT_OK)
-     rw.status = UVM_IS_OK;
+   if (rw.get_status() != UVM_NOT_OK)
+     rw.set_status(UVM_IS_OK);
 
    // Assume that the entire field is enabled
    if (!be[0])
      return;
 
-   m_fname = rw.fname;
-   m_lineno = rw.lineno;
+   m_fname = rw.get_fname();
+   m_lineno = rw.get_line();
 
    case (kind)
 
@@ -738,14 +738,14 @@ function void uvm_reg_field::do_predict(uvm_reg_item      rw,
        begin
          uvm_reg_field_cb_iter cbs = new(this);
 
-         if (rw.path == UVM_FRONTDOOR || rw.path == UVM_PREDICT)
-            field_val = XpredictX(m_mirrored, field_val, rw.map);
+         if (rw.get_door() == UVM_FRONTDOOR || rw.get_door() == UVM_PREDICT)
+            field_val = XpredictX(m_mirrored, field_val, rw.get_map());
 
          m_written = 1;
 
          for (uvm_reg_cbs cb = cbs.first(); cb != null; cb = cbs.next())
             cb.post_predict(this, m_mirrored, field_val, 
-                            UVM_PREDICT_WRITE, rw.path, rw.map);
+                            UVM_PREDICT_WRITE, rw.get_door(), rw.get_map());
 
          field_val &= ('b1 << m_size)-1;
 
@@ -755,9 +755,9 @@ function void uvm_reg_field::do_predict(uvm_reg_item      rw,
        begin
          uvm_reg_field_cb_iter cbs = new(this);
 
-         if (rw.path == UVM_FRONTDOOR || rw.path == UVM_PREDICT) begin
+         if (rw.get_door() == UVM_FRONTDOOR || rw.get_door() == UVM_PREDICT) begin
 
-            string acc = get_access(rw.map);
+            string acc = get_access(rw.get_map());
 
             if (acc == "RC" ||
                 acc == "WRC" ||
@@ -783,7 +783,7 @@ function void uvm_reg_field::do_predict(uvm_reg_item      rw,
 
          for (uvm_reg_cbs cb = cbs.first(); cb != null; cb = cbs.next())
             cb.post_predict(this, m_mirrored, field_val,
-                            UVM_PREDICT_READ, rw.path, rw.map);
+                            UVM_PREDICT_READ, rw.get_door(), rw.get_map());
 
          field_val &= ('b1 << m_size)-1;
 
@@ -795,7 +795,7 @@ function void uvm_reg_field::do_predict(uvm_reg_item      rw,
            `uvm_warning("RegModel", {"Trying to predict value of field '",
               get_name(),"' while register '",m_parent.get_full_name(),
               "' is being accessed"})
-           rw.status = UVM_NOT_OK;
+           rw.set_status(UVM_NOT_OK);
          end
        end
    endcase
@@ -987,49 +987,51 @@ typedef class uvm_reg_map_info;
 
 function bit uvm_reg_field::Xcheck_accessX(input uvm_reg_item rw,
                                            output uvm_reg_map_info map_info);
-
+  uvm_reg_map local_tmp_map;
                         
-   if (rw.path == UVM_DEFAULT_DOOR) begin
+   if (rw.get_door() == UVM_DEFAULT_DOOR) begin
      uvm_reg_block blk = m_parent.get_block();
-     rw.path = blk.get_default_door();
+     rw.set_door(blk.get_default_door());
    end
 
-   if (rw.path == UVM_BACKDOOR) begin
+   if (rw.get_door() == UVM_BACKDOOR) begin
       if (m_parent.get_backdoor() == null && !m_parent.has_hdl_path()) begin
          `uvm_warning("RegModel",
             {"No backdoor access available for field '",get_full_name(),
             "' . Using frontdoor instead."})
-         rw.path = UVM_FRONTDOOR;
+         rw.set_door(UVM_FRONTDOOR);
       end
       else
-        rw.map = uvm_reg_map::backdoor();
+        rw.set_map(uvm_reg_map::backdoor());
    end
 
-   if (rw.path != UVM_BACKDOOR) begin
+   if (rw.get_door() != UVM_BACKDOOR) begin
+     
+     rw.set_local_map(m_parent.get_local_map(rw.get_map()));
 
-     rw.local_map = m_parent.get_local_map(rw.map);
-
-     if (rw.local_map == null) begin
+     if (rw.get_local_map() == null) begin        
+        local_tmp_map = rw.get_map();
         `uvm_error(get_type_name(), 
            {"No transactor available to physically access memory from map '",
-            rw.map.get_full_name(),"'"})
-        rw.status = UVM_NOT_OK;
+            local_tmp_map.get_full_name(),"'"})
+        rw.set_status(UVM_NOT_OK);
         return 0;
      end
 
-     map_info = rw.local_map.get_reg_map_info(m_parent);
+     local_tmp_map = rw.get_local_map;
+     map_info = local_tmp_map.get_reg_map_info(m_parent);
 
      if (map_info.frontdoor == null && map_info.unmapped) begin
         `uvm_error("RegModel", {"Field '",get_full_name(),
                    "' in register that is unmapped in map '",
-                   rw.map.get_full_name(),
+                   local_tmp_map.get_full_name(),
                    "' and does not have a user-defined frontdoor"})
-        rw.status = UVM_NOT_OK;
+        rw.set_status(UVM_NOT_OK);
         return 0;
      end
 
-     if (rw.map == null)
-       rw.map = rw.local_map;
+     if (rw.get_map() == null)
+       rw.set_map(rw.get_local_map());
    end
 
    return 1;
@@ -1050,21 +1052,21 @@ task uvm_reg_field::write(output uvm_status_e       status,
 
    uvm_reg_item rw;
    rw = uvm_reg_item::type_id::create("field_write_item",,get_full_name());
-   rw.element      = this;
-   rw.element_kind = UVM_FIELD;
-   rw.kind         = UVM_WRITE;
-   rw.value[0]     = value;
-   rw.path         = path;
-   rw.map          = map;
-   rw.parent       = parent;
-   rw.prior        = prior;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_element_kind(UVM_FIELD);
+   rw.set_kind(UVM_WRITE);
+   rw.set_value(value, 0);
+   rw.set_door(path);
+   rw.set_map(map);
+   rw.set_parent_sequence(parent);
+   rw.set_priority(prior);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
    do_write(rw);
 
-   status = rw.status;
+   status = rw.get_status();
 
 endtask
 
@@ -1079,18 +1081,21 @@ task uvm_reg_field::do_write(uvm_reg_item rw);
    bit bad_side_effect;
 
    m_parent.XatomicX(1);
-   m_fname  = rw.fname;
-   m_lineno = rw.lineno;
+   m_fname  = rw.get_fname();
+   m_lineno = rw.get_line();
 
    if (!Xcheck_accessX(rw,map_info))
      return;
 
    m_write_in_progress = 1'b1;
 
-   if (rw.value[0] >> m_size) begin
+   if (rw.get_value(0) >> m_size) begin
+     uvm_reg_data_t tmp_value;
       `uvm_warning("RegModel", {"uvm_reg_field::write(): Value greater than field '",
                           get_full_name(),"'"})
-      rw.value[0] &= ((1<<m_size)-1);
+      tmp_value = rw.get_value(0);
+      tmp_value &= ((1<<m_size)-1);
+      rw.set_value(tmp_value, 0);
    end
 
    // Get values to write to the other fields in register
@@ -1098,12 +1103,12 @@ task uvm_reg_field::do_write(uvm_reg_item rw);
    foreach (fields[i]) begin
 
       if (fields[i] == this) begin
-         value_adjust |= rw.value[0] << m_lsb;
+         value_adjust |= rw.get_value(0) << m_lsb;
          continue;
       end
 
       // It depends on what kind of bits they are made of...
-      case (fields[i].get_access(rw.local_map))
+      case (fields[i].get_access(rw.get_local_map()))
         // These...
         "RO", "RC", "RS", "W1C", "W1S", "W1T", "W1SRC", "W1CRC":
           // Use all 0's
@@ -1125,16 +1130,16 @@ task uvm_reg_field::do_write(uvm_reg_item rw);
    end
 
 `ifdef UVM_REG_NO_INDIVIDUAL_FIELD_ACCESS
-   rw.element_kind = UVM_REG;
-   rw.element = m_parent;
-   rw.value[0] = value_adjust;
+   rw.set_element_kind(UVM_REG);
+   rw.set_element(m_parent);
+   rw.set_value(value_adjust, 0);
    m_parent.do_write(rw);   
 `else        
 
-   if (!is_indv_accessible(rw.path,rw.local_map)) begin
-      rw.element_kind = UVM_REG;
-      rw.element = m_parent;
-      rw.value[0] = value_adjust;
+   if (!is_indv_accessible(rw.get_door(),rw.get_local_map())) begin
+      rw.set_element_kind(UVM_REG);
+      rw.set_element(m_parent);
+      rw.set_value(value_adjust, 0);
       m_parent.do_write(rw);
 
       if (bad_side_effect) begin
@@ -1142,19 +1147,19 @@ task uvm_reg_field::do_write(uvm_reg_item rw);
       end
    end
    else begin
-
-     uvm_reg_map system_map = rw.local_map.get_root_map();
+     uvm_reg_map item_map = rw.get_local_map();
+     uvm_reg_map system_map = item_map.get_root_map();
      uvm_reg_field_cb_iter cbs = new(this);
 
      m_parent.Xset_busyX(1);
 
-     rw.status = UVM_IS_OK;
+     rw.set_status(UVM_IS_OK);
       
      pre_write(rw);
      for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
         cb.pre_write(rw);
 
-     if (rw.status != UVM_IS_OK) begin
+     if (rw.get_status() != UVM_IS_OK) begin
         m_write_in_progress = 1'b0;
         m_parent.Xset_busyX(0);
         m_parent.XatomicX(0);
@@ -1162,7 +1167,7 @@ task uvm_reg_field::do_write(uvm_reg_item rw);
         return;
      end
             
-     rw.local_map.do_write(rw);
+     item_map.do_write(rw);
 
      if (system_map.get_auto_predict())
         // ToDo: Call parent.XsampleX();
@@ -1198,22 +1203,22 @@ task uvm_reg_field::read(output uvm_status_e       status,
 
    uvm_reg_item rw;
    rw = uvm_reg_item::type_id::create("field_read_item",,get_full_name());
-   rw.element      = this;
-   rw.element_kind = UVM_FIELD;
-   rw.kind         = UVM_READ;
-   rw.value[0]     = 0;
-   rw.path         = path;
-   rw.map          = map;
-   rw.parent       = parent;
-   rw.prior        = prior;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_element_kind(UVM_FIELD);
+   rw.set_kind(UVM_READ);
+   rw.set_value(0,0);
+   rw.set_door(path);
+   rw.set_map(map);
+   rw.set_parent_sequence(parent);
+   rw.set_priority(prior);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
    do_read(rw);
 
-   value = rw.value[0];
-   status = rw.status;
+   value = rw.get_value(0);
+   status = rw.get_status();
 
 endtask: read
 
@@ -1223,45 +1228,50 @@ endtask: read
 task uvm_reg_field::do_read(uvm_reg_item rw);
 
    uvm_reg_map_info map_info;
+   uvm_reg_map rw_local_map;
    bit bad_side_effect;
-
+   
    m_parent.XatomicX(1);
-   m_fname  = rw.fname;
-   m_lineno = rw.lineno;
+   m_fname  = rw.get_fname();
+   m_lineno = rw.get_line();
    m_read_in_progress = 1'b1;
   
    if (!Xcheck_accessX(rw,map_info))
      return;
-
+   
+   rw_local_map = rw.get_local_map();
+   
 `ifdef UVM_REG_NO_INDIVIDUAL_FIELD_ACCESS
-   rw.element_kind = UVM_REG;
-   rw.element = m_parent;
+   rw.set_element_kind(UVM_REG);
+   rw.set_element(m_parent);
    m_parent.do_read(rw);
-   rw.value[0] = (rw.value[0] >> m_lsb) & ((1<<m_size))-1;
+   rw.set_value(((rw.get_value(0) >> m_lsb) & ((1<<m_size))-1), 0);
    bad_side_effect = 1;
 `else
 
-   if (!is_indv_accessible(rw.path,rw.local_map)) begin
-      rw.element_kind = UVM_REG;
-      rw.element = m_parent;
+   if (!is_indv_accessible(rw.get_door(),rw_local_map)) begin
+      uvm_reg_data_t value;
+      rw.set_element_kind(UVM_REG);
+      rw.set_element(m_parent);
       bad_side_effect = 1;
       m_parent.do_read(rw);
-      rw.value[0] = (rw.value[0] >> m_lsb) & ((1<<m_size))-1;
+      value = rw.get_value(0);
+      rw.set_value(((value >> m_lsb) & ((1<<m_size))-1),0);
    end
    else begin
 
-     uvm_reg_map system_map = rw.local_map.get_root_map();
+     uvm_reg_map system_map = rw_local_map.get_root_map();
      uvm_reg_field_cb_iter cbs = new(this);
 
      m_parent.Xset_busyX(1);
 
-     rw.status = UVM_IS_OK;
+     rw.set_status(UVM_IS_OK);
       
      pre_read(rw);
      for (uvm_reg_cbs cb = cbs.first(); cb != null; cb = cbs.next())
         cb.pre_read(rw);
 
-     if (rw.status != UVM_IS_OK) begin
+     if (rw.get_status() != UVM_IS_OK) begin
         m_read_in_progress = 1'b0;
         m_parent.Xset_busyX(0);
         m_parent.XatomicX(0);
@@ -1269,7 +1279,7 @@ task uvm_reg_field::do_read(uvm_reg_item rw);
         return;
      end
             
-     rw.local_map.do_read(rw);
+     rw_local_map.do_read(rw);
 
 
      if (system_map.get_auto_predict())

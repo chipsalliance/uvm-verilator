@@ -6,6 +6,7 @@
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
 // Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2019 Cisco Systems, Inc.
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -25,7 +26,9 @@
 //
 
 
-
+// Class: uvm_reg_block
+// This is an implementation of uvm_reg_block as described in 1800.2-2017 with
+// the addition of API described below.
 
 // @uvm-ieee 1800.2-2017 auto 18.1.1
 class uvm_reg_block extends uvm_object;
@@ -84,7 +87,8 @@ class uvm_reg_block extends uvm_object;
    // the extension of the block abstraction class.
    // Multiple functional coverage models may be specified by adding their
    // symbolic names, as defined by the <uvm_coverage_model_e> type.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.2.1
    extern function new(string name="", int has_coverage=UVM_NO_COVERAGE);
 
 
@@ -100,7 +104,8 @@ class uvm_reg_block extends uvm_object;
    // Otherwise, the block does not correspond to a hierarchical RTL
    // structure (e.g. it is physically flattened) and does not contribute
    // to the hierarchical HDL path of any contained registers or memories.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.2.2
    extern function void configure(uvm_reg_block parent=null,
                                   string hdl_path="");
 
@@ -125,7 +130,8 @@ class uvm_reg_block extends uvm_object;
    //             apart (TRUE) or ~n_bytes~ apart (FALSE). Default is TRUE. 
    //
    //| APB = create_map("APB", 0, 1, UVM_LITTLE_ENDIAN, 1);
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.2.3
    extern virtual function uvm_reg_map create_map(string name,
                                                   uvm_reg_addr_t base_addr,
                                                   int unsigned n_bytes,
@@ -155,7 +161,8 @@ class uvm_reg_block extends uvm_object;
    //
    // Set the specified address map as the <default_map> for this
    // block. The address map must be a map of this address block.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.2.4
    extern function void set_default_map (uvm_reg_map map);
 
 
@@ -172,6 +179,12 @@ class uvm_reg_block extends uvm_object;
    //
    uvm_reg_map default_map;
 
+   // Function: get_default_map 
+   // This returns the default address map for this block. 
+   // If create_map has never been called, this returns null. 
+   // If set_default_map has been called, this returns the value set in the most recent call. 
+   // Otherwise, this returns the map created in the first call to create_map
+   // @uvm-contrib This API is being considered for potential contribution to 1800.2
    extern function uvm_reg_map get_default_map ();
 
    extern virtual function void set_parent(uvm_reg_block parent);
@@ -195,9 +208,13 @@ class uvm_reg_block extends uvm_object;
    // Once locked, no further structural changes,
    // such as adding registers or memories,
    // can be made.
+
+   // @uvm-ieee 1800.2-2017 auto 18.1.2.5
    extern virtual function void lock_model();
 
 	// brings back the register mode to a state before lock_model() so that a subsequent lock_model() can be issued
+
+   // @uvm-ieee 1800.2-2017 auto 18.1.2.6
    virtual function void unlock_model();
 	   bit s[uvm_reg_block]=m_roots;
 	   m_roots.delete();
@@ -212,6 +229,7 @@ class uvm_reg_block extends uvm_object;
    		locked=0;
    endfunction
    
+   // @uvm-ieee 1800.2-2017 auto 18.1.2.8
    virtual task wait_for_lock();
 	   @m_uvm_lock_model_complete;
    endtask
@@ -220,7 +238,8 @@ class uvm_reg_block extends uvm_object;
    // Function -- NODOCS -- is_locked
    //
    // Return TRUE if the model is locked.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.2.9
    extern function bit is_locked();
 
 
@@ -252,7 +271,8 @@ class uvm_reg_block extends uvm_object;
    // Get the parent block
    //
    // If this a top-level block, returns ~null~. 
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.1
    extern virtual function uvm_reg_block get_parent();
 
 
@@ -261,7 +281,8 @@ class uvm_reg_block extends uvm_object;
    // Get the all root blocks
    //
    // Returns an array of all root blocks in the simulation.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.2
    extern static  function void get_root_blocks(ref uvm_reg_block blks[$]);
       
 
@@ -273,7 +294,8 @@ class uvm_reg_block extends uvm_object;
    // relative to that block, otherwise they are absolute.
    //
    // Returns the number of blocks found.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.3
    extern static function int find_blocks(input string        name,
                                           ref   uvm_reg_block blks[$],
                                           input uvm_reg_block root = null,
@@ -289,7 +311,8 @@ class uvm_reg_block extends uvm_object;
    //
    // Returns the first block found or ~null~ otherwise.
    // A warning is issued if more than one block is found.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.4
    extern static function uvm_reg_block find_block(input string        name,
                                                    input uvm_reg_block root = null,
                                                    input uvm_object    accessor = null);
@@ -301,7 +324,8 @@ class uvm_reg_block extends uvm_object;
    //
    // Get the blocks instantiated in this blocks.
    // If ~hier~ is TRUE, recursively includes any sub-blocks.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.5
    extern virtual function void get_blocks (ref uvm_reg_block  blks[$],
                                             input uvm_hier_e hier=UVM_HIER);
 
@@ -311,7 +335,8 @@ class uvm_reg_block extends uvm_object;
    // Get the address maps
    //
    // Get the address maps instantiated in this block.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.6
    extern virtual function void get_maps (ref uvm_reg_map maps[$]);
 
 
@@ -326,7 +351,8 @@ class uvm_reg_block extends uvm_object;
    // Note that registers may be located in different and/or multiple
    // address maps. To get the registers in a specific address map,
    // use the <uvm_reg_map::get_registers()> method.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.7
    extern virtual function void get_registers (ref uvm_reg regs[$],
                                                input uvm_hier_e hier=UVM_HIER);
 
@@ -338,7 +364,8 @@ class uvm_reg_block extends uvm_object;
    // Get the fields in the registers instantiated in this block.
    // If ~hier~ is TRUE, recursively includes the fields of the registers
    // in the sub-blocks.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.8
    extern virtual function void get_fields (ref uvm_reg_field  fields[$],
                                             input uvm_hier_e hier=UVM_HIER);
 
@@ -354,7 +381,8 @@ class uvm_reg_block extends uvm_object;
    // Note that memories may be located in different and/or multiple
    // address maps. To get the memories in a specific address map,
    // use the <uvm_reg_map::get_memories()> method.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.9
    extern virtual function void get_memories (ref uvm_mem mems[$],
                                               input uvm_hier_e hier=UVM_HIER);
 
@@ -366,7 +394,8 @@ class uvm_reg_block extends uvm_object;
    // Get the virtual registers instantiated in this block.
    // If ~hier~ is TRUE, recursively includes the virtual registers
    // in the sub-blocks.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.10
    extern virtual function void get_virtual_registers(ref uvm_vreg regs[$],
                                                 input uvm_hier_e hier=UVM_HIER);
 
@@ -379,7 +408,8 @@ class uvm_reg_block extends uvm_object;
    // in this block.
    // If ~hier~ is TRUE, recursively includes the virtual fields
    // in the virtual registers in the sub-blocks.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.11
    extern virtual function void get_virtual_fields (ref uvm_vreg_field fields[$],
                                                  input uvm_hier_e hier=UVM_HIER);
 
@@ -395,7 +425,8 @@ class uvm_reg_block extends uvm_object;
    // is returned.
    //
    // If no blocks are found, returns ~null~.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.12
    extern virtual function uvm_reg_block get_block_by_name (string name);  
 
 
@@ -410,7 +441,8 @@ class uvm_reg_block extends uvm_object;
    // is returned.
    //
    // If no address maps are found, returns ~null~.
-   //
+
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.13
    extern virtual function uvm_reg_map get_map_by_name (string name);
 
 
@@ -425,7 +457,8 @@ class uvm_reg_block extends uvm_object;
    // is returned.
    //
    // If no registers are found, returns ~null~.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.14
    extern virtual function uvm_reg get_reg_by_name (string name);
 
 
@@ -440,7 +473,8 @@ class uvm_reg_block extends uvm_object;
    // is returned.
    //
    // If no fields are found, returns ~null~.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.15
    extern virtual function uvm_reg_field get_field_by_name (string name);
 
 
@@ -455,7 +489,8 @@ class uvm_reg_block extends uvm_object;
    // is returned.
    //
    // If no memories are found, returns ~null~.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.16
    extern virtual function uvm_mem get_mem_by_name (string name);
 
 
@@ -471,7 +506,8 @@ class uvm_reg_block extends uvm_object;
    // and the first one to be found is returned.
    //
    // If no virtual registers are found, returns ~null~.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.17
    extern virtual function uvm_vreg get_vreg_by_name (string name);
 
 
@@ -487,7 +523,8 @@ class uvm_reg_block extends uvm_object;
    // and the first one to be found is returned.
    //
    // If no virtual fields are found, returns ~null~.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.3.18
    extern virtual function uvm_vreg_field get_vfield_by_name (string name);
 
 
@@ -508,7 +545,8 @@ class uvm_reg_block extends uvm_object;
    // coverage model as defined in <uvm_coverage_model_e>.
    // Returns the sum of all coverage models to be built in the
    // block model.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.4.1
    extern protected function uvm_reg_cvr_t build_coverage(uvm_reg_cvr_t models);
 
 
@@ -523,7 +561,8 @@ class uvm_reg_block extends uvm_object;
    //
    // This method shall be called only in the constructor of
    // subsequently derived classes.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.4.2
    extern virtual protected function void add_coverage(uvm_reg_cvr_t models);
 
 
@@ -535,7 +574,8 @@ class uvm_reg_block extends uvm_object;
    // for all of the models specified.
    // Models are specified by adding the symbolic value of individual
    // coverage model as defined in <uvm_coverage_model_e>.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.4.3
    extern virtual function bit has_coverage(uvm_reg_cvr_t models);
 
 
@@ -559,7 +599,8 @@ class uvm_reg_block extends uvm_object;
    // then enabled during construction.
    // See the <uvm_reg_block::has_coverage()> method to identify
    // the available functional coverage models.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.4.5
    extern virtual function uvm_reg_cvr_t set_coverage(uvm_reg_cvr_t is_on);
 
 
@@ -573,7 +614,8 @@ class uvm_reg_block extends uvm_object;
    // functional coverage model identifiers.
    //
    // See <uvm_reg_block::set_coverage()> for more details. 
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.4.4
    extern virtual function bit get_coverage(uvm_reg_cvr_t is_on = UVM_CVR_ALL);
 
 
@@ -590,7 +632,8 @@ class uvm_reg_block extends uvm_object;
    // Empty by default, this method may be extended by the
    // abstraction class generator to perform the required sampling
    // in any provided functional coverage model.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.4.6
    protected virtual function void  sample(uvm_reg_addr_t offset,
                                            bit            is_read,
                                            uvm_reg_map    map);
@@ -614,7 +657,8 @@ class uvm_reg_block extends uvm_object;
    // abstraction class generator to perform the required sampling
    // in any provided field-value functional coverage model.
    // If this method is extended, it MUST call super.sample_values().
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.4.7
    extern virtual function void sample_values();
 
    /*local*/ extern function void XsampleX(uvm_reg_addr_t addr,
@@ -628,10 +672,12 @@ class uvm_reg_block extends uvm_object;
 
    // Function -- NODOCS -- get_default_door
 
+   // @uvm-ieee 1800.2-2017 auto 18.1.5.1
    extern virtual function uvm_door_e get_default_door();
 
    // Function -- NODOCS -- set_default_door
 
+   // @uvm-ieee 1800.2-2017 auto 18.1.5.2
    extern virtual function void set_default_door(uvm_door_e door);
 
 `ifdef UVM_ENABLE_DEPRECATED_API
@@ -653,7 +699,8 @@ class uvm_reg_block extends uvm_object;
    // See <uvm_reg_field::reset()> for more details.
    // Does not actually set the value of the registers in the design,
    // only the values mirrored in their corresponding mirror.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.5.3
    extern virtual function void reset(string kind = "HARD");
 
 
@@ -672,7 +719,8 @@ class uvm_reg_block extends uvm_object;
    // values.
    // The mirror values, or actual content of registers, are not modified.
    // For additional information, see <uvm_reg_block::update()> method.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.5.4
    extern virtual function bit needs_update();
 
 
@@ -685,7 +733,8 @@ class uvm_reg_block extends uvm_object;
    // The update can be performed using the physical
    // interfaces (front-door access) or back-door accesses.
    // This method performs the reverse operation of <uvm_reg_block::mirror()>. 
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.5.5
    extern virtual task update(output uvm_status_e       status,
                               input  uvm_door_e         path = UVM_DEFAULT_DOOR,
                               input  uvm_sequence_base  parent = null,
@@ -707,7 +756,8 @@ class uvm_reg_block extends uvm_object;
    // an error message is issued if the current mirrored value
    // does not match the actual value in the design.
    // This method performs the reverse operation of <uvm_reg_block::update()>.
-   // 
+    
+   // @uvm-ieee 1800.2-2017 auto 18.1.5.6
    extern virtual task mirror(output uvm_status_e       status,
                               input  uvm_check_e        check = UVM_NO_CHECK,
                               input  uvm_door_e         path  = UVM_DEFAULT_DOOR,
@@ -723,7 +773,8 @@ class uvm_reg_block extends uvm_object;
    // Write the named register
    //
    // Equivalent to <get_reg_by_name()> followed by <uvm_reg::write()>
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto D.3.1
    extern virtual task write_reg_by_name(
                               output uvm_status_e        status,
                               input  string              name,
@@ -742,7 +793,8 @@ class uvm_reg_block extends uvm_object;
    // Read the named register
    //
    // Equivalent to <get_reg_by_name()> followed by <uvm_reg::read()>
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto D.3.2
    extern virtual task read_reg_by_name(
                               output uvm_status_e       status,
                               input  string             name,
@@ -761,7 +813,8 @@ class uvm_reg_block extends uvm_object;
    // Write the named memory
    //
    // Equivalent to <get_mem_by_name()> followed by <uvm_mem::write()>
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto D.3.3
    extern virtual task write_mem_by_name(
                               output uvm_status_e       status,
                               input  string             name,
@@ -781,7 +834,8 @@ class uvm_reg_block extends uvm_object;
    // Read the named memory
    //
    // Equivalent to <get_mem_by_name()> followed by <uvm_mem::read()>
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto D.3.4
    extern virtual task read_mem_by_name(
                               output uvm_status_e       status,
                               input  string             name,
@@ -815,7 +869,8 @@ class uvm_reg_block extends uvm_object;
    //
    // If ~inherited~ is TRUE, returns the backdoor of the parent block
    // if none have been specified for this block.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.6.1
    extern function uvm_reg_backdoor get_backdoor(bit inherited = 1);
 
 
@@ -826,7 +881,8 @@ class uvm_reg_block extends uvm_object;
    // Defines the backdoor mechanism for all registers instantiated
    // in this block and sub-blocks, unless overridden by a definition
    // in a lower-level block or register.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.6.2
    extern function void set_backdoor (uvm_reg_backdoor bkdr,
                                       string fname = "",
                                       int lineno = 0);
@@ -838,7 +894,8 @@ class uvm_reg_block extends uvm_object;
    //
    // Remove any previously specified HDL path to the block instance
    // for the specified design abstraction.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.6.3
    extern function void clear_hdl_path (string kind = "RTL");
 
 
@@ -850,7 +907,8 @@ class uvm_reg_block extends uvm_object;
    // design abstraction. This method may be called more than once for the
    // same design abstraction if the block is physically duplicated
    // in the design abstraction
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.6.4
    extern function void add_hdl_path (string path, string kind = "RTL");
 
 
@@ -862,7 +920,8 @@ class uvm_reg_block extends uvm_object;
    // specified design abstraction. If no design abstraction is specified,
    // uses the default design abstraction specified for this block or
    // the nearest block ancestor with a specified default design abstraction.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.6.5
    extern function bit has_hdl_path (string kind = "");
 
 
@@ -877,7 +936,8 @@ class uvm_reg_block extends uvm_object;
    //
    // If no design abstraction is specified, the default design abstraction
    // for this block is used.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.6.6
    extern function void get_hdl_path (ref string paths[$], input string kind = "");
 
 
@@ -894,7 +954,8 @@ class uvm_reg_block extends uvm_object;
    //
    // If no design abstraction is specified, the default design abstraction
    // for each ancestor block is used to get each incremental path.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.6.7
    extern function void get_full_hdl_path (ref string paths[$],
                                            input string kind = "",
                                            string separator = ".");
@@ -905,7 +966,8 @@ class uvm_reg_block extends uvm_object;
    // Set the default design abstraction
    //
    // Set the default design abstraction for this block instance.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.6.9
    extern function void   set_default_hdl_path (string kind);
 
 
@@ -918,7 +980,8 @@ class uvm_reg_block extends uvm_object;
    // block instance, returns the default design abstraction for the
    // nearest block ancestor.
    // Returns "" if no default design abstraction has been specified.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.6.8
    extern function string get_default_hdl_path ();
 
 
@@ -932,7 +995,8 @@ class uvm_reg_block extends uvm_object;
    // under this block. The HDL path of any ancestor block is ignored.
    // This method overrides any incremental path for the
    // same design abstraction specified using <add_hdl_path>.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.6.10
    extern function void set_hdl_path_root (string path, string kind = "RTL");
 
 
@@ -944,7 +1008,8 @@ class uvm_reg_block extends uvm_object;
    // for the specified design abstraction has been defined.
    // If no design abstraction is specified, the default design abstraction
    // for this block is used.
-   //
+   
+   // @uvm-ieee 1800.2-2017 auto 18.1.6.11
    extern function bit is_hdl_path_root (string kind = "");
 
 
@@ -960,6 +1025,7 @@ class uvm_reg_block extends uvm_object;
    extern local function void Xinit_address_mapsX();
 
 
+   // @uvm-ieee 1800.2-2017 auto 18.1.2.7
    virtual function void set_lock(bit v);
 	   locked=v;
 	   foreach(blks[idx])
@@ -967,6 +1033,8 @@ class uvm_reg_block extends uvm_object;
    endfunction
    
    // remove all knowledge of map m and all regs|mems|vregs contained in m from the block
+
+   // @uvm-ieee 1800.2-2017 auto 18.1.2.10
    virtual function void unregister(uvm_reg_map m);
 	   foreach(regs[idx]) begin
 			if(idx.is_in_map(m))

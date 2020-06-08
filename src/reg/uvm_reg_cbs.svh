@@ -1,6 +1,6 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010-2020 Mentor Graphics Corporation
 // Copyright 2004-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
@@ -215,15 +215,19 @@ class uvm_reg_read_only_cbs extends uvm_reg_cbs;
 
    // @uvm-ieee 1800.2-2017 auto 18.11.4.2.1
    virtual task pre_write(uvm_reg_item rw);
-      string name = rw.element.get_full_name();
+      string name;
+      uvm_object obj;
       
-      if (rw.status != UVM_IS_OK)
+      obj = rw.get_element();
+      name = obj.get_full_name();
+      
+      if (rw.get_status() != UVM_IS_OK)
          return;
 
-      if (rw.element_kind == UVM_FIELD) begin
+      if (rw.get_element_kind() == UVM_FIELD) begin
          uvm_reg_field fld;
          uvm_reg rg;
-         $cast(fld, rw.element);
+         $cast(fld, rw.get_element());
          rg = fld.get_parent();
          name = rg.get_full_name();
       end
@@ -231,7 +235,7 @@ class uvm_reg_read_only_cbs extends uvm_reg_cbs;
       `uvm_error("UVM/REG/READONLY",
                  {name, " is read-only. Cannot call write() method."})
 
-      rw.status = UVM_NOT_OK;
+      rw.set_status(UVM_NOT_OK);
    endtask
 
    local static uvm_reg_read_only_cbs m_me;
@@ -299,15 +303,19 @@ class uvm_reg_write_only_cbs extends uvm_reg_cbs;
 
    // @uvm-ieee 1800.2-2017 auto 18.11.5.2.1
    virtual task pre_read(uvm_reg_item rw);
-      string name = rw.element.get_full_name();
+      string name;
+      uvm_object obj;
       
-      if (rw.status != UVM_IS_OK)
+      obj = rw.get_element();
+      name = obj.get_full_name();
+      
+      if (rw.get_status() != UVM_IS_OK)
          return;
 
-      if (rw.element_kind == UVM_FIELD) begin
+      if (rw.get_element_kind() == UVM_FIELD) begin
          uvm_reg_field fld;
          uvm_reg rg;
-         $cast(fld, rw.element);
+         $cast(fld, rw.get_element());
          rg = fld.get_parent();
          name = rg.get_full_name();
       end
@@ -315,7 +323,7 @@ class uvm_reg_write_only_cbs extends uvm_reg_cbs;
       `uvm_error("UVM/REG/WRTEONLY",
                  {name, " is write-only. Cannot call read() method."})
 
-      rw.status = UVM_NOT_OK;
+      rw.set_status(UVM_NOT_OK);
    endtask
 
    local static uvm_reg_write_only_cbs m_me;

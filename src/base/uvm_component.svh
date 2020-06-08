@@ -6,9 +6,10 @@
 // Copyright 2018 Intel Corporation
 // Copyright 2010-2014 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2020 Marvell International Ltd.
 // Copyright 2011-2018 AMD
-// Copyright 2012-2018 Cisco Systems, Inc.
 // Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2012-2018 Cisco Systems, Inc.
 // Copyright 2012 Accellera Systems Initiative
 // Copyright 2017-2018 Verific
 //   All Rights Reserved Worldwide
@@ -32,37 +33,12 @@ typedef class uvm_objection;
 typedef class uvm_sequence_base;
 typedef class uvm_sequence_item;
 
-//------------------------------------------------------------------------------
+//----------------------------------------------------------------------
+// Class: uvm_component
 //
-// CLASS -- NODOCS -- uvm_component
-//
-// The uvm_component class is the root base class for UVM components. In
-// addition to the features inherited from <uvm_object> and <uvm_report_object>,
-// uvm_component provides the following interfaces:
-//
-// Hierarchy - provides methods for searching and traversing the component
-//     hierarchy.
-//
-// Phasing - defines a phased test flow that all components follow, with a
-//     group of standard phase methods and an API for custom phases and
-//     multiple independent phasing domains to mirror DUT behavior e.g. power
-//
-// Reporting - provides a convenience interface to the <uvm_report_handler>. All
-//     messages, warnings, and errors are processed through this interface.
-//
-// Transaction recording - provides methods for recording the transactions
-//     produced or consumed by the component to a transaction database (vendor
-//     specific). 
-//
-// Factory - provides a convenience interface to the <uvm_factory>. The factory
-//     is used to create new components and other objects based on type-wide and
-//     instance-specific configuration.
-//
-// The uvm_component is automatically seeded during construction using UVM
-// seeding, if enabled. All other objects must be manually reseeded, if
-// appropriate. See <uvm_object::reseed> for more information.
-//
-//------------------------------------------------------------------------------
+// The library implements the following public API beyond what is 
+// documented in 1800.2.
+///------------------------------------------------------------------------------
 
 // @uvm-ieee 1800.2-2017 auto 13.1.1
 virtual class uvm_component extends uvm_report_object;
@@ -1283,31 +1259,21 @@ virtual class uvm_component extends uvm_report_object;
   extern virtual protected function void do_accept_tr (uvm_transaction tr);
 
 
-  // Function -- NODOCS -- begin_tr
+  // Function: begin_tr
+  // Implementation of uvm_component::begin_tr as described in IEEE 1800.2-2017.
   //
-  // This function marks the start of a transaction, ~tr~, by this component.
-  // Specifically, it performs the following actions:
-  //
-  // - Calls ~tr~'s <uvm_transaction::begin_tr> method, passing to it the
-  //   ~begin_time~ argument. The ~begin_time~ should be greater than or equal
-  //   to the accept time. By default, when ~begin_time~ = 0, the current
-  //   simulation time is used.
-  //
-  //   If recording is enabled (recording_detail != UVM_OFF), then a new
-  //   database-transaction is started on the component's transaction stream
-  //   given by the stream argument. No transaction properties are recorded at
-  //   this time.
-  //
-  // - Calls the component's <do_begin_tr> method to allow for any post-begin
-  //   action in derived classes.
-  //
-  // - Triggers the component's internal begin_tr event. Any processes waiting
-  //   on this event will resume in the next delta cycle. 
-  //
-  // A handle to the transaction is returned. The meaning of this handle, as
-  // well as the interpretation of the arguments ~stream_name~, ~label~, and
-  // ~desc~ are vendor specific.
-
+  //| function int begin_tr( uvm_transaction tr,
+  //|                        string stream_name="main",
+  //|                        string label="",
+  //|                        string desc="",
+  //|                        time begin_time=0,
+  //|                        int parent_handle=0 );
+  // 
+  // As an added feature, this implementation will attempt to get a non-0 
+  // parent_handle from the parent sequence of the transaction tr if the 
+  // parent_handle argument is 0 and the transaction can be cast to a 
+  // uvm_sequence_item.
+ 
    // @uvm-ieee 1800.2-2017 auto 13.1.6.3
    extern function int begin_tr (uvm_transaction tr,
                                      string stream_name="main",
@@ -1449,6 +1415,8 @@ virtual class uvm_component extends uvm_report_object;
   // component to disable the printing of specific children.
 
   bit print_enabled = 1;
+
+  extern virtual function void do_execute_op( uvm_field_op op );
 
   // Variable -- NODOCS -- tr_database
   //
@@ -2567,10 +2535,12 @@ function int uvm_component::m_begin_tr (uvm_transaction tr,
 
    db = get_tr_database();
    
-   if (parent_handle != 0)
+   if (parent_handle != 0) begin
      parent_recorder = uvm_recorder::get_recorder_from_handle(parent_handle);
+     if (parent_recorder == null) `uvm_error("ILLHNDL","begin_tr was passed a non-0 parent handle that corresponds to a null recorder")
+   end
    
-   if (parent_recorder == null) begin
+   else begin 
       uvm_sequence_item seq;
       if ($cast(seq,tr)) begin
          uvm_sequence_base parent_seq = seq.get_parent_sequence();
@@ -2581,7 +2551,11 @@ function int uvm_component::m_begin_tr (uvm_transaction tr,
    end
    
    if(parent_recorder != null) begin
+`ifdef UVM_1800_2_2020_EA
+      link_handle = tr.begin_tr(begin_time, parent_recorder.get_handle());
+`else
       link_handle = tr.begin_child_tr(begin_time, parent_recorder.get_handle());
+`endif
    end
    else begin
       link_handle = tr.begin_tr(begin_time);
@@ -2596,10 +2570,9 @@ function int uvm_component::m_begin_tr (uvm_transaction tr,
    else
      name = tr.get_type_name();
    
-   if (uvm_verbosity'(recording_detail) != UVM_NONE) begin
-      if (stream_name == "")
-        stream_name = "main";
+   if (stream_name == "") stream_name = "main";
 
+   if (uvm_verbosity'(recording_detail) != UVM_NONE) begin
       stream = get_tr_stream(stream_name, "TVM");
 
       if (stream != null ) begin
@@ -2627,9 +2600,9 @@ function int uvm_component::m_begin_tr (uvm_transaction tr,
       end
       
       handle = (recorder == null) ? 0 : recorder.get_handle();
-      do_begin_tr(tr, stream_name, handle); 
       
    end
+   do_begin_tr(tr, stream_name, handle); 
    
    e = event_pool.get("begin_tr");
    if (e!=null) 
@@ -2655,27 +2628,22 @@ function void uvm_component::end_tr (uvm_transaction tr,
    tr.end_tr(end_time,free_handle);
 
    if (uvm_verbosity'(recording_detail) != UVM_NONE) begin
+     if (m_tr_h.exists(tr)) begin
+       recorder = m_tr_h[tr];
+     end
+   end
 
-      if (m_tr_h.exists(tr)) begin
+   do_end_tr(tr, (recorder == null) ? 0: recorder.get_handle()); // callback
 
-         recorder = m_tr_h[tr];
+   if (recorder != null) begin
+     m_tr_h.delete(tr);
 
-         do_end_tr(tr, recorder.get_handle()); // callback
+     tr.record(recorder);
 
-         m_tr_h.delete(tr);
+     recorder.close(end_time);
 
-         tr.record(recorder);
-
-         recorder.close(end_time);
-
-         if (free_handle)
-           recorder.free();
-            
-      end
-      else begin
-         do_end_tr(tr, 0); // callback
-      end
-      
+     if (free_handle)
+       recorder.free();      
    end
 
    e = event_pool.get("end_tr");
@@ -2973,6 +2941,23 @@ function void uvm_component::do_print(uvm_printer printer);
 
 endfunction
 
+function void uvm_component::do_execute_op( uvm_field_op op );
+    if (op.get_op_type == UVM_PRINT) begin
+    // Handle children of the comp
+      uvm_component child_comp;
+      string name;
+      uvm_printer printer;
+      if (!$cast(printer,op.get_policy()))
+        `uvm_error("INVPRINTOP","do_execute_op() called with a field_op that has op_type UVM_PRINT but a policy that does not derive from uvm_printer")
+      else if (get_first_child(name))
+        do begin
+          child_comp = get_child(name);
+          if(child_comp.print_enabled)
+            printer.print_object(name,child_comp);
+        end while (get_next_child(name));
+    end
+    super.do_execute_op(op);  
+endfunction
 
 `ifdef UVM_ENABLE_DEPRECATED_API
 // set_int_local (override)

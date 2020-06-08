@@ -27,7 +27,7 @@
 `ifndef UVM_VERSION_SVH
 `define UVM_VERSION_SVH
 
-parameter string UVM_VERSION_STRING = "Accellera:1800.2-2017:UVM:1.0";
+parameter string UVM_VERSION_STRING = "Accellera:1800.2-2017:UVM:1.1";
 
 `ifdef UVM_ENABLE_DEPRECATED_API
    parameter string uvm_revision = UVM_VERSION_STRING;

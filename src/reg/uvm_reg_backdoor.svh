@@ -1,6 +1,6 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010-2020 Mentor Graphics Corporation
 // Copyright 2004-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
@@ -61,9 +61,12 @@ virtual class uvm_reg_backdoor extends uvm_object;
 
    // @uvm-ieee 1800.2-2017 auto 19.5.2.3
    protected task do_post_read(uvm_reg_item rw);
+      uvm_reg_data_t value_array[];
       uvm_callback_iter#(uvm_reg_backdoor, uvm_reg_cbs) iter = new(this);
-      for(uvm_reg_cbs cb = iter.last(); cb != null; cb=iter.prev())
-         cb.decode(rw.value);
+      for(uvm_reg_cbs cb = iter.last(); cb != null; cb=iter.prev()) begin
+         rw.get_value_array(value_array);
+         cb.decode(value_array);
+      end
       `uvm_do_obj_callbacks(uvm_reg_backdoor,uvm_reg_cbs,this,post_read(rw))
       post_read(rw);
    endtask
@@ -72,11 +75,14 @@ virtual class uvm_reg_backdoor extends uvm_object;
 
    // @uvm-ieee 1800.2-2017 auto 19.5.2.4
    protected task do_pre_write(uvm_reg_item rw);
+      uvm_reg_data_t rw_value[];
       uvm_callback_iter#(uvm_reg_backdoor, uvm_reg_cbs) iter = new(this);
       pre_write(rw);
       `uvm_do_obj_callbacks(uvm_reg_backdoor,uvm_reg_cbs,this,pre_write(rw))
-      for(uvm_reg_cbs cb = iter.first(); cb != null; cb = iter.next())
-         cb.encode(rw.value);
+      for(uvm_reg_cbs cb = iter.first(); cb != null; cb = iter.next()) begin
+         rw.get_value_array(rw_value);
+         cb.encode(rw_value);
+      end
    endtask
 
 
@@ -197,18 +203,19 @@ function void uvm_reg_backdoor::start_update_thread(uvm_object element);
             uvm_status_e status;
             uvm_reg_data_t  val;
             uvm_reg_item r_item = new("bd_r_item");
-            r_item.element = rg;
-            r_item.element_kind = UVM_REG;
+            r_item.set_element(rg);
+            r_item.set_element_kind(UVM_REG);
             this.read(r_item);
-            val = r_item.value[0];
-            if (r_item.status != UVM_IS_OK) begin
+            val = r_item.get_value(0);
+            if (r_item.get_status() != UVM_IS_OK) begin
                `uvm_error("RegModel", $sformatf("Backdoor read of register '%s' failed.",
                           rg.get_name()))
             end
             foreach (fields[i]) begin
                if (this.is_auto_updated(fields[i])) begin
-                  r_item.value[0] = (val >> fields[i].get_lsb_pos()) &
-                                    ((1 << fields[i].get_n_bits())-1);
+                  uvm_reg_data_t tmp;
+                  tmp = (val >> fields[i].get_lsb_pos()) & ((1 << fields[i].get_n_bits())-1);
+                  r_item.set_value(tmp, 0);
                   fields[i].do_predict(r_item);
                 end
             end
@@ -262,5 +269,5 @@ endtask
 
 function void uvm_reg_backdoor::read_func(uvm_reg_item rw);
    `uvm_fatal("RegModel", "uvm_reg_backdoor::read_func() method has not been overloaded")
-   rw.status = UVM_NOT_OK;
+   rw.set_status(UVM_NOT_OK);
 endfunction

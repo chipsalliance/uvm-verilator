@@ -3,6 +3,7 @@
 // Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2010-2013 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2019 Marvell International Ltd.
 // Copyright 2010 AMD
 // Copyright 2014-2015 NVIDIA Corporation
 // Copyright 2017 Cisco Systems, Inc.
@@ -26,7 +27,11 @@
 `ifndef UVM_VERSION_DEFINES_SVH
 `define UVM_VERSION_DEFINES_SVH
 
-`define UVM_VERSION 2016
+`ifdef UVM_1800_2_2020_EA
+   `define UVM_VERSION 2020
+`else
+   `define UVM_VERSION 2016
+`endif
 
 
 // Title --NODOCS-- UVM Version Defines
@@ -42,5 +47,9 @@
 // 1.1 versions, including the various 1.1 fix revisions.  
 `define UVM_POST_VERSION_1_1
 `endif // UVM_ENABLE_DEPRECATED_API
+
+`ifdef UVM_1800_2_2020_EA
+   `define UVM_VERSION_POST_2017
+`endif
 
 `endif // UVM_VERSION_DEFINES_SVH

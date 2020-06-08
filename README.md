@@ -5,13 +5,13 @@
 This kit provides a Systemverilog library matching the requirements of [IEEE 1800.2-2017](https://ieeexplore.ieee.org/document/7932212/). 
 See details in the Library Release Description below.
 
-**Note:** The implementation provided deviates from the 1800.2-2017 standard, see [DEVIATIONS.md] for additional details.
+**Note:** The implementation provided deviates from the 1800.2-2017 standard, see [DEVIATIONS.md](./DEVIATIONS.md) for additional details.
 
 # Kit version
 
-1800.2-2017 1.0
+1800.2-2017 1.1
 
-This kit was generated based upon the following git commit state: 60b56b09e9e78bfec23575529e37fed8d0ccc757.
+This kit was generated based upon the following git commit state: bce9e257 9cbc1ee3da9d8ee083e4922e0fe31187d14a0bf8.
 
 # License
 
@@ -29,6 +29,24 @@ All Rights Reserved Worldwide
 If you have questions about this implementation and/or its application to verification environments, please visit the
 [Accellera UVM 2017 - Methodology and BCL Forum](http://forums.accellera.org/forum/43-uvm-2017-methodology-and-bcl-forum/) or 
 contact the Accellera UVM Working Group (uvm-wg@lists.accellera.org).
+
+# Bug Fixes
+
+The following bugs were fixed in 1.1.
+
+[Mantis 7078](https://accellera.mantishub.io/view.php?id=7078) Changes as a result of IEEE clarifying the behavior of print operations for implicit fields.
+
+[Mantis 6774](https://accellera.mantishub.io/view.php?id=6774) Removed an stray comment refering to a value that does not exist.
+
+[Mantis 4340](https://accellera.mantishub.io/view.php?id=4340) Added an explicit return statement for clarity.
+
+[Mantis 6931](https://accellera.mantishub.io/view.php?id=6931) Corrected uvm_component::begin_tr such that it always calls do_begin_tr, regardless of whether recording is enabled.
+
+[Mantis 7169](https://accellera.mantishub.io/view.php?id=7169) Corrected uvm_component::end_tr such that it always calls do_end_tr, regardless of whether recording is enabled.
+
+[Mantis 6976](https://accellera.mantishub.io/view.php?id=6976) Adding accessors for uvm_reg_item field variables.
+
+[Mantis 6956](https://accellera.mantishub.io/view.php?id=6956) Corrected a bit-shifting error in uvm_reg_map for fields not aligned to the LSB.
 
 # Installing the kit
 

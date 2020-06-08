@@ -1,6 +1,6 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2010-2020 Mentor Graphics Corporation
 // Copyright 2010-2012 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
@@ -103,7 +103,7 @@ class uvm_reg_indirect_data extends uvm_reg;
                                      uvm_reg_byte_en_t be = -1);
       if (m_idx.get() >= m_tbl.size()) begin
          `uvm_error(get_full_name(), $sformatf("Address register %s has a value (%0d) greater than the maximum indirect register array size (%0d)", m_idx.get_full_name(), m_idx.get(), m_tbl.size()))
-         rw.status = UVM_NOT_OK;
+         rw.set_status(UVM_NOT_OK);
          return;
       end
 
@@ -175,21 +175,21 @@ class uvm_reg_indirect_data extends uvm_reg;
          XatomicX(1);
 
          rw = uvm_reg_item::type_id::create("write_item",,get_full_name());
-         rw.element      = this;
-         rw.element_kind = UVM_REG;
-         rw.kind         = UVM_WRITE;
-         rw.value[0]     = value;
-         rw.path         = path;
-         rw.map          = map;
-         rw.parent       = parent;
-         rw.prior        = prior;
-         rw.extension    = extension;
-         rw.fname        = fname;
-         rw.lineno       = lineno;
+         rw.set_element(this);
+         rw.set_element_kind(UVM_REG);
+         rw.set_kind(UVM_WRITE);
+         rw.set_value(value,0);
+         rw.set_door(path);
+         rw.set_map(map);
+         rw.set_parent_sequence(parent);
+         rw.set_priority(prior);
+         rw.set_extension(extension);
+         rw.set_fname(fname);
+         rw.set_line(lineno);
          
          do_write(rw);
 
-         status = rw.status;
+         status = rw.get_status();
 
          XatomicX(0);
       end
@@ -300,17 +300,17 @@ class uvm_reg_indirect_ftdr_seq extends uvm_reg_frontdoor;
       $cast(rw,rw_info.clone());
       rw.element = m_data_reg;
 
-      if (rw_info.kind == UVM_WRITE)
+      if (rw_info.get_kind() == UVM_WRITE)
         m_data_reg.do_write(rw);
       else begin
         m_data_reg.do_read(rw);
-        rw_info.value[0] = rw.value[0];
+        rw_info.set_value(rw.get_value(0), 0);
       end
 
       m_addr_reg.XatomicX(0);
       m_data_reg.XatomicX(0);
       
-      rw_info.status = rw.status;
+      rw_info.set_status(rw.get_status());
    endtask
 
 endclass

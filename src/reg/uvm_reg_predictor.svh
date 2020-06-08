@@ -1,5 +1,6 @@
 //
 // -------------------------------------------------------------
+// Copyright 2020 Mentor Graphics Corporation
 // Copyright 2014 Semifore
 // Copyright 2004-2011 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
@@ -178,11 +179,11 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
        if (!m_pending.exists(rg)) begin
          uvm_reg_item item = new;
          predict_info =new;
-         item.element_kind = UVM_REG;
-         item.element      = rg;
-         item.path         = UVM_PREDICT;
-         item.map          = map;
-         item.kind         = rw.kind;
+         item.set_element_kind(UVM_REG);
+         item.set_element(rg);
+         item.set_door(UVM_PREDICT);
+         item.set_map(map);
+         item.set_kind(rw.kind);
          predict_info.reg_item = item;
          m_pending[rg] = predict_info;
        end
@@ -201,42 +202,45 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
        ir=($cast(ireg, rg))?ireg.get_indirect_reg():rg;
 
        foreach (map_info.addr[i]) begin
+         uvm_reg_data_t reg_item_value;
          if (rw.addr == map_info.addr[i]) begin
             found = 1;
-           reg_item.value[0] |= rw.data << (i * map.get_n_bytes()*8);
+           reg_item_value = reg_item.get_value(0);
+           reg_item_value |= rw.data << (i * map.get_n_bytes()*8);
+           reg_item.set_value(reg_item_value, 0);
            predict_info.addr[rw.addr] = 1;
            if (predict_info.addr.num() == map_info.addr.size()) begin
               // We've captured the entire abstract register transaction.
               uvm_predict_e predict_kind = 
-                  (reg_item.kind == UVM_WRITE) ? UVM_PREDICT_WRITE : UVM_PREDICT_READ;
+                  (reg_item.get_kind() == UVM_WRITE) ? UVM_PREDICT_WRITE : UVM_PREDICT_READ;
 
-              if (reg_item.kind == UVM_READ &&
+              if (reg_item.get_kind() == UVM_READ &&
                   local_map.get_check_on_read() &&
-                  reg_item.status != UVM_NOT_OK) begin
-                 void'(rg.do_check(ir.get_mirrored_value(), reg_item.value[0], local_map));
+                  reg_item.get_status() != UVM_NOT_OK) begin
+                 void'(rg.do_check(ir.get_mirrored_value(), reg_item.get_value(0), local_map));
               end
               
               pre_predict(reg_item);
 
-              ir.XsampleX(reg_item.value[0], rw.byte_en,
-                          reg_item.kind == UVM_READ, local_map);
+              ir.XsampleX(reg_item.get_value(0), rw.byte_en,
+                          (reg_item.get_kind() == UVM_READ), local_map);
               begin
                  uvm_reg_block blk = rg.get_parent();
                  blk.XsampleX(map_info.offset,
-                              reg_item.kind == UVM_READ,
+                              (reg_item.get_kind() == UVM_READ),
                               local_map);
               end
 
               rg.do_predict(reg_item, predict_kind, rw.byte_en);
-              if(reg_item.kind == UVM_WRITE)
+              if(reg_item.get_kind() == UVM_WRITE)
                 `uvm_info("REG_PREDICT", {"Observed WRITE transaction to register ",
                          ir.get_full_name(), ": value='h",
-                         $sformatf("%0h",reg_item.value[0]), " : updated value = 'h", 
+                         $sformatf("%0h",reg_item.get_value(0)), " : updated value = 'h", 
                          $sformatf("%0h",ir.get())},UVM_HIGH)
               else
                 `uvm_info("REG_PREDICT", {"Observed READ transaction to register ",
                          ir.get_full_name(), ": value='h",
-                         $sformatf("%0h",reg_item.value[0])},UVM_HIGH)
+                         $sformatf("%0h",reg_item.get_value(0))},UVM_HIGH)
               reg_ap.write(reg_item);
               m_pending.delete(rg);
            end

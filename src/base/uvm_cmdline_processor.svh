@@ -1,8 +1,8 @@
 //
 //------------------------------------------------------------------------------
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2010-2018 AMD
 // Copyright 2010-2018 Mentor Graphics Corporation
+// Copyright 2010-2018 AMD
 // Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2015 Analog Devices, Inc.

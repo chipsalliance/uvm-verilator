@@ -1,6 +1,6 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2012 Mentor Graphics Corporation
+// Copyright 2010-2020 Mentor Graphics Corporation
 // Copyright 2011-2014 Semifore
 // Copyright 2018 Intel Corporation
 // Copyright 2004-2018 Synopsys, Inc.
@@ -1367,13 +1367,13 @@ function bit uvm_reg::predict (uvm_reg_data_t    value,
                                string            fname = "",
                                int               lineno = 0);
   uvm_reg_item rw = new;
-  rw.value[0] = value;
-  rw.path = path;
-  rw.map = map;
-  rw.fname = fname;
-  rw.lineno = lineno;
+  rw.set_value(value,0);
+  rw.set_door(path);
+  rw.set_map(map);
+  rw.set_fname(fname);
+  rw.set_line(lineno);
   do_predict(rw, kind, be);
-  predict = (rw.status == UVM_NOT_OK) ? 0 : 1;
+  predict = (rw.get_status() == UVM_NOT_OK) ? 0 : 1;
 endfunction: predict
 
 
@@ -1383,27 +1383,26 @@ function void uvm_reg::do_predict(uvm_reg_item      rw,
                                   uvm_predict_e     kind = UVM_PREDICT_DIRECT,
                                   uvm_reg_byte_en_t be = -1);
 
-   uvm_reg_data_t reg_value = rw.value[0];
-   m_fname = rw.fname;
-   m_lineno = rw.lineno;
+   uvm_reg_data_t reg_value = rw.get_value(0);
+   m_fname = rw.get_fname();
+   m_lineno = rw.get_line();
    
-if (rw.status ==UVM_IS_OK )
-   rw.status = UVM_IS_OK;
+if (rw.get_status() == UVM_IS_OK )
 
    if (m_is_busy && kind == UVM_PREDICT_DIRECT) begin
       `uvm_warning("RegModel", {"Trying to predict value of register '",
                   get_full_name(),"' while it is being accessed"})
-      rw.status = UVM_NOT_OK;
+      rw.set_status(UVM_NOT_OK);
       return;
    end
    
    foreach (m_fields[i]) begin
-      rw.value[0] = (reg_value >> m_fields[i].get_lsb_pos()) &
-                                 ((1 << m_fields[i].get_n_bits())-1);
+      rw.set_value((reg_value >> m_fields[i].get_lsb_pos()) &
+                                 ((1 << m_fields[i].get_n_bits())-1));
       m_fields[i].do_predict(rw, kind, be>>(m_fields[i].get_lsb_pos()/8));
    end
 
-   rw.value[0] = reg_value;
+   rw.set_value(reg_value, 0);
 
 endfunction: do_predict
 
@@ -1553,21 +1552,21 @@ task uvm_reg::write(output uvm_status_e      status,
    set(value);
 
    rw = uvm_reg_item::type_id::create("write_item",,get_full_name());
-   rw.element      = this;
-   rw.element_kind = UVM_REG;
-   rw.kind         = UVM_WRITE;
-   rw.value[0]     = value;
-   rw.path         = path;
-   rw.map          = map;
-   rw.parent       = parent;
-   rw.prior        = prior;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_element_kind(UVM_REG);
+   rw.set_kind(UVM_WRITE);
+   rw.set_value(value, 0);
+   rw.set_door(path);
+   rw.set_map(map);
+   rw.set_parent_sequence(parent);
+   rw.set_priority(prior);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
    do_write(rw);
 
-   status = rw.status;
+   status = rw.get_status();
 
    XatomicX(0);
 
@@ -1581,9 +1580,10 @@ task uvm_reg::do_write (uvm_reg_item rw);
    uvm_reg_cb_iter  cbs = new(this);
    uvm_reg_map_info map_info;
    uvm_reg_data_t   value; 
+   uvm_reg_map      tmp_local_map;
 
-   m_fname  = rw.fname;
-   m_lineno = rw.lineno;
+   m_fname  = rw.get_fname();
+   m_lineno = rw.get_line();
 
    if (!Xcheck_accessX(rw,map_info))
      return;
@@ -1591,11 +1591,12 @@ task uvm_reg::do_write (uvm_reg_item rw);
    XatomicX(1);
 
    m_write_in_progress = 1'b1;
+ 
+   value = rw.get_value(0);
+   value &= ((1 << m_n_bits)-1);
+   rw.set_value(value, 0);
 
-   rw.value[0] &= ((1 << m_n_bits)-1);
-   value = rw.value[0];
-
-   rw.status = UVM_IS_OK;
+   rw.set_status(UVM_IS_OK);
 
    // PRE-WRITE CBS - FIELDS
    begin : pre_write_callbacks
@@ -1607,27 +1608,27 @@ task uvm_reg::do_write (uvm_reg_item rw);
          uvm_reg_field f = m_fields[i];
          lsb = f.get_lsb_pos();
          msk = ((1<<f.get_n_bits())-1) << lsb;
-         rw.value[0] = (value & msk) >> lsb;
+         rw.set_value(((value & msk) >> lsb), 0);
          f.pre_write(rw);
          for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next()) begin
-            rw.element = f;
-            rw.element_kind = UVM_FIELD;
+            rw.set_element(f);
+            rw.set_element_kind(UVM_FIELD);
             cb.pre_write(rw);
          end
 
-         value = (value & ~msk) | (rw.value[0] << lsb);
+         value = (value & ~msk) | (rw.get_value(0) << lsb);
       end
    end
-   rw.element = this;
-   rw.element_kind = UVM_REG;
-   rw.value[0] = value;
+   rw.set_element(this);
+   rw.set_element_kind(UVM_REG);
+   rw.set_value(value,0);
 
    // PRE-WRITE CBS - REG
    pre_write(rw);
    for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
       cb.pre_write(rw);
 
-   if (rw.status != UVM_IS_OK) begin
+   if (rw.get_status() != UVM_IS_OK) begin
      m_write_in_progress = 1'b0;
 
      XatomicX(0);
@@ -1636,28 +1637,28 @@ task uvm_reg::do_write (uvm_reg_item rw);
    end
          
    // EXECUTE WRITE...
-   case (rw.path)
+   case (rw.get_door())
       
       // ...VIA USER BACKDOOR
       UVM_BACKDOOR: begin
          uvm_reg_data_t final_val;
          uvm_reg_backdoor bkdr = get_backdoor();
   
-         if (rw.map != null)
-           rw.local_map = rw.map;
+         if (rw.get_map() != null)
+           rw.set_local_map(rw.get_map());
          else 
-           rw.local_map = get_default_map();
+           rw.set_local_map(get_default_map());
 
-         value = rw.value[0];
+         value = rw.get_value(0);
 
          // Mimick the final value after a physical read
-         rw.kind = UVM_READ;
+         rw.set_kind(UVM_READ);
          if (bkdr != null)
            bkdr.read(rw);
          else
            backdoor_read(rw);
 
-         if (rw.status == UVM_NOT_OK) begin
+         if (rw.get_status() == UVM_NOT_OK) begin
            m_write_in_progress = 1'b0;
            return;
          end
@@ -1667,16 +1668,16 @@ task uvm_reg::do_write (uvm_reg_item rw);
                uvm_reg_data_t field_val;
                int lsb = m_fields[i].get_lsb_pos();
                int sz  = m_fields[i].get_n_bits();
-               field_val = m_fields[i].XpredictX((rw.value[0] >> lsb) & ((1<<sz)-1),
+               field_val = m_fields[i].XpredictX((rw.get_value(0) >> lsb) & ((1<<sz)-1),
                                                  (value >> lsb) & ((1<<sz)-1),
-                                                 rw.local_map);
+                                                 rw.get_local_map());
                final_val |= field_val << lsb;
             end
          end
-         rw.kind = UVM_WRITE;
-         rw.value[0] = final_val;
+         rw.set_kind(UVM_WRITE);
+         rw.set_value(final_val, 0);
 
-        if (get_rights(rw.local_map) inside {"RW", "WO"}) begin
+        if (get_rights(rw.get_local_map()) inside {"RW", "WO"}) begin
           if (bkdr != null)
            bkdr.write(rw);
           else
@@ -1685,15 +1686,17 @@ task uvm_reg::do_write (uvm_reg_item rw);
           do_predict(rw, UVM_PREDICT_WRITE);
         end
         else begin
-           rw.status = UVM_NOT_OK;
+           rw.set_status(UVM_NOT_OK);
         end
         
       
       end
 
       UVM_FRONTDOOR: begin
-
-         uvm_reg_map system_map = rw.local_map.get_root_map();
+        
+         uvm_reg_map system_map;
+         tmp_local_map = rw.get_local_map();
+         system_map = tmp_local_map.get_root_map();
 
          m_is_busy = 1;
 
@@ -1703,13 +1706,13 @@ task uvm_reg::do_write (uvm_reg_item rw);
             fd.rw_info = rw;
             if (fd.sequencer == null)
               fd.sequencer = system_map.get_sequencer();
-            fd.start(fd.sequencer, rw.parent);
+            fd.start(fd.sequencer, rw.get_parent_sequence());
          end
 
          // ...VIA BUILT-IN FRONTDOOR
          else begin : built_in_frontdoor
 
-            rw.local_map.do_write(rw);
+            tmp_local_map.do_write(rw);
 
          end
 
@@ -1717,20 +1720,20 @@ task uvm_reg::do_write (uvm_reg_item rw);
 
          if (system_map.get_auto_predict()) begin
             uvm_status_e status;
-            if (rw.status != UVM_NOT_OK) begin
-               sample(value, -1, 0, rw.map);
-               m_parent.XsampleX(map_info.offset, 0, rw.map);
+            if (rw.get_status() != UVM_NOT_OK) begin
+               sample(value, -1, 0, rw.get_map());
+               m_parent.XsampleX(map_info.offset, 0, rw.get_map());
             end
 
-            status = rw.status; // do_predict will override rw.status, so we save it here
+            status = rw.get_status(); // do_predict will override rw.status, so we save it here
             do_predict(rw, UVM_PREDICT_WRITE);
-            rw.status = status;
+            rw.set_status(status);
          end
       end
       
    endcase
 
-   value = rw.value[0];
+   value = rw.get_value(0);
 
    // POST-WRITE CBS - REG
    for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
@@ -1742,29 +1745,32 @@ task uvm_reg::do_write (uvm_reg_item rw);
       uvm_reg_field_cb_iter cbs = new(m_fields[i]);
       uvm_reg_field f = m_fields[i];
       
-      rw.element = f;
-      rw.element_kind = UVM_FIELD;
-      rw.value[0] = (value >> f.get_lsb_pos()) & ((1<<f.get_n_bits())-1);
-      
+      rw.set_element(f);
+      rw.set_element_kind(UVM_FIELD);
+      rw.set_value((value >> f.get_lsb_pos()) & ((1<<f.get_n_bits())-1), 0);
+     
       for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
          cb.post_write(rw);
       f.post_write(rw);
    end
    
-   rw.value[0] = value;
-   rw.element = this;
-   rw.element_kind = UVM_REG;
+   rw.set_value(value, 0);
+   rw.set_element(this);
+   rw.set_element_kind(UVM_REG);
 
    // REPORT
    if (uvm_report_enabled(UVM_HIGH, UVM_INFO, "RegModel")) begin
      string path_s,value_s;
-     if (rw.path == UVM_FRONTDOOR)
+     uvm_reg_map tmp_map;
+     if (rw.get_door() == UVM_FRONTDOOR) begin
+       tmp_map = rw.get_map();
        path_s = (map_info.frontdoor != null) ? "user frontdoor" :
-                                               {"map ",rw.map.get_full_name()};
+                                               {"map ",tmp_map.get_full_name()};
+     end
      else
        path_s = (get_backdoor() != null) ? "user backdoor" : "DPI backdoor";
 
-     value_s = $sformatf("=0x%0h",rw.value[0]);
+     value_s = $sformatf("=0x%0h",rw.get_value(0));
 
       uvm_report_info("RegModel", {"Wrote register via ",path_s,": ",
                                    get_full_name(),value_s}, UVM_HIGH);
@@ -1808,22 +1814,22 @@ task uvm_reg::XreadX(output uvm_status_e      status,
    // create an abstract transaction for this operation
    uvm_reg_item rw;
    rw = uvm_reg_item::type_id::create("read_item",,get_full_name());
-   rw.element      = this;
-   rw.element_kind = UVM_REG;
-   rw.kind         = UVM_READ;
-   rw.value[0]     = 0;
-   rw.path         = path;
-   rw.map          = map;
-   rw.parent       = parent;
-   rw.prior        = prior;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_element_kind(UVM_REG);
+   rw.set_kind(UVM_READ);
+   rw.set_value(0,0);
+   rw.set_door(path);
+   rw.set_map(map);
+   rw.set_parent_sequence(parent);
+   rw.set_priority(prior);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
    do_read(rw);
 
-   status = rw.status;
-   value = rw.value[0];
+   status = rw.get_status();
+   value = rw.get_value(0);
 
 endtask: XreadX
 
@@ -1837,78 +1843,78 @@ task uvm_reg::do_read(uvm_reg_item rw);
    uvm_reg_data_t   value;
    uvm_reg_data_t   exp;
 
-   m_fname   = rw.fname;
-   m_lineno  = rw.lineno;
+   m_fname   = rw.get_fname();
+   m_lineno  = rw.get_line();
    
    if (!Xcheck_accessX(rw,map_info))
      return;
 
    m_read_in_progress = 1'b1;
 
-   rw.status = UVM_IS_OK;
+   rw.set_status(UVM_IS_OK);
 
    // PRE-READ CBS - FIELDS
    foreach (m_fields[i]) begin
       uvm_reg_field_cb_iter cbs = new(m_fields[i]);
       uvm_reg_field f = m_fields[i];
-      rw.element = f;
-      rw.element_kind = UVM_FIELD;
+      rw.set_element(f);
+      rw.set_element_kind(UVM_FIELD);
       m_fields[i].pre_read(rw);
       for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
          cb.pre_read(rw);
    end
 
-   rw.element = this;
-   rw.element_kind = UVM_REG;
+   rw.set_element(this);
+   rw.set_element_kind(UVM_REG);
 
    // PRE-READ CBS - REG
    pre_read(rw);
    for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
       cb.pre_read(rw);
 
-   if (rw.status != UVM_IS_OK) begin
+   if (rw.get_status() != UVM_IS_OK) begin
      m_read_in_progress = 1'b0;
 
      return;
    end
          
    // EXECUTE READ...
-   case (rw.path)
+   case (rw.get_door())
       
       // ...VIA USER BACKDOOR
       UVM_BACKDOOR: begin
          uvm_reg_backdoor bkdr = get_backdoor();
 
          uvm_reg_map map;  // = uvm_reg_map::backdoor();
-         if (rw.map != null)
-            rw.local_map = rw.map;
+         if (rw.get_map() != null)
+            rw.set_local_map(rw.get_map());
          else
-            rw.local_map = get_default_map();  
+            rw.set_local_map(get_default_map());  
          
-         map = rw.local_map;
+         map = rw.get_local_map();
           
          if (map.get_check_on_read()) exp = get();
    
-         if (get_rights(rw.local_map) inside {"RW", "RO"}) begin
+         if (get_rights(rw.get_local_map()) inside {"RW", "RO"}) begin
            if (bkdr != null)
              bkdr.read(rw);
            else
              backdoor_read(rw);
          end
          else begin
-             rw.status = UVM_NOT_OK;
+             rw.set_status(UVM_NOT_OK);
          end
          
-         value = rw.value[0];
+         value = rw.get_value(0);
 
          // Need to clear RC fields, set RS fields and mask WO fields
-         if (rw.status != UVM_NOT_OK) begin
+         if (rw.get_status() != UVM_NOT_OK) begin
 
             uvm_reg_data_t wo_mask;
 
             foreach (m_fields[i]) begin
               // string acc = m_fields[i].get_access(uvm_reg_map::backdoor());
-               string acc = m_fields[i].get_access(rw.local_map);
+               string acc = m_fields[i].get_access(rw.get_local_map());
                if (acc == "RC" ||
                    acc == "WRC" ||
                    acc == "WSRC" ||
@@ -1934,30 +1940,32 @@ task uvm_reg::do_read(uvm_reg_item rw);
                end
             end
 
-           if (get_rights(rw.local_map) inside {"RW", "RO"}) begin
-
-            if (value != rw.value[0]) begin
-              uvm_reg_data_t saved;
-              saved = rw.value[0];
-              rw.value[0] = value;
+           if (get_rights(rw.get_local_map()) inside {"RW", "RO"}) begin
+            uvm_reg_data_t saved;
+            if (value != rw.get_value(0)) begin
+              
+              saved = rw.get_value(0);
+              rw.set_value(value, 0);
               if (bkdr != null)
                  bkdr.write(rw);
               else
                  backdoor_write(rw);
-              rw.value[0] = saved;
+              rw.set_value(saved, 0);
             end
 
-            rw.value[0] &= ~wo_mask;
+            saved = rw.get_value(0);
+            saved &= ~wo_mask;
+            rw.set_value(saved, 0);
 
             if (map.get_check_on_read() &&
-               rw.status != UVM_NOT_OK) begin
-               void'(do_check(exp, rw.value[0], map));
+               rw.get_status() != UVM_NOT_OK) begin
+               void'(do_check(exp, rw.get_value(0), map));
             end
        
             do_predict(rw, UVM_PREDICT_READ);
            end
            else begin
-              rw.status = UVM_NOT_OK;
+              rw.set_status(UVM_NOT_OK);
            end
         
          end
@@ -1965,12 +1973,12 @@ task uvm_reg::do_read(uvm_reg_item rw);
 
 
       UVM_FRONTDOOR: begin
-
-         uvm_reg_map system_map = rw.local_map.get_root_map();
+         uvm_reg_map local_map = rw.get_local_map();
+         uvm_reg_map system_map = local_map.get_root_map();
 
          m_is_busy = 1;
 
-         if (rw.local_map.get_check_on_read()) exp = get();
+         if (local_map.get_check_on_read()) exp = get();
    
          // ...VIA USER FRONTDOOR
          if (map_info.frontdoor != null) begin
@@ -1978,37 +1986,37 @@ task uvm_reg::do_read(uvm_reg_item rw);
             fd.rw_info = rw;
             if (fd.sequencer == null)
               fd.sequencer = system_map.get_sequencer();
-            fd.start(fd.sequencer, rw.parent);
+            fd.start(fd.sequencer, rw.get_parent_sequence());
          end
 
          // ...VIA BUILT-IN FRONTDOOR
          else begin
-            rw.local_map.do_read(rw);
+           local_map.do_read(rw);
          end
 
          m_is_busy = 0;
 
          if (system_map.get_auto_predict()) begin
             uvm_status_e status;
-            if (rw.local_map.get_check_on_read() &&
-                rw.status != UVM_NOT_OK) begin
-               void'(do_check(exp, rw.value[0], system_map));
+            if (local_map.get_check_on_read() &&
+                rw.get_status() != UVM_NOT_OK) begin
+               void'(do_check(exp, rw.get_value(0), system_map));
             end
 
-            if (rw.status != UVM_NOT_OK) begin
-               sample(rw.value[0], -1, 1, rw.map);
-               m_parent.XsampleX(map_info.offset, 1, rw.map);
+            if (rw.get_status() != UVM_NOT_OK) begin
+               sample(rw.get_value(0), -1, 1, rw.get_map());
+               m_parent.XsampleX(map_info.offset, 1, rw.get_map());
             end
 
-            status = rw.status; // do_predict will override rw.status, so we save it here
+            status = rw.get_status(); // do_predict will override rw.status, so we save it here
             do_predict(rw, UVM_PREDICT_READ);
-            rw.status = status;
+            rw.set_status(status);
          end
       end
       
    endcase
 
-   value = rw.value[0]; // preserve 
+   value = rw.get_value(0); // preserve 
 
    // POST-READ CBS - REG
    for (uvm_reg_cbs cb = cbs.first(); cb != null; cb = cbs.next())
@@ -2020,29 +2028,31 @@ task uvm_reg::do_read(uvm_reg_item rw);
       uvm_reg_field_cb_iter cbs = new(m_fields[i]);
       uvm_reg_field f = m_fields[i];
 
-      rw.element = f;
-      rw.element_kind = UVM_FIELD;
-      rw.value[0] = (value >> f.get_lsb_pos()) & ((1<<f.get_n_bits())-1);
+      rw.set_element(f);
+      rw.set_element_kind(UVM_FIELD);
+      rw.set_value((value >> f.get_lsb_pos()) & ((1<<f.get_n_bits())-1));
 
       for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
          cb.post_read(rw);
       f.post_read(rw);
    end
 
-   rw.value[0] = value; // restore
-   rw.element = this;
-   rw.element_kind = UVM_REG;
+   rw.set_value(value, 0); // restore
+   rw.set_element(this);
+   rw.set_element_kind(UVM_REG);
 
    // REPORT
    if (uvm_report_enabled(UVM_HIGH, UVM_INFO, "RegModel")) begin
      string path_s,value_s;
-     if (rw.path == UVM_FRONTDOOR)
+     if (rw.get_door() == UVM_FRONTDOOR) begin
+       uvm_reg_map map = rw.get_map();
        path_s = (map_info.frontdoor != null) ? "user frontdoor" :
-                                               {"map ",rw.map.get_full_name()};
+                                               {"map ",map.get_full_name()};
+     end
      else
        path_s = (get_backdoor() != null) ? "user backdoor" : "DPI backdoor";
 
-     value_s = $sformatf("=%0h",rw.value[0]);
+     value_s = $sformatf("=%0h",rw.get_value(0));
 
       uvm_report_info("RegModel", {"Read  register via ",path_s,": ",
                                    get_full_name(),value_s}, UVM_HIGH);
@@ -2057,57 +2067,60 @@ endtask: do_read
 
 function bit uvm_reg::Xcheck_accessX (input uvm_reg_item rw,
                                       output uvm_reg_map_info map_info);
+   uvm_reg_map tmp_map;
+   uvm_reg_map tmp_local_map;
 
+   if (rw.get_door() == UVM_DEFAULT_DOOR)
+     rw.set_door(m_parent.get_default_door());
 
-   if (rw.path == UVM_DEFAULT_DOOR)
-     rw.path = m_parent.get_default_door();
-
-   if (rw.path == UVM_BACKDOOR) begin
+   if (rw.get_door() == UVM_BACKDOOR) begin
       if (get_backdoor() == null && !has_hdl_path()) begin
          `uvm_warning("RegModel",
             {"No backdoor access available for register '",get_full_name(),
             "' . Using frontdoor instead."})
-         rw.path = UVM_FRONTDOOR;
+         rw.set_door(UVM_FRONTDOOR);
       end
-      else if (rw.map == null) begin
+      else if (rw.get_map() == null) begin
         uvm_reg_map  bkdr_map = get_default_map();
         if (bkdr_map != null)
-            rw.map = bkdr_map;
+            rw.set_map(bkdr_map);
         else
-            rw.map = uvm_reg_map::backdoor();
+            rw.set_map(uvm_reg_map::backdoor());
       end
       
    end
+   
 
+   if (rw.get_door() != UVM_BACKDOOR) begin
+     tmp_map = rw.get_map();
+     rw.set_local_map(get_local_map(tmp_map));
 
-   if (rw.path != UVM_BACKDOOR) begin
+     if (rw.get_local_map() == null) begin       
 
-     rw.local_map = get_local_map(rw.map);
-
-     if (rw.local_map == null) begin
-       if (rw.map == null)
+       if (tmp_map == null)
          `uvm_error(get_type_name(), "Unable to physically access register with null map")
        else
          `uvm_error(get_type_name(), 
                     {"No transactor available to physically access register on map '",
-                     rw.map.get_full_name(),"'"})
-       rw.status = UVM_NOT_OK;
+                     tmp_map.get_full_name(),"'"})
+       rw.set_status(UVM_NOT_OK);
        return 0;
      end
 
-     map_info = rw.local_map.get_reg_map_info(this);
+     tmp_local_map = rw.get_local_map();
+     map_info = tmp_local_map.get_reg_map_info(this);
 
      if (map_info.frontdoor == null && map_info.unmapped) begin
           `uvm_error("RegModel", {"Register '",get_full_name(),
              "' unmapped in map '",
-             (rw.map==null)? rw.local_map.get_full_name():rw.map.get_full_name(),
+             (rw.get_map()==null)? tmp_local_map.get_full_name():tmp_map.get_full_name(),
              "' and does not have a user-defined frontdoor"})
-          rw.status = UVM_NOT_OK;
+          rw.set_status(UVM_NOT_OK);
           return 0;
      end
 
-     if (rw.map == null)
-       rw.map = rw.local_map;
+     if (tmp_map == null)
+       rw.set_map(tmp_local_map);
    end
    return 1;
 endfunction
@@ -2139,7 +2152,7 @@ endfunction
 task  uvm_reg::backdoor_write(uvm_reg_item rw);
   uvm_hdl_path_concat paths[$];
   bit ok=1;
-  get_full_hdl_path(paths,rw.bd_kind);
+  get_full_hdl_path(paths,rw.get_bd_kind());
   foreach (paths[i]) begin
      uvm_hdl_path_concat hdl_concat = paths[i];
      foreach (hdl_concat.slices[j]) begin
@@ -2147,25 +2160,25 @@ task  uvm_reg::backdoor_write(uvm_reg_item rw);
                   hdl_concat.slices[j].path),UVM_DEBUG)
 
         if (hdl_concat.slices[j].offset < 0) begin
-           ok &= uvm_hdl_deposit(hdl_concat.slices[j].path,rw.value[0]);
+           ok &= uvm_hdl_deposit(hdl_concat.slices[j].path,rw.get_value(0));
            continue;
         end
         begin
            uvm_reg_data_t slice;
-           slice = rw.value[0] >> hdl_concat.slices[j].offset;
+           slice = rw.get_value(0) >> hdl_concat.slices[j].offset;
            slice &= (1 << hdl_concat.slices[j].size)-1;
            ok &= uvm_hdl_deposit(hdl_concat.slices[j].path, slice);
         end
      end
   end
-  rw.status = (ok ? UVM_IS_OK : UVM_NOT_OK);
+  rw.set_status(ok ? UVM_IS_OK : UVM_NOT_OK);
 endtask
 
 
 // backdoor_read
 
 task  uvm_reg::backdoor_read (uvm_reg_item rw);
-  rw.status = backdoor_read_func(rw);
+  rw.set_status(backdoor_read_func(rw));
 endtask
 
 
@@ -2175,7 +2188,7 @@ function uvm_status_e uvm_reg::backdoor_read_func(uvm_reg_item rw);
   uvm_hdl_path_concat paths[$];
   uvm_reg_data_t val;
   bit ok=1;
-  get_full_hdl_path(paths,rw.bd_kind);
+  get_full_hdl_path(paths,rw.get_bd_kind());
   foreach (paths[i]) begin
      uvm_hdl_path_concat hdl_concat = paths[i];
      val = 0;
@@ -2203,22 +2216,22 @@ function uvm_status_e uvm_reg::backdoor_read_func(uvm_reg_item rw);
      val &= (1 << m_n_bits)-1;
 
      if (i == 0)
-        rw.value[0] = val;
+        rw.set_value(val, 0);
 
-     if (val != rw.value[0]) begin
+     if (val != rw.get_value(0)) begin
         `uvm_error("RegModel", $sformatf("Backdoor read of register %s with multiple HDL copies: values are not the same: %0h at path '%s', and %0h at path '%s'. Returning first value.",
                get_full_name(),
-               rw.value[0], uvm_hdl_concat2string(paths[0]),
+               rw.get_value(0), uvm_hdl_concat2string(paths[0]),
                val, uvm_hdl_concat2string(paths[i])))
         return UVM_NOT_OK;
       end
       `uvm_info("RegMem", 
-         $sformatf("returned backdoor value 0x%0x",rw.value[0]),UVM_DEBUG)
+         $sformatf("returned backdoor value 0x%0x",rw.get_value(0)),UVM_DEBUG)
       
   end
 
-  rw.status = (ok) ? UVM_IS_OK : UVM_NOT_OK;
-  return rw.status;
+  rw.set_status((ok) ? UVM_IS_OK : UVM_NOT_OK);
+  return rw.get_status();
 endfunction
 
 
@@ -2251,23 +2264,23 @@ task uvm_reg::poke(output uvm_status_e      status,
 
    // create an abstract transaction for this operation
    rw = uvm_reg_item::type_id::create("reg_poke_item",,get_full_name());
-   rw.element      = this;
-   rw.path         = UVM_BACKDOOR;
-   rw.element_kind = UVM_REG;
-   rw.kind         = UVM_WRITE;
-   rw.bd_kind      = kind;
-   rw.value[0]     = value & ((1 << m_n_bits)-1);
-   rw.parent       = parent;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_door(UVM_BACKDOOR);
+   rw.set_element_kind(UVM_REG);
+   rw.set_kind(UVM_WRITE);
+   rw.set_bd_kind(kind);
+   rw.set_value((value & ((1 << m_n_bits)-1)),0);
+   rw.set_parent_sequence(parent);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
    if (bkdr != null)
      bkdr.write(rw);
    else
      backdoor_write(rw);
 
-   status = rw.status;
+   status = rw.get_status();
 
    `uvm_info("RegModel", $sformatf("Poked register \"%s\": 'h%h",
                               get_full_name(), value),UVM_HIGH)
@@ -2308,23 +2321,23 @@ task uvm_reg::peek(output uvm_status_e      status,
 
    // create an abstract transaction for this operation
    rw = uvm_reg_item::type_id::create("mem_peek_item",,get_full_name());
-   rw.element      = this;
-   rw.path         = UVM_BACKDOOR;
-   rw.element_kind = UVM_REG;
-   rw.kind         = UVM_READ;
-   rw.bd_kind      = kind;
-   rw.parent       = parent;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_door(UVM_BACKDOOR);
+   rw.set_element_kind(UVM_REG);
+   rw.set_kind(UVM_READ);
+   rw.set_bd_kind(kind);
+   rw.set_parent_sequence(parent);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
    if (bkdr != null)
      bkdr.read(rw);
    else
      backdoor_read(rw);
 
-   status = rw.status;
-   value = rw.value[0];
+   status = rw.get_status();
+   value = rw.get_value(0);
 
    `uvm_info("RegModel", $sformatf("Peeked register \"%s\": 'h%h",
                           get_full_name(), value),UVM_HIGH)

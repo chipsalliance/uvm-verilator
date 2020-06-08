@@ -3,6 +3,7 @@
 // Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2010-2013 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2020 Marvell International Ltd.
 // Copyright 2010 AMD
 // Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2014-2017 Cisco Systems, Inc.
@@ -209,7 +210,12 @@ virtual class uvm_transaction extends uvm_object;
 
 
   // @uvm-ieee 1800.2-2017 auto 5.4.2.4
-  extern function int begin_tr (time begin_time = 0);
+  extern function int begin_tr (
+     time begin_time = 0
+`ifdef UVM_1800_2_2020_EA
+     , int parent_handle = 0
+`endif
+  );
 
   
   // Function -- NODOCS -- begin_child_tr
@@ -712,8 +718,18 @@ endfunction
 // begin_tr
 // -----------
 
-function int uvm_transaction::begin_tr (time begin_time=0); 
-  return m_begin_tr(begin_time);
+function int uvm_transaction::begin_tr (
+     time begin_time = 0
+`ifdef UVM_1800_2_2020_EA
+     , int parent_handle = 0
+`endif
+); 
+   return m_begin_tr(
+      begin_time 
+`ifdef UVM_1800_2_2020_EA
+      , parent_handle 
+`endif
+   );
 endfunction
 
 // begin_child_tr

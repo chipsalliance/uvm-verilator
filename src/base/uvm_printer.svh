@@ -6,6 +6,7 @@
 // Copyright 2014 Intel Corporation
 // Copyright 2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2020 Marvell International Ltd.
 // Copyright 2012 AMD
 // Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2014-2018 Cisco Systems, Inc.
@@ -1268,18 +1269,6 @@ function void uvm_printer::print_object (string name, uvm_object value,
     push_active_object(value);
     m_recur_states[value][recursion_policy] = uvm_policy::STARTED ;
     print_object_header(name,value,scope_separator); // calls push_element
-
-    // Handle children of the comp
-    // BOZO:  Why isn't this handled inside of uvm_component::do_print?
-    if($cast(comp, value)) begin
-      string name;
-      if (comp.get_first_child(name))
-        do begin
-          child_comp = comp.get_child(name);
-          if(child_comp.print_enabled)
-            this.print_object(name,child_comp);
-        end while (comp.get_next_child(name));
-    end
 
     field_op = uvm_field_op::m_get_available_op() ;
     field_op.set(UVM_PRINT,this,null);
