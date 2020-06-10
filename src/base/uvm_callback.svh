@@ -199,10 +199,17 @@ class uvm_typed_callbacks#(type T=uvm_object) extends uvm_callbacks_base;
 
   //Type checking interface: is given ~obj~ of type T?
   virtual function bit m_am_i_a(uvm_object obj);
+`ifdef VERILATOR  // https://github.com/verilator/verilator/issues/2412
+    T casted_obj;
+    if (obj == null)
+      return 1;
+    return($cast(casted_obj,obj));
+`else  // Functionally equivelent original code, included here for comparison
     T this_type;
     if (obj == null)
       return 1;
     return($cast(this_type,obj));
+`endif
   endfunction
 
   //Getting the typewide queue
