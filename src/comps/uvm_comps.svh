@@ -1,10 +1,11 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2010 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2020 NVIDIA Corporation
+// Copyright 2010 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -26,9 +27,6 @@
  `include "comps/uvm_policies.svh"
  `include "comps/uvm_in_order_comparator.svh"
  `include "comps/uvm_algorithmic_comparator.svh"
- `ifdef UVM_ENABLE_DEPRECATED_API
-    `include "comps/uvm_random_stimulus.svh"
- `endif
  `include "comps/uvm_subscriber.svh"
 
  `include "comps/uvm_monitor.svh"

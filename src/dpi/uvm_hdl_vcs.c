@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
-// Copyright 2009-2011 Mentor Graphics Corporation
-// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2009-2011 Mentor Graphics Corporation
 // Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2010-2018 Synopsys, Inc.
 //
 //   All Rights Reserved Worldwide
 //

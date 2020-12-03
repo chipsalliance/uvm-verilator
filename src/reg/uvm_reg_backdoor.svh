@@ -1,10 +1,11 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2020 Mentor Graphics Corporation
-// Copyright 2004-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2020 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
+// Copyright 2004-2018 Synopsys, Inc.
+// Copyright 2020 Verific
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -36,21 +37,21 @@ typedef class uvm_reg_cbs;
 // or that are not accessible using the default DPI backdoor mechanism.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 19.5.1
+// @uvm-ieee 1800.2-2020 auto 19.5.1
 virtual class uvm_reg_backdoor extends uvm_object;
 
 
    `uvm_object_abstract_utils(uvm_reg_backdoor)
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.1
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.1
    function new(string name = "");
       super.new(name);
    endfunction: new
 
    
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.2
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.2
    protected task do_pre_read(uvm_reg_item rw);
       pre_read(rw);
       `uvm_do_obj_callbacks(uvm_reg_backdoor, uvm_reg_cbs, this,
@@ -59,7 +60,7 @@ virtual class uvm_reg_backdoor extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.3
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.3
    protected task do_post_read(uvm_reg_item rw);
       uvm_reg_data_t value_array[];
       uvm_callback_iter#(uvm_reg_backdoor, uvm_reg_cbs) iter = new(this);
@@ -73,7 +74,7 @@ virtual class uvm_reg_backdoor extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.4
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.4
    protected task do_pre_write(uvm_reg_item rw);
       uvm_reg_data_t rw_value[];
       uvm_callback_iter#(uvm_reg_backdoor, uvm_reg_cbs) iter = new(this);
@@ -87,7 +88,7 @@ virtual class uvm_reg_backdoor extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.5
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.5
    protected task do_post_write(uvm_reg_item rw);
       `uvm_do_obj_callbacks(uvm_reg_backdoor,uvm_reg_cbs,this,post_write(rw))
       post_write(rw);
@@ -95,28 +96,26 @@ virtual class uvm_reg_backdoor extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.6
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.6
    extern virtual task write(uvm_reg_item rw);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.7
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.7
    extern virtual task read(uvm_reg_item rw);
 
    
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.8
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.8
    extern virtual function void read_func(uvm_reg_item rw);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.9
    extern virtual function bit is_auto_updated(uvm_reg_field field);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.10
-   extern virtual local task wait_for_change(uvm_object element);
+   extern virtual task wait_for_change(uvm_object element);
 
   
    /*local*/ extern function void start_update_thread(uvm_object element);
@@ -125,22 +124,22 @@ virtual class uvm_reg_backdoor extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.11
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.9
    virtual task pre_read(uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.12
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.10
    virtual task post_read(uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.13
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.11
    virtual task pre_write(uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.5.2.14
+   // @uvm-ieee 1800.2-2020 auto 19.5.2.12
    virtual task post_write(uvm_reg_item rw); endtask
 
 

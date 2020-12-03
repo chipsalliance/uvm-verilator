@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------
 // Copyright 2018 Cadence Design Systems, Inc.
-// Copyright 2018 NVIDIA Corporation
 // Copyright 2017-2018 Cisco Systems, Inc.
+// Copyright 2018-2020 NVIDIA Corporation
 // Copyright 2017-2018 Verific
 //   All Rights Reserved Worldwide
 //
@@ -204,36 +204,13 @@ endclass
 // documented in 1800.2.
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto C.2.3.1
+// @uvm-ieee 1800.2-2020 auto C.2.3.1
 virtual class uvm_resource_base extends uvm_object;
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  protected string scope;
-`endif // UVM_ENABLE_DEPRECATED_API
   protected bit modified;
   protected bit read_only;
 
   uvm_resource_types::access_t access[string];
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-  // variable -- NODOCS -- precedence
-  //
-  // This variable is used to associate a precedence that a resource
-  // has with respect to other resources which match the same scope
-  // and name. Resources are set to the <default_precedence> initially,
-  // and may be set to a higher or lower precedence as desired.
-
-  int unsigned precedence;
-
-  // variable -- NODOCS -- default_precedence
-  //
-  // The default precedence for an resource that has been created.
-  // When two resources have the same precedence, the first resource
-  // found has precedence.
-  //
-
-  static int unsigned default_precedence = 1000;
-`endif // UVM_ENABLE_DEPRECATED_API
 
   // Function -- NODOCS -- new
   //
@@ -241,30 +218,19 @@ virtual class uvm_resource_base extends uvm_object;
   // arguments, the name of the resource and a regular expression which
   // represents the set of scopes over which this resource is visible.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  function new(string name = "", string s = "*");
-    super.new(name);
-    set_scope(s);
-    modified = 0;
-    read_only = 0;
-    precedence = default_precedence;
-  endfunction
-`else
-  // @uvm-ieee 1800.2-2017 auto C.2.3.2.1
+  // @uvm-ieee 1800.2-2020 auto C.2.3.2.1
   function new(string name = "");
     super.new(name);
     modified = 0;
     read_only = 0;
   endfunction
-`endif // UVM_ENABLE_DEPRECATED_API
-
 
   // Function -- NODOCS -- get_type_handle
   //
   // Pure virtual function that returns the type handle of the resource
   // container.
 
-  // @uvm-ieee 1800.2-2017 auto C.2.3.2.2
+  // @uvm-ieee 1800.2-2020 auto C.2.3.2.2
   pure virtual function uvm_resource_base get_type_handle();
 
 
@@ -277,7 +243,7 @@ virtual class uvm_resource_base extends uvm_object;
   // Establishes this resource as a read-only resource.  An attempt
   // to call <uvm_resource#(T)::write> on the resource will cause an error.
 
-  // @uvm-ieee 1800.2-2017 auto C.2.3.3.1
+  // @uvm-ieee 1800.2-2020 auto C.2.3.3.1
   function void set_read_only();
     read_only = 1;
   endfunction
@@ -296,7 +262,7 @@ virtual class uvm_resource_base extends uvm_object;
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto C.2.3.3.2
+  // @uvm-ieee 1800.2-2020 auto C.2.3.3.2
   function bit is_read_only();
     return read_only;
   endfunction
@@ -314,64 +280,11 @@ virtual class uvm_resource_base extends uvm_object;
   // releases the block.  Wait_modified() then clears the modified bit so 
   // it can be called repeatedly.
 
-  // @uvm-ieee 1800.2-2017 auto C.2.3.4
+  // @uvm-ieee 1800.2-2020 auto C.2.3.4
   task wait_modified();
     wait (modified == 1);
     modified = 0;
   endtask
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-  //-----------------------
-  // Group -- NODOCS -- Scope Interface
-  //-----------------------
-  //
-
-  // Function -- NODOCS -- set_scope
-  //
-  // Set the value of the regular expression that identifies the set of
-  // scopes over which this resource is visible.  If the supplied
-  // argument is a glob it will be converted to a regular expression
-  // before it is stored.
-  //
-  function void set_scope(string s);
-    scope = uvm_glob_to_re(s);
-  endfunction
-
-  // Function -- NODOCS -- get_scope
-  //
-  // Retrieve the regular expression string that identifies the set of
-  // scopes over which this resource is visible.
-  //
-  function string get_scope();
-    return scope;
-  endfunction
-
-  // Function -- NODOCS -- match_scope
-  //
-  // Using the regular expression facility, determine if this resource
-  // is visible in a scope.  Return one if it is, zero otherwise.
-  //
-  function bit match_scope(string s);
-    int match = uvm_is_match(scope, s);
-    return match;
-  endfunction
-
-  //----------------
-  // Group -- NODOCS -- Priority
-  //----------------
-  //
-  // Functions for manipulating the search priority of resources.  The
-  // function definitions here are pure virtual and are implemented in
-  // derived classes.  The definitons serve as a priority management
-  // interface.
-
-  // Function -- NODOCS -- set priority
-  //
-  // Change the search priority of the resource based on the value of
-  // the priority enum argument.
-  //
-  pure virtual function void set_priority (uvm_resource_types::priority_e pri);
-`endif // UVM_ENABLE_DEPRECATED_API
 
   //-------------------------
   // Group -- NODOCS -- Utility Functions

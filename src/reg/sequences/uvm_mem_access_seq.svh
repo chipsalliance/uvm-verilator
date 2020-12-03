@@ -1,10 +1,10 @@
 // 
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2004-2010 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2020 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
+// Copyright 2004-2010 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -50,7 +50,7 @@
 // The DUT should be idle and not modify the memory during this test.
 //
 
-// @uvm-ieee 1800.2-2017 auto E.5.1.1
+// @uvm-ieee 1800.2-2020 auto E.5.1.1
 class uvm_mem_single_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    // Variable -- NODOCS -- mem
@@ -58,12 +58,14 @@ class uvm_mem_single_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
    // The memory to be tested
    //
    uvm_mem mem;
+   rand uvm_reg_randval rand_reg_val;
 
    `uvm_object_utils(uvm_mem_single_access_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.5.1.3
+   // @uvm-ieee 1800.2-2020 auto E.5.1.3
    function new(string name="uam_mem_single_access_seq");
      super.new(name);
+     rand_reg_val = new();  
    endfunction
 
    virtual task body();
@@ -114,9 +116,8 @@ class uvm_mem_single_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
          // - Write complement of random value via back door
          // - Read via front door and expect inverted random value
          for (int k = 0; k < mem.get_size(); k++) begin
-            val = $random & uvm_reg_data_t'((1'b1<<n_bits)-1);
-            if (n_bits > 32)
-              val = uvm_reg_data_t'(val << 32) | $random;
+            void'(rand_reg_val.randomize()); 
+            val = rand_reg_val.randval & uvm_reg_data_t'((1'b1<<n_bits)-1);
             if (mode == "RO") begin
                mem.peek(status, k, exp);
                if (status != UVM_IS_OK) begin
@@ -197,7 +198,7 @@ endclass: uvm_mem_single_access_seq
 //|                            "NO_MEM_TESTS", 1, this);
 //
 
-// @uvm-ieee 1800.2-2017 auto E.5.2.1
+// @uvm-ieee 1800.2-2020 auto E.5.2.1
 class uvm_mem_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    // Variable -- NODOCS -- model
@@ -215,13 +216,13 @@ class uvm_mem_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item)
 
    `uvm_object_utils(uvm_mem_access_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.5.2.3.1
+   // @uvm-ieee 1800.2-2020 auto E.5.2.3.1
    function new(string name="uvm_mem_access_seq");
      super.new(name);
    endfunction
 
 
-   // @uvm-ieee 1800.2-2017 auto E.5.2.3.2
+   // @uvm-ieee 1800.2-2020 auto E.5.2.3.2
    virtual task body();
 
       if (model == null) begin

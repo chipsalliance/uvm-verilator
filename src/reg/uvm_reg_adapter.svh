@@ -1,11 +1,11 @@
 //
 // -------------------------------------------------------------
+// Copyright 2010 AMD
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2004-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2010 AMD
-// Copyright 2014-2015 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -40,7 +40,7 @@
 // and a specific bus transaction. 
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 19.2.1.1
+// @uvm-ieee 1800.2-2020 auto 19.2.1.1
 virtual class uvm_reg_adapter extends uvm_object;
 
 
@@ -51,7 +51,7 @@ virtual class uvm_reg_adapter extends uvm_object;
   //
   // Create a new instance of this type, giving it the optional ~name~.
 
-  // @uvm-ieee 1800.2-2017 auto 19.2.1.2.1
+  // @uvm-ieee 1800.2-2020 auto 19.2.1.2.1
   function new(string name="");
     super.new(name);
   endfunction
@@ -93,7 +93,7 @@ virtual class uvm_reg_adapter extends uvm_object;
   // the corresponding members from the given generic ~rw~ bus operation, then
   // return it.
 
-  // @uvm-ieee 1800.2-2017 auto 19.2.1.2.5
+  // @uvm-ieee 1800.2-2020 auto 19.2.1.2.5
   pure virtual function uvm_sequence_item reg2bus(const ref uvm_reg_bus_op rw);
 
 
@@ -105,7 +105,7 @@ virtual class uvm_reg_adapter extends uvm_object;
   // is not allocated from scratch. This is to accommodate applications
   // where the bus response must be returned in the original request.
 
-  // @uvm-ieee 1800.2-2017 auto 19.2.1.2.6
+  // @uvm-ieee 1800.2-2020 auto 19.2.1.2.6
   pure virtual function void bus2reg(uvm_sequence_item bus_item,
                                      ref uvm_reg_bus_op rw);
 
@@ -113,7 +113,7 @@ virtual class uvm_reg_adapter extends uvm_object;
   local uvm_reg_item m_item;
 
   
-  // @uvm-ieee 1800.2-2017 auto 19.2.1.2.7
+  // @uvm-ieee 1800.2-2020 auto 19.2.1.2.7
   virtual function uvm_reg_item get_item();
     return m_item;
   endfunction
@@ -171,7 +171,7 @@ endclass
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 19.2.2.1
+// @uvm-ieee 1800.2-2020 auto 19.2.2.1
 class uvm_reg_tlm_adapter extends uvm_reg_adapter;
 
   `uvm_object_utils(uvm_reg_tlm_adapter)
@@ -184,7 +184,7 @@ class uvm_reg_tlm_adapter extends uvm_reg_adapter;
   //
   // Converts a <uvm_reg_bus_op> struct to a <uvm_tlm_gp> item.
 
-  // @uvm-ieee 1800.2-2017 auto 19.2.2.2.1
+  // @uvm-ieee 1800.2-2020 auto 19.2.2.2.1
   virtual function uvm_sequence_item reg2bus(const ref uvm_reg_bus_op rw);
 
      uvm_tlm_gp gp = uvm_tlm_gp::type_id::create("tlm_gp",, this.get_full_name());
@@ -217,7 +217,7 @@ class uvm_reg_tlm_adapter extends uvm_reg_adapter;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 19.2.2.2.2
+  // @uvm-ieee 1800.2-2020 auto 19.2.2.2.2
   virtual function void bus2reg(uvm_sequence_item bus_item,
                                 ref uvm_reg_bus_op rw);
 

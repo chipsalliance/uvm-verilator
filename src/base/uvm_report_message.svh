@@ -1,11 +1,11 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2013 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2018 Cisco Systems, Inc.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2013 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -474,7 +474,7 @@ endclass
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 6.2.1
+// @uvm-ieee 1800.2-2020 auto 6.2.1
 class uvm_report_message extends uvm_object;
 
   protected uvm_report_object _report_object;
@@ -500,7 +500,7 @@ class uvm_report_message extends uvm_object;
   // Creates a new uvm_report_message object.
   //
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.2.1
+  // @uvm-ieee 1800.2-2020 auto 6.2.2.1
   function new(string name = "uvm_report_message");
     super.new(name);
     _report_message_element_container = new();
@@ -513,7 +513,7 @@ class uvm_report_message extends uvm_object;
   // This function is the same as new(), but keeps the random stability.
   //
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.2.2
+  // @uvm-ieee 1800.2-2020 auto 6.2.2.2
   static function uvm_report_message new_report_message(string name = "uvm_report_message");
     process p;
     string rand_state;
@@ -554,7 +554,7 @@ class uvm_report_message extends uvm_object;
   //|     bar             string              8     hi there
 
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.2.3
+  // @uvm-ieee 1800.2-2020 auto 6.2.2.3
   virtual function void do_print(uvm_printer printer);
     uvm_verbosity l_verbosity;
 
@@ -624,7 +624,7 @@ class uvm_report_message extends uvm_object;
 
   // Function -- NODOCS -- get_report_object
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.3.1
+  // @uvm-ieee 1800.2-2020 auto 6.2.3.1
   virtual function uvm_report_object get_report_object();
     return _report_object;
   endfunction
@@ -633,7 +633,7 @@ class uvm_report_message extends uvm_object;
   //
   // Get or set the uvm_report_object that originated the message.
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.3.1
+  // @uvm-ieee 1800.2-2020 auto 6.2.3.1
   virtual function void set_report_object(uvm_report_object ro);
     _report_object = ro;
   endfunction
@@ -641,7 +641,7 @@ class uvm_report_message extends uvm_object;
 
   // Function -- NODOCS -- get_report_handler
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.3.2
+  // @uvm-ieee 1800.2-2020 auto 6.2.3.2
   virtual function uvm_report_handler get_report_handler();
     return _report_handler;
   endfunction
@@ -651,7 +651,7 @@ class uvm_report_message extends uvm_object;
   // Get or set the uvm_report_handler that is responsible for checking
   // whether the message is enabled, should be upgraded/downgraded, etc.
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.3.2
+  // @uvm-ieee 1800.2-2020 auto 6.2.3.2
   virtual function void set_report_handler(uvm_report_handler rh);
     _report_handler = rh;
   endfunction
@@ -659,7 +659,7 @@ class uvm_report_message extends uvm_object;
   
   // Function -- NODOCS -- get_report_server
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.3.3
+  // @uvm-ieee 1800.2-2020 auto 6.2.3.3
   virtual function uvm_report_server get_report_server();
     return _report_server;
   endfunction
@@ -669,7 +669,7 @@ class uvm_report_message extends uvm_object;
   // Get or set the uvm_report_server that is responsible for servicing
   // the message's actions.  
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.3.3
+  // @uvm-ieee 1800.2-2020 auto 6.2.3.3
   virtual function void set_report_server(uvm_report_server rs);
     _report_server = rs;
   endfunction
@@ -682,7 +682,7 @@ class uvm_report_message extends uvm_object;
 
   // Function -- NODOCS -- get_severity
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.1
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.1
   virtual function uvm_severity get_severity();
     return _severity;
   endfunction
@@ -693,7 +693,7 @@ class uvm_report_message extends uvm_object;
   // UVM_FATAL) of the message.  The value of this field is determined via
   // the API used (`uvm_info(), `uvm_waring(), etc.) and populated for the user.
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.1
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.1
   virtual function void set_severity(uvm_severity sev);
     _severity = sev;
   endfunction
@@ -701,7 +701,7 @@ class uvm_report_message extends uvm_object;
 
   // Function -- NODOCS -- get_id
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.2
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.2
   virtual function string get_id();
     return _id;
   endfunction
@@ -713,7 +713,7 @@ class uvm_report_message extends uvm_object;
   // consistent convention.  Settings in the uvm_report_handler allow various
   // messaging controls based on this field.  See <uvm_report_handler>.
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.2
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.2
   virtual function void set_id(string id);
     _id = id;
   endfunction
@@ -721,7 +721,7 @@ class uvm_report_message extends uvm_object;
 
   // Function -- NODOCS -- get_message
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.3
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.3
   virtual function string get_message();
     return _message;
   endfunction
@@ -730,7 +730,7 @@ class uvm_report_message extends uvm_object;
   //
   // Get or set the user message content string.
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.3
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.3
   virtual function void set_message(string msg);
     _message = msg;
   endfunction
@@ -738,7 +738,7 @@ class uvm_report_message extends uvm_object;
 
   // Function -- NODOCS -- get_verbosity
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.4
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.4
   virtual function int get_verbosity();
     return _verbosity;
   endfunction
@@ -749,7 +749,7 @@ class uvm_report_message extends uvm_object;
   // against settings in the <uvm_report_handler> to determine whether this
   // message should be executed.
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.4
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.4
   virtual function void set_verbosity(int ver);
     _verbosity = ver;
   endfunction
@@ -757,7 +757,7 @@ class uvm_report_message extends uvm_object;
 
   // Function -- NODOCS -- get_filename
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.5
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.5
   virtual function string get_filename();
     return _filename;
   endfunction
@@ -767,7 +767,7 @@ class uvm_report_message extends uvm_object;
   // Get or set the file from which the message originates.  This value
   // is automatically populated by the messaging macros.
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.5
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.5
   virtual function void set_filename(string fname);
     _filename = fname;
   endfunction
@@ -775,7 +775,7 @@ class uvm_report_message extends uvm_object;
 
   // Function -- NODOCS -- get_line
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.6
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.6
   virtual function int get_line();
     return _line;
   endfunction
@@ -785,7 +785,7 @@ class uvm_report_message extends uvm_object;
   // Get or set the line in the ~file~ from which the message originates.
   // This value is automatically populate by the messaging macros.
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.6
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.6
   virtual function void set_line(int ln);
     _line = ln;
   endfunction
@@ -793,7 +793,7 @@ class uvm_report_message extends uvm_object;
 
   // Function -- NODOCS -- get_context
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.7
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.7
   virtual function string get_context();
     return _context_name;
   endfunction
@@ -804,7 +804,7 @@ class uvm_report_message extends uvm_object;
   // the context of the message.  It can be useful in scopes that are not
   // inherently UVM like modules, interfaces, etc.
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.7
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.7
   virtual function void set_context(string cn);
     _context_name = cn;
   endfunction
@@ -812,7 +812,7 @@ class uvm_report_message extends uvm_object;
 
   // Function -- NODOCS -- get_action
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.8
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.8
   virtual function uvm_action get_action();
     return _action;
   endfunction
@@ -823,7 +823,7 @@ class uvm_report_message extends uvm_object;
   // for this message.  This field is populated by the uvm_report_handler during
   // message execution flow.
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.8
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.8
   virtual function void set_action(uvm_action act);
     _action = act;
   endfunction
@@ -831,7 +831,7 @@ class uvm_report_message extends uvm_object;
 
   // Function -- NODOCS -- get_file
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.9
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.9
   virtual function UVM_FILE get_file();
     return _file;
   endfunction
@@ -842,7 +842,7 @@ class uvm_report_message extends uvm_object;
   // message's action is UVM_LOG.  This field is populated by the 
   // uvm_report_handler during message execution flow.
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.9
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.9
   virtual function void set_file(UVM_FILE fl);
     _file = fl;
   endfunction
@@ -862,7 +862,7 @@ class uvm_report_message extends uvm_object;
   // Set all the common fields of the report message in one shot.
   //
 
-  // @uvm-ieee 1800.2-2017 auto 6.2.4.10
+  // @uvm-ieee 1800.2-2020 auto 6.2.4.10
   virtual function void set_report_message(uvm_severity severity, 
     					   string id,
 					   string message,

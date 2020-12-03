@@ -1,11 +1,11 @@
 //
 //----------------------------------------------------------------------
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2010-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2011 Cypress Semiconductor Corp.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2010-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -114,6 +114,7 @@
 
   // Command Line Processor
   `include "base/uvm_cmdline_processor.svh"
+  `include "base/uvm_cmdline_report.svh"
   
   // traversal utilities
   `include "base/uvm_traversal.svh"

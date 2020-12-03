@@ -1,10 +1,10 @@
 //
 //----------------------------------------------------------------------
-// Copyright 2007-2013 Mentor Graphics Corporation
-// Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2018 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2013 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2010-2014 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 // 
 //   Licensed under the Apache License, Version 2.0 (the
@@ -74,11 +74,7 @@
 `include "macros/uvm_resource_defines.svh"
 `include "macros/uvm_packer_defines.svh"
 `include "macros/uvm_copier_defines.svh"
-`ifdef UVM_ENABLE_DEPRECATED_API
- `include "deprecated/macros/uvm_object_defines.svh"
-`else
  `include "macros/uvm_object_defines.svh"
-`endif
 `include "macros/uvm_tlm_defines.svh"
 `include "macros/uvm_sequence_defines.svh"
 `include "macros/uvm_callback_defines.svh"

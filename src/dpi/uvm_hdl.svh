@@ -1,11 +1,11 @@
 //------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2015 Analog Devices, Inc.
-// Copyright 2010 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
-// Copyright 2014 Cisco Systems, Inc.
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2015 Analog Devices, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2014 Cisco Systems, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2010 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //   
 //   Licensed under the Apache License, Version 2.0 (the
@@ -39,7 +39,6 @@
 
 
 `ifndef UVM_HDL_MAX_WIDTH
-// @uvm-ieee 1800.2-2017 auto 19.6.1
 `define UVM_HDL_MAX_WIDTH 1024
 `endif
 
@@ -51,6 +50,8 @@
  *   vpi_handle_by_name(
  *     "uvm_pkg::UVM_HDL_MAX_WIDTH", 0);
  */
+
+// @uvm-ieee 1800.2-2020 manual 19.6.1
 parameter int UVM_HDL_MAX_WIDTH = `UVM_HDL_MAX_WIDTH;
 
 

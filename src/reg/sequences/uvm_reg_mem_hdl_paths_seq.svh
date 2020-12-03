@@ -1,9 +1,9 @@
 // 
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2010 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
+// Copyright 2010 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -47,7 +47,7 @@
 // does not require any reads/writes to/from the DUT.
 //
 
-// @uvm-ieee 1800.2-2017 auto E.7.1
+// @uvm-ieee 1800.2-2020 auto E.7.1
 class uvm_reg_mem_hdl_paths_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
     // Variable -- NODOCS -- abstractions
     // If set, check the HDL paths for the specified design abstractions.
@@ -59,7 +59,7 @@ class uvm_reg_mem_hdl_paths_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
         `uvm_field_queue_string(abstractions, UVM_DEFAULT)
     `uvm_object_utils_end
     
-    // @uvm-ieee 1800.2-2017 auto E.7.3
+    // @uvm-ieee 1800.2-2020 auto E.7.3
     function new(string name="uvm_reg_mem_hdl_paths_seq");
         super.new(name);
     endfunction

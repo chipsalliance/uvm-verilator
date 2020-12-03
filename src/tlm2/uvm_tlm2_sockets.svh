@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
+// Copyright 2010-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -55,18 +55,18 @@
 // contents
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.2.1
+// @uvm-ieee 1800.2-2020 auto 12.3.5.2.1
 class uvm_tlm_b_initiator_socket #(type T=uvm_tlm_generic_payload)
                            extends uvm_tlm_b_initiator_socket_base #(T);
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.2.3
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.2.3
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction 
    
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.2.4
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.2.4
   function void connect(this_type provider);
 
     uvm_tlm_b_passthrough_initiator_socket_base #(T) initiator_pt_socket;
@@ -103,7 +103,7 @@ endclass
 //
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.1.1
+// @uvm-ieee 1800.2-2020 auto 12.3.5.1.1
 class uvm_tlm_b_target_socket #(type IMP=int,
                                 type T=uvm_tlm_generic_payload)
   extends uvm_tlm_b_target_socket_base #(T);
@@ -111,7 +111,7 @@ class uvm_tlm_b_target_socket #(type IMP=int,
   local IMP m_imp;
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.1.3
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.1.3
   function new (string name, uvm_component parent, IMP imp = null);
     super.new (name, parent);
     if (imp == null) $cast(m_imp, parent);
@@ -122,7 +122,7 @@ class uvm_tlm_b_target_socket #(type IMP=int,
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.1.4
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.1.4
   function void connect(this_type provider);
 
     uvm_component c;
@@ -150,7 +150,7 @@ endclass
 //
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.4.1
+// @uvm-ieee 1800.2-2020 auto 12.3.5.4.1
 class uvm_tlm_nb_initiator_socket #(type IMP=int,
                                     type T=uvm_tlm_generic_payload,
                                     type P=uvm_tlm_phase_e)
@@ -159,7 +159,7 @@ class uvm_tlm_nb_initiator_socket #(type IMP=int,
   uvm_tlm_nb_transport_bw_imp #(T,P,IMP) bw_imp;
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.4.3
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.4.3
   function new(string name, uvm_component parent, IMP imp = null);
     super.new (name, parent);
     if (imp == null) $cast(imp, parent);
@@ -170,7 +170,7 @@ class uvm_tlm_nb_initiator_socket #(type IMP=int,
   endfunction
 
 
-   // @uvm-ieee 1800.2-2017 auto 12.3.5.4.4
+   // @uvm-ieee 1800.2-2020 auto 12.3.5.4.4
    function void connect(this_type provider);
 
     uvm_tlm_nb_passthrough_initiator_socket_base #(T,P) initiator_pt_socket;
@@ -216,7 +216,7 @@ endclass
 //
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.3.1
+// @uvm-ieee 1800.2-2020 auto 12.3.5.3.1
 class uvm_tlm_nb_target_socket #(type IMP=int,
                                  type T=uvm_tlm_generic_payload,
                                  type P=uvm_tlm_phase_e)
@@ -225,7 +225,7 @@ class uvm_tlm_nb_target_socket #(type IMP=int,
   local IMP m_imp;
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.3.3
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.3.3
   function new (string name, uvm_component parent, IMP imp = null);
     super.new (name, parent);
     if (imp == null) $cast(m_imp, parent);
@@ -237,7 +237,7 @@ class uvm_tlm_nb_target_socket #(type IMP=int,
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.3.4
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.3.4
   function void connect(this_type provider);
 
     uvm_component c;
@@ -260,10 +260,11 @@ endclass
 // IS-A forward port;
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.7
+// @uvm-ieee 1800.2-2020 auto 12.3.5.7.1
 class uvm_tlm_b_passthrough_initiator_socket #(type T=uvm_tlm_generic_payload)
   extends uvm_tlm_b_passthrough_initiator_socket_base #(T);
 
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.7.3
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction
@@ -271,6 +272,7 @@ class uvm_tlm_b_passthrough_initiator_socket #(type T=uvm_tlm_generic_payload)
    // Function  -- NODOCS -- connect
    //
    // Connect this socket to the specified <uvm_tlm_b_target_socket>
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.7.4
   function void connect(this_type provider);
 
     uvm_tlm_b_passthrough_initiator_socket_base #(T) initiator_pt_socket;
@@ -294,10 +296,11 @@ class uvm_tlm_b_passthrough_initiator_socket #(type T=uvm_tlm_generic_payload)
 endclass
 
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.8
+// @uvm-ieee 1800.2-2020 auto 12.3.5.8.1
 class uvm_tlm_b_passthrough_target_socket #(type T=uvm_tlm_generic_payload)
   extends uvm_tlm_b_passthrough_target_socket_base #(T);
 
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.8.3
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction 
@@ -305,6 +308,7 @@ class uvm_tlm_b_passthrough_target_socket #(type T=uvm_tlm_generic_payload)
    // Function  -- NODOCS -- connect
    //
    // Connect this socket to the specified <uvm_tlm_b_initiator_socket>
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.8.4
   function void connect(this_type provider);
 
     uvm_tlm_b_passthrough_target_socket_base #(T) target_pt_socket;
@@ -333,11 +337,12 @@ endclass
 // IS-A forward port; HAS-A backward export
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.5
+// @uvm-ieee 1800.2-2020 auto 12.3.5.5.1
 class uvm_tlm_nb_passthrough_initiator_socket #(type T=uvm_tlm_generic_payload,
                                              type P=uvm_tlm_phase_e)
   extends uvm_tlm_nb_passthrough_initiator_socket_base #(T,P);
 
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.5.3
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction
@@ -345,6 +350,7 @@ class uvm_tlm_nb_passthrough_initiator_socket #(type T=uvm_tlm_generic_payload,
    // Function  -- NODOCS -- connect
    //
    // Connect this socket to the specified <uvm_tlm_nb_target_socket>
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.5.4
   function void connect(this_type provider);
 
     uvm_tlm_nb_passthrough_initiator_socket_base #(T,P) initiator_pt_socket;
@@ -384,17 +390,18 @@ endclass
 // IS-A forward export; HAS-A backward port
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.6.1
+// @uvm-ieee 1800.2-2020 auto 12.3.5.6.1
 class uvm_tlm_nb_passthrough_target_socket #(type T=uvm_tlm_generic_payload,
                                           type P=uvm_tlm_phase_e)
   extends uvm_tlm_nb_passthrough_target_socket_base #(T,P);
 
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.6.3
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.6.2
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.6.4
   function void connect(this_type provider);
 
     uvm_tlm_nb_passthrough_target_socket_base #(T,P) target_pt_socket;

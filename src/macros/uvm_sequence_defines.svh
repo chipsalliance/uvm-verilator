@@ -1,10 +1,10 @@
 //------------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2014 Intel Corporation
-// Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2018 AMD
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2010-2014 Synopsys, Inc.
 //   All Rights Reserved Worldwide 
 //  
 //   Licensed under the Apache License, Version 2.0 (the
@@ -46,7 +46,7 @@
 // It intentionally does zero processing.  After this action completes,
 // the user can manually set values, manipulate rand_mode and constraint_mode, etc.
 
-// @uvm-ieee 1800.2-2017 auto B.3.1.1
+// @uvm-ieee 1800.2-2020 auto B.3.1.1
 `define uvm_create(SEQ_OR_ITEM, SEQR=get_sequencer()) \
   begin \
   uvm_object_wrapper w_; \
@@ -96,7 +96,7 @@
 //|   sub_seq.post_start()        (task)
 //|
 
-// @uvm-ieee 1800.2-2017 auto B.3.1.4
+// @uvm-ieee 1800.2-2020 auto B.3.1.4
 `define uvm_do(SEQ_OR_ITEM, SEQR=get_sequencer(), PRIORITY=-1, CONSTRAINTS={}) \
   begin \
   `uvm_create(SEQ_OR_ITEM, SEQR) \
@@ -121,7 +121,7 @@
 // `uvm_create.  The processing is done without randomization.  Essentially, an
 // `uvm_do without the create or randomization.
 
-// @uvm-ieee 1800.2-2017 auto B.3.1.2
+// @uvm-ieee 1800.2-2020 auto B.3.1.2
 `define uvm_send(SEQ_OR_ITEM, PRIORITY=-1) \
   begin \
   uvm_sequence_base __seq; \
@@ -141,7 +141,7 @@
 // allocated (with `uvm_create). The processing is done with
 // randomization.
 
-// @uvm-ieee 1800.2-2017 auto B.3.1.3
+// @uvm-ieee 1800.2-2020 auto B.3.1.3
 `define uvm_rand_send(SEQ_OR_ITEM, PRIORITY=-1, CONSTRAINTS={}) \
   begin \
   uvm_sequence_base __seq; \
@@ -207,7 +207,7 @@
 //|  endclass
 
 
-// @uvm-ieee 1800.2-2017 auto B.3.2.1
+// @uvm-ieee 1800.2-2020 auto B.3.2.1
 `define uvm_add_to_seq_lib(TYPE,LIBTYPE) \
    static bit add_``TYPE``_to_seq_lib_``LIBTYPE =\
       LIBTYPE::m_add_typewide_sequence(TYPE::get_type());
@@ -243,8 +243,8 @@
 // See <uvm_sequencer_base::start_phase_sequence> for information on
 // starting default sequences.
 
-// @uvm-ieee 1800.2-2017 auto 14.4.2
-// @uvm-ieee 1800.2-2017 auto B.3.2.2
+// @uvm-ieee 1800.2-2020 auto 14.4.2
+// @uvm-ieee 1800.2-2020 auto B.3.2.2
 `define uvm_sequence_library_utils(TYPE) \
 \
    static protected uvm_object_wrapper m_typewide_sequences[$]; \
@@ -301,7 +301,7 @@
 //| endclass
 //
 
-// @uvm-ieee 1800.2-2017 auto B.3.3
+// @uvm-ieee 1800.2-2020 auto B.3.3
 `define uvm_declare_p_sequencer(SEQUENCER) \
   SEQUENCER p_sequencer;\
   virtual function void m_set_p_sequencer();\

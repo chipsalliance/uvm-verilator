@@ -1,13 +1,15 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2020 Mentor Graphics Corporation
-// Copyright 2012-2014 Semifore
-// Copyright 2018 Qualcomm, Inc.
-// Copyright 2004-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2014-2018 NVIDIA Corporation
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2020 Intel Corporation
+// Copyright 2020 Marvell International Ltd.
+// Copyright 2010-2020 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2018 Qualcomm, Inc.
+// Copyright 2012-2014 Semifore
+// Copyright 2004-2018 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -29,8 +31,12 @@
 typedef class uvm_reg_cbs;
 
 
+// Class: uvm_reg_field
+// This is an implementation of uvm_reg_field as described in 1800.2 with
+// the addition of API described below.
 
-// @uvm-ieee 1800.2-2017 auto 18.5.1
+
+// @uvm-ieee 1800.2-2020 auto 18.5.1
 class uvm_reg_field extends uvm_object;
 
    // Variable -- NODOCS -- value
@@ -72,12 +78,12 @@ class uvm_reg_field extends uvm_object;
    //----------------------
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.3.1
+   // @uvm-ieee 1800.2-2020 auto 18.5.3.1
    extern function new(string name = "uvm_reg_field");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.3.2
+   // @uvm-ieee 1800.2-2020 auto 18.5.3.2
    extern function void configure(uvm_reg        parent,
                                   int unsigned   size,
                                   int unsigned   lsb_pos,
@@ -112,7 +118,7 @@ class uvm_reg_field extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.4.1
+   // @uvm-ieee 1800.2-2020 auto 18.5.4.1
    extern virtual function uvm_reg get_parent();
    extern virtual function uvm_reg get_register();
 
@@ -143,12 +149,22 @@ class uvm_reg_field extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.4.6
+   // @uvm-ieee 1800.2-2020 auto 18.5.4.6
    extern virtual function string set_access(string mode);
 
+   // Function: set_rand_mode
+   // Modifies the ~rand_mode~ for the field instance to the specified one
+   //
+   // @uvm-contrib This API is being considered for potential contribution to 1800.2
+   extern virtual function void set_rand_mode(bit rand_mode);
 
+   // Function: get_rand_mode
+   // Returns the rand_mode of the field instance
+   //
+   // @uvm-contrib This API is being considered for potential contribution to 1800.2
+   extern virtual function bit get_rand_mode();
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.4.7
+   // @uvm-ieee 1800.2-2020 auto 18.5.4.7
    extern static function bit define_access(string name);
    local static bit m_predefined = m_predefine_policies();
    extern local static function bit m_predefine_policies();
@@ -170,20 +186,20 @@ class uvm_reg_field extends uvm_object;
    // (field access of WO, and map access value of RO, etc), the
    // method's return value is NOACCESS.
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.4.5
+   // @uvm-ieee 1800.2-2020 auto 18.5.4.5
    extern virtual function string get_access(uvm_reg_map map = null);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.4.8
+   // @uvm-ieee 1800.2-2020 auto 18.5.4.8
    extern virtual function bit is_known_access(uvm_reg_map map = null);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.4.9
+   // @uvm-ieee 1800.2-2020 auto 18.5.4.9
    extern virtual function void set_volatility(bit volatile);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.4.10
+   // @uvm-ieee 1800.2-2020 auto 18.5.4.10
    extern virtual function bit is_volatile();
 
 
@@ -193,51 +209,51 @@ class uvm_reg_field extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.2
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.2
    extern virtual function void set(uvm_reg_data_t  value,
                                     string          fname = "",
                                     int             lineno = 0);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.1
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.1
    extern virtual function uvm_reg_data_t get(string fname = "",
                                               int    lineno = 0);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.3
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.3
    extern virtual function uvm_reg_data_t get_mirrored_value(string fname = "",
                                               int    lineno = 0);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.4
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.4
    extern virtual function void reset(string kind = "HARD");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.6
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.6
    extern virtual function uvm_reg_data_t get_reset(string kind = "HARD");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.5
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.5
    extern virtual function bit has_reset(string kind = "HARD",
                                          bit    delete = 0);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.7
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.7
    extern virtual function void set_reset(uvm_reg_data_t value,
                                           string kind = "HARD");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.8
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.8
    extern virtual function bit needs_update();
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.9
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.9
    extern virtual task write (output uvm_status_e       status,
                               input  uvm_reg_data_t     value,
                               input  uvm_door_e         path = UVM_DEFAULT_DOOR,
@@ -250,7 +266,7 @@ class uvm_reg_field extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.10
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.10
    extern virtual task read  (output uvm_status_e       status,
                               output uvm_reg_data_t     value,
                               input  uvm_door_e         path = UVM_DEFAULT_DOOR,
@@ -263,7 +279,7 @@ class uvm_reg_field extends uvm_object;
                
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.11
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.11
    extern virtual task poke  (output uvm_status_e       status,
                               input  uvm_reg_data_t     value,
                               input  string             kind = "",
@@ -274,7 +290,7 @@ class uvm_reg_field extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.12
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.12
    extern virtual task peek  (output uvm_status_e       status,
                               output uvm_reg_data_t     value,
                               input  string             kind = "",
@@ -285,7 +301,7 @@ class uvm_reg_field extends uvm_object;
                
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.13
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.13
    extern virtual task mirror(output uvm_status_e      status,
                               input  uvm_check_e       check = UVM_NO_CHECK,
                               input  uvm_door_e        path = UVM_DEFAULT_DOOR,
@@ -298,23 +314,23 @@ class uvm_reg_field extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.15
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.15
    extern function void set_compare(uvm_check_e check=UVM_CHECK);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.14
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.14
    extern function uvm_check_e get_compare();
 
    
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.16
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.16
    extern function bit is_indv_accessible (uvm_door_e  path,
                                            uvm_reg_map local_map);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.5.17
+   // @uvm-ieee 1800.2-2020 auto 18.5.5.17
    extern function bit predict (uvm_reg_data_t    value,
                                 uvm_reg_byte_en_t be = -1,
                                 uvm_predict_e     kind = UVM_PREDICT_DIRECT,
@@ -357,22 +373,22 @@ class uvm_reg_field extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.6.1
+   // @uvm-ieee 1800.2-2020 auto 18.5.6.1
    virtual task pre_write  (uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.6.2
+   // @uvm-ieee 1800.2-2020 auto 18.5.6.2
    virtual task post_write (uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.6.3
+   // @uvm-ieee 1800.2-2020 auto 18.5.6.3
    virtual task pre_read (uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.5.6.4
+   // @uvm-ieee 1800.2-2020 auto 18.5.6.4
    virtual task post_read  (uvm_reg_item rw); endtask
 
 
@@ -450,7 +466,7 @@ function void uvm_reg_field::configure(uvm_reg        parent,
    endcase
 
    if (!is_rand)
-     value.rand_mode(0);
+     set_rand_mode(0);
 
 endfunction: configure
 
@@ -585,6 +601,20 @@ function string uvm_reg_field::set_access(string mode);
       m_access = set_access;
    end
 endfunction: set_access
+
+
+// set_rand_mode
+
+function void uvm_reg_field::set_rand_mode(bit rand_mode);
+    value.rand_mode(rand_mode);
+endfunction: set_rand_mode   
+
+
+// get_rand_mode
+
+function bit uvm_reg_field::get_rand_mode();
+    return bit'(value.rand_mode());
+endfunction: get_rand_mode 
 
 
 // define_access

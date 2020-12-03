@@ -1,12 +1,12 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2014 Intel Corporation
-// Copyright 2004-2010 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2004-2010 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -173,11 +173,6 @@ typedef uvm_resource_db#(uvm_reg_cvr_t) uvm_reg_cvr_rsrc_db;
       UVM_PREDICT,
       UVM_DEFAULT_DOOR
    } uvm_door_e;
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-   typedef uvm_door_e uvm_path_e;
-   parameter uvm_path_e UVM_DEFAULT_PATH = UVM_DEFAULT_DOOR;
-`endif
 
 // Enum -- NODOCS -- uvm_check_e
 //
@@ -352,6 +347,7 @@ typedef enum bit [63:0] {
 //
 //------------------------------------------------------------------------------
 
+// @uvm-ieee 1800.2-2020 auto 17.2.3.2
 class uvm_hdl_path_concat;
 
    // Variable -- NODOCS -- slices
@@ -367,6 +363,7 @@ class uvm_hdl_path_concat;
 
    // Function -- NODOCS -- add_slice
    // Append the specified ~slice~ literal to the path concatenation
+   // @uvm-ieee 1800.2-2020 auto 17.2.3.3.4
    function void add_slice(uvm_hdl_path_slice slice);
       slices = new [slices.size()+1] (slices);
       slices[slices.size()-1] = slice;
@@ -439,6 +436,7 @@ typedef struct packed {
 `include "reg/uvm_reg_map.svh"
 `include "reg/uvm_reg_block.svh"
 
+`include "reg/sequences/uvm_reg_randval.svh"
 `include "reg/sequences/uvm_reg_hw_reset_seq.svh"
 `include "reg/sequences/uvm_reg_bit_bash_seq.svh"
 `include "reg/sequences/uvm_mem_walk_seq.svh"

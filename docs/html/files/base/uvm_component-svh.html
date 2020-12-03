@@ -34,16 +34,16 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_component.print_config" id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">print_config</a></td><td class=SDescription>Print_config prints all configuration information for this component, as set by previous calls to &lt;uvm_config_db::set()&gt; and exports to the resources pool. </td></tr>
   <!-- index=3 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_component.Variables" >Variables</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_component.get_print_config_matches" id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">get_print_config_matches</a></td><td class=SDescription>static function bit get_print_config_matches()</td></tr>
   <!-- index=4 -->
 
-<tr class="SVariable SIndent2"><td class=SEntry><a href="#uvm_component.print_config_matches" id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">print_config_matches</a></td><td class=SDescription>Setting this static variable causes uvm_config_db::get() to print info about matching configuration settings as they are being applied.</td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_component.set_print_config_matches" id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">set_print_config_matches</a></td><td class=SDescription>static function void set_print_config_matches(bit val)</td></tr>
   <!-- index=5 -->
 
-<tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_component.Methods" >Methods</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_component.begin_tr" >begin_tr</a></td><td class=SDescription>Implementation of uvm_component::begin_tr as described in IEEE 1800.2-2020.</td></tr>
   <!-- index=6 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_component.begin_tr" >begin_tr</a></td><td class=SDescription>Implementation of uvm_component::begin_tr as described in IEEE 1800.2-2017.</td></tr></table></div></div><!--END_ND_SUMMARY-->
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_component.set_recording_enabled" >set_recording_enabled</a></td><td class=SDescription>In addition to the functionality described in IEEE 1800.2, this library implements a call to set_recording_enabled in build_phase when a config_db access of the form uvm_config_db #(uvm_bitstream_t)::get(this, &ldquo;&rdquo;, &ldquo;recording_detail&rdquo;, x) or uvm_config_db #(int)::get(this, &ldquo;&rdquo;, &ldquo;recording_detail&rdquo;, x) returns a non-zero value for x</td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
 
 
@@ -78,32 +78,42 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=3 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_component.Variables" href="../../../../src/base/uvm_component.svh">Variables</a></h3></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component.get_print_config_matches" href="../../../../src/base/uvm_component.svh">get_print_config_matches</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function bit get_print_config_matches()
+  </td></tr></table></blockquote><div class=CBody><p>static function bit get_print_config_matches()</p><p>Returns the value of the internal static variable print_config_matches which is the value of the verbose argument for apply_config_settings() if it is called in build_phase().&nbsp;  The variable has a default value of 0 which may be overwritten by set_print_config_matches()</p><p>@uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2</p></div></div></div>
 
 
 
 
  <!--CONTENT index=4 -->
-<div class="CVariable"><div class=CTopic><h3 class=CTitle><a name="uvm_component.print_config_matches" href="../../../../src/base/uvm_component.svh">print_config_matches</a></h3>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static bit print_config_matches
-  </td></tr></table></blockquote><div class=CBody><p>Setting this static variable causes uvm_config_db::get() to print info about matching configuration settings as they are being applied.</p><p>@uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2</p></div></div></div>
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component.set_print_config_matches" href="../../../../src/base/uvm_component.svh">set_print_config_matches</a></h3>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters colspan=3>static function void set_print_config_matches(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap width=100%>val</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+<div class=CBody><p>static function void set_print_config_matches(bit val)</p><p>Sets the value of the internal static variable print_config_matches to val</p><p>(see get_print_config_matches)</p><p>@uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2</p></div></div></div>
 
 
 
 
  <!--CONTENT index=5 -->
-<div class="CGroup"><div class=CTopic><h3 class=CTitle><a name="uvm_component.Methods" href="../../../../src/base/uvm_component.svh">Methods</a></h3></div></div>
-
-
-
-
- <!--CONTENT index=6 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component.begin_tr" href="../../../../src/base/uvm_component.svh">begin_tr</a></h3><div class=CBody><p>Implementation of uvm_component::begin_tr as described in IEEE 1800.2-2017.</p><blockquote><pre>function int begin_tr( uvm_transaction tr,
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component.begin_tr" href="../../../../src/base/uvm_component.svh">begin_tr</a></h3><div class=CBody><p>Implementation of uvm_component::begin_tr as described in IEEE 1800.2-2020.</p><blockquote><pre>function int begin_tr( uvm_transaction tr,
                        string stream_name=&quot;main&quot;,
                        string label=&quot;&quot;,
                        string desc=&quot;&quot;,
                        time begin_time=0,
                        int parent_handle=0 );</pre></blockquote><p>As an added feature, this implementation will attempt to get a non-0 parent_handle from the parent sequence of the transaction tr if the parent_handle argument is 0 and the transaction can be cast to a uvm_sequence_item.</p></div></div></div>
+
+
+
+
+ <!--CONTENT index=6 -->
+<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_component.set_recording_enabled" href="../../../../src/base/uvm_component.svh">set_recording_enabled</a></h3><div class=CBody><p>In addition to the functionality described in IEEE 1800.2, this library implements a call to set_recording_enabled in build_phase when a config_db access of the form uvm_config_db #(uvm_bitstream_t)::get(this, &ldquo;&rdquo;, &ldquo;recording_detail&rdquo;, x) or uvm_config_db #(int)::get(this, &ldquo;&rdquo;, &ldquo;recording_detail&rdquo;, x) returns a non-zero value for x</p></div></div></div>
 
 </div><!--Content-->
 
@@ -126,9 +136,19 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters colspan=5>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-Print_config prints all configuration information for this component, as set by previous calls to uvm_config_db::set() and exports to the resources pool. </div></div><div class=CToolTip id="tt2"><div class=CVariable>
-    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static bit print_config_matches
-  </td></tr></table></blockquote>Setting this static variable causes uvm_config_db::get() to print info about matching configuration settings as they are being applied.</div></div><!--END_ND_TOOLTIPS-->
+Print_config prints all configuration information for this component, as set by previous calls to uvm_config_db::set() and exports to the resources pool. </div></div><div class=CToolTip id="tt2"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>static function bit get_print_config_matches()
+  </td></tr></table></blockquote>static function bit get_print_config_matches()</div></div><div class=CToolTip id="tt3"><div class=CMethod>
+    <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
+      <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
+      <td class=PBeforeParameters colspan=3>static function void set_print_config_matches(</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
+      <td class=PParameter nowrap width=100%>val</td>
+    </tr>
+    <tr>
+      <td class=PAfterParameters colspan=3>)</td></tr>
+      </table></td></tr>
+    </table></blockquote>
+static function void set_print_config_matches(bit val)</div></div><!--END_ND_TOOLTIPS-->
 
 <script language=JavaScript><!--
 if (browserType) {if (browserVer) {document.write("</div>"); }document.write("</div>");}// --></script></body></html>

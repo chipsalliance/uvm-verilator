@@ -1,11 +1,11 @@
 //
 // -------------------------------------------------------------
+// Copyright 2012 Accellera Systems Initiative
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2020 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2004-2011 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
-// Copyright 2012 Accellera Systems Initiative
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -54,7 +54,7 @@ endclass
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 19.3.1
+// @uvm-ieee 1800.2-2020 auto 19.3.1
 class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
 
   `uvm_component_param_utils(uvm_reg_predictor#(BUSTYPE))
@@ -106,7 +106,7 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 19.3.3.1
+  // @uvm-ieee 1800.2-2020 auto 19.3.3.1
   function new (string name, uvm_component parent);
     super.new(name, parent);
     bus_in = new("bus_in", this);
@@ -114,17 +114,6 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
   endfunction
 
   // This method is documented in uvm_object
-`ifdef UVM_ENABLE_DEPRECATED_API
-  static string type_name = "";
-  virtual function string get_type_name();
-    if (type_name == "") begin
-      BUSTYPE t;
-      t = BUSTYPE::type_id::create("t");
-      type_name = {"uvm_reg_predictor #(", t.get_type_name(), ")"};
-    end
-    return type_name;
-  endfunction
-`else // !`ifdef UVM_ENABLE_DEPRECATED_API
   // TODO:  Is it better to replace this with:
   //| `uvm_type_name_decl($sformatf("uvm_reg_predictor #(%s)", BUSTYPE::type_name())
   static function string type_name();
@@ -140,9 +129,7 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
     return type_name();
   endfunction : get_type_name
 
-`endif // !`ifdef UVM_ENABLE_DEPRECATED_API
-
-  // @uvm-ieee 1800.2-2017 auto 19.3.3.2
+  // @uvm-ieee 1800.2-2020 auto 19.3.3.2
   virtual function void pre_predict(uvm_reg_item rw);
   endfunction
 
@@ -263,7 +250,7 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
   //
   // Checks that no pending register transactions are still queued.
 
-  // @uvm-ieee 1800.2-2017 auto 19.3.3.3
+  // @uvm-ieee 1800.2-2020 auto 19.3.3.3
   virtual function void check_phase(uvm_phase phase);
 	 string q[$];
      super.check_phase(phase);

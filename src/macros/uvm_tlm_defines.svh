@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2014 Intel Corporation
-// Copyright 2013-2018 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2011 AMD
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
+// Copyright 2013-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -84,7 +84,7 @@
 // Define the class uvm_blocking_put_impSFX for providing blocking put
 // implementations.  ~SFX~ is the suffix for the new class type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.1
+// @uvm-ieee 1800.2-2020 auto B.5.1
 `define uvm_blocking_put_imp_decl(SFX) \
 class uvm_blocking_put_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -99,7 +99,7 @@ endclass
 // Define the class uvm_nonblocking_put_impSFX for providing non-blocking 
 // put implementations.  ~SFX~ is the suffix for the new class type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.2
+// @uvm-ieee 1800.2-2020 auto B.5.2
 `define uvm_nonblocking_put_imp_decl(SFX) \
 class uvm_nonblocking_put_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -115,7 +115,7 @@ endclass
 // non-blocking put implementations.  ~SFX~ is the suffix for the new class
 // type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.3
+// @uvm-ieee 1800.2-2020 auto B.5.3
 `define uvm_put_imp_decl(SFX) \
 class uvm_put_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -131,7 +131,7 @@ endclass
 // Define the class uvm_blocking_get_impSFX for providing blocking get
 // implementations.  ~SFX~ is the suffix for the new class type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.4
+// @uvm-ieee 1800.2-2020 auto B.5.4
 `define uvm_blocking_get_imp_decl(SFX) \
 class uvm_blocking_get_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -146,7 +146,7 @@ endclass
 // Define the class uvm_nonblocking_get_impSFX for providing non-blocking 
 // get implementations.  ~SFX~ is the suffix for the new class type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.5
+// @uvm-ieee 1800.2-2020 auto B.5.5
 `define uvm_nonblocking_get_imp_decl(SFX) \
 class uvm_nonblocking_get_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -162,7 +162,7 @@ endclass
 // non-blocking get implementations.  ~SFX~ is the suffix for the new class
 // type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.6
+// @uvm-ieee 1800.2-2020 auto B.5.6
 `define uvm_get_imp_decl(SFX) \
 class uvm_get_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -178,7 +178,7 @@ endclass
 // Define the class uvm_blocking_peek_impSFX for providing blocking peek
 // implementations.  ~SFX~ is the suffix for the new class type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.7
+// @uvm-ieee 1800.2-2020 auto B.5.7
 `define uvm_blocking_peek_imp_decl(SFX) \
 class uvm_blocking_peek_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -193,8 +193,8 @@ endclass
 // Define the class uvm_nonblocking_peek_impSFX for providing non-blocking 
 // peek implementations.  ~SFX~ is the suffix for the new class type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.11
-// @uvm-ieee 1800.2-2017 auto B.5.8
+// @uvm-ieee 1800.2-2020 auto B.5.11
+// @uvm-ieee 1800.2-2020 auto B.5.8
 `define uvm_nonblocking_peek_imp_decl(SFX) \
 class uvm_nonblocking_peek_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -210,7 +210,7 @@ endclass
 // non-blocking peek implementations.  ~SFX~ is the suffix for the new class
 // type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.9
+// @uvm-ieee 1800.2-2020 auto B.5.9
 `define uvm_peek_imp_decl(SFX) \
 class uvm_peek_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -227,7 +227,7 @@ endclass
 // Define the class uvm_blocking_get_peek_impSFX for providing the
 // blocking get_peek implementation.
 
-// @uvm-ieee 1800.2-2017 auto B.5.10
+// @uvm-ieee 1800.2-2020 auto B.5.10
 `define uvm_blocking_get_peek_imp_decl(SFX) \
 class uvm_blocking_get_peek_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -243,7 +243,7 @@ endclass
 // Define the class uvm_nonblocking_get_peek_impSFX for providing non-blocking 
 // get_peek implementation.
 
-// @uvm-ieee 1800.2-2017 auto B.5.11
+// @uvm-ieee 1800.2020 manual B.5.11
 `define uvm_nonblocking_get_peek_imp_decl(SFX) \
 class uvm_nonblocking_get_peek_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -261,7 +261,7 @@ endclass
 // non-blocking get_peek implementations.  ~SFX~ is the suffix for the new class
 // type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.12
+// @uvm-ieee 1800.2-2020 auto B.5.12
 `define uvm_get_peek_imp_decl(SFX) \
 class uvm_get_peek_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \
@@ -279,7 +279,7 @@ endclass
 // Define the class uvm_blocking_master_impSFX for providing the
 // blocking master implementation.
 
-// @uvm-ieee 1800.2-2017 auto B.5.13
+// @uvm-ieee 1800.2-2020 auto B.5.13
 `define uvm_blocking_master_imp_decl(SFX) \
 class uvm_blocking_master_imp``SFX #(type REQ=int, type RSP=int, type IMP=int, \
                                      type REQ_IMP=IMP, type RSP_IMP=IMP) \
@@ -303,7 +303,7 @@ endclass
 // Define the class uvm_nonblocking_master_impSFX for providing the
 // non-blocking master implementation.
 
-// @uvm-ieee 1800.2-2017 auto B.5.14
+// @uvm-ieee 1800.2-2020 auto B.5.14
 `define uvm_nonblocking_master_imp_decl(SFX) \
 class uvm_nonblocking_master_imp``SFX #(type REQ=int, type RSP=int, type IMP=int, \
                                    type REQ_IMP=IMP, type RSP_IMP=IMP) \
@@ -328,7 +328,7 @@ endclass
 // non-blocking master implementations.  ~SFX~ is the suffix for the new class
 // type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.15
+// @uvm-ieee 1800.2-2020 auto B.5.15
 `define uvm_master_imp_decl(SFX) \
 class uvm_master_imp``SFX #(type REQ=int, type RSP=int, type IMP=int, \
                             type REQ_IMP=IMP, type RSP_IMP=IMP) \
@@ -355,7 +355,7 @@ endclass
 // Define the class uvm_blocking_slave_impSFX for providing the
 // blocking slave implementation.
 
-// @uvm-ieee 1800.2-2017 auto B.5.16
+// @uvm-ieee 1800.2-2020 auto B.5.16
 `define uvm_blocking_slave_imp_decl(SFX) \
 class uvm_blocking_slave_imp``SFX #(type REQ=int, type RSP=int, type IMP=int, \
                                     type REQ_IMP=IMP, type RSP_IMP=IMP) \
@@ -379,7 +379,7 @@ endclass
 // Define the class uvm_nonblocking_slave_impSFX for providing the
 // non-blocking slave implementation.
 
-// @uvm-ieee 1800.2-2017 auto B.5.17
+// @uvm-ieee 1800.2-2020 auto B.5.17
 `define uvm_nonblocking_slave_imp_decl(SFX) \
 class uvm_nonblocking_slave_imp``SFX #(type REQ=int, type RSP=int, type IMP=int, \
                                        type REQ_IMP=IMP, type RSP_IMP=IMP) \
@@ -404,7 +404,7 @@ endclass
 // non-blocking slave implementations.  ~SFX~ is the suffix for the new class
 // type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.18
+// @uvm-ieee 1800.2-2020 auto B.5.18
 `define uvm_slave_imp_decl(SFX) \
 class uvm_slave_imp``SFX #(type REQ=int, type RSP=int, type IMP=int, \
                            type REQ_IMP=IMP, type RSP_IMP=IMP) \
@@ -431,7 +431,7 @@ endclass
 // Define the class uvm_blocking_transport_impSFX for providing the
 // blocking transport implementation.
 
-// @uvm-ieee 1800.2-2017 auto B.5.19
+// @uvm-ieee 1800.2-2020 auto B.5.19
 `define uvm_blocking_transport_imp_decl(SFX) \
 class uvm_blocking_transport_imp``SFX #(type REQ=int, type RSP=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(REQ, RSP)); \
@@ -446,7 +446,7 @@ endclass
 // Define the class uvm_nonblocking_transport_impSFX for providing the
 // non-blocking transport implementation.
 
-// @uvm-ieee 1800.2-2017 auto B.5.20
+// @uvm-ieee 1800.2-2020 auto B.5.20
 `define uvm_nonblocking_transport_imp_decl(SFX) \
 class uvm_nonblocking_transport_imp``SFX #(type REQ=int, type RSP=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(REQ, RSP)); \
@@ -465,7 +465,7 @@ endclass
 // non-blocking transport implementations.  ~SFX~ is the suffix for the new class
 // type.
 
-// @uvm-ieee 1800.2-2017 auto B.5.21
+// @uvm-ieee 1800.2-2020 auto B.5.21
 `define uvm_transport_imp_decl(SFX) \
 class uvm_transport_imp``SFX #(type REQ=int, type RSP=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(REQ, RSP)); \
@@ -513,7 +513,7 @@ endclass
 //|   endfunction
 //| endclass
 
-// @uvm-ieee 1800.2-2017 auto B.5.22
+// @uvm-ieee 1800.2-2020 auto B.5.22
 `define uvm_analysis_imp_decl(SFX) \
 class uvm_analysis_imp``SFX #(type T=int, type IMP=int) \
   extends uvm_port_base #(uvm_tlm_if_base #(T,T)); \

@@ -1,13 +1,13 @@
 //
 //------------------------------------------------------------------------------
+// Copyright 2010-2012 AMD
+// Copyright 2012 Accellera Systems Initiative
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2012-2018 Cisco Systems, Inc.
 // Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2012-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2018 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2010-2012 AMD
-// Copyright 2012-2018 NVIDIA Corporation
-// Copyright 2012-2018 Cisco Systems, Inc.
-// Copyright 2012 Accellera Systems Initiative
 // Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
@@ -75,15 +75,15 @@ typedef class uvm_report_message;
 typedef class uvm_report_object;
 typedef class uvm_report_handler;
 typedef class uvm_default_report_server;
+typedef class uvm_cmdline_verbosity;
   
 // Class: uvm_root
 // 
 //| class uvm_root extends uvm_component
 //
 // Implementation of the uvm_root class, as defined
-// in 1800.2-2017 Section F.7
+// in 1800.2-2020 Section F.7
 
-//@uvm-ieee 1800.2-2017 manual F.7
 class uvm_root extends uvm_component;
 
 	// Function -- NODOCS -- get()
@@ -144,21 +144,29 @@ class uvm_root extends uvm_component;
 	// with ~$finish~.
 
 	virtual function void die();
-		uvm_report_server l_rs = uvm_report_server::get_server();
-		// do the pre_abort callbacks
+	  uvm_report_server l_rs;
 
-		m_uvm_core_state=UVM_CORE_PRE_ABORT;
-
-
-		m_do_pre_abort();
-
-    		uvm_run_test_callback::m_do_pre_abort();
-
-		l_rs.report_summarize();
-
-		m_uvm_core_state=UVM_CORE_ABORTED;
-
-		$finish;
+          // Only die once...
+          if (m_uvm_core_state inside {UVM_CORE_PRE_ABORT,UVM_CORE_ABORTED})
+            return;
+          
+          l_rs = uvm_report_server::get_server();
+	  // do the pre_abort callbacks
+          
+	  m_uvm_core_state=UVM_CORE_PRE_ABORT;
+          
+          
+	  m_do_pre_abort();
+          
+    	  uvm_run_test_callback::m_do_pre_abort();
+          
+          m_do_cmdline_checks();
+          
+	  l_rs.report_summarize();
+          
+	  m_uvm_core_state=UVM_CORE_ABORTED;
+          
+	  $finish;
 	endfunction
 
 
@@ -182,11 +190,7 @@ class uvm_root extends uvm_component;
 	//
 	// If set, then run_test will call $finish after all phases are executed.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  bit finish_on_completion = 1;
-`else
   local bit finish_on_completion = 1;
-`endif
 
   // Function -- NODOCS -- get_finish_on_completion
   
@@ -203,17 +207,6 @@ class uvm_root extends uvm_component;
 //----------------------------------------------------------------------------
 // Group -- NODOCS -- Topology
 //----------------------------------------------------------------------------
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-	// Variable -- NODOCS -- top_levels
-	//
-	// This variable is a list of all of the top level components in UVM. It
-	// includes the uvm_test_top component that is created by <run_test> as
-	// well as any other top level components that have been instantiated
-	// anywhere in the hierarchy.
-
-	uvm_component top_levels[$];
-`endif // UVM_ENABLE_DEPRECATED_API
 
 	// Function -- NODOCS -- find
 
@@ -288,7 +281,9 @@ class uvm_root extends uvm_component;
 	extern protected function new ();
 	extern protected virtual function bit m_add_child (uvm_component child);
 	extern function void build_phase(uvm_phase phase);
+        extern local function void m_do_cl_init();
 	extern local function void m_do_verbosity_settings();
+        extern local function void m_do_cmdline_checks();
 	extern local function void m_do_timeout_settings();
 	extern local function void m_do_factory_settings();
 	extern local function void m_process_inst_override(string ovr);
@@ -298,6 +293,8 @@ class uvm_root extends uvm_component;
 	extern local function void m_do_dump_args();
 	extern local function void m_process_config(string cfg, bit is_int);
 	extern local function void m_process_default_sequence(string cfg);
+        local string m_uvm_verbosity_settings[$];
+        local uvm_cmdline_set_verbosity m_time_settings[$];
 	extern function void m_check_verbosity();
 	extern function void m_check_uvm_field_flag_size();
 	extern virtual function void report_header(UVM_FILE file = 0);
@@ -342,11 +339,6 @@ class uvm_root extends uvm_component;
 
 endclass
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-   uvm_root uvm_top ; //Note this is no longer const as we assign it in uvm_root::new() to avoid static init races
-`endif
-
-
 //-----------------------------------------------------------------------------
 // IMPLEMENTATION
 //-----------------------------------------------------------------------------
@@ -379,11 +371,10 @@ function uvm_root::new();
     return;
   end
   m_inst = this;
-`ifdef UVM_ENABLE_DEPRECATED_API
-   uvm_top = this; 
-`endif
-
   clp = uvm_cmdline_processor::get_inst();
+
+  m_do_cl_init();
+  m_set_cl_msg_args();
 
 endfunction
 
@@ -422,7 +413,7 @@ function void uvm_root::report_header(UVM_FILE file = 0);
 	  q.push_back("\n  ***********       IMPORTANT RELEASE NOTES         ************\n");
 	  m_relnotes_done = 1;
 
-  	  q.push_back("\n  This implementation of the UVM Library deviates from the 1800.2-2017\n");
+  	  q.push_back("\n  This implementation of the UVM Library deviates from the 1800.2-2020\n");
 	  q.push_back("  standard.  See the DEVIATIONS.md file contained in the release\n");
 	  q.push_back("  for more details.\n");
           
@@ -576,8 +567,10 @@ task uvm_root::run_test(string test_name="");
 
 	l_rs = uvm_report_server::get_server();
 
-  uvm_run_test_callback::m_do_post_run_test();
+        uvm_run_test_callback::m_do_post_run_test();
 
+        m_do_cmdline_checks();
+  
 	l_rs.report_summarize();
 
 	m_uvm_core_state=UVM_CORE_FINISHED;
@@ -685,12 +678,6 @@ endfunction
 // Add to the top levels array
 function bit uvm_root::m_add_child (uvm_component child);
 	if(super.m_add_child(child)) begin
-`ifdef UVM_ENABLE_DEPRECATED_API
-		if(child.get_name() == "uvm_test_top")
-			top_levels.push_front(child);
-		else
-			top_levels.push_back(child);
-`endif // UVM_ENABLE_DEPRECATED_API
 		return 1;
 	end
 	else
@@ -703,47 +690,100 @@ endfunction
 
 function void uvm_root::build_phase(uvm_phase phase);
 
-	super.build_phase(phase);
-
-	m_set_cl_msg_args();
-
-	m_do_verbosity_settings();
-	m_do_timeout_settings();
-	m_do_factory_settings();
-	m_do_config_settings();
-	m_do_max_quit_settings();
+  super.build_phase(phase);
+  
+  m_do_verbosity_settings();
+  m_do_timeout_settings();
+  m_do_factory_settings();
+  m_do_config_settings();
+  m_do_max_quit_settings();
 
 endfunction
 
+// m_do_cl_init
+// ---------------------
+function void uvm_root::m_do_cl_init();
+  string values[$];
+  string args[$];
+  string message;
 
+  uvm_cmdline_set_verbosity::init(this);
+  foreach(uvm_cmdline_set_verbosity::settings[i])
+    if (uvm_cmdline_set_verbosity::settings[i].phase == "time" && uvm_cmdline_set_verbosity::settings[i].offset != 0)
+      m_time_settings.push_back(uvm_cmdline_set_verbosity::settings[i]);
+
+  uvm_cmdline_set_action::init(this);
+
+  uvm_cmdline_set_severity::init(this);
+
+endfunction : m_do_cl_init
+  
+  
 // m_do_verbosity_settings
 // -----------------------
 
 function void uvm_root::m_do_verbosity_settings();
-	string set_verbosity_settings[$];
-	string split_vals[$];
-	uvm_verbosity tmp_verb;
+  string set_verbosity_settings[$];
+  string split_vals[$];
+  uvm_verbosity tmp_verb;
 
-	// Retrieve them all into set_verbosity_settings
-	void'(clp.get_arg_values("+uvm_set_verbosity=", set_verbosity_settings));
+  // do time based command line verbosity settings
+  fork 
+    begin
+      time last_time = 0;
+      if (m_time_settings.size() > 0)
+        m_time_settings.sort() with ( item.offset );
+      foreach(m_time_settings[i]) begin
+        uvm_component comps[$];
+        find_all(m_time_settings[i].comp,comps);
+        #(m_time_settings[i].offset - last_time);
+        last_time = m_time_settings[i].offset;
+        if(m_time_settings[i].id == "_ALL_") begin
+          foreach(comps[j]) begin
+            m_time_settings[i].used[comps[j]] = 1;
+            comps[j].set_report_verbosity_level(m_time_settings[i].verbosity);
+          end
+        end
+        else begin
+          foreach(comps[j]) begin
+            m_time_settings[i].used[comps[j]] = 1;
+            comps[j].set_report_id_verbosity(m_time_settings[i].id, m_time_settings[i].verbosity);
+          end
+        end
+      end
+    end 
+  join_none // fork begin
 
-	for(int i = 0; i < set_verbosity_settings.size(); i++) begin
-		uvm_split_string(set_verbosity_settings[i], ",", split_vals);
-		if(split_vals.size() < 4 || split_vals.size() > 5) begin
-			uvm_report_warning("INVLCMDARGS",
-				$sformatf("Invalid number of arguments found on the command line for setting '+uvm_set_verbosity=%s'.  Setting ignored.",
-					set_verbosity_settings[i]), UVM_NONE, "", "");
-		end
-		// Invalid verbosity
-		if(!clp.m_convert_verb(split_vals[2], tmp_verb)) begin
-			uvm_report_warning("INVLCMDVERB",
-				$sformatf("Invalid verbosity found on the command line for setting '%s'.",
-					set_verbosity_settings[i]), UVM_NONE, "", "");
-		end
-	end
 endfunction
 
 
+// m_do_cmdline_checks
+// ---------------------
+function void uvm_root::m_do_cmdline_checks();
+  string dump_args[$];
+
+  uvm_cmdline_set_verbosity::check(this);
+  
+  if(clp.get_arg_matches("+UVM_DUMP_REPORT_ARGS", dump_args)) begin
+    string msgs[$];
+
+`ifdef UVM_CMDLINE_NO_DPI
+    msgs.push_back("\n!!! UVM_CMDLINE_NO_DPI IS DEFINED !!!");
+`endif
+
+    msgs.push_back(uvm_cmdline_verbosity::dump());
+    msgs.push_back(uvm_cmdline_set_verbosity::dump());
+    msgs.push_back(uvm_cmdline_set_action::dump());
+    msgs.push_back(uvm_cmdline_set_severity::dump());
+     
+    uvm_report_info("REPORTARGS", 
+                    $sformatf("\n--- UVM Reporting Argument Summary ---\n%s\n", 
+                              `UVM_STRING_QUEUE_STREAMING_PACK(msgs)),
+                    UVM_NONE);
+  end
+  
+endfunction // m_do_cmdline_checks
+  
 // m_do_timeout_settings
 // ---------------------
 
@@ -808,7 +848,7 @@ function void uvm_root::m_process_inst_override(string ovr);
 	uvm_coreservice_t cs = uvm_coreservice_t::get();
 	uvm_factory factory=cs.get_factory();
 
-	uvm_split_string(ovr, ",", split_val);
+	uvm_string_split(ovr, ",", split_val);
 
 	if(split_val.size() != 3 ) begin
 		uvm_report_error("UVM_CMDLINE_PROC", {"Invalid setting for +uvm_set_inst_override=", ovr,
@@ -830,7 +870,7 @@ function void uvm_root::m_process_type_override(string ovr);
 	uvm_coreservice_t cs = uvm_coreservice_t::get();
 	uvm_factory factory=cs.get_factory();
 
-	uvm_split_string(ovr, ",", split_val);
+	uvm_string_split(ovr, ",", split_val);
 
 	if(split_val.size() > 3 || split_val.size() < 2) begin
 		uvm_report_error("UVM_CMDLINE_PROC", {"Invalid setting for +uvm_set_type_override=", ovr,
@@ -865,7 +905,7 @@ function void uvm_root::m_process_config(string cfg, bit is_int);
 	m_uvm_top = cs.get_root();
 
 
-	uvm_split_string(cfg, ",", split_val);
+	uvm_string_split(cfg, ",", split_val);
 	if(split_val.size() == 1) begin
 		uvm_report_error("UVM_CMDLINE_PROC", {"Invalid +uvm_set_config command\"", cfg,
 				"\" missing field and value: component is \"", split_val[0], "\""}, UVM_NONE);
@@ -923,7 +963,7 @@ function void uvm_root::m_process_default_sequence(string cfg);
 	uvm_factory f = cs.get_factory();
 	uvm_object_wrapper w;
 
-	uvm_split_string(cfg, ",", split_val);
+	uvm_string_split(cfg, ",", split_val);
 	if(split_val.size() == 1) begin
 		uvm_report_error("UVM_CMDLINE_PROC", {"Invalid +uvm_set_default_sequence command\"", cfg,
 				"\" missing phase and type: sequencer is \"", split_val[0], "\""}, UVM_NONE);
@@ -1008,7 +1048,7 @@ function void uvm_root::m_do_max_quit_settings();
 		end
 		uvm_report_info("MAXQUITSET",
 			$sformatf("'+UVM_MAX_QUIT_COUNT=%s' provided on the command line is being applied.", max_quit), UVM_NONE);
-		uvm_split_string(max_quit, ",", split_max_quit);
+		uvm_string_split(max_quit, ",", split_max_quit);
 		max_quit_int = split_max_quit[0].atoi();
 		case(split_max_quit[1])
 			"YES"   : srvr.set_max_quit_count(max_quit_int, 1);
@@ -1040,72 +1080,15 @@ endfunction
 
 function void uvm_root::m_check_verbosity();
 
-	string verb_string;
-	string verb_settings[$];
-	int verb_count;
-	int plusarg;
-	int verbosity = UVM_MEDIUM;
-
-  `ifndef UVM_CMDLINE_NO_DPI
-	// Retrieve the verbosities provided on the command line.
-	verb_count = clp.get_arg_values("+UVM_VERBOSITY=", verb_settings);
-  `else
-	verb_count = $value$plusargs("UVM_VERBOSITY=%s",verb_string);
-	if (verb_count)
-		verb_settings.push_back(verb_string);
-  `endif
-
-	// If none provided, provide message about the default being used.
-	//if (verb_count == 0)
-	//  uvm_report_info("DEFVERB", ("No verbosity specified on the command line.  Using the default: UVM_MEDIUM"), UVM_NONE);
-
-	// If at least one, use the first.
-	if (verb_count > 0) begin
-		verb_string = verb_settings[0];
-		plusarg = 1;
-	end
-
-	// If more than one, provide the warning stating how many, which one will
-	// be used and the complete list.
-	if (verb_count > 1) begin
-		string verb_list;
-		string sep;
-		for (int i = 0; i < verb_settings.size(); i++) begin
-			if (i != 0)
-				sep = ", ";
-			verb_list = {verb_list, sep, verb_settings[i]};
-		end
-		uvm_report_warning("MULTVERB",
-			$sformatf("Multiple (%0d) +UVM_VERBOSITY arguments provided on the command line.  '%s' will be used.  Provided list: %s.", verb_count, verb_string, verb_list), UVM_NONE);
-	end
-
-	if(plusarg == 1) begin
-		case(verb_string)
-			"UVM_NONE"    : verbosity = UVM_NONE;
-			"NONE"        : verbosity = UVM_NONE;
-			"UVM_LOW"     : verbosity = UVM_LOW;
-			"LOW"         : verbosity = UVM_LOW;
-			"UVM_MEDIUM"  : verbosity = UVM_MEDIUM;
-			"MEDIUM"      : verbosity = UVM_MEDIUM;
-			"UVM_HIGH"    : verbosity = UVM_HIGH;
-			"HIGH"        : verbosity = UVM_HIGH;
-			"UVM_FULL"    : verbosity = UVM_FULL;
-			"FULL"        : verbosity = UVM_FULL;
-			"UVM_DEBUG"   : verbosity = UVM_DEBUG;
-			"DEBUG"       : verbosity = UVM_DEBUG;
-			default       : begin
-				verbosity = verb_string.atoi();
-				if(verbosity > 0)
-					uvm_report_info("NSTVERB", $sformatf("Non-standard verbosity value, using provided '%0d'.", verbosity), UVM_NONE);
-				if(verbosity == 0) begin
-					verbosity = UVM_MEDIUM;
-					uvm_report_warning("ILLVERB", "Illegal verbosity value, using default of UVM_MEDIUM.", UVM_NONE);
-				end
-			end
-		endcase
-	end
-
-	set_report_verbosity_level_hier(verbosity);
+  int    verbosity = UVM_MEDIUM;
+  
+  uvm_cmdline_verbosity::init(this);
+  uvm_cmdline_verbosity::check(this);
+  
+  if (uvm_cmdline_verbosity::settings.size() > 0)
+    verbosity = uvm_cmdline_verbosity::settings[0].verbosity;
+  
+  set_report_verbosity_level_hier(verbosity);
 
 endfunction
 
@@ -1124,21 +1107,15 @@ endfunction
 // TBD this looks wrong - taking advantage of uvm_root not doing anything else?
 // TBD move to phase_started callback?
 task uvm_root::run_phase (uvm_phase phase);
-	// check that the commandline are took effect
-	foreach(m_uvm_applied_cl_action[idx])
-		if(m_uvm_applied_cl_action[idx].used==0) begin
-			`uvm_warning("INVLCMDARGS",$sformatf("\"+uvm_set_action=%s\" never took effect due to a mismatching component pattern",m_uvm_applied_cl_action[idx].arg))
-		end
-	foreach(m_uvm_applied_cl_sev[idx])
-		if(m_uvm_applied_cl_sev[idx].used==0) begin
-			`uvm_warning("INVLCMDARGS",$sformatf("\"+uvm_set_severity=%s\" never took effect due to a mismatching component pattern",m_uvm_applied_cl_sev[idx].arg))
-		end
+  // check that the commandline are took effect
+  uvm_cmdline_set_action::check(this);
+  uvm_cmdline_set_severity::check(this);
 
-	if($time > 0)
-		`uvm_fatal("RUNPHSTIME", {"The run phase must start at time 0, current time is ",
-				$sformatf("%0t", $realtime), ". No non-zero delays are allowed before ",
-				"run_test(), and pre-run user defined phases may not consume ",
-				"simulation time before the start of the run phase."})
+  if($time > 0)
+    `uvm_fatal("RUNPHSTIME", {"The run phase must start at time 0, current time is ",
+			      $sformatf("%0t", $realtime), ". No non-zero delays are allowed before ",
+			      "run_test(), and pre-run user defined phases may not consume ",
+			      "simulation time before the start of the run phase."})
 endtask
 
 

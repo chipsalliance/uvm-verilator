@@ -1,10 +1,10 @@
 //------------------------------------------------------------------------------
+// Copyright 2012 Accellera Systems Initiative
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2018 NVIDIA Corporation
-// Copyright 2012 Accellera Systems Initiative
 // Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
@@ -32,10 +32,7 @@
 // request (REQ) and response (RSP) types.
 //------------------------------------------------------------------------------
 
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual
-`endif
- class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
+virtual class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
                                  type RSP = REQ) extends uvm_sequencer_base;
 
   typedef uvm_sequencer_param_base #( REQ , RSP) this_type;
@@ -210,6 +207,7 @@ virtual
   // Internal methods and variables; do not use directly, not part of standard
 
   /* local */ extern function void m_last_rsp_push_front(RSP item);
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.9
   /* local */ extern function void put_response (RSP t);
   /* local */ extern virtual function void build_phase(uvm_phase phase);
   /* local */ extern virtual function void connect_phase(uvm_phase phase);

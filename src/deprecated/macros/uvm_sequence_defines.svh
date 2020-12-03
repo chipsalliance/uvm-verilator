@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-// Copyright 2007-2009 Mentor Graphics Corporation
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2018 AMD
-// Copyright 2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2009 Mentor Graphics Corporation
+// Copyright 2018-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide 
 //  
 //   Licensed under the Apache License, Version 2.0 (the

@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2015 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -32,7 +32,7 @@ typedef enum {
 } uvm_heartbeat_modes;
 
 typedef class uvm_heartbeat_callback;
-typedef uvm_callbacks #(uvm_objection,uvm_heartbeat_callback) uvm_heartbeat_cbs_t /* @uvm-ieee 1800.2-2017 auto D.4.2*/   ;
+typedef uvm_callbacks #(uvm_objection,uvm_heartbeat_callback) uvm_heartbeat_cbs_t;
 
 
 //------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ typedef uvm_callbacks #(uvm_objection,uvm_heartbeat_callback) uvm_heartbeat_cbs_
 //------------------------------------------------------------------------------
 
 typedef class uvm_objection_callback;
-// @uvm-ieee 1800.2-2017 auto 10.6.1
+// @uvm-ieee 1800.2-2020 auto 10.6.1
 class uvm_heartbeat extends uvm_object;
 
   protected uvm_objection m_objection;
@@ -79,7 +79,7 @@ class uvm_heartbeat extends uvm_object;
   //|    ...
   //| endclass
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.1
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.1
   function new(string name, uvm_component cntxt, uvm_objection objection=null);
      uvm_coreservice_t cs;
     super.new(name);
@@ -101,7 +101,7 @@ class uvm_heartbeat extends uvm_object;
   // mode is returned. If an argument is specified to change the mode then the
   // mode is changed to the new value.
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.2
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.2
   function uvm_heartbeat_modes set_mode (uvm_heartbeat_modes mode = UVM_NO_HB_MODE);
     set_mode = m_mode;
     if(mode == UVM_ANY_ACTIVE || mode == UVM_ONE_ACTIVE || mode == UVM_ALL_ACTIVE)
@@ -121,7 +121,7 @@ class uvm_heartbeat extends uvm_object;
   // trigger event, then the monitoring is not started. Monitoring can be 
   // started by explicitly calling <start>.
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.3
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.3
   function void set_heartbeat (uvm_event#(uvm_object) e, ref uvm_component comps[$]);
     uvm_object c;
     foreach(comps[i]) begin
@@ -143,7 +143,7 @@ class uvm_heartbeat extends uvm_object;
   // to the list of components and will be expected to participate
   // in the currently active event window.
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.4
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.4
   function void add (uvm_component comp);
     uvm_object c = comp;
     if(m_cb.cnt.exists(c)) return;
@@ -157,7 +157,7 @@ class uvm_heartbeat extends uvm_object;
   // Monitoring is not stopped, even if the last component has been
   // removed (an explicit stop is required).
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.5
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.5
   function void remove (uvm_component comp);
     uvm_object c = comp;
     if(m_cb.cnt.exists(c)) m_cb.cnt.delete(c);
@@ -173,7 +173,7 @@ class uvm_heartbeat extends uvm_object;
   // running and ~e~ is specifying a different trigger event from the
   // current event.
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.6
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.6
   function void start (uvm_event#(uvm_object) e=null);
     if(m_event == null && e == null) begin
       m_cntxt.uvm_report_warning("NOEVNT", { "start() was called for: ",
@@ -198,7 +198,7 @@ class uvm_heartbeat extends uvm_object;
   // that if <start> is called again the process will wait for the first
   // event trigger to start the monitoring.
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.7
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.7
   function void stop ();
     m_started = 0;
     ->m_stop_event;

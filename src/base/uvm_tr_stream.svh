@@ -1,10 +1,10 @@
 //
 //-----------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2015 Analog Devices, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2015 NVIDIA Corporation
 // Copyright 2017 Cisco Systems, Inc.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -39,7 +39,7 @@ typedef class uvm_set_before_get_dap;
 typedef class uvm_text_recorder;
    
 
-// @uvm-ieee 1800.2-2017 auto 7.2.1
+// @uvm-ieee 1800.2-2020 auto 7.2.1
 virtual class uvm_tr_stream extends uvm_object;
 
    // Variable- m_cfg_dap
@@ -65,7 +65,7 @@ virtual class uvm_tr_stream extends uvm_object;
    // !m_is_opened && !m_is_closed == m_is_freed
    
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.2
+   // @uvm-ieee 1800.2-2020 auto 7.2.2
    function new(string name="unnamed-uvm_tr_stream");
       super.new(name);
       m_cfg_dap = new("cfg_dap");
@@ -84,7 +84,7 @@ virtual class uvm_tr_stream extends uvm_object;
    // Group -- NODOCS -- Configuration API
    
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.3.1
+   // @uvm-ieee 1800.2-2020 auto 7.2.3.1
    function uvm_tr_database get_db();
       m_uvm_tr_stream_cfg m_cfg;
       if (!m_cfg_dap.try_get(m_cfg)) begin
@@ -99,7 +99,7 @@ virtual class uvm_tr_stream extends uvm_object;
    endfunction : get_db
       
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.3.2
+   // @uvm-ieee 1800.2-2020 auto 7.2.3.2
    function string get_scope();
       m_uvm_tr_stream_cfg m_cfg;
       if (!m_cfg_dap.try_get(m_cfg)) begin
@@ -114,7 +114,7 @@ virtual class uvm_tr_stream extends uvm_object;
    endfunction : get_scope
       
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.3.3
+   // @uvm-ieee 1800.2-2020 auto 7.2.3.3
    function string get_stream_type_name();
       m_uvm_tr_stream_cfg m_cfg;
       if (!m_cfg_dap.try_get(m_cfg)) begin
@@ -141,7 +141,7 @@ virtual class uvm_tr_stream extends uvm_object;
    //
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.4.1
+   // @uvm-ieee 1800.2-2020 auto 7.2.4.1
    function void close();
       if (!is_open())
         return;
@@ -157,7 +157,7 @@ virtual class uvm_tr_stream extends uvm_object;
    endfunction : close
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.4.2
+   // @uvm-ieee 1800.2-2020 auto 7.2.4.2
    function void free();
 	   process p;
 	   string s;
@@ -238,13 +238,13 @@ virtual class uvm_tr_stream extends uvm_object;
    endfunction : m_do_open
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.4.3
+   // @uvm-ieee 1800.2-2020 auto 7.2.4.3
    function bit is_open();
       return m_is_opened;
    endfunction : is_open
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.4.4
+   // @uvm-ieee 1800.2-2020 auto 7.2.4.4
    function bit is_closed();
       return m_is_closed;
    endfunction : is_closed
@@ -258,7 +258,7 @@ virtual class uvm_tr_stream extends uvm_object;
    //
    
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.5.1
+   // @uvm-ieee 1800.2-2020 auto 7.2.5.1
    function uvm_recorder open_recorder(string name,
                                       time   open_time = 0,
                                       string type_name="");
@@ -297,7 +297,7 @@ virtual class uvm_tr_stream extends uvm_object;
    endfunction : m_free_recorder
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.5.2
+   // @uvm-ieee 1800.2-2020 auto 7.2.5.2
    function unsigned get_recorders(ref uvm_recorder q[$]);
       // Clear out the queue first...
       q.delete();
@@ -316,7 +316,7 @@ virtual class uvm_tr_stream extends uvm_object;
    local static uvm_tr_stream m_streams_by_id[int];
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.6.1
+   // @uvm-ieee 1800.2-2020 auto 7.2.6.1
    function int get_handle();
       if (!is_open() && !is_closed()) begin
         return 0;
@@ -335,7 +335,7 @@ virtual class uvm_tr_stream extends uvm_object;
       end
    endfunction : get_handle   
    
-   // @uvm-ieee 1800.2-2017 auto 7.2.6.2
+   // @uvm-ieee 1800.2-2020 auto 7.2.6.2
    static function uvm_tr_stream get_stream_from_handle(int id);
       if (id == 0)
         return null;
@@ -364,24 +364,24 @@ virtual class uvm_tr_stream extends uvm_object;
    //
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.7.1
+   // @uvm-ieee 1800.2-2020 auto 7.2.7.1
    protected virtual function void do_open(uvm_tr_database db,
                                            string scope,
                                            string stream_type_name);
    endfunction : do_open
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.7.2
+   // @uvm-ieee 1800.2-2020 auto 7.2.7.2
    protected virtual function void do_close();
    endfunction : do_close
       
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.7.3
+   // @uvm-ieee 1800.2-2020 auto 7.2.7.3
    protected virtual function void do_free();
    endfunction : do_free
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.2.7.4
+   // @uvm-ieee 1800.2-2020 auto 7.2.7.4
    protected virtual function uvm_recorder do_open_recorder(string name,
                                                             time   open_time,
                                                             string type_name);

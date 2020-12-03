@@ -1,13 +1,13 @@
 //----------------------------------------------------------------------
-// Copyright 2010-2014 Mentor Graphics Corporation
-// Copyright 2015 Analog Devices, Inc.
-// Copyright 2014 Semifore
-// Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2011-2012 AMD
-// Copyright 2012-2018 NVIDIA Corporation
+// Copyright 2015 Analog Devices, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2017 Cisco Systems, Inc.
 // Copyright 2011 Cypress Semiconductor Corp.
+// Copyright 2010-2014 Mentor Graphics Corporation
+// Copyright 2012-2020 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2014 Synopsys, Inc.
 // Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
@@ -56,7 +56,7 @@ typedef class uvm_root;
 typedef class uvm_config_db_options;
 
 
-// @uvm-ieee 1800.2-2017 auto C.4.2.1
+// @uvm-ieee 1800.2-2020 auto C.4.2.1
 class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
 
   // Internal lookup of config settings so they can be reused
@@ -81,7 +81,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   //| get_config_string(...) => uvm_config_db#(string)::get(cntxt,...)
   //| get_config_object(...) => uvm_config_db#(uvm_object)::get(cntxt,...)
 
-  // @uvm-ieee 1800.2-2017 auto C.4.2.2.2
+  // @uvm-ieee 1800.2-2020 auto C.4.2.2.2
   static function bit get(uvm_component cntxt,
                           string inst_name,
                           string field_name,
@@ -144,7 +144,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   //| set_config_string(...) => uvm_config_db#(string)::set(cntxt,...)
   //| set_config_object(...) => uvm_config_db#(uvm_object)::set(cntxt,...)
 
-  // @uvm-ieee 1800.2-2017 auto C.4.2.2.1
+  // @uvm-ieee 1800.2-2020 auto C.4.2.2.1
   static function void set(uvm_component cntxt,
                            string inst_name,
                            string field_name,
@@ -238,7 +238,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   // returns 1 if a config parameter exists and 0 if it doesn't exist.
   //
 
-  // @uvm-ieee 1800.2-2017 auto C.4.2.2.3
+  // @uvm-ieee 1800.2-2020 auto C.4.2.2.3
   static function bit exists(uvm_component cntxt, string inst_name,
     string field_name, bit spell_chk=0);
     uvm_coreservice_t cs = uvm_coreservice_t::get();
@@ -260,7 +260,7 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   // in ~cntxt~ and ~inst_name~. The task blocks until a new configuration
   // setting is applied that effects the specified field.
 
-  // @uvm-ieee 1800.2-2017 auto C.4.2.2.4
+  // @uvm-ieee 1800.2-2020 auto C.4.2.2.4
   static task wait_modified(uvm_component cntxt, string inst_name,
       string field_name);
     process p = process::self();
@@ -308,7 +308,7 @@ endclass
 // Convenience type for uvm_config_db#(uvm_bitstream_t)
 //
 //| typedef uvm_config_db#(uvm_bitstream_t) uvm_config_int;
-typedef uvm_config_db#(uvm_bitstream_t) uvm_config_int /* @uvm-ieee 1800.2-2017 auto C.4.2.3.1*/   ;
+typedef uvm_config_db#(uvm_bitstream_t) uvm_config_int /* @uvm-ieee 1800.2-2020 auto C.4.2.3.1*/ ;
 
 //----------------------------------------------------------------------
 // Topic -- NODOCS -- uvm_config_string
@@ -316,7 +316,7 @@ typedef uvm_config_db#(uvm_bitstream_t) uvm_config_int /* @uvm-ieee 1800.2-2017 
 // Convenience type for uvm_config_db#(string)
 //
 //| typedef uvm_config_db#(string) uvm_config_string;
-typedef uvm_config_db#(string) uvm_config_string /* @uvm-ieee 1800.2-2017 auto C.4.2.3.2*/   ;
+typedef uvm_config_db#(string) uvm_config_string /* @uvm-ieee 1800.2-2020 auto C.4.2.3.2*/ ;
 
 //----------------------------------------------------------------------
 // Topic -- NODOCS -- uvm_config_object
@@ -324,7 +324,7 @@ typedef uvm_config_db#(string) uvm_config_string /* @uvm-ieee 1800.2-2017 auto C
 // Convenience type for uvm_config_db#(uvm_object)
 //
 //| typedef uvm_config_db#(uvm_object) uvm_config_object;
-typedef uvm_config_db#(uvm_object) uvm_config_object /* @uvm-ieee 1800.2-2017 auto C.4.2.3.3*/   ;
+typedef uvm_config_db#(uvm_object) uvm_config_object /* @uvm-ieee 1800.2-2020 auto C.4.2.3.3*/ ;
 
 //----------------------------------------------------------------------
 // Topic -- NODOCS -- uvm_config_wrapper
@@ -332,7 +332,7 @@ typedef uvm_config_db#(uvm_object) uvm_config_object /* @uvm-ieee 1800.2-2017 au
 // Convenience type for uvm_config_db#(uvm_object_wrapper)
 //
 //| typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;   
-typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper /* @uvm-ieee 1800.2-2017 auto C.4.2.3.4*/   ;
+typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper /* @uvm-ieee 1800.2-2020 auto C.4.2.3.4*/ ;
 
 
 //----------------------------------------------------------------------

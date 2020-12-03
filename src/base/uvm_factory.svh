@@ -1,15 +1,15 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2015 Analog Devices, Inc.
-// Copyright 2014 Semifore
-// Copyright 2017 Intel Corporation
-// Copyright 2018 Qualcomm, Inc.
-// Copyright 2011 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013 Verilab
-// Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2017 Cisco Systems, Inc.
+// Copyright 2017 Intel Corporation
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2018 Qualcomm, Inc.
+// Copyright 2014 Semifore
+// Copyright 2011 Synopsys, Inc.
+// Copyright 2013 Verilab
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -78,21 +78,21 @@ endclass
 // See <uvm_default_factory::Usage> section for details on configuring and using the factory.
 //
   
-// @uvm-ieee 1800.2-2017 auto 8.3.1.1
+// @uvm-ieee 1800.2-2020 auto 8.3.1.1
 virtual class uvm_factory;
 
   // Group -- NODOCS -- Retrieving the factory
 
  
          
-  // @uvm-ieee 1800.2-2017 auto 8.3.1.2.1
+  // @uvm-ieee 1800.2-2020 auto 8.3.1.2.1
   static function uvm_factory get();
 	  	uvm_coreservice_t s;
 	  	s = uvm_coreservice_t::get();
 	  	return s.get_factory();
   endfunction	
   
-  // @uvm-ieee 1800.2-2017 auto 8.3.1.2.2
+  // @uvm-ieee 1800.2-2020 auto 8.3.1.2.2
   static function void set(uvm_factory f);
 	  	uvm_coreservice_t s;
 	  	s = uvm_coreservice_t::get();
@@ -114,7 +114,7 @@ virtual class uvm_factory;
   // If the proxy object's ~get_type_name~ method returns the empty string,
   // name-based lookup is effectively disabled.
 
-  // @uvm-ieee 1800.2-2017 auto 8.3.1.3
+  // @uvm-ieee 1800.2-2020 auto 8.3.1.3
   pure virtual function void register (uvm_object_wrapper obj);
 
 
@@ -123,7 +123,7 @@ virtual class uvm_factory;
   // Function -- NODOCS -- set_inst_override_by_type
 
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.4.1
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.4.1
       void set_inst_override_by_type (uvm_object_wrapper original_type,
                                       uvm_object_wrapper override_type,
                                       string full_inst_path);
@@ -156,7 +156,7 @@ virtual class uvm_factory;
   // first, followed by more general overrides.
 
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.4.1
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.4.1
       void set_inst_override_by_name (string original_type_name,
                                       string override_type_name,
                                       string full_inst_path);
@@ -165,7 +165,7 @@ virtual class uvm_factory;
   // Function -- NODOCS -- set_type_override_by_type
 
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.4.2
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.4.2
       void set_type_override_by_type (uvm_object_wrapper original_type,
                                       uvm_object_wrapper override_type,
                                       bit replace=1);
@@ -190,7 +190,7 @@ virtual class uvm_factory;
   // replaced, otherwise a previous override, if any, remains intact.
 
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.4.2
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.4.2
       void set_type_override_by_name (string original_type_name,
                                       string override_type_name,
                                       bit replace=1);
@@ -201,7 +201,7 @@ virtual class uvm_factory;
   // Function -- NODOCS -- create_object_by_type
 
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.5
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.5
       uvm_object    create_object_by_type    (uvm_object_wrapper requested_type,  
                                               string parent_inst_path="",
                                               string name=""); 
@@ -209,7 +209,7 @@ virtual class uvm_factory;
   // Function -- NODOCS -- create_component_by_type
 
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.5
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.5
       uvm_component create_component_by_type (uvm_object_wrapper requested_type,  
                                               string parent_inst_path="",
                                               string name, 
@@ -218,7 +218,7 @@ virtual class uvm_factory;
   // Function -- NODOCS -- create_object_by_name
 
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.5
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.5
       uvm_object    create_object_by_name    (string requested_type_name,  
                                               string parent_inst_path="",
                                               string name=""); 
@@ -226,14 +226,14 @@ virtual class uvm_factory;
    // Function -- NODOCS -- is_type_name_registered
     
      pure virtual
-        // @uvm-ieee 1800.2-2017 auto 8.3.1.7.3
+        // @uvm-ieee 1800.2-2020 auto 8.3.1.7.3
         function bit is_type_name_registered  (string type_name);
 
  
    // Function -- NODOCS -- is_type_registered 
 
      pure virtual 
-        // @uvm-ieee 1800.2-2017 auto 8.3.1.7.4
+        // @uvm-ieee 1800.2-2020 auto 8.3.1.7.4
         function bit is_type_registered     (uvm_object_wrapper obj); 
 
     
@@ -273,7 +273,7 @@ virtual class uvm_factory;
   // overrides ~xyz~, then ~bar~ is returned after the error is issued.
 
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.5
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.5
       uvm_component create_component_by_name (string requested_type_name,  
                                               string parent_inst_path="",
                                               string name, 
@@ -283,7 +283,7 @@ virtual class uvm_factory;
   
   // Function -- NODOCS -- set_type_alias
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.6.1
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.6.1
       void set_type_alias(string alias_type_name, 
                           uvm_object_wrapper original_type); 
   
@@ -292,7 +292,7 @@ virtual class uvm_factory;
   
   // Function -- NODOCS -- set_inst_alias
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.6.2
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.6.2
       void set_inst_alias(string alias_type_name,
                           uvm_object_wrapper original_type, string full_inst_path);
 
@@ -326,7 +326,7 @@ virtual class uvm_factory;
   // Function -- NODOCS -- find_override_by_type
 
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.7.1
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.7.1
       uvm_object_wrapper find_override_by_type (uvm_object_wrapper requested_type,
                                                 string full_inst_path);
 
@@ -338,7 +338,7 @@ virtual class uvm_factory;
   // { parent.get_full_name(), ".", name }.
 
   pure virtual function
-      // @uvm-ieee 1800.2-2017 auto 8.3.1.7.1
+      // @uvm-ieee 1800.2-2020 auto 8.3.1.7.1
       uvm_object_wrapper find_override_by_name (string requested_type_name,
                                                 string full_inst_path);
 
@@ -347,7 +347,7 @@ virtual class uvm_factory;
   // This method returns the <uvm_object_wrapper> associated with a given
   // ~type_name~.  
   pure virtual 
-    // @uvm-ieee 1800.2-2017 auto 8.3.1.7.2
+    // @uvm-ieee 1800.2-2020 auto 8.3.1.7.2
     function uvm_object_wrapper find_wrapper_by_name            (string type_name);
 
   // Function -- NODOCS -- print
@@ -361,7 +361,7 @@ virtual class uvm_factory;
   // the UVM types (prefixed with uvm_) are included in the list of registered
   // types.
 
-  // @uvm-ieee 1800.2-2017 auto 8.3.1.7.5
+  // @uvm-ieee 1800.2-2020 auto 8.3.1.7.5
   pure  virtual function void print (int all_types=1);
 endclass 
     
@@ -374,7 +374,7 @@ endclass
 // Default implementation of the UVM factory.  The library implements the
 // following public API beyond what is documented in IEEE 1800.2.
    
-// @uvm-ieee 1800.2-2017 auto 8.3.3
+// @uvm-ieee 1800.2-2020 auto 8.3.3
 class uvm_default_factory extends uvm_factory;
 
   // Group --NODOCS-- Registering Types
@@ -943,7 +943,7 @@ endclass
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 8.3.2.1
+// @uvm-ieee 1800.2-2020 auto 8.3.2.1
 virtual class uvm_object_wrapper;
 
   // Function -- NODOCS -- create_object
@@ -952,7 +952,7 @@ virtual class uvm_object_wrapper;
   // An object proxy (e.g., <uvm_object_registry #(T,Tname)>) implements this
   // method to create an object of a specific type, T.
 
-  // @uvm-ieee 1800.2-2017 auto 8.3.2.2.1
+  // @uvm-ieee 1800.2-2020 auto 8.3.2.2.1
   virtual function uvm_object create_object (string name="");
     return null;
   endfunction
@@ -964,7 +964,7 @@ virtual class uvm_object_wrapper;
   // ~parent~. A component proxy (e.g. <uvm_component_registry #(T,Tname)>)
   // implements this method to create a component of a specific type, T.
 
-  // @uvm-ieee 1800.2-2017 auto 8.3.2.2.2
+  // @uvm-ieee 1800.2-2020 auto 8.3.2.2.2
   virtual function uvm_component create_component (string name, 
                                                    uvm_component parent); 
     return null;
@@ -977,7 +977,7 @@ virtual class uvm_object_wrapper;
   // created by <create_component> or <create_object>. The factory uses this
   // name when matching against the requested type in name-based lookups.
 
-  // @uvm-ieee 1800.2-2017 auto 8.3.2.2.3
+  // @uvm-ieee 1800.2-2020 auto 8.3.2.2.3
   pure virtual function string get_type_name();
 
   virtual function void initialize(); endfunction

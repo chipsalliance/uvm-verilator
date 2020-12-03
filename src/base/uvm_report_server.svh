@@ -1,14 +1,14 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2018 Mentor Graphics Corporation
+// Copyright 2010-2012 AMD
 // Copyright 2015 Analog Devices, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2014-2017 Cisco Systems, Inc.
+// Copyright 2007-2020 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2018 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2013 Verilab
-// Copyright 2010-2012 AMD
-// Copyright 2014-2018 NVIDIA Corporation
-// Copyright 2014-2017 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -50,36 +50,37 @@ typedef class uvm_report_object;
 //------------------------------------------------------------------------------
 
 typedef class uvm_default_report_server;
-// @uvm-ieee 1800.2-2017 auto 6.5.1
+// @uvm-ieee 1800.2-2020 auto 6.5.1.1
 virtual class uvm_report_server extends uvm_object;
         function string get_type_name();
                 return "uvm_report_server";
         endfunction
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.1
         function new(string name="base");
                 super.new(name);
         endfunction
 
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.2
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.3
         pure virtual  function void set_max_quit_count(int count, bit overridable = 1);
 
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.1
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.2
         pure virtual  function int get_max_quit_count();
 
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.4
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.5
         pure virtual  function void set_quit_count(int quit_count);
 
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.3
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.4
         pure virtual  function int get_quit_count();
 
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.6
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.7
         pure virtual  function void set_severity_count(uvm_severity severity, int count);
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.5
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.6
         pure virtual  function int get_severity_count(uvm_severity severity);
 
         // Function -- NODOCS -- set_id_count
@@ -87,28 +88,28 @@ virtual class uvm_report_server extends uvm_object;
         pure virtual  function void set_id_count(string id, int count);
 
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.7
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.8
         pure virtual  function int get_id_count(string id);
 
 
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.8
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.9
         pure virtual function void get_id_set(output string q[$]);
 
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.9
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.10
         pure virtual function void get_severity_set(output uvm_severity q[$]);
 
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.11
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.12
         pure virtual function void set_message_database(uvm_tr_database database);
 
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.10
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.11
         pure virtual function uvm_tr_database get_message_database();
 
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.12
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.13
         function void do_copy (uvm_object rhs);
                 uvm_report_server rhs_;
 
@@ -139,7 +140,7 @@ virtual class uvm_report_server extends uvm_object;
         //
         // Main entry for uvm_report_server, combines execute_report_message and compose_report_message
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.13
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.14
         pure virtual function void process_report_message(uvm_report_message report_message);
 
 
@@ -149,7 +150,7 @@ virtual class uvm_report_server extends uvm_object;
         //
         // Expert users can overload this method to customize action processing.
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.15
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.16
         pure virtual function void execute_report_message(uvm_report_message report_message,
                                                           string composed_message);
 
@@ -161,7 +162,7 @@ virtual class uvm_report_server extends uvm_object;
         //
         // Expert users can overload this method to customize report formatting.
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.14
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.15
         pure virtual function string compose_report_message(uvm_report_message report_message,
                                                             string report_object_name = "");
 
@@ -174,7 +175,7 @@ virtual class uvm_report_server extends uvm_object;
         //
         // The <run_test> method in uvm_top calls this method.
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.16
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.17
         pure virtual function void report_summarize(UVM_FILE file = UVM_STDOUT);
 
 
@@ -198,7 +199,7 @@ virtual class uvm_report_server extends uvm_object;
         // | // Not using the uvm_coreservice_t:
         // | uvm_report_server::set_server(your_server);
    
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.18
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.19
         static function void set_server(uvm_report_server server);
 	        uvm_coreservice_t cs = uvm_coreservice_t::get();
                 server.copy(cs.get_report_server());
@@ -225,7 +226,7 @@ virtual class uvm_report_server extends uvm_object;
         // | rs = uvm_report_server::get_server();
         //
 
-        // @uvm-ieee 1800.2-2017 auto 6.5.1.17
+        // @uvm-ieee 1800.2-2020 auto 6.5.1.2.18
         static function uvm_report_server get_server();
 	        uvm_coreservice_t cs = uvm_coreservice_t::get();
                 return cs.get_report_server();
@@ -237,10 +238,10 @@ endclass
 // CLASS: uvm_default_report_server
 //
 // Default implementation of the UVM report server, as defined in section
-// 6.5.2 of 1800.2-2017
+// 6.5.2 of 1800.2-2020
 //
 
-// @uvm-ieee 1800.2-2017 auto 6.5.2
+// @uvm-ieee 1800.2-2020 auto 6.5.2
 class uvm_default_report_server extends uvm_report_server;
 
   local int m_quit_count;
@@ -838,10 +839,13 @@ class uvm_default_report_server extends uvm_report_server;
   virtual function void report_summarize(UVM_FILE file = UVM_STDOUT);
     string id;
     string name;
+    uvm_root root;
+    uvm_action action;
+    
     string output_str;
     string q[$];
 
-    uvm_report_catcher::summarize();
+    uvm_report_catcher::summarize(file);
     q.push_back("\n--- UVM Report Summary ---\n\n");
 
     if(m_max_quit_count != 0) begin
@@ -861,7 +865,18 @@ class uvm_default_report_server extends uvm_report_server;
         q.push_back($sformatf("[%s] %5d\n", id, m_id_count[id]));
     end
 
-    `uvm_info("UVM/REPORT/SERVER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_NONE)
+    if(file == UVM_STDOUT) begin 
+      `uvm_info("UVM/REPORT/SERVER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_NONE)
+    end
+    else begin
+      // Re-route the output for the message to the file by changing the action, restoring to original setting after message reported
+      root = uvm_root::get();
+      action = root.get_report_action(UVM_INFO, "UVM/REPORT/SERVER");
+      root.set_report_id_action("UVM/REPORT/SERVER", UVM_LOG);
+      root.set_report_id_file("UVM/REPORT/SERVER", file);
+      `uvm_info("UVM/REPORT/SERVER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_NONE)
+      root.set_report_id_action("UVM/REPORT/SERVER", action);
+    end
   endfunction
 
 endclass

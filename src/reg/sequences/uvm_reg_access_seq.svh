@@ -1,10 +1,11 @@
 // 
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2004-2010 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2015 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
+// Copyright 2020 Semifore
+// Copyright 2004-2010 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -61,7 +62,7 @@ typedef class uvm_mem_access_seq;
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto E.3.1.1
+// @uvm-ieee 1800.2-2020 auto E.3.1.1
 class uvm_reg_single_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    // Variable -- NODOCS -- rg
@@ -70,7 +71,7 @@ class uvm_reg_single_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
 
    `uvm_object_utils(uvm_reg_single_access_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.3.1.3
+   // @uvm-ieee 1800.2-2020 auto E.3.1.3
    function new(string name="uvm_reg_single_access_seq");
      super.new(name);
    endfunction
@@ -88,7 +89,7 @@ class uvm_reg_single_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
                                              "NO_REG_TESTS", 0) != null || 
           uvm_resource_db#(bit)::get_by_name({"REG::",rg.get_full_name()},
                                              "NO_REG_ACCESS_TEST", 0) != null )
-            return;
+          return;
 
       // Can only deal with registers with backdoor access
       if (rg.get_backdoor() == null && !rg.has_hdl_path()) begin
@@ -106,9 +107,10 @@ class uvm_reg_single_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
 
          rg.get_fields(fields);
          foreach (maps[k]) begin
-	        int ro;
-	       	ro=0;
-	     	foreach (fields[j]) begin    
+            int ro;
+
+            ro=0;
+            foreach (fields[j]) begin    
                if (fields[j].get_access(maps[k]) == "RO") begin
                   ro++;
                end
@@ -118,12 +120,12 @@ class uvm_reg_single_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
                     fields[j].get_access(maps[k]),"', skipping"})
                   return;
                end
-	     	end
-	     	if(ro==fields.size()) begin
-	     		`uvm_warning("uvm_reg_access_seq", {"Register '",
+            end
+            if(ro==fields.size()) begin
+               `uvm_warning("uvm_reg_access_seq", {"Register '",
                 rg.get_full_name(),"' has only RO fields in map ",maps[k].get_full_name(),", skipping"})
                 return;
-	     	end	
+            end	
          end
       end
       
@@ -151,7 +153,7 @@ class uvm_reg_single_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
          end
          #1;
          
-         rg.mirror(status, UVM_CHECK, UVM_BACKDOOR, uvm_reg_map::backdoor(), this);
+         rg.mirror(status, UVM_CHECK, UVM_BACKDOOR, null, this);
          if (status != UVM_IS_OK) begin
             `uvm_error("uvm_reg_access_seq", {"Status was '",status.name(),
                                  "' when reading reset value of register '",
@@ -196,7 +198,7 @@ endclass: uvm_reg_single_access_seq
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto E.3.2.1
+// @uvm-ieee 1800.2-2020 auto E.3.2.1
 class uvm_reg_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    // Variable -- NODOCS -- model
@@ -214,14 +216,14 @@ class uvm_reg_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item)
    
    `uvm_object_utils(uvm_reg_access_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.3.2.3.1
+   // @uvm-ieee 1800.2-2020 auto E.3.2.3.1
    function new(string name="uvm_reg_access_seq");
      super.new(name);
    endfunction
 
 
 
-   // @uvm-ieee 1800.2-2017 auto E.3.2.3.2
+   // @uvm-ieee 1800.2-2020 auto E.3.2.3.2
    virtual task body();
 
       if (model == null) begin
@@ -261,7 +263,7 @@ class uvm_reg_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item)
                                                 "NO_REG_TESTS", 0) != null ||
 	     uvm_resource_db#(bit)::get_by_name({"REG::",regs[i].get_full_name()},
                                                 "NO_REG_ACCESS_TEST", 0) != null )
-              continue;
+             continue;
          
          // Can only deal with registers with backdoor access
          if (regs[i].get_backdoor() == null && !regs[i].has_hdl_path()) begin
@@ -277,7 +279,7 @@ class uvm_reg_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item)
       begin
          uvm_reg_block blks[$];
          
-         blk.get_blocks(blks);
+         blk.get_blocks(blks, UVM_NO_HIER);
          foreach (blks[i]) begin
             do_block(blks[i]);
          end
@@ -318,12 +320,12 @@ endclass: uvm_reg_access_seq
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto E.3.3.1
+// @uvm-ieee 1800.2-2020 auto E.3.3.1
 class uvm_reg_mem_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    `uvm_object_utils(uvm_reg_mem_access_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.3.3.2
+   // @uvm-ieee 1800.2-2020 auto E.3.3.2
    function new(string name="uvm_reg_mem_access_seq");
      super.new(name);
    endfunction

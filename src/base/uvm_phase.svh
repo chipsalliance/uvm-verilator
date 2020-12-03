@@ -1,12 +1,12 @@
 //
 //----------------------------------------------------------------------
+// Copyright 2011-2012 AMD
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2012-2017 Cisco Systems, Inc.
 // Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2011-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
-// Copyright 2012-2017 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -23,10 +23,6 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-  typedef class uvm_test_done_objection;
-`endif
 
 typedef class uvm_sequencer_base;
 
@@ -136,7 +132,7 @@ typedef class uvm_phase_cb;
 // used (eg. <uvm_run_phase::get()>) in APIs. For those APIs that need to look
 // up that phase in the graph, this is done automatically.
 
-// @uvm-ieee 1800.2-2017 auto 9.3.1.2
+// @uvm-ieee 1800.2-2020 auto 9.3.1.2
 class uvm_phase extends uvm_object;
 
   //`uvm_object_utils(uvm_phase)
@@ -149,23 +145,23 @@ class uvm_phase extends uvm_object;
   //--------------------
   
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.3.1
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.3.1
   extern function new(string name="uvm_phase",
                       uvm_phase_type phase_type=UVM_PHASE_SCHEDULE,
                       uvm_phase parent=null);
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.3.2
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.3.2
   extern function uvm_phase_type get_phase_type();
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.3.3
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.3.3
   extern virtual function void set_max_ready_to_end_iterations(int max);
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.3.4
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.3.6
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.3.4
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.3.6
   extern virtual function int get_max_ready_to_end_iterations();
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.3.5
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.3.5
   extern static function void set_default_max_ready_to_end_iterations(int max);
 
   extern static function int get_default_max_ready_to_end_iterations();
@@ -175,37 +171,37 @@ class uvm_phase extends uvm_object;
   //-------------
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.4.1
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.4.1
   extern function uvm_phase_state get_state();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.4.2
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.4.2
   extern function int get_run_count();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.4.3
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.4.3
   extern function uvm_phase find_by_name(string name, bit stay_in_scope=1);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.4.4
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.4.4
   extern function uvm_phase find(uvm_phase phase, bit stay_in_scope=1);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.4.5
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.4.5
   extern function bit is(uvm_phase phase);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.4.6
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.4.6
   extern function bit is_before(uvm_phase phase);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.4.7
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.4.7
   extern function bit is_after(uvm_phase phase);
 
 
@@ -214,12 +210,12 @@ class uvm_phase extends uvm_object;
   //-----------------
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.5.1
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.5.1
   virtual function void exec_func(uvm_component comp, uvm_phase phase); endfunction
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.5.2
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.5.2
   virtual task exec_task(uvm_component comp, uvm_phase phase); endtask
 
 
@@ -229,7 +225,7 @@ class uvm_phase extends uvm_object;
   //----------------
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.6.1
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.6.1
   extern function void add(uvm_phase phase,
                            uvm_phase with_phase=null,
                            uvm_phase after_phase=null,
@@ -240,45 +236,45 @@ class uvm_phase extends uvm_object;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.6.2
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.6.2
   extern function uvm_phase get_parent();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.6.3
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.6.3
   extern virtual function string get_full_name();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.6.4
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.6.4
   extern function uvm_phase get_schedule(bit hier = 0);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.6.5
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.6.5
   extern function string get_schedule_name(bit hier = 0);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.6.6
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.6.6
   extern function uvm_domain get_domain();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.6.7
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.6.7
   extern function uvm_phase get_imp();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.6.8
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.6.8
   extern function string get_domain_name();
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.6.9
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.6.9
   extern function void get_adjacent_predecessor_nodes(ref uvm_phase pred[]);
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.6.10
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.6.10
   extern function void get_adjacent_successor_nodes(ref uvm_phase succ[]);
 
   //-----------------------
@@ -298,20 +294,20 @@ class uvm_phase extends uvm_object;
                                                string action);
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.7.2
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.7.2
   extern virtual function void raise_objection (uvm_object obj, 
                                                 string description="",
                                                 int count=1);
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.7.3
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.7.3
   extern virtual function void drop_objection (uvm_object obj, 
                                                string description="",
                                                int count=1);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.7.4
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.7.4
   extern virtual function int get_objection_count( uvm_object obj=null );
    
   //-----------------------
@@ -346,20 +342,20 @@ class uvm_phase extends uvm_object;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.8.1
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.8.1
   extern function void sync(uvm_domain target,
                             uvm_phase phase=null,
                             uvm_phase with_phase=null);
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.8.2
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.8.2
   extern function void unsync(uvm_domain target,
                               uvm_phase phase=null,
                               uvm_phase with_phase=null);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.8.3
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.8.3
   extern task wait_for_state(uvm_phase_state state, uvm_wait_op op=UVM_EQ);
 
    
@@ -389,15 +385,15 @@ class uvm_phase extends uvm_object;
   // that share a phase to jump to that phase.
  
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.9.1
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.9.1
   extern function void jump(uvm_phase phase);
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.9.2
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.9.2
   extern function void set_jump_phase(uvm_phase phase) ;
   
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.9.3
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.9.3
   extern function void end_prematurely() ;
 
   // Function- jump_all
@@ -410,7 +406,7 @@ class uvm_phase extends uvm_object;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.9.4
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.9.4
   extern function uvm_phase get_jump_target();
 
 
@@ -430,11 +426,8 @@ class uvm_phase extends uvm_object;
   local uvm_phase_state    m_state;
   local int                m_run_count; // num times this phase has executed
   local process            m_phase_proc;
-  local static int         m_default_max_ready_to_end_iters = 20;    // 20 is the initial value defined by 1800.2-2017 9.3.1.3.5
-`ifndef UVM_ENABLE_DEPRECATED_API
-  local
-`endif
-  int                      max_ready_to_end_iters = get_default_max_ready_to_end_iterations();
+  local static int         m_default_max_ready_to_end_iters = 20;    // 20 is the initial value defined by 1800.2-2020 9.3.1.3.5
+  local int                      max_ready_to_end_iters = get_default_max_ready_to_end_iterations();
   int                      m_num_procs_not_yet_returned;
   extern function uvm_phase m_find_predecessor(uvm_phase phase, bit stay_in_scope=1, uvm_phase orig_phase=null);
   extern function uvm_phase m_find_successor(uvm_phase phase, bit stay_in_scope=1, uvm_phase orig_phase=null);
@@ -468,27 +461,7 @@ class uvm_phase extends uvm_object;
   //---------------------------------
   local uvm_phase m_sync[$];  // schedule instance to which we are synced
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  // In order to avoid raciness during static initialization,
-  // the creation of the "phase done" objection has been
-  // delayed until the first call to get_objection(), and all
-  // internal APIs have been updated to call get_objection() instead
-  // of referring to phase_done directly.
-  //
-  // So as to avoid potential null handle dereferences in user code
-  // which was accessing the phase_done variable directly, the variable
-  // was renamed, and made local.  This takes a difficult to debug
-  // run-time error, and converts it into an easy to catch compile-time
-  // error.
-  //
-  // Code which is broken due to the protection of phase_done should be
-  // refactored to use the get_objection() method.  Note that this also
-  // opens the door to virtual get_objection() code, as described in
-  // https://accellera.mantishub.io/view.php?id=6260
-  uvm_objection phase_done;
-`else // !`ifdef UVM_ENABLE_DEPRECATED_API
   local uvm_objection phase_done;
-`endif
    
   local int unsigned m_ready_to_end_count;
 
@@ -565,7 +538,7 @@ class uvm_phase extends uvm_object;
   endfunction
   
   
-  // @uvm-ieee 1800.2-2017 auto 9.3.1.7.1
+  // @uvm-ieee 1800.2-2020 auto 9.3.1.7.1
   function uvm_objection get_objection();
      uvm_phase imp;
      uvm_task_phase tp;
@@ -575,16 +548,7 @@ class uvm_phase extends uvm_object;
 	return null;
      end
      if (phase_done == null) begin
-`ifdef UVM_ENABLE_DEPRECATED_API       
-	   if (get_name() == "run") begin
-              phase_done = uvm_test_done_objection::get();
-	   end
-	   else begin
-              phase_done = uvm_objection::type_id::create({get_name(), "_objection"});
-	   end
-`else // !UVM_ENABLE_DEPRECATED_API
 	   phase_done = uvm_objection::type_id::create({get_name(), "_objection"});
-`endif // UVM_ENABLE_DEPRECATED_API
      end
      
      return phase_done;
@@ -605,7 +569,7 @@ endclass
 // <uvm_phase_cb::phase_state_changed()> callback to be invoked.
 //
 
-// @uvm-ieee 1800.2-2017 auto 9.3.2.1
+// @uvm-ieee 1800.2-2020 auto 9.3.2.1
 class uvm_phase_state_change extends uvm_object;
 
   `uvm_object_utils(uvm_phase_state_change)
@@ -621,19 +585,19 @@ class uvm_phase_state_change extends uvm_object;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.2.2.1
+  // @uvm-ieee 1800.2-2020 auto 9.3.2.2.1
   virtual function uvm_phase_state get_state();
     return m_phase.get_state();
   endfunction
   
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.2.2.2
+  // @uvm-ieee 1800.2-2020 auto 9.3.2.2.2
   virtual function uvm_phase_state get_prev_state();
     return m_prev_state;
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.2.2.3
+  // @uvm-ieee 1800.2-2020 auto 9.3.2.2.3
   function uvm_phase jump_to();
     return m_jump_to;
   endfunction
@@ -653,17 +617,17 @@ endclass
 // are not natively phase-aware with the UVM phasing.
 //
 
-// @uvm-ieee 1800.2-2017 auto 9.3.3.1
+// @uvm-ieee 1800.2-2020 auto 9.3.3.1
 class uvm_phase_cb extends uvm_callback;
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.3.2.1
+  // @uvm-ieee 1800.2-2020 auto 9.3.3.2.1
   function new(string name="unnamed-uvm_phase_cb");
      super.new(name);
   endfunction : new
    
 
-  // @uvm-ieee 1800.2-2017 auto 9.3.3.2.2
+  // @uvm-ieee 1800.2-2020 auto 9.3.3.2.2
   virtual function void phase_state_change(uvm_phase phase,
                                            uvm_phase_state_change change);
   endfunction
@@ -677,7 +641,7 @@ endclass
 //
 // Convenience type for the uvm_callbacks#(uvm_phase, uvm_phase_cb) class.
 //
-typedef uvm_callbacks#(uvm_phase, uvm_phase_cb) uvm_phase_cb_pool /* @uvm-ieee 1800.2-2017 auto D.4.1*/   ;
+typedef uvm_callbacks#(uvm_phase, uvm_phase_cb) uvm_phase_cb_pool /* @uvm-ieee 1800.2-2020 auto D.4.1*/ ;
 
 
 //------------------------------------------------------------------------------

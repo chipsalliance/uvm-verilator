@@ -1,14 +1,15 @@
 //------------------------------------------------------------------------------
-// Copyright 2012 Aldec
-// Copyright 2007-2012 Mentor Graphics Corporation
-// Copyright 2018 Qualcomm, Inc.
-// Copyright 2014 Intel Corporation
-// Copyright 2010-2013 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2012 AMD
-// Copyright 2012-2018 NVIDIA Corporation
-// Copyright 2012-2018 Cisco Systems, Inc.
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2012 Aldec
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2012-2018 Cisco Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2020 Marvell International Ltd.
+// Copyright 2007-2012 Mentor Graphics Corporation
+// Copyright 2012-2020 NVIDIA Corporation
+// Copyright 2018 Qualcomm, Inc.
+// Copyright 2010-2013 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -139,8 +140,9 @@
 // The macro defines the number of bits in uvm_field_flag_t.  It may be defined by the user but it
 // must be at least as large as parameter UVM_FIELD_FLAG_RESERVED_BITS.
 //
+
+// @uvm-ieee 1800.2-2020 manual B.6.1
 `ifndef UVM_FIELD_FLAG_SIZE
-  // @uvm-ieee 1800.2-2017 auto B.6.1
   `define UVM_FIELD_FLAG_SIZE  UVM_FIELD_FLAG_RESERVED_BITS
 `endif
 
@@ -171,7 +173,7 @@
 // field named "op", then that could collide with the "op" argument of the
 // <do_execute_op> method.
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.1
+// @uvm-ieee 1800.2-2020 auto B.2.1.1
 `define uvm_field_utils_begin(T)                                                \
 function void do_execute_op( uvm_field_op op );                                 \
   super.do_execute_op(op);                                                      \
@@ -223,7 +225,7 @@ local function void __m_uvm_execute_field_op( uvm_field_op __local_op__ );      
        return; /* unknown op, just return */                                    \
    endcase                                                                      \
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.1
+// @uvm-ieee 1800.2-2020 manual B.2.1.1
 `define uvm_field_utils_end \
 endfunction : __m_uvm_execute_field_op
 
@@ -289,46 +291,49 @@ endfunction : __m_uvm_execute_field_op
 // placed. The block must be terminated by `uvm_object_utils_end.
 //
 
-// @uvm-ieee 1800.2-2017 auto 14.4.2
-// @uvm-ieee 1800.2-2017 auto B.2.1
-// @uvm-ieee 1800.2-2017 auto B.2.1.2
+// @uvm-ieee 1800.2-2020 auto 14.4.2
+// @uvm-ieee 1800.2-2020 auto B.2.1
+// @uvm-ieee 1800.2-2020 auto B.2.1.2
 `define uvm_object_utils(T) \
   `m_uvm_object_registry_internal(T,T)  \
   `m_uvm_object_create_func(T) \
   `uvm_type_name_decl(`"T`")
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.2
+// @uvm-ieee 1800.2-2020 auto B.2.1.2
 `define uvm_object_param_utils(T) \
   `m_uvm_object_registry_param(T)  \
   `m_uvm_object_create_func(T)
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.2
+// @uvm-ieee 1800.2-2020 auto B.2.1.2
 `define uvm_object_utils_begin(T) \
   `uvm_object_utils(T) \
   `uvm_field_utils_begin(T)
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.2
+// @uvm-ieee 1800.2-2020 auto B.2.1.2
 `define uvm_object_param_utils_begin(T) \
   `uvm_object_param_utils(T) \
   `uvm_field_utils_begin(T)
 
+// @uvm-ieee 1800.2-2020 manual B.2.1.2
 `define uvm_object_abstract_utils(T) \
   `m_uvm_object_abstract_registry_internal(T,T)  \
   `uvm_type_name_decl(`"T`")
 
+// @uvm-ieee 1800.2-2020 manual B.2.1.2
 `define uvm_object_abstract_param_utils(T) \
   `m_uvm_object_abstract_registry_param(T)
 
+// @uvm-ieee 1800.2-2020 manual B.2.1.2
 `define uvm_object_abstract_utils_begin(T) \
   `uvm_object_abstract_utils(T) \
   `uvm_field_utils_begin(T)
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.2
+// @uvm-ieee 1800.2-2020 manual B.2.1.2
 `define uvm_object_abstract_param_utils_begin(T) \
   `uvm_object_abstract_param_utils(T) \
   `uvm_field_utils_begin(T)
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.2
+// @uvm-ieee 1800.2-2020 manual B.2.1.2
 `define uvm_object_utils_end \
   `uvm_field_utils_end
 
@@ -393,45 +398,48 @@ endfunction : __m_uvm_execute_field_op
 // placed. The block must be terminated by `uvm_component_utils_end.
 //
 
-// @uvm-ieee 1800.2-2017 auto B.2.1
-// @uvm-ieee 1800.2-2017 auto B.2.1.3
+// @uvm-ieee 1800.2-2020 auto B.2.1
+// @uvm-ieee 1800.2-2020 auto B.2.1.3
 `define uvm_component_utils(T) \
    `m_uvm_component_registry_internal(T,T) \
    `uvm_type_name_decl(`"T`") \
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.3
+// @uvm-ieee 1800.2-2020 auto B.2.1.3
 `define uvm_component_param_utils(T) \
    `m_uvm_component_registry_param(T) \
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.3
+// @uvm-ieee 1800.2-2020 auto B.2.1.3
 `define uvm_component_utils_begin(T) \
    `uvm_component_utils(T) \
    `uvm_field_utils_begin(T)
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.3
+// @uvm-ieee 1800.2-2020 auto B.2.1.3
 `define uvm_component_param_utils_begin(T) \
    `uvm_component_param_utils(T) \
    `uvm_field_utils_begin(T)
 
+// @uvm-ieee 1800.2-2020 manual B.2.1.3
 `define uvm_component_abstract_utils(T) \
    `m_uvm_component_abstract_registry_internal(T,T) \
    `uvm_type_name_decl(`"T`") \
 
+// @uvm-ieee 1800.2-2020 manual B.2.1.3
 `define uvm_component_abstract_param_utils(T) \
    `m_uvm_component_abstract_registry_param(T) \
 
 
+// @uvm-ieee 1800.2-2020 manual B.2.1.3
 `define uvm_component_abstract_utils_begin(T) \
    `uvm_component_abstract_utils(T) \
    `uvm_field_utils_begin(T)
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.3
+// @uvm-ieee 1800.2-2020 manual B.2.1.3
 `define uvm_component_abstract_param_utils_begin(T) \
    `uvm_component_abstract_param_utils(T) \
    `uvm_field_utils_begin(T)
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.3
+// @uvm-ieee 1800.2-2020 manual B.2.1.3
 `define uvm_component_utils_end \
   `uvm_field_utils_end
 
@@ -447,7 +455,7 @@ endfunction : __m_uvm_execute_field_op
 // name of the class in quotes. The <`uvm_object_utils>
 // family of macros uses this macro.
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.4
+// @uvm-ieee 1800.2-2020 auto B.2.1.4
 `define uvm_object_registry(T,S) \
    typedef uvm_object_registry#(T,S) type_id; \
    static function type_id get_type(); \
@@ -469,7 +477,7 @@ endfunction : __m_uvm_execute_field_op
 // name of the class in quotes. The <`uvm_object_utils>
 // family of macros uses this macro.
 
-// @uvm-ieee 1800.2-2017 auto B.2.1.5
+// @uvm-ieee 1800.2-2020 auto B.2.1.5
 `define uvm_component_registry(T,S) \
    typedef uvm_component_registry #(T,S) type_id; \
    static function type_id get_type(); \
@@ -515,23 +523,6 @@ endfunction : __m_uvm_execute_field_op
 // ~type_name~, and implements the virtual
 // <uvm_object::get_type_name> method.
 //
-// *Note:*  When running with <`UVM_ENABLE_DEPRECATED_API>,
-// the ~type_name~ member is declared as:
-//| const static string type_name = TNAME_STRING;
-// This is unsafe, as static initialization can cause races
-// to occur.  When running without <`UVM_ENABLE_DEPRECATED_API>,
-// the implementation is an static initialization safe function:
-//| static function string type_name();
-//|   return TNAME_STRING;
-//| endfunction : type_name
-//
-`ifdef UVM_ENABLE_DEPRECATED_API
- `define uvm_type_name_decl(TNAME_STRING) \
-     const static string type_name = TNAME_STRING; \
-     virtual function string get_type_name(); \
-       return TNAME_STRING; \
-     endfunction : get_type_name
-`else
  `define uvm_type_name_decl(TNAME_STRING) \
      static function string type_name(); \
        return TNAME_STRING; \
@@ -539,7 +530,6 @@ endfunction : __m_uvm_execute_field_op
      virtual function string get_type_name(); \
        return TNAME_STRING; \
      endfunction : get_type_name
-`endif // !`ifdef UVM_ENABLE_DEPRECATED_API
 
 
 // m_uvm_object_registry_internal
@@ -790,7 +780,21 @@ endfunction : __m_uvm_execute_field_op
 
 `define m_uvm_field_recursion(FLAG) uvm_recursion_policy_enum'((FLAG)&(UVM_RECURSION))
 
+`define m_warn_if_no_positive_ops(FLAG) \
+  begin \
+    static bit dont_warn_if_no_positive_ops ; \
+    if (!dont_warn_if_no_positive_ops && !((FLAG)&UVM_FLAGS_ON) && ((FLAG)&(UVM_NOCOPY|UVM_NOCOMPARE|UVM_NOPRINT|UVM_NORECORD|UVM_NOPACK|UVM_NOUNPACK))) begin \
+      string behavior; \
+      `ifdef UVM_ENABLE_DEPRECATED_API behavior = "As UVM_ENABLE_DEPRECATED_API is set, we will treat this as if UVM_ALL_ON had been bitwise-or'd with FLAG.  This is not the behavior specified by IEEE 1800.2-2020."; \
+      `else behavior = "Previous Accellera UVM libraries treated this as if UVM_ALL_ON had been bitwise-or'd with this FLAG, but per IEEE 1800.2-2020, we will treat it as a NO-OP (see UVM Mantis 7187)"; \
+      `endif \
+      `uvm_warning("UVM/FIELDS/NO_FLAG",{"Field macro uses a FLAG which has only UVM_NOxxx components. ",behavior}) \
+      dont_warn_if_no_positive_ops = 1; \
+    end \
+  end
+
 `define m_uvm_field_begin(ARG, FLAG) \
+  `m_warn_if_no_positive_ops(FLAG) \
   begin \
     case (local_op_type__)
 
@@ -801,7 +805,11 @@ endfunction : __m_uvm_execute_field_op
 
 `define m_uvm_field_op_begin(OP, FLAG) \
 UVM_``OP: \
-  if (!((FLAG)&UVM_NO``OP)) begin
+  if ( \
+     `ifndef UVM_ENABLE_DEPRECATED_API (((FLAG)&UVM_``OP)) && `endif \
+     (!((FLAG)&UVM_NO``OP)) \
+  ) begin
+
 
 `define m_uvm_field_op_end(OP) \
   end
@@ -815,7 +823,7 @@ UVM_``OP: \
 // ~ARG~ is an integral property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.1.1
+// @uvm-ieee 1800.2-2020 auto B.2.2.1.1
 `define uvm_field_int(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -860,7 +868,7 @@ UVM_``OP: \
 // ~ARG~ is an object property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.1.2
+// @uvm-ieee 1800.2-2020 auto B.2.2.1.2
 `define uvm_field_object(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -915,7 +923,7 @@ UVM_``OP: \
 // ~ARG~ is a string property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.1.3
+// @uvm-ieee 1800.2-2020 auto B.2.2.1.3
 `define uvm_field_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -959,7 +967,7 @@ UVM_``OP: \
 // ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.1.4
+// @uvm-ieee 1800.2-2020 auto B.2.2.1.4
 `define uvm_field_enum(T,ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -1005,7 +1013,7 @@ UVM_``OP: \
 // ~ARG~ is an real property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.1.5
+// @uvm-ieee 1800.2-2020 auto B.2.2.1.5
 `define uvm_field_real(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -1046,7 +1054,7 @@ UVM_``OP: \
 // ~ARG~ is an event property of the class, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.1.6
+// @uvm-ieee 1800.2-2020 auto B.2.2.1.6
 `define uvm_field_event(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -1089,7 +1097,7 @@ UVM_``OP: \
 // is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.2.1
+// @uvm-ieee 1800.2-2020 auto B.2.2.2.1
 `define uvm_field_sarray_int(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -1158,7 +1166,7 @@ UVM_``OP: \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.2.2
+// @uvm-ieee 1800.2-2020 auto B.2.2.2.2
 `define uvm_field_sarray_object(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -1242,7 +1250,7 @@ UVM_``OP: \
 // ~ARG~ is a one-dimensional static array of strings, and ~FLAG~ is a bitwise
 // OR of one or more flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.2.3
+// @uvm-ieee 1800.2-2020 auto B.2.2.2.3
 `define uvm_field_sarray_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -1312,7 +1320,7 @@ UVM_``OP: \
 // instance of that type, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.2.4
+// @uvm-ieee 1800.2-2020 auto B.2.2.2.4
 `define uvm_field_sarray_enum(T,ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG,FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -1483,7 +1491,7 @@ UVM_``OP: \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.3.1
+// @uvm-ieee 1800.2-2020 auto B.2.2.3.1
 `define uvm_field_array_int(ARG,FLAG=UVM_DEFAULT) \
    `m_uvm_field_qda_int(da,ARG,FLAG)
 
@@ -1583,7 +1591,7 @@ UVM_``OP: \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.3.2
+// @uvm-ieee 1800.2-2020 auto B.2.2.3.2
 `define uvm_field_array_object(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_object(da,ARG,FLAG)
 
@@ -1599,7 +1607,7 @@ UVM_``OP: \
 // ~ARG~ is a one-dimensional dynamic array of strings, and ~FLAG~ is a bitwise
 // OR of one or more flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.3.3
+// @uvm-ieee 1800.2-2020 auto B.2.2.3.3
 `define uvm_field_array_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_string(da,ARG,FLAG)
 
@@ -1685,7 +1693,7 @@ UVM_``OP: \
 // ~ARG~ is an instance of that type, and ~FLAG~ is a bitwise OR of
 // one or more flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.3.4
+// @uvm-ieee 1800.2-2020 auto B.2.2.3.4
 `define uvm_field_array_enum(T,ARG,FLAG=UVM_DEFAULT) \
   `m_field_qda_enum(da,T,ARG,FLAG)
 
@@ -1777,7 +1785,7 @@ UVM_``OP: \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.4.1
+// @uvm-ieee 1800.2-2020 auto B.2.2.4.1
 `define uvm_field_queue_int(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_int(queue,ARG,FLAG)
 
@@ -1791,7 +1799,7 @@ UVM_``OP: \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described in
 // <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.4.2
+// @uvm-ieee 1800.2-2020 auto B.2.2.4.2
 `define uvm_field_queue_object(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_object(queue,ARG,FLAG)
 
@@ -1805,7 +1813,7 @@ UVM_``OP: \
 // ~ARG~ is a one-dimensional queue of strings, and ~FLAG~ is a bitwise
 // OR of one or more flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.4.3
+// @uvm-ieee 1800.2-2020 auto B.2.2.4.3
 `define uvm_field_queue_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_qda_string(queue,ARG,FLAG)
 
@@ -1820,7 +1828,7 @@ UVM_``OP: \
 // and ~FLAG~ is a bitwise OR of one or more flag settings as described
 // in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.4.4
+// @uvm-ieee 1800.2-2020 auto B.2.2.4.4
 `define uvm_field_queue_enum(T,ARG,FLAG=UVM_DEFAULT) \
   `m_field_qda_enum(queue,T,ARG,FLAG)
 
@@ -1844,7 +1852,7 @@ UVM_``OP: \
 // with string key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.5.1
+// @uvm-ieee 1800.2-2020 auto B.2.2.5.1
 `define uvm_field_aa_int_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -1894,7 +1902,7 @@ UVM_``OP: \
 // with string key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.5.2
+// @uvm-ieee 1800.2-2020 auto B.2.2.5.2
 `define uvm_field_aa_object_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -1959,7 +1967,7 @@ UVM_``OP: \
 // with string key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.5.3
+// @uvm-ieee 1800.2-2020 auto B.2.2.5.3
 `define uvm_field_aa_string_string(ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -2018,7 +2026,7 @@ UVM_``OP: \
 // with ~int~ key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.1
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.1
 `define uvm_field_aa_object_int(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_object_key(int, ARG, FLAG)
      
@@ -2138,7 +2146,7 @@ UVM_``OP: \
 // with ~int~ key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.2
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.2
 `define uvm_field_aa_int_int(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(int, ARG, FLAG) \
 
@@ -2154,7 +2162,7 @@ UVM_``OP: \
 // with ~int unsigned~ key, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.3
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.3
 `define uvm_field_aa_int_int_unsigned(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(int unsigned, ARG, FLAG)
 
@@ -2170,7 +2178,7 @@ UVM_``OP: \
 // with ~integer~ key, and ~FLAG~ is a bitwise OR of one or more flag settings
 // as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.4
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.4
 `define uvm_field_aa_int_integer(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(integer, ARG, FLAG)
 
@@ -2186,7 +2194,7 @@ UVM_``OP: \
 // with ~integer unsigned~ key, and ~FLAG~ is a bitwise OR of one or more
 // flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.5
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.5
 `define uvm_field_aa_int_integer_unsigned(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(integer unsigned, ARG, FLAG)
 
@@ -2202,7 +2210,7 @@ UVM_``OP: \
 // with ~byte~ key, and ~FLAG~ is a bitwise OR of one or more flag settings as
 // described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.6
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.6
 `define uvm_field_aa_int_byte(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(byte, ARG, FLAG)
 
@@ -2218,7 +2226,7 @@ UVM_``OP: \
 // with ~byte unsigned~ key, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.7
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.7
 `define uvm_field_aa_int_byte_unsigned(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(byte unsigned, ARG, FLAG)
 
@@ -2234,7 +2242,7 @@ UVM_``OP: \
 // with ~shortint~ key, and ~FLAG~ is a bitwise OR of one or more flag
 // settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.8
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.8
 `define uvm_field_aa_int_shortint(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(shortint, ARG, FLAG)
 
@@ -2250,7 +2258,7 @@ UVM_``OP: \
 // with ~shortint unsigned~ key, and ~FLAG~ is a bitwise OR of one or more
 // flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.9
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.9
 `define uvm_field_aa_int_shortint_unsigned(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(shortint unsigned, ARG, FLAG)
 
@@ -2266,7 +2274,7 @@ UVM_``OP: \
 // with ~longint~ key, and ~FLAG~ is a bitwise OR of one or more flag settings
 // as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.10
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.10
 `define uvm_field_aa_int_longint(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(longint, ARG, FLAG)
 
@@ -2282,7 +2290,7 @@ UVM_``OP: \
 // with ~longint unsigned~ key, and ~FLAG~ is a bitwise OR of one or more
 // flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.11
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.11
 `define uvm_field_aa_int_longint_unsigned(ARG,FLAG=UVM_DEFAULT) \
   `uvm_field_aa_int_key(longint unsigned, ARG, FLAG)
 
@@ -2298,7 +2306,7 @@ UVM_``OP: \
 // that is an associative array of integrals, and ~FLAG~ is a bitwise OR of one
 // or more flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.12
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.12
 `define uvm_field_aa_int_key(KEY, ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \
@@ -2354,7 +2362,7 @@ UVM_``OP: \
 // that is an associative array of integrals, and ~FLAG~ is a bitwise OR of one
 // or more flag settings as described in <Field Macros> above.
 
-// @uvm-ieee 1800.2-2017 auto B.2.2.6.13
+// @uvm-ieee 1800.2-2020 auto B.2.2.6.13
 `define uvm_field_aa_int_enumkey(KEY, ARG,FLAG=UVM_DEFAULT) \
   `m_uvm_field_begin(ARG, FLAG) \
     `m_uvm_field_op_begin(COPY,FLAG) \

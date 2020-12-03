@@ -1,12 +1,12 @@
 // 
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2012 Semifore
-// Copyright 2018 Qualcomm, Inc.
-// Copyright 2004-2013 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2018 Qualcomm, Inc.
+// Copyright 2012-2020 Semifore
+// Copyright 2004-2013 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -50,12 +50,12 @@
 // This is usually the first test executed on any DUT.
 //
 
-// @uvm-ieee 1800.2-2017 auto E.1.1
+// @uvm-ieee 1800.2-2020 auto E.1.1
 class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    `uvm_object_utils(uvm_reg_hw_reset_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.1.2.1.1
+   // @uvm-ieee 1800.2-2020 auto E.1.2.1.1
    function new(string name="uvm_reg_hw_reset_seq");
      super.new(name);
    endfunction
@@ -73,7 +73,7 @@ class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
    // Executes the Hardware Reset sequence.
    // Do not call directly. Use seq.start() instead.
 
-   // @uvm-ieee 1800.2-2017 auto E.1.2.1.2
+   // @uvm-ieee 1800.2-2020 auto E.1.2.1.2
    virtual task body();
 
       if (model == null) begin
@@ -95,33 +95,32 @@ class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
    protected virtual task do_block(uvm_reg_block blk);
       uvm_reg_map maps[$];
       uvm_reg_map sub_maps[$];
-	  uvm_reg regs[$];
+      uvm_reg regs[$];
 
       if (uvm_resource_db#(bit)::get_by_name({"REG::",blk.get_full_name()},
                                              "NO_REG_TESTS", 0) != null ||
-          uvm_resource_db#(bit)::get_by_name({"REG::",blk.get_full_name()},
+         uvm_resource_db#(bit)::get_by_name({"REG::",blk.get_full_name()},
                                              "NO_REG_HW_RESET_TEST", 0) != null ) begin
-            return;
-
+         return;
       end
 
       blk.get_registers(regs, UVM_NO_HIER);
                                              
       foreach(regs[ridx]) begin
-	                if (uvm_resource_db#(bit)::get_by_name({"REG::",regs[ridx].get_full_name()},
-                                                 "NO_REG_TESTS", 0) != null ||
-                      regs[ridx].has_reset() == 0 ||
-		                uvm_resource_db#(bit)::get_by_name({"REG::",regs[ridx].get_full_name()},
-                                                 "NO_REG_HW_RESET_TEST", 0) != null )
-			                	continue;
+         if (uvm_resource_db#(bit)::get_by_name({"REG::",regs[ridx].get_full_name()},
+                                                "NO_REG_TESTS", 0) != null ||
+                                                regs[ridx].has_reset() == 0 ||
+                                                uvm_resource_db#(bit)::get_by_name({"REG::",regs[ridx].get_full_name()},
+                                                "NO_REG_HW_RESET_TEST", 0) != null )
+            continue;
 	      
-	      begin
-		      uvm_reg_map rm[$];
-		      uvm_status_e status;
+         begin
+            uvm_reg_map rm[$];
+            uvm_status_e status;
             uvm_reg_field fields[$];
             uvm_check_e field_check_restore[uvm_reg_field];
 		      
-		      regs[ridx].get_maps(rm);
+            regs[ridx].get_maps(rm);
 		      
             regs[ridx].get_fields(fields);
             
@@ -154,13 +153,13 @@ class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
             foreach(field_check_restore[field]) begin
                field.set_compare(field_check_restore[field]);
             end
-      	end
+      	 end
       end	
       
       begin
          uvm_reg_block blks[$];
          
-         blk.get_blocks(blks);
+         blk.get_blocks(blks, UVM_NO_HIER);
          foreach (blks[i]) begin
             do_block(blks[i]);
          end

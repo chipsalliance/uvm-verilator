@@ -1,10 +1,10 @@
 //
 //--------------------------------------------------------------
-// Copyright 2010-2020 Mentor Graphics Corporation
-// Copyright 2004-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2020 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2004-2018 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -41,7 +41,7 @@
 // wishes to implement a custom address translation algorithm.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 19.1.1.1
+// @uvm-ieee 1800.2-2020 auto 19.1.1.1
 class uvm_reg_item extends uvm_sequence_item;
 
   `uvm_object_utils(uvm_reg_item)
@@ -202,7 +202,7 @@ class uvm_reg_item extends uvm_sequence_item;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.3.1
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.3.1
   function new(string name="");
     super.new(name);
     value = new[1];
@@ -210,7 +210,7 @@ class uvm_reg_item extends uvm_sequence_item;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.3.2
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.3.2
   virtual function string convert2string();
     string s,value_s;
     s = {"kind=",kind.name(),
@@ -269,106 +269,106 @@ class uvm_reg_item extends uvm_sequence_item;
     set_line(rhs_.get_line());
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.1
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.1
   extern virtual function void set_element_kind(uvm_elem_kind_e element_kind);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.1
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.1
   extern virtual function uvm_elem_kind_e get_element_kind();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.2
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.2
   extern virtual function void set_element(uvm_object element);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.2
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.2
   extern virtual function uvm_object get_element();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.3
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.3
   extern virtual function void set_kind(uvm_access_e kind);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.3
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.3
   extern virtual function uvm_access_e get_kind();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.4
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.4
   extern virtual function void set_value(uvm_reg_data_t value, int unsigned idx = 0);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.4
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.4
   extern virtual function uvm_reg_data_t get_value(int unsigned idx = 0);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.4
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.4
   extern virtual function void set_value_size(int unsigned sz);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.4
+  // @uvm-ieee 1800.2-2020 manual 19.1.1.2.4
   extern virtual function int unsigned get_value_size();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.4
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.4
   extern virtual function void set_value_array(const ref uvm_reg_data_t value[]);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.4
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.4
   extern virtual function void get_value_array(ref uvm_reg_data_t value[]);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.5
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.5
   extern virtual function void set_offset(uvm_reg_addr_t offset);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.5
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.5
   extern virtual function uvm_reg_addr_t get_offset();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.6
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.6
   extern virtual function void set_status(uvm_status_e status);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.6
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.6
   extern virtual function uvm_status_e get_status();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.7
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.7
   extern virtual function void set_local_map(uvm_reg_map map);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.7
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.7
   extern virtual function uvm_reg_map get_local_map();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.8
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.8
   extern virtual function void set_map(uvm_reg_map map);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.8
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.8
   extern virtual function uvm_reg_map get_map();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.9
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.9
   extern virtual function void set_door(uvm_door_e door);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.9
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.9
   extern virtual function uvm_door_e get_door();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.10
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.10
   extern virtual function void set_parent_sequence(uvm_sequence_base parent);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.10
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.10
   extern virtual function uvm_sequence_base get_parent_sequence();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.11
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.11
   extern virtual function void set_priority(int value);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.11
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.11
   extern virtual function int get_priority();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.12
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.12
   extern virtual function void set_extension(uvm_object extension);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.12
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.12
   extern virtual function uvm_object get_extension();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.13
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.13
   extern virtual function void set_bd_kind(string bd_kind);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.13
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.13
   extern virtual function string get_bd_kind();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.14
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.14
   extern virtual function void set_fname(string fname);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.14
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.14
   extern virtual function string get_fname();
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.15
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.15
   extern virtual function void set_line(int line);
 
-  // @uvm-ieee 1800.2-2017 auto 19.1.1.2.15
+  // @uvm-ieee 1800.2-2020 auto 19.1.1.2.15
   extern virtual function int get_line();
 
 

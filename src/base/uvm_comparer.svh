@@ -1,10 +1,10 @@
 //-----------------------------------------------------------------------------
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2017-2018 Cisco Systems, Inc.
+// Copyright 2014-2020 Intel Corporation
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2018 Qualcomm, Inc.
-// Copyright 2014 Intel Corporation
 // Copyright 2013-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -35,16 +35,16 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 16.3.1
+// @uvm-ieee 1800.2-2020 auto 16.3.1
 class uvm_comparer extends uvm_policy;
 	
-   // @uvm-ieee 1800.2-2017 auto 16.3.2.3
+   // @uvm-ieee 1800.2-2020 auto 16.3.2.3
    `uvm_object_utils(uvm_comparer)
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.2.2
+  // @uvm-ieee 1800.2-2020 auto 16.3.2.2
   extern virtual function void flush();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.5
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.5
   extern virtual function uvm_policy::recursion_state_e object_compared(
      uvm_object lhs,
      uvm_object rhs,
@@ -52,42 +52,42 @@ class uvm_comparer extends uvm_policy;
      output bit ret_val
   );
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.8
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.8
   extern virtual function string get_miscompares();
 
   extern virtual function int unsigned get_result();
 
   extern virtual function void set_result(int unsigned result) ;
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.4.1
+  // @uvm-ieee 1800.2-2020 auto 16.3.4.1
   extern virtual function void set_recursion_policy( uvm_recursion_policy_enum policy);
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.4.1
+  // @uvm-ieee 1800.2-2020 auto 16.3.4.1
   extern virtual function uvm_recursion_policy_enum get_recursion_policy();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.4.2
+  // @uvm-ieee 1800.2-2020 auto 16.3.4.2
   extern virtual function void set_check_type( bit enabled );
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.4.2
+  // @uvm-ieee 1800.2-2020 auto 16.3.4.2
   extern virtual function bit get_check_type();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.5.1
+  // @uvm-ieee 1800.2-2020 auto 16.3.5.1
   extern virtual function void set_show_max (int unsigned show_max);
 
   extern virtual function int unsigned get_show_max ();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.5.2
+  // @uvm-ieee 1800.2-2020 auto 16.3.5.2
   extern virtual function void set_verbosity (int unsigned verbosity);
 
   extern virtual function int unsigned get_verbosity ();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.5.3
+  // @uvm-ieee 1800.2-2020 auto 16.3.5.3
   extern virtual function void set_severity (uvm_severity severity);
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.5.3
+  // @uvm-ieee 1800.2-2020 auto 16.3.5.3
   extern virtual function uvm_severity get_severity ();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.6
+  // @uvm-ieee 1800.2-2020 auto 16.3.6
   extern virtual function void set_threshold (int unsigned threshold);
 
   extern virtual function int unsigned get_threshold ();
@@ -102,22 +102,14 @@ class uvm_comparer extends uvm_policy;
   //
   // Determines whether comparison is UVM_DEEP, UVM_REFERENCE, or UVM_SHALLOW.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
-`else
   local uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
-`endif
 
   // Variable -- NODOCS -- show_max
   //
   // Sets the maximum number of messages to send to the printer for miscompares
   // of an object. 
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  int unsigned show_max = 1;
-`else
   local int unsigned show_max = 1;
-`endif
 
   // Variable -- NODOCS -- verbosity
   //
@@ -126,11 +118,7 @@ class uvm_comparer extends uvm_policy;
   // The verbosity setting is used by the messaging mechanism to determine
   // whether messages should be suppressed or shown.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  int unsigned verbosity = UVM_LOW;
-`else
   local int unsigned verbosity = UVM_LOW;
-`endif
 
 
   // Variable -- NODOCS -- sev
@@ -140,11 +128,7 @@ class uvm_comparer extends uvm_policy;
   // The severity setting is used by the messaging mechanism for printing and
   // filtering messages.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  uvm_severity sev = UVM_INFO;
-`else
   local uvm_severity sev = UVM_INFO;
-`endif
 
 
   // Variable -- NODOCS -- miscompares
@@ -154,41 +138,7 @@ class uvm_comparer extends uvm_policy;
   // The string holds the last set of miscompares that occurred during a
   // comparison.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  string miscompares = "";
-`else
   local string miscompares = "";
-`endif
-
-   
-`ifdef UVM_ENABLE_DEPRECATED_API
-  // Variable -- NODOCS -- physical
-  //
-  // This bit provides a filtering mechanism for fields. 
-  //
-  // The abstract and physical settings allow an object to distinguish between
-  // two different classes of fields.
-  //
-  // It is up to you, in the <uvm_object::do_compare> method, to test the
-  // setting of this field if you want to use the physical trait as a filter.
-
-  bit physical = 1;
-`endif
-
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-  // Variable -- NODOCS -- abstract
-  //
-  // This bit provides a filtering mechanism for fields. 
-  //
-  // The abstract and physical settings allow an object to distinguish between
-  // two different classes of fields.
-  //
-  // It is up to you, in the <uvm_object::do_compare> method, to test the
-  // setting of this field if you want to use the abstract trait as a filter.
-
-  bit abstract = 1;
-`endif
 
   // Variable -- NODOCS -- check_type
   //
@@ -199,12 +149,7 @@ class uvm_comparer extends uvm_policy;
   // to set this to 0 when the two operands are related by inheritance but are
   // different types.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  bit check_type = 1;
-`else
   local bit check_type = 1;
-`endif
-
 
   // Variable -- NODOCS -- result
   // 
@@ -212,29 +157,25 @@ class uvm_comparer extends uvm_policy;
   // You can use the result to determine the number of miscompares that
   // were found.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  int unsigned result = 0;
-`else
   local int unsigned result = 0;
-`endif
 
   local int unsigned m_threshold;
 
-	// @uvm-ieee 1800.2-2017 auto 16.3.2.1
+	// @uvm-ieee 1800.2-2020 auto 16.3.2.1
 	function new(string name="");
 	   super.new(name);
 	   m_threshold = 1;
 	endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.2.4
+  // @uvm-ieee 1800.2-2020 auto 16.3.2.4
   static function void set_default (uvm_comparer comparer) ;
      uvm_coreservice_t coreservice ;
      coreservice = uvm_coreservice_t::get() ;
      coreservice.set_default_comparer(comparer) ;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.2.5
+  // @uvm-ieee 1800.2-2020 auto 16.3.2.5
   static function uvm_comparer get_default () ;
      uvm_coreservice_t coreservice ;
      coreservice = uvm_coreservice_t::get() ;
@@ -256,7 +197,7 @@ class uvm_comparer extends uvm_policy;
   //
   // The radix is used for reporting purposes, the default radix is hex.
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.1
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.1
   virtual function bit compare_field (string name, 
                                       uvm_bitstream_t lhs, 
                                       uvm_bitstream_t rhs, 
@@ -316,7 +257,7 @@ class uvm_comparer extends uvm_policy;
   // small integers, less than or equal to 64 bits. It is automatically called
   // by <compare_field> if the operand size is less than or equal to 64.
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.2
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.2
   virtual function bit compare_field_int (string name, 
                                           uvm_integral_t lhs, 
                                           uvm_integral_t rhs, 
@@ -324,7 +265,11 @@ class uvm_comparer extends uvm_policy;
                                           uvm_radix_enum radix=UVM_NORADIX); 
     logic [63:0] mask;
     string msg;
-  
+    if(size > 64) begin
+        `uvm_error("UVM/COMPARER/INT/BAD_SIZE",$sformatf("compare_field_int cannot be called with operand size of more than 64 bits. Input argument size=%0d",size))
+        return 0;
+    end
+    
     mask = -1;
     mask >>= (64-size);
     if((lhs & mask) !== (rhs & mask)) begin
@@ -371,7 +316,7 @@ class uvm_comparer extends uvm_policy;
   // This method is the same as <compare_field> except that the arguments are
   // real numbers.
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.3
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.3
   virtual function bit compare_field_real (string name, 
                                           real lhs, 
                                           real rhs);
@@ -420,7 +365,7 @@ class uvm_comparer extends uvm_policy;
   // types match (the return from ~lhs.get_type_name()~ matches
   // ~rhs.get_type_name()~).
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.4
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.4
   virtual function bit compare_object (string name,
                                        uvm_object lhs,
                                        uvm_object rhs);
@@ -538,7 +483,7 @@ class uvm_comparer extends uvm_policy;
   //
   // The ~lhs~ and ~rhs~ objects are the two objects used for comparison.
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.6
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.6
   virtual function bit compare_string (string name,
                                        string lhs,
                                        string rhs);
@@ -562,7 +507,7 @@ class uvm_comparer extends uvm_policy;
   // is printed to standard-out using the current verbosity and severity
   // settings. See the <verbosity> and <sev> variables for more information.
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.7
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.7
   function void print_msg (string msg);
      
     string tmp = m_current_context(msg);

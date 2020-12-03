@@ -1,9 +1,9 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2020 Mentor Graphics Corporation
-// Copyright 2014 Semifore
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2010-2020 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2014 Semifore
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -35,7 +35,7 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 18.8.1
+// @uvm-ieee 1800.2-2020 auto 18.8.1
 class uvm_reg_fifo extends uvm_reg;
 
     local uvm_reg_field value;
@@ -60,7 +60,7 @@ class uvm_reg_fifo extends uvm_reg;
     //----------------------
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.8.3.1
+    // @uvm-ieee 1800.2-2020 auto 18.8.3.1
     function new(string name = "reg_fifo",
                  int unsigned size,
                  int unsigned n_bits,
@@ -82,7 +82,7 @@ class uvm_reg_fifo extends uvm_reg;
 
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.8.3.2
+    // @uvm-ieee 1800.2-2020 auto 18.8.3.2
     function void set_compare(uvm_check_e check=UVM_CHECK);
        value.set_compare(check);
     endfunction
@@ -134,7 +134,7 @@ class uvm_reg_fifo extends uvm_reg;
 
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.8.5.2
+    // @uvm-ieee 1800.2-2020 auto 18.8.5.2
     virtual function void set(uvm_reg_data_t  value,
                               string          fname = "",
                               int             lineno = 0);
@@ -150,7 +150,7 @@ class uvm_reg_fifo extends uvm_reg;
     
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.8.5.7
+    // @uvm-ieee 1800.2-2020 auto 18.8.5.5
     virtual task update(output uvm_status_e      status,
                         input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                         input  uvm_reg_map       map = null,
@@ -183,7 +183,7 @@ class uvm_reg_fifo extends uvm_reg;
 
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.8.5.1
+    // @uvm-ieee 1800.2-2020 auto 18.8.5.1
     virtual function uvm_reg_data_t get(string fname="", int lineno=0);
        //return fifo.pop_front();
        return fifo[0];

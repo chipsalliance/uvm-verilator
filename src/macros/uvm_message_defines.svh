@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2010-2013 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2012 AMD
-// Copyright 2014-2015 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Cisco Systems, Inc.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2010-2013 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -112,7 +112,7 @@
 //
 // |`uvm_info(ID, MSG, VERBOSITY)
 
-// @uvm-ieee 1800.2-2017 auto B.1.1.1
+// @uvm-ieee 1800.2-2020 auto B.1.1.1
 `define uvm_info(ID, MSG, VERBOSITY) \
    begin \
      if (uvm_report_enabled(VERBOSITY,UVM_INFO,ID)) \
@@ -130,7 +130,7 @@
 //
 // |`uvm_warning(ID, MSG)
 
-// @uvm-ieee 1800.2-2017 auto B.1.1.2
+// @uvm-ieee 1800.2-2020 auto B.1.1.2
 `define uvm_warning(ID, MSG) \
    begin \
      if (uvm_report_enabled(UVM_NONE,UVM_WARNING,ID)) \
@@ -148,7 +148,7 @@
 //
 // |`uvm_error(ID, MSG)
 
-// @uvm-ieee 1800.2-2017 auto B.1.1.3
+// @uvm-ieee 1800.2-2020 auto B.1.1.3
 `define uvm_error(ID, MSG) \
    begin \
      if (uvm_report_enabled(UVM_NONE,UVM_ERROR,ID)) \
@@ -166,7 +166,7 @@
 //
 // |`uvm_fatal(ID, MSG)
 
-// @uvm-ieee 1800.2-2017 auto B.1.1.4
+// @uvm-ieee 1800.2-2020 auto B.1.1.4
 `define uvm_fatal(ID, MSG) \
    begin \
      if (uvm_report_enabled(UVM_NONE,UVM_FATAL,ID)) \
@@ -183,7 +183,7 @@
 // context, or <uvm_report_object>, in which the message is printed be 
 // explicitly supplied as a macro argument.
 
-// @uvm-ieee 1800.2-2017 auto B.1.1.5
+// @uvm-ieee 1800.2-2020 auto B.1.1.5
 `define uvm_info_context(ID, MSG, VERBOSITY, RO) \
    begin \
      if (RO.uvm_report_enabled(VERBOSITY,UVM_INFO,ID)) \
@@ -199,7 +199,7 @@
 // context, or <uvm_report_object>, in which the message is printed be
 // explicitly supplied as a macro argument.
 
-// @uvm-ieee 1800.2-2017 auto B.1.1.6
+// @uvm-ieee 1800.2-2020 auto B.1.1.6
 `define uvm_warning_context(ID, MSG, RO) \
    begin \
      if (RO.uvm_report_enabled(UVM_NONE,UVM_WARNING,ID)) \
@@ -215,7 +215,7 @@
 // context, or <uvm_report_object> in which the message is printed be 
 // explicitly supplied as a macro argument.
 
-// @uvm-ieee 1800.2-2017 auto B.1.1.7
+// @uvm-ieee 1800.2-2020 auto B.1.1.7
 `define uvm_error_context(ID, MSG, RO) \
    begin \
      if (RO.uvm_report_enabled(UVM_NONE,UVM_ERROR,ID)) \
@@ -231,7 +231,7 @@
 // context, or <uvm_report_object>, in which the message is printed be 
 // explicitly supplied as a macro argument.
 
-// @uvm-ieee 1800.2-2017 auto B.1.1.8
+// @uvm-ieee 1800.2-2020 auto B.1.1.8
 `define uvm_fatal_context(ID, MSG, RO) \
    begin \
      if (RO.uvm_report_enabled(UVM_NONE,UVM_FATAL,ID)) \

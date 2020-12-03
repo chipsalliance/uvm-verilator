@@ -1,10 +1,10 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2020 Mentor Graphics Corporation
-// Copyright 2010-2012 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2020 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
+// Copyright 2010-2012 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -38,14 +38,14 @@ typedef class uvm_reg_indirect_ftdr_seq;
 // ~n_bits~ and coverage models.
 //-----------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 18.7.1
+// @uvm-ieee 1800.2-2020 auto 18.7.1
 class uvm_reg_indirect_data extends uvm_reg;
 
    protected uvm_reg m_idx;
    protected uvm_reg m_tbl[];
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.7.2.1
+   // @uvm-ieee 1800.2-2020 auto 18.7.2.1
    function new(string name = "uvm_reg_indirect",
                 int unsigned n_bits,
                 int has_cover);
@@ -56,7 +56,7 @@ class uvm_reg_indirect_data extends uvm_reg;
    endfunction: build
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.7.2.2
+   // @uvm-ieee 1800.2-2020 auto 18.7.2.2
    function void configure (uvm_reg idx,
                             uvm_reg reg_a[],
                             uvm_reg_block blk_parent,

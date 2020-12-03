@@ -1,10 +1,10 @@
 //
 //------------------------------------------------------------------------------
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2014-2018 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -47,7 +47,7 @@ endclass
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.2.8.1.1
+// @uvm-ieee 1800.2-2020 auto 12.2.8.1.1
 virtual class uvm_tlm_fifo_base #(type T=int) extends uvm_component;
 
   `uvm_component_abstract_param_utils(uvm_tlm_fifo_base #(T))
@@ -145,9 +145,9 @@ virtual class uvm_tlm_fifo_base #(type T=int) extends uvm_component;
   // statically elaborated construct (e.g., a module). The ~size~ indicates the
   // maximum size of the FIFO. A value of zero indicates no upper bound.
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.1.7
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.2.1
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.3.2
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.1.7
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.2.1
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.3.2
   function new(string name, uvm_component parent = null);
     super.new(name, parent);
 
@@ -175,63 +175,63 @@ virtual class uvm_tlm_fifo_base #(type T=int) extends uvm_component;
     return 0;
   endfunction : use_automatic_config
    
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.2.6
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.2.6
   virtual function void flush();
     uvm_report_error("flush", `UVM_TLM_FIFO_FUNCTION_ERROR, UVM_NONE);
   endfunction
   
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.2.2
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.2.2
   virtual function int size();
     uvm_report_error("size", `UVM_TLM_FIFO_FUNCTION_ERROR, UVM_NONE);
     return 0;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.1.3
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.1.3
   virtual task put(T t);
     uvm_report_error("put", `UVM_TLM_FIFO_TASK_ERROR, UVM_NONE);
   endtask
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.1.4
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.1.4
   virtual task get(output T t);
     uvm_report_error("get", `UVM_TLM_FIFO_TASK_ERROR, UVM_NONE);
   endtask
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.1.4
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.1.4
   virtual task peek(output T t);
     uvm_report_error("peek", `UVM_TLM_FIFO_TASK_ERROR, UVM_NONE);
   endtask
   
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.1.3
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.1.3
   virtual function bit try_put(T t);
     uvm_report_error("try_put", `UVM_TLM_FIFO_FUNCTION_ERROR, UVM_NONE);
     return 0;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.1.4
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.1.4
   virtual function bit try_get(output T t);
     uvm_report_error("try_get", `UVM_TLM_FIFO_FUNCTION_ERROR, UVM_NONE);
     return 0;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.1.4
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.1.4
   virtual function bit try_peek(output T t);
     uvm_report_error("try_peek", `UVM_TLM_FIFO_FUNCTION_ERROR, UVM_NONE);
     return 0;
   endfunction
   
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.1.3
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.1.3
   virtual function bit can_put();
     uvm_report_error("can_put", `UVM_TLM_FIFO_FUNCTION_ERROR, UVM_NONE);
     return 0;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.1.4
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.1.4
   virtual function bit can_get();
     uvm_report_error("can_get", `UVM_TLM_FIFO_FUNCTION_ERROR, UVM_NONE);
     return 0;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.1.4
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.1.4
   virtual function bit can_peek();
     uvm_report_error("can_peek", `UVM_TLM_FIFO_FUNCTION_ERROR, UVM_NONE);
     return 0;
@@ -252,19 +252,19 @@ virtual class uvm_tlm_fifo_base #(type T=int) extends uvm_component;
     return null;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.2.4
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.2.4
   virtual function bit is_empty();
     uvm_report_error("is_empty", `UVM_TLM_FIFO_FUNCTION_ERROR, UVM_NONE);
     return 0;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.2.5
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.2.5
   virtual function bit is_full();
     uvm_report_error("is_full", `UVM_TLM_FIFO_FUNCTION_ERROR);
     return 0;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.8.2.3
+  // @uvm-ieee 1800.2-2020 auto 12.2.8.2.3
   virtual function int used();
     uvm_report_error("used", `UVM_TLM_FIFO_FUNCTION_ERROR, UVM_NONE);
     return 0;

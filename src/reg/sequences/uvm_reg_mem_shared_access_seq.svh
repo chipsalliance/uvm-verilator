@@ -1,10 +1,10 @@
 // 
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2004-2010 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2020 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
+// Copyright 2004-2010 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -57,18 +57,20 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto E.4.1.1
+// @uvm-ieee 1800.2-2020 auto E.4.1.1
 class uvm_reg_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    // Variable -- NODOCS -- rg
    // The register to be tested
    uvm_reg rg;
+   rand uvm_reg_randval rand_reg_val;
 
    `uvm_object_utils(uvm_reg_shared_access_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.4.1.3
+   // @uvm-ieee 1800.2-2020 auto E.4.1.3
    function new(string name="uvm_reg_shared_access_seq");
      super.new(name);
+     rand_reg_val = new();
    endfunction
 
 
@@ -142,7 +144,8 @@ class uvm_reg_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
          prev = rg.get();
          
          // Write a random value, except in those "don't touch" fields
-         v = ({$random, $random} & ~other_mask) | (prev & other_mask);
+         void'(rand_reg_val.randomize());
+         v = (rand_reg_val.randval & ~other_mask) | (prev & other_mask);
          
          `uvm_info("uvm_reg_shared_access_seq", $sformatf("Writing register %s via map \"%s\"...",
                                     rg.get_full_name(), maps[j].get_full_name), UVM_LOW)
@@ -208,18 +211,20 @@ endclass: uvm_reg_shared_access_seq
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto E.4.2.1
+// @uvm-ieee 1800.2-2020 auto E.4.2.1
 class uvm_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    // variable -- NODOCS -- mem
    // The memory to be tested
    uvm_mem mem;
+   rand uvm_reg_randval rand_reg_val;
 
    `uvm_object_utils(uvm_mem_shared_access_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.4.2.3
+   // @uvm-ieee 1800.2-2020 auto E.4.2.3
    function new(string name="uvm_mem_shared_access_seq");
      super.new(name);
+     rand_reg_val = new();
    endfunction
 
    virtual task body();
@@ -295,7 +300,8 @@ class uvm_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_re
             
             
             // Write a random value,
-            v = {$random, $random};
+            void'(rand_reg_val.randomize());
+            v = rand_reg_val.randval;
             
             mem.write(status, offset, v, UVM_FRONTDOOR, maps[j], this);
             if (status != UVM_IS_OK) begin
@@ -358,7 +364,7 @@ endclass: uvm_mem_shared_access_seq
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto E.4.3.1
+// @uvm-ieee 1800.2-2020 auto E.4.3.1
 class uvm_reg_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    // Variable -- NODOCS -- model
@@ -383,14 +389,14 @@ class uvm_reg_mem_shared_access_seq extends uvm_reg_sequence #(uvm_sequence #(uv
    
    `uvm_object_utils(uvm_reg_mem_shared_access_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.4.3.3.1
+   // @uvm-ieee 1800.2-2020 auto E.4.3.3.1
    function new(string name="uvm_reg_mem_shared_access_seq");
      super.new(name);
    endfunction
 
 
 
-   // @uvm-ieee 1800.2-2017 auto E.4.3.3.2
+   // @uvm-ieee 1800.2-2020 auto E.4.3.3.2
    virtual task body();
 
       if (model == null) begin

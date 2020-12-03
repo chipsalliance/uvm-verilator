@@ -1,12 +1,13 @@
 //
 //-----------------------------------------------------------------------------
+// Copyright 2010-2012 AMD
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2017-2018 Cisco Systems, Inc.
+// Copyright 2020 Marvell International Ltd.
 // Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2018 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2010-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
-// Copyright 2017-2018 Cisco Systems, Inc.
 // Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
@@ -46,7 +47,7 @@ typedef class uvm_field_op;
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 5.3.1
+// @uvm-ieee 1800.2-2020 auto 5.3.1
 virtual class uvm_object extends uvm_void;
 
 
@@ -55,34 +56,20 @@ virtual class uvm_object extends uvm_void;
   // Creates a new uvm_object with the given instance ~name~. If ~name~ is not
   // supplied, the object is unnamed.
 
+  // @uvm-ieee 1800.2-2020 auto 5.3.2
   extern function new (string name="");
 
 
   // Group -- NODOCS -- Seeding
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  // Variable -- NODOCS -- use_uvm_seeding
-  //
-  // This bit enables or disables the UVM seeding mechanism. It globally affects
-  // the operation of the <reseed> method.
-  //
-  // When enabled, UVM-based objects are seeded based on their type and full
-  // hierarchical name rather than allocation order. This improves random
-  // stability for objects whose instance names are unique across each type.
-  // The <uvm_component> class is an example of a type that has a unique
-  // instance name.
-
-  static bit use_uvm_seeding = 1;
-`endif 
-
   // Function -- NODOCS -- get_uvm_seeding
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.3.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.3.1
   extern static function bit get_uvm_seeding();
       
   // Function -- NODOCS -- set_uvm_seeding
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.3.2
+  // @uvm-ieee 1800.2-2020 auto 5.3.3.2
   extern static function void set_uvm_seeding(bit enable);
    
   // Function -- NODOCS -- reseed
@@ -94,7 +81,7 @@ virtual class uvm_object extends uvm_void;
   // If <get_uvm_seeding> returns 0, then reseed() does
   // not perform any function. 
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.3.3
+  // @uvm-ieee 1800.2-2020 auto 5.3.3.3
   extern function void reseed ();
 
 
@@ -105,7 +92,7 @@ virtual class uvm_object extends uvm_void;
   // Sets the instance name of this object, overwriting any previously
   // given name.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.4.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.4.1
   extern virtual function void set_name (string name);
 
 
@@ -114,7 +101,7 @@ virtual class uvm_object extends uvm_void;
   // Returns the name of the object, as provided by the ~name~ argument in the
   // <new> constructor or <set_name> method.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.4.2
+  // @uvm-ieee 1800.2-2020 auto 5.3.4.2
   extern virtual function string get_name ();
 
 
@@ -132,7 +119,7 @@ virtual class uvm_object extends uvm_void;
   // full name concatenated with the sequence's name. This provides the sequence
   // a full context, which is useful when debugging.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.4.3
+  // @uvm-ieee 1800.2-2020 auto 5.3.4.3
   extern virtual function string get_full_name ();
 
 
@@ -140,7 +127,7 @@ virtual class uvm_object extends uvm_void;
   //
   // Returns the object's unique, numeric instance identifier.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.4.4
+  // @uvm-ieee 1800.2-2020 auto 5.3.4.4
   extern virtual function int get_inst_id ();
 
 
@@ -180,6 +167,7 @@ virtual class uvm_object extends uvm_void;
   //
   // This function is implemented by the `uvm_*_utils macros, if employed.
 
+  // @uvm-ieee 1800.2-2020 auto 5.3.4.5
   extern static function uvm_object_wrapper get_type ();
 
 
@@ -211,6 +199,7 @@ virtual class uvm_object extends uvm_void;
   //
   // This function is implemented by the `uvm_*_utils macros, if employed.
 
+  // @uvm-ieee 1800.2-2020 auto 5.3.4.6
   extern virtual function uvm_object_wrapper get_object_type ();
 
 
@@ -237,6 +226,7 @@ virtual class uvm_object extends uvm_void;
   // without need of an object of the class, i.e., to enable access via the
   // scope operator, ~mytype::type_name~.
 
+  // @uvm-ieee 1800.2-2020 auto 5.3.4.7
   virtual function string get_type_name (); return "<unknown>"; endfunction
 
 
@@ -257,6 +247,7 @@ virtual class uvm_object extends uvm_void;
   //|      return t;
   //|    endfunction 
 
+  // @uvm-ieee 1800.2-2020 auto 5.3.5.1
   virtual function uvm_object create (string name=""); return null; endfunction
 
   
@@ -267,7 +258,7 @@ virtual class uvm_object extends uvm_void;
   // The default implementation calls <create> followed by <copy>. As clone is
   // virtual, derived classes may override this implementation if desired. 
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.5.2
+  // @uvm-ieee 1800.2-2020 auto 5.3.5.2
   extern virtual function uvm_object clone ();
 
 
@@ -287,7 +278,7 @@ virtual class uvm_object extends uvm_void;
   // must override the <do_print> method and use the provided printer policy
   // class to format the output.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.6.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.6.1
   extern function void print (uvm_printer printer=null);
 
 
@@ -302,7 +293,7 @@ virtual class uvm_object extends uvm_void;
   // class to format the output. The printer policy will manage all string
   // concatenations and provide the string to ~sprint~ to return to the caller.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.6.2
+  // @uvm-ieee 1800.2-2020 auto 5.3.6.2
   extern function string sprint (uvm_printer printer=null); 
 
 
@@ -339,7 +330,7 @@ virtual class uvm_object extends uvm_void;
   //
   // See <uvm_printer> for information about the printer API.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.6.3
+  // @uvm-ieee 1800.2-2020 auto 5.3.6.3
   extern virtual function void do_print (uvm_printer printer);
 
 
@@ -395,7 +386,7 @@ virtual class uvm_object extends uvm_void;
   //|    base_field=foo write=1 addr=00000123 data=00000456 child_field=bar
 
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.6.4
+  // @uvm-ieee 1800.2-2020 auto 5.3.6.4
   extern virtual function string convert2string();
 
 
@@ -416,7 +407,7 @@ virtual class uvm_object extends uvm_void;
   // via a common interface, the uvm_recorder policy provides vendor-independent
   // access to a simulator's recording capabilities.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.7.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.7.1
   extern function void record (uvm_recorder recorder=null);
 
 
@@ -442,7 +433,7 @@ virtual class uvm_object extends uvm_void;
   //|     recorder.record_object("data", data);
   //|   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.7.2
+  // @uvm-ieee 1800.2-2020 auto 5.3.7.2
   extern virtual function void do_record (uvm_recorder recorder);
 
 
@@ -456,7 +447,7 @@ virtual class uvm_object extends uvm_void;
   // classes. To copy the fields of a derived class, that class should override
   // the <do_copy> method.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.8.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.8.1
   extern function void copy (uvm_object rhs, uvm_copier copier=null);
 
 
@@ -481,7 +472,7 @@ virtual class uvm_object extends uvm_void;
   // The implementation must call ~super.do_copy~, and it must $cast the rhs
   // argument to the derived type before copying. 
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.8.2
+  // @uvm-ieee 1800.2-2020 auto 5.3.8.2
   extern virtual function void do_copy (uvm_object rhs);
 
 
@@ -503,7 +494,7 @@ virtual class uvm_object extends uvm_void;
   // then the global ~uvm_default_comparer~ policy is used. See <uvm_comparer> 
   // for more information.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.9.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.9.1
   extern function bit compare (uvm_object rhs, uvm_comparer comparer=null);
 
 
@@ -536,7 +527,7 @@ virtual class uvm_object extends uvm_void;
   // class to customize how comparisons are performed and how much miscompare
   // information is collected. See uvm_comparer for more details.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.9.2
+  // @uvm-ieee 1800.2-2020 auto 5.3.9.2
   extern virtual function bit do_compare (uvm_object  rhs,
                                           uvm_comparer comparer);
 
@@ -544,13 +535,13 @@ virtual class uvm_object extends uvm_void;
 
   // Function -- NODOCS -- pack
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.10.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.10.1
   extern function int pack (ref bit bitstream[],
                             input uvm_packer packer=null);
 
   // Function -- NODOCS -- pack_bytes
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.10.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.10.1
   extern function int pack_bytes (ref byte unsigned bytestream[],
                                   input uvm_packer packer=null);
 
@@ -569,11 +560,11 @@ virtual class uvm_object extends uvm_void;
   // Use the array's built-in ~size~ method to get the number of bytes or ints
   // consumed during the packing process.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.10.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.10.1
   extern function int pack_ints (ref int unsigned intstream[],
                                  input uvm_packer packer=null);
   
-  // @uvm-ieee 1800.2-2017 auto 5.3.10.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.10.1
   extern function int pack_longints (ref longint unsigned longintstream[],
                                      input uvm_packer packer=null);
   
@@ -629,7 +620,7 @@ virtual class uvm_object extends uvm_void;
   // Packing order does not need to match declaration order. However, unpacking
   // order must match packing order.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.10.2
+  // @uvm-ieee 1800.2-2020 auto 5.3.10.2
   extern virtual function void do_pack (uvm_packer packer);
 
 
@@ -637,13 +628,13 @@ virtual class uvm_object extends uvm_void;
 
   // Function -- NODOCS -- unpack
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.11.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.11.1
   extern function int unpack (ref   bit        bitstream[],
                               input uvm_packer packer=null);
 
   // Function -- NODOCS -- unpack_bytes
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.11.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.11.1
   extern function int unpack_bytes (ref byte unsigned bytestream[],
                                     input uvm_packer packer=null);
   
@@ -666,11 +657,11 @@ virtual class uvm_object extends uvm_void;
   //
   // The return value is the actual number of bits unpacked from the given array.
   
-  // @uvm-ieee 1800.2-2017 auto 5.3.11.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.11.1
   extern function int unpack_ints (ref   int unsigned intstream[],
                                    input uvm_packer packer=null);
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.11.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.11.1
   extern function int unpack_longints (ref   longint unsigned longintstream[],
                                        input uvm_packer packer=null);
 
@@ -717,106 +708,17 @@ virtual class uvm_object extends uvm_void;
   //   the next property, if any. If the least significant bit is 1, then the
   //   target object should be allocated and its properties unpacked.
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.11.2
+  // @uvm-ieee 1800.2-2020 auto 5.3.11.2
   extern virtual function void do_unpack (uvm_packer packer);
 
-  // @uvm-ieee 1800.2-2017 auto 5.3.13.1
+  // @uvm-ieee 1800.2-2020 auto 5.3.13
   extern virtual function void do_execute_op ( uvm_field_op op);
 
-
   // Group -- NODOCS -- Configuration
-`ifdef UVM_ENABLE_DEPRECATED_API
-
-  // Function -- NODOCS -- set_int_local
-
-  extern virtual function void  set_int_local    (string      field_name,
-                                                  uvm_bitstream_t value,
-                                                  bit         recurse=1);
-
-  // Function -- NODOCS -- set_string_local
-
-  extern virtual function void  set_string_local (string field_name,
-                                                  string value,
-                                                  bit    recurse=1);
-
-  // Function -- NODOCS -- set_object_local
-  //
-  // These methods provide write access to integral, string, and 
-  // uvm_object-based properties indexed by a ~field_name~ string. The object
-  // designer choose which, if any, properties will be accessible, and overrides
-  // the appropriate methods depending on the properties' types. For objects,
-  // the optional ~clone~ argument specifies whether to clone the ~value~
-  // argument before assignment.
-  //
-  // The global <uvm_is_match> function is used to match the field names, so
-  // ~field_name~ may contain wildcards.
-  //
-  // An example implementation of all three methods is as follows.
-  //
-  //| class mytype extends uvm_object;
-  //|
-  //|   local int myint;
-  //|   local byte mybyte;
-  //|   local shortint myshort; // no access
-  //|   local string mystring;
-  //|   local obj_type myobj;
-  //| 
-  //|   // provide access to integral properties
-  //|   function void set_int_local(string field_name, uvm_bitstream_t value);
-  //|     if (uvm_is_match (field_name, "myint"))
-  //|       myint = value;
-  //|     else if (uvm_is_match (field_name, "mybyte"))
-  //|       mybyte = value;
-  //|   endfunction
-  //| 
-  //|   // provide access to string properties
-  //|   function void set_string_local(string field_name, string value);
-  //|     if (uvm_is_match (field_name, "mystring"))
-  //|       mystring = value;
-  //|   endfunction
-  //| 
-  //|   // provide access to sub-objects
-  //|   function void set_object_local(string field_name, uvm_object value,
-  //|                                  bit clone=1);
-  //|     if (uvm_is_match (field_name, "myobj")) begin
-  //|       if (value != null) begin
-  //|         obj_type tmp;
-  //|         // if provided value is not correct type, produce error
-  //|         if (!$cast(tmp, value) )
-  //|           /* error */
-  //|         else begin
-  //|           if(clone) 
-  //|             $cast(myobj, tmp.clone());
-  //|           else
-  //|             myobj = tmp;
-  //|         end
-  //|       end
-  //|       else
-  //|         myobj = null; // value is null, so simply assign null to myobj
-  //|     end
-  //|   endfunction
-  //|   ...
-  //
-  // Although the object designer implements these methods to provide outside
-  // access to one or more properties, they are intended for internal use (e.g.,
-  // for command-line debugging and auto-configuration) and should not be called
-  // directly by the user.
-
-  extern virtual function void  set_object_local (string      field_name,
-                                                  uvm_object  value,
-                                                  bit         clone=1,
-                                                  bit         recurse=1);
-
-`endif // UVM_ENABLE_DEPRECATED_API
  
-  // @uvm-ieee 1800.2-2017 auto 5.3.12
+  // @uvm-ieee 1800.2-2020 auto 5.3.12
   extern virtual function void  set_local(uvm_resource_base rsrc) ;
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  // Implementation artifact
-  uvm_resource_base m_set_local_rsrc;
-`endif
-  
   //---------------------------------------------------------------------------
   //                 **** Internal Methods and Properties ***
   //                           Do not use directly
@@ -979,75 +881,6 @@ function string uvm_object::convert2string();
   return "";
 endfunction
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-// set_int_local
-// -------------
-
-function void  uvm_object::set_int_local (string      field_name,
-                                          uvm_bitstream_t value,
-                                          bit         recurse=1);
-  uvm_field_op field_op = uvm_field_op::m_get_available_op();
-  uvm_resource_base rsrc_base  = m_set_local_rsrc;
-  if (rsrc_base == null) begin
-    uvm_resource#(uvm_bitstream_t) rsrc = new(field_name);
-    rsrc.write(value);
-    rsrc_base = rsrc;
-  end
-  field_op.set(UVM_SET, null, rsrc_base);
-  do_execute_op(field_op);
-  field_op.m_recycle();
-  m_set_local_rsrc = null;
-endfunction
-
-
-// set_object_local
-// ----------------
-
-function void  uvm_object::set_object_local (string     field_name,
-                                             uvm_object value,
-                                             bit        clone=1,
-                                             bit        recurse=1);
-  uvm_field_op field_op = uvm_field_op::m_get_available_op();
-  uvm_resource_base rsrc_base  = m_set_local_rsrc;
-  if (rsrc_base == null) begin
-    uvm_resource#(uvm_object) rsrc  = new(field_name);
-    if (clone && (value != null)) begin
-      uvm_object cc  = value.clone();
-      if (cc != null) cc.set_name(field_name);
-      rsrc.write(cc);
-    end
-    else
-      rsrc.write(value);
-    rsrc_base = rsrc;
-  end
-  field_op.set(UVM_SET, null, rsrc_base);
-  do_execute_op(field_op);
-  field_op.m_recycle();
-  m_set_local_rsrc = null;
-endfunction
-
-
-// set_string_local
-// ----------------
-function void  uvm_object::set_string_local (string field_name,
-                                             string value,
-                                             bit    recurse=1);
-                                             
-  uvm_field_op field_op = uvm_field_op::m_get_available_op();
-  uvm_resource_base rsrc_base  = m_set_local_rsrc;
-  if (rsrc_base == null) begin
-    uvm_resource#(string) rsrc = new(field_name);
-    rsrc.write(value);
-    rsrc_base = rsrc;
-  end
-  field_op.set(UVM_SET, null, rsrc_base);
-  do_execute_op(field_op);
-  field_op.m_recycle();
-  m_set_local_rsrc = null;
-endfunction
-`endif // UVM_ENABLE_DEPRECATED_API
-
-
 // set_local
 // ----------------
 
@@ -1056,42 +889,6 @@ function void  uvm_object::set_local(uvm_resource_base rsrc) ;
     return ;
   end
   else begin
-`ifdef UVM_ENABLE_DEPRECATED_API
-    bit success;
-    uvm_object obj;
-    m_set_local_rsrc = rsrc;
-    `uvm_resource_read(success,
-                       rsrc,
-                       uvm_object,
-                       obj,
-                       this)
-    if (success) begin
-      set_object_local(rsrc.get_name(), obj, 0);
-    end
-    else begin
-      string str;
-      `uvm_resource_read(success,
-                         rsrc,
-                         string,
-                         str,
-                         this)
-      if (success) begin
-        set_string_local(rsrc.get_name(), str);
-      end
-      else begin
-        uvm_bitstream_t bits;
-        `uvm_resource_builtin_int_read(success,
-                                       rsrc,
-                                       bits,
-                                       this)
-        if (success) begin
-          set_int_local(rsrc.get_name(), bits);
-        end
-      end
-    end
-    if (!success)
-`endif
-      
     begin
       uvm_field_op op;
       op  = uvm_field_op::m_get_available_op();

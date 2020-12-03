@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
-// Copyright 2018 Qualcomm, Inc.
 // Copyright 2018 Cadence Design Systems, Inc.
-// Copyright 2018 NVIDIA Corporation
 // Copyright 2018 Cisco Systems, Inc.
+// Copyright 2018-2020 NVIDIA Corporation
+// Copyright 2018 Qualcomm, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -83,7 +83,7 @@
 // @uvm-contrib This API is being considered for potential contribution to 1800.2
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.1
+// @uvm-ieee 1800.2-2020 auto B.2.4.1
 `define uvm_pack_intN(VAR,SIZE,PACKER=packer) \
   begin \
     bit __array[]; \
@@ -92,13 +92,13 @@
     PACKER.pack_bits(__array, SIZE); \
   end
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.2
+// @uvm-ieee 1800.2-2020 auto B.2.4.2
 `define uvm_pack_enumN(VAR,SIZE,PACKER=packer) \
    `uvm_pack_intN(VAR,SIZE,PACKER)
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.3
+// @uvm-ieee 1800.2-2020 auto B.2.4.3
 `define uvm_pack_sarrayN(VAR,SIZE,PACKER=packer) \
     begin \
     foreach (VAR `` [index]) \
@@ -107,7 +107,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.4
+// @uvm-ieee 1800.2-2020 auto B.2.4.4
 `define uvm_pack_arrayN(VAR,SIZE,PACKER=packer) \
     begin \
       `uvm_pack_intN(VAR.size(),32,PACKER) \
@@ -116,7 +116,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.5
+// @uvm-ieee 1800.2-2020 auto B.2.4.5
 `define uvm_pack_queueN(VAR,SIZE,PACKER=packer) \
    `uvm_pack_arrayN(VAR,SIZE,PACKER)
 
@@ -126,7 +126,7 @@
 //------------------------------
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.6
+// @uvm-ieee 1800.2-2020 auto B.2.4.6
 `define uvm_pack_int(VAR,PACKER=packer) \
    `uvm_pack_intN(VAR,$bits(VAR),PACKER)
 
@@ -134,38 +134,38 @@
 `define uvm_pack_object(VAR,PACKER=packer) \
   PACKER.pack_object_with_meta(VAR);
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.7
+// @uvm-ieee 1800.2-2020 auto B.2.4.7
 `define uvm_pack_enum(VAR,PACKER=packer) \
    `uvm_pack_enumN(VAR,$bits(VAR),PACKER)
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.8
+// @uvm-ieee 1800.2-2020 auto B.2.4.8
 `define uvm_pack_string(VAR,PACKER=packer) \
   PACKER.pack_string(VAR);
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.9
+// @uvm-ieee 1800.2-2020 auto B.2.4.9
 `define uvm_pack_real(VAR,PACKER=packer) \
   PACKER.pack_real(VAR);
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.10
+// @uvm-ieee 1800.2-2020 auto B.2.4.10
 `define uvm_pack_sarray(VAR,PACKER=packer)  \
    `uvm_pack_sarrayN(VAR,$bits(VAR[0]),PACKER)
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.11
+// @uvm-ieee 1800.2-2020 auto B.2.4.11
 `define uvm_pack_array(VAR,PACKER=packer) \
    `uvm_pack_arrayN(VAR,$bits(VAR[0]),PACKER)
 
 `define uvm_pack_da(VAR,PACKER=packer) \
   `uvm_pack_array(VAR,PACKER)
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.12
+// @uvm-ieee 1800.2-2020 auto B.2.4.12
 `define uvm_pack_queue(VAR,PACKER=packer) \
    `uvm_pack_queueN(VAR,$bits(VAR[0]),PACKER)
 
@@ -191,7 +191,7 @@
 //----------------------------------
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.1
+// @uvm-ieee 1800.2-2020 auto B.2.5.1
 `define uvm_unpack_intN(VAR,SIZE,PACKER=packer) \
   begin \
     bit __array[] = new [SIZE]; \
@@ -202,7 +202,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.2
+// @uvm-ieee 1800.2-2020 auto B.2.5.2
 `define uvm_unpack_enumN(VAR,SIZE,TYPE,PACKER=packer) \
   begin \
     bit __array[] = new [SIZE]; \
@@ -213,7 +213,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.3
+// @uvm-ieee 1800.2-2020 auto B.2.5.3
 `define uvm_unpack_sarrayN(VAR,SIZE,PACKER=packer) \
     begin \
     foreach (VAR `` [i]) \
@@ -222,7 +222,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.4
+// @uvm-ieee 1800.2-2020 auto B.2.5.4
 `define uvm_unpack_arrayN(VAR,SIZE,PACKER=packer) \
     begin \
       int sz__; \
@@ -233,7 +233,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.5
+// @uvm-ieee 1800.2-2020 auto B.2.5.5
 `define uvm_unpack_queueN(VAR,SIZE,PACKER=packer) \
     begin \
       int sz__; \
@@ -251,7 +251,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.6
+// @uvm-ieee 1800.2-2020 auto B.2.5.6
 `define uvm_unpack_int(VAR,PACKER=packer) \
    `uvm_unpack_intN(VAR,$bits(VAR),PACKER)
 
@@ -268,30 +268,30 @@
   end
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.7
+// @uvm-ieee 1800.2-2020 auto B.2.5.7
 `define uvm_unpack_enum(VAR,TYPE,PACKER=packer) \
    `uvm_unpack_enumN(VAR,$bits(VAR),TYPE,PACKER)
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.8
+// @uvm-ieee 1800.2-2020 auto B.2.5.8
 `define uvm_unpack_string(VAR,PACKER=packer) \
   VAR = PACKER.unpack_string();
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.9
+// @uvm-ieee 1800.2-2020 auto B.2.5.9
 `define uvm_unpack_real(VAR,PACKER=packer) \
   VAR = PACKER.unpack_real();
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.10
+// @uvm-ieee 1800.2-2020 auto B.2.5.10
 `define uvm_unpack_sarray(VAR,PACKER=packer)  \
    `uvm_unpack_sarrayN(VAR,$bits(VAR[0]),PACKER)
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.11
+// @uvm-ieee 1800.2-2020 auto B.2.5.11
 `define uvm_unpack_array(VAR,PACKER=packer) \
    `uvm_unpack_arrayN(VAR,$bits(VAR[0]),PACKER)
 
@@ -300,7 +300,7 @@
   `uvm_unpack_array(VAR,PACKER)
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.12
+// @uvm-ieee 1800.2-2020 auto B.2.5.12
 `define uvm_unpack_queue(VAR,PACKER=packer) \
    `uvm_unpack_queueN(VAR,$bits(VAR[0]),PACKER)
 

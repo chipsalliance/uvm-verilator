@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2011 AMD
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Cisco Systems, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2010-2014 Synopsys, Inc.
 // Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
@@ -30,7 +30,7 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 15.5.1
+// @uvm-ieee 1800.2-2020 auto 15.5.1
 class uvm_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
                                    extends uvm_sequencer_param_base #(REQ, RSP);
 
@@ -44,7 +44,7 @@ class uvm_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.5.2.2
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.1
   extern function new (string name, uvm_component parent=null);
   
 
@@ -88,31 +88,37 @@ class uvm_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
   // Task -- NODOCS -- get_next_item
   // Retrieves the next available item from a sequence.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.3
   extern virtual task          get_next_item (output REQ t);
 
   // Task -- NODOCS -- try_next_item
   // Retrieves the next available item from a sequence if one is available.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.4
   extern virtual task          try_next_item (output REQ t);
 
   // Function -- NODOCS -- item_done
   // Indicates that the request is completed.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.5
   extern virtual function void item_done     (RSP item = null);
 
   // Task -- NODOCS -- put
   // Sends a response back to the sequence that issued the request.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.8
   extern virtual task          put           (RSP t);
 
   // Task -- NODOCS -- get
   // Retrieves the next available item from a sequence.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.6
   extern task                  get           (output REQ t);
 
   // Task -- NODOCS -- peek
   // Returns the current request item if one is in the FIFO.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.7
   extern task                  peek          (output REQ t);
 
   /// Documented here for clarity, implemented in uvm_sequencer_base
@@ -228,6 +234,7 @@ endtask
 
 task uvm_sequencer::try_next_item(output REQ t);
   int selected_sequence;
+  bit found_item;
   time arb_time;
   uvm_sequence_base seq;
 
@@ -238,10 +245,15 @@ task uvm_sequencer::try_next_item(output REQ t);
     
   // allow state from last transaction to settle such that sequences'
   // relevancy can be determined with up-to-date information
-  wait_for_sequences();
+  repeat (m_wait_for_sequences_count) begin
+    wait_for_sequences();
 
-  // choose the sequence based on relevancy
-  selected_sequence = m_choose_next_request();
+    // choose the sequence based on relevancy
+    selected_sequence = m_choose_next_request();
+
+    if (selected_sequence != -1)
+      break;
+  end
 
   // return if none available
   if (selected_sequence == -1) begin
@@ -257,15 +269,21 @@ task uvm_sequencer::try_next_item(output REQ t);
   sequence_item_requested = 1;
   get_next_item_called = 1;
 
-  // give it one NBA to put a new item in the fifo
-  wait_for_sequences();
+  repeat (m_wait_for_sequences_count) begin
+    // give it one NBA to put a new item in the fifo
+    wait_for_sequences();
 
-  // attempt to get the item; if it fails, produce an error and return
-  if (!m_req_fifo.try_peek(t))
-    uvm_report_error("TRY_NEXT_BLOCKED", {"try_next_item: the selected sequence '",
-      seq.get_full_name(), "' did not produce an item within an NBA delay. ",
-      "Sequences should not consume time between calls to start_item and finish_item. ",
-      "Returning null item."}, UVM_NONE);
+    // attempt to get the item; if it fails, produce an error and return
+    found_item = m_req_fifo.try_peek(t);
+    if (found_item)
+      break;
+  end
+  
+  if (!found_item) begin
+    string msg = "try_next_item: the selected sequence '%s' did not produce an item within %0d wait_for_sequences call%s.  If the sequence requires more deltas/NBA within this time step, then the wait_for_sequences_count value for this sequencer should be increased.  Note that sequences should not consume non-delta/NBA time between calls to start_item and finish_item.  Returning null item.";
+    `uvm_error("TRY_NEXT_BLOCKED", $sformatf(msg, seq.get_full_name(),m_wait_for_sequences_count,
+                                             (m_wait_for_sequences_count>1)?"s":""))
+  end
 
 endtask
 

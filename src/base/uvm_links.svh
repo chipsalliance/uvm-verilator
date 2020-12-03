@@ -1,9 +1,9 @@
 //
 //-----------------------------------------------------------------------------
-// Copyright 2007-2009 Mentor Graphics Corporation
-// Copyright 2014 Intel Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2009 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -30,11 +30,11 @@
 // 
 
 
-// @uvm-ieee 1800.2-2017 auto 7.3.1.1
+// @uvm-ieee 1800.2-2020 auto 7.3.1.1
 virtual class uvm_link_base extends uvm_object;
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.1.2
+   // @uvm-ieee 1800.2-2020 auto 7.3.1.2
    function new(string name="unnamed-uvm_link_base");
       super.new(name);
    endfunction : new
@@ -42,31 +42,31 @@ virtual class uvm_link_base extends uvm_object;
    // Group -- NODOCS --  Accessors
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.1.3.2
+   // @uvm-ieee 1800.2-2020 auto 7.3.1.3.2
    function void set_lhs(uvm_object lhs);
       do_set_lhs(lhs);
    endfunction : set_lhs
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.1.3.1
+   // @uvm-ieee 1800.2-2020 auto 7.3.1.3.1
    function uvm_object get_lhs();
       return do_get_lhs();
    endfunction : get_lhs
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.1.3.4
+   // @uvm-ieee 1800.2-2020 auto 7.3.1.3.4
    function void set_rhs(uvm_object rhs);
       do_set_rhs(rhs);
    endfunction : set_rhs
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.1.3.3
+   // @uvm-ieee 1800.2-2020 auto 7.3.1.3.3
    function uvm_object get_rhs();
       return do_get_rhs();
    endfunction : get_rhs
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.1.3.5
+   // @uvm-ieee 1800.2-2020 auto 7.3.1.3.5
    function void set(uvm_object lhs, rhs);
       do_set_lhs(lhs);
       do_set_rhs(rhs);
@@ -75,19 +75,19 @@ virtual class uvm_link_base extends uvm_object;
    // Group -- NODOCS -- Implementation Callbacks
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.1.4.2
+   // @uvm-ieee 1800.2-2020 auto 7.3.1.4.2
    pure virtual function void do_set_lhs(uvm_object lhs);
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.1.4.1
+   // @uvm-ieee 1800.2-2020 auto 7.3.1.4.1
    pure virtual function uvm_object do_get_lhs();
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.1.4.4
+   // @uvm-ieee 1800.2-2020 auto 7.3.1.4.4
    pure virtual function void do_set_rhs(uvm_object rhs);
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.1.4.3
+   // @uvm-ieee 1800.2-2020 auto 7.3.1.4.3
    pure virtual function uvm_object do_get_rhs();
 
 endclass : uvm_link_base
@@ -100,7 +100,7 @@ endclass : uvm_link_base
 // between two objects.
 //
 
-// @uvm-ieee 1800.2-2017 auto 7.3.2.1
+// @uvm-ieee 1800.2-2020 auto 7.3.2.1
 class uvm_parent_child_link extends uvm_link_base;
 
    // Variable- m_lhs,m_rhs
@@ -112,13 +112,13 @@ class uvm_parent_child_link extends uvm_link_base;
    `uvm_object_utils(uvm_parent_child_link)
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.2.2.1
+   // @uvm-ieee 1800.2-2020 auto 7.3.2.2.1
    function new(string name="unnamed-uvm_parent_child_link");
       super.new(name);
    endfunction : new
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.2.2.2
+   // @uvm-ieee 1800.2-2020 auto 7.3.2.2.2
    static function uvm_parent_child_link get_link(uvm_object lhs,
                                                   uvm_object rhs,
                                                   string name="pc_link");
@@ -177,7 +177,7 @@ endclass : uvm_parent_child_link
 // between two objects.
 //
 
-// @uvm-ieee 1800.2-2017 auto 7.3.3.1
+// @uvm-ieee 1800.2-2020 auto 7.3.3.1
 class uvm_cause_effect_link extends uvm_link_base;
 
    // Variable- m_lhs,m_rhs
@@ -189,13 +189,13 @@ class uvm_cause_effect_link extends uvm_link_base;
    `uvm_object_utils(uvm_cause_effect_link)
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.3.2.1
+   // @uvm-ieee 1800.2-2020 auto 7.3.3.2.1
    function new(string name="unnamed-uvm_cause_effect_link");
       super.new(name);
    endfunction : new
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.3.2.2
+   // @uvm-ieee 1800.2-2020 auto 7.3.3.2.2
    static function uvm_cause_effect_link get_link(uvm_object lhs,
                                                  uvm_object rhs,
                                                  string name="ce_link");
@@ -253,7 +253,7 @@ endclass : uvm_cause_effect_link
 // between two objects.
 //
 
-// @uvm-ieee 1800.2-2017 auto 7.3.4.1
+// @uvm-ieee 1800.2-2020 auto 7.3.4.1
 class uvm_related_link extends uvm_link_base;
 
    // Variable- m_lhs,m_rhs
@@ -265,13 +265,13 @@ class uvm_related_link extends uvm_link_base;
    `uvm_object_utils(uvm_related_link)
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.4.2.1
+   // @uvm-ieee 1800.2-2020 auto 7.3.4.2.1
    function new(string name="unnamed-uvm_related_link");
       super.new(name);
    endfunction : new
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.3.4.2.2
+   // @uvm-ieee 1800.2-2020 auto 7.3.4.2.2
    static function uvm_related_link get_link(uvm_object lhs,
                                                  uvm_object rhs,
                                                  string name="ce_link");

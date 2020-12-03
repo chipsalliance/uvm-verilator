@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
-// Copyright 2018 Synopsys, Inc.
 // Copyright 2018 Cadence Design Systems, Inc.
-// Copyright 2018 NVIDIA Corporation
 // Copyright 2018 Cisco Systems, Inc.
+// Copyright 2018-2020 NVIDIA Corporation
+// Copyright 2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -26,13 +26,9 @@
 // uvm_field_op is the UVM class for describing all operations supported by the do_execute_op function
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 5.3.13.2.1
+// @uvm-ieee 1800.2-2020 auto 5.7.1
 class uvm_field_op extends uvm_object;
 
-   // @uvm-ieee 1800.2-2017 auto 5.3.4.5
-   // @uvm-ieee 1800.2-2017 auto 5.3.4.6
-   // @uvm-ieee 1800.2-2017 auto 5.3.4.7
-   // @uvm-ieee 1800.2-2017 auto 5.3.5.1
    `uvm_object_utils(uvm_field_op)
 
    local uvm_policy m_policy;
@@ -49,8 +45,7 @@ class uvm_field_op extends uvm_object;
    // Creates a policy with the specified instance name. If name is not provided, then the policy instance is
    // unnamed.
 
-   // @uvm-ieee 1800.2-2017 auto 5.3.13.2.3
-   // @uvm-ieee 1800.2-2017 auto 5.3.2
+   // @uvm-ieee 1800.2-2020 auto 5.7.2.1
    function new (string name="");
       super.new(name);
       m_is_set = 1'b0;
@@ -58,7 +53,7 @@ class uvm_field_op extends uvm_object;
    endfunction
 
 
-   // @uvm-ieee 1800.2-2017 auto 5.3.13.2.4
+   // @uvm-ieee 1800.2-2020 auto 5.7.2.2
    virtual function void set( uvm_field_flag_t op_type, uvm_policy policy = null, uvm_object rhs = null);
      string matching_ops[$];
      if (op_type & UVM_COPY)
@@ -98,7 +93,7 @@ class uvm_field_op extends uvm_object;
        `uvm_error("UVM/FIELD_OP/SET","Attempting to set values in policy without flushing")
    endfunction 
 
-   // @uvm-ieee 1800.2-2017 auto 5.3.13.2.5
+   // @uvm-ieee 1800.2-2020 auto 5.7.2.3
    virtual function string get_op_name();
       case(m_op_type)
         UVM_COPY : return "copy";
@@ -112,7 +107,7 @@ class uvm_field_op extends uvm_object;
       endcase
    endfunction
 
-   // @uvm-ieee 1800.2-2017 auto 5.3.13.2.6
+   // @uvm-ieee 1800.2-2020 auto 5.7.2.4
    virtual function uvm_field_flag_t get_op_type();
       if(m_is_set == 1'b1) 
         return m_op_type;
@@ -121,7 +116,7 @@ class uvm_field_op extends uvm_object;
    endfunction
 
 
-   // @uvm-ieee 1800.2-2017 auto 5.3.13.2.7
+   // @uvm-ieee 1800.2-2020 auto 5.7.2.5
    virtual function uvm_policy get_policy();
       if(m_is_set == 1'b1) 
         return m_policy;
@@ -129,7 +124,7 @@ class uvm_field_op extends uvm_object;
         `uvm_error("UVM/FIELD_OP/GET_POLICY","Attempting to call get_policy() before calling set() is not allowed")
    endfunction
 
-   // @uvm-ieee 1800.2-2017 auto 5.3.13.2.8
+   // @uvm-ieee 1800.2-2020 auto 5.7.2.6
    virtual function uvm_object get_rhs();
       if(m_is_set == 1'b1) 
         return m_object;
@@ -137,7 +132,7 @@ class uvm_field_op extends uvm_object;
         `uvm_error("UVM/FIELD_OP/GET_RHS","Calling get_rhs() before calling set() is not allowed")
    endfunction
 
-   // @uvm-ieee 1800.2-2017 auto 5.3.13.2.9
+   // @uvm-ieee 1800.2-2020 auto 5.7.2.7
    function bit user_hook_enabled();
       if(m_is_set == 1'b1) 
         return m_user_hook;
@@ -145,14 +140,14 @@ class uvm_field_op extends uvm_object;
         `uvm_error("UVM/FIELD_OP/GET_USER_HOOK","Attempting to get_user_hook before calling set() is not allowed")
    endfunction
 
-   // @uvm-ieee 1800.2-2017 auto 5.3.13.2.10
+   // @uvm-ieee 1800.2-2020 auto 5.7.2.8
    function void disable_user_hook();
       m_user_hook = 1'b0;
    endfunction
 
    static uvm_field_op m_recycled_op[$] ; 
 
-   // @uvm-ieee 1800.2-2017 auto 5.3.13.2.11
+   // @uvm-ieee 1800.2-2020 auto 5.7.2.9
    virtual function void flush();
       m_policy = null;
       m_object = null;

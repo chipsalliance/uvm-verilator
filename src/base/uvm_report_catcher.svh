@@ -1,13 +1,13 @@
 // $Id: uvm_report_catcher.svh,v 1.1.2.10 2010/04/09 15:03:25 janick Exp $
 //------------------------------------------------------------------------------
-// Copyright 2007-2018 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2018 Intel Corporation
-// Copyright 2010-2013 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Cisco Systems, Inc.
+// Copyright 2018 Intel Corporation
+// Copyright 2007-2020 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2013 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -34,7 +34,7 @@ typedef class uvm_report_server;
 typedef class uvm_report_catcher;
 
 typedef uvm_callbacks    #(uvm_report_object, uvm_report_catcher) uvm_report_cb;
-typedef uvm_callback_iter#(uvm_report_object, uvm_report_catcher) uvm_report_cb_iter /* @uvm-ieee 1800.2-2017 auto D.4.5*/   ;
+typedef uvm_callback_iter#(uvm_report_object, uvm_report_catcher) uvm_report_cb_iter /* @uvm-ieee 1800.2-2020 auto D.4.4*/ ;
 
 class sev_id_struct;
   bit sev_specified ;
@@ -47,7 +47,7 @@ endclass
 // TITLE: Report Catcher
 //
 // Contains debug methods in the Accellera UVM implementation not documented
-// in the IEEE 1800.2-2017 LRM
+// in the IEEE 1800.2-2020 LRM
 
 
 //------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ endclass
 // CLASS: uvm_report_catcher
 //
 
-// @uvm-ieee 1800.2-2017 auto 6.6.1
+// @uvm-ieee 1800.2-2020 auto 6.6.1
 virtual class uvm_report_catcher extends uvm_callback;
 
   `uvm_register_cb(uvm_report_object,uvm_report_catcher)
@@ -88,7 +88,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // Create a new report catcher. The name argument is optional, but
   // should generally be provided to aid in debugging.
 
-  // @uvm-ieee 1800.2-2017 auto 6.6.2
+  // @uvm-ieee 1800.2-2020 auto 6.6.2
   function new(string name = "uvm_report_catcher");
     super.new(name);
     do_report = 1;
@@ -101,7 +101,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // Returns the <uvm_report_object> that has generated the message that
   // is currently being processed.
 
-  // @uvm-ieee 1800.2-2017 auto 6.6.3.1
+  // @uvm-ieee 1800.2-2020 auto 6.6.3.1
   function uvm_report_object get_client();
     return m_modified_report_message.get_report_object(); 
   endfunction
@@ -113,7 +113,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // catcher object (which re-threw the message), then the returned 
   // severity is the modified value.
 
-  // @uvm-ieee 1800.2-2017 auto 6.6.3.2
+  // @uvm-ieee 1800.2-2020 auto 6.6.3.2
   function uvm_severity get_severity();
     return this.m_modified_report_message.get_severity();
   endfunction
@@ -125,7 +125,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // that issued the message. However, if user-defined context is set from
   // a uvm_report_message, the user-defined context will be returned.
 
-  // @uvm-ieee 1800.2-2017 auto 6.6.3.3
+  // @uvm-ieee 1800.2-2020 auto 6.6.3.3
   function string get_context();
     string context_str;
     
@@ -145,7 +145,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // catcher (which re-threw the message), then the returned 
   // verbosity is the modified value.
   
-  // @uvm-ieee 1800.2-2017 auto 6.6.3.4
+  // @uvm-ieee 1800.2-2020 auto 6.6.3.4
   function int get_verbosity();
     return this.m_modified_report_message.get_verbosity();
   endfunction
@@ -157,7 +157,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // catcher (which re-threw the message), then the returned 
   // id is the modified value.
   
-  // @uvm-ieee 1800.2-2017 auto 6.6.3.5
+  // @uvm-ieee 1800.2-2020 auto 6.6.3.5
   function string get_id();
     return this.m_modified_report_message.get_id();
   endfunction
@@ -169,7 +169,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // catcher (which re-threw the message), then the returned 
   // message is the modified value.
   
-  // @uvm-ieee 1800.2-2017 auto 6.6.3.6
+  // @uvm-ieee 1800.2-2020 auto 6.6.3.6
   function string get_message();
      return this.m_modified_report_message.get_message();
   endfunction
@@ -181,7 +181,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // catcher (which re-threw the message), then the returned 
   // action is the modified value.
   
-  // @uvm-ieee 1800.2-2017 auto 6.6.3.7
+  // @uvm-ieee 1800.2-2020 auto 6.6.3.7
   function uvm_action get_action();
     return this.m_modified_report_message.get_action();
   endfunction
@@ -190,7 +190,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   //
   // Returns the file name of the message.
   
-  // @uvm-ieee 1800.2-2017 auto 6.6.3.8
+  // @uvm-ieee 1800.2-2020 auto 6.6.3.8
   function string get_fname();
     return this.m_modified_report_message.get_filename();
   endfunction             
@@ -199,7 +199,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   //
   // Returns the line number of the message.
 
-  // @uvm-ieee 1800.2-2017 auto 6.6.3.9
+  // @uvm-ieee 1800.2-2020 auto 6.6.3.9
   function int get_line();
     return this.m_modified_report_message.get_line();
   endfunction
@@ -220,7 +220,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // Change the severity of the message to ~severity~. Any other
   // report catchers will see the modified value.
   
-  // @uvm-ieee 1800.2-2017 auto 6.6.4.1
+  // @uvm-ieee 1800.2-2020 auto 6.6.4.1
   protected function void set_severity(uvm_severity severity);
     this.m_modified_report_message.set_severity(severity);
   endfunction
@@ -230,7 +230,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // Change the verbosity of the message to ~verbosity~. Any other
   // report catchers will see the modified value.
 
-  // @uvm-ieee 1800.2-2017 auto 6.6.4.2
+  // @uvm-ieee 1800.2-2020 auto 6.6.4.2
   protected function void set_verbosity(int verbosity);
     this.m_modified_report_message.set_verbosity(verbosity);
   endfunction      
@@ -240,7 +240,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // Change the id of the message to ~id~. Any other
   // report catchers will see the modified value.
 
-  // @uvm-ieee 1800.2-2017 auto 6.6.4.3
+  // @uvm-ieee 1800.2-2020 auto 6.6.4.3
   protected function void set_id(string id);
     this.m_modified_report_message.set_id(id);
   endfunction
@@ -250,7 +250,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // Change the text of the message to ~message~. Any other
   // report catchers will see the modified value.
 
-  // @uvm-ieee 1800.2-2017 auto 6.6.4.4
+  // @uvm-ieee 1800.2-2020 auto 6.6.4.4
   protected function void set_message(string message);
     this.m_modified_report_message.set_message(message);
   endfunction
@@ -260,7 +260,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // Change the action of the message to ~action~. Any other
   // report catchers will see the modified value.
   
-  // @uvm-ieee 1800.2-2017 auto 6.6.4.5
+  // @uvm-ieee 1800.2-2020 auto 6.6.4.5
   protected function void set_action(uvm_action action);
     this.m_modified_report_message.set_action(action);
     this.m_set_action_called = 1;
@@ -271,7 +271,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // Change the context of the message to ~context_str~. Any other
   // report catchers will see the modified value.
 
-  // @uvm-ieee 1800.2-2017 auto 6.6.4.6
+  // @uvm-ieee 1800.2-2020 auto 6.6.4.6
   protected function void set_context(string context_str);
     this.m_modified_report_message.set_context(context_str);
   endfunction
@@ -320,25 +320,6 @@ virtual class uvm_report_catcher extends uvm_callback;
                                      uvm_action action = (UVM_LOG|UVM_RM_RECORD));
     this.m_modified_report_message.add_object(name, obj, action);
   endfunction
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-  // Group -- NODOCS -- Debug
-     
-  // Function -- NODOCS -- get_report_catcher
-  //
-  // Returns the first report catcher that has ~name~. 
-  
-  static function uvm_report_catcher get_report_catcher(string name);
-    static uvm_report_cb_iter iter = new(null);
-    get_report_catcher = iter.first();
-    while(get_report_catcher != null) begin
-      if(get_report_catcher.get_name() == name)
-        return get_report_catcher;
-      get_report_catcher = iter.next();
-    end
-    return null;
-  endfunction
-`endif 
 
   // Function: print_catcher
   //
@@ -393,7 +374,7 @@ virtual class uvm_report_catcher extends uvm_callback;
   // interface methods can be used to access information about the 
   // current message being processed.
 
-  // @uvm-ieee 1800.2-2017 auto 6.6.5
+  // @uvm-ieee 1800.2-2020 auto 6.6.5
   pure virtual function action_e catch();
      
 
@@ -660,8 +641,10 @@ virtual class uvm_report_catcher extends uvm_callback;
   // It prints the statistics for the active catchers.
 
 
-  static function void summarize();
+  static function void summarize(UVM_FILE file = UVM_STDOUT);
     string s;
+    uvm_root root = uvm_root::get();
+    uvm_action action;
     string q[$];
     if(do_report) begin
       q.push_back("\n--- UVM Report catcher Summary ---\n\n\n");
@@ -671,8 +654,17 @@ virtual class uvm_report_catcher extends uvm_callback;
       q.push_back($sformatf("Number of caught UVM_FATAL reports   :%5d\n", m_caught_fatal));
       q.push_back($sformatf("Number of caught UVM_ERROR reports   :%5d\n", m_caught_error));
       q.push_back($sformatf("Number of caught UVM_WARNING reports :%5d\n", m_caught_warning));
-
- 	 `uvm_info_context("UVM/REPORT/CATCHER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_LOW,uvm_root::get())
+      if(file == UVM_STDOUT) begin
+    	 `uvm_info_context("UVM/REPORT/CATCHER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_LOW,root)
+      end
+      else begin
+        // Re-route the output for the message to the file by changing the action, restoring to original setting after message reported
+        action = root.get_report_action(UVM_INFO, "UVM/REPORT/CATCHER");
+        root.set_report_id_action("UVM/REPORT/CATCHER", UVM_LOG);
+        root.set_report_id_file("UVM/REPORT/CATCHER", file);
+        `uvm_info_context("UVM/REPORT/CATCHER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_LOW,root)
+        root.set_report_id_action("UVM/REPORT/CATCHER", action);
+      end  
     end
   endfunction
 

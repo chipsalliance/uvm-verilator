@@ -1,8 +1,8 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -30,7 +30,7 @@
 // a sub-environment in even larger system-level environments.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 13.3.1
+// @uvm-ieee 1800.2-2020 auto 13.3.1
 virtual class uvm_env extends uvm_component;
 
   `uvm_component_abstract_utils(uvm_env)
@@ -41,7 +41,7 @@ virtual class uvm_env extends uvm_component;
   // constructor arguments for <uvm_component>: ~name~ is the name of the
   // instance, and ~parent~ is the handle to the hierarchical parent, if any.
 
-  // @uvm-ieee 1800.2-2017 auto 13.3.2
+  // @uvm-ieee 1800.2-2020 auto 13.3.2
   function new (string name="env", uvm_component parent=null);
     super.new(name,parent);
   endfunction

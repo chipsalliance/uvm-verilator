@@ -1,10 +1,10 @@
 // 
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2004-2010 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2004-2010 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -60,7 +60,7 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto E.6.1.1
+// @uvm-ieee 1800.2-2020 auto E.6.1.1
 class uvm_mem_single_walk_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    `uvm_object_utils(uvm_mem_single_walk_seq)
@@ -77,7 +77,7 @@ class uvm_mem_single_walk_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_
    //
    // Creates a new instance of the class with the given name.
 
-   // @uvm-ieee 1800.2-2017 auto E.6.1.3.1
+   // @uvm-ieee 1800.2-2020 auto E.6.1.3.1
    function new(string name="uvm_mem_walk_seq");
      super.new(name);
    endfunction
@@ -88,7 +88,7 @@ class uvm_mem_single_walk_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_
    // Performs the walking-ones algorithm on each map of the memory
    // specified in <mem>.
 
-   // @uvm-ieee 1800.2-2017 auto E.6.1.3.2
+   // @uvm-ieee 1800.2-2020 auto E.6.1.3.2
    virtual task body();
       uvm_reg_map maps[$];
       int n_bits;
@@ -199,7 +199,7 @@ endclass: uvm_mem_single_walk_seq
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto E.6.2.1
+// @uvm-ieee 1800.2-2020 auto E.6.2.1
 class uvm_mem_walk_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    // Variable -- NODOCS -- model
@@ -217,14 +217,14 @@ class uvm_mem_walk_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    `uvm_object_utils(uvm_mem_walk_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.6.3.1
+   // @uvm-ieee 1800.2-2020 auto E.6.3.1
    function new(string name="uvm_mem_walk_seq");
      super.new(name);
    endfunction
 
 
 
-   // @uvm-ieee 1800.2-2017 auto E.6.3.2
+   // @uvm-ieee 1800.2-2020 auto E.6.3.2
    virtual task body();
 
       if (model == null) begin

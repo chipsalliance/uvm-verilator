@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -27,7 +27,7 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 15.6.1
+// @uvm-ieee 1800.2-2020 auto 15.6.1
 class uvm_push_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
                                    extends uvm_sequencer_param_base #(REQ, RSP);
 
@@ -43,7 +43,7 @@ class uvm_push_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.6.3.2
+  // @uvm-ieee 1800.2-2020 auto 15.6.3.2
   function new (string name, uvm_component parent=null);
     super.new(name, parent);
     req_port = new ("req_port", this);
@@ -59,6 +59,7 @@ class uvm_push_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
   // <uvm_push_driver #(REQ,RSP)>, which would be responsible for
   // executing the item.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.6.3.3
   task run_phase(uvm_phase phase);
     REQ t;
     int selected_sequence;

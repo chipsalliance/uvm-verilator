@@ -1,10 +1,10 @@
 //
 //----------------------------------------------------------------------
-// Copyright 2007-2018 Mentor Graphics Corporation
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2011 AMD
-// Copyright 2015-2018 NVIDIA Corporation
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2018 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -64,7 +64,7 @@ uvm_phase report_ph;
 // Handle used to assign domains to components or hierarchies in the testbench
 //
 
-// @uvm-ieee 1800.2-2017 auto 9.4.1
+// @uvm-ieee 1800.2-2020 auto 9.4.1
 class uvm_domain extends uvm_phase;
 
   static local uvm_domain m_uvm_domain; // run-time phases
@@ -73,7 +73,7 @@ class uvm_domain extends uvm_phase;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.4.2.2
+  // @uvm-ieee 1800.2-2020 auto 9.4.2.2
   static function void get_domains(output uvm_domain domains[string]);
     domains = m_domains;
   endfunction 
@@ -140,7 +140,7 @@ class uvm_domain extends uvm_phase;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.4.2.3
+  // @uvm-ieee 1800.2-2020 auto 9.4.2.3
   static function void add_uvm_phases(uvm_phase schedule);
 
     schedule.add(uvm_pre_reset_phase::get());
@@ -176,7 +176,7 @@ class uvm_domain extends uvm_phase;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.4.2.1
+  // @uvm-ieee 1800.2-2020 auto 9.4.2.1
   function new(string name);
     super.new(name,UVM_PHASE_DOMAIN);
     if (m_domains.exists(name))
@@ -185,7 +185,7 @@ class uvm_domain extends uvm_phase;
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.4.2.4
+  // @uvm-ieee 1800.2-2020 auto 9.4.2.4
   function void jump(uvm_phase phase);
     uvm_phase phases[$];
 

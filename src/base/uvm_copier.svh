@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
+// Copyright 2018 Cadence Design Systems, Inc.
+// Copyright 2018-2020 NVIDIA Corporation
 // Copyright 2018 Qualcomm, Inc.
 // Copyright 2018 Synopsys, Inc.
-// Copyright 2018 Cadence Design Systems, Inc.
-// Copyright 2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -34,11 +34,11 @@
 
 // Class: uvm_copier
 // Implementation of the uvm_copier class, as defined in section
-// 16.6.1 of 1800.2-2017
+// 16.6 of 1800.2-2020
 
-// @uvm-ieee 1800.2-2017 auto 16.6.1
+// @uvm-ieee 1800.2-2020 auto 16.6.1
 class uvm_copier extends uvm_policy;
-   // @uvm-ieee 1800.2-2017 auto 16.6.2.2
+   // @uvm-ieee 1800.2-2020 auto 16.6.2.2
    `uvm_object_utils(uvm_copier)
   // Variable -- NODOCS -- policy
   //
@@ -47,7 +47,7 @@ class uvm_copier extends uvm_policy;
     uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.6.2.1
+   // @uvm-ieee 1800.2-2020 auto 16.6.2.1
    function new(string name="uvm_copier") ; 
 	super.new(name);
    endfunction
@@ -72,7 +72,7 @@ class uvm_copier extends uvm_policy;
   // types match (the return from ~lhs.get_type_name()~ matches
   // ~rhs.get_type_name()~).
 
-  // @uvm-ieee 1800.2-2017 auto 16.6.4.1
+  // @uvm-ieee 1800.2-2020 auto 16.6.4.1
   virtual function void copy_object (
                                        uvm_object lhs,
                                        uvm_object rhs);
@@ -101,7 +101,7 @@ class uvm_copier extends uvm_policy;
     void'(pop_active_object());
   endfunction
   
-   // @uvm-ieee 1800.2-2017 auto 16.6.4.2
+   // @uvm-ieee 1800.2-2020 auto 16.6.4.2
    virtual function recursion_state_e object_copied(
 	 			uvm_object lhs,
   				uvm_object rhs,
@@ -123,12 +123,12 @@ function void flush();
   m_recur_states.delete();
 endfunction
 
-// @uvm-ieee 1800.2-2017 auto 16.6.3
+// @uvm-ieee 1800.2-2020 auto 16.6.3
 virtual function void set_recursion_policy (uvm_recursion_policy_enum policy);
 	this.policy = policy;
 endfunction
 
-// @uvm-ieee 1800.2-2017 auto 16.6.3
+// @uvm-ieee 1800.2-2020 auto 16.6.3
 virtual function uvm_recursion_policy_enum get_recursion_policy();
 	  return policy;
 endfunction
@@ -191,14 +191,14 @@ endfunction : get_num_copies
 // @uvm-contrib This API is being considered for potential contribution to 1800.2
 `uvm_copier_get_function(prev)
 
-// @uvm-ieee 1800.2-2017 auto 16.6.2.3
+// @uvm-ieee 1800.2-2020 auto 16.6.2.3
 static function void set_default (uvm_copier copier) ;
      uvm_coreservice_t coreservice ;
      coreservice = uvm_coreservice_t::get() ;
      coreservice.set_default_copier(copier) ;
 endfunction
 
-// @uvm-ieee 1800.2-2017 auto 16.6.2.4
+// @uvm-ieee 1800.2-2020 auto 16.6.2.4
 static function uvm_copier get_default () ;
      uvm_coreservice_t coreservice ;
      coreservice = uvm_coreservice_t::get() ;

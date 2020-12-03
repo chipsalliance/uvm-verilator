@@ -1,12 +1,12 @@
 //
 //-----------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2015 Analog Devices, Inc.
-// Copyright 2011-2018 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2015 Analog Devices, Inc.
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017-2018 Cisco Systems, Inc.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2011-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -43,7 +43,7 @@ typedef class uvm_report_message;
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 16.4.1
+// @uvm-ieee 1800.2-2020 auto 16.4.1
 virtual class uvm_recorder extends uvm_policy;
 
    `uvm_object_abstract_utils(uvm_recorder)
@@ -84,35 +84,6 @@ virtual class uvm_recorder extends uvm_policy;
 
   uvm_radix_enum default_radix = UVM_HEX;
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-   
-  // Variable -- NODOCS -- physical
-  //
-  // This bit provides a filtering mechanism for fields. 
-  //
-  // The <abstract> and physical settings allow an object to distinguish between
-  // two different classes of fields. 
-  //
-  // It is up to you, in the <uvm_object::do_record> method, to test the
-  // setting of this field if you want to use the physical trait as a filter.
-
-  bit physical = 1;
-
-
-  // Variable -- NODOCS -- abstract
-  //
-  // This bit provides a filtering mechanism for fields. 
-  //
-  // The abstract and physical settings allow an object to distinguish between
-  // two different classes of fields. 
-  //
-  // It is up to you, in the <uvm_object::do_record> method, to test the
-  // setting of this field if you want to use the abstract trait as a filter.
-
-  bit abstract = 1;
-
-`endif //  `ifdef UVM_ENABLE_DEPRECATED_API
-   
   // Variable -- NODOCS -- identifier
   //
   // This bit is used to specify whether or not an object's reference should be
@@ -127,22 +98,19 @@ virtual class uvm_recorder extends uvm_policy;
   //
   // The default policy is deep (which means to recurse an object).
 
-`ifndef UVM_ENABLE_DEPRECATED_API
-  local
-`endif
-  uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
+  local uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
 
-  // @uvm-ieee 1800.2-2017 auto 16.4.2.1
+  // @uvm-ieee 1800.2-2020 auto 16.4.2.1
   virtual function void set_recursion_policy(uvm_recursion_policy_enum policy);
     this.policy  = policy;
   endfunction : set_recursion_policy
 
-  // @uvm-ieee 1800.2-2017 auto 16.4.2.1
+  // @uvm-ieee 1800.2-2020 auto 16.4.2.1
   virtual function uvm_recursion_policy_enum get_recursion_policy();
     return this.policy;
   endfunction : get_recursion_policy
 
-  // @uvm-ieee 1800.2-2017 auto 16.4.4.1
+  // @uvm-ieee 1800.2-2020 auto 16.4.4.1
   virtual function void flush();
     policy      = UVM_DEFAULT_POLICY;
     identifier  = 1;
@@ -169,7 +137,7 @@ virtual class uvm_recorder extends uvm_policy;
    // Group -- NODOCS -- Configuration API
    
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.3
+   // @uvm-ieee 1800.2-2020 auto 16.4.3
    function uvm_tr_stream get_stream();
       if (!m_stream_dap.try_get(get_stream)) begin
          if (m_warn_null_stream == 1) 
@@ -193,7 +161,7 @@ virtual class uvm_recorder extends uvm_policy;
    //
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.4.2
+   // @uvm-ieee 1800.2-2020 auto 16.4.4.2
    function void close(time close_time = 0);
       if (close_time == 0)
         close_time = $realtime;
@@ -209,7 +177,7 @@ virtual class uvm_recorder extends uvm_policy;
    endfunction : close
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.4.3
+   // @uvm-ieee 1800.2-2020 auto 16.4.4.3
    function void free(time close_time = 0);
 	   process p=process::self();
 	   string s;
@@ -244,25 +212,25 @@ virtual class uvm_recorder extends uvm_policy;
    endfunction : free
       
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.4.4
+   // @uvm-ieee 1800.2-2020 auto 16.4.4.4
    function bit is_open();
       return m_is_opened;
    endfunction : is_open
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.4.5
+   // @uvm-ieee 1800.2-2020 auto 16.4.4.5
    function time get_open_time();
       return m_open_time;
    endfunction : get_open_time
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.4.6
+   // @uvm-ieee 1800.2-2020 auto 16.4.4.6
    function bit is_closed();
       return m_is_closed;
    endfunction : is_closed
     
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.4.7
+   // @uvm-ieee 1800.2-2020 auto 16.4.4.7
    function time get_close_time();
       return m_close_time;
    endfunction : get_close_time
@@ -329,7 +297,7 @@ virtual class uvm_recorder extends uvm_policy;
    endfunction : m_free_id
             
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.5.1
+   // @uvm-ieee 1800.2-2020 auto 16.4.5.1
    function int get_handle();
       if (!is_open() && !is_closed()) begin
          return 0;
@@ -349,7 +317,7 @@ virtual class uvm_recorder extends uvm_policy;
    endfunction : get_handle
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.5.2
+   // @uvm-ieee 1800.2-2020 auto 16.4.5.2
    static function uvm_recorder get_recorder_from_handle(int id);
       if (id == 0)
         return null;
@@ -363,7 +331,7 @@ virtual class uvm_recorder extends uvm_policy;
    // Group -- NODOCS -- Attribute Recording
    
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.6.1
+   // @uvm-ieee 1800.2-2020 auto 16.4.6.1
    function void record_field(string name,
                               uvm_bitstream_t value,
                               int size,
@@ -375,7 +343,7 @@ virtual class uvm_recorder extends uvm_policy;
    endfunction : record_field
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.6.2
+   // @uvm-ieee 1800.2-2020 auto 16.4.6.2
    function void record_field_int(string name,
                                   uvm_integral_t value,
                                   int size,
@@ -387,7 +355,7 @@ virtual class uvm_recorder extends uvm_policy;
    endfunction : record_field_int
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.6.3
+   // @uvm-ieee 1800.2-2020 auto 16.4.6.3
    function void record_field_real(string name,
                                    real value);
       if (get_stream() == null) begin
@@ -396,7 +364,7 @@ virtual class uvm_recorder extends uvm_policy;
       do_record_field_real(name, value);
    endfunction : record_field_real
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.6.4
+   // @uvm-ieee 1800.2-2020 auto 16.4.6.4
    function void record_object(string name,
                                uvm_object value);
       if (get_stream() == null) begin
@@ -413,7 +381,7 @@ virtual class uvm_recorder extends uvm_policy;
    endfunction : record_object
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.6.5
+   // @uvm-ieee 1800.2-2020 auto 16.4.6.5
    function void record_string(string name,
                                string value);
       if (get_stream() == null) begin
@@ -424,7 +392,7 @@ virtual class uvm_recorder extends uvm_policy;
    endfunction : record_string
    
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.6.6
+   // @uvm-ieee 1800.2-2020 auto 16.4.6.6
    function void record_time(string name,
                              time value);
       if (get_stream() == null) begin
@@ -435,7 +403,7 @@ virtual class uvm_recorder extends uvm_policy;
    endfunction : record_time
    
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.6.7
+   // @uvm-ieee 1800.2-2020 auto 16.4.6.7
    function void record_generic(string name,
                                 string value,
                                 string type_name="");
@@ -447,13 +415,13 @@ virtual class uvm_recorder extends uvm_policy;
    endfunction : record_generic
 
 
-  // @uvm-ieee 1800.2-2017 auto 16.4.6.8
+  // @uvm-ieee 1800.2-2020 auto 16.4.6.8
   virtual function bit use_record_attribute();
      return 0;
   endfunction : use_record_attribute
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.6.9
+   // @uvm-ieee 1800.2-2020 auto 16.4.6.9
    virtual function int get_record_attribute_handle();
       return get_handle();
    endfunction : get_record_attribute_handle
@@ -461,38 +429,38 @@ virtual class uvm_recorder extends uvm_policy;
    // Group -- NODOCS -- Implementation Agnostic API
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.7.1
+   // @uvm-ieee 1800.2-2020 auto 16.4.7.1
    protected virtual function void do_open(uvm_tr_stream stream,
                                              time open_time,
                                              string type_name);
    endfunction : do_open
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.7.2
+   // @uvm-ieee 1800.2-2020 auto 16.4.7.2
    protected virtual function void do_close(time close_time);
    endfunction : do_close
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.7.3
+   // @uvm-ieee 1800.2-2020 auto 16.4.7.3
    protected virtual function void do_free();
    endfunction : do_free
    
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.7.4
+   // @uvm-ieee 1800.2-2020 auto 16.4.7.4
    pure virtual protected function void do_record_field(string name,
                                                         uvm_bitstream_t value,
                                                         int size,
                                                         uvm_radix_enum radix);
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.7.5
+   // @uvm-ieee 1800.2-2020 auto 16.4.7.5
    pure virtual protected function void do_record_field_int(string name,
                                                             uvm_integral_t value,
                                                             int          size,
                                                             uvm_radix_enum radix);
    
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.7.6
+   // @uvm-ieee 1800.2-2020 auto 16.4.7.6
    pure virtual protected function void do_record_field_real(string name,
                                                              real value);
 
@@ -503,7 +471,7 @@ virtual class uvm_recorder extends uvm_policy;
    // virtual.  The implemented signature is:
    // virtual protected function void do_record_object(string name, uvm_object value);
   
-   // @uvm-ieee 1800.2-2017 auto 16.4.7.7
+   // @uvm-ieee 1800.2-2020 auto 16.4.7.7
    virtual protected function void do_record_object(string name,
                                                     uvm_object value);
      if ((get_recursion_policy() != UVM_REFERENCE) &&
@@ -518,17 +486,17 @@ virtual class uvm_recorder extends uvm_policy;
    endfunction : do_record_object
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.7.9
+   // @uvm-ieee 1800.2-2020 auto 16.4.7.9
    pure virtual protected function void do_record_string(string name,
                                                          string value);
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.7.10
+   // @uvm-ieee 1800.2-2020 auto 16.4.7.10
    pure virtual protected function void do_record_time(string name,
                                                        time value);
 
 
-   // @uvm-ieee 1800.2-2017 auto 16.4.7.11
+   // @uvm-ieee 1800.2-2020 auto 16.4.7.11
    pure virtual protected function void do_record_generic(string name,
                                                           string value,
                                                           string type_name);

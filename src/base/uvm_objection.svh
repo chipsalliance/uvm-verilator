@@ -1,13 +1,13 @@
 //
 //----------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2014 Intel Corporation
-// Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Cisco Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2014 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -32,7 +32,7 @@ typedef class uvm_objection_context_object;
 typedef class uvm_objection;
 typedef class uvm_sequence_base;
 typedef class uvm_objection_callback;
-typedef uvm_callbacks #(uvm_objection,uvm_objection_callback) uvm_objection_cbs_t;
+typedef uvm_callbacks #(uvm_objection,uvm_objection_callback) uvm_objection_cbs_t /* @uvm-ieee 1800.2-2020 auto D.4.2*/ ;
 typedef class uvm_cmdline_processor;
 
 class uvm_objection_events;
@@ -63,8 +63,8 @@ endclass
 // objections from the command line using the option +UVM_OBJECTION_TRACE.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 10.5.1
-// @uvm-ieee 1800.2-2017 auto 10.5.1.1
+// @uvm-ieee 1800.2-2020 auto 10.5.1
+// @uvm-ieee 1800.2-2020 auto 10.5.1.1
 class uvm_objection extends uvm_report_object;
   `uvm_register_cb(uvm_objection, uvm_objection_callback)
 
@@ -130,7 +130,7 @@ class uvm_objection extends uvm_report_object;
   // argument +UVM_OBJECTION_TRACE to turn tracing on for
   // all objection objects.
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.2
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.2
   function new(string name="");
     uvm_cmdline_processor clp;
     uvm_coreservice_t cs_ ;
@@ -256,7 +256,7 @@ class uvm_objection extends uvm_report_object;
   // Group -- NODOCS -- Objection Control
 
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.3.2
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.3.2
   function void set_propagate_mode (bit prop_mode);
      if (!m_top_all_dropped && (get_objection_total() != 0)) begin
         `uvm_error("UVM/BASE/OBJTN/PROP_MODE",
@@ -270,7 +270,7 @@ class uvm_objection extends uvm_report_object;
   endfunction : set_propagate_mode
 
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.3.1
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.3.1
   function bit get_propagate_mode();
      return m_prop_mode;
   endfunction : get_propagate_mode
@@ -293,7 +293,7 @@ class uvm_objection extends uvm_report_object;
   //   hierarchy.
   //
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.3.3
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.3.3
   virtual function void raise_objection (uvm_object obj=null,
                                          string description="",
                                          int count=1);
@@ -489,7 +489,7 @@ class uvm_objection extends uvm_report_object;
   // registered callbacks, the forked process can be skipped and propagation
   // proceeds immediately to the parent as described. 
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.3.4
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.3.4
   virtual function void drop_objection (uvm_object obj=null,
                                         string description="",
                                         int count=1);
@@ -577,7 +577,7 @@ class uvm_objection extends uvm_report_object;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.3.5
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.3.5
   virtual function void clear(uvm_object obj=null);
     string name;
     int  idx;
@@ -761,7 +761,7 @@ class uvm_objection extends uvm_report_object;
   // the drain_time/all_dropped execution is terminated. 
 
   // AE: set_drain_time(drain,obj=null)?
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.3.7
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.3.7
   function void set_drain_time (uvm_object obj=null, time drain);
     if (obj==null)
       obj = m_top;
@@ -778,7 +778,7 @@ class uvm_objection extends uvm_report_object;
   // Objection callback that is called when a <raise_objection> has reached ~obj~.
   // The default implementation calls <uvm_component::raised>.
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.4.1
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.4.1
   virtual function void raised (uvm_object obj,
                                 uvm_object source_obj,
                                 string description,
@@ -797,7 +797,7 @@ class uvm_objection extends uvm_report_object;
   // Objection callback that is called when a <drop_objection> has reached ~obj~.
   // The default implementation calls <uvm_component::dropped>.
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.4.2
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.4.2
   virtual function void dropped (uvm_object obj,
                                  uvm_object source_obj,
                                  string description,
@@ -818,7 +818,7 @@ class uvm_objection extends uvm_report_object;
   // after the drain time associated with ~obj~. The default implementation 
   // calls <uvm_component::all_dropped>.
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.4.3
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.4.3
   virtual task all_dropped (uvm_object obj,
                             uvm_object source_obj,
                             string description,
@@ -843,7 +843,7 @@ class uvm_objection extends uvm_report_object;
   // Returns the current list of objecting objects (objects that
   // raised an objection but have not dropped it).
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.5.1
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.5.1
   function void get_objectors(ref uvm_object list[$]);
     list.delete();
     foreach (m_source_count[obj]) list.push_back(obj); 
@@ -851,7 +851,7 @@ class uvm_objection extends uvm_report_object;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.5.2
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.5.2
   task wait_for(uvm_objection_event objt_event, uvm_object obj=null);
 
      if (obj==null)
@@ -893,7 +893,7 @@ class uvm_objection extends uvm_report_object;
   //
   // Returns the current number of objections raised by the given ~object~.
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.5.3
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.5.3
   function int get_objection_count (uvm_object obj=null);
     if (obj==null)
       obj = m_top;
@@ -909,7 +909,7 @@ class uvm_objection extends uvm_report_object;
   // Returns the current number of objections raised by the given ~object~ 
   // and all descendants.
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.5.4
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.5.4
   function int get_objection_total (uvm_object obj=null);
  
     if (obj==null)
@@ -927,7 +927,7 @@ class uvm_objection extends uvm_report_object;
   //
   // Returns the current drain time set for the given ~object~ (default: 0 ns).
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.1.3.6
+  // @uvm-ieee 1800.2-2020 auto 10.5.1.3.6
   function time get_drain_time (uvm_object obj=null);
     if (obj==null)
       obj = m_top;
@@ -1068,81 +1068,6 @@ endclass
 typedef class uvm_cmdline_processor;
 
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-//------------------------------------------------------------------------------
-//
-// Class- uvm_test_done_objection DEPRECATED
-//
-// Provides built-in end-of-test coordination
-//------------------------------------------------------------------------------
-
-class uvm_test_done_objection extends uvm_objection;
-
-   protected static uvm_test_done_objection m_inst;
-  protected bit m_forced;
-
-  // For communicating all objections dropped and end of phasing
-  local  bit m_executing_stop_processes;
-  local  int m_n_stop_threads;
-
-
-  // Function- new DEPRECATED
-  //
-  // Creates the singleton test_done objection. Users must not call
-  // this method directly.
-
-  function new(string name="uvm_test_done");
-    super.new(name);
-  endfunction
-
-
-  // Function- qualify DEPRECATED
-  //
-  // Checks that the given ~object~ is derived from either <uvm_component> or
-  // <uvm_sequence_base>.
-
-  virtual function void qualify(uvm_object obj=null,
-                                bit is_raise,
-                                string description);
-    uvm_component c;
-    uvm_sequence_base s;
-    string nm = is_raise ? "raise_objection" : "drop_objection";
-    string desc = description == "" ? "" : {" (\"", description, "\")"};
-    if(! ($cast(c,obj) || $cast(s,obj))) begin
-      uvm_report_error("TEST_DONE_NOHIER", {"A non-hierarchical object, '",
-        obj.get_full_name(), "' (", obj.get_type_name(),") was used in a call ",
-        "to uvm_test_done.", nm,"(). For this objection, a sequence ",
-        "or component is required.", desc });
-    end
-  endfunction
-
-  // Below are basic data operations needed for all uvm_objects
-  // for factory registration, printing, comparing, etc.
-
-  typedef uvm_object_registry#(uvm_test_done_objection,"uvm_test_done") type_id;
-  static function type_id get_type();
-    return type_id::get();
-  endfunction
-
-  function uvm_object create (string name="");
-    uvm_test_done_objection tmp = new(name);
-    return tmp;
-  endfunction
-
-  virtual function string get_type_name ();
-    return "uvm_test_done";
-  endfunction
-
-  static function uvm_test_done_objection get();
-    if(m_inst == null)
-      m_inst = uvm_test_done_objection::type_id::create("run");
-    return m_inst;
-  endfunction
-
-endclass
-`endif // UVM_ENABLE_DEPRECATED_API
-
-
 // Have a pool of context objects to use
 class uvm_objection_context_object;
     uvm_object obj;
@@ -1194,7 +1119,7 @@ typedef uvm_objection uvm_callbacks_objection;
 //| end
 
 
-// @uvm-ieee 1800.2-2017 auto 10.5.2.1
+// @uvm-ieee 1800.2-2020 auto 10.5.2.1
 class uvm_objection_callback extends uvm_callback;
   function new(string name);
     super.new(name);
@@ -1204,7 +1129,7 @@ class uvm_objection_callback extends uvm_callback;
   //
   // Objection raised callback function. Called by <uvm_objection::raised>.
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.2.2.1
+  // @uvm-ieee 1800.2-2020 auto 10.5.2.2.1
   virtual function void raised (uvm_objection objection, uvm_object obj, 
       uvm_object source_obj, string description, int count);
   endfunction
@@ -1213,7 +1138,7 @@ class uvm_objection_callback extends uvm_callback;
   //
   // Objection dropped callback function. Called by <uvm_objection::dropped>.
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.2.2.2
+  // @uvm-ieee 1800.2-2020 auto 10.5.2.2.2
   virtual function void dropped (uvm_objection objection, uvm_object obj, 
       uvm_object source_obj, string description, int count);
   endfunction
@@ -1222,7 +1147,7 @@ class uvm_objection_callback extends uvm_callback;
   //
   // Objection all_dropped callback function. Called by <uvm_objection::all_dropped>.
 
-  // @uvm-ieee 1800.2-2017 auto 10.5.2.2.3
+  // @uvm-ieee 1800.2-2020 auto 10.5.2.2.3
   virtual task all_dropped (uvm_objection objection, uvm_object obj, 
       uvm_object source_obj, string description, int count);
   endtask

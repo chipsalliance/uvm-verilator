@@ -1,10 +1,10 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2004-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2004-2018 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -56,7 +56,7 @@
 // Note- The convenience API not yet implemented.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 19.4.1.1
+// @uvm-ieee 1800.2-2020 auto 19.4.1.1
 class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
   `uvm_object_param_utils(uvm_reg_sequence #(BASE))
@@ -113,14 +113,14 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 19.4.1.4.1
+  // @uvm-ieee 1800.2-2020 auto 19.4.1.4.1
   function new (string name="uvm_reg_sequence_inst");
     super.new(name);
   endfunction
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 19.4.1.4.2
+  // @uvm-ieee 1800.2-2020 auto 19.4.1.4.2
   virtual task body();
     if (m_sequencer == null) begin
       `uvm_fatal("NO_SEQR", {"Sequence executing as translation sequence, ",
@@ -154,7 +154,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 19.4.1.4.3
+  // @uvm-ieee 1800.2-2020 auto 19.4.1.4.3
   virtual task do_reg_item(uvm_reg_item rw);
      string rws=rw.convert2string();
     if (m_sequencer == null)
@@ -197,7 +197,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.1
+   // @uvm-ieee 1800.2-2020 auto 19.4.1.5.1
    virtual task write_reg(input  uvm_reg           rg,
                           output uvm_status_e      status,
                           input  uvm_reg_data_t    value,
@@ -215,7 +215,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.2
+   // @uvm-ieee 1800.2-2020 auto 19.4.1.5.2
    virtual task read_reg(input  uvm_reg           rg,
                          output uvm_status_e      status,
                          output uvm_reg_data_t    value,
@@ -234,7 +234,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.3
+   // @uvm-ieee 1800.2-2020 auto 19.4.1.5.3
    virtual task poke_reg(input  uvm_reg           rg,
                          output uvm_status_e      status,
                          input  uvm_reg_data_t    value,
@@ -251,7 +251,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.4
+   // @uvm-ieee 1800.2-2020 auto 19.4.1.5.4
    virtual task peek_reg(input  uvm_reg           rg,
                          output uvm_status_e      status,
                          output uvm_reg_data_t    value,
@@ -268,7 +268,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
    
    
 
-   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.5
+   // @uvm-ieee 1800.2-2020 auto 19.4.1.5.5
    virtual task update_reg(input  uvm_reg           rg,
                            output uvm_status_e      status,
                            input  uvm_door_e        path = UVM_DEFAULT_DOOR,
@@ -286,7 +286,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.6
+   // @uvm-ieee 1800.2-2020 auto 19.4.1.5.6
    virtual task mirror_reg(input  uvm_reg       rg,
                            output uvm_status_e  status,
                            input  uvm_check_e   check  = UVM_NO_CHECK,
@@ -305,7 +305,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
   
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.7
+   // @uvm-ieee 1800.2-2020 auto 19.4.1.5.7
    virtual task write_mem(input  uvm_mem           mem,
                           output uvm_status_e      status,
                           input  uvm_reg_addr_t    offset,
@@ -324,7 +324,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.8
+   // @uvm-ieee 1800.2-2020 auto 19.4.1.5.8
    virtual task read_mem(input  uvm_mem           mem,
                          output uvm_status_e      status,
                          input  uvm_reg_addr_t    offset,
@@ -344,7 +344,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.9
+   // @uvm-ieee 1800.2-2020 auto 19.4.1.5.9
    virtual task poke_mem(input  uvm_mem           mem,
                          output uvm_status_e      status,
                          input  uvm_reg_addr_t    offset,
@@ -362,7 +362,7 @@ class uvm_reg_sequence #(type BASE=uvm_sequence #(uvm_reg_item)) extends BASE;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.4.1.5.10
+   // @uvm-ieee 1800.2-2020 auto 19.4.1.5.10
    virtual task peek_mem(input  uvm_mem           mem,
                          output uvm_status_e      status,
                          input  uvm_reg_addr_t    offset,
@@ -391,7 +391,7 @@ endclass
 
 
 
-// @uvm-ieee 1800.2-2017 auto 19.4.2.1
+// @uvm-ieee 1800.2-2020 auto 19.4.2.1
 virtual class uvm_reg_frontdoor extends uvm_reg_sequence #(uvm_sequence #(uvm_sequence_item));
 
    `uvm_object_abstract_utils(uvm_reg_frontdoor)
@@ -410,7 +410,7 @@ virtual class uvm_reg_frontdoor extends uvm_reg_sequence #(uvm_sequence #(uvm_se
    uvm_sequencer_base sequencer;
 
 
-   // @uvm-ieee 1800.2-2017 auto 19.4.2.3
+   // @uvm-ieee 1800.2-2020 auto 19.4.2.3
    function new(string name="");
       super.new(name);
    endfunction

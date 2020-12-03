@@ -1,13 +1,15 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2020 Mentor Graphics Corporation
-// Copyright 2011-2014 Semifore
-// Copyright 2018 Intel Corporation
-// Copyright 2004-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2014-2018 NVIDIA Corporation
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2018 Intel Corporation
+// Copyright 2020 Marvell International Ltd.
+// Copyright 2010-2020 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2011-2020 Semifore
+// Copyright 2004-2018 Synopsys, Inc.
+// Copyright 2020 Verific
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -29,8 +31,11 @@
 typedef class uvm_reg_cbs;
 typedef class uvm_reg_frontdoor;
 
+// Class: uvm_reg
+// This is an implementation of uvm_reg as described in 1800.2 with
+// the addition of API described below.
 
-// @uvm-ieee 1800.2-2017 auto 18.4.1
+// @uvm-ieee 1800.2-2020 auto 18.4.1
 class uvm_reg extends uvm_object;
 
    local bit               m_locked;
@@ -63,21 +68,21 @@ class uvm_reg extends uvm_object;
    //----------------------
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.2.1
+   // @uvm-ieee 1800.2-2020 auto 18.4.2.1
    extern function new (string name="",
                         int unsigned n_bits,
                         int has_coverage);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.2.2
+   // @uvm-ieee 1800.2-2020 auto 18.4.2.2
    extern function void configure (uvm_reg_block blk_parent,
                                    uvm_reg_file regfile_parent = null,
                                    string hdl_path = "");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.2.3
+   // @uvm-ieee 1800.2-2020 auto 18.4.2.3
    extern virtual function void set_offset (uvm_reg_map    map,
                                             uvm_reg_addr_t offset,
                                             bit            unmapped = 0);
@@ -90,7 +95,7 @@ class uvm_reg extends uvm_object;
    /*local*/ extern function void   Xlock_modelX;
 
 	// remove the knowledge that the register resides in the map from the register instance
-	// @uvm-ieee 1800.2-2017 auto 18.4.2.5
+	// @uvm-ieee 1800.2-2020 auto 18.4.2.5
 	virtual function void unregister(uvm_reg_map map);
 		m_maps.delete(map);
 	endfunction
@@ -118,37 +123,48 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.3.1
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.1
    extern virtual function uvm_reg_block get_parent ();
    extern virtual function uvm_reg_block get_block  ();
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.3.2
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.2
    extern virtual function uvm_reg_file get_regfile ();
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.3.3
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.3
    extern virtual function int get_n_maps ();
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.3.4
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.4
    extern function bit is_in_map (uvm_reg_map map);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.3.5
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.5
    extern virtual function void get_maps (ref uvm_reg_map maps[$]);
 
 
-   /*local*/ extern virtual function uvm_reg_map get_local_map   (uvm_reg_map map);
-   /*local*/ extern virtual function uvm_reg_map get_default_map ();
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.6
+   extern virtual function uvm_reg_map get_local_map (uvm_reg_map map);
+   
+   // Function: get_default_map
+   //
+   // Returns default map for the register as follows:
+   //
+   // If the register is not associated with any map - returns null
+   // Else If the register is associated with only one map - return a handle to that map
+   // Else try to find the first default map in its parent blocks and return its handle
+   // If there are no default maps in the registers parent blocks return a handle to the first map in its map array 
+   //  
+   extern virtual function uvm_reg_map get_default_map ();
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.3.6
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.7
    extern virtual function string get_rights (uvm_reg_map map = null);
 
 
@@ -175,12 +191,12 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.3.10
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.11
    extern virtual function void get_fields (ref uvm_reg_field fields[$]);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.3.11
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.12
    extern virtual function uvm_reg_field get_field_by_name(string name);
 
 
@@ -188,17 +204,17 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.3.12
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.13
    extern virtual function uvm_reg_addr_t get_offset (uvm_reg_map map = null);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.3.13
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.14
    extern virtual function uvm_reg_addr_t get_address (uvm_reg_map map = null);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.3.14
+   // @uvm-ieee 1800.2-2020 auto 18.4.3.15
    extern virtual function int get_addresses (uvm_reg_map map = null,
                                               ref uvm_reg_addr_t addr[]);
 
@@ -210,30 +226,30 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.2
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.2
    extern virtual function void set (uvm_reg_data_t  value,
                                      string          fname = "",
                                      int             lineno = 0);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.1
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.1
    extern virtual function uvm_reg_data_t  get(string  fname = "",
                                                int     lineno = 0);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.3
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.3
    extern virtual function uvm_reg_data_t  get_mirrored_value(string  fname = "",
                                                int     lineno = 0);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.4
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.4
    extern virtual function bit needs_update(); 
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.5
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.5
    extern virtual function void reset(string kind = "HARD");
 
 
@@ -245,12 +261,12 @@ class uvm_reg extends uvm_object;
    // for the specified reset ~kind~.
    //
    extern virtual function uvm_reg_data_t
-                             // @uvm-ieee 1800.2-2017 auto 18.4.4.6
+                             // @uvm-ieee 1800.2-2020 auto 18.4.4.6
                              get_reset(string kind = "HARD");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.7
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.7
    extern virtual function bit has_reset(string kind = "HARD",
                                          bit    delete = 0);
 
@@ -263,14 +279,14 @@ class uvm_reg extends uvm_object;
    // corresponding to the cause specified by ~kind~.
    //
    extern virtual function void
-                       // @uvm-ieee 1800.2-2017 auto 18.4.4.8
+                       // @uvm-ieee 1800.2-2020 auto 18.4.4.8
                        set_reset(uvm_reg_data_t value,
                                  string         kind = "HARD");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.9
-   // @uvm-ieee 1800.2-2017 auto 18.8.5.3
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.9
+   // @uvm-ieee 1800.2-2020 auto 18.8.5.3
    extern virtual task write(output uvm_status_e      status,
                              input  uvm_reg_data_t    value,
                              input  uvm_door_e        path = UVM_DEFAULT_DOOR,
@@ -283,8 +299,8 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.10
-   // @uvm-ieee 1800.2-2017 auto 18.8.5.4
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.10
+   // @uvm-ieee 1800.2-2020 auto 18.8.5.4
    extern virtual task read(output uvm_status_e      status,
                             output uvm_reg_data_t    value,
                             input  uvm_door_e        path = UVM_DEFAULT_DOOR,
@@ -297,9 +313,7 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.11
-   // @uvm-ieee 1800.2-2017 auto 18.8.5.5
-   // @uvm-ieee 1800.2-2017 auto 18.8.5.6
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.11
    extern virtual task poke(output uvm_status_e      status,
                             input  uvm_reg_data_t    value,
                             input  string            kind = "",
@@ -310,7 +324,7 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.12
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.12
    extern virtual task peek(output uvm_status_e      status,
                             output uvm_reg_data_t    value,
                             input  string            kind = "",
@@ -321,7 +335,7 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.13
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.13
    extern virtual task update(output uvm_status_e      status,
                               input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                               input  uvm_reg_map       map = null,
@@ -333,8 +347,8 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.14
-   // @uvm-ieee 1800.2-2017 auto 18.8.5.8
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.14
+   // @uvm-ieee 1800.2-2020 auto 18.8.5.6
    extern virtual task mirror(output uvm_status_e      status,
                               input uvm_check_e        check  = UVM_NO_CHECK,
                               input uvm_door_e         path = UVM_DEFAULT_DOOR,
@@ -347,8 +361,8 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.15
-   // @uvm-ieee 1800.2-2017 auto 18.8.5.9
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.15
+   // @uvm-ieee 1800.2-2020 auto 18.8.5.7
    extern virtual function bit predict (uvm_reg_data_t    value,
                                         uvm_reg_byte_en_t be = -1,
                                         uvm_predict_e     kind = UVM_PREDICT_DIRECT,
@@ -359,7 +373,7 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.4.16
+   // @uvm-ieee 1800.2-2020 auto 18.4.4.16
    extern function bit is_busy();
 
 
@@ -402,7 +416,7 @@ class uvm_reg extends uvm_object;
    //-----------------
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.5.2
+   // @uvm-ieee 1800.2-2020 auto 18.4.5.2
    extern function void set_frontdoor(uvm_reg_frontdoor ftdr,
                                       uvm_reg_map       map = null,
                                       string            fname = "",
@@ -410,7 +424,7 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.5.1
+   // @uvm-ieee 1800.2-2020 auto 18.4.5.1
    extern function uvm_reg_frontdoor get_frontdoor(uvm_reg_map map = null);
 
 
@@ -420,30 +434,30 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.2
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.2
    extern function void set_backdoor(uvm_reg_backdoor bkdr,
                                      string          fname = "",
                                      int             lineno = 0);
    
    
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.1
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.1
    extern function uvm_reg_backdoor get_backdoor(bit inherited = 1);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.3
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.3
    extern function void clear_hdl_path (string kind = "RTL");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.4
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.4
    extern function void add_hdl_path (uvm_hdl_path_slice slices[],
                                       string kind = "RTL");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.5
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.5
    extern function void add_hdl_path_slice(string name,
                                            int offset,
                                            int size,
@@ -452,35 +466,35 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.6
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.6
    extern function bit has_hdl_path (string kind = "");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.7
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.7
    extern function void get_hdl_path (ref uvm_hdl_path_concat paths[$],
                                       input string kind = "");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.8
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.8
    extern function void get_hdl_path_kinds (ref string kinds[$]);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.9
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.9
    extern function void get_full_hdl_path (ref uvm_hdl_path_concat paths[$],
                                            input string kind = "",
                                            input string separator = ".");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.10
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.10
    extern virtual task backdoor_read(uvm_reg_item rw);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.11
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.11
    extern virtual task backdoor_write(uvm_reg_item rw);
 
 
@@ -489,7 +503,7 @@ class uvm_reg extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.6.12
+   // @uvm-ieee 1800.2-2020 auto 18.4.6.12
    virtual task  backdoor_watch(); endtask
 
 
@@ -498,38 +512,38 @@ class uvm_reg extends uvm_object;
    //----------------
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.7.1
+   // @uvm-ieee 1800.2-2020 auto 18.4.7.1
    extern static function void include_coverage(string scope,
                                                 uvm_reg_cvr_t models,
                                                 uvm_object accessor = null);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.7.2
+   // @uvm-ieee 1800.2-2020 auto 18.4.7.2
    extern protected function uvm_reg_cvr_t build_coverage(uvm_reg_cvr_t models);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.7.3
+   // @uvm-ieee 1800.2-2020 auto 18.4.7.3
    extern virtual protected function void add_coverage(uvm_reg_cvr_t models);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.7.4
+   // @uvm-ieee 1800.2-2020 auto 18.4.7.4
    extern virtual function bit has_coverage(uvm_reg_cvr_t models);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.7.6
+   // @uvm-ieee 1800.2-2020 auto 18.4.7.6
    extern virtual function uvm_reg_cvr_t set_coverage(uvm_reg_cvr_t is_on);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.7.5
+   // @uvm-ieee 1800.2-2020 auto 18.4.7.5
    extern virtual function bit get_coverage(uvm_reg_cvr_t is_on);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.7.7
+   // @uvm-ieee 1800.2-2020 auto 18.4.7.7
    protected virtual function void sample(uvm_reg_data_t  data,
                                           uvm_reg_data_t  byte_en,
                                           bit             is_read,
@@ -537,7 +551,7 @@ class uvm_reg extends uvm_object;
    endfunction
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.7.8
+   // @uvm-ieee 1800.2-2020 auto 18.4.7.8
    virtual function void sample_values();
    endfunction
 
@@ -556,22 +570,22 @@ class uvm_reg extends uvm_object;
    
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.8.1
+   // @uvm-ieee 1800.2-2020 auto 18.4.8.1
    virtual task pre_write(uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.8.2
+   // @uvm-ieee 1800.2-2020 auto 18.4.8.2
    virtual task post_write(uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.8.3
+   // @uvm-ieee 1800.2-2020 auto 18.4.8.3
    virtual task pre_read(uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.4.8.4
+   // @uvm-ieee 1800.2-2020 auto 18.4.8.4
    virtual task post_read(uvm_reg_item rw); endtask
 
 
@@ -660,10 +674,9 @@ function void uvm_reg::add_field(uvm_reg_field field);
    if (idx < 0) begin
       m_fields.push_back(field);
       idx = m_fields.size()-1;
+      m_n_used_bits = offset + field.get_n_bits();
    end
 
-   m_n_used_bits += field.get_n_bits();
-   
    // Check if there are too many fields in the register
    if (m_n_used_bits > m_n_bits) begin
       `uvm_error("RegModel",
@@ -1841,6 +1854,7 @@ task uvm_reg::do_read(uvm_reg_item rw);
    uvm_reg_cb_iter  cbs = new(this);
    uvm_reg_map_info map_info;
    uvm_reg_data_t   value;
+   uvm_reg_data_t   value_field_filter;   
    uvm_reg_data_t   exp;
 
    m_fname   = rw.get_fname();
@@ -1893,7 +1907,7 @@ task uvm_reg::do_read(uvm_reg_item rw);
          
          map = rw.get_local_map();
           
-         if (map.get_check_on_read()) exp = get();
+         if (map.get_check_on_read()) exp = get_mirrored_value();
    
          if (get_rights(rw.get_local_map()) inside {"RW", "RO"}) begin
            if (bkdr != null)
@@ -1978,7 +1992,7 @@ task uvm_reg::do_read(uvm_reg_item rw);
 
          m_is_busy = 1;
 
-         if (local_map.get_check_on_read()) exp = get();
+         if (local_map.get_check_on_read()) exp = get_mirrored_value();
    
          // ...VIA USER FRONTDOOR
          if (map_info.frontdoor != null) begin
@@ -2016,28 +2030,40 @@ task uvm_reg::do_read(uvm_reg_item rw);
       
    endcase
 
-   value = rw.get_value(0); // preserve 
-
    // POST-READ CBS - REG
    for (uvm_reg_cbs cb = cbs.first(); cb != null; cb = cbs.next())
       cb.post_read(rw);
    post_read(rw);
 
+   value = rw.get_value(0);
+   
    // POST-READ CBS - FIELDS
    foreach (m_fields[i]) begin
+      int top;
       uvm_reg_field_cb_iter cbs = new(m_fields[i]);
       uvm_reg_field f = m_fields[i];
-
       rw.set_element(f);
       rw.set_element_kind(UVM_FIELD);
       rw.set_value((value >> f.get_lsb_pos()) & ((1<<f.get_n_bits())-1));
-
+      top = (f.get_n_bits()+f.get_lsb_pos());      
+      
+      // Filter to remove field from value before ORing result of field CB/post_read back in
+      value_field_filter = '1;     
+      for(int i = f.get_lsb_pos(); i < top; i++) begin
+         value_field_filter[i] = 0;
+      end
+   
       for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
          cb.post_read(rw);
       f.post_read(rw);
+      
+      // Recreate value based on field value and field filtered version of value
+      value = (value & value_field_filter) | (~value_field_filter & (rw.get_value(0) << f.get_lsb_pos()));
+      
    end
 
-   rw.set_value(value, 0); // restore
+   rw.set_value(value,0);
+   
    rw.set_element(this);
    rw.set_element_kind(UVM_REG);
 
@@ -2052,12 +2078,12 @@ task uvm_reg::do_read(uvm_reg_item rw);
      else
        path_s = (get_backdoor() != null) ? "user backdoor" : "DPI backdoor";
 
-     value_s = $sformatf("=%0h",rw.get_value(0));
+     value_s = $sformatf("=0x%0h",rw.get_value(0));
 
       uvm_report_info("RegModel", {"Read  register via ",path_s,": ",
                                    get_full_name(),value_s}, UVM_HIGH);
    end
-
+   
    m_read_in_progress = 1'b0;
 
 endtask: do_read
@@ -2418,8 +2444,11 @@ task uvm_reg::mirror(output uvm_status_e       status,
    if (path == UVM_DEFAULT_DOOR)
      path = m_parent.get_default_door();
 
-   if (path == UVM_BACKDOOR && (bkdr != null || has_hdl_path()))
-     map = uvm_reg_map::backdoor();
+   if (path == UVM_BACKDOOR && (bkdr != null || has_hdl_path())) begin
+     map = get_default_map();
+     if (map == null) 
+         map = uvm_reg_map::backdoor();
+   end
    else
      map = get_local_map(map);
 
@@ -2496,8 +2525,8 @@ function string uvm_reg::convert2string();
        begin
             uvm_endianness_e e = this_map.get_endian();
             $sformat(convert2string, 
-                "%sMapped in '%s' -- %d bytes, %s, offset 'h%0h\n",
-                prefix, this_map.get_full_name(), this_map.get_n_bytes(),
+                "%s%sMapped in '%s' -- %d bytes, %s, offset 'h%0h\n",
+                convert2string, prefix, this_map.get_full_name(), this_map.get_n_bytes(),
                 e.name(), offset);
        end
      end

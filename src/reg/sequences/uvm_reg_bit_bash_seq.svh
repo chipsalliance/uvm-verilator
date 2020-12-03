@@ -1,11 +1,11 @@
 // 
 // -------------------------------------------------------------
+// Copyright 2010 AMD
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2013 Semifore
 // Copyright 2004-2010 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2010 AMD
-// Copyright 2014-2018 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -55,7 +55,7 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto E.2.1.1
+// @uvm-ieee 1800.2-2020 auto E.2.1.1
 class uvm_reg_single_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    // Variable -- NODOCS -- rg
@@ -64,7 +64,7 @@ class uvm_reg_single_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_
 
    `uvm_object_utils(uvm_reg_single_bit_bash_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.2.1.3
+   // @uvm-ieee 1800.2-2020 auto E.2.1.3
    function new(string name="uvm_reg_single_bit_bash_seq");
      super.new(name);
    endfunction
@@ -206,7 +206,7 @@ endclass: uvm_reg_single_bit_bash_seq
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto E.2.2.1
+// @uvm-ieee 1800.2-2020 auto E.2.2.1
 class uvm_reg_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    // Variable -- NODOCS -- model
@@ -224,14 +224,14 @@ class uvm_reg_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
    
    `uvm_object_utils(uvm_reg_bit_bash_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.2.2.3.1
+   // @uvm-ieee 1800.2-2020 auto E.2.2.3.1
    function new(string name="uvm_reg_bit_bash_seq");
      super.new(name);
    endfunction
 
 
 
-   // @uvm-ieee 1800.2-2017 auto E.2.2.3.2
+   // @uvm-ieee 1800.2-2020 auto E.2.2.3.2
    virtual task body();
       
       if (model == null) begin

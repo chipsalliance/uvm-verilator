@@ -1,9 +1,9 @@
 //
 //----------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2011 AMD
-// Copyright 2015 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -33,19 +33,19 @@
 // has been called and returned on all applicable components
 // in the hierarchy.
 
-// @uvm-ieee 1800.2-2017 auto 9.7.1
+// @uvm-ieee 1800.2-2020 auto 9.7.1
 virtual class uvm_topdown_phase extends uvm_phase;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.7.2.1
+  // @uvm-ieee 1800.2-2020 auto 9.7.2.1
   function new(string name);
     super.new(name,UVM_PHASE_IMP);
   endfunction
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.7.2.2
+  // @uvm-ieee 1800.2-2020 auto 9.7.2.2
   virtual function void traverse(uvm_component comp,
                                  uvm_phase phase,
                                  uvm_phase_state state);
@@ -95,7 +95,7 @@ virtual class uvm_topdown_phase extends uvm_phase;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.7.2.3
+  // @uvm-ieee 1800.2-2020 auto 9.7.2.3
   virtual function void execute(uvm_component comp,
                                           uvm_phase phase);
     // reseed this process for random stability

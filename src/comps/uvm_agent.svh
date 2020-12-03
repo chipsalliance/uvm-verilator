@@ -1,9 +1,9 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2010-2012 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2010-2012 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -37,7 +37,7 @@
 // subtypes should contain only the monitor.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 13.4.1
+// @uvm-ieee 1800.2-2020 auto 13.4.1
 virtual class uvm_agent extends uvm_component;
   uvm_active_passive_enum is_active = UVM_ACTIVE;
 
@@ -56,7 +56,7 @@ virtual class uvm_agent extends uvm_component;
   //
   //| uvm_config_int::set(this, "<relative_path_to_agent>, "is_active", UVM_ACTIVE);
 
-  // @uvm-ieee 1800.2-2017 auto 13.4.2.1
+  // @uvm-ieee 1800.2-2020 auto 13.4.2.1
   function new (string name, uvm_component parent);
     super.new(name, parent);
   endfunction
@@ -93,7 +93,7 @@ virtual class uvm_agent extends uvm_component;
   // override this behavior if a more complex algorithm is needed to determine
   // the active/passive nature of the agent.
 
-  // @uvm-ieee 1800.2-2017 auto 13.4.2.2
+  // @uvm-ieee 1800.2-2020 auto 13.4.2.2
   virtual function uvm_active_passive_enum get_is_active();
     return is_active;
   endfunction

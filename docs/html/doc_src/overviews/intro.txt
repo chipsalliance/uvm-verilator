@@ -1,7 +1,7 @@
 
-Title: UVM 1800.2-2017 Class Reference
+Title: UVM 1800.2-2020 Class Reference
 
-This library implements the API as documented in the IEEE 1800.2-2017 standard.  Documentation for that API is in the standard.  In addition, this library also implements user-facing APIs that go beyond the standard.  
+This library implements the API as documented in the IEEE 1800.2-2020 standard.  Documentation for that API is in the standard.  In addition, this library also implements user-facing APIs that go beyond the standard.  
 
 These APIs are documented here and include both APIs that are being considered for contribution to the IEEE by Accellera and APIs that are provided for debug purposes and not being considered for contribution to the IEEE.  
 

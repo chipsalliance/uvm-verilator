@@ -1,12 +1,12 @@
 //
 //-----------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2010-2013 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2020 Marvell International Ltd.
 // Copyright 2010 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2017 Cisco Systems, Inc.
+// Copyright 2020 Marvell International Ltd.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2010-2013 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -125,7 +125,7 @@ typedef class uvm_parent_child_link;
 //
 //------------------------------------------------------------------------------
     
-// @uvm-ieee 1800.2-2017 auto 5.4.1
+// @uvm-ieee 1800.2-2020 auto 5.4.1
 virtual class uvm_transaction extends uvm_object;
 
   // Function -- NODOCS -- new
@@ -133,7 +133,7 @@ virtual class uvm_transaction extends uvm_object;
   // Creates a new transaction object. The name is the instance name of the
   // transaction. If not supplied, then the object is unnamed.
   
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.1
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.1
   extern function new (string name="", uvm_component initiator=null);
 
 
@@ -162,7 +162,7 @@ virtual class uvm_transaction extends uvm_object;
   // - The <do_accept_tr> method is called to allow for any post-accept
   //   action in derived classes.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.2
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.2
   extern function void accept_tr (time accept_time = 0);
 
   
@@ -172,7 +172,7 @@ virtual class uvm_transaction extends uvm_object;
   // event is triggered. Implementations should call ~super.do_accept_tr~ to
   // ensure correct operation.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.3
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.3
   extern virtual protected function void do_accept_tr ();
 
 
@@ -209,12 +209,10 @@ virtual class uvm_transaction extends uvm_object;
   // recording is enabled. The meaning of the handle is implementation specific.
 
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.4
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.4
   extern function int begin_tr (
      time begin_time = 0
-`ifdef UVM_1800_2_2020_EA
      , int parent_handle = 0
-`endif
   );
 
   
@@ -250,7 +248,6 @@ virtual class uvm_transaction extends uvm_object;
   // The return value is a transaction handle, which is valid (non-zero) only if
   // recording is enabled. The meaning of the handle is implementation specific.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.5
   extern function int begin_child_tr (time begin_time = 0, 
                                                int parent_handle = 0);
 
@@ -261,7 +258,7 @@ virtual class uvm_transaction extends uvm_object;
   // before the begin event is triggered. Implementations should call
   // ~super.do_begin_tr~ to ensure correct operation.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.6
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.5
   extern virtual protected function void do_begin_tr ();
 
 
@@ -297,7 +294,7 @@ virtual class uvm_transaction extends uvm_object;
   // - The transaction's internal end event is triggered. Any processes waiting
   //   on this event will resume in the next delta cycle. 
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.7
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.6
   extern function void end_tr (time end_time=0, bit free_handle=1);
 
 
@@ -307,7 +304,7 @@ virtual class uvm_transaction extends uvm_object;
   // is triggered. Implementations should call ~super.do_end_tr~ to ensure correct
   // operation.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.8
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.7
   extern virtual protected function void do_end_tr ();
 
 
@@ -316,7 +313,7 @@ virtual class uvm_transaction extends uvm_object;
   // Returns the handle associated with the transaction, as set by a previous
   // call to <begin_child_tr> or <begin_tr> with transaction recording enabled.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.9
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.8
   extern function int get_tr_handle ();
 
   
@@ -325,18 +322,18 @@ virtual class uvm_transaction extends uvm_object;
   // Turns off recording for the transaction stream. This method does not
   // effect a <uvm_component>'s recording streams.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.11
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.10
   extern function void disable_recording ();
 
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.10
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.9
   extern function void enable_recording (uvm_tr_stream stream);
 
   // Function -- NODOCS -- is_recording_enabled
   //
   // Returns 1 if recording is currently on, 0 otherwise.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.12
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.11
   extern function bit is_recording_enabled();
 
   
@@ -345,7 +342,7 @@ virtual class uvm_transaction extends uvm_object;
   // Returns 1 if the transaction has been started but has not yet been ended.
   // Returns 0 if the transaction has not been started.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.13
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.12
   extern function bit is_active ();
 
 
@@ -357,7 +354,7 @@ virtual class uvm_transaction extends uvm_object;
   // Events can also be added by derivative objects. An event pool is a
   // specialization of <uvm_pool#(KEY,T)>, e.g. a ~uvm_pool#(uvm_event)~.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.14
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.13
   extern function uvm_event_pool get_event_pool ();
 
 
@@ -369,7 +366,7 @@ virtual class uvm_transaction extends uvm_object;
   // also be the component that started the transaction. This or any other
   // usage is up to the transaction designer.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.15
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.14
   extern function void set_initiator (uvm_component initiator);
 
   
@@ -378,18 +375,18 @@ virtual class uvm_transaction extends uvm_object;
   // Returns the component that produced or started the transaction, as set by
   // a previous call to set_initiator.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.16
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.15
   extern function uvm_component get_initiator ();
 
 
   // Function -- NODOCS -- get_accept_time
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.17
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.16
   extern function time   get_accept_time    ();
 
   // Function -- NODOCS -- get_begin_time
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.17
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.16
   extern function time   get_begin_time     ();
 
   // Function -- NODOCS -- get_end_time
@@ -397,7 +394,7 @@ virtual class uvm_transaction extends uvm_object;
   // Returns the time at which this transaction was accepted, begun, or ended, 
   // as by a previous call to <accept_tr>, <begin_tr>, <begin_child_tr>, or <end_tr>.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.17
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.16
   extern function time   get_end_time       ();
 
 
@@ -410,7 +407,7 @@ virtual class uvm_transaction extends uvm_object;
   // with the sequence ID to route responses in sequencers and to correlate
   // responses to requests.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.18
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.17
   extern function void set_transaction_id(int id);
 
 
@@ -424,7 +421,7 @@ virtual class uvm_transaction extends uvm_object;
   // with the sequence ID to route responses in sequencers and to correlate
   // responses to requests.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.19
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.18
   extern function int get_transaction_id();
 
        
@@ -433,49 +430,8 @@ virtual class uvm_transaction extends uvm_object;
   // The event pool instance for this transaction. This pool is used to track
   // various milestones: by default, begin, accept, and end
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  const uvm_event_pool events = new("events");
-`else
   const local uvm_event_pool events = new("events");
-`endif 
 
-
-  // Variable -- NODOCS -- begin_event
-  //
-  // A ~uvm_event#(uvm_object)~ that is triggered when this transaction's actual execution on the
-  // bus begins, typically as a result of a driver calling <uvm_component::begin_tr>. 
-  // Processes that wait on this event will block until the transaction has
-  // begun. 
-  //
-  // For more information, see the general discussion for <uvm_transaction>.
-  // See <uvm_event#(T)> for details on the event API.
-  //
-`ifdef UVM_ENABLE_DEPRECATED_API
-  uvm_event#(uvm_object) begin_event;
-`endif
-
-  // Variable -- NODOCS -- end_event
-  //
-  // A ~uvm_event#(uvm_object)~ that is triggered when this transaction's actual execution on
-  // the bus ends, typically as a result of a driver calling <uvm_component::end_tr>. 
-  // Processes that wait on this event will block until the transaction has
-  // ended. 
-  //
-  // For more information, see the general discussion for <uvm_transaction>.
-  // See <uvm_event#(T)> for details on the event API.
-  //
-  //| virtual task my_sequence::body();
-  //|  ...
-  //|  start_item(item);    \ 
-  //|  item.randomize();     } `uvm_do(item)
-  //|  finish_item(item);   /
-  //|  // return from finish item does not always mean item is completed
-  //|  item.end_event.wait_on();
-  //|  ...
-  // 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  uvm_event#(uvm_object) end_event;
-`endif
 
   //----------------------------------------------------------------------------
   //
@@ -519,10 +475,6 @@ function uvm_transaction::new (string name="",
   super.new(name);
   this.initiator = initiator;
   m_transaction_id = -1;
-`ifdef UVM_ENABLE_DEPRECATED_API
-  begin_event = events.get("begin");
-  end_event = events.get("end");
-`endif
 endfunction // uvm_transaction
 
 
@@ -720,15 +672,11 @@ endfunction
 
 function int uvm_transaction::begin_tr (
      time begin_time = 0
-`ifdef UVM_1800_2_2020_EA
      , int parent_handle = 0
-`endif
 ); 
    return m_begin_tr(
       begin_time 
-`ifdef UVM_1800_2_2020_EA
       , parent_handle 
-`endif
    );
 endfunction
 

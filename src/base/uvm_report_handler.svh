@@ -1,14 +1,14 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2012 Accellera Systems Initiative
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2011 Cypress Semiconductor Corp.
-// Copyright 2012 Accellera Systems Initiative
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2014 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -57,7 +57,7 @@ typedef uvm_pool#(uvm_severity, uvm_severity) uvm_sev_override_array;
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 6.4.1
+// @uvm-ieee 1800.2-2020 auto 6.4.1
 class uvm_report_handler extends uvm_object;
 
   // internal variables
@@ -91,7 +91,7 @@ class uvm_report_handler extends uvm_object;
   // 
   // Creates and initializes a new uvm_report_handler object.
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.2.1
+  // @uvm-ieee 1800.2-2020 auto 6.4.2.1
   function new(string name = "uvm_report_handler");
     super.new(name);
     initialize();
@@ -119,7 +119,7 @@ class uvm_report_handler extends uvm_object;
   // |    [UVM_FATAL]             uvm_action          32    DISPLAY EXIT            
   // |  default_file_handle       int                 32    'h1                     
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.2.2
+  // @uvm-ieee 1800.2-2020 auto 6.4.2.2
   virtual function void do_print (uvm_printer printer);
 
     uvm_verbosity l_verbosity;
@@ -315,7 +315,7 @@ class uvm_report_handler extends uvm_object;
   // This is the common handler method used by the four core reporting methods
   // (e.g. <uvm_report_error>) in <uvm_report_object>.
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.7
+  // @uvm-ieee 1800.2-2020 auto 6.4.7
   virtual function void process_report_message(uvm_report_message report_message);
     process p = process::self();
     uvm_report_server srvr = uvm_report_server::get_server();
@@ -431,7 +431,7 @@ class uvm_report_handler extends uvm_object;
   //
   // Internal method called by uvm_report_object.
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.3.2
+  // @uvm-ieee 1800.2-2020 auto 6.4.3.2
   function void set_verbosity_level(int verbosity_level);
     m_max_verbosity_level = verbosity_level;
   endfunction
@@ -445,7 +445,7 @@ class uvm_report_handler extends uvm_object;
   // return that.  Else, if there is a verbosity associated with the ~id~, return
   // that.  Else, return the max verbosity setting.
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.3.1
+  // @uvm-ieee 1800.2-2020 auto 6.4.3.1
   function int get_verbosity_level(uvm_severity severity=UVM_INFO, string id="" );
 
     uvm_id_verbosities_array array;
@@ -474,7 +474,7 @@ class uvm_report_handler extends uvm_object;
   // that.  Else, if there is an action associated with the ~severity~, return
   // that. Else, return the default action associated with the ~severity~.
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.4.1
+  // @uvm-ieee 1800.2-2020 auto 6.4.4.1
   function uvm_action get_action(uvm_severity severity, string id);
 
     uvm_id_actions_array array;
@@ -501,7 +501,7 @@ class uvm_report_handler extends uvm_object;
   // that. Else, if there is an file handle associated with the ~severity~, return
   // that. Else, return the default file handle.
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.5.1
+  // @uvm-ieee 1800.2-2020 auto 6.4.5.1
   function UVM_FILE get_file_handle(uvm_severity severity, string id);
     UVM_FILE file;
   
@@ -533,18 +533,18 @@ class uvm_report_handler extends uvm_object;
   //
   // Internal methods called by uvm_report_object.
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.4.2
+  // @uvm-ieee 1800.2-2020 auto 6.4.4.2
   function void set_severity_action(input uvm_severity severity,
                                     input uvm_action action);
     severity_actions[severity] = action;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.4.2
+  // @uvm-ieee 1800.2-2020 auto 6.4.4.2
   function void set_id_action(input string id, input uvm_action action);
     id_actions.add(id, action);
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.4.2
+  // @uvm-ieee 1800.2-2020 auto 6.4.4.2
   function void set_severity_id_action(uvm_severity severity,
                                        string id,
                                        uvm_action action);
@@ -553,12 +553,12 @@ class uvm_report_handler extends uvm_object;
     severity_id_actions[severity].add(id,action);
   endfunction
   
-  // @uvm-ieee 1800.2-2017 auto 6.4.3.3
+  // @uvm-ieee 1800.2-2020 auto 6.4.3.3
   function void set_id_verbosity(input string id, input int verbosity);
     id_verbosities.add(id, verbosity);
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.3.3
+  // @uvm-ieee 1800.2-2020 auto 6.4.3.3
   function void set_severity_id_verbosity(uvm_severity severity,
                                        string id,
                                        int verbosity);
@@ -574,22 +574,22 @@ class uvm_report_handler extends uvm_object;
   //
   // Internal methods called by uvm_report_object.
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.5.2
+  // @uvm-ieee 1800.2-2020 auto 6.4.5.2
   function void set_default_file (UVM_FILE file);
     default_file_handle = file;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.5.2
+  // @uvm-ieee 1800.2-2020 auto 6.4.5.2
   function void set_severity_file (uvm_severity severity, UVM_FILE file);
     severity_file_handles[severity] = file;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.5.2
+  // @uvm-ieee 1800.2-2020 auto 6.4.5.2
   function void set_id_file (string id, UVM_FILE file);
     id_file_handles.add(id, file);
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.5.2
+  // @uvm-ieee 1800.2-2020 auto 6.4.5.2
   function void set_severity_id_file(uvm_severity severity,
                                      string id, UVM_FILE file);
     if(!severity_id_file_handles.exists(severity))
@@ -597,13 +597,13 @@ class uvm_report_handler extends uvm_object;
     severity_id_file_handles[severity].add(id, file);
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.6
+  // @uvm-ieee 1800.2-2020 auto 6.4.6
   function void set_severity_override(uvm_severity cur_severity,
                                       uvm_severity new_severity);
     sev_overrides.add(cur_severity, new_severity);
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 6.4.6
+  // @uvm-ieee 1800.2-2020 auto 6.4.6
   function void set_severity_id_override(uvm_severity cur_severity,
                                          string id,
                                          uvm_severity new_severity);

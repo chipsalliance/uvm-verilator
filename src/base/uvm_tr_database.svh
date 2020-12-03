@@ -1,11 +1,11 @@
 //
 //-----------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2015 Analog Devices, Inc.
-// Copyright 2014 Intel Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2015 NVIDIA Corporation
 // Copyright 2017 Cisco Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -49,7 +49,7 @@ typedef class uvm_link_base;
 // <uvm_text_tr_database> class.
 //
 
-// @uvm-ieee 1800.2-2017 auto 7.1.1
+// @uvm-ieee 1800.2-2020 auto 7.1.1
 virtual class uvm_tr_database extends uvm_object;
 
    // Variable- m_is_opened
@@ -61,7 +61,7 @@ virtual class uvm_tr_database extends uvm_object;
    local bit m_streams[uvm_tr_stream];
    
 
-   // @uvm-ieee 1800.2-2017 auto 7.1.2
+   // @uvm-ieee 1800.2-2020 auto 7.1.2
    function new(string name="unnamed-uvm_tr_database");
       super.new(name);
    endfunction : new
@@ -69,7 +69,7 @@ virtual class uvm_tr_database extends uvm_object;
    // Group -- NODOCS -- Database API
    
 
-   // @uvm-ieee 1800.2-2017 auto 7.1.3.1
+   // @uvm-ieee 1800.2-2020 auto 7.1.3.1
    function bit open_db();
       if (!m_is_opened)
         m_is_opened = do_open_db();
@@ -77,7 +77,7 @@ virtual class uvm_tr_database extends uvm_object;
    endfunction : open_db
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.1.3.2
+   // @uvm-ieee 1800.2-2020 auto 7.1.3.2
    function bit close_db();
       if (m_is_opened) begin
          if (do_close_db())
@@ -87,7 +87,7 @@ virtual class uvm_tr_database extends uvm_object;
    endfunction : close_db
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.1.3.3
+   // @uvm-ieee 1800.2-2020 auto 7.1.3.3
    function bit is_open();
       return m_is_opened;
    endfunction : is_open
@@ -95,7 +95,7 @@ virtual class uvm_tr_database extends uvm_object;
    // Group -- NODOCS -- Stream API
    
 
-   // @uvm-ieee 1800.2-2017 auto 7.1.4.1
+   // @uvm-ieee 1800.2-2020 auto 7.1.4.1
    function uvm_tr_stream open_stream(string name,
                                       string scope="",
                                       string type_name="");
@@ -131,7 +131,7 @@ virtual class uvm_tr_database extends uvm_object;
    endfunction : m_free_stream
    
 
-   // @uvm-ieee 1800.2-2017 auto 7.1.4.2
+   // @uvm-ieee 1800.2-2020 auto 7.1.4.2
    function unsigned get_streams(ref uvm_tr_stream q[$]);
       // Clear out the queue first...
       q.delete();
@@ -145,7 +145,7 @@ virtual class uvm_tr_database extends uvm_object;
    // Group -- NODOCS -- Link API
    
 
-   // @uvm-ieee 1800.2-2017 auto 7.1.5
+   // @uvm-ieee 1800.2-2020 auto 7.1.5
    function void establish_link(uvm_link_base link);
       uvm_tr_stream s_lhs, s_rhs;
       uvm_recorder r_lhs, r_rhs;
@@ -208,21 +208,21 @@ virtual class uvm_tr_database extends uvm_object;
    //
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.1.6.1
+   // @uvm-ieee 1800.2-2020 auto 7.1.6.1
    pure virtual protected function bit do_open_db();
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.1.6.2
+   // @uvm-ieee 1800.2-2020 auto 7.1.6.2
    pure virtual protected function bit do_close_db();
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.1.6.3
+   // @uvm-ieee 1800.2-2020 auto 7.1.6.3
    pure virtual protected function uvm_tr_stream do_open_stream(string name,
                                                                 string scope,
                                                                 string type_name);
 
 
-   // @uvm-ieee 1800.2-2017 auto 7.1.6.4
+   // @uvm-ieee 1800.2-2020 auto 7.1.6.4
    pure virtual protected function void do_establish_link(uvm_link_base link);
 
 endclass : uvm_tr_database

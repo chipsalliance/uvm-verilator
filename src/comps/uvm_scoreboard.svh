@@ -1,8 +1,8 @@
 //
 //-----------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -33,7 +33,7 @@
 // added to uvm_scoreboard in the future.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 13.6.1
+// @uvm-ieee 1800.2-2020 auto 13.6.1
 virtual class uvm_scoreboard extends uvm_component;
 
   `uvm_component_abstract_utils(uvm_scoreboard)

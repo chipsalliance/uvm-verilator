@@ -1,14 +1,16 @@
 //----------------------------------------------------------------------
-// Copyright 2007-2017 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2014 Intel Corporation
-// Copyright 2010-2017 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013 Verilab
 // Copyright 2010-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
-// Copyright 2013-2018 Cisco Systems, Inc.
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2013-2018 Cisco Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2020 Marvell International Ltd.
+// Copyright 2007-2020 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2017 Synopsys, Inc.
+// Copyright 2020 Verific
+// Copyright 2013 Verilab
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -40,14 +42,12 @@ endclass : uvm_sequence_process_wrapper
 // CLASS: uvm_sequencer_base
 //
 // The library implements some public API beyond what is documented
-// in 1800.2.  It also modifies some API described erroneously in 1800.2.
+// in 1800.2.  
 //
 //------------------------------------------------------------------------------
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual
-`endif
-// @uvm-ieee 1800.2-2017 auto 15.3.1
-class uvm_sequencer_base extends uvm_component;
+
+// @uvm-ieee 1800.2-2020 auto 15.3.1
+virtual class uvm_sequencer_base extends uvm_component;
 
   typedef enum {SEQ_TYPE_REQ,
                 SEQ_TYPE_LOCK} seq_req_t; 
@@ -73,24 +73,51 @@ class uvm_sequencer_base extends uvm_component;
   local static int              g_sequence_id = 1;
   local static int              g_sequencer_id = 1;
 
-
+  protected int                 m_wait_for_sequences_count;  // specifies the # of times the sequencer
+                                                             // should call wait_for_sequences().  A
+                                                             // value > 1 allows sequencer stacking.
   // Function -- NODOCS -- new
   //
   // Creates and initializes an instance of this class using the normal
   // constructor arguments for uvm_component: name is the name of the
   // instance, and parent is the handle to the hierarchical parent.
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.1
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.1
   extern function new (string name, uvm_component parent);
 
+  // Variable: wait_for_sequences_count
+  // Controls the number of wait_for_sequences calls when selecting next sequence.
+  //
+  // By default, the sequencers will wait for 1 ~wait_for_sequences~ call
+  // when selecting a new sequence.  When stacking sequencers, this will
+  // cause a problem as the single call in a low level sequencer is absorbed
+  // by the next call in the higher level sequencer(s).  This problem can be avoided
+  // by setting the value of "wait_for_sequences_count" to a value higher than
+  // 1 for the lower level sequencer(s) using the config database, e.g.:
+  //
+  //| uvm_config_db#(int)::set(this, "path.to.sequencer", "wait_for_sequences_count", 4);
+  //
+  // Setting wait_for_sequences_count less than 1 will be ignored.  
+  //
+  // Note: Each successively lower sequencer in a stack will require a higher wait_for_sequences_count
+  // value in order to absorb all potential wait_for_sequences() counts in each higher level
+  // of the stack.
+  //
+  // Note: Increasing this value will decrease the efficiency of the sequencer
+  // in the event of a get/get_next_item/peek/try_next_item call when no items
+  // are actually available.  As such, care should be taken to avoid unnecessarily
+  // increasing the value.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+  extern virtual function void build_phase(uvm_phase phase);
+  
 
-
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.2
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.2
   extern function bit is_child (uvm_sequence_base parent, uvm_sequence_base child);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.3
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.3
   extern virtual function int user_priority_arbitration(int avail_sequences[$]);
 
 
@@ -102,7 +129,7 @@ class uvm_sequencer_base extends uvm_component;
   // sequencer, eventually causing response overflow unless
   // <uvm_sequence_base::set_response_queue_error_report_enabled> is called.
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.5
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.5
   extern virtual task execute_item(uvm_sequence_item item);
 
   // Hidden array, keeps track of running default sequences
@@ -186,97 +213,72 @@ class uvm_sequencer_base extends uvm_component;
   // other than delta cycles.  The driver is currently waiting for the next
   // item to be sent via the send_request call.
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.6
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.6
   extern virtual task wait_for_grant(uvm_sequence_base sequence_ptr,
                                      int item_priority = -1,
                                      bit lock_request = 0);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.7
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.7
   extern virtual task wait_for_item_done(uvm_sequence_base sequence_ptr,
                                          int transaction_id);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.8
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.8
   extern function bit is_blocked(uvm_sequence_base sequence_ptr);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.9
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.9
   extern function bit has_lock(uvm_sequence_base sequence_ptr);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.10
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.10
   extern virtual task lock(uvm_sequence_base sequence_ptr);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.11
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.11
   extern virtual task grab(uvm_sequence_base sequence_ptr);
 
-
-
-  // Function: unlock
-  //
-  //| extern virtual function void unlock(uvm_sequence_base sequence_ptr);
-  //
-  // Implementation of unlock, as defined in P1800.2-2017 section 15.3.2.12.
-  // 
-  // NOTE: unlock is documented in error as a virtual task, whereas it is 
-  // implemented as a virtual function.
-  //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
-
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.12
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.12
   extern virtual function void unlock(uvm_sequence_base sequence_ptr);
 
-
-  // Function: ungrab
-  //
-  //| extern virtual function void ungrab(uvm_sequence_base sequence_ptr);
-  //
-  // Implementation of ungrab, as defined in P1800.2-2017 section 15.3.2.13.
-  // 
-  // NOTE: ungrab is documented in error as a virtual task, whereas it is 
-  // implemented as a virtual function.
-  //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
-
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.13
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.13
   extern virtual function void  ungrab(uvm_sequence_base sequence_ptr);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.14
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.14
   extern virtual function void stop_sequences();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.15
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.15
   extern virtual function bit is_grabbed();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.16
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.16
   extern virtual function uvm_sequence_base current_grabber();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.17
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.17
   extern virtual function bit has_do_available();
 
  
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.19
-  extern function void set_arbitration(UVM_SEQ_ARB_TYPE val);
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.19
+  extern function void set_arbitration(uvm_sequencer_arb_mode val);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.18
-  extern function UVM_SEQ_ARB_TYPE get_arbitration();
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.18
+  extern function uvm_sequencer_arb_mode get_arbitration();
 
 
   // Task -- NODOCS -- wait_for_sequences
@@ -296,17 +298,17 @@ class uvm_sequencer_base extends uvm_component;
   //
   // This function may only be called after a <wait_for_grant> call.
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.20
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.20
   extern virtual function void send_request(uvm_sequence_base sequence_ptr,
                                             uvm_sequence_item t,
                                             bit rerandomize = 0);
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.21
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.21
   extern virtual function void set_max_zero_time_wait_relevant_count(int new_val) ;
 
   // Added in IEEE. Not in UVM 1.2
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.4
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.4
   extern virtual function uvm_sequence_base get_arbitration_sequence( int index );
 
   //----------------------------------------------------------------------------
@@ -379,7 +381,7 @@ class uvm_sequencer_base extends uvm_component;
 
   // Access to following internal methods provided via seq_item_export
 
-  // Function: disable_auto_item_recording
+  // Function -- NODOCS -- disable_auto_item_recording
   //
   // Disables auto_item_recording
   // 
@@ -390,12 +392,13 @@ class uvm_sequencer_base extends uvm_component;
   // This function is implemented here to allow <uvm_push_sequencer#(REQ,RSP)>
   // and <uvm_push_driver#(REQ,RSP)> access to the call.
   //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
+
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.22
   virtual function void disable_auto_item_recording();
     m_auto_item_recording = 0;
   endfunction
 
-  // Function: is_auto_item_recording_enabled
+  // Function -- NODOCS -- is_auto_item_recording_enabled
   //
   // Returns 1 is auto_item_recording is enabled,
   // otherwise 0
@@ -407,7 +410,6 @@ class uvm_sequencer_base extends uvm_component;
   // This function is implemented here to allow <uvm_push_sequencer#(REQ,RSP)>
   // and <uvm_push_driver#(REQ,RSP)> access to the call.
   //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
   virtual function bit is_auto_item_recording_enabled();
     return m_auto_item_recording;
   endfunction
@@ -431,8 +433,21 @@ function uvm_sequencer_base::new (string name, uvm_component parent);
   m_sequencer_id = g_sequencer_id++;
   m_lock_arb_size = -1;
   all_sequencer_insts[m_sequencer_id]=this;
+  m_wait_for_sequences_count = 1; // default
 endfunction
 
+// build_phase
+// -----------
+function void uvm_sequencer_base::build_phase(uvm_phase phase);
+  super.build_phase(phase);
+  if (!uvm_config_db#(uvm_bitstream_t)::get(this, "", "wait_for_sequences_count", m_wait_for_sequences_count))
+    void'(uvm_config_db#(int)::get(this, "", "wait_for_sequences_count", m_wait_for_sequences_count));
+  
+  if (m_wait_for_sequences_count < 1) begin
+    `uvm_warning("UVM/SQR/WFSC", $sformatf("attempt to set wait_for_sequences_count to '%0d' will be ignored, values must be 1 or greater!", m_wait_for_sequences_count))
+    m_wait_for_sequences_count = 1;
+  end
+endfunction : build_phase
 
 // do_print
 // --------
@@ -582,8 +597,12 @@ task uvm_sequencer_base::m_select_sequence();
 
     // Select a sequence
     do begin
-      wait_for_sequences();
-      selected_sequence = m_choose_next_request();
+      repeat(m_wait_for_sequences_count) begin
+        wait_for_sequences();
+        selected_sequence = m_choose_next_request();
+        if (selected_sequence != -1)
+          break;
+      end
       if (selected_sequence == -1) begin
         m_wait_for_available_sequence();
       end
@@ -918,6 +937,8 @@ task uvm_sequencer_base::execute_item(uvm_sequence_item item);
   seq.set_sequencer(this);
   seq.start_item(item);
   seq.finish_item(item);
+  remove_sequence_from_queues(seq);
+
 endtask
 
 
@@ -1254,7 +1275,7 @@ endfunction
 // set_arbitration
 // ---------------
 
-function void uvm_sequencer_base::set_arbitration(UVM_SEQ_ARB_TYPE val);
+function void uvm_sequencer_base::set_arbitration(uvm_sequencer_arb_mode val);
   m_arbitration = val;
 endfunction
 
@@ -1262,7 +1283,7 @@ endfunction
 // get_arbitration
 // ---------------
 
-function UVM_SEQ_ARB_TYPE uvm_sequencer_base::get_arbitration();
+function uvm_sequencer_arb_mode uvm_sequencer_base::get_arbitration();
   return m_arbitration;
 endfunction
 

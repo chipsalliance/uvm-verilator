@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------
-// Copyright 2007-2009 Mentor Graphics Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2018 NVIDIA Corporation
+// Copyright 2007-2009 Mentor Graphics Corporation
+// Copyright 2018-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -77,7 +77,7 @@
     `define uvm_record_attribute(TR_HANDLE,NAME,VALUE,RECORDER=recorder) \
       $add_attribute(TR_HANDLE,VALUE,NAME);
   `else
-    // @uvm-ieee 1800.2-2017 auto B.2.3.1
+    // @uvm-ieee 1800.2-2020 auto B.2.3.1
     `define uvm_record_attribute(TR_HANDLE,NAME,VALUE,RECORDER=recorder) \
       RECORDER.record_generic(NAME, $sformatf("%p", VALUE)); 
   `endif
@@ -96,7 +96,7 @@
 //
 
 `ifndef uvm_record_int
-  // @uvm-ieee 1800.2-2017 auto B.2.3.2
+  // @uvm-ieee 1800.2-2020 auto B.2.3.2
   `define uvm_record_int(NAME,VALUE,SIZE,RADIX = UVM_NORADIX,RECORDER=recorder) \
     if (RECORDER != null && RECORDER.is_open()) begin \
       if (RECORDER.use_record_attribute()) \
@@ -122,7 +122,7 @@
 //
 
 `ifndef uvm_record_string
-  // @uvm-ieee 1800.2-2017 auto B.2.3.3
+  // @uvm-ieee 1800.2-2020 auto B.2.3.3
   `define uvm_record_string(NAME,VALUE,RECORDER=recorder) \
     if (RECORDER != null && RECORDER.is_open()) begin \
       if (RECORDER.use_record_attribute()) \
@@ -144,7 +144,7 @@
 // will be passed to <uvm_recorder::record_time>.
 //
 `ifndef uvm_record_time
-  // @uvm-ieee 1800.2-2017 auto B.2.3.4
+  // @uvm-ieee 1800.2-2020 auto B.2.3.4
   `define uvm_record_time(NAME,VALUE,RECORDER=recorder) \
     if (RECORDER != null && RECORDER.is_open()) begin \
       if (RECORDER.use_record_attribute()) \
@@ -167,7 +167,7 @@
 // will be passed to <uvm_recorder::record_field_real>.
 //
 `ifndef uvm_record_real
-  // @uvm-ieee 1800.2-2017 auto B.2.3.5
+  // @uvm-ieee 1800.2-2020 auto B.2.3.5
   `define uvm_record_real(NAME,VALUE,RECORDER=recorder) \
     if (RECORDER != null && RECORDER.is_open()) begin \
       if (RECORDER.use_record_attribute()) \
@@ -177,7 +177,7 @@
     end
 `endif
 
-// @uvm-ieee 1800.2-2017 auto B.2.3.6
+// @uvm-ieee 1800.2-2020 auto B.2.3.6
 `define uvm_record_field(NAME,VALUE,RECORDER=recorder) \
    if (RECORDER != null && RECORDER.is_open()) begin \
      if (RECORDER.use_record_attribute()) begin \

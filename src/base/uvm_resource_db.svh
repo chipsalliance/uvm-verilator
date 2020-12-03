@@ -1,14 +1,14 @@
 //----------------------------------------------------------------------
-// Copyright 2010-2011 Paradigm Works
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2015 Analog Devices, Inc.
-// Copyright 2017 Intel Corporation
-// Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2011 AMD
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2015 Analog Devices, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2011 Cypress Semiconductor Corp.
+// Copyright 2017 Intel Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2010-2011 Paradigm Works
+// Copyright 2010-2014 Synopsys, Inc.
 // Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
@@ -49,11 +49,11 @@ typedef class uvm_cmdline_processor;
 
 // Class: uvm_resource_db
 // Implementation of uvm_resource_db, as defined in section
-// C.3.2.1 of 1800.2-2017.
+// C.3.2.1 of 1800.2-2020.
 //
 //| class uvm_resource_db#(type T=uvm_object)
   
-// @uvm-ieee 1800.2-2017 auto C.3.2.1
+// @uvm-ieee 1800.2-2020 auto C.3.2.1
 class uvm_resource_db #(type T=uvm_object);
 
   typedef uvm_resource #(T) rsrc_t;
@@ -67,7 +67,7 @@ class uvm_resource_db #(type T=uvm_object);
   // class parameter so the only argument to this function is the
   // ~scope~.
 
-  // @uvm-ieee 1800.2-2017 auto C.3.2.2.5
+  // @uvm-ieee 1800.2-2020 auto C.3.2.3.5
   static function rsrc_t get_by_type(string scope);
     uvm_resource_pool rp = uvm_resource_pool::get();
     uvm_resource_base rsrc_base;
@@ -95,7 +95,7 @@ class uvm_resource_db #(type T=uvm_object);
   // the ~name~. The ~rpterr~ flag indicates whether or not to generate
   // a warning if no matching resource is found.
 
-  // @uvm-ieee 1800.2-2017 auto C.3.2.2.4
+  // @uvm-ieee 1800.2-2020 auto C.3.2.3.4
   static function rsrc_t get_by_name(string scope,
                                      string name,
                                      bit rpterr=1);
@@ -126,7 +126,7 @@ class uvm_resource_db #(type T=uvm_object);
   // written to so it will have its default value. The resource is
   // created using ~name~ and ~scope~ as the lookup parameters.
 
-  // @uvm-ieee 1800.2-2017 auto C.3.2.2.2
+  // @uvm-ieee 1800.2-2020 auto C.3.2.3.2
   static function rsrc_t set_default(string scope, string name);
 
     rsrc_t r;
@@ -162,7 +162,7 @@ class uvm_resource_db #(type T=uvm_object);
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto C.3.2.2.1
+  // @uvm-ieee 1800.2-2020 auto C.3.2.3.1
   static function void set(input string scope, input string name,
                            T val, input uvm_object accessor = null);
 
@@ -176,7 +176,7 @@ class uvm_resource_db #(type T=uvm_object);
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto C.3.2.2.3
+  // @uvm-ieee 1800.2-2020 auto C.3.2.3.3
   static function void set_anonymous(input string scope,
                                      T val, input uvm_object accessor = null);
 
@@ -250,28 +250,7 @@ class uvm_resource_db #(type T=uvm_object);
       m_show_msg("RSRCDB/SETOVRDNAM","Resource", "set", scope, name, accessor, rsrc);
   endfunction
 
-
-  // function: read_by_name
-  //
-  // Locates a resource by name and scope and reads its value. The value is returned through the inout argument
-  // val. The return value is a bit that indicates whether or not the read was successful. The accessor is available
-  // for an implementation to use for debug purposes only; its value shall have no functional effect on outcome
-  // of this method.
-  //
-  // *Note:*  This function deviates from IEEE 1800.2-2017 LRM as it defines the ~val~ argument as inout, 
-  // whereas the LRM defines it as an output.
-  //
-  //|   static function bit read_by_name(input string scope,
-  //|                                    input string name,
-  //|                                    inout T val, 
-  //|                                    input uvm_object accessor = null);
-  //
-  //  The implementation treats the argument as inout for cases where a read may fail 
-  //  and the value will not change from its original supplied value.
-  //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
-
-  // @uvm-ieee 1800.2-2017 auto C.3.2.2.6
+  // @uvm-ieee 1800.2-2020 auto C.3.2.3.6
   static function bit read_by_name(input string scope,
                                    input string name,
                                    inout T val, input uvm_object accessor = null);
@@ -290,26 +269,7 @@ class uvm_resource_db #(type T=uvm_object);
   
   endfunction
 
-  // function: read_by_type
-  //
-  // Reads a value by type. The value is returned through the inout argument val. The scope is used for the
-  // lookup. The return value is a bit that indicates whether or not the read is successful. The accessor is
-  // available for an implementation to use for debug purposes only; its value shall have no functional effect on
-  // outcome of this method.
-  // 
-  // *Note:* This function deviates from IEEE 1800.2-2017 LRM as it defines the <val> argument as inout, whereas the
-  // LRM defines it as an output.
-  //
-  //|    static function bit read_by_type(input string scope,
-  //|                                     inout T val,
-  //|                                     input uvm_object accessor = null);
-  //
-  // The implementation treats the argument as inout for cases where a read may fail 
-  // and the value will not change from its original supplied value.
-  //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
-
-  // @uvm-ieee 1800.2-2017 auto C.3.2.2.7
+  // @uvm-ieee 1800.2-2020 auto C.3.2.3.7
   static function bit read_by_type(input string scope,
                                    inout T val,
                                    input uvm_object accessor = null);
@@ -329,7 +289,7 @@ class uvm_resource_db #(type T=uvm_object);
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto C.3.2.2.8
+  // @uvm-ieee 1800.2-2020 auto C.3.2.3.8
   static function bit write_by_name(input string scope, input string name,
                                     input T val, input uvm_object accessor = null);
 
@@ -348,7 +308,7 @@ class uvm_resource_db #(type T=uvm_object);
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto C.3.2.2.9
+  // @uvm-ieee 1800.2-2020 auto C.3.2.3.9
   static function bit write_by_type(input string scope,
                                     input T val, input uvm_object accessor = null);
 

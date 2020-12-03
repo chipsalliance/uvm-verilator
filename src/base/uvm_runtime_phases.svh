@@ -1,10 +1,10 @@
 //
 //----------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2011 AMD
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2013 Cisco Systems, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -46,7 +46,7 @@
 // 
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.1
+// @uvm-ieee 1800.2-2020 auto 9.8.2.1
 class uvm_pre_reset_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.pre_reset_phase(phase); 
@@ -67,7 +67,7 @@ class uvm_pre_reset_phase extends uvm_task_phase;
 endclass
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.2
+// @uvm-ieee 1800.2-2020 auto 9.8.2.2
 class uvm_reset_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.reset_phase(phase); 
@@ -88,7 +88,7 @@ class uvm_reset_phase extends uvm_task_phase;
 endclass
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.3
+// @uvm-ieee 1800.2-2020 auto 9.8.2.3
 class uvm_post_reset_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.post_reset_phase(phase); 
@@ -110,7 +110,7 @@ endclass
 
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.4
+// @uvm-ieee 1800.2-2020 auto 9.8.2.4
 class uvm_pre_configure_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.pre_configure_phase(phase); 
@@ -132,7 +132,7 @@ endclass
 
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.5
+// @uvm-ieee 1800.2-2020 auto 9.8.2.5
 class uvm_configure_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.configure_phase(phase); 
@@ -153,7 +153,7 @@ class uvm_configure_phase extends uvm_task_phase;
 endclass
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.6
+// @uvm-ieee 1800.2-2020 auto 9.8.2.6
 class uvm_post_configure_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.post_configure_phase(phase); 
@@ -174,7 +174,7 @@ class uvm_post_configure_phase extends uvm_task_phase;
 endclass
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.7
+// @uvm-ieee 1800.2-2020 auto 9.8.2.7
 class uvm_pre_main_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.pre_main_phase(phase); 
@@ -196,7 +196,7 @@ endclass
 
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.8
+// @uvm-ieee 1800.2-2020 auto 9.8.2.8
 class uvm_main_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.main_phase(phase); 
@@ -218,7 +218,7 @@ endclass
 
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.9
+// @uvm-ieee 1800.2-2020 auto 9.8.2.9
 class uvm_post_main_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.post_main_phase(phase); 
@@ -240,7 +240,7 @@ endclass
 
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.10
+// @uvm-ieee 1800.2-2020 auto 9.8.2.10
 class uvm_pre_shutdown_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.pre_shutdown_phase(phase); 
@@ -262,7 +262,7 @@ endclass
 
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.11
+// @uvm-ieee 1800.2-2020 auto 9.8.2.11
 class uvm_shutdown_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.shutdown_phase(phase); 
@@ -284,7 +284,7 @@ endclass
 
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.2.12
+// @uvm-ieee 1800.2-2020 auto 9.8.2.12
 class uvm_post_shutdown_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.post_shutdown_phase(phase); 

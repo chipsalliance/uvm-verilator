@@ -1,11 +1,11 @@
 //
 // -------------------------------------------------------------
+// Copyright 2010 AMD
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2004-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2010 AMD
-// Copyright 2014-2018 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -58,7 +58,7 @@ typedef class uvm_vreg_cbs;
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 18.9.1
+// @uvm-ieee 1800.2-2020 auto 18.9.1
 class uvm_vreg extends uvm_object;
 
    `uvm_register_cb(uvm_vreg, uvm_vreg_cbs)
@@ -89,13 +89,13 @@ class uvm_vreg extends uvm_object;
    //
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.1.1
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.1.1
    extern function new(string       name,
                        int unsigned n_bits);
                        
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.1.2
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.1.2
    extern function void configure(uvm_reg_block     parent,
                                   uvm_mem       mem    = null,
                                   longint unsigned  size   = 0,
@@ -103,24 +103,24 @@ class uvm_vreg extends uvm_object;
                                   int unsigned      incr   = 0);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.1.3
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.1.3
    extern virtual function bit implement(longint unsigned  n,
                                          uvm_mem       mem    = null,
                                          uvm_reg_addr_t    offset = 0,
                                          int unsigned      incr   = 0);
 
  
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.1.4
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.1.4
    extern virtual function uvm_mem_region allocate(longint unsigned   n,
                                                    uvm_mem_mam        mam,
                                                    uvm_mem_mam_policy alloc = null);
 
  
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.1.5
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.1.5
    extern virtual function uvm_mem_region get_region();
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.1.6
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.1.6
    extern virtual function void release_region();
 
 
@@ -151,33 +151,33 @@ class uvm_vreg extends uvm_object;
    extern virtual function string        get_full_name();
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.2.1
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.2.1
    extern virtual function uvm_reg_block get_parent();
    extern virtual function uvm_reg_block get_block();
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.2.2
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.2.2
    extern virtual function uvm_mem get_memory();
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.2.3
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.2.3
    extern virtual function int             get_n_maps      ();
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.2.4
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.2.4
    extern function         bit             is_in_map       (uvm_reg_map map);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.2.5
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.2.5
    extern virtual function void            get_maps        (ref uvm_reg_map maps[$]);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.2.6
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.2.6
    extern virtual function string get_rights(uvm_reg_map map = null);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.2.7
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.2.7
    extern virtual function string get_access(uvm_reg_map map = null);
 
    //
@@ -212,19 +212,19 @@ class uvm_vreg extends uvm_object;
    extern virtual function int unsigned get_incr();
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.2.12
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.2.12
    extern virtual function void get_fields(ref uvm_vreg_field fields[$]);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.2.13
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.2.13
    extern virtual function uvm_vreg_field get_field_by_name(string name);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.2.14
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.2.14
    extern virtual function uvm_reg_addr_t  get_offset_in_memory(longint unsigned idx);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.2.15
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.2.15
    extern virtual function uvm_reg_addr_t  get_address(longint unsigned idx,
                                                        uvm_reg_map map = null);
 
@@ -233,7 +233,7 @@ class uvm_vreg extends uvm_object;
    //
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.3.1
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.3.1
    extern virtual task write(input  longint unsigned   idx,
                              output uvm_status_e  status,
                              input  uvm_reg_data_t     value,
@@ -245,7 +245,7 @@ class uvm_vreg extends uvm_object;
                              input  int                lineno = 0);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.3.2
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.3.2
    extern virtual task read(input  longint unsigned    idx,
                             output uvm_status_e   status,
                             output uvm_reg_data_t      value,
@@ -257,7 +257,7 @@ class uvm_vreg extends uvm_object;
                             input  int                 lineno = 0);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.3.3
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.3.3
    extern virtual task poke(input  longint unsigned    idx,
                             output uvm_status_e   status,
                             input  uvm_reg_data_t      value,
@@ -267,7 +267,7 @@ class uvm_vreg extends uvm_object;
                             input  int                 lineno = 0);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.3.4
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.3.4
    extern virtual task peek(input  longint unsigned    idx,
                             output uvm_status_e   status,
                             output uvm_reg_data_t      value,
@@ -277,7 +277,7 @@ class uvm_vreg extends uvm_object;
                             input  int                 lineno = 0);
   
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.3.5
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.3.5
    extern function void reset(string kind = "HARD");
 
 
@@ -286,7 +286,7 @@ class uvm_vreg extends uvm_object;
    //
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.4.1
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.4.1
    virtual task pre_write(longint unsigned     idx,
                           ref uvm_reg_data_t   wdat,
                           ref uvm_door_e  path,
@@ -294,7 +294,7 @@ class uvm_vreg extends uvm_object;
    endtask: pre_write
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.4.2
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.4.2
    virtual task post_write(longint unsigned       idx,
                            uvm_reg_data_t         wdat,
                            uvm_door_e        path,
@@ -303,14 +303,14 @@ class uvm_vreg extends uvm_object;
    endtask: post_write
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.4.3
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.4.3
    virtual task pre_read(longint unsigned     idx,
                          ref uvm_door_e  path,
                          ref uvm_reg_map      map);
    endtask: pre_read
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.1.4.4
+   // @uvm-ieee 1800.2-2020 auto 18.9.1.4.4
    virtual task post_read(longint unsigned       idx,
                           ref uvm_reg_data_t     rdat,
                           input uvm_door_e  path,
@@ -338,7 +338,7 @@ endclass: uvm_vreg
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 18.9.2.1
+// @uvm-ieee 1800.2-2020 auto 18.9.2.1
 virtual class uvm_vreg_cbs extends uvm_callback;
 
    `uvm_object_abstract_utils(uvm_vreg_cbs)
@@ -352,7 +352,7 @@ virtual class uvm_vreg_cbs extends uvm_callback;
    
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.2.2.1
+   // @uvm-ieee 1800.2-2020 auto 18.9.2.2.1
    virtual task pre_write(uvm_vreg         rg,
                           longint unsigned     idx,
                           ref uvm_reg_data_t   wdat,
@@ -362,7 +362,7 @@ virtual class uvm_vreg_cbs extends uvm_callback;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.2.2.2
+   // @uvm-ieee 1800.2-2020 auto 18.9.2.2.2
    virtual task post_write(uvm_vreg           rg,
                            longint unsigned       idx,
                            uvm_reg_data_t         wdat,
@@ -373,7 +373,7 @@ virtual class uvm_vreg_cbs extends uvm_callback;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.2.2.3
+   // @uvm-ieee 1800.2-2020 auto 18.9.2.2.3
    virtual task pre_read(uvm_vreg         rg,
                          longint unsigned     idx,
                          ref uvm_door_e  path,
@@ -382,7 +382,7 @@ virtual class uvm_vreg_cbs extends uvm_callback;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.9.2.2.4
+   // @uvm-ieee 1800.2-2020 auto 18.9.2.2.4
    virtual task post_read(uvm_vreg           rg,
                           longint unsigned       idx,
                           ref uvm_reg_data_t     rdat,
@@ -400,7 +400,7 @@ endclass: uvm_vreg_cbs
 // Use this declaration to register virtual register callbacks rather than
 // the more verbose parameterized class
 //
-typedef uvm_callbacks#(uvm_vreg, uvm_vreg_cbs) uvm_vreg_cb /* @uvm-ieee 1800.2-2017 auto D.4.6.9*/   ;
+typedef uvm_callbacks#(uvm_vreg, uvm_vreg_cbs) uvm_vreg_cb /* @uvm-ieee 1800.2-2020 auto D.4.5.9*/ ;
 
 //
 // Type -- NODOCS -- uvm_vreg_cb_iter
@@ -409,7 +409,7 @@ typedef uvm_callbacks#(uvm_vreg, uvm_vreg_cbs) uvm_vreg_cb /* @uvm-ieee 1800.2-2
 // Use this declaration to iterate over registered virtual register callbacks
 // rather than the more verbose parameterized class
 //
-typedef uvm_callback_iter#(uvm_vreg, uvm_vreg_cbs) uvm_vreg_cb_iter /* @uvm-ieee 1800.2-2017 auto D.4.6.10*/   ;
+typedef uvm_callback_iter#(uvm_vreg, uvm_vreg_cbs) uvm_vreg_cb_iter /* @uvm-ieee 1800.2-2020 auto D.4.5.10*/ ;
 
 
 

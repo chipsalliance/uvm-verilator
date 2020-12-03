@@ -1,9 +1,9 @@
 //
 //----------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2011 AMD
-// Copyright 2013-2015 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -55,19 +55,19 @@
 // of a task phase without any participants in the phase raising an objection.
 //
 
-// @uvm-ieee 1800.2-2017 auto 9.6.1
+// @uvm-ieee 1800.2-2020 auto 9.6.1
 virtual class uvm_task_phase extends uvm_phase;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.6.2.1
+  // @uvm-ieee 1800.2-2020 auto 9.6.2.1
   function new(string name);
     super.new(name,UVM_PHASE_IMP);
   endfunction
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.6.2.2
+  // @uvm-ieee 1800.2-2020 auto 9.6.2.2
   virtual function void traverse(uvm_component comp,
                                  uvm_phase phase,
                                  uvm_phase_state state);
@@ -127,7 +127,7 @@ virtual class uvm_task_phase extends uvm_phase;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 9.6.2.3
+  // @uvm-ieee 1800.2-2020 auto 9.6.2.3
   virtual function void execute(uvm_component comp,
                                           uvm_phase phase);
 

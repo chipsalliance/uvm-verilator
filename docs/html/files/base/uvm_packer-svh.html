@@ -18,27 +18,21 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_packer" href="../../../../src/base/uvm_packer.svh">uvm_packer</a></h1><div class=CBody><p>Implementation of uvm_packer, as defined in section 16.5.1 of 1800.2-2017</p>
+<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_packer" href="../../../../src/base/uvm_packer.svh">uvm_packer</a></h1><div class=CBody><p>Implementation of uvm_packer, as defined in section 16.5.1 of 1800.2-2020</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
   <!-- index=0 -->
 
 <tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_packer" >uvm_packer</a></td></tr>
-<tr class=SMain><td colspan=2 class=SWideDescription>Implementation of uvm_packer, as defined in section 16.5.1 of 1800.2-2017</td></tr>
+<tr class=SMain><td colspan=2 class=SWideDescription>Implementation of uvm_packer, as defined in section 16.5.1 of 1800.2-2020</td></tr>
   <!-- index=1 -->
 
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_packer.Methods" >Methods</a></td><td class=SDescription></td></tr>
   <!-- index=2 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_packer.set_packed_*" >set_packed_*</a></td><td class=SDescription>Implementation of P1800.2 16.5.3.1</td></tr>
-  <!-- index=3 -->
-
-<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_packer.get_packed_*" >get_packed_*</a></td><td class=SDescription>Implementation of P1800.2 16.5.3.2</td></tr>
-  <!-- index=4 -->
-
 <tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_packer.pack_object_with_meta" id=link1 onMouseOver="ShowTip(event, 'tt1', 'link1')" onMouseOut="HideTip('tt1')">pack_object_with_meta</a></td><td class=SDescription>Packs <i>obj</i> into the packer data stream, such that it can be unpacked via an associated <a href="#uvm_packer.unpack_object_with_meta" class=LMethod id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">unpack_object_with_meta</a> call.</td></tr>
-  <!-- index=5 -->
+  <!-- index=3 -->
 
 <tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_packer.unpack_object_with_meta" id=link3 onMouseOver="ShowTip(event, 'tt2', 'link3')" onMouseOut="HideTip('tt2')">unpack_object_with_meta</a></td><td class=SDescription>Unpacks an object which was packed into the packer data stream using <a href="#uvm_packer.pack_object_with_meta" class=LMethod id=link4 onMouseOver="ShowTip(event, 'tt1', 'link4')" onMouseOut="HideTip('tt1')">pack_object_with_meta</a>.</td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
@@ -53,24 +47,6 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=2 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_packer.set_packed_*" href="../../../../src/base/uvm_packer.svh">set_packed_*</a></h3><div class=CBody><p>Implementation of P1800.2 16.5.3.1</p><p>The LRM specifies the set_packed_* methods as being signed, whereas the &lt;uvm_object::unpack&gt; methods are specified as unsigned.&nbsp;  This is being tracked in Mantis 6423.</p><p>The reference implementation has implemented these methods as unsigned so as to remain consistent.</p><blockquote><pre>virtual function void set_packed_bits( ref bit unsigned stream[] );
-virtual function void set_packed_bytes( ref byte unsigned stream[] );
-virtual function void set_packed_ints( ref int unsigned stream[] );
-virtual function void set_packed_longints( ref longint unsigned stream[] );</pre></blockquote><p>@uvm-contrib This API is being considered for potential contribution to 1800.2</p></div></div></div>
-
-
-
-
- <!--CONTENT index=3 -->
-<div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_packer.get_packed_*" href="../../../../src/base/uvm_packer.svh">get_packed_*</a></h3><div class=CBody><p>Implementation of P1800.2 16.5.3.2</p><p>The LRM specifies the get_packed_* methods as being signed, whereas the &lt;uvm_object::pack&gt; methods are specified as unsigned.&nbsp;  This is being tracked in Mantis 6423.</p><p>The reference implementation has implemented these methods as unsigned so as to remain consistent.</p><blockquote><pre>virtual function void get_packed_bits( ref bit unsigned stream[] );
-virtual function void get_packed_bytes( ref byte unsigned stream[] );
-virtual function void get_packed_ints( ref int unsigned stream[] );
-virtual function void get_packed_longints( ref longint unsigned stream[] );</pre></blockquote><p>@uvm-contrib This API is being considered for potential contribution to 1800.2</p></div></div></div>
-
-
-
-
- <!--CONTENT index=4 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_packer.pack_object_with_meta" href="../../../../src/base/uvm_packer.svh">pack_object_with_meta</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
@@ -86,7 +62,7 @@ virtual function void get_packed_longints( ref longint unsigned stream[] );</pre
 
 
 
- <!--CONTENT index=5 -->
+ <!--CONTENT index=3 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_packer.unpack_object_with_meta" href="../../../../src/base/uvm_packer.svh">unpack_object_with_meta</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>

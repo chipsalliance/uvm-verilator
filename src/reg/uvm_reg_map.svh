@@ -1,13 +1,13 @@
 // -------------------------------------------------------------
-// Copyright 2010-2020 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2014-2017 Intel Corporation
-// Copyright 2004-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2014-2020 NVIDIA Corporation
-// Copyright 2017 Cisco Systems, Inc.
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2017 Cisco Systems, Inc.
+// Copyright 2014-2017 Intel Corporation
+// Copyright 2010-2020 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2004-2018 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -86,7 +86,7 @@ endclass
 // method.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 18.2.1
+// @uvm-ieee 1800.2-2020 auto 18.2.1
 class uvm_reg_map extends uvm_object;
 
   `uvm_object_utils(uvm_reg_map)
@@ -126,7 +126,7 @@ class uvm_reg_map extends uvm_object;
     static local uvm_reg_map   m_backdoor;
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.2.2
+    // @uvm-ieee 1800.2-2020 auto 18.2.2
     static function uvm_reg_map backdoor();
       if (m_backdoor == null)
         m_backdoor = new("Backdoor");
@@ -140,12 +140,12 @@ class uvm_reg_map extends uvm_object;
 
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.2.3.1
+    // @uvm-ieee 1800.2-2020 auto 18.2.3.1
     extern function new(string name="uvm_reg_map");
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.3.2
+  // @uvm-ieee 1800.2-2020 auto 18.2.3.2
   extern function void configure(uvm_reg_block     parent,
                                  uvm_reg_addr_t    base_addr,
                                  int unsigned      n_bytes,
@@ -153,7 +153,7 @@ class uvm_reg_map extends uvm_object;
                                  bit byte_addressing = 1);
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.3.3
+  // @uvm-ieee 1800.2-2020 auto 18.2.3.3
   extern virtual function void add_reg (uvm_reg           rg,
                                         uvm_reg_addr_t    offset,
                                         string            rights = "RW",
@@ -162,7 +162,7 @@ class uvm_reg_map extends uvm_object;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.3.4
+  // @uvm-ieee 1800.2-2020 auto 18.2.3.4
   extern virtual function void add_mem (uvm_mem        mem,
                                         uvm_reg_addr_t offset,
                                         string         rights = "RW",
@@ -176,7 +176,7 @@ class uvm_reg_map extends uvm_object;
   // also AddressUnitBits needs to match which means essentially that within a block there can only be one 
   // AddressUnitBits
   
-  // @uvm-ieee 1800.2-2017 auto 18.2.3.5
+  // @uvm-ieee 1800.2-2020 auto 18.2.3.5
   extern virtual function void add_submap (uvm_reg_map    child_map,
                                            uvm_reg_addr_t offset);
 
@@ -186,7 +186,7 @@ class uvm_reg_map extends uvm_object;
   // Set the sequencer and adapter associated with this map. This method
   // ~must~ be called before starting any sequences based on uvm_reg_sequence.
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.3.6
+  // @uvm-ieee 1800.2-2020 auto 18.2.3.6
   extern virtual function void set_sequencer (uvm_sequencer_base sequencer,
                                               uvm_reg_adapter    adapter=null);
 
@@ -196,7 +196,7 @@ class uvm_reg_map extends uvm_object;
   //
   // Set the offset of the given ~submap~ to ~offset~.
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.3.8
+  // @uvm-ieee 1800.2-2020 auto 18.2.3.8
   extern virtual function void set_submap_offset (uvm_reg_map submap,
                                                   uvm_reg_addr_t offset);
 
@@ -205,7 +205,7 @@ class uvm_reg_map extends uvm_object;
   //
   // Return the offset of the given ~submap~.
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.3.7
+  // @uvm-ieee 1800.2-2020 auto 18.2.3.7
   extern virtual function uvm_reg_addr_t get_submap_offset (uvm_reg_map submap);
 
 
@@ -213,12 +213,12 @@ class uvm_reg_map extends uvm_object;
   //
   // Set the base address of this map.
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.3.9
+  // @uvm-ieee 1800.2-2020 auto 18.2.3.9
   extern virtual function void   set_base_addr (uvm_reg_addr_t  offset);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.3.10
+  // @uvm-ieee 1800.2-2020 auto 18.2.3.10
   extern virtual function void reset(string kind = "SOFT");
 
 
@@ -258,22 +258,22 @@ class uvm_reg_map extends uvm_object;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.1
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.1
   extern virtual function uvm_reg_map get_root_map();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.2
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.2
   extern virtual function uvm_reg_block get_parent();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.3
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.3
   extern virtual function uvm_reg_map           get_parent_map();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.4
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.4
   extern virtual function uvm_reg_addr_t get_base_addr (uvm_hier_e hier=UVM_HIER);
 
 
@@ -298,52 +298,52 @@ class uvm_reg_map extends uvm_object;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.7
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.7
   extern virtual function uvm_endianness_e get_endian (uvm_hier_e hier=UVM_HIER);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.8
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.8
   extern virtual function uvm_sequencer_base get_sequencer (uvm_hier_e hier=UVM_HIER);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.9
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.9
   extern virtual function uvm_reg_adapter get_adapter (uvm_hier_e hier=UVM_HIER);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.10
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.10
   extern virtual function void  get_submaps (ref uvm_reg_map maps[$],
                                              input uvm_hier_e hier=UVM_HIER);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.11
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.11
   extern virtual function void  get_registers (ref uvm_reg regs[$],
                                                input uvm_hier_e hier=UVM_HIER);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.12
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.12
   extern virtual function void  get_fields (ref uvm_reg_field fields[$],
                                             input uvm_hier_e hier=UVM_HIER);
 
   
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.13
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.13
   extern virtual function void  get_memories (ref uvm_mem mems[$],
                                               input uvm_hier_e hier=UVM_HIER);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.14
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.14
   extern virtual function void  get_virtual_registers (ref uvm_vreg regs[$],
                                                        input uvm_hier_e hier=UVM_HIER);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.15
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.15
   extern virtual function void  get_virtual_fields (ref uvm_vreg_field fields[$],
                                                     input uvm_hier_e hier=UVM_HIER);
 
@@ -353,7 +353,7 @@ class uvm_reg_map extends uvm_object;
   extern virtual function int unsigned get_size();
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.16
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.16
   extern virtual function int get_physical_addresses(uvm_reg_addr_t        base_addr,
                                                      uvm_reg_addr_t        mem_offset,
                                                      int unsigned          n_bytes,
@@ -361,12 +361,12 @@ class uvm_reg_map extends uvm_object;
   
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.17
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.17
   extern virtual function uvm_reg get_reg_by_offset(uvm_reg_addr_t offset,
                                                     bit            read = 1);
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.4.18
+  // @uvm-ieee 1800.2-2020 auto 18.2.4.18
   extern virtual function uvm_mem    get_mem_by_offset(uvm_reg_addr_t offset);
 
 
@@ -375,17 +375,17 @@ class uvm_reg_map extends uvm_object;
   //------------------
 
   
-  // @uvm-ieee 1800.2-2017 auto 18.2.5.2
+  // @uvm-ieee 1800.2-2020 auto 18.2.5.2
   function void set_auto_predict(bit on=1); m_auto_predict = on; endfunction
 
 
   
-  // @uvm-ieee 1800.2-2017 auto 18.2.5.1
+  // @uvm-ieee 1800.2-2020 auto 18.2.5.1
   function bit  get_auto_predict(); return m_auto_predict; endfunction
 
 
   
-  // @uvm-ieee 1800.2-2017 auto 18.2.5.3
+  // @uvm-ieee 1800.2-2020 auto 18.2.5.3
   function void set_check_on_read(bit on=1);
     m_check_on_read = on;
     foreach (m_submaps[submap]) begin
@@ -449,13 +449,13 @@ class uvm_reg_map extends uvm_object;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.5.5
+  // @uvm-ieee 1800.2-2020 auto 18.2.5.5
   function void set_transaction_order_policy(uvm_reg_transaction_order_policy pol);
     policy = pol;
   endfunction
   
 
-  // @uvm-ieee 1800.2-2017 auto 18.2.5.4
+  // @uvm-ieee 1800.2-2020 auto 18.2.5.4
   function uvm_reg_transaction_order_policy get_transaction_order_policy();
     return policy;
   endfunction    
@@ -499,7 +499,7 @@ class uvm_reg_map extends uvm_object;
   // it is NOT expected that this leads to a fresh new map 
   // it rather removes all knowledge of this map from other objects 
   // so that they can be reused with a fresh map instance
-  // @uvm-ieee 1800.2-2017 auto 18.2.3.11
+  // @uvm-ieee 1800.2-2020 auto 18.2.3.11
   virtual function void unregister();
     uvm_reg_block q[$];
     uvm_reg_block::get_root_blocks(q);
@@ -1959,10 +1959,11 @@ task uvm_reg_map::do_bus_access (uvm_reg_item rw,
 	endcase
 	
 	begin
-		bit be[$];
-		byte unsigned p[$];
-		uvm_reg_data_t values[];
-
+        bit be[$];
+        byte unsigned p[$];
+        uvm_reg_data_t values[];
+        typedef bit bit_q_t[$];
+        
 		// adjust bytes if there is a leading bit shift
 		num_stream_bytes+=extra_byte;
 
@@ -1991,13 +1992,13 @@ task uvm_reg_map::do_bus_access (uvm_reg_item rw,
                   //            the high order byte ('h3F) is now the low order byte.
                   // {<<8{ ... } -> This takes the bit stream and corrects the endianness
                   //                8 bits at a time.
-                  bits = {<< 8{ {<< {p}} }};
+                  bits = {<< 8 {bit_q_t'({<< {p}}) }};
                   repeat(bit_shift)
                     bits.push_front(1'b0);
                   // This operation is the exact opposite of above, converting the
                   // bitstream into a byte stream, and then reversing the endianness of
                   // the byte stream.
-                  p = {<< 8{ {<< {bits}} }};
+                  p = {<< 8 {bit_q_t'({<< {bits}}) }};
 		end	
 
 /*

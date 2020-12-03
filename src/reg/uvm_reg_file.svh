@@ -1,11 +1,11 @@
 //
 // -------------------------------------------------------------
+// Copyright 2010 AMD
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2010 AMD
-// Copyright 2015 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -26,7 +26,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto 18.3.1
+// @uvm-ieee 1800.2-2020 auto 18.3.1
 class uvm_reg_file extends uvm_object;
 
    local uvm_reg_block     parent;
@@ -43,11 +43,11 @@ class uvm_reg_file extends uvm_object;
    //----------------------
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.3.2.1
+   // @uvm-ieee 1800.2-2020 auto 18.3.2.1
    extern function                  new        (string name="");
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.3.2.2
+   // @uvm-ieee 1800.2-2020 auto 18.3.2.2
    extern function void     configure  (uvm_reg_block blk_parent,
                                         uvm_reg_file regfile_parent,
                                         string hdl_path = "");
@@ -73,12 +73,12 @@ class uvm_reg_file extends uvm_object;
    extern virtual function string        get_full_name();
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.3.3.1
+   // @uvm-ieee 1800.2-2020 auto 18.3.3.1
    extern virtual function uvm_reg_block get_parent ();
    extern virtual function uvm_reg_block get_block  ();
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.3.3.2
+   // @uvm-ieee 1800.2-2020 auto 18.3.3.2
    extern virtual function uvm_reg_file  get_regfile     ();
 
 
@@ -87,33 +87,33 @@ class uvm_reg_file extends uvm_object;
    //----------------
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.3.4.1
+   // @uvm-ieee 1800.2-2020 auto 18.3.4.1
    extern function void clear_hdl_path    (string kind = "RTL");
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.3.4.2
+   // @uvm-ieee 1800.2-2020 auto 18.3.4.2
    extern function void add_hdl_path      (string path, string kind = "RTL");
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.3.4.3
+   // @uvm-ieee 1800.2-2020 auto 18.3.4.3
    extern function bit  has_hdl_path      (string kind = "");
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.3.4.4
+   // @uvm-ieee 1800.2-2020 auto 18.3.4.4
    extern function void get_hdl_path      (ref string paths[$], input string kind = "");
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.3.4.5
+   // @uvm-ieee 1800.2-2020 auto 18.3.4.5
    extern function void get_full_hdl_path (ref string paths[$],
                                            input string kind = "",
                                            input string separator = ".");
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.3.4.7
+   // @uvm-ieee 1800.2-2020 auto 18.3.4.7
    extern function void   set_default_hdl_path (string kind);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.3.4.6
+   // @uvm-ieee 1800.2-2020 auto 18.3.4.6
    extern function string get_default_hdl_path ();
 
 

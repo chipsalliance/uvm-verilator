@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------
-// Copyright 2011-2014 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2014 Intel Corporation
-// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2011-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2014 Intel Corporation
+// Copyright 2011-2014 Mentor Graphics Corporation
+// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -33,7 +33,7 @@
 // see <Why is this necessary>.
 //
 
-// @uvm-ieee 1800.2-2017 auto 5.6.1
+// @uvm-ieee 1800.2-2020 auto 5.6.1
 class uvm_time;
 
    static local real m_resolution = 1.0e-12; // ps by default
@@ -64,7 +64,7 @@ class uvm_time;
    // the default resolution,
    // as specified by <set_time_resolution()>,
    // is used.
-   // @uvm-ieee 1800.2-2017 auto 5.6.2.1
+   // @uvm-ieee 1800.2-2020 auto 5.6.2.1
    function new(string name = "uvm_tlm_time", real res = 0);
       m_name = name;
       m_res = (res == 0) ? m_resolution : res;
@@ -75,7 +75,7 @@ class uvm_time;
    // Function -- NODOCS -- get_name
    // Return the name of this instance
    //
-   // @uvm-ieee 1800.2-2017 auto 5.6.2.3
+   // @uvm-ieee 1800.2-2020 auto 5.6.2.3
    function string get_name();
       return m_name;
    endfunction
@@ -83,7 +83,7 @@ class uvm_time;
 
    // Function -- NODOCS -- reset
    // Reset the value to 0
-   // @uvm-ieee 1800.2-2017 auto 5.6.2.4
+   // @uvm-ieee 1800.2-2020 auto 5.6.2.4
    function void reset();
       m_time = 0;
    endfunction
@@ -109,7 +109,7 @@ class uvm_time;
    //| #(delay.get_realtime(1ns));
    //| #(delay.get_realtime(1fs, 1.0e-15));
    //
-   // @uvm-ieee 1800.2-2017 auto 5.6.2.5
+   // @uvm-ieee 1800.2-2020 auto 5.6.2.5
    function real get_realtime(time scaled, real secs = 1.0e-9);
       return m_time*real'(scaled) * m_res/secs;
    endfunction
@@ -128,7 +128,7 @@ class uvm_time;
    //| delay.incr(1.5ns, 1ns);
    //| delay.incr(1.5ns, 1ps, 1.0e-12);
    //
-   // @uvm-ieee 1800.2-2017 auto 5.6.2.6
+   // @uvm-ieee 1800.2-2020 auto 5.6.2.6
    function void incr(real t, time scaled, real secs = 1.0e-9);
       if (t < 0.0) begin
          `uvm_error("UVM/TLM/TIMENEG", {"Cannot increment uvm_tlm_time variable ", m_name, " by a negative value"})
@@ -155,7 +155,7 @@ class uvm_time;
    //
    //| delay.decr(200ps, 1ns);
    //
-   // @uvm-ieee 1800.2-2017 auto 5.6.2.7
+   // @uvm-ieee 1800.2-2020 auto 5.6.2.7
    function void decr(real t, time scaled, real secs);
       if (t < 0.0) begin
          `uvm_error("UVM/TLM/TIMENEG", {"Cannot decrement uvm_tlm_time variable ", m_name, " by a negative value"})
@@ -185,7 +185,7 @@ class uvm_time;
    //
    //| $write("%.3f ps\n", delay.get_abstime(1e-12));
    //
-   // @uvm-ieee 1800.2-2017 auto 5.6.2.8
+   // @uvm-ieee 1800.2-2020 auto 5.6.2.8
    function real get_abstime(real secs);
       return m_time*m_res/secs;
    endfunction
@@ -201,7 +201,7 @@ class uvm_time;
    //
    //| delay.set_abstime(1.5, 1e-12));
    //
-   // @uvm-ieee 1800.2-2017 auto 5.6.2.9
+   // @uvm-ieee 1800.2-2020 auto 5.6.2.9
    function void set_abstime(real t, real secs);
       m_time = t*secs/m_res;
    endfunction

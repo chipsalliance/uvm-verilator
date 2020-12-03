@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------
-// Copyright 2011-2017 Mentor Graphics Corporation
-// Copyright 2011-2014 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
+// Copyright 2011-2020 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2011-2014 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -63,15 +63,15 @@ typedef class uvm_sequence_library_cfg;
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 14.4.1
+// @uvm-ieee 1800.2-2020 auto 14.4.1
 class uvm_sequence_library #(type REQ=uvm_sequence_item,RSP=REQ) extends uvm_sequence #(REQ,RSP);
 
 
   `uvm_object_param_utils(uvm_sequence_library#(REQ,RSP))
   `uvm_type_name_decl("uvm_sequence_library #(REQ,RSP)")
   
-   // @uvm-ieee 1800.2-2017 auto 14.4.2
-   // @uvm-ieee 1800.2-2017 auto 14.4.3
+   // @uvm-ieee 1800.2-2020 auto 14.4.2
+   // @uvm-ieee 1800.2-2020 auto 14.4.3
    extern function new(string name="");
 
 
@@ -180,7 +180,13 @@ class uvm_sequence_library #(type REQ=uvm_sequence_item,RSP=REQ) extends uvm_seq
    //
    randc bit [15:0] select_randc;
 
-
+   
+   // Variable -- NODOCS -- counter
+   //
+   // The counter value used with the select_sequence() API in UVM_SEQ_LIB_USER mode
+   //
+   protected int unsigned counter;
+   
 
    // Variable- seqs_distrib
    //
@@ -256,30 +262,30 @@ class uvm_sequence_library #(type REQ=uvm_sequence_item,RSP=REQ) extends uvm_seq
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 14.4.5.2
+   // @uvm-ieee 1800.2-2020 auto 14.4.5.2
    extern static function void add_typewide_sequences(uvm_object_wrapper seq_types[$]);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 14.4.5.3
+   // @uvm-ieee 1800.2-2020 auto 14.4.5.3
    extern function void add_sequence(uvm_object_wrapper seq_type);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 14.4.5.4
+   // @uvm-ieee 1800.2-2020 auto 14.4.5.4
    extern virtual function void add_sequences(uvm_object_wrapper seq_types[$]);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 14.4.5.5
+   // @uvm-ieee 1800.2-2020 auto 14.4.5.5
    extern virtual function void remove_sequence(uvm_object_wrapper seq_type);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 14.4.5.6
+   // @uvm-ieee 1800.2-2020 auto 14.4.5.6
    extern virtual function void get_sequences(ref uvm_object_wrapper seq_types[$]);
    
-   // @uvm-ieee 1800.2-2017 auto 14.4.4.10
+   // @uvm-ieee 1800.2-2020 auto 14.4.4.10
    extern virtual function uvm_object_wrapper get_sequence(int unsigned idx);
 
 
@@ -460,10 +466,9 @@ endfunction
 // ---------------
 
 function int unsigned uvm_sequence_library::select_sequence(int unsigned max);
-  static int unsigned counter;
   select_sequence = counter;
   counter++;
-  if (counter >= max)
+  if (counter > max)
     counter = 0;
 endfunction
 
@@ -521,13 +526,8 @@ function bit uvm_sequence_library::m_check(uvm_object_wrapper seq_type, this_typ
   string name;
   string typ;
   obj = seq_type.create_object();
-`ifdef UVM_ENABLE_DEPRECATED_API
-  name = (lib == null) ? type_name : lib.get_full_name();
-  typ = (lib == null) ? type_name : lib.get_type_name();
-`else
   name = (lib == null) ? type_name() : lib.get_full_name();
   typ = (lib == null) ? type_name() : lib.get_type_name();
-`endif
   cs = uvm_coreservice_t::get();   
   top = cs.get_root();
 
@@ -793,7 +793,7 @@ function void uvm_sequence_library::do_print(uvm_printer printer);
 
    printer.print_array_header("seqs_distrib",seqs_distrib.num(),"as_int_string");
    foreach (seqs_distrib[typ]) begin
-     printer.print_field_int({"[",typ,"]"},seqs_distrib[typ],32,,UVM_DEC,"int unsigned");
+     printer.print_field_int({"[",typ,"]"},seqs_distrib[typ],32,UVM_DEC,,"int unsigned");     
    end
    printer.print_array_footer();
 endfunction

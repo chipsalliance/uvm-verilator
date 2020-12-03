@@ -1,8 +1,8 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -39,14 +39,14 @@ typedef class uvm_callbacks;
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 10.2.1
+// @uvm-ieee 1800.2-2020 auto 10.2.1
 virtual class uvm_event_callback#(type T=uvm_object) extends uvm_callback;
 
   // Function -- NODOCS -- new
   //
   // Creates a new callback object.
 
-  // @uvm-ieee 1800.2-2017 auto 10.2.2.1
+  // @uvm-ieee 1800.2-2020 auto 10.2.2.1
   function new (string name=""); 
     super.new(name);
   endfunction
@@ -65,7 +65,7 @@ virtual class uvm_event_callback#(type T=uvm_object) extends uvm_callback;
   // In the function, ~e~ is the <uvm_event#(T)> that is being triggered, and ~data~
   // is the optional data associated with the event trigger.
 
-  // @uvm-ieee 1800.2-2017 auto 10.2.2.2
+  // @uvm-ieee 1800.2-2020 auto 10.2.2.2
   virtual function bit pre_trigger (uvm_event#(T) e, T data);
     return 0;
   endfunction
@@ -81,7 +81,7 @@ virtual class uvm_event_callback#(type T=uvm_object) extends uvm_callback;
   // In the function, ~e~ is the <uvm_event#(T)> that is being triggered, and ~data~
   // is the optional data associated with the event trigger.
 
-  // @uvm-ieee 1800.2-2017 auto 10.2.2.3
+  // @uvm-ieee 1800.2-2020 auto 10.2.2.3
   virtual function void post_trigger (uvm_event#(T) e, T data);
     return;
   endfunction

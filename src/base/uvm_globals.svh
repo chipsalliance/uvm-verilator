@@ -1,12 +1,12 @@
 // 
 //------------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2014 Intel Corporation
-// Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2010-2014 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -41,7 +41,7 @@ typedef class uvm_report_message;
 // Convenience function for uvm_top.run_test(). See <uvm_root> for more
 // information.
 
-// @uvm-ieee 1800.2-2017 auto F.3.1.2
+// @uvm-ieee 1800.2-2020 auto F.3.1.2
 task run_test (string test_name="");
   uvm_root top;
   uvm_coreservice_t cs;
@@ -58,7 +58,7 @@ endtask
 
 
 
-// @uvm-ieee 1800.2-2017 auto F.3.2.1
+// @uvm-ieee 1800.2-2020 auto F.3.2.1
 function uvm_report_object uvm_get_report_object();
   uvm_root top;
   uvm_coreservice_t cs;
@@ -80,7 +80,7 @@ endfunction
 // the <uvm_report_object::uvm_report_enabled>, which is non-static.
 // Static methods cannot call non-static methods of the same class. 
 
-// @uvm-ieee 1800.2-2017 auto F.3.2.2
+// @uvm-ieee 1800.2-2020 auto F.3.2.2
 function int uvm_report_enabled (int verbosity,
                                  uvm_severity severity=UVM_INFO, string id="");
   uvm_root top;
@@ -92,7 +92,7 @@ endfunction
 
 // Function -- NODOCS -- uvm_report
 
-// @uvm-ieee 1800.2-2017 auto F.3.2.3
+// @uvm-ieee 1800.2-2020 auto F.3.2.3
 function void uvm_report( uvm_severity severity,
                           string id,
                           string message,
@@ -122,7 +122,7 @@ endfunction : m__uvm_report_dpi
 
 // Function -- NODOCS -- uvm_report_info
 
-// @uvm-ieee 1800.2-2017 auto F.3.2.3
+// @uvm-ieee 1800.2-2020 auto F.3.2.3
 function void uvm_report_info(string id,
 			      string message,
                               int verbosity = UVM_MEDIUM,
@@ -141,7 +141,7 @@ endfunction
 
 // Function -- NODOCS -- uvm_report_warning
 
-// @uvm-ieee 1800.2-2017 auto F.3.2.3
+// @uvm-ieee 1800.2-2020 auto F.3.2.3
 function void uvm_report_warning(string id,
                                  string message,
                                  int verbosity = UVM_MEDIUM,
@@ -160,7 +160,7 @@ endfunction
 
 // Function -- NODOCS -- uvm_report_error
 
-// @uvm-ieee 1800.2-2017 auto F.3.2.3
+// @uvm-ieee 1800.2-2020 auto F.3.2.3
 function void uvm_report_error(string id,
                                string message,
                                int verbosity = UVM_NONE,
@@ -188,7 +188,7 @@ endfunction
 // do not inadvertently filter them out. It remains in the methods for backward
 // compatibility.
 
-// @uvm-ieee 1800.2-2017 auto F.3.2.3
+// @uvm-ieee 1800.2-2020 auto F.3.2.3
 function void uvm_report_fatal(string id,
 	                       string message,
                                int verbosity = UVM_NONE,
@@ -212,7 +212,7 @@ endfunction
 // used in module-based code to use the same reporting mechanism as class-based
 // components. See <uvm_report_object> for details on the reporting mechanism.
 
-// @uvm-ieee 1800.2-2017 auto F.3.2.3
+// @uvm-ieee 1800.2-2020 auto F.3.2.3
 function void uvm_process_report_message(uvm_report_message report_message);
   uvm_root top;
   uvm_coreservice_t cs;
@@ -239,7 +239,7 @@ endfunction
 
 function automatic bit uvm_string_to_action (string action_str, output uvm_action action);
   string actions[$];
-  uvm_split_string(action_str,"|",actions);
+  uvm_string_split(action_str,"|",actions);
   uvm_string_to_action = 1;
   action = 0;
   foreach(actions[i]) begin
@@ -256,7 +256,25 @@ function automatic bit uvm_string_to_action (string action_str, output uvm_actio
     endcase
   end
 endfunction
-
+  
+function automatic bit uvm_string_to_verbosity(string verb_str, output uvm_verbosity verb_enum);
+    case (verb_str)
+      "NONE"       : begin verb_enum = UVM_NONE;   return 1; end
+      "UVM_NONE"   : begin verb_enum = UVM_NONE;   return 1; end
+      "LOW"        : begin verb_enum = UVM_LOW;    return 1; end
+      "UVM_LOW"    : begin verb_enum = UVM_LOW;    return 1; end
+      "MEDIUM"     : begin verb_enum = UVM_MEDIUM; return 1; end
+      "UVM_MEDIUM" : begin verb_enum = UVM_MEDIUM; return 1; end
+      "HIGH"       : begin verb_enum = UVM_HIGH;   return 1; end
+      "UVM_HIGH"   : begin verb_enum = UVM_HIGH;   return 1; end
+      "FULL"       : begin verb_enum = UVM_FULL;   return 1; end
+      "UVM_FULL"   : begin verb_enum = UVM_FULL;   return 1; end
+      "DEBUG"      : begin verb_enum = UVM_DEBUG;  return 1; end
+      "UVM_DEBUG"  : begin verb_enum = UVM_DEBUG;  return 1; end
+      default      : begin                         return 0; end
+    endcase
+endfunction
+  
   
 //----------------------------------------------------------------------------
 //
@@ -266,7 +284,7 @@ endfunction
 // what is documented in IEEE 1800.2.
 //----------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto F.3.3.1
+// @uvm-ieee 1800.2-2020 auto F.3.3.1
 function bit uvm_is_match (string expr, string str);
   string s;
   s = uvm_glob_to_re(expr);
@@ -292,14 +310,14 @@ function logic[UVM_LARGE_STRING:0] uvm_string_to_bits(string str);
   $swrite(uvm_string_to_bits, "%0s", str);
 endfunction
 
-// @uvm-ieee 1800.2-2017 auto F.3.1.1
+// @uvm-ieee 1800.2-2020 auto F.3.1.1
 function uvm_core_state get_core_state();
 		return m_uvm_core_state;
 endfunction
 
 // Function: uvm_init
 // Implementation of uvm_init, as defined in section
-// F.3.1.3 in 1800.2-2017.
+// F.3.1.3 in 1800.2-2020.
 //
 // *Note:* The LRM states that subsequent calls to <uvm_init> after
 // the first are silently ignored, however there are scenarios wherein
@@ -317,7 +335,7 @@ endfunction
 //
 // @uvm-contrib This API represents a potential contribution to IEEE 1800.2
   
-// @uvm-ieee 1800.2-2017 auto F.3.1.3
+// @uvm-ieee 1800.2-2020 auto F.3.1.3
 function void uvm_init(uvm_coreservice_t cs=null);
   uvm_default_coreservice_t dcs;
   
@@ -435,7 +453,8 @@ task uvm_wait_for_nba_region;
 
 endtask
 
-
+`ifdef UVM_ENABLE_DEPRECATED_API
+  
 //----------------------------------------------------------------------------
 //
 // Function -- NODOCS -- uvm_split_string
@@ -461,6 +480,30 @@ function automatic void uvm_split_string (string str, byte sep, ref string value
   end
 endfunction
 
+`endif //  `ifdef UVM_ENABLE_DEPRECATED_API
+
+//----------------------------------------------------------------------------
+//
+// Function -- NODOCS -- uvm_string_split
+// Returns a queue of strings, values, that is the result of the str split based 
+// on the sep. values shall be a queue.
+//----------------------------------------------------------------------------
+
+function automatic void uvm_string_split (string str, byte sep, ref string values[$]);
+  int s = 0, e = 0, limit;
+  values.delete();
+  limit = str.len() + 1;
+  do 
+    begin
+      for(s=e; e<str.len(); ++e)
+        if(str[e] == sep) break;
+      values.push_back(str.substr(s,e-1));
+      e++;
+    end
+  while(e < limit);
+endfunction
+
+  
 // Class -- NODOCS -- uvm_enum_wrapper#(T)
 //
 // The ~uvm_enum_wrapper#(T)~ class is a utility mechanism provided
@@ -468,13 +511,13 @@ endfunction
 // method which is the logical inverse of the System Verilog ~name~ 
 // method which is built into all enumerations.
 
-// @uvm-ieee 1800.2-2017 auto F.3.4.1
+// @uvm-ieee 1800.2-2020 auto F.3.4.1
 class uvm_enum_wrapper#(type T=uvm_active_passive_enum);
 
     protected static T map[string];
 
 
-    // @uvm-ieee 1800.2-2017 auto F.3.4.2
+    // @uvm-ieee 1800.2-2020 auto F.3.4.2
     static function bit from_name(string name, ref T value);
         if (map.size() == 0)
           m_init_map();
