@@ -9,9 +9,9 @@ See details in the Library Release Description below.
 
 # Kit version
 
-1800.2-2020 1.0
+1800.2-2020 1.1
 
-This kit was generated based upon the following git commit state: 93c9214 db8f1708988ef878f09d7f8c440dd472e8b9ddac.
+This kit was generated based upon the following git commit state: 50a7958 4f67ed69f4f51f1f3844d0ca9441fb4b97a81176.
 
 # License
 
@@ -31,6 +31,10 @@ If you have questions about this implementation and/or its application to verifi
 contact the Accellera UVM Working Group (uvm-wg@lists.accellera.org).
 
 # Bug Fixes
+
+The following bugs were fixed in 1.1.
+
+The only Update in 1.1 is,  if XCELIUM is defined then define UVM_USE_PROCESS_CONTAINER is added.
 
 The following bugs were fixed in 1.0.
 

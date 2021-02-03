@@ -89,12 +89,12 @@ var indexSectionsWithContent = {
       "Y": false,
       "Z": false
       },
-   "Classes": {
+   "Types": {
       "Symbols": false,
       "Numbers": false,
       "A": false,
       "B": false,
-      "C": false,
+      "C": true,
       "D": false,
       "E": false,
       "F": false,
@@ -149,12 +149,12 @@ var indexSectionsWithContent = {
       "Y": false,
       "Z": false
       },
-   "Types": {
+   "Classes": {
       "Symbols": false,
       "Numbers": false,
       "A": false,
       "B": false,
-      "C": true,
+      "C": false,
       "D": false,
       "E": false,
       "F": false,

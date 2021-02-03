@@ -58,6 +58,7 @@
 `endif
 `ifdef XCELIUM
 `define UVM_XCELIUM
+`define UVM_USE_PROCESS_CONTAINER
 `define DPI_COMPATIBILITY_VERSION_1800v2005
 `endif
 
