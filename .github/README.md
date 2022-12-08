@@ -19,7 +19,7 @@ Verilator UVM support is still in development.
 
 # Source Material
 
-This repository is hosted at https://github.com/SymbiFlow/uvm.
+This repository is hosted at https://github.com/chipsalliance/uvm-verilator.
 
 The repository code was downloaded from [Accellera Standard Universal
 Verification Methodology
