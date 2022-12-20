@@ -339,7 +339,12 @@ function void uvm_init(uvm_coreservice_t cs=null);
       // as a warning.  We only report it if the value for ~cs~ is _not_
       // the current core service, and ~cs~ is not null.
       uvm_coreservice_t actual;
+`ifdef VERILATOR
+      // If it is a subsequent call, uvm_coreservice_t::get returns uvm_coreservice_t::inst, but there is no recursion.
+      actual = uvm_coreservice_t::inst;
+`else
       actual = uvm_coreservice_t::get();
+`endif
       if ((cs != actual) && (cs != null))
         `uvm_warning("UVM/INIT/MULTI", "uvm_init() called after library has already completed initialization, subsequent calls are ignored!")
     end
