@@ -1552,7 +1552,11 @@ task uvm_reg::write(output uvm_status_e      status,
 
    set(value);
 
+`ifdef VERILATOR
+   rw = uvm_reg_item::type_id_create("write_item",,get_full_name());
+`else
    rw = uvm_reg_item::type_id::create("write_item",,get_full_name());
+`endif
    rw.element      = this;
    rw.element_kind = UVM_REG;
    rw.kind         = UVM_WRITE;
@@ -1807,7 +1811,11 @@ task uvm_reg::XreadX(output uvm_status_e      status,
    
    // create an abstract transaction for this operation
    uvm_reg_item rw;
+`ifdef VERILATOR
+   rw = uvm_reg_item::type_id_create("read_item",,get_full_name());
+`else
    rw = uvm_reg_item::type_id::create("read_item",,get_full_name());
+`endif
    rw.element      = this;
    rw.element_kind = UVM_REG;
    rw.kind         = UVM_READ;
@@ -2250,7 +2258,11 @@ task uvm_reg::poke(output uvm_status_e      status,
      XatomicX(1);
 
    // create an abstract transaction for this operation
+`ifdef VERILATOR
+   rw = uvm_reg_item::type_id_create("reg_poke_item",,get_full_name());
+`else
    rw = uvm_reg_item::type_id::create("reg_poke_item",,get_full_name());
+`endif
    rw.element      = this;
    rw.path         = UVM_BACKDOOR;
    rw.element_kind = UVM_REG;
@@ -2307,7 +2319,11 @@ task uvm_reg::peek(output uvm_status_e      status,
       XatomicX(1);
 
    // create an abstract transaction for this operation
+`ifdef VERILATOR
+   rw = uvm_reg_item::type_id_create("mem_peek_item",,get_full_name());
+`else
    rw = uvm_reg_item::type_id::create("mem_peek_item",,get_full_name());
+`endif
    rw.element      = this;
    rw.path         = UVM_BACKDOOR;
    rw.element_kind = UVM_REG;

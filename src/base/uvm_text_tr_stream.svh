@@ -112,7 +112,11 @@ class uvm_text_tr_stream extends uvm_tr_stream;
                                                            time   open_time,
                                                            string type_name);
       if (m_text_db.open_db()) begin
+`ifdef VERILATOR
+         return uvm_text_recorder::type_id_create(name);
+`else
          return uvm_text_recorder::type_id::create(name);
+`endif
       end
 
       return null;
