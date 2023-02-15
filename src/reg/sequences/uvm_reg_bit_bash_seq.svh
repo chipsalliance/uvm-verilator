@@ -241,7 +241,11 @@ class uvm_reg_bit_bash_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
 
       uvm_report_info("STARTING_SEQ",{"\n\nStarting ",get_name()," sequence...\n"},UVM_LOW);
 
+`ifdef VERILATOR
+      reg_seq = uvm_reg_single_bit_bash_seq::type_id_create("reg_single_bit_bash_seq");
+`else
       reg_seq = uvm_reg_single_bit_bash_seq::type_id::create("reg_single_bit_bash_seq");
+`endif
 
       this.reset_blk(model);
       model.reset();

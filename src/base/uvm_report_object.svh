@@ -91,7 +91,11 @@ class uvm_report_object extends uvm_object;
   local bit m_rh_set;
   local function void m_rh_init();
     if (!m_rh_set)
+`ifdef VERILATOR
+      set_report_handler(uvm_report_handler::type_id_create(get_name()));
+`else
       set_report_handler(uvm_report_handler::type_id::create(get_name()));
+`endif
   endfunction : m_rh_init
 
   // Function -- NODOCS -- new

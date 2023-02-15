@@ -448,6 +448,22 @@ endfunction : __m_uvm_execute_field_op
 // family of macros uses this macro.
 
 // @uvm-ieee 1800.2-2017 auto B.2.1.4
+
+`ifdef VERILATOR
+`define uvm_object_registry(T,S) \
+   typedef uvm_object_registry#(T,S) type_id; \
+   static function T type_id_create (string name="", \
+                                     uvm_component parent=null, \
+                                     string contxt=""); \
+     return type_id::create(name, parent, contxt); \
+   endfunction \
+   static function type_id get_type(); \
+     return type_id::get(); \
+   endfunction \
+   virtual function uvm_object_wrapper get_object_type(); \
+     return type_id::get(); \
+   endfunction
+`else
 `define uvm_object_registry(T,S) \
    typedef uvm_object_registry#(T,S) type_id; \
    static function type_id get_type(); \
@@ -456,7 +472,7 @@ endfunction : __m_uvm_execute_field_op
    virtual function uvm_object_wrapper get_object_type(); \
      return type_id::get(); \
    endfunction
-
+`endif
 
 // MACRO -- NODOCS -- `uvm_component_registry
 //
@@ -470,6 +486,21 @@ endfunction : __m_uvm_execute_field_op
 // family of macros uses this macro.
 
 // @uvm-ieee 1800.2-2017 auto B.2.1.5
+`ifdef VERILATOR
+`define uvm_component_registry(T,S) \
+   typedef uvm_component_registry #(T,S) type_id; \
+   static function T type_id_create (string name="", \
+                                     uvm_component parent=null, \
+                                     string contxt=""); \
+     return type_id::create(name, parent, contxt); \
+   endfunction \
+   static function type_id get_type(); \
+     return type_id::get(); \
+   endfunction \
+   virtual function uvm_object_wrapper get_object_type(); \
+     return type_id::get(); \
+   endfunction
+`else
 `define uvm_component_registry(T,S) \
    typedef uvm_component_registry #(T,S) type_id; \
    static function type_id get_type(); \
@@ -478,7 +509,7 @@ endfunction : __m_uvm_execute_field_op
    virtual function uvm_object_wrapper get_object_type(); \
      return type_id::get(); \
    endfunction
-
+`endif
 
 `define uvm_declare_type_alias(TYPE,NAME,SFX=) \
   static bit m__alias_declared``SFX = TYPE::type_id::set_type_alias(NAME);
@@ -547,6 +578,21 @@ endfunction : __m_uvm_execute_field_op
 
 //This is needed due to an issue in of passing down strings
 //created by args to lower level macros.
+`ifdef VERILATOR
+`define m_uvm_object_registry_internal(T,S) \
+   typedef uvm_object_registry#(T,`"S`") type_id; \
+   static function T type_id_create (string name="", \
+                                     uvm_component parent=null, \
+                                     string contxt=""); \
+     return type_id::create(name, parent, contxt); \
+   endfunction \
+   static function type_id get_type(); \
+     return type_id::get(); \
+   endfunction \
+   virtual function uvm_object_wrapper get_object_type(); \
+     return type_id::get(); \
+   endfunction
+`else
 `define m_uvm_object_registry_internal(T,S) \
    typedef uvm_object_registry#(T,`"S`") type_id; \
    static function type_id get_type(); \
@@ -555,7 +601,7 @@ endfunction : __m_uvm_execute_field_op
    virtual function uvm_object_wrapper get_object_type(); \
      return type_id::get(); \
    endfunction
-
+`endif
 
 // m_uvm_object_registry_param
 // ---------------------------

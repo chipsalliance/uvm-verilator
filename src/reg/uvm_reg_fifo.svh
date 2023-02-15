@@ -76,7 +76,11 @@ class uvm_reg_fifo extends uvm_reg;
     // the instantiating block, a <uvm_reg_block> subtype.
     //
     virtual function void build();
-        value = uvm_reg_field::type_id::create("value");
+`ifdef VERILATOR
+       value = uvm_reg_field::type_id_create("value");
+`else
+       value = uvm_reg_field::type_id::create("value");
+`endif
         value.configure(this, get_n_bits(), 0, "RW", 0, 32'h0, 1, 0, 1);
     endfunction
 

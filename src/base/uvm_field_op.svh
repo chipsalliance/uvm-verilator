@@ -170,7 +170,11 @@ class uvm_field_op extends uvm_object;
    static function uvm_field_op m_get_available_op() ;
       uvm_field_op field_op ;
       if (m_recycled_op.size() > 0) field_op = m_recycled_op.pop_back() ;
+`ifdef VERILATOR
+      else field_op = uvm_field_op::type_id_create("field_op");
+`else
       else field_op = uvm_field_op::type_id::create("field_op");
+`endif
       return field_op ;
    endfunction
 endclass
