@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2014-2022 NVIDIA Corporation
 // Copyright 2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -68,8 +68,8 @@ class uvm_push_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
       super.run_phase(phase);
       forever
         begin
-          m_select_sequence();
-          m_req_fifo.get(t);
+          m_safe_select_item(0, t);
+          sequence_item_requested = 0;
           req_port.put(t);
           m_wait_for_item_sequence_id = t.get_sequence_id();
           m_wait_for_item_transaction_id = t.get_transaction_id();

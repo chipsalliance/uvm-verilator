@@ -2,7 +2,9 @@
 //------------------------------------------------------------------------------
 // Copyright 2010-2012 AMD
 // Copyright 2013-2018 Cadence Design Systems, Inc.
+// Copyright 2022 Marvell International Ltd.
 // Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2020-2022 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -40,9 +42,17 @@ function string uvm_dpi_get_tool_version();
   return uvm_dpi_get_tool_version_c();
 endfunction
 
-import "DPI-C" function chandle uvm_dpi_regcomp(string regex);
-import "DPI-C" function int uvm_dpi_regexec(chandle preg, string str);
-import "DPI-C" function void uvm_dpi_regfree(chandle preg);
+function chandle uvm_dpi_regcomp(string regex);
+  return uvm_re_comp(regex, .deglob(0));
+endfunction
+
+function int uvm_dpi_regexec(chandle preg, string str);
+  return uvm_re_exec(preg, str);
+endfunction
+
+function void uvm_dpi_regfree(chandle preg);
+  uvm_re_free(preg);
+endfunction
 
 `else
 function string uvm_dpi_get_next_arg(int init=0);

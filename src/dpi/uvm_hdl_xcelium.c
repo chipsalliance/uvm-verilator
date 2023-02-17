@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------
-// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2023 Cadence Design Systems, Inc.
 // Copyright 2009-2011 Mentor Graphics Corporation
-// Copyright 2013 NVIDIA Corporation
+// Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2010-2011 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -273,7 +273,7 @@ static int uvm_hdl_set_vlog(char *path, p_vpi_vecval value, PLI_INT32 flag)
 
 static vhpiEnumT vhpiEnumTLookup[4] = {vhpi0,vhpi1,vhpiZ,vhpiX}; // idx={b[0],a[0]}
 static vhpiEnumT vhpi2val(int aval,int bval) {
-  int idx=(((bval<<1) || (aval&1)) && 3);
+  int idx=(((bval<<1) | (aval&1)) & 3);
   return vhpiEnumTLookup[idx];
 }
 

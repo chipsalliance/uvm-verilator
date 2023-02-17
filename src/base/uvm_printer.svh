@@ -4,7 +4,7 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2018 Cisco Systems, Inc.
 // Copyright 2014 Intel Corporation
-// Copyright 2020 Marvell International Ltd.
+// Copyright 2020-2022 Marvell International Ltd.
 // Copyright 2007-2018 Mentor Graphics Corporation
 // Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2018 Qualcomm, Inc.
@@ -32,6 +32,15 @@ typedef class m_uvm_printer_knobs;
 typedef class uvm_printer_element;
 typedef class uvm_structure_proxy;
 
+//@uvm-compat provided for compatibility with 1.2
+typedef struct {
+  int    level;
+  string name;
+  string type_name;
+  string size;
+  string val;
+} uvm_printer_row_info;
+
 // File: uvm_printer
   
 // @uvm-ieee 1800.2-2020 auto 16.2.1
@@ -44,7 +53,9 @@ virtual class uvm_printer extends uvm_policy;
   bit m_flushed ; // 0 = needs flush, 1 = flushed since last use
 
   //config values from set_* accessors are stored in knobs
-  local m_uvm_printer_knobs knobs ;
+
+  //@uvm-compat for compatibility with 1.2
+  m_uvm_printer_knobs knobs ;
 
 protected function m_uvm_printer_knobs get_knobs() ; return knobs; endfunction
 
@@ -77,6 +88,16 @@ protected function m_uvm_printer_knobs get_knobs() ; return knobs; endfunction
                                             uvm_radix_enum radix=UVM_NORADIX,
                                             byte   scope_separator=".",
                                             string type_name="");
+
+  //@uvm-compat provided for compatibility with 1.2
+  virtual function void print_int (string          name,
+                                   uvm_bitstream_t value,
+                                   int    size,
+                                   uvm_radix_enum radix=UVM_NORADIX,
+                                   byte   scope_separator=".",
+                                   string type_name="");
+    print_field (name, value, size, radix, scope_separator, type_name);
+  endfunction
 
   // @uvm-ieee 1800.2-2020 auto 16.2.3.9
   extern virtual function void print_field_int (string name,
@@ -302,13 +323,42 @@ protected function m_uvm_printer_knobs get_knobs() ; return knobs; endfunction
   // @uvm-ieee 1800.2-2020 auto 16.2.3.7
   extern virtual  function void print_array_footer (int size = 0);
 
+  // Compat methods
 
+  //@uvm-compat provided for compatibility with 1.2
+  virtual function string format_row (uvm_printer_row_info row);
+    return "";
+  endfunction
+
+  //@uvm-compat provided for compatibility with 1.2
+  virtual function string format_header();
+    return "";
+  endfunction
+
+  //@uvm-compat provided for compatibility with 1.2
+  virtual function string format_footer();
+    return "";
+  endfunction
+
+  //@uvm-compat provided for compatibility with 1.2
+  virtual protected function string adjust_name (string id,
+                                                 byte scope_separator=".");
+    if (get_root_enabled() &&
+        istop() ||
+        knobs.full_name ||
+        id == "...")
+      return id;
+    return uvm_leaf_scope(id, scope_separator);
+  endfunction
 
   // Utility methods
   extern  function bit istop ();
   extern  function string index_string (int index, string name="");
 
   string m_string;
+
+  // @uvm-compat provided for compatibility with 1.2
+  extern function string get_radix_str(uvm_radix_enum radix);
 
 endclass
 
@@ -407,8 +457,6 @@ class uvm_table_printer extends uvm_printer;
 
   extern virtual function string m_emit_element(uvm_printer_element element, int unsigned level);
 
-  local static uvm_table_printer m_default_table_printer ;
-
   local static string m_space ;
 
   // @uvm-ieee 1800.2-2020 auto 16.2.10.2.3
@@ -459,6 +507,9 @@ endclass
 //|  }
 //
 //------------------------------------------------------------------------------
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
 
 // @uvm-ieee 1800.2-2020 auto 16.2.11.1
 class uvm_tree_printer extends uvm_printer;
@@ -474,8 +525,6 @@ class uvm_tree_printer extends uvm_printer;
 
   // @uvm-ieee 1800.2-2020 auto 16.2.11.2.1
   extern function new(string name="");
-
-  local static uvm_tree_printer m_default_tree_printer ;
 
   // @uvm-ieee 1800.2-2020 auto 16.2.11.2.3
   extern static function void set_default(uvm_tree_printer printer) ;
@@ -516,6 +565,9 @@ endclass
 //
 //| c1: (container@1013) { d1: (mydata@1022) { v1: 'hcb8f1c97 e1: THREE str: hi } value: 'h2d }
 //------------------------------------------------------------------------------
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
 
 // @uvm-ieee 1800.2-2020 auto 16.2.12.1
 class uvm_line_printer extends uvm_tree_printer;
@@ -531,8 +583,6 @@ class uvm_line_printer extends uvm_tree_printer;
   // @uvm-ieee 1800.2-2020 auto 16.2.12.2.1
   // @uvm-ieee 1800.2-2020 auto 16.2.2.1
   extern function new(string name="");
-
-  local static uvm_line_printer m_default_line_printer ;
 
   // @uvm-ieee 1800.2-2020 auto 16.2.12.2.3
   // @uvm-ieee 1800.2-2020 auto 16.2.2.2
@@ -724,6 +774,13 @@ class m_uvm_printer_knobs;
 
   uvm_recursion_policy_enum recursion_policy ;
 
+  //@uvm-compat provided for compatibility with 1.2
+  bit header = 1;
+  //@uvm-compat provided for compatibility with 1.2
+  bit footer = 1;
+  //@uvm-compat provided for compatibility with 1.2
+  bit full_name = 0;
+
 endclass
 
 //------------------------------------------------------------------------------
@@ -776,7 +833,7 @@ function void uvm_printer::print_field (string name,
   val_str = uvm_bitstream_to_string (value, size, radix,
                                      get_radix_string(radix));
 
-  name = uvm_leaf_scope(name,scope_separator);
+  name = adjust_name(name,scope_separator);
 
   push_element(name,type_name,sz_str,val_str);
   pop_element() ;
@@ -813,7 +870,7 @@ function void uvm_printer::print_field_int (string name,
   val_str = uvm_integral_to_string (value, size, radix,
                                     get_radix_string(radix));
 
-  name = uvm_leaf_scope(name,scope_separator);
+  name = adjust_name(name,scope_separator);
 
   push_element(name,type_name,sz_str,val_str);
   pop_element() ;
@@ -987,6 +1044,9 @@ function void uvm_printer::push_element ( string name,
    uvm_printer_element parent ;
    element = get_unused_element() ;
    parent = get_top_element() ;
+   if (knobs.full_name && (parent != null)) begin
+      name = $sformatf("%s.%s",parent.get_element_name(),name);
+   end
    element.set(name,type_name,size,value);
    if (parent != null) parent.add_child(element) ;
    m_element_stack.push_back(element) ;
@@ -1318,32 +1378,45 @@ function string uvm_table_printer::emit();
   	end
   end
 
-  begin
-    string header;
-    string dash_id, dash_typ, dash_sz;
-    string head_id, head_typ, head_sz;
-    if (get_name_enabled()) begin
-      dashes = {dash.substr(1,m_max_name+2)};
-      header = {"Name",m_space.substr(1,m_max_name-2)};
-    end
-    if (get_type_name_enabled()) begin
-      dashes = {dashes, dash.substr(1,m_max_type+2)};
-      header = {header, "Type",m_space.substr(1,m_max_type-2)};
-    end
-    if (get_size_enabled()) begin
-      dashes = {dashes, dash.substr(1,m_max_size+2)};
-      header = {header, "Size",m_space.substr(1,m_max_size-2)};
-    end
-    dashes = {dashes, dash.substr(1,m_max_value), linefeed};
-    header = {header, "Value", m_space.substr(1,m_max_value-5), linefeed};
-
-    s = {s, dashes, header, dashes};
+  // for backward compatibility
+  if (knobs.header) begin
+     user_format = format_header();
+     if (user_format != "") begin
+        s = {s, user_format, linefeed};
+     end
+     else begin // branch taken if backward compatibility not used
+        string header;
+        string dash_id, dash_typ, dash_sz;
+        string head_id, head_typ, head_sz;
+        if (get_name_enabled()) begin
+          dashes = {dash.substr(1,m_max_name+2)};
+          header = {"Name",m_space.substr(1,m_max_name-2)};
+        end
+        if (get_type_name_enabled()) begin
+          dashes = {dashes, dash.substr(1,m_max_type+2)};
+          header = {header, "Type",m_space.substr(1,m_max_type-2)};
+        end
+        if (get_size_enabled()) begin
+          dashes = {dashes, dash.substr(1,m_max_size+2)};
+          header = {header, "Size",m_space.substr(1,m_max_size-2)};
+        end
+        dashes = {dashes, dash.substr(1,m_max_value), linefeed};
+        header = {header, "Value", m_space.substr(1,m_max_value-5), linefeed};
+    
+        s = {s, dashes, header, dashes};
+     end
   end
+
 
   s = {s, m_emit_element(get_bottom_element(),0)} ;
 
-  begin
-    s = {s, dashes}; // add dashes for footer
+  // for backward compatibility
+  if (knobs.footer) begin
+     user_format = format_footer();
+     if (user_format != "") s = {s, user_format, linefeed};
+     else begin // branch taken if backward compatibility not used
+        s = {s, dashes}; // add dashes for footer
+     end
   end
 
   emit = {get_line_prefix(), s};
@@ -1353,10 +1426,22 @@ function string uvm_table_printer::m_emit_element(uvm_printer_element element, i
   string result ;
   static uvm_printer_element_proxy proxy = new("proxy") ;
   uvm_printer_element element_children[$];
-  string linefeed;
+  string linefeed = {"\n", get_line_prefix()};
 
-
-  linefeed = {"\n", get_line_prefix()};
+// begin code for compatibility
+    uvm_printer_row_info row ;
+    string user_format ;
+    row.level = level ;
+    row.name = element.get_element_name() ;
+    row.type_name = element.get_element_type_name() ;
+    row.size = element.get_element_size() ;
+    row.val = element.get_element_value() ;
+    user_format = format_row(row);
+    if (user_format != "") begin
+      result = {user_format, linefeed};
+    end
+    else
+// end code for compatibility
 
     begin
       string row_str;
@@ -1397,6 +1482,9 @@ function uvm_tree_printer::new(string name="");
   super.new(name);
   set_size_enabled(0);
   set_type_name_enabled(0);
+  //for backward compatibility
+  knobs.header = 0;
+  knobs.footer = 0;
 endfunction
 
 
@@ -1442,7 +1530,21 @@ function string uvm_tree_printer::emit();
   s = get_line_prefix() ;
   m_linefeed = m_newline == "" || m_newline == " " ? m_newline : {m_newline, get_line_prefix()};
 
+  // backward compatibility
+  if (knobs.header) begin
+    user_format = format_header();
+    if (user_format != "")
+      s = {s, user_format, m_linefeed};
+  end
+
   s = {s,m_emit_element(get_bottom_element(),0)} ;
+
+  // backward compatibility
+  if (knobs.footer) begin
+    user_format = format_footer();
+    if (user_format != "")
+      s = {s, user_format, m_linefeed};
+  end
 
   if (m_newline == "" || m_newline == " ")
     s = {s, "\n"};
@@ -1455,15 +1557,32 @@ function string uvm_tree_printer::m_emit_element(uvm_printer_element element, in
    string space= "                                                                                                   ";
    static uvm_printer_element_proxy proxy = new("proxy") ;
    uvm_printer_element element_children[$];
+   string separators;
+   string indent_str;
+   string user_format ; // for compatibility only
+
+   separators=get_separators() ;
+   indent_str = space.substr(1,level * get_indent());
+   proxy.get_immediate_children(element,element_children) ;
+
+// begin code for compatibility
+    begin
+      uvm_printer_row_info row ;
+      row.level = level ;
+      row.name = element.get_element_name() ;
+      row.type_name = element.get_element_type_name() ;
+      row.size = element.get_element_size() ;
+      row.val = element.get_element_value() ;
+      user_format = format_row(row);
+    end
+    if (user_format != "") begin
+      result = user_format;
+    end
+    else
+// end code for compatibility
 
     begin
-      string indent_str;
-      string separators;
       string value_str ;
-      indent_str = space.substr(1,level * get_indent());
-      separators=get_separators() ;
-
-      proxy.get_immediate_children(element,element_children) ;
 
       // Name (id)
       if (get_name_enabled()) begin
@@ -1493,28 +1612,29 @@ function string uvm_tree_printer::m_emit_element(uvm_printer_element element, in
          result = {result, string'(separators[0]), m_linefeed};
       end
       else result = {result, value_str, " ", m_linefeed};
+    end
 
-      //process all children (if any) of this element
-      foreach (element_children[i]) begin
-        result = {result, m_emit_element(element_children[i],level+1)} ;
-      end
-      //if there were children, add the closing separator
-      if (element_children.size() > 0) begin
-        result = {result, indent_str, string'(separators[1]), m_linefeed};
-      end
+    //process all children (if any) of this element
+    foreach (element_children[i]) begin
+      result = {result, m_emit_element(element_children[i],level+1)} ;
+    end
+    //if there were children, add the closing separator
+    if ((user_format == "") && (element_children.size() > 0)) begin
+      result = {result, indent_str, string'(separators[1]), m_linefeed};
     end
     return result ;
 endfunction : m_emit_element
 
 function void uvm_table_printer::set_default(uvm_table_printer printer) ;
-   m_default_table_printer = printer ;
+   // for backward compatibility we store default in global variable
+   uvm_default_table_printer = printer ;
 endfunction
 
 function uvm_table_printer uvm_table_printer::get_default() ;
-   if (m_default_table_printer == null) begin
-      m_default_table_printer = new("uvm_default_table_printer") ;
+   if (uvm_default_table_printer == null) begin
+      uvm_default_table_printer = new() ;
    end
-   return m_default_table_printer ;
+   return uvm_default_table_printer ;
 endfunction
 
 function void uvm_table_printer::set_indent(int indent) ;
@@ -1537,14 +1657,15 @@ endfunction
 
 
 function void uvm_tree_printer::set_default(uvm_tree_printer printer) ;
-   m_default_tree_printer = printer ;
+   // for backward compatibility we store default in global variable
+   uvm_default_tree_printer = printer ;
 endfunction
 
 function uvm_tree_printer uvm_tree_printer::get_default() ;
-   if (m_default_tree_printer == null) begin
-      m_default_tree_printer = new("uvm_default_tree_printer") ;
+   if (uvm_default_tree_printer == null) begin
+      uvm_default_tree_printer = new() ;
    end
-   return m_default_tree_printer ;
+   return uvm_default_tree_printer ;
 endfunction
 
 function uvm_line_printer::new(string name="") ;
@@ -1554,14 +1675,15 @@ function uvm_line_printer::new(string name="") ;
 endfunction
 
 function void uvm_line_printer::set_default(uvm_line_printer printer) ;
-   m_default_line_printer = printer ;
+   // for backwards compatibility we store default in global variable
+   uvm_default_line_printer = printer ;
 endfunction
 
 function uvm_line_printer uvm_line_printer::get_default() ;
-   if (m_default_line_printer == null) begin
-      m_default_line_printer = new("uvm_default_line_printer") ;
+   if (uvm_default_line_printer == null) begin
+      uvm_default_line_printer = new() ;
    end
-   return m_default_line_printer ;
+   return uvm_default_line_printer ;
 endfunction
 
 function void uvm_line_printer::set_separators(string separators) ;
@@ -1580,5 +1702,13 @@ function void uvm_line_printer::flush() ;
    super.flush() ;
    //set_indent(0); // LRM says to include this call
    //set_separators("{}"); // LRM says to include this call
+endfunction
+
+function string uvm_printer::get_radix_str(uvm_radix_enum radix);
+    if(knobs.show_radix == 0)
+      return "";
+    if(radix == UVM_NORADIX)
+      radix = knobs.default_radix;
+    return get_radix_string(radix);
 endfunction
 

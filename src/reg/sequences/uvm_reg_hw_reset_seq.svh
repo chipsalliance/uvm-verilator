@@ -2,6 +2,7 @@
 // -------------------------------------------------------------
 // Copyright 2010 AMD
 // Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2021 Marvell International Ltd.
 // Copyright 2010-2011 Mentor Graphics Corporation
 // Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2018 Qualcomm, Inc.
@@ -77,7 +78,7 @@ class uvm_reg_hw_reset_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_ite
    virtual task body();
 
       if (model == null) begin
-         `uvm_error("uvm_reg_hw_reset_seq", "Not block or system specified to run sequence on")
+         `uvm_error("uvm_reg_hw_reset_seq", "No block or system specified to run sequence on")
          return;
       end
       `uvm_info("STARTING_SEQ",{"\n\nStarting ",get_name()," sequence...\n"},UVM_LOW)

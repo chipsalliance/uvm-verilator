@@ -2,6 +2,7 @@
 // Copyright 2010 AMD
 // Copyright 2012 Accellera Systems Initiative
 // Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2022 Marvell International Ltd.
 // Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2012-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
@@ -26,7 +27,7 @@
 `include "uvm_macros.svh"
 
 //------------------------------------------------------------------------------
-// Title: Callbacks Classes
+// Title -- NODOCS -- Callbacks Classes
 //
 // This section defines the classes used for callback registration, management,
 // and user-defined callbacks.
@@ -199,10 +200,10 @@ class uvm_typed_callbacks#(type T=uvm_object) extends uvm_callbacks_base;
 
   //Type checking interface: is given ~obj~ of type T?
   virtual function bit m_am_i_a(uvm_object obj);
-    T this_type;
+    T this_type_inst;
     if (obj == null)
       return 1;
-    return($cast(this_type,obj));
+    return($cast(this_type_inst,obj));
   endfunction
 
   //Getting the typewide queue
@@ -448,13 +449,7 @@ endclass
 // provided in an example included in the kit.
 //------------------------------------------------------------------------------
 
-// Class: uvm_callbacks#(T, CB)
-// Implementation of uvm_callbacks#(T,CB) class, as defined in
-// section 10.7.2.1.
-//
-// | class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
-//
-  
+ 
 // @uvm-ieee 1800.2-2020 auto 10.7.2.1
 class uvm_callbacks #(type T=uvm_object, type CB=uvm_callback)
     extends uvm_typed_callbacks#(T);

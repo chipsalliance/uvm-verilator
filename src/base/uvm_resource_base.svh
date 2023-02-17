@@ -1,7 +1,8 @@
 //----------------------------------------------------------------------
 // Copyright 2018 Cadence Design Systems, Inc.
 // Copyright 2017-2018 Cisco Systems, Inc.
-// Copyright 2018-2020 NVIDIA Corporation
+// Copyright 2021-2023 Marvell International Ltd.
+// Copyright 2018-2022 NVIDIA Corporation
 // Copyright 2017-2018 Verific
 //   All Rights Reserved Worldwide
 //
@@ -86,17 +87,9 @@
 // resource as read-only, notification, scope management, altering
 // search priority, and managing auditing.
 //
-// <uvm_resource#(T)>: parameterized resource container.  This class
-// includes the interfaces for reading and writing each resource.
-// Because the class is parameterized, all the access functions are type
-// safe.
-//
-// <uvm_resource_pool>: the resource database. This is a singleton
-// class object.
 //----------------------------------------------------------------------
 
 typedef class uvm_resource_base; // forward reference
-
 
 //----------------------------------------------------------------------
 // Class -- NODOCS -- uvm_resource_types
@@ -116,8 +109,12 @@ class uvm_resource_types;
   typedef enum override_t { TYPE_OVERRIDE = 2'b01,
                             NAME_OVERRIDE = 2'b10 } override_e;
 
-   // general purpose queue of resourcex
+  // general purpose queue of resource
   typedef uvm_queue#(uvm_resource_base) rsrc_q_t;
+
+  // SV queue of resources
+  typedef uvm_resource_base rsrc_sv_q_t[$];
+  typedef uvm_shared#(rsrc_sv_q_t) rsrc_shared_q_t;
 
   // enum for setting resource search priority
   typedef enum { PRI_HIGH, PRI_LOW } priority_e;
@@ -190,6 +187,133 @@ class uvm_resource_options;
 endclass
 
 //----------------------------------------------------------------------
+// Title: Resource Base Classes
+//
+
+//----------------------------------------------------------------------
+// Class: uvm_resource_debug
+//
+// Class provided to facilitate overriding of debug functions
+// in the parameterized uvm_resource class.
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation and are not being considered for contribution to 1800.2
+class uvm_resource_debug extends uvm_object ;
+
+  uvm_resource_types::access_t access[string];
+
+  `uvm_object_utils(uvm_resource_debug)
+
+  function new(string name = "");
+    super.new(name);
+  endfunction
+
+  // Function: record_read_access
+  //
+  // Record the read access information for this resource for debug purposes.
+  // This information is used by <print_accessors> function.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+  virtual function void record_read_access(uvm_object accessor = null);
+
+    string str;
+    uvm_resource_types::access_t access_record;
+
+    // If an accessor is supplied, then use its name
+	// as the database entry for the accessor record.
+	// Otherwise, use "<empty>" as the database entry.
+    if(accessor != null)
+      str = accessor.get_full_name();
+    else
+      str = "<empty>";
+
+    // Create a new accessor record if one does not exist
+    if(access.exists(str))
+      access_record = access[str];
+    else
+      init_access_record(access_record);
+
+    // Update the accessor record
+    access_record.read_count++;
+    access_record.read_time = $realtime;
+    access[str] = access_record;
+
+  endfunction
+
+  // Function: record_write_access
+  //
+  // Record the write access information for this resource for debug purposes.
+  // This information is used by <print_accessors> function.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+  virtual function void record_write_access(uvm_object accessor = null);
+
+    string str;
+
+    // If an accessor object is supplied then get the accessor record.
+    // Otherwise create a new access record.  In either case populate
+    // the access record with information about this access.  
+
+      if(accessor != null) begin
+        uvm_resource_types::access_t access_record;
+        string str;
+        str = accessor.get_full_name();
+        if(access.exists(str))
+          access_record = access[str];
+        else
+          init_access_record(access_record);
+        access_record.write_count++;
+        access_record.write_time = $realtime;
+        access[str] = access_record;
+      end
+  endfunction
+
+  // Function: print_accessors
+  //
+  // Print the read/write access history of the resource, using the accessor 
+  // argument <accessor> which is passed to the <uvm_resource#(T)::read> 
+  // and <uvm_resource#(T)::write> 
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+
+  virtual function void print_accessors();
+
+    string str;
+    uvm_component comp;
+    uvm_resource_types::access_t access_record;
+    string qs[$];
+    
+    if(access.num() == 0)
+      return;
+
+    foreach (access[i]) begin
+      str = i;
+      access_record = access[str];
+      qs.push_back($sformatf("%s reads: %0d @ %0t  writes: %0d @ %0t\n",str,
+               access_record.read_count,
+               access_record.read_time,
+               access_record.write_count,
+               access_record.write_time));
+    end
+    `uvm_info("UVM/RESOURCE/ACCESSOR",`UVM_STRING_QUEUE_STREAMING_PACK(qs),UVM_NONE)
+
+  endfunction
+
+  // Function -- NODOCS -- init_access_record
+  //
+  // Initialize a new access record
+  //
+  function void init_access_record (inout uvm_resource_types::access_t access_record);
+    access_record.read_time = 0;
+    access_record.write_time = 0;
+    access_record.read_count = 0;
+    access_record.write_count = 0;
+  endfunction
+
+endclass
+
+//----------------------------------------------------------------------
 // Class -- NODOCS -- uvm_resource_base
 //
 // Non-parameterized base class for resources.  Supports interfaces for
@@ -210,19 +334,26 @@ virtual class uvm_resource_base extends uvm_object;
   protected bit modified;
   protected bit read_only;
 
-  uvm_resource_types::access_t access[string];
+  // instance of delegate class for supporting resource debug
+  uvm_resource_debug dbg ;
 
-  // Function -- NODOCS -- new
-  //
-  // constructor for uvm_resource_base.  The constructor takes two
-  // arguments, the name of the resource and a regular expression which
-  // represents the set of scopes over which this resource is visible.
+  protected string scope;
+
+  //@uvm-compat provided for compatibility with 1.2
+  int unsigned precedence;
+  //@uvm-compat provided for compatibility with 1.2
+  static int unsigned default_precedence = 1000;
 
   // @uvm-ieee 1800.2-2020 auto C.2.3.2.1
-  function new(string name = "");
+  function new(string name = "",string s = "<not provided>"); //string argument added for compatibility
     super.new(name);
     modified = 0;
     read_only = 0;
+    // begin lines provided for compatibility with 1.2
+    if (s == "<not provided>") scope = s; //don't call glob_to_re unless legacy usage
+    else scope = uvm_glob_to_re(s) ; 
+    precedence = default_precedence ;
+    // end lines provided for compatibility with 1.2
   endfunction
 
   // Function -- NODOCS -- get_type_handle
@@ -309,8 +440,7 @@ virtual class uvm_resource_base extends uvm_object;
     super.do_print(printer);
     printer.print_generic_element("val", m_value_type_name(), "", m_value_as_string());
   endfunction : do_print
-  
-  
+
   //-------------------
   // Group: Audit Trail
   //-------------------
@@ -344,119 +474,71 @@ virtual class uvm_resource_base extends uvm_object;
 
   // Function: record_read_access
   //
-  // Record the read access information for this resource for debug purposes.
-  // This information is used by <print_accessors> function.
+  // Delegates to the <uvm_resource_debug::record_read_access function to 
+  // record read access information for this resource for debug purposes,
+  // information used by <print_accessors> function.
   //
   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
   function void record_read_access(uvm_object accessor = null);
-
-    string str;
-    uvm_resource_types::access_t access_record;
-
-    // If an accessor object is supplied then get the accessor record.
-    // Otherwise create a new access record.  In either case populate
-    // the access record with information about this access.  Check
-    // first to make sure that auditing is turned on.
-
-    if(!uvm_resource_options::is_auditing())
-      return;
-
-    // If an accessor is supplied, then use its name
-	// as the database entry for the accessor record.
-	// Otherwise, use "<empty>" as the database entry.
-    if(accessor != null)
-      str = accessor.get_full_name();
-    else
-      str = "<empty>";
-
-    // Create a new accessor record if one does not exist
-    if(access.exists(str))
-      access_record = access[str];
-    else
-      init_access_record(access_record);
-
-    // Update the accessor record
-    access_record.read_count++;
-    access_record.read_time = $realtime;
-    access[str] = access_record;
-
+     if (dbg==null) dbg = uvm_resource_debug::type_id::create("dbg") ; 
+     dbg.record_read_access(accessor);
   endfunction
 
   // Function: record_write_access
   //
-  // Record the write access information for this resource for debug purposes.
-  // This information is used by <print_accessors> function.
+  // Delegates to the <uvm_resource_debug::record_write_access function to 
+  // record write access information for this resource for debug purposes,
+  // information used by <print_accessors> function.
   //
   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
   function void record_write_access(uvm_object accessor = null);
-
-    string str;
-
-    // If an accessor object is supplied then get the accessor record.
-    // Otherwise create a new access record.  In either case populate
-    // the access record with information about this access.  Check
-    // first that auditing is turned on
-
-    if(uvm_resource_options::is_auditing()) begin
-      if(accessor != null) begin
-        uvm_resource_types::access_t access_record;
-        string str;
-        str = accessor.get_full_name();
-        if(access.exists(str))
-          access_record = access[str];
-        else
-          init_access_record(access_record);
-        access_record.write_count++;
-        access_record.write_time = $realtime;
-        access[str] = access_record;
-      end
-    end
+     if (dbg==null) dbg = uvm_resource_debug::type_id::create("dbg") ; 
+     dbg.record_write_access(accessor);
   endfunction
 
   // Function: print_accessors
   //
-  // Print the read/write access history of the resource, using the accessor 
+  // Delegates to the <uvm_resource_debug::print_access function to 
+  // print the read/write access history of the resource, using the accessor 
   // argument <accessor> which is passed to the <uvm_resource#(T)::read> 
   // and <uvm_resource#(T)::write> 
   //
   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
   virtual function void print_accessors();
-
-    string str;
-    uvm_component comp;
-    uvm_resource_types::access_t access_record;
-    string qs[$];
-    
-    if(access.num() == 0)
-      return;
-
-    foreach (access[i]) begin
-      str = i;
-      access_record = access[str];
-      qs.push_back($sformatf("%s reads: %0d @ %0t  writes: %0d @ %0t\n",str,
-               access_record.read_count,
-               access_record.read_time,
-               access_record.write_count,
-               access_record.write_time));
-    end
-    `uvm_info("UVM/RESOURCE/ACCESSOR",`UVM_STRING_QUEUE_STREAMING_PACK(qs),UVM_NONE)
-
+     // if dbg is null, we never called record_xxx_access and so there is nothing to print
+     if (dbg != null) dbg.print_accessors();
   endfunction
 
-
-  // Function -- NODOCS -- init_access_record
-  //
-  // Initialize a new access record
-  //
   function void init_access_record (inout uvm_resource_types::access_t access_record);
-    access_record.read_time = 0;
-    access_record.write_time = 0;
-    access_record.read_count = 0;
-    access_record.write_count = 0;
+     if (dbg==null) dbg = uvm_resource_debug::type_id::create("dbg") ; 
+     dbg.init_access_record(access_record);
   endfunction
+
+  //@uvm-compat provided for compatibility with 1.2
+  function void set_scope(string s);
+    scope = uvm_glob_to_re(s);
+  endfunction
+
+  function void m_set_scope(string s); 
+    scope = s;
+  endfunction // m_set_scope
+
+  //@uvm-compat provided for compatibility with 1.2
+  function string get_scope();
+    return scope;
+  endfunction
+
+  //@uvm-compat provided for compatibility with 1.2
+  function bit match_scope(string s);
+    return uvm_is_match(scope, s);
+  endfunction
+
+  //@uvm-compat provided for compatibility with 1.2
+  pure virtual function void set_priority (uvm_resource_types::priority_e pri);
+
 endclass
 
 

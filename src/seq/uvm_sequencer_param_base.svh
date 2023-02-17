@@ -1,8 +1,10 @@
 //------------------------------------------------------------------------------
 // Copyright 2012 Accellera Systems Initiative
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2021 Marvell International Ltd.
+// Copyright 2007-2022 Mentor Graphics Corporation
+// Copyright 2013-2022 NVIDIA Corporation
+// Copyright 2021 NXP Semiconductors
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
 // Copyright 2017 Verific
@@ -41,6 +43,9 @@ virtual class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
 
   REQ m_last_req_buffer[$];
   RSP m_last_rsp_buffer[$];
+
+  protected bit sequence_item_requested;
+  protected bit get_next_item_called;
 
   protected int m_num_last_reqs = 1;
   protected int num_last_items = m_num_last_reqs;
@@ -130,7 +135,7 @@ virtual class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
         m_num_last_reqs));
       return null;
     end
-    if(n == m_last_req_buffer.size())
+    if(n >= m_last_req_buffer.size())
       return null;
   
     return m_last_req_buffer[n];
@@ -196,7 +201,7 @@ virtual class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
         m_num_last_rsps));
       return null;
     end
-    if(n == m_last_rsp_buffer.size())
+    if(n >= m_last_rsp_buffer.size())
       return null;
   
     return m_last_rsp_buffer[n];
@@ -214,6 +219,7 @@ virtual class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
   /* local */ extern virtual function void do_print (uvm_printer printer);
   /* local */ extern virtual function void analysis_write(uvm_sequence_item t);
   /* local */ extern function void m_last_req_push_front(REQ item);
+  /* local */ extern task m_safe_select_item(input bit get_next_item, output REQ t);
 
   /* local */ uvm_tlm_fifo #(REQ) m_req_fifo;
 
@@ -460,3 +466,41 @@ function void uvm_sequencer_param_base::m_last_rsp_push_front(RSP item);
 
   this.m_last_rsp_buffer.push_front(item);
 endfunction
+
+
+// m_safe_select_item
+// ---------------------
+
+task uvm_sequencer_param_base::m_safe_select_item(input bit get_next_item, output REQ t);
+  process select_process;
+  uvm_sequence_request selected_sequence_request;
+  if(sequence_item_requested == 0) begin
+    m_select_sequence(selected_sequence_request);
+    fork
+      begin
+        select_process = process::self();
+        // re-arbitrate if the sequence was killed or finished after it won arbitration but before it was
+        // able to send its request.
+        forever begin
+          selected_sequence_request.process_id.await();
+
+          if(!m_req_fifo.is_empty())
+            break;
+
+          if (arb_completed.exists(selected_sequence_request.request_id)) begin
+            arb_completed.delete(selected_sequence_request.request_id);
+          end
+          m_select_sequence(selected_sequence_request);
+        end
+      end
+    join_none
+    // wait for thread to start to ensure it gets killed when peek returns
+    wait(select_process != null);
+  end
+  sequence_item_requested = 1;
+  if (get_next_item)
+    get_next_item_called = 1;
+  m_req_fifo.peek(t);
+  if ((select_process != null) && (select_process.status != process::FINISHED))
+    select_process.kill();
+endtask

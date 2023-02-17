@@ -3,7 +3,7 @@
 // Copyright 2011 AMD
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Cisco Systems, Inc.
-// Copyright 2020 Marvell International Ltd.
+// Copyright 2020-2022 Marvell International Ltd.
 // Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2011 Synopsys, Inc.
@@ -256,6 +256,7 @@ class uvm_event#(type T=uvm_object) extends uvm_event_base;
         // Type: cbs_type
         // Callback typedef for this event type.
         //
+        // | typedef uvm_callbacks#(this_type, cb_type) cbs_type;
         // @uvm-contrib Potential Contribution to 1800.2
         typedef uvm_callbacks#(this_type, cb_type) cbs_type;
    

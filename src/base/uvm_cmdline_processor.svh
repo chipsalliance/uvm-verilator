@@ -4,8 +4,9 @@
 // Copyright 2015 Analog Devices, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
+// Copyright 2021 Marvell International Ltd.
 // Copyright 2010-2018 Mentor Graphics Corporation
-// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2013-2022 NVIDIA Corporation
 // Copyright 2011 Synopsys, Inc.
 // Copyright 2020 Verific
 //   All Rights Reserved Worldwide
@@ -70,11 +71,58 @@ endclass
 //
 // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
+// TITLE: Command line configuration
+//
+// The following argument is provided in addition to those required by IEEE UVM 1800.2-2020.
+//
+
+// Variable: +uvm_set_config_bitstream
+// 
+// ~+uvm_set_config_bitstream=<comp>,<field>,<value>~ works like its
+// procedural counterpart <uvm_config_db#(uvm_bitstream_t)::set()>. The string ~value~ is
+// processed as:
+//
+//| [sign][radix]value
+//
+// Where `[sign]` is an optional sign character, either "+" or "-", and 
+// `[radix]` is an optional radix specifier.  
+//
+// The following radix specifiers are supported:
+//   "'b", "0b": Binary
+//   "'o": Octal
+//   "'d": Decimal
+//   "'h", "'x", "0x": Hexidecimal
+//
+// If the optional radix is omitted, then the ~value~ shall be treated as decimal.  
+//
+// As the <uvm_bitstream_t> is a 4-state value, the characters "X", "x", "Z", "z", 
+// and "?" are legal within the ~value~ string.  Additionally, the underscore character
+// ("_") is ignored.
+// 
+// Note that unlike <+uvm_set_config_int>, the Accellera implementation of
+// ~+uvm_set_config_bitstream~ is capable storing values that exceed 32 bits in size.
+// This means the two yield different results for 32 bit values when bit 32 is set, 
+// as <+uvm_set_config_int> treats bit 32 as the sign bit.
+//
+// For example:
+//| // +uvm_set_config_int=uvm_test_top.soc_env,valA,'hFFFF_FFFF
+//| // +uvm_set_config_bitstream=uvm_test_top.soc_env,valB,'hFFFF_FFFF
+//|
+//| longint valA, valB;
+//| uvm_config_int::get(uvm_test_top.soc_env, "", "valA", valA); // 64'hFFFF_FFFF_FFFF_FFFF
+//| uvm_config_int::get(uvm_test_top.soc_env, "", "valB", valB); // 64'h0000_0000_FFFF_FFFF
+//
+// Additionally, note that if the ~value~ passed on the command line is larger than 
+// the maximum value that can be stored in a <uvm_bitstream_t> then truncation without 
+// warning may occur.  
+
+// The implementation of this is in uvm_root.
+
 
 typedef class uvm_cmdline_processor;
-`ifdef UVM_ENABLE_DEPRECATED_API
+
+// @uvm-compat , for compatibility with 1.2
 uvm_cmdline_processor uvm_cmdline_proc;
-`endif // UVM_ENABLE_DEPRECATED_API
 
 
 // Class -- NODOCS -- uvm_cmdline_processor
@@ -108,9 +156,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   static function uvm_cmdline_processor get_inst();
     if(m_inst == null) 
       m_inst = new("uvm_cmdline_proc");
-`ifdef UVM_ENABLE_DEPRECATED_API
       uvm_cmdline_proc = m_inst;
-`endif // UVM_ENABLE_DEPRECATED_API
     return m_inst;
   endfunction
 

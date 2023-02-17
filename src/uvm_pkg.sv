@@ -1,9 +1,9 @@
 //
 //----------------------------------------------------------------------
-// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2022 Cadence Design Systems, Inc.
 // Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2013 NVIDIA Corporation
-// Copyright 2011 Synopsys, Inc.
+// Copyright 2013-2021 NVIDIA Corporation
+// Copyright 2011-2022 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -24,6 +24,7 @@
 `define UVM_PKG_SV
 
 `include "uvm_macros.svh"
+
 
 package uvm_pkg;
 

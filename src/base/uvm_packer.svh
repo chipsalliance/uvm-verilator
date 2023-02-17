@@ -3,7 +3,8 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017-2018 Cisco Systems, Inc.
 // Copyright 2014 Intel Corporation
-// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2021-2022 Marvell International Ltd.
+// Copyright 2007-2022 Mentor Graphics Corporation
 // Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2018 Qualcomm, Inc.
 // Copyright 2014 Semifore
@@ -278,9 +279,6 @@ class uvm_packer extends uvm_policy;
   //
   // Unpacks a string. 
   //
-  // num_chars bytes are unpacked into a string. If num_chars is -1 then
-  // unpacking stops on at the first ~null~ character that is encountered.
-
   // @uvm-ieee 1800.2-2020 auto 16.5.4.13
   extern virtual function string unpack_string ();
 
@@ -350,10 +348,21 @@ class uvm_packer extends uvm_policy;
   bit   nopack;             //only count packable bits
 
   uvm_pack_bitstream_t m_bits;
+  
+  //@uvm-compat
+  bit physical = 1;
+
+  //@uvm-compat
+  bit abstract = 1 ;
 
 
   extern function void index_error(int index, string id, int sz);
   extern function bit enough_bits(int needed, string id);
+
+  //@uvm-compat provided to support uvm_compat_pkg
+  function string unpack_string_with_size (int num_chars=-1);
+     return unpack_string();
+  endfunction
 
 endclass
 
@@ -909,8 +918,6 @@ endfunction
 // unpack_string
 // -------------
 
-// If num_chars is not -1, then the user only wants to unpack a
-// specific number of bytes into the string.
 function string uvm_packer::unpack_string();
   byte b;
   int i; i=0;

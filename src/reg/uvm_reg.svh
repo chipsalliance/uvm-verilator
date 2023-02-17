@@ -3,11 +3,11 @@
 // Copyright 2010 AMD
 // Copyright 2012 Accellera Systems Initiative
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2018 Intel Corporation
-// Copyright 2020 Marvell International Ltd.
+// Copyright 2018-2022 Intel Corporation
+// Copyright 2020-2022 Marvell International Ltd.
 // Copyright 2010-2020 Mentor Graphics Corporation
 // Copyright 2014-2020 NVIDIA Corporation
-// Copyright 2011-2020 Semifore
+// Copyright 2011-2022 Semifore
 // Copyright 2004-2018 Synopsys, Inc.
 // Copyright 2020 Verific
 //    All Rights Reserved Worldwide
@@ -30,6 +30,57 @@
 
 typedef class uvm_reg_cbs;
 typedef class uvm_reg_frontdoor;
+typedef class uvm_reg;
+
+// Class: uvm_reg_err_service
+// This class contains virtual functions implementing error messages from uvm_reg.
+// The user may factory-replace this class to produce messages with a different
+// format.
+//
+// @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+class uvm_reg_err_service extends uvm_object ;
+
+   `uvm_object_utils(uvm_reg_err_service)
+
+   static uvm_reg_err_service inst ;
+
+   // Function : get()
+   // Called by the library when a supported uvm_reg error occurs.  Returns an
+   // instance of the standard UVM library class if set() has not been called or 
+   // has been called with a null instance; otherwise, returns the instance 
+   // passed to set().
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+   static function uvm_reg_err_service get() ;
+      if (inst == null) inst = uvm_reg_err_service::type_id::create("uvm_inst");
+      return inst ;
+   endfunction
+
+   // Function : set()
+   // May be called to pass a new instance of a derived class, to be returned
+   // by a subsequent call to get().
+   //
+   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+   static function void set(uvm_reg_err_service es) ;
+      inst = es ;
+   endfunction
+
+   function new (string name="");
+      super.new(name);
+   endfunction
+
+   // Function: do_check_error
+   //
+   // Called when do_check finds a mismatch to create the error message 
+   // and any other supporting information.  Users may customize the look 
+   // of this error message by overriding this function.
+   // 
+   extern virtual function void do_check_error(uvm_reg        this_reg,
+                                        uvm_reg_data_t       expected,
+                                        uvm_reg_data_t       actual,
+                                        uvm_reg_map          map,
+                                        uvm_reg_data_t       valid_bits_mask);
+endclass
 
 // Class: uvm_reg
 // This is an implementation of uvm_reg as described in 1800.2 with
@@ -56,13 +107,17 @@ class uvm_reg extends uvm_object;
    protected bit           m_update_in_progress;
    /*local*/ bit           m_is_busy;
    /*local*/ bit           m_is_locked_by_field;
-   local uvm_reg_backdoor  m_backdoor;
+   local int               m_atomic_cnt;
+   local uvm_reg_backdoor  m_backdoor;    
 
    local static int unsigned m_max_size;
 
+   local static uvm_reg_err_service  m_err_service ;
+
    local uvm_object_string_pool
        #(uvm_queue #(uvm_hdl_path_concat)) m_hdl_paths_pool;
-
+   
+   /*local*/ static uvm_reg m_reg_registry[string];
    //----------------------
    // Group -- NODOCS -- Initialization
    //----------------------
@@ -93,6 +148,8 @@ class uvm_reg extends uvm_object;
    /*local*/ extern virtual function void add_map    (uvm_reg_map map);
 
    /*local*/ extern function void   Xlock_modelX;
+    
+   /*local*/ extern function void   Xunlock_modelX;
 
 	// remove the knowledge that the register resides in the map from the register instance
 	// @uvm-ieee 1800.2-2020 auto 18.4.2.5
@@ -160,6 +217,7 @@ class uvm_reg extends uvm_object;
    // Else try to find the first default map in its parent blocks and return its handle
    // If there are no default maps in the registers parent blocks return a handle to the first map in its map array 
    //  
+   // @uvm-contrib
    extern virtual function uvm_reg_map get_default_map ();
 
 
@@ -218,7 +276,18 @@ class uvm_reg extends uvm_object;
    extern virtual function int get_addresses (uvm_reg_map map = null,
                                               ref uvm_reg_addr_t addr[]);
 
-
+   // Function -- NODOCS -- get_reg_by_full_name
+   //
+   // Finds a register with the specified full hierarchical name.
+   //
+   // The name is the full name of the register, starting with the root block.
+   // The function looks up the cached registry built after register model is locked
+   //
+   // If no register is found, returns ~null~.
+   
+   static function uvm_reg get_reg_by_full_name(string name);
+      return m_reg_registry[name];
+   endfunction
 
    //--------------
    // Group -- NODOCS -- Access
@@ -402,6 +471,7 @@ class uvm_reg extends uvm_object;
    extern virtual function bit do_check(uvm_reg_data_t expected,
                                         uvm_reg_data_t actual,
                                         uvm_reg_map    map);
+
 
    extern virtual task do_write(uvm_reg_item rw);
 
@@ -620,6 +690,8 @@ function uvm_reg::new(string name="", int unsigned n_bits, int has_coverage);
    m_locked      = 0;
    m_is_busy     = 0;
    m_is_locked_by_field = 1'b0;
+   m_atomic_cnt  = 0;
+   m_process     = null;
    m_hdl_paths_pool = new("hdl_paths");
 
    if (n_bits > m_max_size)
@@ -643,6 +715,7 @@ function void uvm_reg::configure (uvm_reg_block blk_parent,
    m_regfile_parent = regfile_parent;
    if (hdl_path != "")
      add_hdl_path_slice(hdl_path, -1, -1);
+
 endfunction: configure
 
 
@@ -710,7 +783,21 @@ endfunction: add_field
 function void uvm_reg::Xlock_modelX();
    if (m_locked)
      return;
+   
+   m_reg_registry[get_full_name()] = this;
+   foreach (m_fields[f])
+       uvm_reg_field::m_reg_field_registry[m_fields[f].get_full_name()]=m_fields[f];
+   
    m_locked = 1;
+endfunction
+
+// Xunlock_modelX
+
+function void uvm_reg::Xunlock_modelX();
+   uvm_reg::m_reg_registry.delete(this.get_full_name());
+   foreach (m_fields[f])
+       uvm_reg_field::m_reg_field_registry.delete(m_fields[f].get_full_name());
+   m_locked = 0;
 endfunction
 
 
@@ -1238,9 +1325,10 @@ endfunction
 // get_field_by_name
 
 function uvm_reg_field uvm_reg::get_field_by_name(string name);
-   foreach (m_fields[i])
-      if (m_fields[i].get_name() == name)
-         return m_fields[i];
+   get_field_by_name = uvm_reg_field::get_field_by_full_name({this.get_full_name(),".",name});
+   if(get_field_by_name!=null)
+       return get_field_by_name;
+
    `uvm_warning("RegModel", {"Unable to locate field '",name,
                             "' in register '",get_name(),"'"})
    return null;
@@ -1400,23 +1488,26 @@ function void uvm_reg::do_predict(uvm_reg_item      rw,
    m_fname = rw.get_fname();
    m_lineno = rw.get_line();
    
-if (rw.get_status() == UVM_IS_OK )
+   if (rw.get_status() == UVM_IS_OK ) begin
 
-   if (m_is_busy && kind == UVM_PREDICT_DIRECT) begin
-      `uvm_warning("RegModel", {"Trying to predict value of register '",
-                  get_full_name(),"' while it is being accessed"})
-      rw.set_status(UVM_NOT_OK);
-      return;
+     if (m_is_busy && kind == UVM_PREDICT_DIRECT) begin
+        `uvm_warning("RegModel", {"Trying to predict value of register '",
+                    get_full_name(),"' while it is being accessed"})
+        rw.set_status(UVM_NOT_OK);
+        return;
+     end
+     
+     foreach (m_fields[i]) begin
+        rw.set_value((reg_value >> m_fields[i].get_lsb_pos()) &
+                                   ((1 << m_fields[i].get_n_bits())-1));
+        m_fields[i].do_predict(rw, kind, be>>(m_fields[i].get_lsb_pos()/8));
+     end
+
+     rw.set_value(reg_value, 0);
    end
-   
-   foreach (m_fields[i]) begin
-      rw.set_value((reg_value >> m_fields[i].get_lsb_pos()) &
-                                 ((1 << m_fields[i].get_n_bits())-1));
-      m_fields[i].do_predict(rw, kind, be>>(m_fields[i].get_lsb_pos()/8));
+   else begin
+     `uvm_warning("PREDICT_NOK", "status UVM_NOT_OK; skip prediction.");
    end
-
-   rw.set_value(reg_value, 0);
-
 endfunction: do_predict
 
 
@@ -1673,6 +1764,7 @@ task uvm_reg::do_write (uvm_reg_item rw);
 
          if (rw.get_status() == UVM_NOT_OK) begin
            m_write_in_progress = 1'b0;
+           XatomicX(0);
            return;
          end
 
@@ -2391,35 +2483,51 @@ function bit uvm_reg::do_check(input uvm_reg_data_t expected,
    end
 
    if ((actual&valid_bits_mask) === (expected&valid_bits_mask)) return 1;
-   
+   else begin
+      uvm_reg_err_service err_service ;
+      err_service = uvm_reg_err_service::get();
+      err_service.do_check_error(this, expected, actual, map, valid_bits_mask);
+      return 0;
+   end
+endfunction
+       
+function void uvm_reg_err_service::do_check_error(
+                               uvm_reg              this_reg,
+                               uvm_reg_data_t       expected,
+                               uvm_reg_data_t       actual,
+                               uvm_reg_map          map,
+                               uvm_reg_data_t       valid_bits_mask);
+
+   uvm_reg_field fields[$] ;
    `uvm_error("RegModel", $sformatf("Register \"%s\" value read from DUT (0x%h) does not match mirrored value (0x%h) (valid bit mask = 0x%h)",
-                                    get_full_name(), actual, expected,valid_bits_mask))
+                                    this_reg.get_full_name(), actual, expected,valid_bits_mask))
                                      
-   foreach(m_fields[i]) begin
-      string acc = m_fields[i].get_access(map);
+   this_reg.get_fields(fields);
+   foreach(fields[i]) begin
+      string acc = fields[i].get_access(map);
       acc = acc.substr(0, 1);
-      if (!(m_fields[i].get_compare() == UVM_NO_CHECK ||
+      if (!(fields[i].get_compare() == UVM_NO_CHECK ||
             acc == "WO")) begin
-         uvm_reg_data_t mask  = ((1 << m_fields[i].get_n_bits())-1);
-         uvm_reg_data_t val   = actual   >> m_fields[i].get_lsb_pos() & mask;
-         uvm_reg_data_t exp   = expected >> m_fields[i].get_lsb_pos() & mask;
+         uvm_reg_data_t mask  = ((1 << fields[i].get_n_bits())-1);
+         uvm_reg_data_t val   = actual   >> fields[i].get_lsb_pos() & mask;
+         uvm_reg_data_t exp   = expected >> fields[i].get_lsb_pos() & mask;
 
          if (val !== exp) begin
             `uvm_info("RegModel",
                       $sformatf("Field %s (%s[%0d:%0d]) mismatch read=%0d'h%0h mirrored=%0d'h%0h ",
-                                m_fields[i].get_name(), get_full_name(),
-                                m_fields[i].get_lsb_pos() + m_fields[i].get_n_bits() - 1,
-                                m_fields[i].get_lsb_pos(),
-                                m_fields[i].get_n_bits(), val,
-                                m_fields[i].get_n_bits(), exp),
+                                fields[i].get_name(), 
+                                this_reg.get_full_name(),
+                                fields[i].get_lsb_pos() + fields[i].get_n_bits() - 1,
+                                fields[i].get_lsb_pos(),
+                                fields[i].get_n_bits(), val,
+                                fields[i].get_n_bits(), exp),
                       UVM_NONE)
          end
       end
    end
 
-   return 0;
 endfunction
-       
+
 
 // mirror
 
@@ -2452,8 +2560,10 @@ task uvm_reg::mirror(output uvm_status_e       status,
    else
      map = get_local_map(map);
 
-   if (map == null)
+   if (map == null) begin
+     XatomicX(0);
      return;
+   end
    
    // Remember what we think the value is before it gets updated
    if (check == UVM_CHECK)
@@ -2479,12 +2589,23 @@ task uvm_reg::XatomicX(bit on);
    m_reg_process=process::self();
 
    if (on) begin
-     if (m_reg_process == m_process)
+     if (m_reg_process == m_process) begin
+       m_atomic_cnt++;
        return;
-     m_atomic.get(1);
-     m_process = m_reg_process; 
+     end
+     else begin
+       if (m_process != null) 
+         if (m_process.status() == process::KILLED)
+           `uvm_error("UVM/REG/ZOMBIE", $sformatf("Register %s access permanently locked by killed process", get_full_name()));
+       m_atomic.get(1);
+       m_process = m_reg_process; 
+     end
    end
    else begin
+     if (m_atomic_cnt) begin
+       m_atomic_cnt--; 
+       return;
+     end
       // Maybe a key was put back in by a spurious call to reset()
       void'(m_atomic.try_get(1));
       m_atomic.put(1);

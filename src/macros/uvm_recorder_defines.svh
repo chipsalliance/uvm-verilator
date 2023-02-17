@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2007-2009 Mentor Graphics Corporation
-// Copyright 2018-2020 NVIDIA Corporation
+// Copyright 2018-2021 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -200,10 +200,41 @@
     end \
  end
 
+// uvm_record_object*
+// -----------------
+
+`define uvm_record_object(VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, RECORDER=recorder) \
+  `uvm_record_named_object(`"VALUE`", VALUE, RECURSION_POLICY, RECORDER)
+
+`define uvm_record_named_object(NAME, VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, RECORDER=recorder) \
+if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+    (RECURSION_POLICY != RECORDER.get_recursion_policy())) begin \
+  uvm_recursion_policy_enum __saved_recursion_policy  = RECORDER.get_recursion_policy(); \
+  RECORDER.set_recursion_policy(RECURSION_POLICY); \
+  `m_uvm_record_named_object(NAME, VALUE, RECORDER) \
+  RECORDER.set_recursion_policy(__saved_recursion_policy); \
+end \
+else begin \
+  `m_uvm_record_named_object(NAME, VALUE, RECORDER) \
+end
+
+
+`define m_uvm_record_named_object(NAME, VALUE, RECORDER) \
+if (RECORDER.object_recorded(VALUE, RECORDER.get_recursion_policy()) != uvm_policy::NEVER) begin \
+  uvm_recursion_policy_enum __saved_recursion_policy = RECORDER.get_recursion_policy(); \
+  RECORDER.set_recursion_policy(UVM_REFERENCE); \
+  RECORDER.record_object(NAME, VALUE); \
+  RECORDER.set_recursion_policy(__saved_recursion_policy); \
+end \
+else begin \
+  RECORDER.record_object(NAME, VALUE); \
+end
+
+
 // uvm_record_qda_int
 // ------------------
 
-`define uvm_record_qda_int(ARG, RADIX,RECORDER=recorder) \
+  `define uvm_record_qda_int(ARG, RADIX,RECORDER=recorder) \
   begin \
     int sz__ = $size(ARG); \
     if(sz__ == 0) begin \
@@ -230,29 +261,43 @@
 // uvm_record_qda_object
 // ---------------------
 
-`define uvm_record_qda_object(ARG,RECORDER=recorder) \
-  begin \
-    int sz__ = $size(ARG); \
-    if(sz__ == 0) begin \
-      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC, RECORDER) \
-    end \
-    else if(sz__ < 10) begin \
-      foreach(ARG[i]) begin \
-        string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        RECORDER.record_object(nm__, ARG[i]); \
-      end \
-    end \
+`define uvm_record_qda_object(VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, RECORDER=recorder) \
+   begin \
+    int sz__ = $size(VALUE); \
+     if(sz__ == 0) begin \
+      `uvm_record_int(`"VALUE`", 0, 32, UVM_DEC, RECORDER) \
+     end \
     else begin \
-      for(int i=0; i<5; ++i) begin \
-        string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        RECORDER.record_object(nm__, ARG[i]); \
-      end \
-      for(int i=sz__-5; i<sz__; ++i) begin \
-        string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        RECORDER.record_object(nm__, ARG[i]); \
-      end \
-    end \
-  end
+      uvm_recursion_policy_enum __tmp_recursion_policy; \
+      __tmp_recursion_policy  = RECORDER.get_recursion_policy(); \
+      if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+          (__tmp_recursion_policy != RECURSION_POLICY)) \
+        RECORDER.set_recursion_policy(RECURSION_POLICY); begin \
+        if(sz__ < 10) begin \
+          foreach(VALUE[__tmp_index]) begin \
+            `m_uvm_record_named_object($sformatf("%s[%0d]", `"VALUE`", __tmp_index), \
+                                      VALUE[__tmp_index], \
+                                      RECORDER) \
+           end \
+         end \
+         else begin \
+          for(int __tmp_index=0; __tmp_index<5; ++__tmp_index) begin \
+            `m_uvm_record_named_object($sformatf("%s[%0d]", `"VALUE`", __tmp_index), \
+                                      VALUE[__tmp_index], \
+                                      RECORDER) \
+          end \
+          for(int __tmp_index=sz__-5; __tmp_index<sz__; ++__tmp_index) begin \
+            `m_uvm_record_named_object($sformatf("%s[%0d]", `"VALUE`", __tmp_index), \
+                                      VALUE[__tmp_index], \
+                                      RECORDER) \
+          end \
+         end \
+       end \
+      if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+          (__tmp_recursion_policy != RECURSION_POLICY)) \
+        RECORDER.set_recursion_policy(__tmp_recursion_policy); \
+     end \
+   end
 
 // uvm_record_qda_enum
 // --------------------

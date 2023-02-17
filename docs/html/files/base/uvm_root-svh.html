@@ -18,14 +18,14 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 
 
  <!--CONTENT index=0 -->
-<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_root" href="../../../../src/base/uvm_root.svh">uvm_root</a></h1><div class=CBody><blockquote><pre>class uvm_root extends uvm_component</pre></blockquote><p>Implementation of the uvm_root class, as defined in 1800.2-2020 Section F.7</p>
+<div class="CClass"><div class=CTopic id=MainTopic><h1 class=CTitle><a name="uvm_root" href="../../../../src/base/uvm_root.svh">uvm_root</a></h1><div class=CBody><p>Implementation of the uvm_root class, as defined in 1800.2-2020 Section F.7 with the following additional API</p>
 
 <!--START_ND_SUMMARY index=0-->
 <div class=Summary><div class=STitle>Summary</div><div class=SBorder><table border=0 cellspacing=0 cellpadding=0 class=STable>
   <!-- index=0 -->
 
 <tr class="SClass"><td colspan=2 class=SEntry><a href="#uvm_root" id=link2 onMouseOver="ShowTip(event, 'tt2', 'link2')" onMouseOut="HideTip('tt2')">uvm_root</a></td></tr>
-<tr class=SMain><td colspan=2 class=SWideDescription></td></tr>
+<tr class=SMain><td colspan=2 class=SWideDescription>Implementation of the uvm_root class, as defined in 1800.2-2020 Section F.7 with the following additional API</td></tr>
 
   <!-- HIERARCHY -->
   <tr class="SHierarchy SIndent1 "><td colspan=2 class="SEntry SIndent1">Class Hierarchy</td></tr>
@@ -51,10 +51,10 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <tr class="SGroup SIndent1"><td class=SEntry><a href="#uvm_root.Methods" >Methods</a></td><td class=SDescription></td></tr>
   <!-- index=2 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_root.set_enable_print_topology" id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">set_enable_print_topology</a></td><td class=SDescription></td></tr>
+<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_root.set_enable_print_topology" id=link3 onMouseOver="ShowTip(event, 'tt3', 'link3')" onMouseOut="HideTip('tt3')">set_enable_print_topology</a></td><td class=SDescription>Sets the variable to enable printing the entire testbench topology just after completion of the end_of_elaboration phase.</td></tr>
   <!-- index=3 -->
 
-<tr class="SMethod SIndent2"><td class=SEntry><a href="#uvm_root.get_enable_print_topology" id=link4 onMouseOver="ShowTip(event, 'tt4', 'link4')" onMouseOut="HideTip('tt4')">get_enable_print_topology</a></td><td class=SDescription></td></tr></table></div></div><!--END_ND_SUMMARY-->
+<tr class="SMethod SIndent2 SMarked"><td class=SEntry><a href="#uvm_root.get_enable_print_topology" id=link4 onMouseOver="ShowTip(event, 'tt4', 'link4')" onMouseOut="HideTip('tt4')">get_enable_print_topology</a></td><td class=SDescription>Gets the variable to enable printing the entire testbench topology just after completion of the end_of_elaboration phase..</td></tr></table></div></div><!--END_ND_SUMMARY-->
 </div></div></div>
 
 
@@ -77,7 +77,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-<div class=CBody><blockquote><pre>function void set_enable_print_topology (bit enable)</pre></blockquote><p>Sets the variable to enable printing the entire testbench topology just after completion of the end_of_elaboration phase.</p><p>@uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2</p></div></div></div>
+<div class=CBody><p>Sets the variable to enable printing the entire testbench topology just after completion of the end_of_elaboration phase.</p><p>@uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2</p></div></div></div>
 
 
 
@@ -85,7 +85,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
  <!--CONTENT index=3 -->
 <div class="CMethod"><div class=CTopic><h3 class=CTitle><a name="uvm_root.get_enable_print_topology" href="../../../../src/base/uvm_root.svh">get_enable_print_topology</a></h3>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit get_enable_print_topology ()
-  </td></tr></table></blockquote><div class=CBody><blockquote><pre>function bit get_enable_print_topology()</pre></blockquote><p>Gets the variable to enable printing the entire testbench topology just after completion.</p><p>@uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2</p></div></div></div>
+  </td></tr></table></blockquote><div class=CBody><p>Gets the variable to enable printing the entire testbench topology just after completion of the end_of_elaboration phase..</p><p>@uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2</p></div></div></div>
 
 </div><!--Content-->
 
@@ -94,7 +94,7 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
 <!--START_ND_TOOLTIPS-->
 <div class=CToolTip id="tt1"><div class=CClass>The library implements the following public API beyond what is documented in 1800.2.</div></div><div class=CToolTip id="tt2"><div class=CClass>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>class uvm_root extends uvm_component
-  </td></tr></table></blockquote></div></div><div class=CToolTip id="tt3"><div class=CMethod>
+  </td></tr></table></blockquote>Implementation of the uvm_root class, as defined in 1800.2-2020 Section F.7 with the following additional API</div></div><div class=CToolTip id="tt3"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype>
       <tr><td><table border=0 cellspacing=0 cellpadding=0><tr>
       <td class=PBeforeParameters colspan=3>function void set_enable_print_topology (</td>      </tr><tr><td>&nbsp;&nbsp;&nbsp;</td>      <td class=PType nowrap>bit&nbsp;</td>
@@ -104,9 +104,9 @@ if (browserType) {document.write("<div class=" + browserType + ">");if (browserV
       <td class=PAfterParameters colspan=3>)</td></tr>
       </table></td></tr>
     </table></blockquote>
-</div></div><div class=CToolTip id="tt4"><div class=CMethod>
+Sets the variable to enable printing the entire testbench topology just after completion of the end_of_elaboration phase.</div></div><div class=CToolTip id="tt4"><div class=CMethod>
     <blockquote><table border=0 cellspacing=0 cellpadding=0 class=Prototype><tr><td>function bit get_enable_print_topology ()
-  </td></tr></table></blockquote></div></div><!--END_ND_TOOLTIPS-->
+  </td></tr></table></blockquote>Gets the variable to enable printing the entire testbench topology just after completion of the end_of_elaboration phase..</div></div><!--END_ND_TOOLTIPS-->
 
 <script language=JavaScript><!--
 if (browserType) {if (browserVer) {document.write("</div>"); }document.write("</div>");}// --></script></body></html>

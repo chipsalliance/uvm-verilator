@@ -4,6 +4,7 @@
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2017 Cisco Systems, Inc.
 // Copyright 2011 Cypress Semiconductor Corp.
+// Copyright 2021 Marvell International Ltd.
 // Copyright 2010-2014 Mentor Graphics Corporation
 // Copyright 2012-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
@@ -41,20 +42,7 @@ typedef class uvm_phase;
 // all configuration DB accesses (read and write) are displayed.
 //----------------------------------------------------------------------
 
-//Internal class for config waiters
-class m_uvm_waiter;
-  string inst_name;
-  string field_name;
-  event trigger;
-  function new (string inst_name, string field_name);
-    this.inst_name = inst_name;
-    this.field_name = field_name;
-  endfunction
-endclass
-
-typedef class uvm_root;
 typedef class uvm_config_db_options;
-
 
 // @uvm-ieee 1800.2-2020 auto C.4.2.1
 class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
@@ -62,9 +50,6 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
   // Internal lookup of config settings so they can be reused
   // The context has a pool that is keyed by the inst/field name.
   static uvm_pool#(string,uvm_resource#(T)) m_rsc[uvm_component];
-
-  // Internal waiter list for wait_modified
-  static local uvm_queue#(m_uvm_waiter) m_waiters[string];
 
   // function -- NODOCS -- get
   //
@@ -86,31 +71,9 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
                           string inst_name,
                           string field_name,
                           inout T value);
-//TBD: add file/line
-    uvm_resource#(T) r;
-    uvm_resource_pool rp = uvm_resource_pool::get();
-    uvm_resource_types::rsrc_q_t rq;
-    uvm_coreservice_t cs = uvm_coreservice_t::get();
-
-    if(cntxt == null) 
-      cntxt = cs.get_root();
-    if(inst_name == "") 
-      inst_name = cntxt.get_full_name();
-    else if(cntxt.get_full_name() != "") 
-      inst_name = {cntxt.get_full_name(), ".", inst_name};
- 
-    rq = rp.lookup_regex_names(inst_name, field_name, uvm_resource#(T)::get_type());
-    r = uvm_resource#(T)::get_highest_precedence(rq);
-    
-    if(uvm_config_db_options::is_tracing())
-      m_show_msg("CFGDB/GET", "Configuration","read", inst_name, field_name, cntxt, r);
-
-    if(r == null)
-      return 0;
-
-    value = r.read(cntxt);
-
-    return 1;
+    uvm_config_db_implementation_t #(T) imp;
+    imp = uvm_config_db_implementation_t #(T)::get_imp();
+    return imp.get(cntxt, inst_name, field_name, value);
   endfunction
 
   // function -- NODOCS -- set 
@@ -150,79 +113,21 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
                            string field_name,
                            T value);
 
-    uvm_root top;
-    uvm_phase curr_phase;
-    uvm_resource#(T) r;
-    bit exists;
-    string lookup;
     uvm_pool#(string,uvm_resource#(T)) pool;
-    string rstate;
-    uvm_coreservice_t cs = uvm_coreservice_t::get();
-    uvm_resource_pool rp = cs.get_resource_pool();
-    int unsigned precedence;
-     
-    //take care of random stability during allocation
-    process p = process::self();
-    if(p != null) 
-  		rstate = p.get_randstate();
-  		
-    top = cs.get_root();
-
-    curr_phase = top.m_current_phase;
+    uvm_config_db_implementation_t #(T) imp; 
+    uvm_coreservice_t cs ;
+    imp = uvm_config_db_implementation_t #(T)::get_imp();
+    cs = uvm_coreservice_t::get();
 
     if(cntxt == null) 
-      cntxt = top;
-    if(inst_name == "") 
-      inst_name = cntxt.get_full_name();
-    else if(cntxt.get_full_name() != "") 
-      inst_name = {cntxt.get_full_name(), ".", inst_name};
+      cntxt = cs.get_root();
 
     if(!m_rsc.exists(cntxt)) begin
       m_rsc[cntxt] = new;
     end
     pool = m_rsc[cntxt];
 
-    // Insert the token in the middle to prevent cache
-    // oddities like i=foobar,f=xyz and i=foo,f=barxyz.
-    // Can't just use '.', because '.' isn't illegal
-    // in field names
-    lookup = {inst_name, "__M_UVM__", field_name};
-
-    if(!pool.exists(lookup)) begin
-       r = new(field_name);
-       rp.set_scope(r, inst_name);
-       pool.add(lookup, r);
-    end
-    else begin
-      r = pool.get(lookup);
-      exists = 1;
-    end
-      
-    if(curr_phase != null && curr_phase.get_name() == "build")
-      precedence = cs.get_resource_pool_default_precedence() - (cntxt.get_depth());
-    else
-      precedence = cs.get_resource_pool_default_precedence();
-
-    rp.set_precedence(r, precedence);
-    r.write(value, cntxt);
-
-    rp.set_priority_name(r, uvm_resource_types::PRI_HIGH);
-    
-    //trigger any waiters
-    if(m_waiters.exists(field_name)) begin
-      m_uvm_waiter w;
-      for(int i=0; i<m_waiters[field_name].size(); ++i) begin
-        w = m_waiters[field_name].get(i);
-        if ( uvm_is_match(inst_name,w.inst_name) )
-           ->w.trigger;  
-      end
-    end
-
-    if(p != null)
-    	p.set_randstate(rstate);
-
-    if(uvm_config_db_options::is_tracing())
-      m_show_msg("CFGDB/SET", "Configuration","set", inst_name, field_name, cntxt, r);
+    imp.set(cntxt.get_full_name(), inst_name, field_name, value, cntxt.get_depth(), pool, cntxt);
   endfunction
 
 
@@ -240,17 +145,11 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
 
   // @uvm-ieee 1800.2-2020 auto C.4.2.2.3
   static function bit exists(uvm_component cntxt, string inst_name,
-    string field_name, bit spell_chk=0);
-    uvm_coreservice_t cs = uvm_coreservice_t::get();
+                             string field_name, bit spell_chk=0);
+    uvm_config_db_implementation_t #(T) imp;
+    imp = uvm_config_db_implementation_t #(T)::get_imp();
+    return imp.exists(cntxt, inst_name, field_name, spell_chk);
 
-    if(cntxt == null)
-      cntxt = cs.get_root();
-    if(inst_name == "")
-      inst_name = cntxt.get_full_name();
-    else if(cntxt.get_full_name() != "")
-      inst_name = {cntxt.get_full_name(), ".", inst_name};
-
-    return (uvm_resource_db#(T)::get_by_name(inst_name,field_name,spell_chk) != null);
   endfunction
 
 
@@ -262,39 +161,10 @@ class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
 
   // @uvm-ieee 1800.2-2020 auto C.4.2.2.4
   static task wait_modified(uvm_component cntxt, string inst_name,
-      string field_name);
-    process p = process::self();
-    string rstate = p.get_randstate();
-    m_uvm_waiter waiter;
-    uvm_coreservice_t cs = uvm_coreservice_t::get();
-
-    if(cntxt == null)
-      cntxt = cs.get_root();
-    if(cntxt != cs.get_root()) begin
-      if(inst_name != "")
-        inst_name = {cntxt.get_full_name(),".",inst_name};
-      else
-        inst_name = cntxt.get_full_name();
-    end
-
-    waiter = new(inst_name, field_name);
-
-    if(!m_waiters.exists(field_name))
-      m_waiters[field_name] = new;
-    m_waiters[field_name].push_back(waiter);
-
-    p.set_randstate(rstate);
-
-    // wait on the waiter to trigger
-    @waiter.trigger;
-  
-    // Remove the waiter from the waiter list 
-    for(int i=0; i<m_waiters[field_name].size(); ++i) begin
-      if(m_waiters[field_name].get(i) == waiter) begin
-        m_waiters[field_name].delete(i);
-        break;
-      end
-    end 
+                            string field_name);
+    uvm_config_db_implementation_t #(T) imp;
+    imp = uvm_config_db_implementation_t #(T)::get_imp();
+    imp.wait_modified(cntxt, inst_name, field_name); 
   endtask
 
 

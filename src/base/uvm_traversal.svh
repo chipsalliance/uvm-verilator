@@ -1,5 +1,6 @@
 //----------------------------------------------------------------------
 // Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2022 Marvell International Ltd.
 // Copyright 2014-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
@@ -270,9 +271,23 @@ class uvm_component_name_check_visitor extends uvm_visitor#(uvm_component);
   virtual function void visit(NODE node);
     // dont check the root component
     if(_root != node) begin
-      if ( ! uvm_is_match( get_name_constraint(), node.get_name() ) ) begin
+`ifdef UVM_REGEX_NO_DPI
+      static bit warned ;
+      if (!warned) begin
+        `uvm_warning("NO_VISIT_CHECK","Because UVM_REGEX_NO_DPI is defined, no uvm component name constraints will be checked")
+        warned = 1;
+      end
+`else
+      string regex = get_name_constraint();
+         // if we don't have something surrounded by "/" characters, add them
+      if ((regex.len() <= 2) || 
+          (regex[0] != "/") || 
+          (regex[regex.len()-1] != "/"))
+         regex = {"/",regex,"/"};
+      if ( ! uvm_is_match( regex, node.get_name() ) ) begin
         `uvm_warning("UVM/COMP/NAME",$sformatf("the name \"%s\" of the component \"%s\" violates the uvm component name constraints",node.get_name(),node.get_full_name()))
       end
+`endif
     end
   endfunction 
 

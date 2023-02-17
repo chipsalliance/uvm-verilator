@@ -5,6 +5,7 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2011 Cypress Semiconductor Corp.
+// Copyright 2021-2022 Marvell International Ltd.
 // Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
@@ -317,7 +318,6 @@ class uvm_report_handler extends uvm_object;
 
   // @uvm-ieee 1800.2-2020 auto 6.4.7
   virtual function void process_report_message(uvm_report_message report_message);
-    process p = process::self();
     uvm_report_server srvr = uvm_report_server::get_server();
     string id = report_message.get_id();
     uvm_severity severity = report_message.get_severity();
@@ -652,6 +652,155 @@ class uvm_report_handler extends uvm_object;
     process_report_message(l_report_message);
 
   endfunction
+
+  // @uvm-compat Added for compatibility with 1.1d
+  function void dump_state();
+
+    string s;
+    UVM_FILE file;
+    uvm_action a;
+    string idx;
+    string q[$];
+ 
+    uvm_id_actions_array id_a_ary;
+    uvm_id_verbosities_array id_v_ary;
+    uvm_id_file_array id_f_ary;
+
+    q.push_back("\n----------------------------------------------------------------------\n");
+    q.push_back("report handler state dump \n\n");
+
+    // verbosities
+
+    q.push_back("\n+-----------------+\n");
+    q.push_back("|   Verbosities   |\n");
+    q.push_back("+-----------------+\n\n"); 
+
+    q.push_back($sformatf("max verbosity level = %d\n", m_max_verbosity_level));
+    q.push_back("*** verbosities by id\n");
+
+    if(id_verbosities.first(idx))
+    do begin
+      uvm_verbosity v = uvm_verbosity'(id_verbosities.get(idx));
+      q.push_back($sformatf("[%s] --> %s\n", idx, v.name()));
+    end while(id_verbosities.next(idx));
+
+    // verbosities by id
+
+    q.push_back("*** verbosities by id and severity\n");
+
+    foreach( severity_id_verbosities[severity] ) begin
+      uvm_severity sev = uvm_severity'(severity);
+      id_v_ary = severity_id_verbosities[severity];
+      if(id_v_ary.first(idx))
+      do begin
+        uvm_verbosity v = uvm_verbosity'(id_v_ary.get(idx));
+        q.push_back($sformatf("%s:%s --> %s\n",sev.name(), idx, v.name()));    
+      end while(id_v_ary.next(idx));
+    end
+
+    // actions
+
+    q.push_back("\n+-------------+\n");
+    q.push_back("|   actions   |\n");
+    q.push_back("+-------------+\n\n");
+    
+    q.push_back("*** actions by severity\n");
+    foreach( severity_actions[severity] ) begin
+      uvm_severity sev = uvm_severity'(severity);
+      q.push_back($sformatf("%s = %s\n",sev.name(), format_action(severity_actions[severity])));
+    end
+
+    q.push_back("\n*** actions by id\n");
+
+    if(id_actions.first(idx))
+    do begin
+      q.push_back($sformatf("[%s] --> %s\n", idx, format_action(id_actions.get(idx))));
+    end while(id_actions.next(idx));
+
+    // actions by id
+    q.push_back("\n*** actions by id and severity\n");
+
+    foreach( severity_id_actions[severity] ) begin
+      uvm_severity sev = uvm_severity'(severity);
+      id_a_ary = severity_id_actions[severity];
+      if(id_a_ary.first(idx))
+      do begin
+        q.push_back($sformatf("%s:%s --> %s\n",sev.name(), idx, format_action(id_a_ary.get(idx))));   
+      end while(id_a_ary.next(idx));
+    end
+
+    // Files
+
+    q.push_back("\n+-------------+\n");
+    q.push_back("|    files    |\n");
+    q.push_back("+-------------+\n\n");
+
+    q.push_back($sformatf("default file handle = %d\n\n", default_file_handle));
+
+    q.push_back("*** files by severity\n");
+    foreach( severity_file_handles[severity] ) begin
+      uvm_severity sev = uvm_severity'(severity);
+      file = severity_file_handles[severity];
+      q.push_back($sformatf("%s = %d\n", sev.name(), file));
+    end
+
+    q.push_back("\n*** files by id\n");
+
+    if(id_file_handles.first(idx))
+    do begin
+      file = id_file_handles.get(idx);
+      q.push_back($sformatf("id %s --> %d\n", idx, file));
+    end while (id_file_handles.next(idx));
+
+    q.push_back("\n*** files by id and severity\n");
+
+    foreach( severity_id_file_handles[severity] ) begin
+      uvm_severity sev = uvm_severity'(severity);
+      id_f_ary = severity_id_file_handles[severity];
+      if(id_f_ary.first(idx))
+      do begin
+        q.push_back($sformatf("%s:%s --> %d\n", sev.name(), idx, id_f_ary.get(idx)));
+      end while(id_f_ary.next(idx));
+    end
+    q.push_back("----------------------------------------------------------------------\n");
+
+    begin
+	uvm_report_server srvr;
+	srvr=uvm_report_server::get_server();        
+    	srvr.report_summarize();
+    end
+    `uvm_info("UVM/REPORT/HANDLER",`UVM_STRING_QUEUE_STREAMING_PACK(q),UVM_LOW)
+
+  endfunction
+
+  //@uvm-compat provided for compatibility with 1.1d
+  virtual function bit run_hooks(uvm_report_object client,
+                                 uvm_severity severity,
+                                 string id,
+                                 string message,
+                                 int verbosity,
+                                 string filename,
+                                 int line);
+
+    bit ok;
+
+    ok = client.report_hook(id, message, verbosity, filename, line);
+
+    case(severity)
+      UVM_INFO:
+       ok &= client.report_info_hook   (id, message, verbosity, filename, line);
+      UVM_WARNING:
+       ok &= client.report_warning_hook(id, message, verbosity, filename, line);
+      UVM_ERROR:
+       ok &= client.report_error_hook  (id, message, verbosity, filename, line);
+      UVM_FATAL:
+       ok &= client.report_fatal_hook  (id, message, verbosity, filename, line);
+    endcase
+
+    return ok;
+
+  endfunction
+
 
 endclass : uvm_report_handler
 

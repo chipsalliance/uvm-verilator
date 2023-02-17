@@ -3,8 +3,9 @@
 // Copyright 2010-2012 AMD
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2013 Cisco Systems, Inc.
+// Copyright 2021-2022 Marvell International Ltd.
 // Copyright 2007-2020 Mentor Graphics Corporation
-// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2013-2021 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
 // Copyright 2017 Verific
@@ -521,6 +522,75 @@ class uvm_report_object extends uvm_object;
     m_rh_init();
     m_rh.initialize();
   endfunction
+
+
+  // @uvm-compat Added for compatibility with 1.1d
+  virtual function void report_header(UVM_FILE file = 0);
+    uvm_root top = uvm_root::get();
+    // Bail on broken infinite loop
+    if (this == top)
+      return;
+    top.report_header(file);
+  endfunction : report_header
+
+  // @uvm-compat Added for compatibility with 1.1d
+  virtual function void die();
+    uvm_root top = uvm_root::get();
+    // Bail on broken infinite loop
+    if (this == top)
+      return;
+    top.die();
+  endfunction : die
+
+  // @uvm-compat Added for compatibility with 1.1d
+  virtual function void report_summarize(UVM_FILE file = 0);
+    uvm_report_server svr = uvm_report_server::get_server();
+    svr.report_summarize(file);
+  endfunction : report_summarize
+
+  // @uvm-compat Added for compatibility with 1.1d
+  function void set_report_max_quit_count(int max_count);
+    uvm_report_server svr = uvm_report_server::get_server();
+    svr.set_max_quit_count(max_count);
+  endfunction : set_report_max_quit_count
+
+  // @uvm-compat Added for compatibility with 1.1d
+  function void dump_report_state();
+    m_rh.dump_state();
+  endfunction
+
+  // @uvm-compat Added for compatibility with 1.1d
+  virtual function bit report_info_hook(
+           string id, string message, int verbosity, string filename, int line);
+    return 1;
+  endfunction
+
+  // @uvm-compat Added for compatibility with 1.1d
+  virtual function bit report_error_hook(
+           string id, string message, int verbosity, string filename, int line);
+    return 1;
+  endfunction
+
+  // @uvm-compat Added for compatibility with 1.1d
+  virtual function bit report_warning_hook(
+           string id, string message, int verbosity, string filename, int line);
+    return 1;
+  endfunction
+
+  // @uvm-compat Added for compatibility with 1.1d
+  virtual function bit report_fatal_hook(
+           string id, string message, int verbosity, string filename, int line);
+    return 1;
+  endfunction
+
+  // @uvm-compat Added for compatibility with 1.1d
+  virtual function bit report_hook(
+           string id, string message, int verbosity, string filename, int line);
+    return 1;
+  endfunction
+
+
+
 
 endclass
 

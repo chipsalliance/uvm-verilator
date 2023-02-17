@@ -4,9 +4,9 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2013-2018 Cisco Systems, Inc.
 // Copyright 2014 Intel Corporation
-// Copyright 2020 Marvell International Ltd.
+// Copyright 2020-2022 Marvell International Ltd.
 // Copyright 2007-2020 Mentor Graphics Corporation
-// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2013-2022 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2017 Synopsys, Inc.
 // Copyright 2020 Verific
@@ -318,7 +318,7 @@ virtual class uvm_sequencer_base extends uvm_component;
   extern protected function void grant_queued_locks();
 
 
-  extern protected task          m_select_sequence();
+  extern protected task          m_select_sequence(output uvm_sequence_request selected_sequence_request);
   extern protected function int  m_choose_next_request();
   extern           task          m_wait_for_arbitration_completed(int request_id);
   extern           function void m_set_arbitration_completed(int request_id);
@@ -366,11 +366,10 @@ virtual class uvm_sequencer_base extends uvm_component;
 `endif
 
 // Macro: UVM_DISABLE_AUTO_ITEM_RECORDING
-// Performs the same function as the 1800.2 define UVM_DISABLE_RECORDING,
+// Performs the same function as the deprecated 1800.2 define UVM_DISABLE_RECORDING,
 // globally turning off automatic item recording when defined by the user.  
-// Provided for backward compatibility.
 //
-// @uvm-contrib This API is being considered for potential contribution to 1800.2
+// @uvm-accellera
 
 `ifdef UVM_DISABLE_AUTO_ITEM_RECORDING
   local bit m_auto_item_recording = 0;
@@ -592,7 +591,7 @@ endfunction
 // m_select_sequence
 // -----------------
 
-task uvm_sequencer_base::m_select_sequence();
+task uvm_sequencer_base::m_select_sequence(output uvm_sequence_request selected_sequence_request);
    int selected_sequence;
 
     // Select a sequence
@@ -609,7 +608,8 @@ task uvm_sequencer_base::m_select_sequence();
     end while (selected_sequence == -1);
     // issue grant
     if (selected_sequence >= 0) begin
-      m_set_arbitration_completed(arb_sequence_q[selected_sequence].request_id);
+      selected_sequence_request = arb_sequence_q[selected_sequence];
+      m_set_arbitration_completed(selected_sequence_request.request_id);
       arb_sequence_q.delete(selected_sequence);
       m_update_lists();
     end

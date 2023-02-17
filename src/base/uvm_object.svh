@@ -3,7 +3,7 @@
 // Copyright 2010-2012 AMD
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017-2018 Cisco Systems, Inc.
-// Copyright 2020 Marvell International Ltd.
+// Copyright 2020-2022 Marvell International Ltd.
 // Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
@@ -61,6 +61,9 @@ virtual class uvm_object extends uvm_void;
 
 
   // Group -- NODOCS -- Seeding
+
+  //@uvm-compat provided for compatbility with 1.2
+  static bit use_uvm_seeding = 1;
 
   // Function -- NODOCS -- get_uvm_seeding
 
@@ -743,6 +746,26 @@ virtual class uvm_object extends uvm_void;
 
   extern protected virtual function uvm_report_object m_get_report_object();
 
+
+  // Compatibility methods
+
+  //@uvm-compat for compatibility with 1.2
+  extern virtual function void  set_int_local    (string      field_name,
+                                                  uvm_bitstream_t value,
+                                                  bit         recurse=1);
+
+  //@uvm-compat for compatibility with 1.2
+  extern virtual function void  set_string_local (string field_name,
+                                                  string value,
+                                                  bit    recurse=1);
+
+  //@uvm-compat for compatibility with 1.2
+  extern virtual function void  set_object_local (string      field_name,
+                                                  uvm_object  value,
+                                                  bit         clone=1,
+                                                  bit         recurse=1);
+
+
 endclass
 
 //------------------------------------------------------------------------------
@@ -1170,3 +1193,70 @@ endfunction
 function uvm_report_object uvm_object::m_get_report_object();
   return null;
 endfunction
+
+
+uvm_resource_base m_set_local_rsrc;
+
+function void  uvm_object::set_int_local (string      field_name,
+                                          uvm_bitstream_t value,
+                                          bit         recurse=1);
+  uvm_field_op field_op = uvm_field_op::m_get_available_op();
+  uvm_resource_base rsrc_base  = m_set_local_rsrc;
+  if (rsrc_base == null) begin
+    uvm_resource#(uvm_bitstream_t) rsrc = new(field_name);
+    rsrc.write(value);
+    rsrc_base = rsrc;
+  end
+  field_op.set(UVM_SET, null, rsrc_base);
+  do_execute_op(field_op);
+  field_op.m_recycle();
+  m_set_local_rsrc = null;
+endfunction
+
+
+// set_object_local
+// ----------------
+
+function void  uvm_object::set_object_local (string     field_name,
+                                             uvm_object value,
+                                             bit        clone=1,
+                                             bit        recurse=1);
+  uvm_field_op field_op = uvm_field_op::m_get_available_op();
+  uvm_resource_base rsrc_base  = m_set_local_rsrc;
+  if (rsrc_base == null) begin
+    uvm_resource#(uvm_object) rsrc  = new(field_name);
+    if (clone && (value != null)) begin
+      uvm_object cc  = value.clone();
+      if (cc != null) cc.set_name(field_name);
+      rsrc.write(cc);
+    end
+    else
+      rsrc.write(value);
+    rsrc_base = rsrc;
+  end
+  field_op.set(UVM_SET, null, rsrc_base);
+  do_execute_op(field_op);
+  field_op.m_recycle();
+  m_set_local_rsrc = null;
+endfunction
+
+
+// set_string_local
+// ----------------
+function void  uvm_object::set_string_local (string field_name,
+                                             string value,
+                                             bit    recurse=1);
+                                             
+  uvm_field_op field_op = uvm_field_op::m_get_available_op();
+  uvm_resource_base rsrc_base  = m_set_local_rsrc;
+  if (rsrc_base == null) begin
+    uvm_resource#(string) rsrc = new(field_name);
+    rsrc.write(value);
+    rsrc_base = rsrc;
+  end
+  field_op.set(UVM_SET, null, rsrc_base);
+  do_execute_op(field_op);
+  field_op.m_recycle();
+  m_set_local_rsrc = null;
+endfunction
+

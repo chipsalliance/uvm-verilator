@@ -2,6 +2,7 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017-2018 Cisco Systems, Inc.
 // Copyright 2014-2020 Intel Corporation
+// Copyright 2021-2022 Marvell International Ltd.
 // Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2018 Qualcomm, Inc.
@@ -92,6 +93,12 @@ class uvm_comparer extends uvm_policy;
 
   extern virtual function int unsigned get_threshold ();
 
+  //@uvm-compat
+  bit physical = 1;
+
+  //@uvm-compat
+  bit abstract = 1 ;
+
   typedef struct {
      recursion_state_e state;
      bit ret_val;
@@ -101,15 +108,16 @@ class uvm_comparer extends uvm_policy;
   // Variable -- NODOCS -- policy
   //
   // Determines whether comparison is UVM_DEEP, UVM_REFERENCE, or UVM_SHALLOW.
-
-  local uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
+  // @uvm-compat , for compatibility with 1.2
+  uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
 
   // Variable -- NODOCS -- show_max
   //
   // Sets the maximum number of messages to send to the printer for miscompares
   // of an object. 
 
-  local int unsigned show_max = 1;
+  // @uvm-compat , for compatibility with 1.2
+  int unsigned show_max = 1;
 
   // Variable -- NODOCS -- verbosity
   //
@@ -118,7 +126,8 @@ class uvm_comparer extends uvm_policy;
   // The verbosity setting is used by the messaging mechanism to determine
   // whether messages should be suppressed or shown.
 
-  local int unsigned verbosity = UVM_LOW;
+  // @uvm-compat , for compatibility with 1.2
+  int unsigned verbosity = UVM_LOW;
 
 
   // Variable -- NODOCS -- sev
@@ -128,7 +137,8 @@ class uvm_comparer extends uvm_policy;
   // The severity setting is used by the messaging mechanism for printing and
   // filtering messages.
 
-  local uvm_severity sev = UVM_INFO;
+  // @uvm-compat , for compatibility with 1.2
+  uvm_severity sev = UVM_INFO;
 
 
   // Variable -- NODOCS -- miscompares
@@ -138,7 +148,8 @@ class uvm_comparer extends uvm_policy;
   // The string holds the last set of miscompares that occurred during a
   // comparison.
 
-  local string miscompares = "";
+  // @uvm-compat , for compatibility with 1.2
+  string miscompares = "";
 
   // Variable -- NODOCS -- check_type
   //
@@ -149,7 +160,8 @@ class uvm_comparer extends uvm_policy;
   // to set this to 0 when the two operands are related by inheritance but are
   // different types.
 
-  local bit check_type = 1;
+  // @uvm-compat , for compatibility with 1.2
+  bit check_type = 1;
 
   // Variable -- NODOCS -- result
   // 
@@ -157,7 +169,8 @@ class uvm_comparer extends uvm_policy;
   // You can use the result to determine the number of miscompares that
   // were found.
 
-  local int unsigned result = 0;
+  // @uvm-compat , for compatibility with 1.2
+  int unsigned result = 0;
 
   local int unsigned m_threshold;
 

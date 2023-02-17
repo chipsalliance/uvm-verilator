@@ -4,6 +4,7 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Cisco Systems, Inc.
 // Copyright 2018 Intel Corporation
+// Copyright 2022 Marvell International Ltd.
 // Copyright 2007-2020 Mentor Graphics Corporation
 // Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
@@ -667,6 +668,19 @@ virtual class uvm_report_catcher extends uvm_callback;
       end  
     end
   endfunction
+
+  //@uvm-compat for compatibility with 1.2
+  static function uvm_report_catcher get_report_catcher(string name);
+    static uvm_report_cb_iter iter = new(null);
+    get_report_catcher = iter.first();
+    while(get_report_catcher != null) begin
+      if(get_report_catcher.get_name() == name)
+        return get_report_catcher;
+      get_report_catcher = iter.next();
+    end
+    return null;
+  endfunction
+
 
 endclass
 

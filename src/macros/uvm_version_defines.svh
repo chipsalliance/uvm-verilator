@@ -3,7 +3,7 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2019-2020 Marvell International Ltd.
-// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2007-2022 Mentor Graphics Corporation
 // Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2011-2012 Paradigm Works
 // Copyright 2010-2013 Synopsys, Inc.
@@ -38,5 +38,24 @@
 // implementation releases from Accellera.
 
    `define UVM_VERSION_POST_2017
+   `define UVM_VERSION_POST_2017_1_0   
+   `define UVM_VERSION_POST_2017_1_1
+   `define UVM_VERSION_POST_2020_1_0
+   `define UVM_VERSION_POST_2020_1_1
+   
+// These defines are used in earlier versions of UVM
+// They are provided here with mappings relevant to IEEE 1800.2 2020 v2.0  
+//@back_compat   
+  `define UVM_NAME UVM
+  
+  `define UVM_MAJOR_REV 2020
+  `define UVM_MINOR_REV 2.0
+  
+  `define UVM_VERSION_STRING uvm_pkg::UVM_VERSION_STRING
+
+  // Defines for `ifdefs
+  `define UVM_POST_VERSION_1_1
+  `define UVM_POST_VERSION_1_2
+
 
 `endif // UVM_VERSION_DEFINES_SVH

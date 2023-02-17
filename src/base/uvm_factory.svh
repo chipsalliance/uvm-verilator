@@ -4,7 +4,7 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2017 Intel Corporation
-// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2007-2022 Mentor Graphics Corporation
 // Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2018 Qualcomm, Inc.
 // Copyright 2014 Semifore
@@ -535,6 +535,11 @@ class uvm_default_factory extends uvm_factory;
   extern virtual function
       uvm_object_wrapper find_override_by_type (uvm_object_wrapper requested_type,
                                                 string full_inst_path);
+
+  extern function
+      uvm_object_wrapper m_find_override_by_type (uvm_object_wrapper requested_type,
+                                                string full_inst_path, ref uvm_factory_override override_info[$]);
+
 
   // Function --NODOCS-- find_override_by_name
   //
@@ -1457,8 +1462,6 @@ function uvm_object uvm_default_factory::create_object_by_type (uvm_object_wrapp
   else
     full_inst_path = parent_inst_path;
 
-  m_override_info.delete();
-
   requested_type = find_override_by_type(requested_type, full_inst_path);
 
   return requested_type.create_object(name);
@@ -1531,8 +1534,6 @@ function uvm_component uvm_default_factory::create_component_by_type (uvm_object
     full_inst_path = {parent_inst_path,".",name};
   else
     full_inst_path = parent_inst_path;
-
-  m_override_info.delete();
 
   requested_type = find_override_by_type(requested_type, full_inst_path);
 
@@ -1663,17 +1664,25 @@ endfunction
 
 function uvm_object_wrapper uvm_default_factory::find_override_by_type(uvm_object_wrapper requested_type,
                                                                string full_inst_path);
+   uvm_factory_override override_info[$];
+   
+   return m_find_override_by_type(requested_type, full_inst_path, override_info);
+   
+endfunction                                                               
+
+function uvm_object_wrapper uvm_default_factory::m_find_override_by_type(uvm_object_wrapper requested_type,
+                                                               string full_inst_path, ref uvm_factory_override override_info[$]);
 
   uvm_object_wrapper override;
   uvm_factory_override lindex;
   
   uvm_factory_queue_class qc;
 
-  foreach (m_override_info[index]) begin
+  foreach (override_info[index]) begin
     if ( //index != m_override_info.size()-1 &&
-       m_override_info[index].orig.m_type == requested_type) begin
+       override_info[index].orig.m_type == requested_type) begin
       uvm_report_error("OVRDLOOP", "Recursive loop detected while finding override.", UVM_NONE);
-      m_override_info[index].used++;
+      override_info[index].used++;
       if (!m_debug_pass)
         debug_create_by_type (requested_type, full_inst_path);
 
@@ -1687,7 +1696,7 @@ function uvm_object_wrapper uvm_default_factory::find_override_by_type(uvm_objec
                                  .requested_type(requested_type),
                                  .requested_type_name(requested_type.get_type_name()),
                                  .full_inst_path(full_inst_path))) begin
-        m_override_info.push_back(m_inst_overrides[i]);
+        override_info.push_back(m_inst_overrides[i]);
         if (lindex == null) begin
           lindex = m_inst_overrides[i];
           if (!m_debug_pass) begin
@@ -1723,10 +1732,10 @@ function uvm_object_wrapper uvm_default_factory::find_override_by_type(uvm_objec
     end
     if(matched_overrides.size() != 0) begin
       if (m_debug_pass) begin
-        m_override_info = {m_override_info,matched_overrides};
+        override_info = {override_info,matched_overrides};
       end
       else begin
-        m_override_info.push_back(matched_overrides[$]);
+        override_info.push_back(matched_overrides[$]);
       end
     end
   end

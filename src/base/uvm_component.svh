@@ -1,13 +1,13 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2011-2018 AMD
+// Copyright 2011-2022 AMD
 // Copyright 2012 Accellera Systems Initiative
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2012-2018 Cisco Systems, Inc.
 // Copyright 2018 Intel Corporation
-// Copyright 2020 Marvell International Ltd.
-// Copyright 2007-2020 Mentor Graphics Corporation
-// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2020-2022 Marvell International Ltd.
+// Copyright 2007-2021 Mentor Graphics Corporation
+// Copyright 2013-2022 NVIDIA Corporation
 // Copyright 2010 Paradigm Works
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
@@ -649,6 +649,27 @@ virtual class uvm_component extends uvm_report_object;
   // @uvm-ieee 1800.2-2020 auto 13.1.4.4.3
   extern virtual protected function void define_domain(uvm_domain domain);
 
+  // @uvm-compat for compatibility with 1.2
+  extern function void set_phase_imp(uvm_phase phase, uvm_phase imp, int hier=1);
+
+  // @uvm-compat for compatibility with OVM
+  extern virtual function void build();
+  // @uvm-compat for compatibility with OVM
+  extern virtual function void connect();
+  // @uvm-compat for compatibility with OVM
+  extern virtual function void end_of_elaboration();
+  // @uvm-compat for compatibility with OVM
+  extern virtual function void start_of_simulation();
+  // @uvm-compat for compatibility with OVM
+  extern virtual task run();
+  // @uvm-compat for compatibility with OVM
+  extern virtual function void extract();
+  // @uvm-compat for compatibility with OVM
+  extern virtual function void check();
+  // @uvm-compat for compatibility with OVM
+  extern virtual function void report();
+
+
   // Task -- NODOCS -- suspend
   //
   // Suspend this component.
@@ -701,32 +722,154 @@ virtual class uvm_component extends uvm_report_object;
   //
   //----------------------------------------------------------------------------
 
-  // Function -- NODOCS -- apply_config_settings
+  // Function -- NODOCS -- check_config_usage
+  // @uvm-compat  , for compatibility with 1.2
+  // 
+  // Check all configuration settings in a components configuration table
+  // to determine if the setting has been used, overridden or not used.
+  // When ~recurse~ is 1 (default), configuration for this and all child
+  // components are recursively checked. This function is automatically
+  // called in the check phase, but can be manually called at any time.
   //
-  // Searches for all config settings matching this component's instance path.
-  // For each match, the appropriate set_*_local method is called using the
-  // matching config setting's field_name and value. Provided the set_*_local
-  // method is implemented, the component property associated with the
-  // field_name is assigned the given value. 
+  // To get all configuration information prior to the run phase, do something 
+  // like this in your top object:
+  //|  function void start_of_simulation_phase(uvm_phase phase);
+  //|    check_config_usage();
+  //|  endfunction
+
+  extern function void check_config_usage (bit recurse=1);
+
+  // Function -- NODOCS -- set_config_int
+  //@uvm-compat
+  extern virtual function void set_config_int (string inst_name,  
+                                               string field_name,
+                                               uvm_bitstream_t value);
+
+  // Function -- NODOCS -- set_config_string
+  //@uvm-compat
+  extern virtual function void set_config_string (string inst_name,  
+                                                  string field_name,
+                                                  string value);
+
+  // Function -- NODOCS -- set_config_object
   //
-  // This function is called by <uvm_component::build_phase>.
+  // Calling set_config_* causes configuration settings to be created and
+  // placed in a table internal to this component. There are similar global
+  // methods that store settings in a global table. Each setting stores the
+  // supplied ~inst_name~, ~field_name~, and ~value~ for later use by descendent
+  // components during their construction. (The global table applies to
+  // all components and takes precedence over the component tables.)
   //
-  // The apply_config_settings method determines all the configuration
-  // settings targeting this component and calls the appropriate set_*_local
-  // method to set each one. To work, you must override one or more set_*_local
-  // methods to accommodate setting of your component's specific properties.
-  // Any properties registered with the optional `uvm_*_field macros do not
-  // require special handling by the set_*_local methods; the macros provide
-  // the set_*_local functionality for you. 
+  // When a descendant component calls a get_config_* method, the ~inst_name~
+  // and ~field_name~ provided in the get call are matched against all the
+  // configuration settings stored in the global table and then in each
+  // component in the parent hierarchy, top-down. Upon the first match, the
+  // value stored in the configuration setting is returned. Thus, precedence is
+  // global, following by the top-level component, and so on down to the
+  // descendent component's parent.
   //
-  // If you do not want apply_config_settings to be called for a component,
-  // then the build_phase() method should be overloaded and you should not call
-  // super.build_phase(phase). Likewise, apply_config_settings can be overloaded to
-  // customize automated configuration.
+  // These methods work in conjunction with the get_config_* methods to
+  // provide a configuration setting mechanism for integral, string, and
+  // uvm_object-based types. Settings of other types, such as virtual interfaces
+  // and arrays, can be indirectly supported by defining a class that contains
+  // them.
   //
-  // When the ~verbose~ bit is set, all overrides are printed as they are
-  // applied. If the component's <print_config_matches> property is set, then
-  // apply_config_settings is automatically called with ~verbose~ = 1.
+  // Both ~inst_name~ and ~field_name~ may contain wildcards.
+  //
+  // - For set_config_int, ~value~ is an integral value that can be anything
+  //   from 1 bit to 4096 bits.
+  //
+  // - For set_config_string, ~value~ is a string.
+  //
+  // - For set_config_object, ~value~ must be an <uvm_object>-based object or
+  //   null.  Its clone argument specifies whether the object should be cloned.
+  //   If set, the object is cloned both going into the table (during the set)
+  //   and coming out of the table (during the get), so that multiple components
+  //   matched to the same setting (by way of wildcards) do not end up sharing
+  //   the same object.
+  //
+  //
+  // See <get_config_int>, <get_config_string>, and <get_config_object> for
+  // information on getting the configurations set by these methods.
+
+  //@uvm-compat
+  extern virtual function void set_config_object (string inst_name,  
+                                                  string field_name,
+                                                  uvm_object value,  
+                                                  bit clone=1);
+
+
+  // Function -- NODOCS -- get_config_int
+  //@uvm-compat
+  extern virtual function bit get_config_int (string field_name,
+                                              inout uvm_bitstream_t value);
+
+  // Function -- NODOCS -- get_config_string
+  //@uvm-compat
+  extern virtual function bit get_config_string (string field_name,
+                                                 inout string value);
+
+  // Function -- NODOCS -- get_config_object
+  //
+  // These methods retrieve configuration settings made by previous calls to
+  // their set_config_* counterparts. As the methods' names suggest, there is
+  // direct support for integral types, strings, and objects.  Settings of other
+  // types can be indirectly supported by defining an object to contain them.
+  //
+  // Configuration settings are stored in a global table and in each component
+  // instance. With each call to a get_config_* method, a top-down search is
+  // made for a setting that matches this component's full name and the given
+  // ~field_name~. For example, say this component's full instance name is
+  // top.u1.u2. First, the global configuration table is searched. If that
+  // fails, then it searches the configuration table in component 'top',
+  // followed by top.u1. 
+  //
+  // The first instance/field that matches causes ~value~ to be written with the
+  // value of the configuration setting and 1 is returned. If no match
+  // is found, then ~value~ is unchanged and the 0 returned.
+  //
+  // Calling the get_config_object method requires special handling. Because
+  // ~value~ is an output of type <uvm_object>, you must provide an uvm_object
+  // handle to assign to (_not_ a derived class handle). After the call, you can
+  // then $cast to the actual type.
+  //
+  // For example, the following code illustrates how a component designer might
+  // call upon the configuration mechanism to assign its ~data~ object property,
+  // whose type myobj_t derives from uvm_object.
+  //
+  //|  class mycomponent extends uvm_component;
+  //|
+  //|    local myobj_t data;
+  //|
+  //|    function void build_phase(uvm_phase phase);
+  //|      uvm_object tmp;
+  //|      super.build_phase(phase);
+  //|      if(get_config_object("data", tmp))
+  //|        if (!$cast(data, tmp))
+  //|          $display("error! config setting for 'data' not of type myobj_t");
+  //|        endfunction
+  //|      ...
+  //
+  // The above example overrides the <build_phase> method. If you want to retain
+  // any base functionality, you must call super.build_phase(uvm_phase phase).
+  //
+  // The ~clone~ bit clones the data inbound. The get_config_object method can
+  // also clone the data outbound.
+  //
+  // See Members for information on setting the global configuration table.
+  //@uvm-compat
+  extern virtual function bit get_config_object (string field_name,
+                                                 inout uvm_object value,  
+                                                 input bit clone=1);
+
+
+
+  // Function: apply_config_settings
+  //
+  // The apply_config_settings method diverges from the 1800.2
+  // standard definition, using <apply_config_settings_mode> to determine
+  // how the resource pool shall be queried.
+  //
 
   // @uvm-ieee 1800.2-2020 auto 13.1.5.1
   extern virtual function void apply_config_settings (bit verbose = 0);
@@ -753,8 +896,13 @@ virtual class uvm_component extends uvm_report_object;
   // along with the resource name and value
   //
   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
-
   extern function void print_config(bit recurse = 0, bit audit = 0);
+
+  //@uvm-compat provided for compatibility with 1.1d
+  extern function void print_config_settings(string field="",
+                                             uvm_component comp=null,
+                                             bit recurse=0);
+
 
   // Function -- NODOCS -- print_config_with_audit
   //
@@ -767,7 +915,8 @@ virtual class uvm_component extends uvm_report_object;
 
   extern function void print_config_with_audit(bit recurse = 0);
 
-  static `ifndef UVM_ENABLE_DEPRECATED_API local `endif bit print_config_matches;
+  //@uvm-compat for compatibility with 1800.2-2017
+  static bit print_config_matches;
 
   // Function: get_print_config_matches
   //
@@ -1343,6 +1492,43 @@ virtual class uvm_component extends uvm_report_object;
   // @uvm-ieee 1800.2-2020 auto 13.1.2.3
   extern virtual function void do_execute_op( uvm_field_op op );
 
+  // Type: config_mode_t
+  // Value type for storing config_mode_e values
+  //
+  // |  typedef bit [1:0] config_mode_t;
+  //
+  // @uvm-contrib
+  typedef bit [1:0] config_mode_t;
+
+  // Type: config_mode_e
+  // Enumeration for controlling component config settings.
+  //
+  // CONFIG_STRICT - Strictly adhere to the LRM
+  // CONFIG_HIGHEST_PRECEDENCE - Only apply resources with highest precedence for each 
+  //                             field name / type handle pair
+  // CONFIG_CHECK_NAMES - Only apply settings for fields names responding to UVM_CHECK_FIELDS op
+  //
+  // @uvm-contrib
+  typedef enum config_mode_t {CONFIG_STRICT=2'b00,
+                              CONFIG_HIGHEST_PRECEDENCE=2'b01,
+                              CONFIG_CHECK_NAMES=2'b10} config_mode_e;
+
+  // Variable: CONFIG_DEFAULT
+  // Default configuration mode used by apply_config_settings_mode.
+  //
+  // @uvm-contrib
+  localparam config_mode_t CONFIG_DEFAULT = `UVM_COMPONENT_CONFIG_MODE_DEFAULT;
+
+  // Function: apply_config_settings_mode
+  // Controls the configuration mode for <uvm_component::apply_config_settings>.
+  //
+  // Extensions may override this method to return a different config settings
+  // mode.
+  //
+  // @uvm-contrib
+  extern virtual function config_mode_t apply_config_settings_mode();
+  
+  
   // Variable -- NODOCS -- tr_database
   //
   // Specifies the <uvm_tr_database> object to use for <begin_tr>
@@ -1425,6 +1611,8 @@ virtual class uvm_component extends uvm_report_object;
   
   // Function: set_recording_enabled 
   //
+  // | function void set_recording_enabled(bit enabled)
+  //
   // In addition to the functionality described in IEEE 1800.2, this
   // library implements a call to set_recording_enabled in build_phase
   // when a config_db access of the form 
@@ -1458,6 +1646,17 @@ virtual class uvm_component extends uvm_report_object;
   uvm_resource_base m_unsupported_resource_base = null;
   extern function void m_unsupported_set_local(uvm_resource_base rsrc);
 
+  // Compat API
+
+  //@uvm-compat for compatibility with 1.2
+  extern function int begin_child_tr (uvm_transaction tr,
+                                          int parent_handle=0,
+                                          string stream_name="main",
+                                          string label="",
+                                          string desc="",
+                                          time begin_time=0);
+  
+
 endclass : uvm_component
   
 `include "base/uvm_root.svh"
@@ -1481,12 +1680,15 @@ function uvm_component::new (string name, uvm_component parent);
   string error_str;
   uvm_root top;
   uvm_coreservice_t cs;
+  uvm_resource_pool rp;
+  uvm_resource_types::rsrc_q_t rq;
 
   super.new(name);
 
   // If uvm_top, reset name to "" so it doesn't show in full paths then return
   if (parent==null && name == "__top__") begin
     set_name(""); // *** VIRTUAL
+    event_pool = new("event_pool");
     return;
   end
 
@@ -1557,9 +1759,23 @@ function uvm_component::new (string name, uvm_component parent);
   reseed();
 
   // Do local configuration settings
-  if (!uvm_config_db #(uvm_bitstream_t)::get(this, "", "recording_detail", recording_detail))
-        void'(uvm_config_db #(int)::get(this, "", "recording_detail", recording_detail));
-
+  rp = cs.get_resource_pool();
+  rq = rp.lookup_name(.scope(get_full_name()),
+                      .name("recording_detail"),
+                      .type_handle(null),
+                      .rpterr(0));
+  if (rq.size() > 0) begin
+    uvm_resource_base rsrc;
+    bit found;
+    rp.sort_by_precedence(rq);
+    do begin
+      // Apply in highest precedence order, exit on first match
+      rsrc = rq.pop_front();
+      `uvm_resource_builtin_int_read(found, rsrc, recording_detail, this);
+    end
+    while (!found && (rq.size() > 0));
+  end
+      
   m_rh.set_name(get_full_name());
   set_report_verbosity_level(parent.get_report_verbosity_level());
 
@@ -2071,40 +2287,42 @@ endfunction
 // build_phase() has a default implementation, the others have an empty default
 
 function void uvm_component::build_phase(uvm_phase phase);
-  m_build_done = 1;
-  if (use_automatic_config())
-    apply_config_settings(get_print_config_matches());
+  build();
 endfunction
 
 
-// these phase methods are common to all components in UVM. For backward
-// compatibility, they call the old style name (without the _phse)
-
 function void uvm_component::connect_phase(uvm_phase phase);
+  connect();
   return; 
 endfunction
 
 function void uvm_component::start_of_simulation_phase(uvm_phase phase);
+  start_of_simulation();
   return; 
 endfunction
 
 function void uvm_component::end_of_elaboration_phase(uvm_phase phase);
+  end_of_elaboration();
   return; 
 endfunction
 
 task          uvm_component::run_phase(uvm_phase phase);
+  run();
   return; 
 endtask
 
 function void uvm_component::extract_phase(uvm_phase phase);
+  extract();
   return; 
 endfunction
 
 function void uvm_component::check_phase(uvm_phase phase);
+  check();
   return; 
 endfunction
 
 function void uvm_component::report_phase(uvm_phase phase);
+  report();
   return; 
 endfunction
 
@@ -2166,18 +2384,29 @@ endfunction
 // -------------
 
 function void uvm_component::define_domain(uvm_domain domain);
-  uvm_phase schedule;
-  //schedule = domain.find(uvm_domain::get_uvm_schedule());
-  schedule = domain.find_by_name("uvm_sched");
-  if (schedule == null) begin
-    uvm_domain common;
-    schedule = new("uvm_sched", UVM_PHASE_SCHEDULE);
-    uvm_domain::add_uvm_phases(schedule);
-    domain.add(schedule);
-    common = uvm_domain::get_common_domain();
-    if (common.find(domain,0) == null)
-      common.add(domain,.with_phase(uvm_run_phase::get()));
+  int num_children;
+  uvm_phase succ[];
+  // An empty domain will only have no successor, or a successor
+  // which it isn't a parent to.
+  domain.get_adjacent_successor_nodes(succ);
+  num_children = succ.size(); // Potential children
+  foreach(succ[iter]) begin
+    if (succ[iter].get_parent() != domain)
+      num_children--; // Successor, but not a child
   end
+  if (num_children == 0) begin
+      uvm_phase schedule;
+      schedule = domain.find_by_name("uvm_sched");
+      if (schedule == null) begin
+      uvm_domain common;
+      schedule = new("uvm_sched", UVM_PHASE_SCHEDULE);
+      uvm_domain::add_uvm_phases(schedule);
+      domain.add(schedule);
+      common = uvm_domain::get_common_domain();
+      if (common.find(domain,0) == null)
+      common.add(domain,.with_phase(uvm_run_phase::get()));
+      end
+  end 
 
 endfunction
 
@@ -2204,6 +2433,15 @@ endfunction
 //
 function uvm_domain uvm_component::get_domain();
   return m_domain;
+endfunction
+
+// set_phase_imp
+// -------------
+function void uvm_component::set_phase_imp(uvm_phase phase, uvm_phase imp, int hier=1);
+  m_phase_imps[phase] = imp;
+  if (hier)
+    foreach (m_children[c])
+      m_children[c].set_phase_imp(phase,imp,hier);
 endfunction
 
 //--------------------------
@@ -2243,6 +2481,113 @@ function void uvm_component::do_resolve_bindings();
   resolve_bindings();
 endfunction
 
+//
+// set_config_int
+//
+// Undocumented struct for storing clone bit along w/
+// object on set_config_object(...) calls
+class uvm_config_object_wrapper;
+   uvm_object obj;
+   bit clone;
+endclass : uvm_config_object_wrapper
+
+function void uvm_component::set_config_int(string inst_name,
+                                           string field_name,
+                                           uvm_bitstream_t value);
+
+  uvm_config_int::set(this, inst_name, field_name, value);
+endfunction
+
+//
+// set_config_string
+//
+function void uvm_component::set_config_string(string inst_name,
+                                               string field_name,
+                                               string value);
+
+  uvm_config_string::set(this, inst_name, field_name, value);
+endfunction
+
+//
+// set_config_object
+//
+function void uvm_component::set_config_object(string inst_name,
+                                               string field_name,
+                                               uvm_object value,
+                                               bit clone = 1);
+  uvm_object tmp;
+  uvm_config_object_wrapper wrapper;
+
+  if(value == null)
+    `uvm_warning("NULLCFG", {"A null object was provided as a ",
+       $sformatf("configuration object for set_config_object(\"%s\",\"%s\")",
+       inst_name, field_name), ". Verify that this is intended."})
+
+  if(clone && (value != null)) begin
+    tmp = value.clone();
+    if(tmp == null) begin
+      uvm_component comp;
+      if ($cast(comp,value)) begin
+        `uvm_error("INVCLNC", {"Clone failed during set_config_object ",
+          "with an object that is an uvm_component. Components cannot be cloned."})
+        return;
+      end
+      else begin
+        `uvm_warning("INVCLN", {"Clone failed during set_config_object, ",
+          "the original reference will be used for configuration. Check that ",
+          "the create method for the object type is defined properly."})
+      end
+    end
+    else
+      value = tmp;
+  end
+
+
+  uvm_config_object::set(this, inst_name, field_name, value);
+
+  wrapper = new;
+  wrapper.obj = value;
+  wrapper.clone = clone;
+  uvm_config_db#(uvm_config_object_wrapper)::set(this, inst_name, field_name, wrapper);
+endfunction
+
+//
+// get_config_int
+//
+function bit uvm_component::get_config_int (string field_name,
+                                            inout uvm_bitstream_t value);
+
+  return uvm_config_int::get(this, "", field_name, value);
+endfunction
+
+//
+// get_config_string
+//
+function bit uvm_component::get_config_string(string field_name,
+                                              inout string value);
+
+  return uvm_config_string::get(this, "", field_name, value);
+endfunction
+
+//
+// get_config_object
+//
+//
+// Note that this does not honor the set_config_object clone bit
+function bit uvm_component::get_config_object (string field_name,
+                                               inout uvm_object value,
+                                               input bit clone=1);
+
+  if(!uvm_config_object::get(this, "", field_name, value)) begin
+    return 0;
+  end
+
+  if(clone && value != null) begin
+    value = value.clone();
+  end
+
+  return 1;
+endfunction
 
 
 //------------------------------------------------------------------------------
@@ -2632,42 +2977,167 @@ function string uvm_component::massage_scope(string scope);
 
 endfunction
 
+// apply_config_settings_mode
+// ---------------
+function uvm_component::config_mode_t uvm_component::apply_config_settings_mode();
+  return CONFIG_DEFAULT;
+endfunction : apply_config_settings_mode
 
 // use_automatic_config
 // --------------------
 function bit uvm_component::use_automatic_config();
   return 1;
-endfunction      
+endfunction 
+
+// check_config_usage
+// ------------------
+
+function void uvm_component::check_config_usage ( bit recurse=1 );
+  uvm_resource_pool rp = uvm_resource_pool::get();
+  uvm_queue#(uvm_resource_base) rq;
+
+  rq = rp.find_unused_resources();
+
+  if(rq.size() == 0)
+    return;
+
+  uvm_report_info("CFGNRD"," ::: The following resources have at least one write and no reads :::",UVM_INFO);
+  rp.print_resources(rq, 1);
+endfunction     
    
 // apply_config_settings
 // ---------------------
 
 function void uvm_component::apply_config_settings (bit verbose=0);
-
+  uvm_resource_types::rsrc_q_t all[string];
+  string name_order[$];
   uvm_resource_pool rp = uvm_resource_pool::get();
   uvm_queue#(uvm_resource_base) rq;
   uvm_resource_base r;
+  config_mode_t mode;
+  mode = apply_config_settings_mode();
 
-  // The following is VERY expensive. Needs refactoring. Should
-  // get config only for the specific field names in 'field_array'.
-  // That's because the resource pool is organized first by field name.
-  // Can further optimize by encoding the value for each 'field_array' 
-  // entry to indicate string, uvm_bitstream_t, or object. That way,
-  // we call 'get' for specific fields of specific types rather than
-  // the search-and-cast approach here.
-  rq = rp.lookup_scope(get_full_name());
-  rp.sort_by_precedence(rq);
+  if (mode & CONFIG_CHECK_NAMES) begin
+    uvm_queue#(uvm_acs_name_struct) names;
+    uvm_field_op op;
+    names = new("names");
+    op = uvm_field_op::m_get_available_op();
+    op.set(UVM_CHECK_FIELDS, null, names);
+    this.do_execute_op(op);
+    op.m_recycle();
 
-  // rq is in precedence order now, so we have to go through in reverse
-  // order to do the settings.
-  for(int i=rq.size()-1; i>=0; --i) begin
-    r = rq.get(i);
+    while (names.size()) begin
+      uvm_acs_name_struct s;
+      s = names.pop_front();
+      // We could push this into the macros themselves, ie. have the
+      // macro do the config_db lookup, but it's not clear that there's
+      // a strong perf win there.  If a field name is reused by many
+      // different types of resources (e.g. object, string, int, bitstream), then
+      // only a subset are going to be valid for a single field (e.g. int
+      // and bitstream).  Filtering on type is cheap though compared to
+      // matching scope, and if a field is declared multiple times in a single
+      // inheritance hierarchy then we could double-tap the scope match.
+      if (s.name != "") begin
+        name_order.push_back(s.name);
+        all[s.name] = rp.lookup_name(.scope(get_full_name()),
+                                     .name(s.name), 
+                                     .type_handle(null), 
+                                     .rpterr(0));
+        if(verbose)
+          uvm_report_info("CFGAPL",$sformatf("looking up configuration for field %s (%0d resources)", s.name, all[s.name].size()),UVM_NONE);
+      end
+      if (s.regex != "") begin
+        // Regexes are more painful, but are required for arrays/queues/etc
+        rq = rp.lookup_regex(.re(s.regex),
+                             .scope(get_full_name()));
+        if(verbose)
+          uvm_report_info("CFGAPL",$sformatf("looking up configuration for regex field %s (%0d resources)", s.regex, rq.size()),UVM_NONE);
 
-    if(verbose)
-      uvm_report_info("CFGAPL",$sformatf("applying configuration to field %s", r.get_name()),UVM_NONE);
+        // The regex match (ie. resource name) is the name used, so push into
+        // the appropriate all-array location.
+        for (int iter = 0; iter < rq.size(); iter++) begin
+          string r_name;
+          r = rq.get(iter);
+          r_name = r.get_name();
+          if (!all.exists(r_name)) begin
+            all[r_name] = new(r_name);
+            name_order.push_back(r_name);
+          end
+          all[r_name].push_back(r);
+        end
+      end
+    end
+  end
+  else begin
+    // The following is VERY expensive. CONFIG_CHECK_NAMES is much better. 
+    rq = rp.lookup_scope(get_full_name());
+    while (rq.size()) begin
+      string name;
+      r = rq.pop_front();
+      name = r.get_name();
+      if (!all.exists(name)) begin
+        name_order.push_back(name);
+        all[name] = new(name);
+      end
+      all[name].push_back(r);
+    end
+  end // else: !if(mode & CONFIG_CHECK_NAMES)
 
-    set_local(r);
+  // At this point the all-array is loaded with queues of resources by-name.
+  // Next we iterate through every field and sort by precedence, because 
+  // regardless of CONFIG_HIGHEST_PRECEDENCE, we still need the queues sorted.
+  //
+  // We can't just grab the single highest precedence per-field, because
+  // duplicate field names can exist with different resource types.  While
+  // this is ugly, it's perfectly legal.
+  //
+  // Instead, we sort by precedence, and then drop the duplicate resource types.
+  foreach (name_order[iter]) begin
+    rq = all[name_order[iter]];
+    // TODO: Update this to use sort_by_precedence_q (Mantis 7354)
+    rp.sort_by_precedence(rq);
 
+    if (mode & CONFIG_HIGHEST_PRECEDENCE) begin
+      int unsigned precedence_by_handle[uvm_resource_base];
+      uvm_resource_base type_handle;
+      int idx;
+      while (idx < rq.size()) begin
+        r = rq.get(idx);
+        type_handle = r.get_type_handle();
+        if (type_handle == null) begin
+          // null type handles are always applied
+          idx++;
+        end
+        else if (!precedence_by_handle.exists(type_handle)) begin
+          // first we enounter is highest precedence
+          if(verbose)
+            uvm_report_info("CFGAPL",$sformatf("found high precedence (%0d) configuration to field %s", rp.get_precedence(r), r.get_name()),UVM_NONE);
+          precedence_by_handle[type_handle] = rp.get_precedence(r);
+          idx++;
+        end
+        else begin
+          if (rp.get_precedence(r) < precedence_by_handle[type_handle]) begin
+            if(verbose)
+              uvm_report_info("CFGAPL",$sformatf("skipping low precedence (%0d<%0d) configuration to field %s", rp.get_precedence(r), precedence_by_handle[type_handle], r.get_name()),UVM_NONE);
+            rq.delete(idx);
+          end
+          else begin
+            if(verbose)
+              uvm_report_info("CFGAPL",$sformatf("found matching high precedence (%0d) configuration to field %s", rp.get_precedence(r), r.get_name()),UVM_NONE);
+            idx++;
+          end
+        end // else: !if(!precedence_by_handle.exists(type_handle))
+      end // while (idx < rq.size())
+    end // if (mode & CONFIG_HIGHEST_PRECEDENCE)
+    
+    // Apply all resources for this name
+    for (int i=rq.size()-1; i>=0; --i) begin
+      r = rq.get(i);
+        
+      if(verbose)
+        uvm_report_info("CFGAPL",$sformatf("applying configuration to field %s", r.get_name()),UVM_NONE);
+      set_local(r);
+    end
   end
 
 endfunction
@@ -2702,6 +3172,12 @@ endfunction
 
 function bit uvm_component::get_recording_enabled();
    return (uvm_verbosity'(recording_detail) != UVM_NONE);
+endfunction
+
+function void uvm_component::print_config_settings (string field="",
+                                                    uvm_component comp=null,
+                                                    bit recurse=0);
+  print_config(recurse, 1);
 endfunction
 
 function void uvm_component::set_recording_enabled(bit enabled);
@@ -2960,3 +3436,31 @@ function void uvm_component::m_do_pre_abort;
     m_children[i].m_do_pre_abort(); 
   pre_abort(); 
 endfunction
+
+function int uvm_component::begin_child_tr (uvm_transaction tr,
+                                                int parent_handle=0,
+                                                string stream_name="main",
+                                                string label="",
+                                                string desc="",
+                                                time begin_time=0);
+  return begin_tr(tr, stream_name, label, desc, begin_time, parent_handle);
+endfunction
+
+// contains default behavior for build_phase()
+function void uvm_component::build();
+  m_build_done = 1;
+  if (use_automatic_config())
+    apply_config_settings(get_print_config_matches());
+endfunction
+
+// These are the old style phase names for backward compatibility. 
+function void uvm_component::connect();             return; endfunction
+function void uvm_component::start_of_simulation(); return; endfunction
+function void uvm_component::end_of_elaboration();  return; endfunction
+task          uvm_component::run();                 return; endtask
+function void uvm_component::extract();             return; endfunction
+function void uvm_component::check();               return; endfunction
+function void uvm_component::report();              return; endfunction
+
+
+

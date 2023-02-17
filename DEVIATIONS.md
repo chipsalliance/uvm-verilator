@@ -12,3 +12,5 @@ the following issues which resulted in the implementation deviating from the 180
 2. Section 18.4.3.6 says that if the map argument passed to get_local_map() is null, then the default map of the parent block is returned. The actual behaviour is to return the result of the get_default_map() call.
 
 [Mantis 7091](https://accellera.mantishub.io/view.php?id=7091)
+
+3. Section 13.1.5.1 says that ``apply_config_settings`` shall search all fields that match for the component's scope.  This operation is very expensive, as it implies a regex check against all resources in the database.  The actual behavior is to only check for fields that have been defined in `` `uvm_field_* `` macros.  See the documentation of `` uvm_component::apply_config_settings_mode `` for more information.

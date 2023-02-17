@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2015-2020 NVIDIA Corporation
+// Copyright 2022 Marvell International Ltd.
+// Copyright 2015-2022 NVIDIA Corporation
 // Copyright 2014 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -22,11 +23,25 @@
 `define UVM_GLOBAL_DEFINES_SVH
 
 //
-// Title -- NODOCS -- Global Macros 
+// Title: Global Macros 
 //------------------------
-// Group -- NODOCS -- Global object Macro definitions can be used in multiple locations
+// Global object Macro definitions can be used in multiple locations
 //------------------------
 //
+
+// MACRO: `UVM_COMPONENT_CONFIG_MODE_DEFAULT
+//
+// Defines the default configuration mode used by uvm_component::apply_config_settings_mode.
+//
+// The default value is CONFIG_CHECK_NAMES.  Note that this is a divergence from 1800.2,
+// however the performance increase is drastic.  If the 1800.2 behavior is desired,
+// the library can be compiled with `+define+UVM_COMPONENT_CONFIG_MODE_DEFAULT=CONFIG_STRICT`.
+//
+// @uvm-contrib
+`ifndef UVM_COMPONENT_CONFIG_MODE_DEFAULT
+ `define UVM_COMPONENT_CONFIG_MODE_DEFAULT CONFIG_CHECK_NAMES
+`endif
+
 // MACRO -- NODOCS -- `UVM_MAX_STREAMBITS
 //
 // Defines the maximum bit vector size for integral types. 

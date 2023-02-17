@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2015-2020 NVIDIA Corporation
 // Copyright 2011 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //

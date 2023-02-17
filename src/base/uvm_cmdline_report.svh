@@ -1,5 +1,6 @@
 //
 //------------------------------------------------------------------------------
+// Copyright 2022 AMD
 // Copyright 2007-2009 Cadence Design Systems, Inc.
 // Copyright 2007-2009 Mentor Graphics Corporation
 // Copyright 2020 NVIDIA Corporation
@@ -172,7 +173,7 @@ class uvm_cmdline_set_verbosity extends uvm_cmdline_setting_base;
       string  args[$];
       string  message;
       bit     skip;
-      
+       
       foreach(setting_str[i]) begin
         skip = 0;
         uvm_string_split(setting_str[i], ",", args);
@@ -194,6 +195,7 @@ class uvm_cmdline_set_verbosity extends uvm_cmdline_setting_base;
         end
         
         if (!skip) begin
+          int rt_val;
           uvm_cmdline_set_verbosity setting;
           setting = new();
           setting.arg = setting_str[i];
@@ -201,8 +203,9 @@ class uvm_cmdline_set_verbosity extends uvm_cmdline_setting_base;
           setting.id = args[1];
           setting.verbosity = temp_verb;
           setting.phase = args[3];
-          if (setting.phase == "time")
-            setting.offset = args[4].atoi();
+          if (setting.phase == "time") begin
+            rt_val = $sscanf(args[4], "%d", setting.offset);
+          end
           else
             setting.offset = 0;
           settings.push_back(setting);

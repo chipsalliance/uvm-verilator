@@ -1,7 +1,8 @@
 //
 //----------------------------------------------------------------------
 // Copyright 2010-2018 AMD
-// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2021 Cadence Design Systems, Inc.
+// Copyright 2021 Marvell International Ltd.
 // Copyright 2007-2013 Mentor Graphics Corporation
 // Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2010-2014 Synopsys, Inc.
@@ -81,8 +82,6 @@
 `include "macros/uvm_callback_defines.svh"
 `include "macros/uvm_reg_defines.svh"
 
-`ifdef UVM_ENABLE_DEPRECATED_API
 `include "deprecated/macros/uvm_sequence_defines.svh"
-`endif
 
 `endif

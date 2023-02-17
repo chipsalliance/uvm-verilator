@@ -1,10 +1,11 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2012 AMD
+// Copyright 2012-2022 AMD
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2018 Cisco Systems, Inc.
 // Copyright 2017 Intel Corporation
-// Copyright 2007-2018 Mentor Graphics Corporation
+// Copyright 2022 Marvell International Ltd.
+// Copyright 2007-2021 Mentor Graphics Corporation
 // Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
@@ -309,6 +310,8 @@ endfunction
 
 function int uvm_get_array_index_int(string arg, output bit is_wildcard);
   int i;
+  int rt_val;
+   
   uvm_get_array_index_int = 0;
   is_wildcard = 1;
   i = arg.len() - 1;
@@ -328,7 +331,7 @@ function int uvm_get_array_index_int(string arg, output bit is_wildcard);
 
   if(i>0) begin
     arg = arg.substr(i+1, arg.len()-2);
-    uvm_get_array_index_int = arg.atoi(); 
+    rt_val = $sscanf(arg, "%d" ,uvm_get_array_index_int ); 
     is_wildcard = 0;
   end
 endfunction 
@@ -383,6 +386,110 @@ endfunction
 typedef class uvm_component;
 typedef class uvm_root;
 typedef class uvm_report_object;
+
+//------------------------------------------------------------------------------
+// CLASS -- NODOCS -- uvm_utils #(TYPE,FIELD)
+//
+// This class contains useful template functions.
+//
+//------------------------------------------------------------------------------
+//@uvm-compat        
+class uvm_utils #(type TYPE=int, string FIELD="config");
+
+  typedef TYPE types_t[$];
+
+  // Function -- NODOCS -- find_all
+  //
+  // Recursively finds all component instances of the parameter type ~TYPE~,
+  // starting with the component given by ~start~. Uses <uvm_root::find_all>.
+//@uvm-compat
+  static function types_t find_all(uvm_component start);
+    uvm_component list[$];
+    types_t types;
+    uvm_root top;
+    uvm_coreservice_t cs;
+    cs = uvm_coreservice_t::get();
+    top = cs.get_root();
+    top.find_all("*",list,start);
+    foreach (list[i]) begin
+      TYPE typ;
+      if ($cast(typ,list[i]))
+        types.push_back(typ);
+    end
+    if (types.size() == 0) begin
+      `uvm_warning("find_type-no match",{"Instance of type '",TYPE::type_name,
+         " not found in component hierarchy beginning at ",start.get_full_name()})
+    end
+    return types;
+  endfunction
+//@uvm-compat
+  static function TYPE find(uvm_component start);
+    types_t types = find_all(start);
+    if (types.size() == 0)
+      return null;
+    if (types.size() > 1) begin
+      `uvm_warning("find_type-multi match",{"More than one instance of type '",TYPE::type_name,
+         " found in component hierarchy beginning at ",start.get_full_name()})
+      return null;
+    end
+    return types[0];
+  endfunction
+//@uvm-compat
+  static function TYPE create_type_by_name(string type_name, string contxt);
+    uvm_object obj;
+    TYPE  typ;
+    uvm_coreservice_t cs = uvm_coreservice_t::get();                                                     
+    uvm_factory factory=cs.get_factory();
+  
+    obj = factory.create_object_by_name(type_name,contxt,type_name);
+       if (!$cast(typ,obj))
+         uvm_report_error("WRONG_TYPE",{"The type_name given '",type_name,
+                "' with context '",contxt,"' did not produce the expected type."});
+    return typ;
+  endfunction
+
+
+  // Function -- NODOCS -- get_config
+  //
+  // This method gets the object config of type ~TYPE~
+  // associated with component ~comp~.
+  // We check for the two kinds of error which may occur with this kind of 
+  // operation.
+//@uvm-compat
+  static function TYPE get_config(uvm_component comp, bit is_fatal);
+    uvm_object obj;
+    TYPE cfg;
+
+    if (!m_uvm_config_obj_misc::get(comp,"",FIELD, obj)) begin
+      if (is_fatal)
+        comp.uvm_report_fatal("NO_SET_CFG", {"no set_config to field '", FIELD,
+                           "' for component '",comp.get_full_name(),"'"},
+                           UVM_MEDIUM, `uvm_file , `uvm_line  );
+      else
+        comp.uvm_report_warning("NO_SET_CFG", {"no set_config to field '", FIELD,
+                           "' for component '",comp.get_full_name(),"'"},
+                           UVM_MEDIUM, `uvm_file , `uvm_line  );
+      return null;
+    end
+
+    if (!$cast(cfg, obj)) begin
+      if (is_fatal)
+        comp.uvm_report_fatal( "GET_CFG_TYPE_FAIL",
+                          {"set_config_object with field name ",FIELD,
+                          " is not of type '",TYPE::type_name,"'"},
+                          UVM_NONE , `uvm_file , `uvm_line );
+      else
+        comp.uvm_report_warning( "GET_CFG_TYPE_FAIL",
+                          {"set_config_object with field name ",FIELD,
+                          " is not of type '",TYPE::type_name,"'"},
+                          UVM_NONE , `uvm_file , `uvm_line );
+    end
+
+    return cfg;
+  endfunction
+endclass
+
+
 
 `ifdef UVM_USE_PROCESS_CONTAINER
 class process_container_c;

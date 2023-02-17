@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------
 // Copyright 2018 Cadence Design Systems, Inc.
 // Copyright 2018 Cisco Systems, Inc.
-// Copyright 2018-2020 NVIDIA Corporation
+// Copyright 2018-2021 NVIDIA Corporation
 // Copyright 2018 Qualcomm, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -85,7 +85,13 @@
 
 // @uvm-ieee 1800.2-2020 auto B.2.4.1
 `define uvm_pack_intN(VAR,SIZE,PACKER=packer) \
-  begin \
+  if (SIZE <= $bits(uvm_integral_t)) begin \
+     PACKER.pack_field_int(VAR, SIZE); \
+  end \
+  else if (SIZE <= $bits(uvm_bitstream_t)) begin \
+     PACKER.pack_field(VAR, SIZE); \
+  end \
+  else begin \
     bit __array[]; \
     { << bit { __array}} = VAR; \
     __array = new [SIZE] (__array); \
@@ -193,7 +199,13 @@
 
 // @uvm-ieee 1800.2-2020 auto B.2.5.1
 `define uvm_unpack_intN(VAR,SIZE,PACKER=packer) \
-  begin \
+  if (SIZE <= $bits(uvm_integral_t)) begin \
+    VAR = PACKER.unpack_field_int(SIZE); \
+  end \
+  else if (SIZE <= $bits(uvm_bitstream_t)) begin \
+    VAR = PACKER.unpack_field(SIZE); \
+  end \
+  else begin \
     bit __array[] = new [SIZE]; \
     PACKER.unpack_bits(__array, SIZE); \
     __array = new [$bits(VAR)] (__array); \

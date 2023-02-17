@@ -2,6 +2,7 @@
 //------------------------------------------------------------------------------
 // Copyright 2011 AMD
 // Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2022 Marvell International Ltd.
 // Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2010-2014 Synopsys, Inc.
@@ -246,7 +247,7 @@ endclass
 // uvm_object_string_pool storing ~uvm_event#(uvm_object)~) and
 // ~uvm_barrier_pool~ (a uvm_obejct_string_pool storing <uvm_barrier>).
 //------------------------------------------------------------------------------
-
+//@uvm-compat provided for compatibility with 1.2
 class uvm_object_string_pool #(type T=uvm_object) extends uvm_pool #(string,T);
 
   typedef uvm_object_string_pool #(T) this_type;

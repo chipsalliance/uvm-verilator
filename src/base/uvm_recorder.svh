@@ -4,8 +4,9 @@
 // Copyright 2015 Analog Devices, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017-2018 Cisco Systems, Inc.
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2022 Marvell International Ltd.
+// Copyright 2007-2022 Mentor Graphics Corporation
+// Copyright 2013-2021 NVIDIA Corporation
 // Copyright 2011-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -82,15 +83,28 @@ virtual class uvm_recorder extends uvm_policy;
   // This is the default radix setting if <record_field> is called without
   // a radix.
 
+  // @uvm-compat
   uvm_radix_enum default_radix = UVM_HEX;
 
   // Variable -- NODOCS -- identifier
   //
   // This bit is used to specify whether or not an object's reference should be
-  // recorded when the object is recorded. 
+  // recorded when the object is recorded.
 
+  // @uvm-compat
   bit identifier = 1;
 
+  //@uvm-compat
+  bit physical = 1;
+
+  //@uvm-compat
+  bit abstract = 1 ;
+  
+  //@uvm-compat
+  integer tr_handle;
+  
+   uvm_policy::recursion_state_e m_recur_states[uvm_object][uvm_recursion_policy_enum /*recursion*/] ;
+   
 
   // Variable -- NODOCS -- recursion_policy
   //
@@ -98,7 +112,8 @@ virtual class uvm_recorder extends uvm_policy;
   //
   // The default policy is deep (which means to recurse an object).
 
-  local uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
+  // @uvm-compat for compatibility with 1.2
+  uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
 
   // @uvm-ieee 1800.2-2020 auto 16.4.2.1
   virtual function void set_recursion_policy(uvm_recursion_policy_enum policy);
@@ -110,13 +125,34 @@ virtual class uvm_recorder extends uvm_policy;
     return this.policy;
   endfunction : get_recursion_policy
 
+  // @uvm-ieee 1800.2-2020 auto 16.4.2.2
+  virtual function void set_id_enabled(bit enabled);
+    this.identifier = enabled;
+  endfunction : set_id_enabled
+
+  // @uvm-ieee 1800.2-2020 auto 16.4.2.2
+  virtual function bit get_id_enabled();
+    return this.identifier;
+  endfunction : get_id_enabled
+
+  // @uvm-ieee 1800.2-2020 auto 16.4.2.3
+  virtual function void set_default_radix(uvm_radix_enum radix);
+    this.default_radix = radix;
+  endfunction : set_default_radix
+
+  // @uvm-ieee 1800.2-2020 auto 16.4.2.3
+  virtual function uvm_radix_enum get_default_radix();
+    return this.default_radix;
+  endfunction : get_default_radix
+
   // @uvm-ieee 1800.2-2020 auto 16.4.4.1
   virtual function void flush();
     policy      = UVM_DEFAULT_POLICY;
     identifier  = 1;
     free();
+    m_recur_states.delete();
   endfunction : flush
-  
+
    // Variable- m_ids_by_recorder
    // An associative array of int, indexed by uvm_recorders.  This
    // provides a unique 'id' or 'handle' for each recorder, which can be
@@ -375,7 +411,9 @@ virtual class uvm_recorder extends uvm_policy;
         do_record_object(name, value);
       else begin
         push_active_object(value);
+        m_recur_states[value][get_recursion_policy()] = uvm_policy::STARTED ;
         do_record_object(name, value);
+        m_recur_states[value][get_recursion_policy()] = uvm_policy::FINISHED ;
         void'(pop_active_object());
       end
    endfunction : record_object
@@ -482,9 +520,17 @@ virtual class uvm_recorder extends uvm_policy;
        if (field_op.user_hook_enabled())
          value.do_record(this);
        field_op.m_recycle();
-     end 
+     end
    endfunction : do_record_object
 
+   // @uvm-ieee 1800.2-2020 auto 16.4.7.8
+   virtual function uvm_policy::recursion_state_e object_recorded ( uvm_object value,
+                                                                    uvm_recursion_policy_enum recursion);
+
+      if (!m_recur_states.exists(value)) return NEVER ;
+      if (!m_recur_states[value].exists(recursion)) return NEVER ;
+      else return m_recur_states[value][recursion] ;
+   endfunction
 
    // @uvm-ieee 1800.2-2020 auto 16.4.7.9
    pure virtual protected function void do_record_string(string name,
@@ -529,7 +575,7 @@ virtual class uvm_recorder extends uvm_policy;
   // Function- create_stream
   //
   //
-  virtual function int create_stream (string name,
+  virtual function integer create_stream (string name,
                                           string t,
                                           string scope);
      return -1;
@@ -686,8 +732,8 @@ class uvm_text_recorder extends uvm_recorder;
                                                    uvm_bitstream_t value,
                                                    int size,
                                                    uvm_radix_enum radix);
-      if (!radix)
-        radix = default_radix;
+      if(radix == UVM_NORADIX)
+        radix = get_default_radix();
 
       write_attribute(m_current_context(name),
                       value,
@@ -705,8 +751,8 @@ class uvm_text_recorder extends uvm_recorder;
                                                        uvm_integral_t value,
                                                        int          size,
                                                        uvm_radix_enum radix);
-      if (!radix)
-        radix = default_radix;
+      if(radix == UVM_NORADIX)
+        radix = get_default_radix();
 
       write_attribute_int(m_current_context(name),
                           value,
@@ -765,10 +811,10 @@ class uvm_text_recorder extends uvm_recorder;
                                                     uvm_object value);
       int            v;
       string         str;
-      
-      if(identifier) begin 
+
+      if(get_id_enabled()) begin
          if(value != null) begin
-           v = value.get_inst_id(); 
+           v = value.get_inst_id();
          end
          write_attribute_int("inst_id", 
                              v, 
@@ -910,7 +956,7 @@ class uvm_text_recorder extends uvm_recorder;
   // Function- create_stream
   //
   //
-  virtual function int create_stream (string name,
+  virtual function integer create_stream (string name,
                                           string t,
                                           string scope);
      uvm_text_tr_stream stream;
@@ -1029,6 +1075,3 @@ class uvm_text_recorder extends uvm_recorder;
   endfunction // free_tr
 
 endclass : uvm_text_recorder
-
-  
-   

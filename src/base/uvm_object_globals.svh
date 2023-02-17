@@ -3,9 +3,9 @@
 // Copyright 2010-2012 AMD
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2012-2018 Cisco Systems, Inc.
-// Copyright 2020 Marvell International Ltd.
+// Copyright 2020-2022 Marvell International Ltd.
 // Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2013-2022 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
 // Copyright 2020 Verific
@@ -207,10 +207,13 @@ parameter uvm_field_flag_t UVM_UNPACK       = (1<<10);
 parameter uvm_field_flag_t UVM_NOUNPACK     = UVM_NOPACK;
 parameter uvm_field_flag_t UVM_SET          = (1<<11);
 parameter uvm_field_flag_t UVM_NOSET        = (1<<12);
+//@uvm-compat
+parameter uvm_field_flag_t UVM_PHYSICAL     = (1<<13);
+//@uvm-compat
+parameter uvm_field_flag_t UVM_ABSTRACT     = (1<<14);
+//@uvm-compat
+parameter uvm_field_flag_t UVM_READONLY     = UVM_NOSET;
 parameter uvm_field_flag_t UVM_NODEFPRINT   = (1<<15); //??
-//parameter UVM_DEEP         = (1<<16);
-//parameter UVM_SHALLOW      = (1<<17);
-//parameter UVM_REFERENCE    = (1<<18);
 
 parameter uvm_field_flag_t UVM_FLAGS_ON    = UVM_COPY | UVM_COMPARE | 
                                              UVM_PRINT | UVM_RECORD |
@@ -258,6 +261,9 @@ typedef enum bit [1:0]
   UVM_ERROR,
   UVM_FATAL
 } uvm_severity;
+
+//@uvm-compat provided for compatibility with 1.2
+typedef uvm_severity uvm_severity_type;
 
 // Enum --NODOCS-- uvm_action
 //
@@ -633,8 +639,43 @@ typedef enum {
 	UVM_CORE_ABORTED	
 } uvm_core_state;
 
-uvm_core_state m_uvm_core_state = UVM_CORE_UNINITIALIZED;
+// Used to indicate a strict name vs. regex name lookup in apply_config_settings
+typedef struct {
+  string       name;
+  string       regex;
+} uvm_acs_name_struct;
+
+// we use a queue here only to avoid any problems on writing to variables
+// inside an always_comb/latch/ff in case those call UVM
+uvm_core_state m_uvm_core_state[$];
 parameter uvm_core_state UVM_CORE_POST_INIT = UVM_CORE_INITIALIZED;
 
 typedef class uvm_object_wrapper;
 uvm_object_wrapper uvm_deferred_init[$];
+
+// Note that the followed variables are included for backwards compatibility,
+// however they are unsafe to use prior to the UVM Core initializing.
+// The uvm_coreservice_t provides safe accessors which ensure proper 
+// ordering of initialization.
+	
+// backward compatibility code
+typedef class uvm_printer;
+typedef class uvm_table_printer;
+typedef class uvm_tree_printer;
+typedef class uvm_line_printer;
+typedef class uvm_comparer;
+typedef class uvm_packer;
+
+//@uvm-compat provided for compatibility with 1.2
+uvm_table_printer uvm_default_table_printer ;
+//@uvm-compat provided for compatibility with 1.2
+uvm_tree_printer uvm_default_tree_printer  ;
+//@uvm-compat provided for compatibility with 1.2
+uvm_line_printer uvm_default_line_printer  ;
+//@uvm-compat provided for compatibility with 1.2
+uvm_printer uvm_default_printer ;
+//@uvm-compat provided for compatibility with 1.2
+uvm_packer uvm_default_packer ;
+//@uvm-compat provided for compatibility with 1.2
+uvm_comparer uvm_default_comparer ; 
+

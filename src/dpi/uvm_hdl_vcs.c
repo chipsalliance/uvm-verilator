@@ -1,8 +1,9 @@
 //----------------------------------------------------------------------
 // Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2023 Marvell International Ltd.
 // Copyright 2009-2011 Mentor Graphics Corporation
-// Copyright 2013-2018 NVIDIA Corporation
-// Copyright 2010-2018 Synopsys, Inc.
+// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2010-2022 Synopsys, Inc.
 //
 //   All Rights Reserved Worldwide
 //
@@ -24,17 +25,21 @@
 #include "uvm_dpi.h"
 #include <math.h>
 
+#include "sv_vpi_user.h"
 #include "svdpi.h"
 #include "vcsuser.h"
-#include "sv_vpi_user.h"
 
 #ifdef VCSMX
 #include "mhpi_user.h"
 #include "vhpi_user.h"
 #endif
 
+#ifndef VCSMX_DO_NOT_ERROR_ON_NULL_HANDLE
+#define VCSMX_ERROR_ON_NULL_HANDLE
+#endif
+
 #if defined(VCSMX_FAST_UVM) && !defined(MHPI_FAST_UVM)
-#error “UVM_ERROR: THIS VERSION OF VCS DOESN’T SUPPORT VCSMX_FAST_UVM. Compile without -DVCSMX_FAST_UVM”
+#error "UVM_ERROR: THIS VERSION OF VCS DOESN'T SUPPORT VCSMX_FAST_UVM. Compile without -DVCSMX_FAST_UVM"
 #endif
 
 /*
@@ -66,10 +71,8 @@ static int vector_compat_type(vpiHandle obj)
     return 1;
 }
 
-static int vector_compat_type_stub(vpiHandle obj)
-{
-    return 1;
-}
+
+#define UVM_DPI_DO_TYPE_CHECK
 
 #ifdef UVM_DPI_DISABLE_DO_TYPE_CHECK
 #undef UVM_DPI_DO_TYPE_CHECK
@@ -78,6 +81,10 @@ static int vector_compat_type_stub(vpiHandle obj)
 #ifdef UVM_DPI_DO_TYPE_CHECK
    static int (*check_type)(vpiHandle) = &vector_compat_type;
 #else
+   static int vector_compat_type_stub(vpiHandle obj)
+   {
+       return 1;
+   }
    static int (*check_type)(vpiHandle) = &vector_compat_type_stub;
 #endif
 
@@ -86,6 +93,7 @@ static int vector_compat_type_stub(vpiHandle obj)
  *
  */
 
+#ifdef VCSMX_FAST_UVM
 static char* get_memory_for_alloc(int need)
 {
     static int alloc_size = 0;
@@ -97,6 +105,7 @@ static char* get_memory_for_alloc(int need)
     }
     return alloc;
 }
+#endif
 /*
  * This C code checks to see if there is PLI handle
  * with a value set to define the maximum bit width.
@@ -159,13 +168,34 @@ static int uvm_hdl_set_vlog(vpiHandle r, char* path, p_vpi_vecval value, PLI_INT
     value_s.format = vpiVectorVal;
     value_s.value.vector = value;
     if (!check_type(r)) {
-        vpi_printf((PLI_BYTE8*) "UVM_ERROR: Object pointed to by path '%s' is not of supported type\n" \
-                "(Unpacked Array/Struct/Union type) for reading/writing value.", path);
+        const char * err_str = "Object pointed to by path  (%s) is not of supported type\n (Unpacked Array/Struct/Union type) for reading/writing value";
+        char buffer[strlen(err_str) + strlen(path)];
+        sprintf(buffer, err_str, path);
+        m_uvm_report_dpi(M_UVM_ERROR,
+                (char*) "UVM/DPI/HDL_SET",
+                &buffer[0],
+                M_UVM_NONE,
+                (char*)__FILE__,
+
+                __LINE__);
+        vpi_release_handle(r);
         return 0;
     }
     vpi_put_value(r, &value_s, &time_s, flag);
-    //if (value_p != NULL)
-    //  free(value_p);
+    if (vpi_chk_error(NULL)) {
+        const char * err_str = "set: unable to write to hdl path (%s)\n  or You may not have PLI/ACC visibility to that name";
+        char buffer[strlen(err_str) + strlen(path)];
+        sprintf(buffer, err_str, path);
+        m_uvm_report_dpi(M_UVM_ERROR,
+                (char*) "UVM/DPI/HDL_SET",
+                &buffer[0],
+                M_UVM_NONE,
+                (char*)__FILE__,
+
+                __LINE__);
+        vpi_release_handle(r);
+        return 0;
+    }
     if (value == NULL) {
       value = value_s.value.vector;
     }
@@ -188,6 +218,7 @@ static int uvm_hdl_set_vlog(char *path, p_vpi_vecval value, PLI_INT32 flag)
 #endif
   mhpiHandleT h = mhpi_handle_by_name(path, 0);
   r = (vpiHandle) mhpi_get_vpi_handle(h);
+  mhpi_release_parent_handle(h);
 #else
   r = vpi_handle_by_name(path, 0);
 #endif
@@ -219,13 +250,35 @@ static int uvm_hdl_set_vlog(char *path, p_vpi_vecval value, PLI_INT32 flag)
     value_s.format = vpiVectorVal;
     value_s.value.vector = value;
     if (!check_type(r)) {
-        vpi_printf((PLI_BYTE8*) "UVM_ERROR: Object pointed to by path '%s' is not of supported type\n" \
-                "(Unpacked Array/Struct/Union type) for reading/writing value.", path);
+        const char * err_str = "set:Object pointed to by path '%s' is not of supported type\n (Unpacked Array/Struct/Union type) for reading/writing value.";
+        char buffer[strlen(err_str) + strlen(path)];
+        sprintf(buffer, err_str, path);
+        m_uvm_report_dpi(M_UVM_ERROR,
+                (char*) "UVM/DPI/HDL_SET",
+                &buffer[0],
+                M_UVM_NONE,
+                (char*)__FILE__,
+
+                __LINE__);
+        vpi_release_handle(r);
         return 0;
     }
     vpi_put_value(r, &value_s, &time_s, flag);  
-    //if (value_p != NULL)
-    //  free(value_p);
+    if (vpi_chk_error(NULL)) {
+
+        const char * err_str = "Unable to write to hdl path (%s)\n, You may not have sufficient PLI/ACC capabilites enabled for that path\n";
+        char buffer[strlen(err_str) + strlen(path)];
+        sprintf(buffer, err_str, path);
+        m_uvm_report_dpi(M_UVM_ERROR,
+                (char*) "UVM/DPI/HDL_SET",
+                &buffer[0],
+                M_UVM_NONE,
+                (char*)__FILE__,
+
+                __LINE__);
+        vpi_release_handle(r);
+        return 0;
+    }
     if (value == NULL) {
       value = value_s.value.vector;
     }
@@ -279,17 +332,46 @@ static int uvm_hdl_get_vlog(vpiHandle r, char* path, p_vpi_vecval value, PLI_INT
                        M_UVM_NONE,
                        (char*)__FILE__,
                        __LINE__);
+      vpi_release_handle(r);
       return 0;
     }
+  #ifdef PREFILL_ALL_BITS_WITH_ZERO
+    chunks = (maxsize-1)/32 + 1;
+    for(i=0;i<chunks; ++i) {
+      value[i].aval = 0;
+      value[i].bval = 0;
+    }
+  #endif
     chunks = (size-1)/32 + 1;
 
     value_s.format = vpiVectorVal;
     if (!check_type(r)) {
-        vpi_printf((PLI_BYTE8*) "UVM_ERROR: Object pointed to by path '%s' is not of supported type\n" \
-                "(Unpacked Array/Struct/Union type) for reading/writing value.", path);
+        const char * err_str = " Object pointed to by path '%s' is not of supported type\n (Unpacked Array/Struct/Union type) for reading/writing value.";
+        char buffer[strlen(err_str) + strlen(path) + (2*int_str_max(10))];
+        sprintf(buffer, err_str, path, size, maxsize);
+        m_uvm_report_dpi(M_UVM_ERROR,
+                (char*)"UVM/DPI/HDL_SET",
+                &buffer[0],
+                M_UVM_NONE,
+                (char*)__FILE__,
+                __LINE__);
+        vpi_release_handle(r);
         return 0;
     }
     vpi_get_value(r, &value_s);
+    if (vpi_chk_error(NULL)) {
+        const char * err_str = "set: : unable to perform read on hdl path (%s)\n You may not have sufficient PLI/ACC capabilites enabled for that path\n";
+        char buffer[strlen(err_str) + strlen(path) + (2*int_str_max(10))];
+        sprintf(buffer, err_str, path, size, maxsize);
+        m_uvm_report_dpi(M_UVM_ERROR,
+                (char*)"UVM/DPI/HDL_SET",
+                &buffer[0],
+                M_UVM_NONE,
+                (char*)__FILE__,
+                __LINE__);
+        vpi_release_handle(r);
+        return 0;
+    }
     /*dpi and vpi are reversed*/
     for(i=0;i<chunks; ++i)
     {
@@ -297,7 +379,6 @@ static int uvm_hdl_get_vlog(vpiHandle r, char* path, p_vpi_vecval value, PLI_INT
       value[i].bval = value_s.value.vector[i].bval;
     }
   }
-  //vpi_printf("uvm_hdl_get_vlog(%s,%0x)\n",path,value[0].aval);
   return 1;
 }
 #else
@@ -311,6 +392,7 @@ static int uvm_hdl_get_vlog(char *path, p_vpi_vecval value, PLI_INT32 flag)
 #ifdef VCSMX
   mhpiHandleT h = mhpi_handle_by_name(path, 0);
   r = (vpiHandle) mhpi_get_vpi_handle(h);
+  mhpi_release_parent_handle(h);
 #else
   r = vpi_handle_by_name(path, 0);
 #endif
@@ -347,21 +429,52 @@ static int uvm_hdl_get_vlog(char *path, p_vpi_vecval value, PLI_INT32 flag)
                        M_UVM_NONE,
                        (char*)__FILE__,
                        __LINE__);
+      vpi_release_handle(r);
       return 0;
     }
+  #ifdef PREFILL_ALL_BITS_WITH_ZERO
+    chunks = (maxsize-1)/32 + 1;
+    for(i=0;i<chunks; ++i) {
+      value[i].aval = 0;
+      value[i].bval = 0;
+    }
+  #endif
     chunks = (size-1)/32 + 1;
 
     value_s.format = vpiVectorVal;
     if (!check_type(r)) {
-        vpi_printf((PLI_BYTE8*) "UVM_ERROR: Object pointed to by path '%s' is not of supported type\n" \
-                "(Unpacked Array/Struct/Union type) for reading/writing value.", path);
+        const char * err_str = "Object pointed to by path '%s' is not of supported type\n (Unpacked Array/Struct/Union type) for reading/writing value.";
+        char buffer[strlen(err_str) + strlen(path) + (2*int_str_max(10))];
+        sprintf(buffer, err_str, path, size, maxsize);
+        m_uvm_report_dpi(M_UVM_ERROR,
+                (char*)"UVM/DPI/HDL_SET",
+                &buffer[0],
+                M_UVM_NONE,
+                (char*)__FILE__,
+                __LINE__);
+        vpi_release_handle(r);
         return 0;
     }
     vpi_get_value(r, &value_s);
+    if (vpi_chk_error(NULL)) {
+        const char * err_str = "set: unable to perform read on hdl path (%s)\n. You may not have sufficient PLI/ACC capabilites enabled for that path\n";
+        char buffer[strlen(err_str) + strlen(path) + (2*int_str_max(10))];
+        sprintf(buffer, err_str, path, size, maxsize);
+        m_uvm_report_dpi(M_UVM_ERROR,
+                (char*)"UVM/DPI/HDL_SET",
+                &buffer[0],
+                M_UVM_NONE,
+                (char*)__FILE__,
+                __LINE__);
+//        vpi_printf((PLI_BYTE8*) "UVM_ERROR: set: unable to perform read on hdl path (%s)\n",path);
+  //      vpi_printf((PLI_BYTE8*) "You may not have sufficient PLI/ACC capabilites enabled for that path\n");
+        vpi_release_handle(r);
+        return 0;
+    }
     /*dpi and vpi are reversed*/
     for(i=0;i<chunks; ++i)
     {
-      value[i].aval = value_s.value.vector[i].aval;
+        value[i].aval = value_s.value.vector[i].aval;
       value[i].bval = value_s.value.vector[i].bval;
     }
   }
@@ -490,7 +603,15 @@ int uvm_memory_load(const char* nid,
                      const char* type)
 {
     //TODO:: furture implementation for pure verilog
-    vpi_printf((PLI_BYTE8*) "UVM_ERROR: uvm_memory_load is not supported, please compile with -DVCSMX_FAST_UVM\n");
+    m_uvm_report_dpi(M_UVM_ERROR,
+            (char*) "UVM/DPI/MEMORY",
+            (char*) "uvm_memory_load: uvm_memory_load is not supported, please compile with -DVCSMX_FAST_UVM",
+            M_UVM_NONE,
+            (char*)__FILE__,
+            __LINE__);
+
+
+//    vpi_printf((PLI_BYTE8*) "UVM_ERROR: uvm_memory_load is not supported, please compile with -DVCSMX_FAST_UVM\n");
     return 0;
 }
 #endif
@@ -523,10 +644,12 @@ int uvm_hdl_check_path(char *path)
 #else
    mhpiHandleT h = mhpi_handle_by_name(path, 0);
 #endif
-    if (h == 0)
+    if (h == 0)  {
       return 0;
-   else 
+    } else {
+     mhpi_release_parent_handle(h);   
      return 1;
+    }
 #endif
 }
 
@@ -534,7 +657,7 @@ int uvm_hdl_check_path(char *path)
  * convert binary to integer
  */
 unsigned long int uvm_hdl_btoi(char *binVal) {
-  unsigned long int remainder, dec=0, j = 0;
+  unsigned long int dec=0, j = 0;
   unsigned long long int bin;
   int i;
   char tmp[2];
@@ -554,11 +677,10 @@ unsigned long int uvm_hdl_btoi(char *binVal) {
  *decimal to hex conversion
  */
 char *uvm_hdl_dtob(unsigned long int decimalNumber, unsigned long int msb) {
-  unsigned int remainder, quotient;
+  unsigned int quotient;
   int  i=0,j, length;
   int binN[65];
   static char binaryNumber[65];
-  char *str = (char*) malloc(sizeof(char));
   memset(binN, 0, 65*sizeof(int));
 
   quotient = decimalNumber;
@@ -597,6 +719,7 @@ int uvm_hdl_get_mhdl(vhpiHandleT vhpiH, char *path, p_vpi_vecval value) {
   vhpiValueT value1;
   p_vpi_vecval vecval;
   int size = 0;
+  int chunks;
 /*
 #ifndef USE_DOT_AS_HIER_SEP
     mhpi_initialize('/');
@@ -624,6 +747,13 @@ int uvm_hdl_get_mhdl(vhpiHandleT vhpiH, char *path, p_vpi_vecval value) {
                      __LINE__);
     return 0;
   }
+  #ifdef PREFILL_ALL_BITS_WITH_ZERO
+    chunks = (maxsize-1)/32 + 1;
+    for(i=0;i<chunks; ++i) {
+      value[i].aval = 0;
+      value[i].bval = 0;
+    }
+  #endif
 
   value1.bufSize = size+1;
   value1.value.str = get_memory_for_alloc(size + 1);
@@ -665,7 +795,7 @@ int uvm_hdl_get_mhdl(vhpiHandleT vhpiH, char *path, p_vpi_vecval value) {
                 value[max_i-i-1].bval = (value[max_i-i-1].bval << 1) + 1;
             }
         }
-        binVal = binVal+32;
+        binVal = binVal+bits_to_consider;
     }
 
     return(1);
@@ -688,6 +818,7 @@ int uvm_hdl_get_mhdl(char *path, p_vpi_vecval value) {
   vhpiValueT value1;
   p_vpi_vecval vecval;
   int size = 0;
+  int chunks;
 
 #ifndef USE_DOT_AS_HIER_SEP
     mhpi_initialize('/');
@@ -715,6 +846,13 @@ int uvm_hdl_get_mhdl(char *path, p_vpi_vecval value) {
                      __LINE__);
     return 0;
   }
+  #ifdef PREFILL_ALL_BITS_WITH_ZERO
+    chunks = (maxsize-1)/32 + 1;
+    for(i=0;i<chunks; ++i) {
+      value[i].aval = 0;
+      value[i].bval = 0;
+    }
+  #endif
 
   //value1.bufSize = (size)/8 + 1;
   value1.bufSize = size+1;
@@ -758,13 +896,12 @@ int uvm_hdl_get_mhdl(char *path, p_vpi_vecval value) {
                 value[max_i-i-1].bval = (value[max_i-i-1].bval << 1) + 1;
             }
         }
-        binVal = binVal+32;
+        binVal = binVal+ bits_to_consider;
     }
     mhpi_release_parent_handle(mhpiH);
 
     free(value1.value.str);
     return(1);
-    
 
   } else {
     mhpi_release_parent_handle(mhpiH);
@@ -817,8 +954,15 @@ char* uvm_hdl_read_string(char* path)
            s_vpi_value getValue;
            getValue.format = vpiStringVal;
            if (!check_type(h)) {
-               vpi_printf((PLI_BYTE8*) "UVM_ERROR: Object pointed to by path '%s' is not of supported type\n" \
-                       "(Unpacked Array/Struct/Union type) for reading/writing value.", path);
+               const char * err_str = " Object pointed to by path '%s' is not of supported type\n (Unpacked Array/Struct/Union type) for reading/writing value.";
+               char buffer[strlen(err_str) + strlen(path) + (2*int_str_max(10))];
+               sprintf(buffer, err_str, path, size, maxsize);
+               m_uvm_report_dpi(M_UVM_ERROR,
+                       (char*)"UVM/DPI/HDL_SET",
+                       &buffer[0],
+                       M_UVM_NONE,
+                       (char*)__FILE__,
+                       __LINE__);
                return 0;
            }
            vpi_get_value(h, &getValue);
@@ -833,8 +977,15 @@ char* uvm_hdl_read_string(char* path)
         s_vpi_value getValue;
         getValue.format = vpiStringVal;
         if (!check_type(h)) {
-            vpi_printf((PLI_BYTE8*) "UVM_ERROR: Object pointed to by path '%s' is not of supported type\n" \
-                    "(Unpacked Array/Struct/Union type) for reading/writing value.", path);
+            const char * err_str = " Object pointed to by path '%s' is not of supported type\n (Unpacked Array/Struct/Union type) for reading/writing value.";
+            char buffer[strlen(err_str) + strlen(path) + (2*int_str_max(10))];
+            sprintf(buffer, err_str, path, size, maxsize);
+            m_uvm_report_dpi(M_UVM_ERROR,
+                    (char*)"UVM/DPI/HDL_SET",
+                    &buffer[0],
+                    M_UVM_NONE,
+                    (char*)__FILE__,
+                    __LINE__);
             return 0;
         }
         vpi_get_value(h, &getValue);
@@ -847,7 +998,12 @@ char* uvm_hdl_read_string(char* path)
 #else 
 char* uvm_hdl_read_string(char* path)
 {
-    vpi_printf((PLI_BYTE8*) "UVM_ERROR: uvm_hdl_read_string is not supported, please compile with -DVCSMX_FAST_UVM\n");
+    m_uvm_report_dpi(M_UVM_ERROR,
+            (char*) "UVM/DPI/REGEX_ALLOC",
+            (char*) "uvm_hdl_read_string: uvm_hdl_read_string is not supported, please compile with -DVCSMX_FAST_UVM",
+            M_UVM_NONE,
+            (char*)__FILE__,
+            __LINE__);
     return (char*)0;
 }
 #endif
@@ -882,11 +1038,25 @@ int uvm_hdl_read(char *path, p_vpi_vecval value)
       return res;
     }
     else if (mhpi_get(mhpiPliP, h) == mhpiVhpiPli) {
-      vhpiHandleT r = (vhpiHandleT) mhpi_get_vhpi_handle(h);
-      //return uvm_hdl_get_mhdl(r, path,value);
-      int res = uvm_hdl_get_vhpi(r, path, value);
-      mhpi_release_handle(h);
-      return res;
+        vhpiHandleT r = (vhpiHandleT) mhpi_get_vhpi_handle(h);
+        int res = uvm_hdl_get_vhpi(r, path, value);
+        mhpi_release_handle(h);
+        return res;
+    }
+    else {
+#ifdef VCSMX_ERROR_ON_NULL_HANDLE
+        const char * err_str = "set: unable to locate hdl path (%s)\n Either the name is incorrect, or you may not have PLI/ACC visibility to that name";
+        char buffer[strlen(err_str) + strlen(path)];
+        sprintf(buffer, err_str, path);
+        m_uvm_report_dpi(M_UVM_ERROR,
+                (char*) "UVM/DPI/HDL_SET",
+                &buffer[0],
+                M_UVM_NONE,
+                (char*)__FILE__,
+
+                __LINE__);
+#endif        
+        return 0;
     }
 #else
     mhpiHandleT h = mhpi_handle_by_name(path, 0);
@@ -899,8 +1069,25 @@ int uvm_hdl_read(char *path, p_vpi_vecval value)
     mhpi_release_parent_handle(h);
       return uvm_hdl_get_mhdl(path,value);
     }
+    else {
+#ifdef VCSMX_ERROR_ON_NULL_HANDLE
+        const char * err_str = "set: unable to locate hdl path (%s)\n Either the name is incorrect, or you may not have PLI/ACC visibility to that name";
+        char buffer[strlen(err_str) + strlen(path)];
+        sprintf(buffer, err_str, path);
+        m_uvm_report_dpi(M_UVM_ERROR,
+                (char*) "UVM/DPI/HDL_SET",
+                &buffer[0],
+                M_UVM_NONE,
+                (char*)__FILE__,
+
+                __LINE__);
+#endif
+        return 0;
+    }
+
 #endif
 #endif
+
 }
 
 
@@ -1006,8 +1193,21 @@ int uvm_hdl_deposit(char *path, p_vpi_vecval value)
       int res = uvm_hdl_set_mhdl(h, path, value, mhpiNoDelay);
       return res;
     }
-    else
+    else {
+#ifdef VCSMX_ERROR_ON_NULL_HANDLE
+      const char * err_str = "set: unable to locate hdl path (%s)\n Either the name is incorrect, or you may not have PLI/ACC visibility to that name";
+      char buffer[strlen(err_str) + strlen(path)];
+      sprintf(buffer, err_str, path);
+      m_uvm_report_dpi(M_UVM_ERROR,
+                       (char*) "UVM/DPI/HDL_DEPOSIT",
+                       &buffer[0],
+                       M_UVM_NONE,
+                       (char*)__FILE__,
+
+                       __LINE__);
+#endif      
       return (0);
+    }  
 #else
     mhpiHandleT h = mhpi_handle_by_name(path, 0);
 
@@ -1019,8 +1219,21 @@ int uvm_hdl_deposit(char *path, p_vpi_vecval value)
       mhpi_release_parent_handle(h);
       return uvm_hdl_set_mhdl(path, value, mhpiNoDelay);
      }
-    else
+    else {
+#ifdef VCSMX_ERROR_ON_NULL_HANDLE
+      const char * err_str = "set: unable to locate hdl path (%s)\n Either the name is incorrect, or you may not have PLI/ACC visibility to that name";
+      char buffer[strlen(err_str) + strlen(path)];
+      sprintf(buffer, err_str, path);
+      m_uvm_report_dpi(M_UVM_ERROR,
+                       (char*) "UVM/DPI/HDL_DEPOSIT",
+                       &buffer[0],
+                       M_UVM_NONE,
+                       (char*)__FILE__,
+
+                       __LINE__);
+#endif      
       return (0);
+    }
 #endif
 #endif
 }
@@ -1060,8 +1273,22 @@ int uvm_hdl_force(char *path, p_vpi_vecval value)
       int res = uvm_hdl_set_mhdl(h, path, value, mhpiForce);
       return res;
     }
-    else
+    else {
+#ifdef VCSMX_ERROR_ON_NULL_HANDLE
+      const char * err_str = "set: unable to locate hdl path (%s)\n Either the name is incorrect, or you may not have PLI/ACC visibility to that name";
+      char buffer[strlen(err_str) + strlen(path)];
+      sprintf(buffer, err_str, path);
+      m_uvm_report_dpi(M_UVM_ERROR,
+                       (char*) "UVM/DPI/HDL_FORCE",
+                       &buffer[0],
+                       M_UVM_NONE,
+                       (char*)__FILE__,
+
+                       __LINE__);
+#endif      
+
       return (0);
+    }
 #else
     mhpiHandleT h = mhpi_handle_by_name(path, 0);
 
@@ -1075,8 +1302,21 @@ int uvm_hdl_force(char *path, p_vpi_vecval value)
       return uvm_hdl_set_mhdl(path, value, mhpiForce);
 
       }
-    else
+    else {
+#ifdef VCSMX_ERROR_ON_NULL_HANDLE
+      const char * err_str = "set: unable to locate hdl path (%s)\n Either the name is incorrect, or you may not have PLI/ACC visibility to that name";
+      char buffer[strlen(err_str) + strlen(path)];
+      sprintf(buffer, err_str, path);
+      m_uvm_report_dpi(M_UVM_ERROR,
+                       (char*) "UVM/DPI/HDL_FORCE",
+                       &buffer[0],
+                       M_UVM_NONE,
+                       (char*)__FILE__,
+
+                       __LINE__);
+#endif      
       return (0);
+    }
 #endif
 #endif
 }
@@ -1120,8 +1360,21 @@ int uvm_hdl_release_and_read(char *path, p_vpi_vecval value)
       else 
         return(0);
       }
-    else
+    else {
+#ifdef VCSMX_ERROR_ON_NULL_HANDLE
+      const char * err_str = "set: unable to locate hdl path (%s)\n Either the name is incorrect, or you may not have PLI/ACC visibility to that name";
+      char buffer[strlen(err_str) + strlen(path)];
+      sprintf(buffer, err_str, path);
+      m_uvm_report_dpi(M_UVM_ERROR,
+                       (char*) "UVM/DPI/HDL_RELEASE_AND_READ",
+                       &buffer[0],
+                       M_UVM_NONE,
+                       (char*)__FILE__,
+
+                       __LINE__);
+#endif      
       return (0);
+    }
 #endif
 }
 
@@ -1170,7 +1423,19 @@ int uvm_hdl_release(char *path)
 
     }
     else {
+#ifdef VCSMX_ERROR_ON_NULL_HANDLE
+      const char * err_str = "set: unable to locate hdl path (%s)\n Either the name is incorrect, or you may not have PLI/ACC visibility to that name";
+      char buffer[strlen(err_str) + strlen(path)];
+      sprintf(buffer, err_str, path);
+      m_uvm_report_dpi(M_UVM_ERROR,
+                       (char*) "UVM/DPI/HDL_RELEASE",
+                       &buffer[0],
+                       M_UVM_NONE,
+                       (char*)__FILE__,
+
+                       __LINE__);
       mhpi_release_handle(h); 
+#endif      
       return (0);
     }
 #else
@@ -1178,10 +1443,12 @@ int uvm_hdl_release(char *path)
     mhpiReturnT ret;
 
     if (mhpi_get(mhpiPliP, h) == mhpiVpiPli) {
+      mhpi_release_parent_handle(h);  
       return uvm_hdl_set_vlog(path, valuep, vpiReleaseFlag);
     }
     else if (mhpi_get(mhpiPliP, h) == mhpiVhpiPli) {
       mhpiHandleT mhpi_mhRegion = mhpi_handle(mhpiScope, h);
+      mhpi_release_parent_handle(h);  
       ret = mhpi_release_force(path, mhpi_mhRegion);
       if (ret == mhpiRetOk) {
         return(1);
@@ -1190,8 +1457,21 @@ int uvm_hdl_release(char *path)
         return(0);
 
       }
-    else
+    else {
+#ifdef VCSMX_ERROR_ON_NULL_HANDLE
+      const char * err_str = "set: unable to locate hdl path (%s)\n Either the name is incorrect, or you may not have PLI/ACC visibility to that name";
+      char buffer[strlen(err_str) + strlen(path)];
+      sprintf(buffer, err_str, path);
+      m_uvm_report_dpi(M_UVM_ERROR,
+                       (char*) "UVM/DPI/HDL_RELEASE",
+                       &buffer[0],
+                       M_UVM_NONE,
+                       (char*)__FILE__,
+
+                       __LINE__);
+#endif
       return (0);
+    }
 #endif
 #endif
 }

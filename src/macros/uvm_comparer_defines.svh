@@ -1,5 +1,6 @@
 //----------------------------------------------------------------------
 // Copyright 2018 Cadence Design Systems, Inc.
+// Copyright 2022 Marvell International Ltd.
 // Copyright 2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
@@ -103,13 +104,13 @@
 // reused by other object macros.
 `define m_uvm_compare_named_object(NAME, LVALUE, RVALUE, COMPARER) \
   if (COMPARER.get_recursion_policy() != UVM_REFERENCE) begin \
-    bit rv; \
-    uvm_policy::recursion_state_e state; \
-    state = COMPARER.object_compared(LVALUE, RVALUE, COMPARER.get_recursion_policy(), rv); \
-    if ((state == uvm_policy::FINISHED) && \
-        !rv) \
+    bit local_rv__; \
+    uvm_policy::recursion_state_e local_state__; \
+    local_state__ = COMPARER.object_compared(LVALUE, RVALUE, COMPARER.get_recursion_policy(), local_rv__); \
+    if ((local_state__ == uvm_policy::FINISHED) && \
+        !local_rv__) \
       COMPARER.print_msg($sformatf("'%s' miscompared using saved return value", NAME)); \
-    else if (state == uvm_policy::NEVER) \
+    else if (local_state__ == uvm_policy::NEVER) \
       void'(COMPARER.compare_object(NAME, LVALUE, RVALUE)); \
     /* else skip to avoid infinite loop */ \
   end \

@@ -4,6 +4,7 @@
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2014-2017 Intel Corporation
+// Copyright 2021 Marvell International Ltd.
 // Copyright 2010-2020 Mentor Graphics Corporation
 // Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
@@ -597,7 +598,7 @@ function void uvm_reg_map::add_reg(uvm_reg rg,
 
   if (m_regs_info.exists(rg)) begin
     `uvm_error("RegModel", {"Register '",rg.get_name(),
-                            "' has already been added to map '",get_name(),"'"})
+                            "' has already been added to map '",get_full_name(),"'"})
     return;
   end
 
@@ -743,7 +744,7 @@ function void uvm_reg_map::add_mem(uvm_mem mem,
                                    uvm_reg_frontdoor frontdoor=null);
   if (m_mems_info.exists(mem)) begin
     `uvm_error("RegModel", {"Memory '",mem.get_name(),
-                            "' has already been added to map '",get_name(),"'"})
+                            "' has already been added to map '",get_full_name(),"'"})
     return;
   end
 
@@ -1154,7 +1155,7 @@ endfunction
 function uvm_reg_map_info uvm_reg_map::get_mem_map_info(uvm_mem mem, bit error=1);
   if (!m_mems_info.exists(mem)) begin
     if (error)
-      `uvm_error("REG_NO_MAP",{"Memory '",mem.get_name(),"' not in map '",get_name(),"'"})
+      `uvm_error("REG_NO_MAP",{"Memory '",mem.get_name(),"' not in map '",get_full_name(),"'"})
     return null;
   end
   return m_mems_info[mem];
@@ -1167,12 +1168,12 @@ function uvm_reg_map_info uvm_reg_map::get_reg_map_info(uvm_reg rg, bit error=1)
   uvm_reg_map_info result;
   if (!m_regs_info.exists(rg)) begin
     if (error)
-      `uvm_error("REG_NO_MAP",{"Register '",rg.get_name(),"' not in map '",get_name(),"'"})
+      `uvm_error("REG_NO_MAP",{"Register '",rg.get_name(),"' not in map '",get_full_name(),"'"})
     return null;
   end
   result = m_regs_info[rg];
   if(!result.is_initialized)
-    `uvm_warning("RegModel",{"map '",get_name(),"' does not seem to be initialized correctly, check that the top register model is locked()"})
+    `uvm_warning("RegModel",{"map '",get_full_name(),"' does not seem to be initialized correctly, check that the top register model is locked()"})
   
   return result;
 endfunction

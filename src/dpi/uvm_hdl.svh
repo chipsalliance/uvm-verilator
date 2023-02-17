@@ -3,6 +3,7 @@
 // Copyright 2015 Analog Devices, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Cisco Systems, Inc.
+// Copyright 2022 Intel Corporation
 // Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2010 Synopsys, Inc.
@@ -153,7 +154,7 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
       $sformatf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
   endtask
 
-  function int uvm_hdl_release(string path, output uvm_hdl_data_t value);
+  function int uvm_hdl_release(string path);
     uvm_report_fatal("UVM_HDL_RELEASE", 
       $sformatf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
     return 0;

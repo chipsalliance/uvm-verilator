@@ -5,6 +5,7 @@
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2011 Cypress Semiconductor Corp.
 // Copyright 2017 Intel Corporation
+// Copyright 2021-2022 Marvell International Ltd.
 // Copyright 2010-2011 Mentor Graphics Corporation
 // Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2010-2011 Paradigm Works
@@ -43,13 +44,11 @@
 // specified, all resource DB accesses (read and write) are displayed.
 //----------------------------------------------------------------------
 
-typedef class uvm_resource_db_options;
-typedef class uvm_cmdline_processor;
 
 
 // Class: uvm_resource_db
 // Implementation of uvm_resource_db, as defined in section
-// C.3.2.1 of 1800.2-2020.
+// C.3.2.1 of 1800.2-2020, with the following additional API
 //
 //| class uvm_resource_db#(type T=uvm_object)
   
@@ -69,23 +68,9 @@ class uvm_resource_db #(type T=uvm_object);
 
   // @uvm-ieee 1800.2-2020 auto C.3.2.3.5
   static function rsrc_t get_by_type(string scope);
-    uvm_resource_pool rp = uvm_resource_pool::get();
-    uvm_resource_base rsrc_base;
-    rsrc_t rsrc;
-    string msg;
-    uvm_resource_base type_handle = rsrc_t::get_type();
-
-    if(type_handle == null)
-       return null;
-
-    rsrc_base = rp.get_by_type(scope, type_handle);
-    if(!$cast(rsrc, rsrc_base)) begin
-      $sformat(msg, "Resource with specified type handle in scope %s was not located", scope);
-      `uvm_warning("RSRCNF", msg)
-      return null;
-    end
-
-    return rsrc;
+    uvm_resource_db_implementation_t #(T) imp;
+    imp = uvm_resource_db_implementation_t #(T)::get_imp();
+    return imp.get_by_type(scope);
   endfunction
 
   // function -- NODOCS -- get_by_name
@@ -100,24 +85,9 @@ class uvm_resource_db #(type T=uvm_object);
                                      string name,
                                      bit rpterr=1);
 
-    uvm_resource_pool rp = uvm_resource_pool::get();
-    uvm_resource_base rsrc_base;
-    rsrc_t rsrc;
-    string msg;
-
-    rsrc_base = rp.get_by_name(scope, name, rsrc_t::get_type(), rpterr);
-    if(rsrc_base == null)
-      return null;
-
-    if(!$cast(rsrc, rsrc_base)) begin
-      if(rpterr) begin
-        $sformat(msg, "Resource with name %s in scope %s has incorrect type", name, scope);
-        `uvm_warning("RSRCTYPE", msg)
-      end
-      return null;
-    end
-
-    return rsrc;
+    uvm_resource_db_implementation_t #(T) imp;
+    imp = uvm_resource_db_implementation_t #(T)::get_imp();
+    return imp.get_by_name(scope, name, rpterr);
   endfunction
 
   // function -- NODOCS -- set_default
@@ -129,36 +99,9 @@ class uvm_resource_db #(type T=uvm_object);
   // @uvm-ieee 1800.2-2020 auto C.3.2.3.2
   static function rsrc_t set_default(string scope, string name);
 
-    rsrc_t r;
-    uvm_resource_pool rp = uvm_resource_pool::get();
-    
-    r = new(name);
-    rp.set_scope(r, scope);
-    return r;
-  endfunction
-
-  // function- show_msg
-
-  // internal helper function to print resource accesses
-
-  protected static function void m_show_msg(
-          input string id,
-          input string rtype,
-          input string action,
-          input string scope,
-          input string name,
-          input uvm_object accessor,
-          input rsrc_t rsrc);
-
-          T foo;
-          string msg=`uvm_typename(foo);
-
-          $sformat(msg, "%s scope='%s' name='%s' (type %s) %s accessor=%s = %s",
-              rtype,scope,name, msg,action,
-              (accessor != null) ? accessor.get_full_name() : "<unknown>",
-              rsrc==null?"null (failed lookup)":rsrc.convert2string());
-
-          `uvm_info(id, msg, UVM_LOW)
+    uvm_resource_db_implementation_t #(T) imp;
+    imp = uvm_resource_db_implementation_t #(T)::get_imp();
+    return imp.set_default(scope, name);
   endfunction
 
 
@@ -166,13 +109,9 @@ class uvm_resource_db #(type T=uvm_object);
   static function void set(input string scope, input string name,
                            T val, input uvm_object accessor = null);
 
-    uvm_resource_pool rp = uvm_resource_pool::get();
-    rsrc_t rsrc = new(name);
-    rsrc.write(val, accessor);
-    rp.set_scope(rsrc, scope);
-
-    if(uvm_resource_db_options::is_tracing())
-      m_show_msg("RSRCDB/SET", "Resource","set", scope, name, accessor, rsrc);
+    uvm_resource_db_implementation_t #(T) imp;
+    imp = uvm_resource_db_implementation_t #(T)::get_imp();
+    imp.set(scope, name, val, accessor);
   endfunction
 
 
@@ -180,74 +119,61 @@ class uvm_resource_db #(type T=uvm_object);
   static function void set_anonymous(input string scope,
                                      T val, input uvm_object accessor = null);
 
-    uvm_resource_pool rp = uvm_resource_pool::get();
-    rsrc_t rsrc = new("");
-    rsrc.write(val, accessor);
-    rp.set_scope(rsrc, scope);
-
-    if(uvm_resource_db_options::is_tracing())
-      m_show_msg("RSRCDB/SETANON","Resource", "set", scope, "", accessor, rsrc);
+    uvm_resource_db_implementation_t #(T) imp;
+    imp = uvm_resource_db_implementation_t #(T)::get_imp();
+    imp.set_anonymous(scope, val, accessor);
   endfunction
 
-  // function set_override
+  // Function: set_override
   //
   // Create a new resource, write ~val~ to it, and set it into the
   // database.  Set it at the beginning of the queue in the type map and
   // the name map so that it will be (currently) the highest priority
   // resource with the specified name and type.
-
+  //
+  // @uvm-contrib
   static function void set_override(input string scope, input string name,
                                     T val, uvm_object accessor = null);
 
-    uvm_resource_pool rp = uvm_resource_pool::get();
-    rsrc_t rsrc = new(name);
-    rsrc.write(val, accessor);
-    rp.set_override(rsrc, scope);
-
-    if(uvm_resource_db_options::is_tracing())
-      m_show_msg("RSRCDB/SETOVRD", "Resource","set", scope, name, accessor, rsrc);
+    uvm_resource_db_implementation_t #(T) imp;
+    imp = uvm_resource_db_implementation_t #(T)::get_imp();
+    imp.set_override(scope, name, val, accessor);
   endfunction
 
 
     
-  // function set_override_type
+  // Function: set_override_type
   //
   // Create a new resource, write ~val~ to it, and set it into the
   // database.  Set it at the beginning of the queue in the type map so
   // that it will be (currently) the highest priority resource with the
   // specified type. It will be normal priority (i.e. at the end of the
   // queue) in the name map.
-
+  //
+  // @uvm-contrib
   static function void set_override_type(input string scope, input string name,
                                          T val, uvm_object accessor = null);
 
-    uvm_resource_pool rp = uvm_resource_pool::get();
-    rsrc_t rsrc = new(name);
-    rsrc.write(val, accessor);
-    rp.set_type_override(rsrc, scope);
-
-    if(uvm_resource_db_options::is_tracing())
-      m_show_msg("RSRCDB/SETOVRDTYP","Resource", "set", scope, name, accessor, rsrc);
+    uvm_resource_db_implementation_t #(T) imp;
+    imp = uvm_resource_db_implementation_t #(T)::get_imp();
+    imp.set_override_type(scope, name, val, accessor);
   endfunction
 
-  // function set_override_name
+  // Function: set_override_name
   //
   // Create a new resource, write ~val~ to it, and set it into the
   // database.  Set it at the beginning of the queue in the name map so
   // that it will be (currently) the highest priority resource with the
   // specified name. It will be normal priority (i.e. at the end of the
   // queue) in the type map.
-
+  //
+  // @uvm-contrib
   static function void set_override_name(input string scope, input string name,
                                   T val, uvm_object accessor = null);
 
-    uvm_resource_pool rp = uvm_resource_pool::get();
-    rsrc_t rsrc = new(name);
-    rsrc.write(val, accessor);
-    rp.set_name_override(rsrc, scope);
-
-    if(uvm_resource_db_options::is_tracing())
-      m_show_msg("RSRCDB/SETOVRDNAM","Resource", "set", scope, name, accessor, rsrc);
+     uvm_resource_db_implementation_t #(T) imp;
+     imp = uvm_resource_db_implementation_t #(T)::get_imp();
+     imp.set_override_name(scope, name, val, accessor);
   endfunction
 
   // @uvm-ieee 1800.2-2020 auto C.3.2.3.6
@@ -255,18 +181,9 @@ class uvm_resource_db #(type T=uvm_object);
                                    input string name,
                                    inout T val, input uvm_object accessor = null);
 
-    rsrc_t rsrc = get_by_name(scope, name);
-
-    if(uvm_resource_db_options::is_tracing())
-      m_show_msg("RSRCDB/RDBYNAM","Resource", "read", scope, name, accessor, rsrc);
-
-    if(rsrc == null)
-      return 0;
-
-    val = rsrc.read(accessor);
-
-    return 1;
-  
+     uvm_resource_db_implementation_t #(T) imp;
+     imp = uvm_resource_db_implementation_t #(T)::get_imp();
+     return imp.read_by_name(scope, name, val, accessor);
   endfunction
 
   // @uvm-ieee 1800.2-2020 auto C.3.2.3.7
@@ -274,18 +191,9 @@ class uvm_resource_db #(type T=uvm_object);
                                    inout T val,
                                    input uvm_object accessor = null);
     
-    rsrc_t rsrc = get_by_type(scope);
-
-    if(uvm_resource_db_options::is_tracing())
-      m_show_msg("RSRCDB/RDBYTYP", "Resource","read", scope, "", accessor, rsrc);
-
-    if(rsrc == null)
-      return 0;
-
-    val = rsrc.read(accessor);
-
-    return 1;
-
+     uvm_resource_db_implementation_t #(T) imp;
+     imp = uvm_resource_db_implementation_t #(T)::get_imp();
+     return imp.read_by_type(scope, val, accessor);
   endfunction
 
 
@@ -293,18 +201,9 @@ class uvm_resource_db #(type T=uvm_object);
   static function bit write_by_name(input string scope, input string name,
                                     input T val, input uvm_object accessor = null);
 
-    rsrc_t rsrc = get_by_name(scope, name);
-
-    if(uvm_resource_db_options::is_tracing())
-      m_show_msg("RSRCDB/WR","Resource", "written", scope, name, accessor, rsrc);
-
-    if(rsrc == null)
-      return 0;
-
-    rsrc.write(val, accessor);
-
-    return 1;
-
+     uvm_resource_db_implementation_t #(T) imp;
+     imp = uvm_resource_db_implementation_t #(T)::get_imp();
+     return imp.write_by_name(scope, name, val, accessor);
   endfunction
 
 
@@ -312,17 +211,9 @@ class uvm_resource_db #(type T=uvm_object);
   static function bit write_by_type(input string scope,
                                     input T val, input uvm_object accessor = null);
 
-    rsrc_t rsrc = get_by_type(scope);
-
-    if(uvm_resource_db_options::is_tracing())
-      m_show_msg("RSRCDB/WRTYP", "Resource","written", scope, "", accessor, rsrc);
-
-    if(rsrc == null)
-      return 0;
-
-    rsrc.write(val, accessor);
-
-    return 1;
+     uvm_resource_db_implementation_t #(T) imp;
+     imp = uvm_resource_db_implementation_t #(T)::get_imp();
+     return imp.write_by_type(scope, val, accessor);
   endfunction
 
   // function -- NODOCS -- dump

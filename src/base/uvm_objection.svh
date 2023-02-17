@@ -4,6 +4,7 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Cisco Systems, Inc.
 // Copyright 2014 Intel Corporation
+// Copyright 2021-2022 Marvell International Ltd.
 // Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2013-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
@@ -176,9 +177,9 @@ class uvm_objection extends uvm_report_object;
     if (source_obj == obj)
 
       uvm_report_info("OBJTN_TRC", 
-        $sformatf("Object %0s %0s %0d objection(s)%s: count=%0d  total=%0d",
+        $sformatf("Object %0s %0s %0d %0s objection(s)%s: count=%0d  total=%0d",
            obj.get_full_name()==""?"uvm_top":obj.get_full_name(), action,
-           count, description != ""? {" (",description,")"}:"", _count, _total), UVM_NONE);
+           count, get_full_name(), description != ""? {" (",description,")"}:"", _count, _total), UVM_NONE);
     else begin
       int cpath = 0, last_dot=0;
       string sname = source_obj.get_full_name(), nm = obj.get_full_name();
@@ -193,9 +194,9 @@ class uvm_objection extends uvm_report_object;
 
       if(last_dot) sname = sname.substr(last_dot+1, sname.len());
       uvm_report_info("OBJTN_TRC",
-        $sformatf("Object %0s %0s %0d objection(s) %0s its total (%s from source object %s%s): count=%0d  total=%0d",
+        $sformatf("Object %0s %0s %0d %0s objection(s) %0s its total (%s from source object %s%s): count=%0d  total=%0d",
            obj.get_full_name()==""?"uvm_top":obj.get_full_name(), action=="raised"?"added":"subtracted",
-            count, action=="raised"?"to":"from", action, sname, 
+            count, get_full_name(), action=="raised"?"to":"from", action, sname, 
             description != ""?{", ",description}:"", _count, _total), UVM_NONE);
     end
   endfunction
@@ -1060,6 +1061,14 @@ class uvm_objection extends uvm_report_object;
     m_prop_mode    = _rhs.m_prop_mode;
   endfunction
 
+  //@uvm-compat for compatibility with 1.1d
+  function void m_set_hier_mode (uvm_object obj);
+     // this method was available to trade off between performance and
+     // functionality, but we have since fixed performance so this
+     // method can be a no-op
+  endfunction
+
+
 endclass
 
 // TODO: change to plusarg
@@ -1153,6 +1162,80 @@ class uvm_objection_callback extends uvm_callback;
   endtask
 
 endclass
+
+
+//@uvm-compat for compatibility with 1.2
+class uvm_test_done_objection extends uvm_objection;
+
+   protected static uvm_test_done_objection m_inst;
+  protected bit m_forced;
+
+  // For communicating all objections dropped and end of phasing
+  local  bit m_executing_stop_processes;
+  local  int m_n_stop_threads;
+
+
+  // Function- new DEPRECATED
+  //
+  // Creates the singleton test_done objection. Users must not call
+  // this method directly.
+
+  //@uvm-compat for compatibility with 1.2
+  function new(string name="uvm_test_done");
+    super.new(name);
+  endfunction
+
+
+  // Function- qualify DEPRECATED
+  //
+  // Checks that the given ~object~ is derived from either <uvm_component> or
+  // <uvm_sequence_base>.
+
+  //@uvm-compat for compatibility with 1.2
+  virtual function void qualify(uvm_object obj=null,
+                                bit is_raise,
+                                string description);
+    uvm_component c;
+    uvm_sequence_base s;
+    string nm = is_raise ? "raise_objection" : "drop_objection";
+    string desc = description == "" ? "" : {" (\"", description, "\")"};
+    if(! ($cast(c,obj) || $cast(s,obj))) begin
+      uvm_report_error("TEST_DONE_NOHIER", {"A non-hierarchical object, '",
+        obj.get_full_name(), "' (", obj.get_type_name(),") was used in a call ",
+        "to uvm_test_done.", nm,"(). For this objection, a sequence ",
+        "or component is required.", desc });
+    end
+  endfunction
+
+  // Below are basic data operations needed for all uvm_objects
+  // for factory registration, printing, comparing, etc.
+
+  typedef uvm_object_registry#(uvm_test_done_objection,"uvm_test_done") type_id;
+  //@uvm-compat for compatibility with 1.2
+  static function type_id get_type();
+    return type_id::get();
+  endfunction
+
+  //@uvm-compat for compatibility with 1.2
+  function uvm_object create (string name="");
+    uvm_test_done_objection tmp = new(name);
+    return tmp;
+  endfunction
+
+  //@uvm-compat for compatibility with 1.2
+  virtual function string get_type_name ();
+    return "uvm_test_done";
+  endfunction
+
+  //@uvm-compat for compatibility with 1.2
+  static function uvm_test_done_objection get();
+    if(m_inst == null)
+      m_inst = uvm_test_done_objection::type_id::create("run");
+    return m_inst;
+  endfunction
+
+endclass
+
 
 
 `endif

@@ -5,7 +5,8 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2012-2017 Cisco Systems, Inc.
 // Copyright 2014 Intel Corporation
-// Copyright 2007-2018 Mentor Graphics Corporation
+// Copyright 2021-2022 Marvell International Ltd.
+// Copyright 2007-2021 Mentor Graphics Corporation
 // Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2018 Synopsys, Inc.
@@ -76,6 +77,15 @@ virtual class uvm_port_component_base extends uvm_component;
   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
   pure virtual function void get_connected_to(ref uvm_port_list list);
+  
+  // Function -- NODOCS -- get_provided_to
+  //
+  // For an implementation or export type, this function fills ~list~ with all
+  // of the ports, exports and implementations that this port is
+  // provides its implementation to.
+  // @uvm_compat
+  pure virtual function void get_provided_to(ref uvm_port_list list);
+
 
   // Function -- NODOCS -- is_port
   //
@@ -93,7 +103,7 @@ virtual class uvm_port_component_base extends uvm_component;
 
   pure virtual function bit is_imp();
 
-  // Turn off auto config by not calling build_phase()
+  // Turn off auto config 
   virtual function bit use_automatic_config();
     return 0;
   endfunction : use_automatic_config    
@@ -149,13 +159,25 @@ class uvm_port_component #(type PORT=uvm_object) extends uvm_port_component_base
   // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
   virtual function void get_connected_to(ref uvm_port_list list);
+
     PORT list1[string];
     m_port.get_connected_to(list1);
     list.delete();
     foreach(list1[name]) begin
       list[name] = list1[name].get_comp();
     end
+  
   endfunction
+  
+  virtual function void get_provided_to(ref uvm_port_list list);
+
+    PORT list1[string];
+    m_port.get_provided_to(list1);
+    list.delete();
+    foreach(list1[name]) begin
+      list[name] = list1[name].get_comp();
+    end
+  endfunction  
 
   function bit is_port ();
     return m_port.is_port();

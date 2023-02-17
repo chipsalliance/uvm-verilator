@@ -2,6 +2,7 @@
 //--------------------------------------------------------------
 // Copyright 2010 AMD
 // Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2022 Marvell International Ltd.
 // Copyright 2010-2020 Mentor Graphics Corporation
 // Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2004-2018 Synopsys, Inc.
@@ -170,6 +171,7 @@ class uvm_reg_item extends uvm_sequence_item;
   // Handle to optional user data, as conveyed in the call to
   // write(), read(), mirror(), or update() used to trigger the operation.
   //
+  // @uvm-contrib This variable is being considered for potential contribution to 1800.2
 
   rand uvm_object extension;
 

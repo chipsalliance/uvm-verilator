@@ -2,6 +2,7 @@
 //------------------------------------------------------------------------------
 // Copyright 2012 Accellera Systems Initiative
 // Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2022 Marvell International Ltd.
 // Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2015-2020 NVIDIA Corporation
 // Copyright 2013 Synopsys, Inc.
@@ -87,6 +88,6 @@ class uvm_driver #(type REQ=uvm_sequence_item,
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
 	  if(seq_item_port.size<1)
-		  `uvm_warning("DRVCONNECT","the driver is not connected to a sequencer via the standard mechanisms enabled by connect()")
+		  `uvm_warning("DRVCONNECT","seq_item_port (a uvm_seq_item_pull_port in uvm_driver) has not been connected to a sequencer")
   endfunction
 endclass

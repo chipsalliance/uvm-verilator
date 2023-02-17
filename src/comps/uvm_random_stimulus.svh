@@ -1,9 +1,10 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2015-2018 NVIDIA Corporation
 // Copyright 2017 Cisco Systems, Inc.
+// Copyright 2022 Marvell International Ltd.
+// Copyright 2007-2021 Mentor Graphics Corporation
+// Copyright 2015-2020 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -22,7 +23,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// CLASS -- NODOCS -- uvm_random_stimulus #(T)
+// CLASS  -- NODOCS -- uvm_random_stimulus #(T)
 //
 // A general purpose unidirectional random stimulus class.
 //
@@ -42,16 +43,13 @@
 // add additional stimulus generation methods and to simplify test writing.
 //
 //------------------------------------------------------------------------------
-
-`ifdef UVM_ENABLE_DEPRECATED_API 
-
+//@uvm_compat
 class uvm_random_stimulus #(type T=uvm_transaction) extends uvm_component;
+
+  const static string type_name = "uvm_random_stimulus #(T)";
 
   typedef uvm_random_stimulus #(T) this_type;
   `uvm_component_param_utils(this_type)
-  // TODO: Would this be better as:
-  //| `uvm_type_name_decl($sformatf("uvm_random_stimulus #(%s)", T::type_name))
-  `uvm_type_name_decl("uvm_random_stimulus #(T)")
 
   // Port -- NODOCS -- blocking_put_port
   //
@@ -96,7 +94,7 @@ class uvm_random_stimulus #(type T=uvm_transaction) extends uvm_component;
   //
   // The transactions are cloned before they are sent out 
   // over the blocking_put_port
-
+//@uvm_compat
   virtual task generate_stimulus(T t=null, int max_count=0);
 
     T temp;
@@ -116,17 +114,20 @@ class uvm_random_stimulus #(type T=uvm_transaction) extends uvm_component;
   endtask
   
 
-  // Function -- NODOCS -- stop_stimulus_generation
+  // Function -- NODOCS --  stop_stimulus_generation
   //
   // Stops the generation of stimulus.
   // If a subclass of this method has forked additional
   // processes, those processes will also need to be
   // stopped in an overridden version of this method
-  
+//@uvm_compat  
   virtual function void stop_stimulus_generation;
     m_stop = 1;
   endfunction
   
 
+  virtual function string get_type_name();
+    return type_name;
+  endfunction
+
 endclass : uvm_random_stimulus
-`endif //UVM_ENABLE_DEPRECATED_API

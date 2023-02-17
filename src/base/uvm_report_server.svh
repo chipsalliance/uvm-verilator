@@ -4,8 +4,9 @@
 // Copyright 2015 Analog Devices, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2017 Cisco Systems, Inc.
+// Copyright 2021-2022 Marvell International Ltd.
 // Copyright 2007-2020 Mentor Graphics Corporation
-// Copyright 2014-2020 NVIDIA Corporation
+// Copyright 2014-2021 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2013 Verilab
@@ -178,7 +179,6 @@ virtual class uvm_report_server extends uvm_object;
         // @uvm-ieee 1800.2-2020 auto 6.5.1.2.17
         pure virtual function void report_summarize(UVM_FILE file = UVM_STDOUT);
 
-
         // Function -- NODOCS -- set_server
         //
         // Sets the global report server to use for reporting.
@@ -231,6 +231,11 @@ virtual class uvm_report_server extends uvm_object;
 	        uvm_coreservice_t cs = uvm_coreservice_t::get();
                 return cs.get_report_server();
         endfunction
+
+        // @uvm-compat Added for compatibility to uvm-1.1d
+        function void dump_server_state();
+          this.report_summarize();
+        endfunction : dump_server_state
 endclass
 
 //------------------------------------------------------------------------------
@@ -285,6 +290,7 @@ class uvm_default_report_server extends uvm_report_server;
   // 
   // "UVM_INFO file.v(3) @ 60: reporter [ID0] Message 0 -UVM_INFO"
   //
+  // @uvm-accellera This API is specific to the Accellera implementation, and is not being considered for contribution to 1800.2
   bit show_terminator = 0;
 
   // Needed for callbacks
@@ -416,6 +422,7 @@ class uvm_default_report_server extends uvm_report_server;
 
   // Function --NODOCS-- incr_quit_count
 
+  //@uvm-compat provided for compatibility with 1.2
   function void incr_quit_count();
     m_quit_count++;
   endfunction
@@ -425,6 +432,7 @@ class uvm_default_report_server extends uvm_report_server;
   // Set, get, increment, or reset to 0 the quit count, i.e., the number of
   // COUNT actions issued.
 
+  //@uvm-compat provided for compatibility with 1.2
   function void reset_quit_count();
     m_quit_count = 0;
   endfunction
@@ -434,6 +442,7 @@ class uvm_default_report_server extends uvm_report_server;
   // If is_quit_count_reached returns 1, then the quit counter has reached
   // the maximum.
 
+  //@uvm-compat provided for compatibility with 1.2
   function bit is_quit_count_reached();
     return (m_quit_count >= m_max_quit_count);
   endfunction
@@ -458,6 +467,7 @@ class uvm_default_report_server extends uvm_report_server;
 
   // Function --NODOCS-- incr_severity_count
 
+  //@uvm-compat provided for compatibility with 1.2
   function void incr_severity_count(uvm_severity severity);
     m_severity_count[severity]++;
   endfunction
@@ -467,6 +477,7 @@ class uvm_default_report_server extends uvm_report_server;
   // Set, get, or increment the counter for the given severity, or reset
   // all severity counters to 0.
 
+  //@uvm-compat provided for compatibility with 1.2
   function void reset_severity_counts();
     uvm_severity s;
     s = s.first();
@@ -493,6 +504,7 @@ class uvm_default_report_server extends uvm_report_server;
 
   // Function --NODOCS-- set_id_count
 
+  //@uvm-compat provided for compatibility with 1.2
   function void set_id_count(string id, int count);
     m_id_count[id] = count < 0 ? 0 : count;
   endfunction
@@ -501,6 +513,7 @@ class uvm_default_report_server extends uvm_report_server;
   //
   // Set, get, or increment the counter for reports with the given id.
 
+  //@uvm-compat provided for compatibility with 1.2
   function void incr_id_count(string id);
     if(m_id_count.exists(id))
       m_id_count[id]++;
@@ -568,6 +581,17 @@ class uvm_default_report_server extends uvm_report_server;
 
     // Set the report server for this message
     report_message.set_report_server(this);
+
+    // this functionality provided for backward compatibility with 1.1d
+    if(report_message.get_action() & UVM_CALL_HOOK)
+      report_ok = l_report_handler.run_hooks(
+        report_message.get_report_object(),
+        report_message.get_severity(), 
+        report_message.get_id(), 
+        report_message.get_message(), 
+        report_message.get_verbosity(), 
+        report_message.get_filename(), 
+        report_message.get_line());
 
     if(report_ok)
       report_ok = uvm_report_catcher::process_all_report_catchers(report_message);
@@ -789,7 +813,7 @@ class uvm_default_report_server extends uvm_report_server;
     end
 
     // Make definable in terms of units.
-    $swrite(time_str, "%0t", $time);
+    $swrite(time_str, "%0t", $realtime);
  
     if (report_message.get_context() != "")
       context_str = {"@@", report_message.get_context()};
@@ -827,6 +851,8 @@ class uvm_default_report_server extends uvm_report_server;
 
   endfunction 
 
+  // is report_summarize() in the call stack
+  protected bit m_report_summarize_in_stack = 0 ;
 
   // Function --NODOCS-- report_summarize
   //
@@ -837,6 +863,18 @@ class uvm_default_report_server extends uvm_report_server;
   // The <run_test> method in uvm_top calls this method.
 
   virtual function void report_summarize(UVM_FILE file = UVM_STDOUT);
+     m_report_summarize_in_stack = 1 ;
+     summarize(file);
+     m_report_summarize_in_stack = 0 ;
+  endfunction
+
+  // @uvm-compat
+  virtual function void summarize(UVM_FILE file = UVM_STDOUT);
+     if (!m_report_summarize_in_stack) report_summarize(file);
+     else m_report_summarize(file);
+  endfunction
+
+  virtual function void m_report_summarize(UVM_FILE file = UVM_STDOUT);
     string id;
     string name;
     uvm_root root;

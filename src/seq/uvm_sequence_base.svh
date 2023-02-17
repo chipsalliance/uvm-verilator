@@ -4,8 +4,9 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Cisco Systems, Inc.
 // Copyright 2014-2017 Intel Corporation
+// Copyright 2021-2022 Marvell International Ltd.
 // Copyright 2007-2017 Mentor Graphics Corporation
-// Copyright 2012-2020 NVIDIA Corporation
+// Copyright 2012-2022 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
 // Copyright 2013 Verilab
@@ -143,6 +144,9 @@ virtual class uvm_sequence_base extends uvm_sequence_item;
   `uvm_object_abstract_utils(uvm_sequence_base)
 
 
+  // This semaphore is provided to ensure that a sequence is only being
+  // run from a single thread at a time.
+  protected semaphore          m_sequence_state_mutex;
   protected uvm_sequence_state m_sequence_state;
             int                m_next_transaction_id = 1;
   local     int                m_priority = -1;
@@ -165,7 +169,8 @@ virtual class uvm_sequence_base extends uvm_sequence_item;
   // by the `uvm_do*() and `uvm_rand_send*() macros,
   // or as a default sequence.
   //
-  local bit do_not_randomize;
+  // @uvm-compat , provided for compatibility with 1.2
+  bit do_not_randomize;
 
   protected process  m_sequence_process;
   local bit m_use_response_handler;
@@ -180,6 +185,7 @@ virtual class uvm_sequence_base extends uvm_sequence_item;
   function new (string name = "uvm_sequence");
 
     super.new(name);
+    m_sequence_state_mutex = new(1);
     m_sequence_state = UVM_CREATED;
     m_wait_for_grant_semaphore = 0;
     m_init_phase_daps(1);
@@ -281,7 +287,7 @@ virtual class uvm_sequence_base extends uvm_sequence_item;
 
     set_item_context(parent_sequence, sequencer);
 
-    if (!(m_sequence_state inside {UVM_CREATED,UVM_STOPPED,UVM_FINISHED})) begin
+    if (m_sequence_state_mutex.try_get(1) == 0) begin
       uvm_report_fatal("SEQ_NOT_DONE",
          {"Sequence ", get_full_name(), " already started"},UVM_NONE);
     end
@@ -412,16 +418,18 @@ virtual class uvm_sequence_base extends uvm_sequence_item;
   // were forcibly stopped, this step has already taken place
 
    function void clean_exit_sequence();
-      if (m_sequencer != null)
-        m_sequencer.m_sequence_exiting(this);	 
-      else	
-	      // remove any routing for this sequence even when virtual sequencers (or a null sequencer is involved)
-	      // once we pass this point nothing can be routed to this sequence(id)
-	      foreach(m_sqr_seq_ids[seqrID]) begin
-		      uvm_sequencer_base s = uvm_sequencer_base::all_sequencer_insts[seqrID];
-		      s.m_sequence_exiting(this);
-	      end	
-	       m_sqr_seq_ids.delete();
+     if (m_sequencer != null) begin
+       m_sequencer.m_sequence_exiting(this);	 
+     end
+     // remove any routing for this sequence even when virtual sequencers (or a null sequencer is involved)
+     // once we pass this point nothing can be routed to this sequence(id)
+     foreach(m_sqr_seq_ids[seqrID]) begin
+       uvm_sequencer_base s = uvm_sequencer_base::all_sequencer_insts[seqrID];
+       s.m_sequence_exiting(this);
+     end	
+     m_sqr_seq_ids.delete();
+    // Release the state mutex to allow for re-use (not recommended)
+    m_sequence_state_mutex.put(1);
  endfunction
  
 
@@ -542,6 +550,9 @@ virtual class uvm_sequence_base extends uvm_sequence_item;
   // Starting Phase DAP
   local uvm_get_to_lock_dap#(uvm_phase) m_starting_phase_dap;
 
+  // @uvm-compat For compatibility with UVM 1.1d
+  uvm_phase starting_phase;
+  
   // Function- m_init_phase_daps
   // Either creates or renames DAPS
   function void m_init_phase_daps(bit create);
@@ -574,13 +585,41 @@ virtual class uvm_sequence_base extends uvm_sequence_item;
   //
   // @uvm-ieee 1800.2-2020 auto 14.2.4.1
   function uvm_phase get_starting_phase();
-     return m_starting_phase_dap.get();
+    uvm_phase sp;
+    
+    // If we're not locked, use the starting_phase variable
+    if (!m_starting_phase_dap.is_locked() && starting_phase != null)
+      m_starting_phase_dap.set(starting_phase);
+
+    // Get the DAP value (and lock it)
+    sp = m_starting_phase_dap.get();
+
+    // Throw an error if starting_phase != dap.get()
+    if (sp!=starting_phase) begin
+      `uvm_error("UVM/SEQ/SP/GET",
+                 $sformatf("The starting_phase variable was set to '%s' after a call to get_starting_phase locked the value '%s'.  The new value is ignored.",
+                           (starting_phase == null) ? "<null>" : starting_phase.get_name(),
+                           (sp == null) ? "<null>" : sp.get_name()))
+    end
+    return sp;
   endfunction : get_starting_phase
 
 
   // @uvm-ieee 1800.2-2020 auto 14.2.4.2
   function void set_starting_phase(uvm_phase phase);
-     m_starting_phase_dap.set(phase);
+    if (!m_starting_phase_dap.try_set(phase)) begin
+      // Too late to update starting phase
+      uvm_phase sp;
+      sp = m_starting_phase_dap.get();
+      `uvm_error("UVM/SEQ/SP/SET",
+                 $sformatf("The starting_phase variable was set to '%s' after a call to get_starting_phase locked the value at '%s'.  The new value is ignored.",
+                           (phase == null) ? "<null>" : phase.get_name(),
+                           (sp == null) ? "<null>" : sp.get_name()))
+    end
+    else begin
+      // Update the starting_phase variable
+      starting_phase = phase;
+    end
   endfunction : set_starting_phase
    
 
@@ -1084,6 +1123,11 @@ virtual class uvm_sequence_base extends uvm_sequence_item;
     response_queue_error_report_enabled = value;
   endfunction : set_response_queue_error_report_enabled
 
+  // @uvm-compat provided for compatibility with 1.2
+  function void set_response_queue_error_report_disabled(bit value);
+    response_queue_error_report_enabled = ~value;
+  endfunction : set_response_queue_error_report_disabled
+
   // Function -- NODOCS -- get_response_queue_error_report_enabled
   //
   // When this bit is '1' (default value), error reports are generated when
@@ -1094,6 +1138,11 @@ virtual class uvm_sequence_base extends uvm_sequence_item;
   function bit get_response_queue_error_report_enabled();
     return response_queue_error_report_enabled;
   endfunction : get_response_queue_error_report_enabled
+
+  // @uvm-compat provided for compatibility with 1.2
+  function bit get_response_queue_error_report_disabled();
+    return ~response_queue_error_report_enabled;
+  endfunction : get_response_queue_error_report_disabled
 
   // Function -- NODOCS -- set_response_queue_depth
   //

@@ -3,7 +3,7 @@
 // Copyright 2011 AMD
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2015-2020 NVIDIA Corporation
+// Copyright 2015-2022 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -52,10 +52,14 @@ virtual class uvm_bottomup_phase extends uvm_phase;
     string name;
     uvm_domain phase_domain =phase.get_domain();
     uvm_domain comp_domain = comp.get_domain();
+    uvm_phase_hopper hopper;
+    hopper = uvm_phase_hopper::get_global_hopper();
 
     if (comp.get_first_child(name))
       do
-        traverse(comp.get_child(name), phase, state);
+        begin
+          hopper.traverse_on(this, comp.get_child(name), phase, state);
+        end
       while(comp.get_next_child(name));
 
     if (m_phase_trace)
@@ -75,7 +79,7 @@ virtual class uvm_bottomup_phase extends uvm_phase;
           uvm_phase ph = this; 
           if (comp.m_phase_imps.exists(this))
             ph = comp.m_phase_imps[this];
-          ph.execute(comp, phase);
+          hopper.execute_on(ph, comp, phase);
           end
         UVM_PHASE_READY_TO_END: begin
           comp.phase_ready_to_end(phase);

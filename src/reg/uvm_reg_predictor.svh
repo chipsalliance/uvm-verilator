@@ -2,9 +2,10 @@
 // -------------------------------------------------------------
 // Copyright 2012 Accellera Systems Initiative
 // Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2022 Marvell International Ltd.
 // Copyright 2020 Mentor Graphics Corporation
 // Copyright 2014-2020 NVIDIA Corporation
-// Copyright 2014 Semifore
+// Copyright 2014-2022 Semifore
 // Copyright 2004-2011 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 //
@@ -53,6 +54,14 @@ endclass
 // Memories can be large, so their accesses are not predicted.
 //
 //------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Class: uvm_reg_predictor
+//
+// The library implements the following public API beyond what is 
+// documented in 1800.2.
+//----------------------------------------------------------------------
+
 
 // @uvm-ieee 1800.2-2020 auto 19.3.1
 class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
@@ -171,6 +180,7 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
          item.set_door(UVM_PREDICT);
          item.set_map(map);
          item.set_kind(rw.kind);
+         item.set_status(rw.status);
          predict_info.reg_item = item;
          m_pending[rg] = predict_info;
        end
@@ -265,6 +275,15 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
       	$sformatf("There are %0d incomplete register transactions still pending completion:%s",m_pending.num(),`UVM_STRING_QUEUE_STREAMING_PACK(q)))
 
     end
+  endfunction
+
+  // Function: flush
+  //
+  // Clear the state of the predictor including the pending writes.
+  //
+  // @uvm-contrib This API is being considered for potential contribution to 1800.2
+  virtual function void flush(); 
+    m_pending.delete();
   endfunction
 
 endclass

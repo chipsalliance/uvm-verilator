@@ -4,8 +4,9 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2014 Intel Corporation
+// Copyright 2021-2022 Marvell International Ltd.
 // Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2013-2022 NVIDIA Corporation
 // Copyright 2010-2014 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -286,9 +287,7 @@ endfunction
 
 // @uvm-ieee 1800.2-2020 auto F.3.3.1
 function bit uvm_is_match (string expr, string str);
-  string s;
-  s = uvm_glob_to_re(expr);
-  return (uvm_re_match(s, str) == 0);
+  return (uvm_re_match(.re(expr), .str(str), .deglob(1)) == 0);
 endfunction
 
 
@@ -312,7 +311,8 @@ endfunction
 
 // @uvm-ieee 1800.2-2020 auto F.3.1.1
 function uvm_core_state get_core_state();
-		return m_uvm_core_state;
+   if (m_uvm_core_state.size() == 0) return UVM_CORE_UNINITIALIZED;
+   else return m_uvm_core_state[0];
 endfunction
 
 // Function: uvm_init
@@ -363,7 +363,7 @@ function void uvm_init(uvm_coreservice_t cs=null);
     end
     return;
   end
-  m_uvm_core_state=UVM_CORE_PRE_INIT;
+  m_uvm_core_state.push_front(UVM_CORE_PRE_INIT);
 
   // We control the implementation of uvm_default_coreservice_t::new
   // and uvm_coreservice_t::set (which is undocumented).  As such,
@@ -386,7 +386,7 @@ function void uvm_init(uvm_coreservice_t cs=null);
   // constructor that relies on the specialized
   // root being constructed...  but there's not
   // really anything that can be done about that.
-  m_uvm_core_state=UVM_CORE_INITIALIZING;
+  m_uvm_core_state.push_front(UVM_CORE_INITIALIZING);
   
   foreach(uvm_deferred_init[idx]) begin
     uvm_deferred_init[idx].initialize();
@@ -406,8 +406,17 @@ function void uvm_init(uvm_coreservice_t cs=null);
     // change individual component verbosity.
     top.m_check_verbosity();
   end
+
+  m_uvm_core_state.push_front(UVM_CORE_INITIALIZED);
+
+  // initialize compat fields from uvm_object_globals
+  uvm_default_table_printer = new();
+  uvm_default_tree_printer = new();
+  uvm_default_line_printer = new();
+  uvm_default_printer = uvm_default_table_printer;
+  uvm_default_packer = new();
+  uvm_default_comparer = new();
     
-  m_uvm_core_state=UVM_CORE_INITIALIZED;
 endfunction
 
 //----------------------------------------------------------------------------
@@ -437,8 +446,9 @@ endfunction
 
 task uvm_wait_for_nba_region;
 
-  int nba;
-  int next_nba;
+  // Nonblocking assignment requires static
+  static int nba;
+  static int next_nba;
 
   //If `included directly in a program block, can't use a non-blocking assign,
   //but it isn't needed since program blocks are in a separate region.
@@ -453,7 +463,6 @@ task uvm_wait_for_nba_region;
 
 endtask
 
-`ifdef UVM_ENABLE_DEPRECATED_API
   
 //----------------------------------------------------------------------------
 //
@@ -467,7 +476,7 @@ endtask
 // Results in the 'splits' queue containing the three elements: 1, on and 
 // false.
 //----------------------------------------------------------------------------
-
+//@uvm-compat provided for backward compatibility with 1800.2-2017
 function automatic void uvm_split_string (string str, byte sep, ref string values[$]);
   int s = 0, e = 0;
   values.delete();
@@ -480,7 +489,6 @@ function automatic void uvm_split_string (string str, byte sep, ref string value
   end
 endfunction
 
-`endif //  `ifdef UVM_ENABLE_DEPRECATED_API
 
 //----------------------------------------------------------------------------
 //
@@ -549,3 +557,21 @@ class uvm_enum_wrapper#(type T=uvm_active_passive_enum);
     endfunction : new
 
 endclass : uvm_enum_wrapper
+
+// Class -- NODOCS -- uvm_shared#(T)
+//
+// The ~uvm_shared#(T)~ class is a utility mechanism provided as
+// a convenience method for passing potentially large values
+// such as arrays, queues, or bitstreams by reference instead
+// of by value.  The data itself is contained in a single
+// ~value~ variable.
+//
+// Unlike ref ports, the uvm_shared#(T) can be saved and used
+// after a function/task scope has been exited.
+//
+// @uvm-contrib - For potential contribution to 1800.2 standard
+class uvm_shared#(type T=int);
+  // Variable- value
+  // The value contained within the ref.
+  T value;
+endclass : uvm_shared

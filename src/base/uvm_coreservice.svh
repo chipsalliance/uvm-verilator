@@ -3,8 +3,9 @@
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2017 Cisco Systems, Inc.
 // Copyright 2018 Intel Corporation
+// Copyright 2021-2022 Marvell International Ltd.
 // Copyright 2014-2018 Mentor Graphics Corporation
-// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2013-2022 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2018 Synopsys, Inc.
 // Copyright 2017 Verific
@@ -37,10 +38,11 @@ typedef class uvm_copier;
 typedef class uvm_packer;
 typedef class uvm_printer;
 typedef class uvm_table_printer;
-
+typedef class uvm_phase_hopper;
 typedef class uvm_tr_database;
 typedef class uvm_text_tr_database;
 typedef class uvm_resource_pool;
+typedef class uvm_resource_base;
 
 
 typedef class uvm_default_coreservice_t;
@@ -142,6 +144,13 @@ virtual class uvm_coreservice_t;
 	pure virtual function void set_resource_pool_default_precedence(int unsigned precedence);
 
 	pure virtual function int unsigned get_resource_pool_default_precedence();
+
+        // Function: get_phase_hopper
+        //
+        // Returns the <uvm_phase_hopper> (singleton) instance for this environment
+        //
+        // @uvm-contrib For potential contribution to 1800.2
+        pure virtual function uvm_phase_hopper get_phase_hopper();
 
 	local static uvm_coreservice_t inst;
 
@@ -265,10 +274,9 @@ class uvm_default_coreservice_t extends uvm_coreservice_t;
 		return _visitor;
 	endfunction
 
-	local uvm_printer m_printer ;
-
 	virtual function void set_default_printer(uvm_printer printer);
-		m_printer = printer ;
+           // using field in uvm_object_globals for backward compatibility
+		uvm_default_printer = printer ;
 	endfunction
 
     // Function: get_default_printer
@@ -282,34 +290,36 @@ class uvm_default_coreservice_t extends uvm_coreservice_t;
     // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
 	virtual function uvm_printer get_default_printer();
-		if (m_printer == null) begin
-			m_printer =  uvm_table_printer::get_default() ;
+           // using field in uvm_object_globals for backward compatibility
+		if (uvm_default_printer == null) begin
+			uvm_default_printer =  uvm_table_printer::get_default() ;
 		end
-		return m_printer ;
+		return uvm_default_printer ;
 	endfunction
 
-	local uvm_packer m_packer ;
-
 	virtual function void set_default_packer(uvm_packer packer);
-		m_packer = packer ;
+           // using field in uvm_object_globals for backward compatibility
+	   uvm_default_packer = packer ;
 	endfunction
 
 	virtual function uvm_packer get_default_packer();
-		if (m_packer == null) begin
-         m_packer =  new("uvm_default_packer") ;
-		end
-		return m_packer ;
+           // using field in uvm_object_globals for backward compatibility
+	   if (uvm_default_packer == null) begin
+              uvm_default_packer =  new("uvm_default_packer") ;
+	   end
+	   return uvm_default_packer ;
 	endfunction
 
-	local uvm_comparer m_comparer ;
 	virtual function void set_default_comparer(uvm_comparer comparer);
-		m_comparer = comparer ;
+           // using field in uvm_object_globals for backward compatibility
+	   uvm_default_comparer = comparer ;
 	endfunction
 	virtual function uvm_comparer get_default_comparer();
-		if (m_comparer == null) begin
-         m_comparer =  new("uvm_default_comparer") ;
-		end
-		return m_comparer ;
+           // using field in uvm_object_globals for backward compatibility
+	   if (uvm_default_comparer == null) begin
+              uvm_default_comparer =  new("uvm_default_comparer") ;
+	   end
+	   return uvm_default_comparer ;
 	endfunction
 
 	local int m_default_max_ready_to_end_iters = 20;
@@ -332,28 +342,34 @@ class uvm_default_coreservice_t extends uvm_coreservice_t;
 		return m_rp;
 	endfunction
 
-	local int unsigned m_default_precedence = 1000;
 	virtual function void set_resource_pool_default_precedence(int unsigned precedence);
-		m_default_precedence = precedence;
+		uvm_resource_base::default_precedence = precedence;
 	endfunction
 
 	virtual function int unsigned get_resource_pool_default_precedence();
-		return m_default_precedence;
+		return uvm_resource_base::default_precedence;
 	endfunction
 
+        local uvm_phase_hopper m_hopper;
+
+        virtual function uvm_phase_hopper get_phase_hopper();
+          if (m_hopper == null) begin
+            m_hopper = uvm_phase_hopper::type_id::create("default_hopper");
+          end
+          return m_hopper;
+        endfunction // get_phase_hopper
+          
 	local int unsigned m_uvm_global_seed = $urandom;
 	virtual function int unsigned get_global_seed();
 		return m_uvm_global_seed;
 	endfunction
 
-   local bit m_use_uvm_seeding = 1;
-   
    virtual function bit get_uvm_seeding();
-      return m_use_uvm_seeding;
+      return uvm_object::use_uvm_seeding;
    endfunction : get_uvm_seeding
 
    virtual function void set_uvm_seeding(bit enable);
-      m_use_uvm_seeding = enable;
+      uvm_object::use_uvm_seeding = enable;
    endfunction : set_uvm_seeding
 
 	local uvm_copier m_copier ;

@@ -1,14 +1,16 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2010-2012 AMD
+// Copyright 2010-2022 AMD
 // Copyright 2012 Accellera Systems Initiative
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2012-2018 Cisco Systems, Inc.
+// Copyright 2022 Intel Corporation
+// Copyright 2021-2022 Marvell International Ltd.
 // Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2012-2020 NVIDIA Corporation
+// Copyright 2012-2022 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2018 Synopsys, Inc.
-// Copyright 2017 Verific
+// Copyright 2017-2021 Verific
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -76,13 +78,11 @@ typedef class uvm_report_object;
 typedef class uvm_report_handler;
 typedef class uvm_default_report_server;
 typedef class uvm_cmdline_verbosity;
-  
+
 // Class: uvm_root
 // 
-//| class uvm_root extends uvm_component
-//
-// Implementation of the uvm_root class, as defined
-// in 1800.2-2020 Section F.7
+// Implementation of the uvm_root class, as defined in
+// 1800.2-2020 Section F.7 with the following additional API
 
 class uvm_root extends uvm_component;
 
@@ -147,13 +147,13 @@ class uvm_root extends uvm_component;
 	  uvm_report_server l_rs;
 
           // Only die once...
-          if (m_uvm_core_state inside {UVM_CORE_PRE_ABORT,UVM_CORE_ABORTED})
+          if (get_core_state() inside {UVM_CORE_PRE_ABORT,UVM_CORE_ABORTED})
             return;
           
           l_rs = uvm_report_server::get_server();
 	  // do the pre_abort callbacks
           
-	  m_uvm_core_state=UVM_CORE_PRE_ABORT;
+          m_uvm_core_state.push_front(UVM_CORE_PRE_ABORT);
           
           
 	  m_do_pre_abort();
@@ -164,7 +164,7 @@ class uvm_root extends uvm_component;
           
 	  l_rs.report_summarize();
           
-	  m_uvm_core_state=UVM_CORE_ABORTED;
+          m_uvm_core_state.push_front(UVM_CORE_ABORTED);
           
 	  $finish;
 	endfunction
@@ -189,8 +189,8 @@ class uvm_root extends uvm_component;
 	// Variable -- NODOCS -- finish_on_completion
 	//
 	// If set, then run_test will call $finish after all phases are executed.
-
-  local bit finish_on_completion = 1;
+  //@uvm-compat , for compatibility with 1.2
+  bit finish_on_completion = 1;
 
   // Function -- NODOCS -- get_finish_on_completion
   
@@ -207,6 +207,16 @@ class uvm_root extends uvm_component;
 //----------------------------------------------------------------------------
 // Group -- NODOCS -- Topology
 //----------------------------------------------------------------------------
+
+        // Variable -- NODOCS -- top_levels
+        //
+        // This variable is a list of all of the top level components in UVM. It
+        // includes the uvm_test_top component that is created by <run_test> as
+        // well as any other top level components that have been instantiated
+        // anywhere in the hierarchy.
+
+        // @uvm-compat Added for compatibility with uvm-1.2
+        uvm_component top_levels[$];
 
 	// Function -- NODOCS -- find
 
@@ -245,8 +255,6 @@ class uvm_root extends uvm_component;
     
 	// Function: set_enable_print_topology
 	//
-	//| function void set_enable_print_topology (bit enable)
-	//
 	// Sets the variable to enable printing the entire testbench topology just after completion
 	// of the end_of_elaboration phase.
         //
@@ -256,9 +264,7 @@ class uvm_root extends uvm_component;
 		
 	// Function: get_enable_print_topology
 	//
-	//| function bit get_enable_print_topology()
-	//
-	// Gets the variable to enable printing the entire testbench topology just after completion.
+	// Gets the variable to enable printing the entire testbench topology just after completion of the end_of_elaboration phase..
         //
         // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
@@ -291,7 +297,7 @@ class uvm_root extends uvm_component;
 	extern local function void m_do_config_settings();
 	extern local function void m_do_max_quit_settings();
 	extern local function void m_do_dump_args();
-	extern local function void m_process_config(string cfg, bit is_int);
+	extern local function void m_process_config(string cfg, bit is_int, is_bitstream);
 	extern local function void m_process_default_sequence(string cfg);
         local string m_uvm_verbosity_settings[$];
         local uvm_cmdline_set_verbosity m_time_settings[$];
@@ -339,6 +345,14 @@ class uvm_root extends uvm_component;
 
 endclass
 
+// Note that uvm_top is provided for backwards compatibility, but to avoid
+// complications caused by static initialization it can no longer be a
+// const value.
+   
+//@uvm-compat Provided for compatibility with 1.2
+/* const */ uvm_root uvm_top;
+   
+   
 //-----------------------------------------------------------------------------
 // IMPLEMENTATION
 //-----------------------------------------------------------------------------
@@ -385,6 +399,7 @@ function uvm_root uvm_root::m_uvm_get_root();
   if (m_inst == null) begin
     uvm_root top;
     top = new();
+    uvm_top = top; // backwards compat 
     
     if (top != m_inst)
       // Something very, very bad has happened and
@@ -393,6 +408,9 @@ function uvm_root uvm_root::m_uvm_get_root();
       return null;
     
     top.m_domain = uvm_domain::get_uvm_domain();
+  end // if (m_inst == null)
+  if (m_inst != uvm_top) begin
+    `uvm_fatal_context("UVM/BAD_TOP", "The uvm_top variable has been overwritten outside of uvm_root!",m_inst)
   end
   return m_inst;
 endfunction
@@ -460,7 +478,7 @@ task uvm_root::run_test(string test_name="");
   	uvm_run_test_callback::m_do_pre_run_test();
 
 	factory=uvm_factory::get();
-	m_uvm_core_state=UVM_CORE_PRE_RUN;
+        m_uvm_core_state.push_front(UVM_CORE_PRE_RUN);
 
 	testname_plusarg = 0;
 
@@ -503,6 +521,7 @@ task uvm_root::run_test(string test_name="");
 
 `else
 
+        `uvm_warning("NO_DPI_USED", "We are thinking of removing support for UVM_NO_DPI.  Please try this test without it and evaluate the impact")
 	// plusarg overrides argument
 	if ($value$plusargs("UVM_TESTNAME=%s", test_name)) begin
 		`uvm_info("NO_DPI_TSTNAME", "UVM_NO_DPI defined--getting UVM_TESTNAME directly, without DPI", UVM_NONE)
@@ -550,20 +569,21 @@ task uvm_root::run_test(string test_name="");
 	end
 
 	// phase runner, isolated from calling process
-	fork begin
-			// spawn the phase runner task
-			phase_runner_proc = process::self();
-			uvm_phase::m_run_phases();
-		end
-	join_none
-	#0; // let the phase runner start
+        // Note: Using a fork here may not be necessary.  If the calling
+        // process is disabled, then this process continues,
+        // but if the calling process is killed then this
+        // process is killed.  
+	fork 
+          begin
+	    // spawn the phase runner task
+            uvm_phase_hopper hopper;
+            hopper = uvm_phase_hopper::get_global_hopper();
+            m_uvm_core_state.push_front(UVM_CORE_RUNNING);
+            hopper.run_phases();
+	  end
+	join
 
-	wait (m_phase_all_done == 1);
-
-	m_uvm_core_state=UVM_CORE_POST_RUN;
-
-	// clean up after ourselves
-	phase_runner_proc.kill();
+        m_uvm_core_state.push_front(UVM_CORE_POST_RUN);
 
 	l_rs = uvm_report_server::get_server();
 
@@ -573,7 +593,7 @@ task uvm_root::run_test(string test_name="");
   
 	l_rs.report_summarize();
 
-	m_uvm_core_state=UVM_CORE_FINISHED;
+        m_uvm_core_state.push_front(UVM_CORE_FINISHED);
   	if (get_finish_on_completion())
 		$finish;
 
@@ -678,6 +698,10 @@ endfunction
 // Add to the top levels array
 function bit uvm_root::m_add_child (uvm_component child);
 	if(super.m_add_child(child)) begin
+                if(child.get_name() == "uvm_test_top")
+                        top_levels.push_front(child);
+                else
+                        top_levels.push_back(child);
 		return 1;
 	end
 	else
@@ -896,7 +920,7 @@ endfunction
 // m_process_config
 // ----------------
 
-function void uvm_root::m_process_config(string cfg, bit is_int);
+function void uvm_root::m_process_config(string cfg, bit is_int, is_bitstream);
 	uvm_bitstream_t v;
 	string split_val[$];
 	uvm_root m_uvm_top;
@@ -906,6 +930,7 @@ function void uvm_root::m_process_config(string cfg, bit is_int);
 
 
 	uvm_string_split(cfg, ",", split_val);
+   
 	if(split_val.size() == 1) begin
 		uvm_report_error("UVM_CMDLINE_PROC", {"Invalid +uvm_set_config command\"", cfg,
 				"\" missing field and value: component is \"", split_val[0], "\""}, UVM_NONE);
@@ -925,30 +950,84 @@ function void uvm_root::m_process_config(string cfg, bit is_int);
 	end
 
 	if(is_int) begin
-		if(split_val[2].len() > 2) begin
-			string base, extval;
-			base = split_val[2].substr(0,1);
-			extval = split_val[2].substr(2,split_val[2].len()-1);
-			case(base)
-				"'b" : v = extval.atobin();
-				"0b" : v = extval.atobin();
-				"'o" : v = extval.atooct();
-				"'d" : v = extval.atoi();
-				"'h" : v = extval.atohex();
-				"'x" : v = extval.atohex();
-				"0x" : v = extval.atohex();
-				default : v = split_val[2].atoi();
-			endcase
-		end
-		else begin
-			v = split_val[2].atoi();
-		end
-		uvm_report_info("UVM_CMDLINE_PROC", {"Applying config setting from the command line: +uvm_set_config_int=", cfg}, UVM_NONE);
-		uvm_config_int::set(m_uvm_top, split_val[0], split_val[1], v);
-	end
+	  if(split_val[2].len() > 2) begin
+	    string base, extval;
+	    base = split_val[2].substr(0,1);
+	    extval = split_val[2].substr(2,split_val[2].len()-1);
+	    case(base)
+	      "'b" : v = extval.atobin();
+	      "0b" : v = extval.atobin();
+	      "'o" : v = extval.atooct();
+	      "'d" : v = extval.atoi();
+	      "'h" : v = extval.atohex();
+	      "'x" : v = extval.atohex();
+	      "0x" : v = extval.atohex();
+	      default : v = split_val[2].atoi();
+	    endcase
+	  end
+	  else begin
+	    v = split_val[2].atoi();
+	  end
+	  uvm_report_info("UVM_CMDLINE_PROC", {"Applying config setting from the command line: +uvm_set_config_int=", cfg}, UVM_NONE);
+	  uvm_config_int::set(m_uvm_top, split_val[0], split_val[1], v);
+	end // if (is_int)
+        else if(is_bitstream) begin
+	  string base, extval, tmp;
+          int    success ;
+          bit    is_negative;
+          if (split_val[2].len() > 1) begin
+            byte char;
+            char = split_val[2].getc(0);
+            // Optional sign
+            if (char == "-") begin
+              // Signed, negative
+              is_negative = 1;
+              tmp = split_val[2].substr(1, split_val[2].len()-1);
+            end
+            else if (char == "+") begin
+              // Signed, positive (just remove the sign)
+              tmp = split_val[2].substr(1, split_val[2].len()-1);
+            end
+            else begin
+              // Unsigned
+              tmp = split_val[2];
+            end
+          end // if (split_val[2].len() > 1)
+          else begin // !(split_val[2].len() > 1)
+            tmp = split_val[2];
+          end
+          
+	  if(tmp.len() > 2) begin
+	    base = tmp.substr(0,1);
+	    extval = tmp.substr(2,tmp.len()-1);                   
+	    case(base)
+	      "'b" : success= $sscanf(extval,"%b", v); 
+	      "0b" : success= $sscanf(extval,"%b", v); 
+	      "'o" : success= $sscanf(extval,"%o", v); 
+	      "'d" : success= $sscanf(extval,"%d", v); 
+	      "'h" : success= $sscanf(extval,"%x", v); 
+	      "'x" : success= $sscanf(extval,"%x", v); 
+	      "0x" : success= $sscanf(extval,"%x", v); 
+	      default : success = $sscanf(split_val[2],"%d", v); 
+	    endcase
+	  end
+	  else begin
+            success = $sscanf(tmp,"%d", v);
+	  end // else: !if(tmp.len() > 2)
+
+          if (success == 1) begin
+            if (is_negative) begin
+              v = -v;
+            end
+	    uvm_report_info("UVM_CMDLINE_PROC", {"Applying config setting from the command line: +uvm_set_config_bitstream=", cfg}, UVM_NONE);
+	    uvm_config_int::set(m_uvm_top, split_val[0], split_val[1], v);
+          end
+          else begin
+          end
+        end // if (is_bitstream)
 	else begin
-		uvm_report_info("UVM_CMDLINE_PROC", {"Applying config setting from the command line: +uvm_set_config_string=", cfg}, UVM_NONE);
-		uvm_config_string::set(m_uvm_top, split_val[0], split_val[1], split_val[2]);
+	  uvm_report_info("UVM_CMDLINE_PROC", {"Applying config setting from the command line: +uvm_set_config_string=", cfg}, UVM_NONE);
+	  uvm_config_string::set(m_uvm_top, split_val[0], split_val[1], split_val[2]);
 	end
 
 endfunction
@@ -1005,11 +1084,15 @@ function void uvm_root::m_do_config_settings();
 
 	void'(clp.get_arg_matches("/^\\+(UVM_SET_CONFIG_INT|uvm_set_config_int)=/",args));
 	foreach(args[i]) begin
-		m_process_config(args[i].substr(20, args[i].len()-1), 1);
+		m_process_config(args[i].substr(20, args[i].len()-1), 1, 0);
+	end
+	void'(clp.get_arg_matches("/^\\+(UVM_SET_CONFIG_BITSTREAM|uvm_set_config_bitstream)=/",args));
+	foreach(args[i]) begin
+		m_process_config(args[i].substr(26, args[i].len()-1), 0, 1);
 	end
 	void'(clp.get_arg_matches("/^\\+(UVM_SET_CONFIG_STRING|uvm_set_config_string)=/",args));
 	foreach(args[i]) begin
-		m_process_config(args[i].substr(23, args[i].len()-1), 0);
+		m_process_config(args[i].substr(23, args[i].len()-1), 0, 0);
 	end
 	void'(clp.get_arg_matches("/^\\+(UVM_SET_DEFAULT_SEQUENCE|uvm_set_default_sequence)=/", args));
 	foreach(args[i]) begin
@@ -1028,6 +1111,8 @@ function void uvm_root::m_do_max_quit_settings();
 	string max_quit;
 	string split_max_quit[$];
 	int max_quit_int;
+        int i;
+        string tmp;
 	srvr = uvm_report_server::get_server();
 	max_quit_count = clp.get_arg_values("+UVM_MAX_QUIT_COUNT=", max_quit_settings);
 	if (max_quit_count ==  0)
@@ -1049,7 +1134,8 @@ function void uvm_root::m_do_max_quit_settings();
 		uvm_report_info("MAXQUITSET",
 			$sformatf("'+UVM_MAX_QUIT_COUNT=%s' provided on the command line is being applied.", max_quit), UVM_NONE);
 		uvm_string_split(max_quit, ",", split_max_quit);
-		max_quit_int = split_max_quit[0].atoi();
+                tmp = split_max_quit[0];
+                i = $sscanf(tmp,"%d", max_quit_int);           
 		case(split_max_quit[1])
 			"YES"   : srvr.set_max_quit_count(max_quit_int, 1);
 			"NO"    : srvr.set_max_quit_count(max_quit_int, 0);
@@ -1057,7 +1143,6 @@ function void uvm_root::m_do_max_quit_settings();
 		endcase
 	end
 endfunction
-
 
 // m_do_dump_args
 // --------------

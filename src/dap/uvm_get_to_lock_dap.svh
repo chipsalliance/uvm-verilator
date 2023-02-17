@@ -3,7 +3,7 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Intel Corporation
 // Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2013-2015 NVIDIA Corporation
+// Copyright 2013-2022 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -105,6 +105,16 @@ class uvm_get_to_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       return 1;
    endfunction : try_get
 
+   // Function -- NODOCS -- is_locked
+   // Returns the state of the lock.
+   //
+   // Returns:
+   // 1 - The value is locked
+   // 0 - The value is unlocked
+   function bit is_locked();
+      return m_locked;
+   endfunction : is_locked
+   
    // Group -- NODOCS -- Introspection
    //
    // The ~uvm_get_to_lock_dap~ cannot support the standard UVM

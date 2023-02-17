@@ -4,8 +4,9 @@
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2011 Cypress Semiconductor Corp.
+// Copyright 2021 Marvell International Ltd.
 // Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2013-2020 NVIDIA Corporation
+// Copyright 2013-2022 NVIDIA Corporation
 // Copyright 2010-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -56,10 +57,13 @@
   // Resources/configuration facility
   `include "base/uvm_spell_chkr.svh"
   `include "base/uvm_resource_base.svh"
+  `include "base/uvm_resource_pool.svh"
   `include "base/uvm_resource.svh"
   `include "base/uvm_resource_specializations.svh"
+  `include "base/uvm_resource_db_implementation.svh"
   `include "base/uvm_resource_db.svh"
   `include "base/uvm_resource_db_options.svh"
+  `include "base/uvm_config_db_implementation.svh"
   `include "base/uvm_config_db.svh"
 
 
@@ -103,6 +107,7 @@
   `include "base/uvm_task_phase.svh"
   `include "base/uvm_common_phases.svh"
   `include "base/uvm_runtime_phases.svh"
+  `include "base/uvm_phase_hopper.svh"
 
   `include "base/uvm_run_test_callback.svh"
   `include "base/uvm_component.svh"
@@ -119,4 +124,11 @@
   // traversal utilities
   `include "base/uvm_traversal.svh"
 
+  // Caches
+  `include "base/uvm_cache.svh"
+  `include "base/uvm_lru_cache.svh"
+ `ifndef UVM_REGEX_NO_DPI
+  `include "base/uvm_regex_cache.svh"
+ `endif
+  
 `endif // UVM_BASE_SVH

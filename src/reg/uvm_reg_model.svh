@@ -3,6 +3,7 @@
 // Copyright 2010 AMD
 // Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Intel Corporation
+// Copyright 2021 Marvell International Ltd.
 // Copyright 2010-2011 Mentor Graphics Corporation
 // Copyright 2015-2020 NVIDIA Corporation
 // Copyright 2014 Semifore
@@ -173,6 +174,12 @@ typedef uvm_resource_db#(uvm_reg_cvr_t) uvm_reg_cvr_rsrc_db;
       UVM_PREDICT,
       UVM_DEFAULT_DOOR
    } uvm_door_e;
+
+   //@uvm-compat for compatibility with 1.2
+   parameter uvm_door_e UVM_DEFAULT_PATH = UVM_DEFAULT_DOOR ; 
+
+   //@uvm-compat for compatibility with 1.2
+   typedef uvm_door_e uvm_path_e ; 
 
 // Enum -- NODOCS -- uvm_check_e
 //

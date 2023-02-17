@@ -3,12 +3,12 @@
 // Copyright 2010 AMD
 // Copyright 2012 Accellera Systems Initiative
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2020 Intel Corporation
-// Copyright 2020 Marvell International Ltd.
+// Copyright 2020-2022 Intel Corporation
+// Copyright 2020-2022 Marvell International Ltd.
 // Copyright 2010-2020 Mentor Graphics Corporation
 // Copyright 2014-2020 NVIDIA Corporation
 // Copyright 2018 Qualcomm, Inc.
-// Copyright 2012-2014 Semifore
+// Copyright 2012-2022 Semifore
 // Copyright 2004-2018 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 //
@@ -64,6 +64,7 @@ class uvm_reg_field extends uvm_object;
 
    local static int m_max_size;
    local static bit m_policy_names[string];
+   /*local*/ static uvm_reg_field m_reg_field_registry[string];
 
    constraint uvm_reg_field_valid {
       if (`UVM_REG_DATA_WIDTH > m_size) {
@@ -201,7 +202,19 @@ class uvm_reg_field extends uvm_object;
 
    // @uvm-ieee 1800.2-2020 auto 18.5.4.10
    extern virtual function bit is_volatile();
-
+   
+   // Function -- NODOCS -- get_field_by_full_name
+   //
+   // Finds a field with the specified full hierarchical name.
+   //
+   // The name is the full name of the field, starting with the root block.
+   // The function looks up the cached registry built after register model is locked
+   //
+   // If no field is found, returns ~null~.
+   
+   static function uvm_reg_field get_field_by_full_name(string name);
+      return m_reg_field_registry[name];
+   endfunction
 
    //--------------
    // Group -- NODOCS -- Access
@@ -946,6 +959,8 @@ endfunction: get
 
 function uvm_reg_data_t  uvm_reg_field::get_mirrored_value(string  fname = "",
                                             int     lineno = 0);
+   if (is_volatile())
+       `uvm_warning("UVM/FLD/GET_MIRRORED_VAL/VOL",$sformatf("Mirrored value returned for volatile field \"%s\" may not reflect the actual current value.",this.get_full_name()))
    m_fname = fname;
    m_lineno = lineno;
    get_mirrored_value = m_mirrored;
@@ -1006,6 +1021,8 @@ endfunction: set_reset
 // needs_update
 
 function bit uvm_reg_field::needs_update();
+   if (get_access() inside {"RO","RC","RS"})
+       return 0;
    needs_update = (m_mirrored != m_desired) | m_volatile;
 endfunction: needs_update
 
@@ -1081,6 +1098,9 @@ task uvm_reg_field::write(output uvm_status_e       status,
                           input  int                lineno = 0);
 
    uvm_reg_item rw;
+    
+   set(value);
+    
    rw = uvm_reg_item::type_id::create("field_write_item",,get_full_name());
    rw.set_element(this);
    rw.set_element_kind(UVM_FIELD);
@@ -1114,8 +1134,10 @@ task uvm_reg_field::do_write(uvm_reg_item rw);
    m_fname  = rw.get_fname();
    m_lineno = rw.get_line();
 
-   if (!Xcheck_accessX(rw,map_info))
+   if (!Xcheck_accessX(rw,map_info)) begin
+     m_parent.XatomicX(0);
      return;
+   end
 
    m_write_in_progress = 1'b1;
 
@@ -1361,6 +1383,7 @@ endtask: do_read
 
 function bit uvm_reg_field::is_indv_accessible(uvm_door_e  path,
                                                uvm_reg_map local_map);
+
    if (path == UVM_BACKDOOR) begin
       `uvm_warning("RegModel",
          {"Individual BACKDOOR field access not available for field '",
@@ -1387,20 +1410,23 @@ function bit uvm_reg_field::is_indv_accessible(uvm_door_e  path,
    begin
      uvm_reg_map system_map = local_map.get_root_map();
      uvm_reg_adapter adapter = system_map.get_adapter();
-     if (adapter.supports_byte_enable)
-       return 1;
+     if ((adapter != null) && !adapter.supports_byte_enable) begin
+       `uvm_warning("RegModel", 
+                    {"Target bus does not support byte enable, field '", get_full_name(),
+                     ". Accessing complete register instead."})
+       return 0;
+     end
    end
 
    begin
      int fld_idx;
      int bus_width = local_map.get_n_bytes();
      uvm_reg_field fields[$];
-     bit sole_field;
 
      m_parent.get_fields(fields);
 
      if (fields.size() == 1) begin
-        sole_field = 1;
+        return 1;
      end
      else begin
         int prev_lsb,this_lsb,next_lsb; 
@@ -1444,7 +1470,7 @@ function bit uvm_reg_field::is_indv_accessible(uvm_door_e  path,
            if ((this_lsb % bus_sz) == 0) begin
               if ((next_lsb % bus_sz) == 0 ||
                   (next_lsb - (this_lsb + this_sz)) >= (next_lsb % bus_sz))
-                 return 1;
+                  return 1;
            end 
            else begin
               if ( (next_lsb - (this_lsb + this_sz)) >= (next_lsb % bus_sz) &&
@@ -1456,8 +1482,7 @@ function bit uvm_reg_field::is_indv_accessible(uvm_door_e  path,
    end
    
    `uvm_warning("RegModel", 
-       {"Target bus does not support byte enabling, and the field '",
-       get_full_name(),"' is not the only field within the entire bus width. ",
+       {"Field '", get_full_name(),"' is not the only field within the entire bus width. ",
        "Individual field access will not be available. ",
        "Accessing complete register instead."})
 
