@@ -168,7 +168,11 @@ virtual class uvm_coreservice_t;
 
 	pure virtual function int unsigned get_resource_pool_default_precedence();
 
+`ifdef VERILATOR
+	static uvm_coreservice_t inst;
+`else
 	local static uvm_coreservice_t inst;
+`endif
 
 	// @uvm-ieee 1800.2-2017 auto F.4.1.3
 	static function uvm_coreservice_t get();
