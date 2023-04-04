@@ -606,7 +606,21 @@ endfunction : __m_uvm_execute_field_op
 // m_uvm_object_registry_param
 // ---------------------------
 
+`ifdef VERILATOR
 `define m_uvm_object_registry_param(T) \
+   typedef uvm_object_registry #(T) type_id; \
+   static function T type_id_create (string name="", \
+                                     uvm_component parent=null, \
+                                     string contxt=""); \
+     return type_id::create(name, parent, contxt); \
+   endfunction \
+   static function type_id get_type(); \
+     return type_id::get(); \
+   endfunction \
+   virtual function uvm_object_wrapper get_object_type(); \
+     return type_id::get(); \
+   endfunction
+`else \
    typedef uvm_object_registry #(T) type_id; \
    static function type_id get_type(); \
      return type_id::get(); \
@@ -614,6 +628,7 @@ endfunction : __m_uvm_execute_field_op
    virtual function uvm_object_wrapper get_object_type(); \
      return type_id::get(); \
    endfunction
+`endif
 
 // m_uvm_object_abstract_registry_internal
 // ---------------------------------------
