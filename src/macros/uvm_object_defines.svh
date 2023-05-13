@@ -620,7 +620,8 @@ endfunction : __m_uvm_execute_field_op
    virtual function uvm_object_wrapper get_object_type(); \
      return type_id::get(); \
    endfunction
-`else \
+`else
+`define m_uvm_object_registry_param(T) \
    typedef uvm_object_registry #(T) type_id; \
    static function type_id get_type(); \
      return type_id::get(); \
