@@ -7,7 +7,7 @@
 // Copyright 2014 Intel Corporation
 // Copyright 2020-2022 Marvell International Ltd.
 // Copyright 2007-2012 Mentor Graphics Corporation
-// Copyright 2012-2022 NVIDIA Corporation
+// Copyright 2012-2024 NVIDIA Corporation
 // Copyright 2018 Qualcomm, Inc.
 // Copyright 2010-2013 Synopsys, Inc.
 //   All Rights Reserved Worldwide
@@ -26,6 +26,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/macros/uvm_object_defines.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 `ifndef UVM_OBJECT_DEFINES_SVH
 `define UVM_OBJECT_DEFINES_SVH
