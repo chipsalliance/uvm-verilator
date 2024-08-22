@@ -1,7 +1,7 @@
 //
 //------------------------------------------------------------------------------
 // Copyright 2022 AMD
-// Copyright 2007-2009 Cadence Design Systems, Inc.
+// Copyright 2007-2024 Cadence Design Systems, Inc.
 // Copyright 2007-2009 Mentor Graphics Corporation
 // Copyright 2020-2024 NVIDIA Corporation
 //   All Rights Reserved Worldwide
@@ -25,8 +25,8 @@
 // Git details (see DEVELOPMENT.md):
 //
 // $File:     src/base/uvm_cmdline_report.svh $
-// $Rev:      2024-02-08 13:43:04 -0800 $
-// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
 //
 //----------------------------------------------------------------------
 
@@ -41,12 +41,11 @@ class uvm_cmdline_verbosity extends uvm_cmdline_setting_base;
   // Instance Methods/Variables
   int verbosity;
   enum {STANDARD, NON_STANDARD, ILLEGAL} src;
-  
+  localparam  string prefix = "+UVM_VERBOSITY=";
+
   // Static Methods/Variables
-  static const string prefix = "+UVM_VERBOSITY=";
   static uvm_cmdline_verbosity settings[$];
   
-
   // Function --NODOCS-- init
   // Initializes the ~settings~ queue with the command line verbosity settings.
   //
@@ -179,8 +178,8 @@ class uvm_cmdline_set_verbosity extends uvm_cmdline_setting_base;
   string    phase;
   time      offset;
 
-  // Static Methods/Variables
-  static const string prefix = "+uvm_set_verbosity="; 
+  localparam  string prefix = "+uvm_set_verbosity="; 
+  // Static Methods/Variables    
   static uvm_cmdline_set_verbosity settings[$]; // Processed command line settings
 
   
@@ -375,8 +374,9 @@ class uvm_cmdline_set_action extends uvm_cmdline_setting_base;
   uvm_severity sev;
   uvm_action action;
 
+  localparam  string prefix = "+uvm_set_action="; 
+  
   // Static Methods/Variables
-  static const string prefix="+uvm_set_action=";
   static uvm_cmdline_set_action settings[$]; // Processed command line settings
   
   // Function --NODOCS-- init
@@ -505,8 +505,9 @@ class uvm_cmdline_set_severity extends uvm_cmdline_setting_base;
   uvm_severity orig_sev;
   uvm_severity sev;
 
+  localparam string prefix="+uvm_set_severity=";
+  
   // Static Methods/Variables
-  static const string prefix="+uvm_set_severity=";
   static uvm_cmdline_set_severity settings[$]; // Processed command line settings
   
   // Function --NODOCS-- init

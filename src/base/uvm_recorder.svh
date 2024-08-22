@@ -29,8 +29,8 @@
 // Git details (see DEVELOPMENT.md):
 //
 // $File:     src/base/uvm_recorder.svh $
-// $Rev:      2024-02-08 13:43:04 -0800 $
-// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
 //
 //----------------------------------------------------------------------
 
@@ -986,8 +986,8 @@ class uvm_text_recorder extends uvm_recorder;
                    $realtime,
                    this.get_handle(),
                    nm,
-                   uvm_bitstream_to_string(value, numbits, radix),
-                    radix.name(),
+                   uvm_bit_vector_utils#(uvm_bitstream_t)::to_string(value, numbits, radix),
+                   radix.name(),
                    numbits);
       end
    endfunction : write_attribute
@@ -1012,7 +1012,7 @@ class uvm_text_recorder extends uvm_recorder;
                    $realtime,
                    this.get_handle(),
                    nm,
-                   uvm_integral_to_string(value, numbits, radix),
+                   uvm_bit_vector_utils#(uvm_integral_t)::to_string(value, numbits, radix),
                    radix.name(),
                    numbits);
       end
@@ -1088,7 +1088,7 @@ class uvm_text_recorder extends uvm_recorder;
                    $realtime,
                    txh,
                    nm,
-                   uvm_bitstream_to_string(value, numbits, radix),
+                   uvm_bit_vector_utils#(uvm_bitstream_t)::to_string(value, numbits, radix),
                    radix.name(),
                    numbits);
         

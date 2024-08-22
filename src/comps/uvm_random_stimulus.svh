@@ -1,6 +1,6 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2024 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2022 Marvell International Ltd.
 // Copyright 2007-2021 Mentor Graphics Corporation
@@ -26,8 +26,8 @@
 // Git details (see DEVELOPMENT.md):
 //
 // $File:     src/comps/uvm_random_stimulus.svh $
-// $Rev:      2024-02-08 13:43:04 -0800 $
-// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
 //
 //----------------------------------------------------------------------
 
@@ -56,7 +56,7 @@
 //@uvm_compat
 class uvm_random_stimulus #(type T=uvm_transaction) extends uvm_component;
 
-  const static string type_name = "uvm_random_stimulus #(T)";
+  localparam  string type_name = "uvm_random_stimulus #(T)";
 
   typedef uvm_random_stimulus #(T) this_type;
   `uvm_component_param_utils(this_type)

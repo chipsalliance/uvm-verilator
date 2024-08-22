@@ -28,8 +28,8 @@
 // Git details (see DEVELOPMENT.md):
 //
 // $File:     src/base/uvm_event.svh $
-// $Rev:      2024-02-08 13:43:04 -0800 $
-// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
 //
 //----------------------------------------------------------------------
 
@@ -281,36 +281,35 @@ endclass
 // @uvm-ieee 1800.2-2020 auto 10.1.2.1
 class uvm_event#(type T=uvm_object) extends uvm_event_base;
 
-        typedef uvm_event#(T) this_type;
-        typedef uvm_event_callback#(T) cb_type;
+    typedef uvm_event#(T) this_type;
+    typedef uvm_event_callback#(T) cb_type;
 
-        // Type: cbs_type
-        // Callback typedef for this event type.
-        //
-        // | typedef uvm_callbacks#(this_type, cb_type) cbs_type;
-        // @uvm-contrib Potential Contribution to 1800.2
-        typedef uvm_callbacks#(this_type, cb_type) cbs_type;
+    // Type: cbs_type
+    // Callback typedef for this event type.
+    //
+    // | typedef uvm_callbacks#(this_type, cb_type) cbs_type;
+    // @uvm-contrib Potential Contribution to 1800.2
+    typedef uvm_callbacks#(this_type, cb_type) cbs_type;
    
-        // Not using `uvm_register_cb(this_type, cb_type)
-        // so as to try and get ~slightly~ better debug
-        // output for names.
-        static local function bit m_register_cb();
-       return uvm_callbacks#(this_type,cb_type)::m_register_pair(
-                                                "uvm_pkg::uvm_event#(T)",
-                                                "uvm_pkg::uvm_event_callback#(T)"
-                                                     );
+    // Not using `uvm_register_cb(this_type, cb_type)
+    // so as to try and get ~slightly~ better debug
+    // output for names.
+    static local function bit m_register_cb();
+        return cbs_type::m_register_pair("uvm_pkg::uvm_event#(T)",
+                                         "uvm_pkg::uvm_event_callback#(T)"
+                                        );
     endfunction : m_register_cb
-        static local bit m_cb_registered = m_register_cb();
+    static local bit m_cb_registered = m_register_cb();
    
-        `uvm_object_param_utils(this_type)
+    `uvm_object_param_utils(this_type)
 
-        // Better type name for debug
-        virtual function string get_type_name();
-       return "uvm_pkg::uvm_event#(T)";
+    // Better type name for debug
+    virtual function string get_type_name();
+        return "uvm_pkg::uvm_event#(T)";
     endfunction : get_type_name
 
     local T trigger_data;
-        local T default_data;
+    local T default_data;
 
     // Function -- NODOCS -- new
     //
@@ -327,8 +326,8 @@ class uvm_event#(type T=uvm_object) extends uvm_event_base;
 
     virtual function void reset (bit wakeup = 0);
         trigger_data = get_default_data();
-          super.reset(wakeup);
-        endfunction : reset
+        super.reset(wakeup);
+    endfunction : reset
 
     // Task -- NODOCS -- wait_trigger_data
     //
@@ -483,6 +482,18 @@ class uvm_event#(type T=uvm_object) extends uvm_event_base;
 
 
        end
+    endfunction
+
+    // @uvm-compat - Added for compatibility with UVM 1.2.
+    virtual function void add_callback(cb_type cb, bit append=1);
+        uvm_apprepend ordering;
+        ordering = (append) ? UVM_APPEND : UVM_PREPEND;
+        cbs_type::add(this, cb, ordering);
+    endfunction
+
+    // @uvm-compat - Added for compatibility with UVM 1.2.
+    virtual function void delete_callback(cb_type cb);
+        cbs_type::delete(this, cb);
     endfunction
 
 endclass

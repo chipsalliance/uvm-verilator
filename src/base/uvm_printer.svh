@@ -31,8 +31,8 @@
 // Git details (see DEVELOPMENT.md):
 //
 // $File:     src/base/uvm_printer.svh $
-// $Rev:      2024-02-08 13:43:04 -0800 $
-// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
 //
 //----------------------------------------------------------------------
 
@@ -854,9 +854,7 @@ function void uvm_printer::print_field (string name,
     radix = get_default_radix();
   end
 
-
-  val_str = uvm_bitstream_to_string (value, size, radix,
-                                     get_radix_string(radix));
+  val_str = uvm_bit_vector_utils#(uvm_bitstream_t)::to_string(value, size, radix, get_radix_string(radix));
 
   name = adjust_name(name,scope_separator);
 
@@ -903,9 +901,7 @@ function void uvm_printer::print_field_int (string name,
     radix = get_default_radix();
   end
 
-
-  val_str = uvm_integral_to_string (value, size, radix,
-                                    get_radix_string(radix));
+  val_str = uvm_bit_vector_utils#(uvm_integral_t)::to_string(value, size, radix, get_radix_string(radix));
 
   name = adjust_name(name,scope_separator);
 

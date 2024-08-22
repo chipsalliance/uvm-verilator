@@ -1,7 +1,7 @@
 // $Id: uvm_report_catcher.svh,v 1.1.2.10 2010/04/09 15:03:25 janick Exp $
 //------------------------------------------------------------------------------
 // Copyright 2010-2012 AMD
-// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2024 Cadence Design Systems, Inc.
 // Copyright 2014 Cisco Systems, Inc.
 // Copyright 2018 Intel Corporation
 // Copyright 2022 Marvell International Ltd.
@@ -30,8 +30,8 @@
 // Git details (see DEVELOPMENT.md):
 //
 // $File:     src/base/uvm_report_catcher.svh $
-// $Rev:      2024-02-08 13:43:04 -0800 $
-// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
 //
 //----------------------------------------------------------------------
 
@@ -87,8 +87,8 @@ virtual class uvm_report_catcher extends uvm_callback;
   local static int m_caught_warning;
 
   // Flag counts
-  const static int DO_NOT_CATCH      = 1; 
-  const static int DO_NOT_MODIFY     = 2; 
+  localparam   int DO_NOT_CATCH      = 1; 
+  localparam   int DO_NOT_MODIFY     = 2; 
   local static int m_debug_flags;
 
   local static  bit do_report;

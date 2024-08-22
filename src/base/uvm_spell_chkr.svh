@@ -1,6 +1,6 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2024 Cadence Design Systems, Inc.
 // Copyright 2010-2011 Mentor Graphics Corporation
 // Copyright 2014-2024 NVIDIA Corporation
 // Copyright 2013 Verilab
@@ -25,8 +25,8 @@
 // Git details (see DEVELOPMENT.md):
 //
 // $File:     src/base/uvm_spell_chkr.svh $
-// $Rev:      2024-02-08 13:43:04 -0800 $
-// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
 //
 //----------------------------------------------------------------------
 
@@ -39,7 +39,7 @@
 class uvm_spell_chkr #(type T=int);
 
   typedef T tab_t[string];
-  static const int unsigned max = '1;
+  localparam int unsigned max = '1;
    
   //--------------------------------------------------------------------
   // check

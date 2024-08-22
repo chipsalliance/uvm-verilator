@@ -30,8 +30,8 @@
 // Git details (see DEVELOPMENT.md):
 //
 // $File:     src/base/uvm_report_object.svh $
-// $Rev:      2024-02-08 13:43:04 -0800 $
-// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
 //
 //----------------------------------------------------------------------
 
@@ -615,7 +615,10 @@ class uvm_report_object extends uvm_object;
     return 1;
   endfunction
 
-
+  // @uvm-compat - Added for compatibility with 1.2
+  function uvm_report_server get_report_server();
+      return uvm_report_server::get_server();
+  endfunction
 
 
 endclass

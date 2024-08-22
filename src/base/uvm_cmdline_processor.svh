@@ -30,8 +30,8 @@
 // Git details (see DEVELOPMENT.md):
 //
 // $File:     src/base/uvm_cmdline_processor.svh $
-// $Rev:      2024-02-08 13:43:04 -0800 $
-// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
 //
 //----------------------------------------------------------------------
 
@@ -89,25 +89,8 @@ endclass
 // Variable: +uvm_set_config_bitstream
 // 
 // ~+uvm_set_config_bitstream=<comp>,<field>,<value>~ works like its
-// procedural counterpart <uvm_config_db#(uvm_bitstream_t)::set()>. The string ~value~ is
-// processed as:
-//
-//| [sign][radix]value
-//
-// Where `[sign]` is an optional sign character, either "+" or "-", and 
-// `[radix]` is an optional radix specifier.  
-//
-// The following radix specifiers are supported:
-//   "'b", "0b": Binary
-//   "'o": Octal
-//   "'d": Decimal
-//   "'h", "'x", "0x": Hexidecimal
-//
-// If the optional radix is omitted, then the ~value~ shall be treated as decimal.  
-//
-// As the <uvm_bitstream_t> is a 4-state value, the characters "X", "x", "Z", "z", 
-// and "?" are legal within the ~value~ string.  Additionally, the underscore character
-// ("_") is ignored.
+// procedural counterpart <uvm_config_db#(uvm_bitstream_t)::set()>. The string ~value~
+// is interpreted using the same rules as uvm_bit_vector_utils#(uvm_bitstream_t)::from_string().
 // 
 // Note that unlike <+uvm_set_config_int>, the Accellera implementation of
 // ~+uvm_set_config_bitstream~ is capable storing values that exceed 32 bits in size.
