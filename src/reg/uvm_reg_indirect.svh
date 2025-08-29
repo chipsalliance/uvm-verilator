@@ -174,11 +174,7 @@ class uvm_reg_indirect_data extends uvm_reg;
 
          XatomicX(1);
 
-`ifdef VERILATOR
-         rw = uvm_reg_item::type_id_create("write_item",,get_full_name());
-`else
          rw = uvm_reg_item::type_id::create("write_item",,get_full_name());
-`endif
          rw.element      = this;
          rw.element_kind = UVM_REG;
          rw.kind         = UVM_WRITE;

@@ -118,11 +118,7 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
   virtual function string get_type_name();
     if (type_name == "") begin
       BUSTYPE t;
- `ifdef VERILATOR
-       t = BUSTYPE::type_id_create("t");
- `else
-       t = BUSTYPE::type_id::create("t");
- `endif
+      t = BUSTYPE::type_id::create("t");
       type_name = {"uvm_reg_predictor #(", t.get_type_name(), ")"};
     end
     return type_name;
@@ -134,11 +130,7 @@ class uvm_reg_predictor #(type BUSTYPE=int) extends uvm_component;
     static string m_type_name;
     if (m_type_name == "") begin
       BUSTYPE t;
- `ifdef VERILATOR
-       t = BUSTYPE::type_id_create("t");
- `else
-       t = BUSTYPE::type_id::create("t");
- `endif
+      t = BUSTYPE::type_id::create("t");
       m_type_name = {"uvm_reg_predictor #(", t.get_type_name(), ")"};
     end
     return m_type_name;

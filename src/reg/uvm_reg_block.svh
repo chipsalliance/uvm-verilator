@@ -1873,11 +1873,7 @@ function uvm_reg_map uvm_reg_block::create_map(string name,
 
    uvm_reg_map  map;
 
-`ifdef VERILATOR
-   map = uvm_reg_map::type_id_create(name,,this.get_full_name());
-`else
    map = uvm_reg_map::type_id::create(name,,this.get_full_name());
-`endif
    map.configure(this,base_addr,n_bytes,endian,byte_addressing);
 
    add_map(map);

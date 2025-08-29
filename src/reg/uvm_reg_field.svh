@@ -1049,11 +1049,7 @@ task uvm_reg_field::write(output uvm_status_e       status,
                           input  int                lineno = 0);
 
    uvm_reg_item rw;
-`ifdef VERILATOR
-   rw = uvm_reg_item::type_id_create("field_write_item",,get_full_name());
-`else
    rw = uvm_reg_item::type_id::create("field_write_item",,get_full_name());
-`endif
    rw.element      = this;
    rw.element_kind = UVM_FIELD;
    rw.kind         = UVM_WRITE;
@@ -1201,11 +1197,7 @@ task uvm_reg_field::read(output uvm_status_e       status,
                          input  int                lineno = 0);
 
    uvm_reg_item rw;
-`ifdef VERILATOR
-   rw = uvm_reg_item::type_id_create("field_read_item",,get_full_name());
-`else
    rw = uvm_reg_item::type_id::create("field_read_item",,get_full_name());
-`endif
    rw.element      = this;
    rw.element_kind = UVM_FIELD;
    rw.kind         = UVM_READ;

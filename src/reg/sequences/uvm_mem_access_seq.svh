@@ -231,11 +231,7 @@ class uvm_mem_access_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item)
 
       uvm_report_info("STARTING_SEQ",{"\n\nStarting ",get_name()," sequence...\n"},UVM_LOW);
       
-`ifdef VERILATOR
-      mem_seq = uvm_mem_single_access_seq::type_id_create("single_mem_access_seq");
-`else
       mem_seq = uvm_mem_single_access_seq::type_id::create("single_mem_access_seq");
-`endif
 
       this.reset_blk(model);
       model.reset();

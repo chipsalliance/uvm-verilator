@@ -132,11 +132,7 @@ class uvm_text_tr_database extends uvm_tr_database;
    protected virtual function uvm_tr_stream do_open_stream(string name,
                                                            string scope,
                                                            string type_name);
-`ifdef VERILATOR
-      uvm_text_tr_stream m_stream = uvm_text_tr_stream::type_id_create(name);
-`else
       uvm_text_tr_stream m_stream = uvm_text_tr_stream::type_id::create(name);
-`endif
       return m_stream;
    endfunction : do_open_stream
 
