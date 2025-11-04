@@ -75,11 +75,7 @@ class uvm_reg_mem_built_in_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg
                                              "NO_REG_TESTS", 0) == null &&
           uvm_resource_db#(bit)::get_by_name({"REG::",model.get_full_name()},
                                              "NO_REG_HW_RESET_TEST", 0) == null ) begin
-`ifdef VERILATOR
-         uvm_reg_hw_reset_seq seq = uvm_reg_hw_reset_seq::type_id_create("reg_hw_reset_seq");
-`else
-         uvm_reg_hw_reset_seq seq = uvm_reg_hw_reset_seq::type_id::create("reg_hw_reset_seq");
-`endif
+        uvm_reg_hw_reset_seq seq = uvm_reg_hw_reset_seq::type_id::create("reg_hw_reset_seq");
         seq.model = model;
         seq.start(null,this);
         `uvm_info("FINISH_SEQ",{"Finished ",seq.get_name()," sequence."},UVM_LOW)
@@ -90,11 +86,7 @@ class uvm_reg_mem_built_in_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg
                                              "NO_REG_TESTS", 0) == null &&
           uvm_resource_db#(bit)::get_by_name({"REG::",model.get_full_name()},
                                              "NO_REG_BIT_BASH_TEST", 0) == null ) begin
-`ifdef VERILATOR
-         uvm_reg_bit_bash_seq seq = uvm_reg_bit_bash_seq::type_id_create("reg_bit_bash_seq");
-`else
-         uvm_reg_bit_bash_seq seq = uvm_reg_bit_bash_seq::type_id::create("reg_bit_bash_seq");
-`endif
+        uvm_reg_bit_bash_seq seq = uvm_reg_bit_bash_seq::type_id::create("reg_bit_bash_seq");
         seq.model = model;
         seq.start(null,this);
         `uvm_info("FINISH_SEQ",{"Finished ",seq.get_name()," sequence."},UVM_LOW)
@@ -105,11 +97,7 @@ class uvm_reg_mem_built_in_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg
                                              "NO_REG_TESTS", 0) == null &&
           uvm_resource_db#(bit)::get_by_name({"REG::",model.get_full_name()},
                                              "NO_REG_ACCESS_TEST", 0) == null ) begin
-`ifdef VERILATOR
-         uvm_reg_access_seq seq = uvm_reg_access_seq::type_id_create("reg_access_seq");
-`else
-         uvm_reg_access_seq seq = uvm_reg_access_seq::type_id::create("reg_access_seq");
-`endif
+        uvm_reg_access_seq seq = uvm_reg_access_seq::type_id::create("reg_access_seq");
         seq.model = model;
         seq.start(null,this);
         `uvm_info("FINISH_SEQ",{"Finished ",seq.get_name()," sequence."},UVM_LOW)
@@ -122,11 +110,7 @@ class uvm_reg_mem_built_in_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg
                                              "NO_MEM_TESTS", 0) == null &&
           uvm_resource_db#(bit)::get_by_name({"REG::",model.get_full_name()},
                                              "NO_MEM_ACCESS_TEST", 0) == null ) begin
-`ifdef VERILATOR
-         uvm_mem_access_seq seq = uvm_mem_access_seq::type_id_create("mem_access_seq");
-`else
-         uvm_mem_access_seq seq = uvm_mem_access_seq::type_id::create("mem_access_seq");
-`endif
+        uvm_mem_access_seq seq = uvm_mem_access_seq::type_id::create("mem_access_seq");
         seq.model = model;
         seq.start(null,this);
         `uvm_info("FINISH_SEQ",{"Finished ",seq.get_name()," sequence."},UVM_LOW)
@@ -137,11 +121,7 @@ class uvm_reg_mem_built_in_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg
                                              "NO_REG_TESTS", 0) == null &&
           uvm_resource_db#(bit)::get_by_name({"REG::",model.get_full_name()},
                                              "NO_REG_SHARED_ACCESS_TEST", 0) == null ) begin
-`ifdef VERILATOR
-         uvm_reg_mem_shared_access_seq seq = uvm_reg_mem_shared_access_seq::type_id_create("shared_access_seq");
-`else
-         uvm_reg_mem_shared_access_seq seq = uvm_reg_mem_shared_access_seq::type_id::create("shared_access_seq");
-`endif
+        uvm_reg_mem_shared_access_seq seq = uvm_reg_mem_shared_access_seq::type_id::create("shared_access_seq");
         seq.model = model;
         seq.start(null,this);
         `uvm_info("FINISH_SEQ",{"Finished ",seq.get_name()," sequence."},UVM_LOW)
@@ -152,11 +132,7 @@ class uvm_reg_mem_built_in_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg
                                              "NO_REG_TESTS", 0) == null &&
           uvm_resource_db#(bit)::get_by_name({"REG::",model.get_full_name()},
                                              "NO_MEM_WALK_TEST", 0) == null ) begin
-`ifdef VERILATOR
-         uvm_mem_walk_seq seq = uvm_mem_walk_seq::type_id_create("mem_walk_seq");
-`else
-         uvm_mem_walk_seq seq = uvm_mem_walk_seq::type_id::create("mem_walk_seq");
-`endif
+        uvm_mem_walk_seq seq = uvm_mem_walk_seq::type_id::create("mem_walk_seq");
         seq.model = model;
         seq.start(null,this);
         `uvm_info("FINISH_SEQ",{"Finished ",seq.get_name()," sequence."},UVM_LOW)

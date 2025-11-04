@@ -580,18 +580,10 @@ class uvm_phase extends uvm_object;
               phase_done = uvm_test_done_objection::get();
 	   end
 	   else begin
- `ifdef VERILATOR
-              phase_done = uvm_objection::type_id_create({get_name(), "_objection"});
- `else
               phase_done = uvm_objection::type_id::create({get_name(), "_objection"});
- `endif
 	   end
 `else // !UVM_ENABLE_DEPRECATED_API
- `ifdef VERILATOR
-        phase_done = uvm_objection::type_id_create({get_name(), "_objection"});
- `else
-	phase_done = uvm_objection::type_id::create({get_name(), "_objection"});
- `endif
+	   phase_done = uvm_objection::type_id::create({get_name(), "_objection"});
 `endif // UVM_ENABLE_DEPRECATED_API
      end
      
@@ -986,11 +978,7 @@ function void uvm_phase::add(uvm_phase phase,
   else
     tmp_node = new_node;
 
-`ifdef VERILATOR
-   state_chg = uvm_phase_state_change::type_id_create(tmp_node.get_name());
-`else
-   state_chg = uvm_phase_state_change::type_id::create(tmp_node.get_name());
-`endif
+  state_chg = uvm_phase_state_change::type_id::create(tmp_node.get_name());
   state_chg.m_phase = tmp_node;
   state_chg.m_jump_to = null;
   state_chg.m_prev_state = tmp_node.m_state;
@@ -1349,11 +1337,7 @@ task uvm_phase::execute_phase();
   if (m_state == UVM_PHASE_DONE)
     return;
 
-`ifdef VERILATOR
-   state_chg = uvm_phase_state_change::type_id_create(get_name());
-`else
-   state_chg = uvm_phase_state_change::type_id::create(get_name());
-`endif
+  state_chg = uvm_phase_state_change::type_id::create(get_name());
   state_chg.m_phase      = this;
   state_chg.m_jump_to    = null;
 

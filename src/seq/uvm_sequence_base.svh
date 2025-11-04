@@ -563,13 +563,8 @@ virtual class uvm_sequence_base extends uvm_sequence_item;
      string sp_name = $sformatf("%s.starting_phase", get_full_name());
 
      if (create) begin
-`ifdef VERILATOR
-        m_automatic_phase_objection_dap = uvm_get_to_lock_dap#(bit)::type_id_create(apo_name, get_sequencer());
-        m_starting_phase_dap = uvm_get_to_lock_dap#(uvm_phase)::type_id_create(sp_name, get_sequencer());
-`else
         m_automatic_phase_objection_dap = uvm_get_to_lock_dap#(bit)::type_id::create(apo_name, get_sequencer());
         m_starting_phase_dap = uvm_get_to_lock_dap#(uvm_phase)::type_id::create(sp_name, get_sequencer());
-`endif
      end
      else begin
         m_automatic_phase_objection_dap.set_name(apo_name);
