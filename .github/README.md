@@ -29,21 +29,25 @@ It also contains modifications for [Verilator](https://verilator.org).  All
 such modifications have appropriate `ifdef annotations, and once proven are
 expected to be fed upstream into future new Accellera releases.
 
-# Tags
+# Tags and branches
 
-GIT tags may be used to select the UVM version of interest:
+GIT branches contain UVM versions supported or otherwise relevant, and may
+point to different revisions over time:
 
-- master: default branch. Includes "stable" plus any released but potentially unstable features.
-- stable: most recent stable release. Currently points to "v2017-1.0".
-- standard: most recent Accellera standard release. Currently points to "v2017-1.0".
-- v2017-1.0: Accellera release 2018-11.
-- v2017-0.9: Accellera release 2018-06.
-- v1.2: Accellera release 2014-06.
-- v1.1d: Accellera release 2013-03.
-- v1.1c: Accellera release 2012-11.
-- v1.1b: Accellera release 2012-05.
-- v1.1a: Accellera release 2011-12.
-- v1.0p1: Accellera release 2011-02.
+- master: default branch. Currently matches "uvm-2017-1.0-vlt"
+- standard: branch with most recent Accellera standard release. Currently matches "uvm-2017-1.0".
+- uvm-2017-1.0-vlt: UVM 2017 1.0 plus Verilator changes
+
+GIT tags point to specific upstream standard releases:
+
+- uvm-2017-1.0: Tag of Accellera release 1.0 from 2018-11.
+- uvm-2017-0.9: Tag of Accellera release 0.9 from 2018-06.
+- uvm-1.2: Tag of Accellera release 1.2 from 2014-06.
+- uvm-1.1d: Tag of Accellera release 1.1d from 2013-03.
+- uvm-1.1c: Tag of Accellera release 1.1c from 2012-11.
+- uvm-1.1b: Tag of Accellera release 1.1b from 2012-05.
+- uvm-1.1a: Tag of Accellera release 1.1a from 2011-12.
+- uvm-1.0p1: Tag of Accellera release 1.0p1 from 2011-02.
 
 # License
 
