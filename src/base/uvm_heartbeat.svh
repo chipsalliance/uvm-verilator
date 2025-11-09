@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2015 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,6 +21,16 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_heartbeat.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 `ifndef UVM_HEARTBEAT_SVH
 `define UVM_HEARTBEAT_SVH
 
@@ -32,7 +42,7 @@ typedef enum {
 } uvm_heartbeat_modes;
 
 typedef class uvm_heartbeat_callback;
-typedef uvm_callbacks #(uvm_objection,uvm_heartbeat_callback) uvm_heartbeat_cbs_t /* @uvm-ieee 1800.2-2017 auto D.4.2*/   ;
+typedef uvm_callbacks #(uvm_objection,uvm_heartbeat_callback) uvm_heartbeat_cbs_t;
 
 
 //------------------------------------------------------------------------------
@@ -53,7 +63,7 @@ typedef uvm_callbacks #(uvm_objection,uvm_heartbeat_callback) uvm_heartbeat_cbs_
 //------------------------------------------------------------------------------
 
 typedef class uvm_objection_callback;
-// @uvm-ieee 1800.2-2017 auto 10.6.1
+// @uvm-ieee 1800.2-2020 auto 10.6.1
 class uvm_heartbeat extends uvm_object;
 
   protected uvm_objection m_objection;
@@ -79,7 +89,7 @@ class uvm_heartbeat extends uvm_object;
   //|    ...
   //| endclass
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.1
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.1
   function new(string name, uvm_component cntxt, uvm_objection objection=null);
      uvm_coreservice_t cs;
     super.new(name);
@@ -87,8 +97,14 @@ class uvm_heartbeat extends uvm_object;
     cs  = uvm_coreservice_t::get();
      
     //if a cntxt is given it will be used for reporting.
-    if(cntxt != null) m_cntxt = cntxt;
-    else m_cntxt = cs.get_root();
+    if(cntxt != null) begin
+      m_cntxt = cntxt;
+    end
+
+    else begin
+      m_cntxt = cs.get_root();
+    end
+
 
     m_cb = new({name,"_cb"},m_cntxt);
 
@@ -101,11 +117,14 @@ class uvm_heartbeat extends uvm_object;
   // mode is returned. If an argument is specified to change the mode then the
   // mode is changed to the new value.
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.2
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.2
   function uvm_heartbeat_modes set_mode (uvm_heartbeat_modes mode = UVM_NO_HB_MODE);
     set_mode = m_mode;
-    if(mode == UVM_ANY_ACTIVE || mode == UVM_ONE_ACTIVE || mode == UVM_ALL_ACTIVE)
+    if(mode == UVM_ANY_ACTIVE || mode == UVM_ONE_ACTIVE || mode == UVM_ALL_ACTIVE) begin
+      
       m_mode = mode;
+    end
+
   endfunction
 
 
@@ -121,17 +140,26 @@ class uvm_heartbeat extends uvm_object;
   // trigger event, then the monitoring is not started. Monitoring can be 
   // started by explicitly calling <start>.
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.3
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.3
   function void set_heartbeat (uvm_event#(uvm_object) e, ref uvm_component comps[$]);
     uvm_object c;
     foreach(comps[i]) begin
       c = comps[i];
-      if(!m_cb.cnt.exists(c)) 
+      if(!m_cb.cnt.exists(c)) begin 
+        
         m_cb.cnt[c]=0;
-      if(!m_cb.last_trigger.exists(c)) 
+      end
+
+      if(!m_cb.last_trigger.exists(c)) begin 
+        
         m_cb.last_trigger[c]=0;
+      end
+
     end
-    if(e==null && m_event==null) return;
+    if(e==null && m_event==null) begin
+      return;
+    end
+
     start(e);
   endfunction
 
@@ -143,10 +171,13 @@ class uvm_heartbeat extends uvm_object;
   // to the list of components and will be expected to participate
   // in the currently active event window.
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.4
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.4
   function void add (uvm_component comp);
     uvm_object c = comp;
-    if(m_cb.cnt.exists(c)) return;
+    if(m_cb.cnt.exists(c)) begin
+      return;
+    end
+
     m_cb.cnt[c]=0;
     m_cb.last_trigger[c]=0;
   endfunction
@@ -157,11 +188,17 @@ class uvm_heartbeat extends uvm_object;
   // Monitoring is not stopped, even if the last component has been
   // removed (an explicit stop is required).
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.5
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.5
   function void remove (uvm_component comp);
     uvm_object c = comp;
-    if(m_cb.cnt.exists(c)) m_cb.cnt.delete(c);
-    if(m_cb.last_trigger.exists(c)) m_cb.last_trigger.delete(c);
+    if(m_cb.cnt.exists(c)) begin
+      m_cb.cnt.delete(c);
+    end
+
+    if(m_cb.last_trigger.exists(c)) begin
+      m_cb.last_trigger.delete(c);
+    end
+
   endfunction
 
 
@@ -173,7 +210,7 @@ class uvm_heartbeat extends uvm_object;
   // running and ~e~ is specifying a different trigger event from the
   // current event.
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.6
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.6
   function void start (uvm_event#(uvm_object) e=null);
     if(m_event == null && e == null) begin
       m_cntxt.uvm_report_warning("NOEVNT", { "start() was called for: ",
@@ -187,7 +224,10 @@ class uvm_heartbeat extends uvm_object;
         "from the original trigger ", m_event.get_name() }, UVM_NONE);
       return;
     end  
-    if(e != null) m_event = e;
+    if(e != null) begin
+      m_event = e;
+    end
+
     m_enable_cb();
     m_start_hb_process();
   endfunction
@@ -198,7 +238,7 @@ class uvm_heartbeat extends uvm_object;
   // that if <start> is called again the process will wait for the first
   // event trigger to start the monitoring.
 
-  // @uvm-ieee 1800.2-2017 auto 10.6.2.7
+  // @uvm-ieee 1800.2-2020 auto 10.6.2.7
   function void stop ();
     m_started = 0;
     ->m_stop_event;
@@ -206,19 +246,31 @@ class uvm_heartbeat extends uvm_object;
   endfunction
 
   function void m_start_hb_process();
-    if(m_started) return;
+    if(m_started) begin
+      return;
+    end
+
     m_started = 1;
     fork
-      m_hb_process;
+      begin
+        m_hb_process;
+      end
+
     join_none
   endfunction
 
   protected bit m_added;
   function void m_enable_cb;
     void'(m_cb.callback_mode(1));
-    if(m_objection == null) return;
-    if(!m_added) 
+    if(m_objection == null) begin
+      return;
+    end
+
+    if(!m_added) begin 
+      
       uvm_heartbeat_cbs_t::add(m_objection, m_cb);
+    end
+
     m_added = 1;
   endfunction
 
@@ -239,51 +291,54 @@ class uvm_heartbeat extends uvm_object;
           m_event.wait_trigger();
           if(triggered) begin
             case (m_mode)
-              UVM_ALL_ACTIVE:              
-                begin
-                  foreach(m_cb.cnt[idx]) begin
-                    obj = idx;
-                    if(!m_cb.cnt[obj]) begin
-                      m_cntxt.uvm_report_fatal("HBFAIL", $sformatf("Did not recieve an update of %s for component %s since last event trigger at time %0t : last update time was %0t",
+              UVM_ALL_ACTIVE: begin              
+                
+                foreach(m_cb.cnt[idx]) begin
+                  obj = idx;
+                  if(!m_cb.cnt[obj]) begin
+                    m_cntxt.uvm_report_fatal("HBFAIL", $sformatf("Did not recieve an update of %s for component %s since last event trigger at time %0t : last update time was %0t",
                         m_objection.get_name(), obj.get_full_name(), 
                         last_trigger, m_cb.last_trigger[obj]), UVM_NONE);
-                    end
                   end
-                end 
-              UVM_ANY_ACTIVE:              
-                begin
-                  if(m_cb.cnt.num() && !m_cb.objects_triggered()) begin
-                    string s;
-                    foreach(m_cb.cnt[idx]) begin
-                      obj = idx;
-                      s={s,"\n  ",obj.get_full_name()};
-                    end
-                    m_cntxt.uvm_report_fatal("HBFAIL", $sformatf("Did not recieve an update of %s on any component since last event trigger at time %0t. The list of registered components is:%s",
+                end
+              end 
+              UVM_ANY_ACTIVE: begin              
+                
+                if(m_cb.cnt.num() && !m_cb.objects_triggered()) begin
+                  string s;
+                  foreach(m_cb.cnt[idx]) begin
+                    obj = idx;
+                    s={s,"\n  ",obj.get_full_name()};
+                  end
+                  m_cntxt.uvm_report_fatal("HBFAIL", $sformatf("Did not recieve an update of %s on any component since last event trigger at time %0t. The list of registered components is:%s",
                       m_objection.get_name(), last_trigger, s), UVM_NONE); 
-                  end
-                end 
-              UVM_ONE_ACTIVE:              
-                begin
-                  if(m_cb.objects_triggered() > 1) begin
-                    string s;
-                    foreach(m_cb.cnt[idx])  begin
-                      obj = idx;
-                      if(m_cb.cnt[obj]) $swrite(s,"%s\n  %s (updated: %0t)",
+                end
+              end 
+              UVM_ONE_ACTIVE: begin              
+                
+                if(m_cb.objects_triggered() > 1) begin
+                  string s;
+                  foreach(m_cb.cnt[idx])  begin
+                    obj = idx;
+                    if(m_cb.cnt[obj]) begin
+                      $swrite(s,"%s\n  %s (updated: %0t)",
                          s, obj.get_full_name(), m_cb.last_trigger[obj]);
                     end
-                    m_cntxt.uvm_report_fatal("HBFAIL", $sformatf("Recieved update of %s from more than one component since last event trigger at time %0t. The list of triggered components is:%s",
-                      m_objection.get_name(), last_trigger, s), UVM_NONE); 
+
                   end
-                  if(m_cb.cnt.num() && !m_cb.objects_triggered()) begin
-                    string s;
-                    foreach(m_cb.cnt[idx]) begin
-                      obj = idx;
-                      s={s,"\n  ",obj.get_full_name()};
-                    end
-                    m_cntxt.uvm_report_fatal("HBFAIL", $sformatf("Did not recieve an update of %s on any component since last event trigger at time %0t. The list of registered components is:%s",
+                  m_cntxt.uvm_report_fatal("HBFAIL", $sformatf("Recieved update of %s from more than one component since last event trigger at time %0t. The list of triggered components is:%s",
                       m_objection.get_name(), last_trigger, s), UVM_NONE); 
+                end
+                if(m_cb.cnt.num() && !m_cb.objects_triggered()) begin
+                  string s;
+                  foreach(m_cb.cnt[idx]) begin
+                    obj = idx;
+                    s={s,"\n  ",obj.get_full_name()};
                   end
-                end 
+                  m_cntxt.uvm_report_fatal("HBFAIL", $sformatf("Did not recieve an update of %s on any component since last event trigger at time %0t. The list of registered components is:%s",
+                      m_objection.get_name(), last_trigger, s), UVM_NONE); 
+                end
+              end 
             endcase
           end 
           m_cb.reset_counts();
@@ -291,7 +346,10 @@ class uvm_heartbeat extends uvm_object;
           triggered = 1;
         end
       end
-      @(m_stop_event);
+      begin
+        @(m_stop_event);
+      end
+
     join_any
     disable fork;
   endtask
@@ -306,10 +364,16 @@ class uvm_heartbeat_callback extends uvm_objection_callback;
 
   function new(string name, uvm_object target);
     super.new(name);
-    if (target != null)
-       this.target = target;
-    else
-       this.target = cs.get_root();
+    if (target != null) begin
+       
+      this.target = target;
+    end
+
+    else begin
+       
+      this.target = cs.get_root();
+    end
+
   endfunction
 
   virtual function void raised (uvm_objection objection,
@@ -318,8 +382,11 @@ class uvm_heartbeat_callback extends uvm_objection_callback;
                                 string description,
                                 int count);
     if(obj == target) begin
-      if(!cnt.exists(source_obj))
+      if(!cnt.exists(source_obj)) begin
+        
         cnt[source_obj] = 0;
+      end
+
       cnt[source_obj] = cnt[source_obj]+1;
       last_trigger[source_obj] = $realtime;
     end
@@ -334,14 +401,23 @@ class uvm_heartbeat_callback extends uvm_objection_callback;
   endfunction
 
   function void reset_counts;
-    foreach(cnt[i]) cnt[i] = 0;
+    foreach(cnt[i]) begin
+      cnt[i] = 0;
+    end
+
   endfunction
 
   function int objects_triggered;
     objects_triggered = 0; 
-    foreach(cnt[i])
-      if (cnt[i] != 0)
+    foreach(cnt[i]) begin
+      
+      if (cnt[i] != 0) begin
+        
         objects_triggered++;
+      end
+
+    end
+
   endfunction
 
 endclass

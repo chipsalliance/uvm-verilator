@@ -1,11 +1,12 @@
-//------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2015 Analog Devices, Inc.
-// Copyright 2010 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
-// Copyright 2014 Cisco Systems, Inc.
+//----------------------------------------------------------------------
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2015 Analog Devices, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2014 Cisco Systems, Inc.
+// Copyright 2022-2023 Intel Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
+// Copyright 2010 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //   
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,7 +22,16 @@
 //   CONDITIONS OF ANY KIND, either express or implied.  See
 //   the License for the specific language governing
 //   permissions and limitations under the License.
-//------------------------------------------------------------
+//----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/dpi/uvm_hdl.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
 
 // TITLE -- NODOCS -- UVM HDL Backdoor Access support routines.
 //
@@ -39,7 +49,6 @@
 
 
 `ifndef UVM_HDL_MAX_WIDTH
-// @uvm-ieee 1800.2-2017 auto 19.6.1
 `define UVM_HDL_MAX_WIDTH 1024
 `endif
 
@@ -51,6 +60,8 @@
  *   vpi_handle_by_name(
  *     "uvm_pkg::UVM_HDL_MAX_WIDTH", 0);
  */
+
+// @uvm-ieee 1800.2-2020 manual 19.6.1
 parameter int UVM_HDL_MAX_WIDTH = `UVM_HDL_MAX_WIDTH;
 
 
@@ -92,8 +103,11 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
       void'(uvm_hdl_deposit(path, value));
       return;
     end
-    if (!uvm_hdl_force(path, value))
+    if (!uvm_hdl_force(path, value)) begin
+      
       return;
+    end
+
     #force_time;
     void'(uvm_hdl_release_and_read(path, value));
   endtask
@@ -152,7 +166,7 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
       $sformatf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
   endtask
 
-  function int uvm_hdl_release(string path, output uvm_hdl_data_t value);
+  function int uvm_hdl_release(string path);
     uvm_report_fatal("UVM_HDL_RELEASE", 
       $sformatf("uvm_hdl DPI routines are compiled off. Recompile without +define+UVM_HDL_NO_DPI"));
     return 0;
@@ -165,6 +179,5 @@ typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
   endfunction
 
 `endif
-
 
 `endif

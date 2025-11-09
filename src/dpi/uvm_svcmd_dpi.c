@@ -1,9 +1,9 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2011-2014 Mentor Graphics Corporation
-// Copyright 2011-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2012 AMD
-// Copyright 2013 NVIDIA Corporation
+// Copyright 2011-2018 Cadence Design Systems, Inc.
+// Copyright 2011-2014 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -20,6 +20,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/dpi/uvm_svcmd_dpi.c $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 #include "uvm_dpi.h"
 #include <assert.h>
@@ -96,40 +106,3 @@ extern char* uvm_dpi_get_tool_version_c ()
   return info.version;
 }
 
-extern regex_t* uvm_dpi_regcomp (char* pattern)
-{
-  regex_t* re = (regex_t*) malloc (sizeof(regex_t));
-  int status = regcomp(re, pattern, REG_NOSUB|REG_EXTENDED);
-  if(status)
-  {
-      const char * err_str = "uvm_dpi_regcomp : Unable to compile regex: |%s|, Element 0 is: %c";
-      char buffer[strlen(err_str) + strlen(pattern) + 1];
-      sprintf(buffer, err_str, pattern, pattern[0]);
-      m_uvm_report_dpi(M_UVM_ERROR,
-    		  (char*)"UVM/DPI/REGCOMP",
-                       &buffer[0],
-                       M_UVM_NONE,
-                       (char*) __FILE__,
-                       __LINE__);
-      regfree(re);
-      free (re);
-    return NULL;
-  }
-  return re;
-}
-
-extern int uvm_dpi_regexec (regex_t* re, char* str)
-{
-  if(!re )
-  {
-    return 1;
-  }
-  return regexec(re, str, (size_t)0, NULL, 0);
-}
-
-extern void uvm_dpi_regfree (regex_t* re)
-{
-  if(!re) return;
-  regfree(re);
-  free (re);
-}

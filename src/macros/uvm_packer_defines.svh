@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
-// Copyright 2018 Qualcomm, Inc.
 // Copyright 2018 Cadence Design Systems, Inc.
-// Copyright 2018 NVIDIA Corporation
 // Copyright 2018 Cisco Systems, Inc.
+// Copyright 2018-2024 NVIDIA Corporation
+// Copyright 2018 Qualcomm, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -19,6 +19,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/macros/uvm_packer_defines.svh $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
+//
+//----------------------------------------------------------------------
+
 
 `ifndef UVM_PACKER_DEFINES_SVH
  `define UVM_PACKER_DEFINES_SVH
@@ -83,31 +93,55 @@
 // @uvm-contrib This API is being considered for potential contribution to 1800.2
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.1
+// @uvm-ieee 1800.2-2020 auto B.2.4.1
 `define uvm_pack_intN(VAR,SIZE,PACKER=packer) \
-  begin \
+  if (SIZE <= $bits(uvm_integral_t)) begin \
+     PACKER.pack_field_int(VAR, SIZE); \
+  end \
+  else if (SIZE <= $bits(uvm_bitstream_t)) begin \
+     PACKER.pack_field(VAR, SIZE); \
+  end \
+  else begin \
     bit __array[]; \
     { << bit { __array}} = VAR; \
     __array = new [SIZE] (__array); \
     PACKER.pack_bits(__array, SIZE); \
   end
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.2
+// @uvm-ieee 1800.2-2020 auto B.2.4.2
 `define uvm_pack_enumN(VAR,SIZE,PACKER=packer) \
    `uvm_pack_intN(VAR,SIZE,PACKER)
 
+// Impementation macro for opening a begin..end block
+// with the uvm_packer_array_extension present.
+`define uvm_packer_array_extension_begin(PACKER) \
+  begin \
+    uvm_object m__ext; \
+    uvm_object m__prev_ext; \
+    m__ext = uvm_packer_array_extension::get(); \
+    m__prev_ext = PACKER.set_extension(m__ext);
 
+// Impementation macro for closing the begin..end block
+// opened by `uvm_pack_array_begin
+`define uvm_packer_array_extension_end(PACKER) \
+    if (m__prev_ext != null) begin \
+      void'(PACKER.set_extension(m__prev_ext)); \
+    end \
+    else begin \
+      PACKER.clear_extension(m__ext.get_object_type()); \
+    end \
+  end
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.3
+// @uvm-ieee 1800.2-2020 auto B.2.4.3
 `define uvm_pack_sarrayN(VAR,SIZE,PACKER=packer) \
-    begin \
-    foreach (VAR `` [index]) \
-      `uvm_pack_intN(VAR[index],SIZE,PACKER) \
-    end
+    `uvm_packer_array_extension_begin(PACKER) \
+        foreach(VAR `` [index]) begin \
+          `uvm_pack_intN(VAR[index],SIZE,PACKER) \
+        end \
+    `uvm_packer_array_extension_end(PACKER)
 
 
-
-// @uvm-ieee 1800.2-2017 auto B.2.4.4
+// @uvm-ieee 1800.2-2020 auto B.2.4.4
 `define uvm_pack_arrayN(VAR,SIZE,PACKER=packer) \
     begin \
       `uvm_pack_intN(VAR.size(),32,PACKER) \
@@ -116,7 +150,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.5
+// @uvm-ieee 1800.2-2020 auto B.2.4.5
 `define uvm_pack_queueN(VAR,SIZE,PACKER=packer) \
    `uvm_pack_arrayN(VAR,SIZE,PACKER)
 
@@ -126,7 +160,7 @@
 //------------------------------
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.6
+// @uvm-ieee 1800.2-2020 auto B.2.4.6
 `define uvm_pack_int(VAR,PACKER=packer) \
    `uvm_pack_intN(VAR,$bits(VAR),PACKER)
 
@@ -134,38 +168,38 @@
 `define uvm_pack_object(VAR,PACKER=packer) \
   PACKER.pack_object_with_meta(VAR);
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.7
+// @uvm-ieee 1800.2-2020 auto B.2.4.7
 `define uvm_pack_enum(VAR,PACKER=packer) \
    `uvm_pack_enumN(VAR,$bits(VAR),PACKER)
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.8
+// @uvm-ieee 1800.2-2020 auto B.2.4.8
 `define uvm_pack_string(VAR,PACKER=packer) \
   PACKER.pack_string(VAR);
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.9
+// @uvm-ieee 1800.2-2020 auto B.2.4.9
 `define uvm_pack_real(VAR,PACKER=packer) \
   PACKER.pack_real(VAR);
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.10
+// @uvm-ieee 1800.2-2020 auto B.2.4.10
 `define uvm_pack_sarray(VAR,PACKER=packer)  \
    `uvm_pack_sarrayN(VAR,$bits(VAR[0]),PACKER)
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.11
+// @uvm-ieee 1800.2-2020 auto B.2.4.11
 `define uvm_pack_array(VAR,PACKER=packer) \
    `uvm_pack_arrayN(VAR,$bits(VAR[0]),PACKER)
 
 `define uvm_pack_da(VAR,PACKER=packer) \
   `uvm_pack_array(VAR,PACKER)
 
-// @uvm-ieee 1800.2-2017 auto B.2.4.12
+// @uvm-ieee 1800.2-2020 auto B.2.4.12
 `define uvm_pack_queue(VAR,PACKER=packer) \
    `uvm_pack_queueN(VAR,$bits(VAR[0]),PACKER)
 
@@ -191,9 +225,15 @@
 //----------------------------------
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.1
+// @uvm-ieee 1800.2-2020 auto B.2.5.1
 `define uvm_unpack_intN(VAR,SIZE,PACKER=packer) \
-  begin \
+  if (SIZE <= $bits(uvm_integral_t)) begin \
+    VAR = PACKER.unpack_field_int(SIZE); \
+  end \
+  else if (SIZE <= $bits(uvm_bitstream_t)) begin \
+    VAR = PACKER.unpack_field(SIZE); \
+  end \
+  else begin \
     bit __array[] = new [SIZE]; \
     PACKER.unpack_bits(__array, SIZE); \
     __array = new [$bits(VAR)] (__array); \
@@ -202,7 +242,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.2
+// @uvm-ieee 1800.2-2020 auto B.2.5.2
 `define uvm_unpack_enumN(VAR,SIZE,TYPE,PACKER=packer) \
   begin \
     bit __array[] = new [SIZE]; \
@@ -213,16 +253,15 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.3
+// @uvm-ieee 1800.2-2020 auto B.2.5.3
 `define uvm_unpack_sarrayN(VAR,SIZE,PACKER=packer) \
-    begin \
-    foreach (VAR `` [i]) \
-      `uvm_unpack_intN(VAR``[i], SIZE, PACKER) \
-    end
+    `uvm_packer_array_extension_begin(PACKER) \
+        foreach (VAR `` [i]) begin \
+          `uvm_unpack_intN(VAR``[i], SIZE, PACKER) \
+        end \
+    `uvm_packer_array_extension_end(PACKER)
 
-
-
-// @uvm-ieee 1800.2-2017 auto B.2.5.4
+// @uvm-ieee 1800.2-2020 auto B.2.5.4
 `define uvm_unpack_arrayN(VAR,SIZE,PACKER=packer) \
     begin \
       int sz__; \
@@ -233,7 +272,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.5
+// @uvm-ieee 1800.2-2020 auto B.2.5.5
 `define uvm_unpack_queueN(VAR,SIZE,PACKER=packer) \
     begin \
       int sz__; \
@@ -251,7 +290,7 @@
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.6
+// @uvm-ieee 1800.2-2020 auto B.2.5.6
 `define uvm_unpack_int(VAR,PACKER=packer) \
    `uvm_unpack_intN(VAR,$bits(VAR),PACKER)
 
@@ -268,30 +307,30 @@
   end
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.7
+// @uvm-ieee 1800.2-2020 auto B.2.5.7
 `define uvm_unpack_enum(VAR,TYPE,PACKER=packer) \
    `uvm_unpack_enumN(VAR,$bits(VAR),TYPE,PACKER)
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.8
+// @uvm-ieee 1800.2-2020 auto B.2.5.8
 `define uvm_unpack_string(VAR,PACKER=packer) \
   VAR = PACKER.unpack_string();
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.9
+// @uvm-ieee 1800.2-2020 auto B.2.5.9
 `define uvm_unpack_real(VAR,PACKER=packer) \
   VAR = PACKER.unpack_real();
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.10
+// @uvm-ieee 1800.2-2020 auto B.2.5.10
 `define uvm_unpack_sarray(VAR,PACKER=packer)  \
    `uvm_unpack_sarrayN(VAR,$bits(VAR[0]),PACKER)
 
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.11
+// @uvm-ieee 1800.2-2020 auto B.2.5.11
 `define uvm_unpack_array(VAR,PACKER=packer) \
    `uvm_unpack_arrayN(VAR,$bits(VAR[0]),PACKER)
 
@@ -300,7 +339,7 @@
   `uvm_unpack_array(VAR,PACKER)
 
 
-// @uvm-ieee 1800.2-2017 auto B.2.5.12
+// @uvm-ieee 1800.2-2020 auto B.2.5.12
 `define uvm_unpack_queue(VAR,PACKER=packer) \
    `uvm_unpack_queueN(VAR,$bits(VAR[0]),PACKER)
 
@@ -575,8 +614,10 @@ end
 //--
 
 `define uvm_pack_sarray_real(VAR, PACKER=packer) \
-  foreach(VAR[index]) \
-    `uvm_pack_real(VAR[index], PACKER)
+  `uvm_packer_array_extension_begin(PACKER) \
+    foreach(VAR[index]) \
+      `uvm_pack_real(VAR[index], PACKER) \
+  `uvm_packer_array_extension_end(PACKER)
 
 `define m_uvm_pack_qda_real(VAR, PACKER=packer) \
   `uvm_pack_intN(VAR.size(), 32, PACKER) \
@@ -589,8 +630,10 @@ end
   `m_uvm_pack_qda_real(VAR, PACKER)
 
 `define uvm_unpack_sarray_real(VAR, PACKER=packer) \
+  `uvm_packer_array_extension_begin(PACKER) \
   foreach(VAR[index]) \
-    `uvm_unpack_real(VAR[index], PACKER)
+    `uvm_unpack_real(VAR[index], PACKER) \
+  `uvm_packer_array_extension_end(PACKER)
 
 `define uvm_unpack_da_real(VAR, PACKER=packer) \
   begin \

@@ -1,13 +1,15 @@
 //
 //------------------------------------------------------------------------------
+// Copyright 2010-2024 AMD
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2012-2018 Cisco Systems, Inc.
+// Copyright 2020-2022 Marvell International Ltd.
 // Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2020 Verific
 // Copyright 2013 Verilab
-// Copyright 2010-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
-// Copyright 2012-2018 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -24,6 +26,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_object_globals.svh $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
+//
+//----------------------------------------------------------------------
+
 
 //------------------------------------------------------------------------------
 //
@@ -58,7 +70,21 @@ typedef logic signed [UVM_STREAMBITS-1:0] uvm_bitstream_t;
 
 typedef logic signed [63:0] uvm_integral_t;
 
+// Type: uvm_transaction_id_t
+//
+// Integral type used to represent unique IDs of transactions in 
+// <uvm_transaction::set_transaction_id> and <uvm_transaction::get_transaction_id>.
+//
+// @uvm-contrib - For potential contribution to a future 1800.2 standard.
+typedef int uvm_transaction_id_t;
 
+// Type: uvm_tr_handle_t
+//
+// Integral type used to represent transaction handles in <uvm_transaction::get_tr_handle>
+// and associated APIs.
+//
+// @uvm-contrib - For potential contribution to a future 1800.2 standard.
+typedef int uvm_tr_handle_t;
 
 // The number of least significant bits of uvm_field_flag_t which are reserved for this
 // implementation.  Derived from the value of UVM_RADIX which uses the most significant subset.
@@ -110,20 +136,62 @@ parameter UVM_RADIX = 'hf000000; //4 bits setting the radix
 
 function string uvm_radix_to_string(uvm_radix_enum radix);
   case(radix)
-    UVM_BIN:        return "b";
-    UVM_OCT:        return "o";
-    UVM_DEC:        return "d";
-    UVM_HEX:        return "h";
-    UVM_UNSIGNED:   return "u";
-    UVM_UNFORMAT2:  return "u";
-    UVM_UNFORMAT4:  return "z";
-    UVM_STRING:     return "s";
-    UVM_TIME:       return "t";
-    UVM_ENUM:       return "s";
-    UVM_REAL:       return "g";
-    UVM_REAL_DEC:   return "f";
-    UVM_REAL_EXP:   return "e";
-    default:        return "x"; //hex
+    UVM_BIN:        begin
+      return "b";
+    end
+
+    UVM_OCT:        begin
+      return "o";
+    end
+
+    UVM_DEC:        begin
+      return "d";
+    end
+
+    UVM_HEX:        begin
+      return "h";
+    end
+
+    UVM_UNSIGNED:   begin
+      return "u";
+    end
+
+    UVM_UNFORMAT2:  begin
+      return "u";
+    end
+
+    UVM_UNFORMAT4:  begin
+      return "z";
+    end
+
+    UVM_STRING:     begin
+      return "s";
+    end
+
+    UVM_TIME:       begin
+      return "t";
+    end
+
+    UVM_ENUM:       begin
+      return "s";
+    end
+
+    UVM_REAL:       begin
+      return "g";
+    end
+
+    UVM_REAL_DEC:   begin
+      return "f";
+    end
+
+    UVM_REAL_EXP:   begin
+      return "e";
+    end
+
+    default:        begin
+      return "x";
+    end
+    //hex
   endcase
 endfunction
 
@@ -188,14 +256,6 @@ typedef enum bit { UVM_PASSIVE=0, UVM_ACTIVE=1 } uvm_active_passive_enum;
 // UVM_READONLY  - Object field will NOT be automatically configured.
 
 parameter uvm_field_flag_t UVM_MACRO_NUMFLAGS    = 19;
-//A=ABSTRACT Y=PHYSICAL
-//F=REFERENCE, S=SHALLOW, D=DEEP
-//K=PACK, R=RECORD, P=PRINT, M=COMPARE, C=COPY
-//--------------------------- AYFSD K R P M C
-parameter uvm_field_flag_t UVM_DEFAULT     = 'b000010101010101;
-parameter uvm_field_flag_t UVM_ALL_ON      = 'b000000101010101;
-parameter uvm_field_flag_t UVM_FLAGS_ON    = 'b000000101010101;
-parameter uvm_field_flag_t UVM_FLAGS_OFF   = 0;
 
 //Values are OR'ed into a 32 bit value
 //and externally
@@ -209,19 +269,24 @@ parameter uvm_field_flag_t UVM_RECORD       = (1<<6);
 parameter uvm_field_flag_t UVM_NORECORD     = (1<<7);
 parameter uvm_field_flag_t UVM_PACK         = (1<<8);
 parameter uvm_field_flag_t UVM_NOPACK       = (1<<9);
-parameter uvm_field_flag_t UVM_UNPACK       = (1<<10);
+parameter uvm_field_flag_t UVM_UNPACK       = (1<<10);  
 parameter uvm_field_flag_t UVM_NOUNPACK     = UVM_NOPACK;
 parameter uvm_field_flag_t UVM_SET          = (1<<11);
 parameter uvm_field_flag_t UVM_NOSET        = (1<<12);
-`ifdef UVM_ENABLE_DEPRECATED_API
+//@uvm-compat
 parameter uvm_field_flag_t UVM_PHYSICAL     = (1<<13);
+//@uvm-compat
 parameter uvm_field_flag_t UVM_ABSTRACT     = (1<<14);
+//@uvm-compat
 parameter uvm_field_flag_t UVM_READONLY     = UVM_NOSET;
-`endif
 parameter uvm_field_flag_t UVM_NODEFPRINT   = (1<<15); //??
-//parameter UVM_DEEP         = (1<<16);
-//parameter UVM_SHALLOW      = (1<<17);
-//parameter UVM_REFERENCE    = (1<<18);
+
+parameter uvm_field_flag_t UVM_FLAGS_ON    = UVM_COPY | UVM_COMPARE | 
+                                             UVM_PRINT | UVM_RECORD |
+                                             UVM_PACK | UVM_UNPACK | UVM_SET ;
+parameter uvm_field_flag_t UVM_FLAGS_OFF   = 0;
+parameter uvm_field_flag_t UVM_ALL_ON      = UVM_FLAGS_ON;
+parameter uvm_field_flag_t UVM_DEFAULT     = UVM_ALL_ON;
 
 //Extra values that are used for extra methods
 parameter uvm_field_flag_t UVM_MACRO_EXTRAS  = (1<<UVM_MACRO_NUMFLAGS);
@@ -262,6 +327,9 @@ typedef enum bit [1:0]
   UVM_ERROR,
   UVM_FATAL
 } uvm_severity;
+
+//@uvm-compat provided for compatibility with 1.2
+typedef uvm_severity uvm_severity_type;
 
 // Enum --NODOCS-- uvm_action
 //
@@ -375,7 +443,6 @@ typedef enum
   UVM_SEQ_ARB_STRICT_RANDOM,
   UVM_SEQ_ARB_USER
 } uvm_sequencer_arb_mode;
-
 
 typedef uvm_sequencer_arb_mode UVM_SEQ_ARB_TYPE; // backward compat
 
@@ -592,80 +659,6 @@ typedef enum { UVM_RAISED      = 'h01,
                UVM_ALL_DROPPED = 'h04
 } uvm_objection_event;
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-
-//------------------------------
-// Group --NODOCS-- Default Policy Classes
-//------------------------------
-//
-// Policy classes copying, comparing, packing, unpacking, and recording
-// <uvm_object>-based objects.
-
-
-typedef class uvm_printer;
-typedef class uvm_table_printer;
-typedef class uvm_tree_printer;
-typedef class uvm_line_printer;
-typedef class uvm_comparer;
-typedef class uvm_packer;
-typedef class uvm_tr_database;
-typedef class uvm_text_tr_database;
-typedef class uvm_recorder;
-
-
-// Variable --NODOCS-- uvm_default_table_printer
-//
-// The table printer is a global object that can be used with
-// <uvm_object::do_print> to get tabular style printing.
-
-uvm_table_printer uvm_default_table_printer = new();
-
-
-// Variable --NODOCS-- uvm_default_tree_printer
-//
-// The tree printer is a global object that can be used with
-// <uvm_object::do_print> to get multi-line tree style printing.
-
-uvm_tree_printer uvm_default_tree_printer  = new();
-
-
-// Variable --NODOCS-- uvm_default_line_printer
-//
-// The line printer is a global object that can be used with
-// <uvm_object::do_print> to get single-line style printing.
-
-uvm_line_printer uvm_default_line_printer  = new();
-
-
-// Variable --NODOCS-- uvm_default_printer
-//
-// The default printer policy. Used when calls to <uvm_object::print>
-// or <uvm_object::sprint> do not specify a printer policy.
-//
-// The default printer may be set to any legal <uvm_printer> derived type,
-// including the global line, tree, and table printers described above.
-
-uvm_printer uvm_default_printer = uvm_default_table_printer;
-
-
-// Variable --NODOCS-- uvm_default_packer
-//
-// The default packer policy. Used when calls to <uvm_object::pack>
-// and <uvm_object::unpack> do not specify a packer policy.
-
-uvm_packer uvm_default_packer = new();
-
-
-// Variable --NODOCS-- uvm_default_comparer
-//
-//
-// The default compare policy. Used when calls to <uvm_object::compare>
-// do not specify a comparer policy.
-
-uvm_comparer uvm_default_comparer = new(); // uvm_comparer::init();
-
-`endif //UVM_ENABLE_DEPRECATED_API
-
 typedef int UVM_FILE;
 
 parameter UVM_FILE UVM_STDIN  = 32'h8000_0000;
@@ -674,7 +667,7 @@ parameter UVM_FILE UVM_STDERR = 32'h8000_0002;
 
 // Type: uvm_core_state
 // Implementation of the uvm_core_state enumeration, as defined
-// in section F.2.10 of 1800.2-2017.
+// in section F.2.10 of 1800.2-2020.
 //
 // *Note:* In addition to the states defined in section F.2.10,
 // this implementation includes the following additional states.
@@ -692,26 +685,61 @@ parameter UVM_FILE UVM_STDERR = 32'h8000_0002;
 //                         <uvm_coreservice_t::get>.
 //
 // UVM_CORE_POST_INIT - Included for consistency, this is equivalent to
-//                      ~UVM_CORE_INITIALIZED~ in 1800.2-2017.
+//                      ~UVM_CORE_INITIALIZED~ in 1800.2-2020.
 //
 // @uvm-contrib Potential contribution to 1800.2
 
-// @uvm-ieee 1800.2-2017 manual F.2.10  
+// @uvm-ieee 1800.2-2020 manual F.2.10
 typedef enum {
-	UVM_CORE_UNINITIALIZED,
+    UVM_CORE_UNINITIALIZED,
         UVM_CORE_PRE_INIT,
         UVM_CORE_INITIALIZING,
-	UVM_CORE_INITIALIZED, // UVM_CORE_POST_INIT
-	UVM_CORE_PRE_RUN,
-	UVM_CORE_RUNNING,
-	UVM_CORE_POST_RUN,
-	UVM_CORE_FINISHED,
-	UVM_CORE_PRE_ABORT,
-	UVM_CORE_ABORTED	
+    UVM_CORE_INITIALIZED, // UVM_CORE_POST_INIT
+    UVM_CORE_PRE_RUN,
+    UVM_CORE_RUNNING,
+    UVM_CORE_POST_RUN,
+    UVM_CORE_FINISHED,
+    UVM_CORE_PRE_ABORT,
+    UVM_CORE_ABORTED    
 } uvm_core_state;
 
-uvm_core_state m_uvm_core_state = UVM_CORE_UNINITIALIZED;
+// Used to indicate a strict name vs. regex name lookup in apply_config_settings
+typedef struct {
+  string       name;
+  string       regex;
+} uvm_acs_name_struct;
+
+// we use a queue here only to avoid any problems on writing to variables
+// inside an always_comb/latch/ff in case those call UVM
+uvm_core_state m_uvm_core_state[$];
 parameter uvm_core_state UVM_CORE_POST_INIT = UVM_CORE_INITIALIZED;
 
 typedef class uvm_object_wrapper;
 uvm_object_wrapper uvm_deferred_init[$];
+
+// Note that the followed variables are included for backwards compatibility,
+// however they are unsafe to use prior to the UVM Core initializing.
+// The uvm_coreservice_t provides safe accessors which ensure proper 
+// ordering of initialization.
+    
+// backward compatibility code
+typedef class uvm_printer;
+typedef class uvm_table_printer;
+typedef class uvm_tree_printer;
+typedef class uvm_line_printer;
+typedef class uvm_comparer;
+typedef class uvm_packer;
+
+//@uvm-compat provided for compatibility with 1.2
+uvm_table_printer uvm_default_table_printer ;
+//@uvm-compat provided for compatibility with 1.2
+uvm_tree_printer uvm_default_tree_printer  ;
+//@uvm-compat provided for compatibility with 1.2
+uvm_line_printer uvm_default_line_printer  ;
+//@uvm-compat provided for compatibility with 1.2
+uvm_printer uvm_default_printer ;
+//@uvm-compat provided for compatibility with 1.2
+uvm_packer uvm_default_packer ;
+//@uvm-compat provided for compatibility with 1.2
+uvm_comparer uvm_default_comparer ; 
+

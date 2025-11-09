@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2018 NVIDIA Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2018-2024 NVIDIA Corporation
 // Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
@@ -19,6 +19,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_resource_specializations.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 // macro - UVM_RESOURCE_GET_FCNS
 
@@ -86,10 +96,6 @@ class uvm_int_rsrc extends uvm_resource #(int);
     return s;
   endfunction
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  `UVM_RESOURCE_GET_FCNS(int)
-`endif // UVM_ENABLE_DEPRECATED_API
-
 endclass
 
 //----------------------------------------------------------------------
@@ -112,10 +118,6 @@ class uvm_string_rsrc extends uvm_resource #(string);
     return read();
   endfunction
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  `UVM_RESOURCE_GET_FCNS(string)
-`endif // UVM_ENABLE_DEPRECATED_API
-
 endclass
 
 //----------------------------------------------------------------------
@@ -133,10 +135,6 @@ class uvm_obj_rsrc extends uvm_resource #(uvm_object);
     rp = uvm_resource_pool::get();
     rp.set_scope(this, s);
   endfunction
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-  `UVM_RESOURCE_GET_FCNS(uvm_object)
-`endif // UVM_ENABLE_DEPRECATED_API
 
 endclass
 
@@ -162,10 +160,6 @@ class uvm_bit_rsrc #(int unsigned N=1) extends uvm_resource #(bit[N-1:0]);
     return s;
   endfunction
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  `UVM_RESOURCE_GET_FCNS(bit[N-1:0])
-`endif // UVM_ENABLE_DEPRECATED_API
-
 endclass
 
 //----------------------------------------------------------------------
@@ -189,9 +183,5 @@ class uvm_byte_rsrc #(int unsigned N=1) extends uvm_resource #(bit[7:0][N-1:0]);
     $sformat(s, "%0x", read());
     return s;
   endfunction
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-  `UVM_RESOURCE_GET_FCNS(bit[7:0][N-1:0])
-`endif // UVM_ENABLE_DEPRECATED_API
 
 endclass

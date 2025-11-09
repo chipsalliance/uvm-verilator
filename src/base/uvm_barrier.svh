@@ -2,7 +2,7 @@
 //------------------------------------------------------------------------------
 // Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2013-2024 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -20,6 +20,16 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_barrier.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 
 //-----------------------------------------------------------------------------
 //
@@ -31,7 +41,7 @@
 // released.
 //-----------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 10.3.1
+// @uvm-ieee 1800.2-2020 auto 10.3.1
 class uvm_barrier extends uvm_object;
 
   local  int       threshold;
@@ -46,7 +56,7 @@ class uvm_barrier extends uvm_object;
   //
   // Creates a new barrier object.
 
-  // @uvm-ieee 1800.2-2017 auto 10.3.2.1
+  // @uvm-ieee 1800.2-2020 auto 10.3.2.1
   function new (string name="", int threshold=0);
     super.new(name);
     m_event = new({"barrier_",name});
@@ -63,20 +73,27 @@ class uvm_barrier extends uvm_object;
   //
   // The number of processes to wait for is set by the <set_threshold> method.
 
-  // @uvm-ieee 1800.2-2017 auto 10.3.2.2
+  // @uvm-ieee 1800.2-2020 auto 10.3.2.2
   virtual task wait_for();
 
     if (at_threshold)
-      return;
+      begin
+        return;
+      end
+
 
     num_waiters++;
 
-    if (num_waiters >= threshold) begin
-      if (!auto_reset)
-        at_threshold=1;
-      m_trigger();
-      return;
-    end
+    if (num_waiters >= threshold) 
+      begin
+        if (!auto_reset)
+        begin
+          at_threshold=1;
+        end
+
+        m_trigger();
+        return;
+      end
 
     m_event.wait_trigger();
 
@@ -93,15 +110,22 @@ class uvm_barrier extends uvm_object;
   // If the ~wakeup~ bit is set, any currently waiting processes will
   // be activated.
 
-  // @uvm-ieee 1800.2-2017 auto 10.3.2.3
+  // @uvm-ieee 1800.2-2020 auto 10.3.2.3
   virtual function void reset (bit wakeup=1);
     at_threshold = 0;
-    if (num_waiters) begin
-      if (wakeup)
-        m_event.trigger();
-      else
-        m_event.reset();
-    end
+    if (num_waiters) 
+      begin
+        if (wakeup)
+        begin
+          m_event.trigger();
+        end
+
+        else
+        begin
+          m_event.reset();
+        end
+
+      end
     num_waiters = 0;
   endfunction
 
@@ -117,7 +141,7 @@ class uvm_barrier extends uvm_object;
   // If auto reset is off, then once the threshold is achieved, new processes
   // pass through without being blocked until the barrier is reset.
 
-  // @uvm-ieee 1800.2-2017 auto 10.3.2.4
+  // @uvm-ieee 1800.2-2020 auto 10.3.2.4
   virtual function void set_auto_reset (bit value=1);
     at_threshold = 0;
     auto_reset = value;
@@ -137,11 +161,14 @@ class uvm_barrier extends uvm_object;
   // waiting processes, then the barrier is reset and waiting processes are
   // activated.
 
-  // @uvm-ieee 1800.2-2017 auto 10.3.2.6
+  // @uvm-ieee 1800.2-2020 auto 10.3.2.6
   virtual function void set_threshold (int threshold);
     this.threshold = threshold;
     if (threshold <= num_waiters)
-      reset(1);
+      begin
+        reset(1);
+      end
+
   endfunction
 
 
@@ -149,7 +176,7 @@ class uvm_barrier extends uvm_object;
   //
   // Gets the current threshold setting for the barrier.
 
-  // @uvm-ieee 1800.2-2017 auto 10.3.2.5
+  // @uvm-ieee 1800.2-2020 auto 10.3.2.5
   virtual function int get_threshold ();
     return threshold;
   endfunction
@@ -159,7 +186,7 @@ class uvm_barrier extends uvm_object;
   //
   // Returns the number of processes currently waiting at the barrier.
 
-  // @uvm-ieee 1800.2-2017 auto 10.3.2.7
+  // @uvm-ieee 1800.2-2020 auto 10.3.2.7
   virtual function int get_num_waiters ();
     return num_waiters;
   endfunction
@@ -170,7 +197,7 @@ class uvm_barrier extends uvm_object;
   // Decrements the waiter count by one. This is used when a process that is
   // waiting on the barrier is killed or activated by some other means.
 
-  // @uvm-ieee 1800.2-2017 auto 10.3.2.8
+  // @uvm-ieee 1800.2-2020 auto 10.3.2.8
   virtual function void cancel ();
     m_event.cancel();
     num_waiters = m_event.get_num_waiters();
@@ -192,7 +219,11 @@ class uvm_barrier extends uvm_object;
   virtual function void do_copy (uvm_object rhs);
     uvm_barrier b;
     super.do_copy(rhs);
-    if(!$cast(b, rhs) || (b==null)) return;
+    if(!$cast(b, rhs) || (b==null)) 
+      begin
+        return;
+      end
+
 
     threshold = b.threshold;
     num_waiters = b.num_waiters;

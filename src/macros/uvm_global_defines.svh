@@ -1,7 +1,8 @@
 //------------------------------------------------------------------------------
-// Copyright 2014 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2015 NVIDIA Corporation
+// Copyright 2022 Marvell International Ltd.
+// Copyright 2015-2024 NVIDIA Corporation
+// Copyright 2014 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -18,25 +19,45 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/macros/uvm_global_defines.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 `ifndef UVM_GLOBAL_DEFINES_SVH
 `define UVM_GLOBAL_DEFINES_SVH
 
 //
-// Title -- NODOCS -- Global Macros 
+// Title: Global Macros 
 //------------------------
-// Group -- NODOCS -- Global object Macro definitions can be used in multiple locations
+// Global object Macro definitions can be used in multiple locations
 //------------------------
 //
+
+// MACRO: `UVM_COMPONENT_CONFIG_MODE_DEFAULT
+//
+// Defines the default configuration mode used by uvm_component::apply_config_settings_mode.
+//
+// The default value is CONFIG_CHECK_NAMES.  Note that this is a divergence from 1800.2,
+// however the performance increase is drastic.  If the 1800.2 behavior is desired,
+// the library can be compiled with `+define+UVM_COMPONENT_CONFIG_MODE_DEFAULT=CONFIG_STRICT`.
+//
+// @uvm-contrib
+`ifndef UVM_COMPONENT_CONFIG_MODE_DEFAULT
+ `define UVM_COMPONENT_CONFIG_MODE_DEFAULT CONFIG_CHECK_NAMES
+`endif
+
 // MACRO -- NODOCS -- `UVM_MAX_STREAMBITS
 //
 // Defines the maximum bit vector size for integral types. 
 // Used to set uvm_bitstream_t
 
 `ifndef UVM_MAX_STREAMBITS
- // @uvm-ieee 1800.2-2017 auto 16.2.3.8
- // @uvm-ieee 1800.2-2017 auto 16.4.6.1
- // @uvm-ieee 1800.2-2017 auto 16.5.4.8
- // @uvm-ieee 1800.2-2017 auto B.6.2
  `define UVM_MAX_STREAMBITS 4096
 `endif
 
@@ -46,6 +67,7 @@
 // Defines the maximum bytes to allocate for packing an object using
 // the <uvm_packer>. Default is <`UVM_MAX_STREAMBITS>, in ~bytes~.
 
+// @uvm-ieee 1800.2-2020 manual B.6.2
 `ifndef UVM_PACKER_MAX_BYTES
  `define UVM_PACKER_MAX_BYTES `UVM_MAX_STREAMBITS
 `endif

@@ -1,13 +1,14 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2018 Qualcomm, Inc.
-// Copyright 2014 Intel Corporation
-// Copyright 2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2017-2018 Cisco Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2021-2022 Marvell International Ltd.
+// Copyright 2007-2022 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
+// Copyright 2018 Qualcomm, Inc.
+// Copyright 2014 Semifore
+// Copyright 2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -24,6 +25,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_packer.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 
 //------------------------------------------------------------------------------
@@ -42,19 +53,19 @@ typedef bit signed [(`UVM_PACKER_MAX_BYTES*8)-1:0] uvm_pack_bitstream_t;
 
 // Class: uvm_packer
 // Implementation of uvm_packer, as defined in section
-// 16.5.1 of 1800.2-2017
+// 16.5.1 of 1800.2-2020
 
-// @uvm-ieee 1800.2-2017 auto 16.5.1
+// @uvm-ieee 1800.2-2020 auto 16.5.1
 class uvm_packer extends uvm_policy;
 
-   // @uvm-ieee 1800.2-2017 auto 16.5.2.3
+   // @uvm-ieee 1800.2-2020 auto 16.5.2.3
    `uvm_object_utils(uvm_packer)
 
-    uvm_factory m_factory;	
+    uvm_factory m_factory;    
     local uvm_object m_object_references[int];
    
 
-  // Function: set_packed_*
+  // Function -- NODOCS -- set_packed_*
   // Implementation of P1800.2 16.5.3.1
   //
   // The LRM specifies the set_packed_* methods as being
@@ -69,21 +80,20 @@ class uvm_packer extends uvm_policy;
   //| virtual function void set_packed_ints( ref int unsigned stream[] );
   //| virtual function void set_packed_longints( ref longint unsigned stream[] );
   //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
    
-  // @uvm-ieee 1800.2-2017 auto 16.5.3.1
+  // @uvm-ieee 1800.2-2020 auto 16.5.3.1
   extern virtual function void set_packed_bits (ref bit unsigned stream[]);
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.3.1
+  // @uvm-ieee 1800.2-2020 auto 16.5.3.1
   extern virtual function void set_packed_bytes (ref byte unsigned stream[]);
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.3.1
+  // @uvm-ieee 1800.2-2020 auto 16.5.3.1
   extern virtual function void set_packed_ints (ref int unsigned stream[]);
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.3.1
+  // @uvm-ieee 1800.2-2020 auto 16.5.3.1
   extern virtual function void set_packed_longints (ref longint unsigned stream[]);
    
-  // Function: get_packed_*
+  // Function -- NODOCS -- get_packed_*
   // Implementation of P1800.2 16.5.3.2
   //
   // The LRM specifies the get_packed_* methods as being
@@ -98,32 +108,31 @@ class uvm_packer extends uvm_policy;
   //| virtual function void get_packed_ints( ref int unsigned stream[] );
   //| virtual function void get_packed_longints( ref longint unsigned stream[] );
   //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
    
-  // @uvm-ieee 1800.2-2017 auto 16.5.3.2
+  // @uvm-ieee 1800.2-2020 auto 16.5.3.2
   extern virtual function void get_packed_bits (ref bit unsigned stream[]);
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.3.2
+  // @uvm-ieee 1800.2-2020 auto 16.5.3.2
   extern virtual function void get_packed_bytes (ref byte unsigned stream[]);
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.3.2
+  // @uvm-ieee 1800.2-2020 auto 16.5.3.2
   extern virtual function void get_packed_ints (ref int unsigned stream[]);
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.3.2
+  // @uvm-ieee 1800.2-2020 auto 16.5.3.2
   extern virtual function void get_packed_longints (ref longint unsigned stream[]);
    
   //----------------//
   // Group -- NODOCS -- Packing //
   //----------------//
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.2.4
+  // @uvm-ieee 1800.2-2020 auto 16.5.2.4
   static function void set_default (uvm_packer packer) ;
      uvm_coreservice_t coreservice ;
      coreservice = uvm_coreservice_t::get() ;
      coreservice.set_default_packer(packer) ;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.2.5
+  // @uvm-ieee 1800.2-2020 auto 16.5.2.5
   static function uvm_packer get_default () ;
      uvm_coreservice_t coreservice ;
      coreservice = uvm_coreservice_t::get() ;
@@ -131,14 +140,14 @@ class uvm_packer extends uvm_policy;
   endfunction
 
   
-  // @uvm-ieee 1800.2-2017 auto 16.5.2.2
+  // @uvm-ieee 1800.2-2020 auto 16.5.2.2
   extern virtual function void flush ();
   // Function -- NODOCS -- pack_field
   //
   // Packs an integral value (less than or equal to 4096 bits) into the
   // packed array. ~size~ is the number of bits of ~value~ to pack.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.8
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.8
   extern virtual function void pack_field (uvm_bitstream_t value, int size);
 
 
@@ -149,22 +158,22 @@ class uvm_packer extends uvm_policy;
   // ~$bits~. This optimized version of <pack_field> is useful for sizes up
   // to 64 bits.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.2.1
+  // @uvm-ieee 1800.2-2020 auto 16.5.2.1
   extern function new(string name="");
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.9
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.9
   extern virtual function void pack_field_int (uvm_integral_t value, int size);
 
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.1
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.1
   extern virtual function void pack_bits(ref bit value[], input int size = -1);
 
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.10
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.10
   extern virtual function void pack_bytes(ref byte value[], input int size = -1);
 
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.11
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.11
   extern virtual function void pack_ints(ref int value[], input int size = -1);
 
   // recursion functions
@@ -181,7 +190,7 @@ class uvm_packer extends uvm_policy;
   // This is useful for mixed language communication where unpacking may occur
   // outside of SystemVerilog UVM.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.5
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.5
   extern virtual function void pack_string (string value);
 
 
@@ -189,7 +198,7 @@ class uvm_packer extends uvm_policy;
   //
   // Packs a time ~value~ as 64 bits into the pack array.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.6
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.6
   extern virtual function void pack_time (time value); 
 
 
@@ -200,7 +209,7 @@ class uvm_packer extends uvm_policy;
   // The real ~value~ is converted to a 6-bit scalar value using the function
   // $real2bits before it is packed into the array.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.7
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.7
   extern virtual function void pack_real (real value);
 
 
@@ -215,7 +224,7 @@ class uvm_packer extends uvm_policy;
   // This is useful for mixed-language communication where unpacking may occur
   // outside of SystemVerilog UVM.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.2
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.2
   extern virtual function void pack_object (uvm_object value);
   
   extern virtual function void pack_object_with_meta (uvm_object value);
@@ -238,7 +247,7 @@ class uvm_packer extends uvm_policy;
   // This is useful when unpacking objects, to decide whether a new object
   // needs to be allocated or not.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.3
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.3
   extern virtual function bit is_null ();
 
 
@@ -248,7 +257,7 @@ class uvm_packer extends uvm_policy;
   // Unpacks bits from the pack array and returns the bit-stream that was
   // unpacked. ~size~ is the number of bits to unpack; the maximum is 4096 bits.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.16
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.16
   extern virtual function uvm_bitstream_t unpack_field (int size);
 
   // Function -- NODOCS -- unpack_field_int
@@ -260,19 +269,19 @@ class uvm_packer extends uvm_policy;
   // This is a more efficient variant than unpack_field when unpacking into
   // smaller vectors.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.17
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.17
   extern virtual function uvm_integral_t unpack_field_int (int size);
 
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.18
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.18
   extern virtual function void unpack_bits(ref bit value[], input int size = -1);
 
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.19
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.19
   extern virtual function void unpack_bytes(ref byte value[], input int size = -1);
 
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.12
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.12
   extern virtual function void unpack_ints(ref int value[], input int size = -1);
    
 
@@ -280,10 +289,7 @@ class uvm_packer extends uvm_policy;
   //
   // Unpacks a string. 
   //
-  // num_chars bytes are unpacked into a string. If num_chars is -1 then
-  // unpacking stops on at the first ~null~ character that is encountered.
-
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.13
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.13
   extern virtual function string unpack_string ();
 
 
@@ -292,7 +298,7 @@ class uvm_packer extends uvm_policy;
   // Unpacks the next 64 bits of the pack array and places them into a
   // time variable.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.14
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.14
   extern virtual function time unpack_time (); 
 
 
@@ -304,7 +310,7 @@ class uvm_packer extends uvm_policy;
   // The 64 bits of packed data are converted to a real using the $bits2real
   // system function.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.15
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.15
   extern virtual function real unpack_real ();
 
 
@@ -319,7 +325,7 @@ class uvm_packer extends uvm_policy;
   // The <is_null> function can be used to peek at the next four bits in
   // the pack array before calling this method.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.4.4
+  // @uvm-ieee 1800.2-2020 auto 16.5.4.4
   extern virtual function void unpack_object (uvm_object value);
   
   extern virtual function void unpack_object_with_meta (inout uvm_object value);
@@ -331,74 +337,13 @@ class uvm_packer extends uvm_policy;
   //
   // Returns the number of bits that were packed.
 
-  // @uvm-ieee 1800.2-2017 auto 16.5.3.3
+  // @uvm-ieee 1800.2-2020 auto 16.5.3.3
   extern virtual function int get_packed_size(); 
 
 
   //------------------//
   // Group -- NODOCS -- Variables //
   //------------------//
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-  // Variable -- NODOCS -- physical
-  //
-  // This bit provides a filtering mechanism for fields.
-  //
-  // The <abstract> and physical settings allow an object to distinguish between
-  // two different classes of fields. It is up to you, in the
-  // <uvm_object::do_pack> and <uvm_object::do_unpack> methods, to test the
-  // setting of this field if you want to use it as a filter.
-
-  bit physical = 1;
-
-
-  // Variable -- NODOCS -- abstract
-  //
-  // This bit provides a filtering mechanism for fields. 
-  //
-  // The abstract and physical settings allow an object to distinguish between
-  // two different classes of fields. It is up to you, in the
-  // <uvm_object::do_pack> and <uvm_object::do_unpack> routines, to test the
-  // setting of this field if you want to use it as a filter.
-
-  bit abstract;
-
-
-  // Variable -- NODOCS -- big_endian
-  //
-  // This bit determines the order that integral data is packed (using
-  // <pack_field>, <pack_field_int>, <pack_time>, or <pack_real>) and how the
-  // data is unpacked from the pack array (using <unpack_field>,
-  // <unpack_field_int>, <unpack_time>, or <unpack_real>). When the bit is set,
-  // data is associated msb to lsb; otherwise, it is associated lsb to msb. 
-  //
-  // The following code illustrates how data can be associated msb to lsb and
-  // lsb to msb:
-  //
-  //|  class mydata extends uvm_object;
-  //|
-  //|    logic[15:0] value = 'h1234;
-  //|
-  //|    function void do_pack (uvm_packer packer);
-  //|      packer.pack_field_int(value, 16);
-  //|    endfunction
-  //|
-  //|    function void do_unpack (uvm_packer packer);
-  //|      value = packer.unpack_field_int(16);
-  //|    endfunction
-  //|  endclass
-  //|
-  //|  mydata d = new;
-  //|  bit bits[];
-  //|
-  //|  initial begin
-  //|    d.pack(bits);  // 'b0001001000110100
-  //|    uvm_default_packer.big_endian = 0;
-  //|    d.pack(bits);  // 'b0010110001001000
-  //|  end
-
-  bit big_endian = 0;
-`endif
 
   // variables and methods primarily for internal use
 
@@ -413,31 +358,22 @@ class uvm_packer extends uvm_policy;
   bit   nopack;             //only count packable bits
 
   uvm_pack_bitstream_t m_bits;
+  
+  //@uvm-compat
+  bit physical = 1;
+
+  //@uvm-compat
+  bit abstract = 1 ;
 
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  extern virtual function bit  unsigned get_bit  (int unsigned index);
-  extern virtual function byte unsigned get_byte (int unsigned index);
-  extern virtual function int  unsigned get_int  (int unsigned index);
-
-  extern virtual function void get_bits (ref bit unsigned bits[]);
-  extern virtual function void get_bytes(ref byte unsigned bytes[]);
-  extern virtual function void get_ints (ref int unsigned ints[]);
-
-  extern virtual function void put_bits (ref bit unsigned bitstream[]);
-  extern virtual function void put_bytes(ref byte unsigned bytestream[]);
-  extern virtual function void put_ints (ref int unsigned intstream[]);
-
-  extern virtual function void set_packed_size(); 
-`endif
-   
   extern function void index_error(int index, string id, int sz);
   extern function bit enough_bits(int needed, string id);
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  extern function void reset();
-`endif
-  
+  //@uvm-compat provided to support uvm_compat_pkg
+  function string unpack_string_with_size (int num_chars=-1);
+     return unpack_string();
+  endfunction
+
 endclass
 
 
@@ -481,26 +417,6 @@ function int uvm_packer::get_packed_size();
 endfunction
 
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-// set_packed_size
-// ---------------
-
-function void uvm_packer::set_packed_size();
-  /* doesn't actually do anything now */
-endfunction
-
-// reset
-// -----
-
-function void uvm_packer::reset();
-  flush();
-endfunction
-
-function void uvm_packer::get_bits( ref bit bits [] ); get_packed_bits(bits); endfunction
-function void uvm_packer::get_bytes( ref byte unsigned bytes [] ); get_packed_bytes(bytes); endfunction
-function void uvm_packer::get_ints( ref int unsigned ints [] ); get_packed_ints(ints); endfunction
-`endif
-
 function void uvm_packer::flush();
   // The iterators are spaced 64b from the beginning, enough to store
   // the iterators during get_packed_* and retrieve them during
@@ -522,31 +438,13 @@ function void uvm_packer::get_packed_bits(ref bit unsigned stream[]);
   stream        = new[m_pack_iter];
   m_bits[31:0]  = m_pack_iter; /* Reserved bits */
   m_bits[63:32] = m_unpack_iter; /* Reserved bits */
-  for (int i=0;i<m_pack_iter;i++)
+  for (int i=0;i<m_pack_iter;i++) begin
+    
     stream[i] = m_bits[i];
+  end
+
 endfunction
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-// When deprecated, we support big_endian
-`define M__UVM_GET_PACKED(T) \
-function void uvm_packer::get_packed_``T``s (ref T unsigned stream[] ); \
-   int sz;                                                              \
-   T v;                                                                 \
-   sz = (m_pack_iter + $high(v)) / $bits(T);                            \
-   stream = new[sz];                                                    \
-   m_bits[31:0] = m_pack_iter; /* Reserved Bits */                      \
-   m_bits[63:32] = m_unpack_iter; /* Reserved Bits */                   \
-   foreach (stream[i]) begin                                            \
-      if (i != sz-1 || (m_pack_iter % $bits(T)) == 0)                   \
-	v = m_bits[ i* $bits(T) +: $bits(T) ];                          \
-      else                                                              \
-	v = m_bits[ i* $bits(T) +: $bits(T) ] & ({$bits(T){1'b1}} >> ($bits(T)-(m_pack_iter%$bits(T)))); \
-      if(big_endian)                                                    \
-	v = {<<{v}};                                                    \
-      stream[i] = v;                                                    \
-   end                                                                  \
-endfunction 
-`else // !`ifdef UVM_ENABLE_DEPRECATED_API
 `define M__UVM_GET_PACKED(T) \
 function void uvm_packer::get_packed_``T``s (ref T unsigned stream[] ); \
    int sz;                                                              \
@@ -556,26 +454,21 @@ function void uvm_packer::get_packed_``T``s (ref T unsigned stream[] ); \
    m_bits[63:32] = m_unpack_iter; /* Reserved Bits */                   \
    stream = new[sz];                                                    \
    foreach (stream[i]) begin                                            \
-      if (i != sz-1 || (m_pack_iter % $bits(T)) == 0)                   \
-	v = m_bits[ i* $bits(T) +: $bits(T) ];                          \
-      else                                                              \
-	v = m_bits[ i* $bits(T) +: $bits(T) ] & ({$bits(T){1'b1}} >> ($bits(T)-(m_pack_iter%$bits(T)))); \
+      if (i != sz-1 || (m_pack_iter % $bits(T)) == 0) begin             \
+    v = m_bits[ i* $bits(T) +: $bits(T) ];                          \
+      end                                                               \
+      else begin                                                        \
+    v = m_bits[ i* $bits(T) +: $bits(T) ] & ({$bits(T){1'b1}} >> ($bits(T)-(m_pack_iter%$bits(T)))); \
+      end                                                               \
       stream[i] = v;                                                    \
    end                                                                  \
 endfunction 
-`endif // !`ifdef UVM_ENABLE_DEPRECATED_API
 
 `M__UVM_GET_PACKED(byte)
 `M__UVM_GET_PACKED(int)
 `M__UVM_GET_PACKED(longint)
 
 `undef M__UVM_GET_PACKED
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-function void uvm_packer::put_bits( ref bit bitstream [] ); set_packed_bits(bitstream); endfunction
-function void uvm_packer::put_bytes( ref byte unsigned bytestream [] ); set_packed_bytes(bytestream); endfunction
-function void uvm_packer::put_ints( ref int unsigned intstream [] ); set_packed_ints(intstream); endfunction
-`endif
 
 // set_packed_bits
 // --------
@@ -586,36 +479,17 @@ function void uvm_packer::set_packed_bits (ref bit stream []);
 
   bit_size = stream.size();
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  if(big_endian)
-    for (int i=bit_size-1;i>=0;i--)
+    for (int i=0;i<bit_size;i++) begin
+      
       m_bits[i] = stream[i];
-  else
-`endif
-    for (int i=0;i<bit_size;i++)
-      m_bits[i] = stream[i];
+    end
+
 
   m_pack_iter = m_bits[31:0]; /* Reserved Bits */
   m_unpack_iter = m_bits[63:32]; /* Reserved Bits */
  
 endfunction
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-// In deprecated mode we support big_endian
-`define M__UVM_SET_PACKED(T) \
-function void uvm_packer::set_packed_``T``s (ref T unsigned stream []); \
-   int count;                                                           \
-   foreach(stream[i]) begin                                             \
-     if (big_endian)                                                    \
-       m_bits[count +: $bits(T)] = {<<{stream[i]}};                     \
-     else                                                               \
-       m_bits[count +: $bits(T)] = stream[i];                           \
-     count += $bits(T);                                                 \
-   end                                                                  \
-  m_pack_iter = m_bits[31:0]; /* Reserved Bits */                       \
-  m_unpack_iter = m_bits[63:32]; /* Reserved Bits */                    \
-endfunction 
-`else // !`ifdef UVM_ENABLE_DEPRECATED_API
 `define M__UVM_SET_PACKED(T) \
 function void uvm_packer::set_packed_``T``s (ref T unsigned stream []); \
    int count;                                                           \
@@ -626,7 +500,6 @@ function void uvm_packer::set_packed_``T``s (ref T unsigned stream []); \
   m_pack_iter = m_bits[31:0]; /* Reserved Bits */                       \
   m_unpack_iter = m_bits[63:32]; /* Reserved Bits */                    \
 endfunction 
-`endif
 
 `M__UVM_SET_PACKED(byte)
 `M__UVM_SET_PACKED(int)
@@ -634,36 +507,6 @@ endfunction
 
 `undef M__UVM_SET_PACKED
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-// get_bit
-// -------
-
-function bit unsigned uvm_packer::get_bit(int unsigned index);
-  if (index >= m_pack_iter)
-    index_error(index, "bit",1);
-  return m_bits[index];
-endfunction
-
-
-// get_byte
-// --------
-
-function byte unsigned uvm_packer::get_byte(int unsigned index);
-  if (index >= (m_pack_iter+7)/8)
-    index_error(index, "byte",8);
-  return m_bits[index*8 +: 8];
-endfunction
-
-
-// get_int
-// -------
-
-function int unsigned uvm_packer::get_int(int unsigned index);
-  if (index >= (m_pack_iter+31)/32)
-    index_error(index, "int",32);
-  return m_bits[(index*32) +: 32];
-endfunction
-`endif
 
 // PACK
 
@@ -758,13 +601,11 @@ endfunction
 // ----------
 
 function void uvm_packer::pack_field(uvm_bitstream_t value, int size);
-  for (int i=0; i<size; i++)
-`ifdef UVM_ENABLE_DEPRECATED_API
-    if(big_endian == 1)
-      m_bits[m_pack_iter+i] = value[size-1-i];
-    else
-`endif
-      m_bits[m_pack_iter+i] = value[i];
+  for (int i=0; i<size; i++) begin
+      
+    m_bits[m_pack_iter+i] = value[i];
+  end
+
   m_pack_iter += size;
 endfunction
   
@@ -773,13 +614,11 @@ endfunction
 // --------------
 
 function void uvm_packer::pack_field_int(uvm_integral_t value, int size);
-  for (int i=0; i<size; i++)
-`ifdef UVM_ENABLE_DEPRECATED_API
-    if(big_endian == 1)
-      m_bits[m_pack_iter+i] = value[size-1-i];
-    else
-`endif
-      m_bits[m_pack_iter+i] = value[i];
+  for (int i=0; i<size; i++) begin
+      
+    m_bits[m_pack_iter+i] = value[i];
+  end
+
   m_pack_iter += size;
 endfunction
   
@@ -787,24 +626,25 @@ endfunction
 // -----------------
 
 function void uvm_packer::pack_bits(ref bit value[], input int size = -1);
-   if (size < 0)
+   if (size < 0) begin
+     
      size = value.size();
+   end
+
 
    if (size > value.size()) begin
-      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
-                 $sformatf("pack_bits called with size '%0d', which exceeds value.size() of '%0d'",
-                           size,
-                           value.size()))
-      return;
+     `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+     $sformatf("pack_bits called with size '%0d', which exceeds value.size() of '%0d'",
+     size,
+     value.size()))
+     return;
    end
    
-   for (int i=0; i<size; i++)
-`ifdef UVM_ENABLE_DEPRECATED_API
-     if (big_endian == 1)
-       m_bits[m_pack_iter+i] = value[size-1-i];
-     else
-`endif
-       m_bits[m_pack_iter+i] = value[i];
+   for (int i=0; i<size; i++) begin
+       
+     m_bits[m_pack_iter+i] = value[i];
+   end
+
    m_pack_iter += size;
 endfunction 
 
@@ -814,31 +654,29 @@ endfunction
 function void uvm_packer::pack_bytes(ref byte value[], input int size = -1);
    int max_size = value.size() * $bits(byte);
    
-   if (size < 0)
+   if (size < 0) begin
+     
      size = max_size;
+   end
+
 
    if (size > max_size) begin
-      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
-                 $sformatf("pack_bytes called with size '%0d', which exceeds value size of '%0d'",
-                           size,
-                           max_size))
-      return;
+     `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+     $sformatf("pack_bytes called with size '%0d', which exceeds value size of '%0d'",
+     size,
+     max_size))
+     return;
    end
    else begin
-      int idx_select;
+     int idx_select;
 
-      for (int i=0; i<size; i++) begin
-`ifdef UVM_ENABLE_DEPRECATED_API
-         if (big_endian == 1)
-           idx_select = size-1-i;
-         else
-`endif
-           idx_select = i;
+     for (int i=0; i<size; i++) begin
+       idx_select = i;
          
-         m_bits[m_pack_iter+i] = value[idx_select / $bits(byte)][idx_select % $bits(byte)];
-      end
+       m_bits[m_pack_iter+i] = value[idx_select / $bits(byte)][idx_select % $bits(byte)];
+     end
    
-      m_pack_iter += size;
+     m_pack_iter += size;
    end
 endfunction 
 
@@ -848,31 +686,29 @@ endfunction
 function void uvm_packer::pack_ints(ref int value[], input int size = -1);
    int max_size = value.size() * $bits(int);
    
-   if (size < 0)
+   if (size < 0) begin
+     
      size = max_size;
+   end
+
 
    if (size > max_size) begin
-      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
-                 $sformatf("pack_ints called with size '%0d', which exceeds value size of '%0d'",
-                           size,
-                           max_size))
-      return;
+     `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+     $sformatf("pack_ints called with size '%0d', which exceeds value size of '%0d'",
+     size,
+     max_size))
+     return;
    end
    else begin
-      int idx_select;
+     int idx_select;
 
-      for (int i=0; i<size; i++) begin
-`ifdef UVM_ENABLE_DEPRECATED_API
-         if (big_endian == 1)
-           idx_select = size-1-i;
-         else
-`endif
-           idx_select = i;
+     for (int i=0; i<size; i++) begin
+       idx_select = i;
          
-         m_bits[m_pack_iter+i] = value[idx_select / $bits(int)][idx_select % $bits(int)];
-      end
+       m_bits[m_pack_iter+i] = value[idx_select / $bits(int)][idx_select % $bits(int)];
+     end
    
-      m_pack_iter += size;
+     m_pack_iter += size;
    end
 endfunction 
 
@@ -882,23 +718,10 @@ endfunction
 
 function void uvm_packer::pack_string(string value);
   byte b;
-`ifdef UVM_ENABLE_DEPRECATED_API
   foreach (value[index]) begin
-    if(big_endian == 1) begin
-      b = value[index];
-      for(int i=0; i<8; ++i)
-        m_bits[m_pack_iter+i] = b[7-i];
-    end 
-    else 
-      m_bits[m_pack_iter +: 8] = value[index];
+    m_bits[m_pack_iter +: 8] = value[index];
     m_pack_iter += 8;
   end
-`else // !`ifdef UVM_ENABLE_DEPRECATED_API
-  foreach (value[index]) begin
-     m_bits[m_pack_iter +: 8] = value[index];
-     m_pack_iter += 8;
-  end
-`endif // !`ifdef UVM_ENABLE_DEPRECATED_API
    m_bits[m_pack_iter +: 8] = 0;
    m_pack_iter += 8;
 endfunction 
@@ -943,7 +766,7 @@ function void uvm_packer::unpack_object(uvm_object value);
     field_op.set(UVM_UNPACK,this,value);
     value.do_execute_op(field_op);
     if (field_op.user_hook_enabled()) begin
-       value.do_unpack(this);
+      value.do_unpack(this);
     end
     field_op.m_recycle();
     void'(pop_active_object());
@@ -983,7 +806,7 @@ function void uvm_packer::unpack_object_with_meta(inout uvm_object value);
   else begin
     uvm_object_wrapper __wrapper = unpack_object_wrapper();
     if ((__wrapper != null) && 
-        ((value == null) || (value.get_object_type() != __wrapper))) begin 
+    ((value == null) || (value.get_object_type() != __wrapper))) begin 
       value = __wrapper.create_object("");
       if (value == null) begin
         value = __wrapper.create_component("",null);
@@ -998,8 +821,11 @@ endfunction
 function uvm_object_wrapper uvm_packer::unpack_object_wrapper();
   string type_name;
   type_name = unpack_string();
-  if (m_factory == null)
+  if (m_factory == null) begin
+    
     m_factory = uvm_factory::get();
+  end
+
   if (m_factory.is_type_name_registered(type_name)) begin
     return m_factory.find_wrapper_by_name(type_name);
   end
@@ -1034,13 +860,11 @@ function uvm_bitstream_t uvm_packer::unpack_field(int size);
   unpack_field = 'b0;
   if (enough_bits(size,"integral")) begin
     m_unpack_iter += size;
-    for (int i=0; i<size; i++)
-`ifdef UVM_ENABLE_DEPRECATED_API
-      if(big_endian == 1)
-        unpack_field[i] = m_bits[m_unpack_iter-i-1];
-      else
-`endif
-        unpack_field[i] = m_bits[m_unpack_iter-size+i];
+    for (int i=0; i<size; i++) begin
+        
+      unpack_field[i] = m_bits[m_unpack_iter-size+i];
+    end
+
   end
 endfunction
   
@@ -1052,13 +876,11 @@ function uvm_integral_t uvm_packer::unpack_field_int(int size);
   unpack_field_int = 'b0;
   if (enough_bits(size,"integral")) begin
     m_unpack_iter += size;
-    for (int i=0; i<size; i++)
-`ifdef UVM_ENABLE_DEPRECATED_API
-      if(big_endian == 1)
-        unpack_field_int[i] = m_bits[m_unpack_iter-i-1];
-      else
-`endif
-        unpack_field_int[i] = m_bits[m_unpack_iter-size+i];
+    for (int i=0; i<size; i++) begin
+        
+      unpack_field_int[i] = m_bits[m_unpack_iter-size+i];
+    end
+
   end
 endfunction
   
@@ -1066,26 +888,27 @@ endfunction
 // -------------------
 
 function void uvm_packer::unpack_bits(ref bit value[], input int size = -1);
-   if (size < 0)
+   if (size < 0) begin
+     
      size = value.size();
+   end
+
 
    if (size > value.size()) begin
-      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
-                 $sformatf("unpack_bits called with size '%0d', which exceeds value.size() of '%0d'",
-                           size,
-                           value.size()))
-      return;
+     `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+     $sformatf("unpack_bits called with size '%0d', which exceeds value.size() of '%0d'",
+     size,
+     value.size()))
+     return;
    end
    
    if (enough_bits(size, "integral")) begin
-      m_unpack_iter += size;
-      for (int i=0; i<size; i++)
-`ifdef UVM_ENABLE_DEPRECATED_API
-        if (big_endian == 1)
-          value[i] = m_bits[m_unpack_iter-i-1];
-        else
-`endif
-          value[i] = m_bits[m_unpack_iter-size+i];
+     m_unpack_iter += size;
+     for (int i=0; i<size; i++) begin
+          
+       value[i] = m_bits[m_unpack_iter-size+i];
+     end
+
    end
 endfunction
 
@@ -1094,30 +917,28 @@ endfunction
 
 function void uvm_packer::unpack_bytes(ref byte value[], input int size = -1);
    int max_size = value.size() * $bits(byte);
-   if (size < 0)
+   if (size < 0) begin
+     
      size = max_size;
+   end
+
 
    if (size > max_size) begin
-      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
-                 $sformatf("unpack_bytes called with size '%0d', which exceeds value size of '%0d'",
-                           size,
-                           value.size()))
-      return;
+     `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+     $sformatf("unpack_bytes called with size '%0d', which exceeds value size of '%0d'",
+     size,
+     value.size()))
+     return;
    end
    else begin
-      if (enough_bits(size, "integral")) begin
-         m_unpack_iter += size;
+     if (enough_bits(size, "integral")) begin
+       m_unpack_iter += size;
 
-         for (int i=0; i<size; i++) begin
-`ifdef UVM_ENABLE_DEPRECATED_API
-            if (big_endian == 1)
-              value[ i / $bits(byte) ][ i % $bits(byte) ] = m_bits[m_unpack_iter-i-1];
-            else
-`endif
-              value[ i / $bits(byte) ][ i % $bits(byte) ] = m_bits[m_unpack_iter-size+i];
+       for (int i=0; i<size; i++) begin
+         value[ i / $bits(byte) ][ i % $bits(byte) ] = m_bits[m_unpack_iter-size+i];
          
-         end
-      end // if (enough_bits(size, "integral"))
+       end
+     end // if (enough_bits(size, "integral"))
    end
 endfunction
 
@@ -1126,29 +947,27 @@ endfunction
 
 function void uvm_packer::unpack_ints(ref int value[], input int size = -1);
    int max_size = value.size() * $bits(int);
-   if (size < 0)
+   if (size < 0) begin
+     
      size = max_size;
+   end
+
 
    if (size > max_size) begin
-      `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
-                 $sformatf("unpack_ints called with size '%0d', which exceeds value size of '%0d'",
-                           size,
-                           value.size()))
-      return;
+     `uvm_error("UVM/BASE/PACKER/BAD_SIZE",
+     $sformatf("unpack_ints called with size '%0d', which exceeds value size of '%0d'",
+     size,
+     value.size()))
+     return;
    end
    else begin
-      if (enough_bits(size, "integral")) begin
-         m_unpack_iter += size;
+     if (enough_bits(size, "integral")) begin
+       m_unpack_iter += size;
 
-         for (int i=0; i<size; i++) begin
-`ifdef UVM_ENABLE_DEPRECATED_API
-            if (big_endian == 1)
-              value[ i / $bits(int) ][ i % $bits(int) ] = m_bits[m_unpack_iter-i-1];
-            else
-`endif
-              value[ i / $bits(int) ][ i % $bits(int) ] = m_bits[m_unpack_iter-size+i];
-         end   
-      end
+       for (int i=0; i<size; i++) begin
+         value[ i / $bits(int) ][ i % $bits(int) ] = m_bits[m_unpack_iter-size+i];
+       end   
+     end
    end
 endfunction
 
@@ -1156,31 +975,24 @@ endfunction
 // unpack_string
 // -------------
 
-// If num_chars is not -1, then the user only wants to unpack a
-// specific number of bytes into the string.
 function string uvm_packer::unpack_string();
   byte b;
   int i; i=0;
 
   while(enough_bits(8,"string") && 
-        (m_bits[m_unpack_iter+:8] != 0) )
-  begin
+        (m_bits[m_unpack_iter+:8] != 0) ) begin
+  
     // silly, because cannot append byte/char to string
     unpack_string = {unpack_string," "};
-`ifdef UVM_ENABLE_DEPRECATED_API
-    if(big_endian == 1) begin
-      for(int j=0; j<8; ++j)
-        b[7-j] = m_bits[m_unpack_iter+j];
-      unpack_string[i] = b;
-    end 
-    else
-`endif
-      unpack_string[i] = m_bits[m_unpack_iter +: 8];
+    unpack_string[i] = m_bits[m_unpack_iter +: 8];
     m_unpack_iter += 8;
     ++i;
   end
-  if(enough_bits(8,"string"))
+  if(enough_bits(8,"string")) begin
+    
     m_unpack_iter += 8;
+  end
+
 endfunction 
 
 

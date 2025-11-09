@@ -1,12 +1,14 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2018 AMD
-// Copyright 2010-2018 Mentor Graphics Corporation
-// Copyright 2013-2018 NVIDIA Corporation
-// Copyright 2017 Cisco Systems, Inc.
 // Copyright 2015 Analog Devices, Inc.
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2017 Cisco Systems, Inc.
+// Copyright 2021-2023 Marvell International Ltd.
+// Copyright 2010-2018 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
 // Copyright 2011 Synopsys, Inc.
+// Copyright 2020 Verific
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -24,6 +26,16 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_cmdline_processor.svh $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
+//
+//----------------------------------------------------------------------
+
+
 class uvm_cmd_line_verb;
   string comp_path;
   string id;
@@ -34,7 +46,7 @@ endclass
 // TITLE: Command Line Debug
 //
 // Debug command line plusargs that are available in the Accellera reference implementation
-// but not documented in the IEEE UVM 1800.2-2017 LRM
+// but not documented in the IEEE UVM 1800.2-2020 LRM
 //
 
 // Variable: +UVM_DUMP_CMDLINE_ARGS
@@ -69,9 +81,40 @@ endclass
 //
 // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
 
+// TITLE: Command line configuration
+//
+// The following argument is provided in addition to those required by IEEE UVM 1800.2-2020.
+//
 
-// @uvm-ieee 1800.2-2017 auto G.1
+// Variable: +uvm_set_config_bitstream
+// 
+// ~+uvm_set_config_bitstream=<comp>,<field>,<value>~ works like its
+// procedural counterpart <uvm_config_db#(uvm_bitstream_t)::set()>. The string ~value~
+// is interpreted using the same rules as uvm_bit_vector_utils#(uvm_bitstream_t)::from_string().
+// 
+// Note that unlike <+uvm_set_config_int>, the Accellera implementation of
+// ~+uvm_set_config_bitstream~ is capable storing values that exceed 32 bits in size.
+// This means the two yield different results for 32 bit values when bit 32 is set, 
+// as <+uvm_set_config_int> treats bit 32 as the sign bit.
+//
+// For example:
+//| // +uvm_set_config_int=uvm_test_top.soc_env,valA,'hFFFF_FFFF
+//| // +uvm_set_config_bitstream=uvm_test_top.soc_env,valB,'hFFFF_FFFF
+//|
+//| longint valA, valB;
+//| uvm_config_int::get(uvm_test_top.soc_env, "", "valA", valA); // 64'hFFFF_FFFF_FFFF_FFFF
+//| uvm_config_int::get(uvm_test_top.soc_env, "", "valB", valB); // 64'h0000_0000_FFFF_FFFF
+//
+// Additionally, note that if the ~value~ passed on the command line is larger than 
+// the maximum value that can be stored in a <uvm_bitstream_t> then truncation without 
+// warning may occur.  
+
+// The implementation of this is in uvm_root.
+
+
 typedef class uvm_cmdline_processor;
+
+// @uvm-compat , for compatibility with 1.2
 uvm_cmdline_processor uvm_cmdline_proc;
 
 
@@ -91,7 +134,7 @@ uvm_cmdline_processor uvm_cmdline_proc;
 // in the Built-in UVM Aware Command Line Arguments section.
 //
 
-// @uvm-ieee 1800.2-2017 auto G.1.1
+// @uvm-ieee 1800.2-2020 auto G.1.1
 class uvm_cmdline_processor extends uvm_report_object;
 
   static local uvm_cmdline_processor m_inst;
@@ -102,11 +145,14 @@ class uvm_cmdline_processor extends uvm_report_object;
   //
   // Returns the singleton instance of the UVM command line processor.
 
-  // @uvm-ieee 1800.2-2017 auto G.1.2
+  // @uvm-ieee 1800.2-2020 auto G.1.2
   static function uvm_cmdline_processor get_inst();
-    if(m_inst == null) 
+    if(m_inst == null) begin
+      
       m_inst = new("uvm_cmdline_proc");
-      uvm_cmdline_proc = m_inst;
+    end
+
+    uvm_cmdline_proc = m_inst;
     return m_inst;
   endfunction
 
@@ -123,7 +169,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   // element 0 of the array will always be the name of the 
   // executable which started the simulation.
 
-  // @uvm-ieee 1800.2-2017 auto G.1.3.1
+  // @uvm-ieee 1800.2-2020 auto G.1.3.1
   function void get_args (output string args[$]);
     args = m_argv;
   endfunction
@@ -138,7 +184,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   // command line, the third argument is unrelated); this is not
   // necessarily the case with vendor specific dash arguments.
 
-  // @uvm-ieee 1800.2-2017 auto G.1.3.2
+  // @uvm-ieee 1800.2-2020 auto G.1.3.2
   function void get_plusargs (output string args[$]);
     args = m_plus_argv;
   endfunction
@@ -151,7 +197,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   // the keyword UVM (case insensitive) as the first three
   // letters of the argument.
 
-  // @uvm-ieee 1800.2-2017 auto G.1.3.3
+  // @uvm-ieee 1800.2-2020 auto G.1.3.3
   function void get_uvm_args (output string args[$]);
     args = m_uvm_argv;
   endfunction
@@ -175,7 +221,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   //|                                                                   //and foo123.sv,
   //|                                                                   //not barfoo.sv.
 
-  // @uvm-ieee 1800.2-2017 auto G.1.3.4
+  // @uvm-ieee 1800.2-2020 auto G.1.3.4
   function int get_arg_matches (string match, ref string args[$]);
     bit match_is_regex = (match.len() > 2) && (match[0] == "/") && (match[match.len()-1] == "/");
     int len = match.len();
@@ -204,7 +250,7 @@ class uvm_cmdline_processor extends uvm_report_object;
   // the number of command line arguments that match the ~match~ string, and
   // ~value~ is the value of the first match.
   
-  // @uvm-ieee 1800.2-2017 auto G.1.4.1
+  // @uvm-ieee 1800.2-2020 auto G.1.4.1
   function int get_arg_value (string match, ref string value);
     int chars = match.len();
     get_arg_value = 0;
@@ -212,8 +258,11 @@ class uvm_cmdline_processor extends uvm_report_object;
       if(m_argv[i].len() >= chars) begin
         if(m_argv[i].substr(0,chars-1) == match) begin
           get_arg_value++;
-          if(get_arg_value == 1)
+          if(get_arg_value == 1) begin
+            
             value = m_argv[i].substr(chars,m_argv[i].len()-1);
+          end
+
         end
       end
     end
@@ -240,17 +289,20 @@ class uvm_cmdline_processor extends uvm_report_object;
   //   1 - "5,no,off"
   //
   // Splitting the resultant string is left to user but using the
-  // uvm_split_string() function is recommended.
+  // uvm_string_split() function is recommended.
 
-  // @uvm-ieee 1800.2-2017 auto G.1.4.2
+  // @uvm-ieee 1800.2-2020 auto G.1.4.2
   function int get_arg_values (string match, ref string values[$]);
     int chars = match.len();
 
     values.delete();
     foreach (m_argv[i]) begin
       if(m_argv[i].len() >= chars) begin
-        if(m_argv[i].substr(0,chars-1) == match)
+        if(m_argv[i].substr(0,chars-1) == match) begin
+          
           values.push_back(m_argv[i].substr(chars,m_argv[i].len()-1));
+        end
+
       end
     end
     return values.size();
@@ -283,44 +335,27 @@ class uvm_cmdline_processor extends uvm_report_object;
     string sub;
     int doInit=1;
     super.new(name);
-    do begin
-      s = uvm_dpi_get_next_arg(doInit);
-      doInit=0;
-      if(s!="") begin
-        m_argv.push_back(s);
-        if(s[0] == "+") begin
-          m_plus_argv.push_back(s);
-        end 
-        if(s.len() >= 4 && (s[0]=="-" || s[0]=="+")) begin
-          sub = s.substr(1,3);
-          sub = sub.toupper();
-          if(sub == "UVM")
-            m_uvm_argv.push_back(s);
-        end 
-      end
-    end while(s!=""); 
+    do 
+      begin
+        s = uvm_dpi_get_next_arg(doInit);
+        doInit=0;
+        if(s!="") begin
+          m_argv.push_back(s);
+          if(s[0] == "+") begin
+            m_plus_argv.push_back(s);
+          end 
+          if(s.len() >= 4 && (s[0]=="-" || s[0]=="+")) begin
+            sub = s.substr(1,3);
+            sub = sub.toupper();
+            if(sub == "UVM") begin
+              m_uvm_argv.push_back(s);
+            end
+          end
+        end
+      end 
+    while(s!=""); 
 
   endfunction
-
-  function bit m_convert_verb(string verb_str, output uvm_verbosity verb_enum);
-    case (verb_str)
-      "NONE"       : begin verb_enum = UVM_NONE;   return 1; end
-      "UVM_NONE"   : begin verb_enum = UVM_NONE;   return 1; end
-      "LOW"        : begin verb_enum = UVM_LOW;    return 1; end
-      "UVM_LOW"    : begin verb_enum = UVM_LOW;    return 1; end
-      "MEDIUM"     : begin verb_enum = UVM_MEDIUM; return 1; end
-      "UVM_MEDIUM" : begin verb_enum = UVM_MEDIUM; return 1; end
-      "HIGH"       : begin verb_enum = UVM_HIGH;   return 1; end
-      "UVM_HIGH"   : begin verb_enum = UVM_HIGH;   return 1; end
-      "FULL"       : begin verb_enum = UVM_FULL;   return 1; end
-      "UVM_FULL"   : begin verb_enum = UVM_FULL;   return 1; end
-      "DEBUG"      : begin verb_enum = UVM_DEBUG;  return 1; end
-      "UVM_DEBUG"  : begin verb_enum = UVM_DEBUG;  return 1; end
-      default      : begin                         return 0; end
-    endcase
-  endfunction
-  
-
 
 endclass
 

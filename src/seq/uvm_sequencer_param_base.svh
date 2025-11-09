@@ -1,10 +1,12 @@
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2012 Accellera Systems Initiative
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2021 Marvell International Ltd.
+// Copyright 2007-2022 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
+// Copyright 2021 NXP Semiconductors
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2018 NVIDIA Corporation
-// Copyright 2012 Accellera Systems Initiative
 // Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
@@ -23,6 +25,16 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/seq/uvm_sequencer_param_base.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 
 //------------------------------------------------------------------------------
 //
@@ -32,10 +44,7 @@
 // request (REQ) and response (RSP) types.
 //------------------------------------------------------------------------------
 
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual
-`endif
- class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
+virtual class uvm_sequencer_param_base #(type REQ = uvm_sequence_item,
                                  type RSP = REQ) extends uvm_sequencer_base;
 
   typedef uvm_sequencer_param_base #( REQ , RSP) this_type;
@@ -44,6 +53,9 @@ virtual
 
   REQ m_last_req_buffer[$];
   RSP m_last_rsp_buffer[$];
+
+  protected bit sequence_item_requested;
+  protected bit get_next_item_called;
 
   protected int m_num_last_reqs = 1;
   protected int num_last_items = m_num_last_reqs;
@@ -87,8 +99,11 @@ virtual
   //
   function REQ get_current_item();
     REQ t;
-    if (m_req_fifo.try_peek(t) == 0)
+    if (m_req_fifo.try_peek(t) == 0) begin
+      
       return null;
+    end
+
     return t;
   endfunction
 
@@ -133,8 +148,11 @@ virtual
         m_num_last_reqs));
       return null;
     end
-    if(n == m_last_req_buffer.size())
+    if(n >= m_last_req_buffer.size()) begin
+      
       return null;
+    end
+
   
     return m_last_req_buffer[n];
   endfunction
@@ -199,8 +217,11 @@ virtual
         m_num_last_rsps));
       return null;
     end
-    if(n == m_last_rsp_buffer.size())
+    if(n >= m_last_rsp_buffer.size()) begin
+      
       return null;
+    end
+
   
     return m_last_rsp_buffer[n];
   endfunction
@@ -210,12 +231,14 @@ virtual
   // Internal methods and variables; do not use directly, not part of standard
 
   /* local */ extern function void m_last_rsp_push_front(RSP item);
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.9
   /* local */ extern function void put_response (RSP t);
   /* local */ extern virtual function void build_phase(uvm_phase phase);
   /* local */ extern virtual function void connect_phase(uvm_phase phase);
   /* local */ extern virtual function void do_print (uvm_printer printer);
   /* local */ extern virtual function void analysis_write(uvm_sequence_item t);
   /* local */ extern function void m_last_req_push_front(REQ item);
+  /* local */ extern task m_safe_select_item(input bit get_next_item, output REQ t);
 
   /* local */ uvm_tlm_fifo #(REQ) m_req_fifo;
 
@@ -391,8 +414,11 @@ function void uvm_sequencer_param_base::set_num_last_reqs(int unsigned max);
   end
 
   //shrink the buffer if necessary
-  while((m_last_req_buffer.size() != 0) && (m_last_req_buffer.size() > max))
+  while((m_last_req_buffer.size() != 0) && (m_last_req_buffer.size() > max)) begin
+    
     void'(m_last_req_buffer.pop_back());
+  end
+
 
   m_num_last_reqs = max;
   num_last_items = max;
@@ -412,11 +438,17 @@ endfunction
 // ---------------------
 
 function void uvm_sequencer_param_base::m_last_req_push_front(REQ item);
-  if(!m_num_last_reqs)
+  if(!m_num_last_reqs) begin
+    
     return;
+  end
+
  
-  if(m_last_req_buffer.size() == m_num_last_reqs)
+  if(m_last_req_buffer.size() == m_num_last_reqs) begin
+    
     void'(m_last_req_buffer.pop_back());
+  end
+
 
   this.m_last_req_buffer.push_front(item);
 endfunction
@@ -454,11 +486,64 @@ endfunction
 // ---------------------
 
 function void uvm_sequencer_param_base::m_last_rsp_push_front(RSP item);
-  if(!m_num_last_rsps)
+  if(!m_num_last_rsps) begin
+    
     return;
+  end
+
  
-  if(m_last_rsp_buffer.size() == m_num_last_rsps)
+  if(m_last_rsp_buffer.size() == m_num_last_rsps) begin
+    
     void'(m_last_rsp_buffer.pop_back());
+  end
+
 
   this.m_last_rsp_buffer.push_front(item);
 endfunction
+
+
+// m_safe_select_item
+// ---------------------
+
+task uvm_sequencer_param_base::m_safe_select_item(input bit get_next_item, output REQ t);
+  process select_process;
+  uvm_sequence_request selected_sequence_request;
+  if(sequence_item_requested == 0) begin
+    m_select_sequence(selected_sequence_request);
+    fork
+      begin
+        select_process = process::self();
+        // re-arbitrate if the sequence was killed or finished after it won arbitration but before it was
+        // able to send its request.
+        forever begin
+          selected_sequence_request.process_id.await();
+
+          if(!m_req_fifo.is_empty()) begin
+            
+            break;
+          end
+
+
+          if (arb_completed.exists(selected_sequence_request.request_id)) begin
+            arb_completed.delete(selected_sequence_request.request_id);
+          end
+          m_select_sequence(selected_sequence_request);
+        end
+      end
+    join_none
+    // wait for thread to start to ensure it gets killed when peek returns
+    wait(select_process != null);
+  end
+  sequence_item_requested = 1;
+  if (get_next_item) begin
+    
+    get_next_item_called = 1;
+  end
+
+  m_req_fifo.peek(t);
+  if ((select_process != null) && (select_process.status != process::FINISHED)) begin
+    
+    select_process.kill();
+  end
+
+endtask

@@ -1,8 +1,8 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2015 NVIDIA Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2015-2024 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -20,6 +20,16 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/comps/uvm_subscriber.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 //------------------------------------------------------------------------------
 //
 // CLASS -- NODOCS -- uvm_subscriber
@@ -33,7 +43,7 @@
 // collector that attaches to a monitor. 
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 13.9.1
+// @uvm-ieee 1800.2-2020 auto 13.9.1
 virtual class uvm_subscriber #(type T=int) extends uvm_component;
 
   typedef uvm_subscriber #(T) this_type;
@@ -62,7 +72,7 @@ virtual class uvm_subscriber #(type T=int) extends uvm_component;
   // to this method by outside components should be done via the
   // analysis_export.
 
-  // @uvm-ieee 1800.2-2017 auto 13.9.3.2
+  // @uvm-ieee 1800.2-2020 auto 13.9.3.2
   pure virtual function void write(T t);
     
 endclass

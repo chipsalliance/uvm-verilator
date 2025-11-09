@@ -1,14 +1,15 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2018 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2017 Intel Corporation
-// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2012-2022 AMD
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013 Verilab
-// Copyright 2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2014-2018 Cisco Systems, Inc.
+// Copyright 2017 Intel Corporation
+// Copyright 2022-2024 Marvell International Ltd.
+// Copyright 2007-2021 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2014 Synopsys, Inc.
+// Copyright 2013 Verilab
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -26,6 +27,16 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_misc.svh $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
+//
+//----------------------------------------------------------------------
+
+
 // File -- NODOCS -- Miscellaneous Structures
 
 //------------------------------------------------------------------------------
@@ -41,7 +52,7 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 5.2
+// @uvm-ieee 1800.2-2020 auto 5.2
 virtual class uvm_void;
 endclass
 
@@ -104,17 +115,26 @@ function string uvm_instance_scope();
   //first time through the scope is ~null~ and we need to calculate, afterwards it
   //is correctly set.
 
-  if(uvm_instance_scope != "") 
+  if(uvm_instance_scope != "") begin 
+    
     return uvm_instance_scope;
+  end
+
 
   $swrite(uvm_instance_scope, "%m");
   //remove the extraneous .uvm_instance_scope piece or ::uvm_instance_scope
   pos = uvm_instance_scope.len()-1;
   c = uvm_instance_scope[pos];
-  while(pos && (c != ".") && (c != ":")) 
+  while(pos && (c != ".") && (c != ":")) begin 
+    
     c = uvm_instance_scope[--pos];
-  if(pos == 0)
+  end
+
+  if(pos == 0) begin
+    
     uvm_report_error("SCPSTR", $sformatf("Illegal name %s in scope string",uvm_instance_scope));
+  end
+
   uvm_instance_scope = uvm_instance_scope.substr(0,pos);
 endfunction
 
@@ -132,21 +152,27 @@ function int unsigned uvm_oneway_hash ( string string_in, int unsigned seed=0 );
   bit [7:0]    current_byte;
   bit [31:0]   crc1;
       
-  if(!seed) seed = uvm_global_random_seed;
+  if(!seed) begin
+    seed = uvm_global_random_seed;
+  end
+
   uvm_oneway_hash = seed;
 
   crc1 = 32'hffffffff;
   for (int _byte=0; _byte < string_in.len(); _byte++) begin
-     current_byte = string_in[_byte];
-     if (current_byte == 0) break;
-     for (int _bit=0; _bit < 8; _bit++) begin
-        msb = crc1[31];
-        crc1 <<= 1;
-        if (msb ^ current_byte[_bit]) begin
-           crc1 ^=  UVM_STR_CRC_POLYNOMIAL;
-           crc1[0] = 1;
-        end
-     end
+    current_byte = string_in[_byte];
+    if (current_byte == 0) begin
+      break;
+    end
+
+    for (int _bit=0; _bit < 8; _bit++) begin
+      msb = crc1[31];
+      crc1 <<= 1;
+      if (msb ^ current_byte[_bit]) begin
+        crc1 ^=  UVM_STR_CRC_POLYNOMIAL;
+        crc1[0] = 1;
+      end
+    end
   end
   uvm_oneway_hash += ~{crc1[7:0], crc1[15:8], crc1[23:16], crc1[31:24]};
 
@@ -163,11 +189,17 @@ endfunction
 function int unsigned uvm_create_random_seed ( string type_id, string inst_id="" );
   uvm_seed_map seed_map;
 
-  if(inst_id == "")
+  if(inst_id == "") begin
+    
     inst_id = "__global__";
+  end
 
-  if(!uvm_random_seed_table_lookup.exists(inst_id))
+
+  if(!uvm_random_seed_table_lookup.exists(inst_id)) begin
+    
     uvm_random_seed_table_lookup[inst_id] = new;
+  end
+
   seed_map = uvm_random_seed_table_lookup[inst_id];
 
   type_id = {uvm_instance_scope(),type_id};
@@ -193,8 +225,11 @@ endfunction
 //
 //
 function string uvm_object_value_str(uvm_object v);
-  if (v == null)
+  if (v == null) begin
+    
     return "<null>";
+  end
+
   uvm_object_value_str.itoa(v.get_inst_id());
   uvm_object_value_str = {"@",uvm_object_value_str};
 endfunction
@@ -210,26 +245,53 @@ function string uvm_leaf_scope (string full_name, byte scope_separator = ".");
 
   bmatches = 0;
   case(scope_separator)
-    "[": bracket_match = "]";
-    "(": bracket_match = ")";
-    "<": bracket_match = ">";
-    "{": bracket_match = "}";
-    default: bracket_match = "";
+    "[": begin
+      bracket_match = "]";
+    end
+
+    "(": begin
+      bracket_match = ")";
+    end
+
+    "<": begin
+      bracket_match = ">";
+    end
+
+    "{": begin
+      bracket_match = "}";
+    end
+
+    default: begin
+      bracket_match = "";
+    end
+
   endcase
 
   //Only use bracket matching if the input string has the end match
-  if(bracket_match != "" && bracket_match != full_name[full_name.len()-1])
+  if(bracket_match != "" && bracket_match != full_name[full_name.len()-1]) begin
+    
     bracket_match = "";
+  end
+
 
   for(pos=full_name.len()-1; pos>0; --pos) begin
-    if(full_name[pos] == bracket_match) bmatches++;
+    if(full_name[pos] == bracket_match) begin
+      bmatches++;
+    end
+
     else if(full_name[pos] == scope_separator) begin
       bmatches--;
-      if(!bmatches || (bracket_match == "")) break;
+      if(!bmatches || (bracket_match == "")) begin
+        break;
+      end
+
     end
   end
   if(pos) begin
-    if(scope_separator != ".") pos--;
+    if(scope_separator != ".") begin
+      pos--;
+    end
+
     uvm_leaf_scope = full_name.substr(pos+1,full_name.len()-1);
   end
   else begin
@@ -238,36 +300,189 @@ function string uvm_leaf_scope (string full_name, byte scope_separator = ".");
 endfunction
 
 
+// Class: uvm_bit_vector_utils#(T)
+// 
+// Provides utility functions for converting bit vectors to/from strings.
+//
+// @uvm-contrib - For potential contribution to a future 1800.2 standard
+virtual class uvm_bit_vector_utils#(type T=int);
+
+  // Function: to_string
+  // Converts a packed array value into a string.
+  //
+  // The <size> argument is the number of bits in the vector to be converted,
+  // all bits beyond the size are ignored/masked out.
+  // The <radix> argument controls the base of the conversion, e.g. UVM_BIN for "%0b".
+  // The <radix_str> argument is prepended to the converted value, e.g. "'b" for binary.
+  // Note that the radix_str argument has no effect on the base of the conversion.
+  //
+  // The return value is the converted string.
+  //
+  // @uvm-contrib - For potential contribution to a future 1800.2 standard
+  static function string to_string(T value, int size,
+                                   uvm_radix_enum radix=UVM_NORADIX,
+                                   string radix_str="");
+    // sign extend & don't show radix for negative values
+    if (radix == UVM_DEC && value[size-1] === 1) begin
+      return $sformatf("%0d", value);
+    end
+
+
+    // TODO $countbits(value,'z) would be even better
+    if($isunknown(value)) begin
+      T _t;
+      _t=0;
+      for(int idx=0;idx<size;idx++) begin
+        _t[idx]=value[idx];
+      end
+
+      value=_t;
+    end
+    else begin
+      value &= (1 << size)-1;
+    end
+
+
+    case(radix)
+      UVM_BIN:      begin
+        return $sformatf("%0s%0b", radix_str, value);
+      end
+
+      UVM_OCT:      begin
+        return $sformatf("%0s%0o", radix_str, value);
+      end
+
+      UVM_UNSIGNED: begin
+        return $sformatf("%0s%0d", radix_str, value);
+      end
+
+      UVM_STRING:   begin
+        return $sformatf("%0s%0s", radix_str, value);
+      end
+
+      UVM_TIME:     begin
+        return $sformatf("%0s%0t", radix_str, value);
+      end
+
+      UVM_DEC:      begin
+        return $sformatf("%0s%0d", radix_str, value);
+      end
+
+      default:      begin
+        return $sformatf("%0s%0x", radix_str, value);
+      end
+
+    endcase
+
+  endfunction : to_string
+
+  // Function: from_string
+  // Converts a string value into a packed array.
+  //
+  // The string ~val_str~ is processed as:
+  //
+  //| [sign][radix]value
+  //
+  // Where `[sign]` is an optional sign character, either "+" or "-", and 
+  // `[radix]` is an optional radix specifier.  
+  //
+  // The following radix specifiers are supported:
+  //   "'b", "0b": Binary
+  //   "'o": Octal
+  //   "'d": Decimal
+  //   "'h", "'x", "0x": Hexidecimal
+  //
+  // If the optional radix is omitted, then the ~value~ shall be treated as decimal.  
+  //
+  // The ~val_str~ is treated as a 4-state value, the characters "X", "x", "Z", "z", 
+  // and "?" are legal within the ~val_str~ string.  Additionally, the underscore character
+  // ("_") is ignored.
+  //
+  // @uvm-contrib - For potential contribution to a future 1800.2 standard
+  static function int from_string(input string val_str, output T val);
+    string base, extval, tmp;
+    int    success ;
+    bit    is_negative;
+
+    if (val_str.len()  > 1) begin
+      byte char;
+      char = val_str.getc(0);
+      // Optional sign
+      if (char == "-") begin
+        // Signed, negative
+        is_negative = 1;
+        tmp = val_str.substr(1, val_str.len()-1);
+      end
+      else if (char == "+") begin
+        // Signed, positive (just remove the sign)
+        tmp = val_str.substr(1, val_str.len()-1);
+      end
+      else begin
+        // Unsigned
+        tmp = val_str;
+      end
+    end // if (val_str.len() > 1)
+    else begin // !(val_str.len() > 1)
+      tmp = val_str;
+    end
+
+    if(tmp.len() > 2) begin
+      base = tmp.substr(0,1);
+      extval = tmp.substr(2,tmp.len()-1);
+      case(base)
+        "'b" : begin
+          success= $sscanf(extval,"%b", val);
+        end
+
+        "0b" : begin
+          success= $sscanf(extval,"%b", val);
+        end
+
+        "'o" : begin
+          success= $sscanf(extval,"%o", val);
+        end
+
+        "'d" : begin
+          success= $sscanf(extval,"%d", val);
+        end
+
+        "'h" : begin
+          success= $sscanf(extval,"%x", val);
+        end
+
+        "'x" : begin
+          success= $sscanf(extval,"%x", val);
+        end
+
+        "0x" : begin
+          success= $sscanf(extval,"%x", val);
+        end
+
+        default : begin
+          success = $sscanf(val_str,"%d", val);
+        end
+
+      endcase
+    end
+    else begin
+      success = $sscanf(tmp,"%d", val);
+    end // else: !if(tmp.len() > 2)
+
+    if ((success == 1) && (is_negative)) begin
+      val = -val;
+    end
+    return success;
+  endfunction : from_string
+
+endclass : uvm_bit_vector_utils
+
 // Function- uvm_bitstream_to_string
 //
 //
 function string uvm_bitstream_to_string (uvm_bitstream_t value, int size,
                                          uvm_radix_enum radix=UVM_NORADIX,
                                          string radix_str="");
-  // sign extend & don't show radix for negative values
-  if (radix == UVM_DEC && value[size-1] === 1)
-    return $sformatf("%0d", value);
-
-  // TODO $countbits(value,'z) would be even better
-  if($isunknown(value)) begin
-	  uvm_bitstream_t _t;
-	  _t=0;
-	  for(int idx=0;idx<size;idx++)
-	    _t[idx]=value[idx];
-	  value=_t;
-  	end
-  else 
-  	value &= (1 << size)-1;
-
-  case(radix)
-    UVM_BIN:      return $sformatf("%0s%0b", radix_str, value);
-    UVM_OCT:      return $sformatf("%0s%0o", radix_str, value);
-    UVM_UNSIGNED: return $sformatf("%0s%0d", radix_str, value);
-    UVM_STRING:   return $sformatf("%0s%0s", radix_str, value);
-    UVM_TIME:     return $sformatf("%0s%0t", radix_str, value);
-    UVM_DEC:      return $sformatf("%0s%0d", radix_str, value);
-    default:      return $sformatf("%0s%0x", radix_str, value);
-  endcase
+  return uvm_bit_vector_utils#(uvm_bitstream_t)::to_string(value,size,radix,radix_str);
 endfunction
 
 // Function- uvm_integral_to_string
@@ -276,32 +491,9 @@ endfunction
 function string uvm_integral_to_string (uvm_integral_t value, int size,
                                          uvm_radix_enum radix=UVM_NORADIX,
                                          string radix_str="");
-  // sign extend & don't show radix for negative values
-  if (radix == UVM_DEC && value[size-1] === 1)
-    return $sformatf("%0d", value);
-
-  // TODO $countbits(value,'z) would be even better
-  if($isunknown(value)) begin
-	  uvm_integral_t _t;
-	  _t=0;
-	  for(int idx=0;idx<size;idx++)
-	  	_t[idx]=value[idx];
-	  value=_t;
-  	end
-  else 
-  	value &= (1 << size)-1;
-
-  case(radix)
-    UVM_BIN:      return $sformatf("%0s%0b", radix_str, value);
-    UVM_OCT:      return $sformatf("%0s%0o", radix_str, value);
-    UVM_UNSIGNED: return $sformatf("%0s%0d", radix_str, value);
-    UVM_STRING:   return $sformatf("%0s%0s", radix_str, value);
-    UVM_TIME:     return $sformatf("%0s%0t", radix_str, value);
-    UVM_DEC:      return $sformatf("%0s%0d", radix_str, value);
-    default:      return $sformatf("%0s%0x", radix_str, value);
-  endcase
+  return uvm_bit_vector_utils#(uvm_integral_t)::to_string(value, size, radix, radix_str);
 endfunction
-   
+
 // Function- uvm_get_array_index_int
 //
 // The following functions check to see if a string is representing an array
@@ -309,18 +501,26 @@ endfunction
 
 function int uvm_get_array_index_int(string arg, output bit is_wildcard);
   int i;
+  int rt_val;
+   
   uvm_get_array_index_int = 0;
   is_wildcard = 1;
   i = arg.len() - 1;
-  if(arg[i] == "]")
+  if(arg[i] == "]") begin
+    
     while(i > 0 && (arg[i] != "[")) begin
       --i;
-      if((arg[i] == "*") || (arg[i] == "?")) i=0;
+      if((arg[i] == "*") || (arg[i] == "?")) begin
+        i=0;
+      end
+
       else if((arg[i] < "0") || (arg[i] > "9") && (arg[i] != "[")) begin
         uvm_get_array_index_int = -1; //illegal integral index
         i=0;
       end
     end
+  end
+
   else begin
     is_wildcard = 0;
     return 0;
@@ -328,7 +528,7 @@ function int uvm_get_array_index_int(string arg, output bit is_wildcard);
 
   if(i>0) begin
     arg = arg.substr(i+1, arg.len()-2);
-    uvm_get_array_index_int = arg.atoi(); 
+    rt_val = $sscanf(arg, "%d" ,uvm_get_array_index_int ); 
     is_wildcard = 0;
   end
 endfunction 
@@ -342,11 +542,17 @@ function string uvm_get_array_index_string(string arg, output bit is_wildcard);
   uvm_get_array_index_string = "";
   is_wildcard = 1;
   i = arg.len() - 1;
-  if(arg[i] == "]")
+  if(arg[i] == "]") begin
+    
     while(i > 0 && (arg[i] != "[")) begin
-      if((arg[i] == "*") || (arg[i] == "?")) i=0;
+      if((arg[i] == "*") || (arg[i] == "?")) begin
+        i=0;
+      end
+
       --i;
     end
+  end
+
   if(i>0) begin
     uvm_get_array_index_string = arg.substr(i+1, arg.len()-2);
     is_wildcard = 0;
@@ -369,13 +575,22 @@ function automatic bit uvm_has_wildcard (string arg);
   uvm_has_wildcard = 0;
 
   //if it is a regex then return true
-  if( (arg.len() > 1) && (arg[0] == "/") && (arg[arg.len()-1] == "/") )
+  if( (arg.len() > 1) && (arg[0] == "/") && (arg[arg.len()-1] == "/") ) begin
+    
     return 1;
+  end
+
 
   //check if it has globs
-  foreach(arg[i])
-    if( (arg[i] == "*") || (arg[i] == "+") || (arg[i] == "?") )
+  foreach(arg[i]) begin
+    
+    if( (arg[i] == "*") || (arg[i] == "+") || (arg[i] == "?") ) begin
+      
       uvm_has_wildcard = 1;
+    end
+
+  end
+
 
 endfunction
 
@@ -384,14 +599,13 @@ typedef class uvm_component;
 typedef class uvm_root;
 typedef class uvm_report_object;
 
-`ifdef UVM_ENABLE_DEPRECATED_API 
 //------------------------------------------------------------------------------
 // CLASS -- NODOCS -- uvm_utils #(TYPE,FIELD)
 //
 // This class contains useful template functions.
 //
 //------------------------------------------------------------------------------
-        
+//@uvm-compat        
 class uvm_utils #(type TYPE=int, string FIELD="config");
 
   typedef TYPE types_t[$];
@@ -400,7 +614,7 @@ class uvm_utils #(type TYPE=int, string FIELD="config");
   //
   // Recursively finds all component instances of the parameter type ~TYPE~,
   // starting with the component given by ~start~. Uses <uvm_root::find_all>.
-
+//@uvm-compat
   static function types_t find_all(uvm_component start);
     uvm_component list[$];
     types_t types;
@@ -411,28 +625,34 @@ class uvm_utils #(type TYPE=int, string FIELD="config");
     top.find_all("*",list,start);
     foreach (list[i]) begin
       TYPE typ;
-      if ($cast(typ,list[i]))
+      if ($cast(typ,list[i])) begin
+        
         types.push_back(typ);
+      end
+
     end
     if (types.size() == 0) begin
       `uvm_warning("find_type-no match",{"Instance of type '",TYPE::type_name,
-         " not found in component hierarchy beginning at ",start.get_full_name()})
+      " not found in component hierarchy beginning at ",start.get_full_name()})
     end
     return types;
   endfunction
-
+//@uvm-compat
   static function TYPE find(uvm_component start);
     types_t types = find_all(start);
-    if (types.size() == 0)
+    if (types.size() == 0) begin
+      
       return null;
+    end
+
     if (types.size() > 1) begin
       `uvm_warning("find_type-multi match",{"More than one instance of type '",TYPE::type_name,
-         " found in component hierarchy beginning at ",start.get_full_name()})
+      " found in component hierarchy beginning at ",start.get_full_name()})
       return null;
     end
     return types[0];
   endfunction
-
+//@uvm-compat
   static function TYPE create_type_by_name(string type_name, string contxt);
     uvm_object obj;
     TYPE  typ;
@@ -440,9 +660,12 @@ class uvm_utils #(type TYPE=int, string FIELD="config");
     uvm_factory factory=cs.get_factory();
   
     obj = factory.create_object_by_name(type_name,contxt,type_name);
-       if (!$cast(typ,obj))
+       if (!$cast(typ,obj)) begin
+         
          uvm_report_error("WRONG_TYPE",{"The type_name given '",type_name,
                 "' with context '",contxt,"' did not produce the expected type."});
+       end
+
     return typ;
   endfunction
 
@@ -453,40 +676,53 @@ class uvm_utils #(type TYPE=int, string FIELD="config");
   // associated with component ~comp~.
   // We check for the two kinds of error which may occur with this kind of 
   // operation.
-
+//@uvm-compat
   static function TYPE get_config(uvm_component comp, bit is_fatal);
     uvm_object obj;
     TYPE cfg;
 
     if (!m_uvm_config_obj_misc::get(comp,"",FIELD, obj)) begin
-      if (is_fatal)
+      if (is_fatal) begin
+        
         comp.uvm_report_fatal("NO_SET_CFG", {"no set_config to field '", FIELD,
                            "' for component '",comp.get_full_name(),"'"},
                            UVM_MEDIUM, `uvm_file , `uvm_line  );
-      else
+      end
+
+      else begin
+        
         comp.uvm_report_warning("NO_SET_CFG", {"no set_config to field '", FIELD,
                            "' for component '",comp.get_full_name(),"'"},
                            UVM_MEDIUM, `uvm_file , `uvm_line  );
+      end
+
       return null;
     end
 
     if (!$cast(cfg, obj)) begin
-      if (is_fatal)
+      if (is_fatal) begin
+        
         comp.uvm_report_fatal( "GET_CFG_TYPE_FAIL",
                           {"set_config_object with field name ",FIELD,
                           " is not of type '",TYPE::type_name,"'"},
                           UVM_NONE , `uvm_file , `uvm_line );
-      else
+      end
+
+      else begin
+        
         comp.uvm_report_warning( "GET_CFG_TYPE_FAIL",
                           {"set_config_object with field name ",FIELD,
                           " is not of type '",TYPE::type_name,"'"},
                           UVM_NONE , `uvm_file , `uvm_line );
+      end
+
     end
 
     return cfg;
   endfunction
 endclass
-`endif
+
+
 
 `ifdef UVM_USE_PROCESS_CONTAINER
 class process_container_c;
@@ -503,10 +739,10 @@ function automatic string m_uvm_string_queue_join(ref string i[$]);
 `ifndef QUESTA
    m_uvm_string_queue_join = {>>{i}};
 `else
-	foreach(i[idx])
-		m_uvm_string_queue_join = {m_uvm_string_queue_join,i[idx]};
+    foreach(i[idx])
+        m_uvm_string_queue_join = {m_uvm_string_queue_join,i[idx]};
 `endif
 endfunction
 
 
-			
+            

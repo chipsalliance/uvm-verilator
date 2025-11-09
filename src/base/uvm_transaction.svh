@@ -1,11 +1,12 @@
 //
 //-----------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2010-2013 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014-2017 Cisco Systems, Inc.
+// Copyright 2020 Marvell International Ltd.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
+// Copyright 2010-2013 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -22,6 +23,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //-----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_transaction.svh $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
+//
+//----------------------------------------------------------------------
+
 
 typedef class uvm_event;
 typedef class uvm_event_pool;
@@ -124,7 +135,7 @@ typedef class uvm_parent_child_link;
 //
 //------------------------------------------------------------------------------
     
-// @uvm-ieee 1800.2-2017 auto 5.4.1
+// @uvm-ieee 1800.2-2020 auto 5.4.1
 virtual class uvm_transaction extends uvm_object;
 
   // Function -- NODOCS -- new
@@ -132,7 +143,7 @@ virtual class uvm_transaction extends uvm_object;
   // Creates a new transaction object. The name is the instance name of the
   // transaction. If not supplied, then the object is unnamed.
   
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.1
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.1
   extern function new (string name="", uvm_component initiator=null);
 
 
@@ -161,7 +172,7 @@ virtual class uvm_transaction extends uvm_object;
   // - The <do_accept_tr> method is called to allow for any post-accept
   //   action in derived classes.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.2
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.2
   extern function void accept_tr (time accept_time = 0);
 
   
@@ -171,7 +182,7 @@ virtual class uvm_transaction extends uvm_object;
   // event is triggered. Implementations should call ~super.do_accept_tr~ to
   // ensure correct operation.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.3
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.3
   extern virtual protected function void do_accept_tr ();
 
 
@@ -208,8 +219,11 @@ virtual class uvm_transaction extends uvm_object;
   // recording is enabled. The meaning of the handle is implementation specific.
 
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.4
-  extern function int begin_tr (time begin_time = 0);
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.4
+  extern function uvm_tr_handle_t begin_tr (
+     time begin_time = 0
+     , uvm_tr_handle_t parent_handle = 0
+  );
 
   
   // Function -- NODOCS -- begin_child_tr
@@ -244,9 +258,8 @@ virtual class uvm_transaction extends uvm_object;
   // The return value is a transaction handle, which is valid (non-zero) only if
   // recording is enabled. The meaning of the handle is implementation specific.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.5
-  extern function int begin_child_tr (time begin_time = 0, 
-                                               int parent_handle = 0);
+  extern function uvm_tr_handle_t begin_child_tr (time begin_time = 0, 
+                                               uvm_tr_handle_t parent_handle = 0);
 
 
   // Function -- NODOCS -- do_begin_tr
@@ -255,7 +268,7 @@ virtual class uvm_transaction extends uvm_object;
   // before the begin event is triggered. Implementations should call
   // ~super.do_begin_tr~ to ensure correct operation.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.6
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.5
   extern virtual protected function void do_begin_tr ();
 
 
@@ -291,7 +304,7 @@ virtual class uvm_transaction extends uvm_object;
   // - The transaction's internal end event is triggered. Any processes waiting
   //   on this event will resume in the next delta cycle. 
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.7
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.6
   extern function void end_tr (time end_time=0, bit free_handle=1);
 
 
@@ -301,7 +314,7 @@ virtual class uvm_transaction extends uvm_object;
   // is triggered. Implementations should call ~super.do_end_tr~ to ensure correct
   // operation.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.8
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.7
   extern virtual protected function void do_end_tr ();
 
 
@@ -310,8 +323,8 @@ virtual class uvm_transaction extends uvm_object;
   // Returns the handle associated with the transaction, as set by a previous
   // call to <begin_child_tr> or <begin_tr> with transaction recording enabled.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.9
-  extern function int get_tr_handle ();
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.8
+  extern function uvm_tr_handle_t get_tr_handle ();
 
   
   // Function -- NODOCS -- disable_recording
@@ -319,18 +332,18 @@ virtual class uvm_transaction extends uvm_object;
   // Turns off recording for the transaction stream. This method does not
   // effect a <uvm_component>'s recording streams.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.11
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.10
   extern function void disable_recording ();
 
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.10
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.9
   extern function void enable_recording (uvm_tr_stream stream);
 
   // Function -- NODOCS -- is_recording_enabled
   //
   // Returns 1 if recording is currently on, 0 otherwise.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.12
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.11
   extern function bit is_recording_enabled();
 
   
@@ -339,7 +352,7 @@ virtual class uvm_transaction extends uvm_object;
   // Returns 1 if the transaction has been started but has not yet been ended.
   // Returns 0 if the transaction has not been started.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.13
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.12
   extern function bit is_active ();
 
 
@@ -351,7 +364,7 @@ virtual class uvm_transaction extends uvm_object;
   // Events can also be added by derivative objects. An event pool is a
   // specialization of <uvm_pool#(KEY,T)>, e.g. a ~uvm_pool#(uvm_event)~.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.14
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.13
   extern function uvm_event_pool get_event_pool ();
 
 
@@ -363,7 +376,7 @@ virtual class uvm_transaction extends uvm_object;
   // also be the component that started the transaction. This or any other
   // usage is up to the transaction designer.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.15
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.14
   extern function void set_initiator (uvm_component initiator);
 
   
@@ -372,18 +385,18 @@ virtual class uvm_transaction extends uvm_object;
   // Returns the component that produced or started the transaction, as set by
   // a previous call to set_initiator.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.16
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.15
   extern function uvm_component get_initiator ();
 
 
   // Function -- NODOCS -- get_accept_time
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.17
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.16
   extern function time   get_accept_time    ();
 
   // Function -- NODOCS -- get_begin_time
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.17
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.16
   extern function time   get_begin_time     ();
 
   // Function -- NODOCS -- get_end_time
@@ -391,7 +404,7 @@ virtual class uvm_transaction extends uvm_object;
   // Returns the time at which this transaction was accepted, begun, or ended, 
   // as by a previous call to <accept_tr>, <begin_tr>, <begin_child_tr>, or <end_tr>.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.17
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.16
   extern function time   get_end_time       ();
 
 
@@ -404,8 +417,8 @@ virtual class uvm_transaction extends uvm_object;
   // with the sequence ID to route responses in sequencers and to correlate
   // responses to requests.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.18
-  extern function void set_transaction_id(int id);
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.17
+  extern function void set_transaction_id(uvm_transaction_id_t id);
 
 
   // Function -- NODOCS -- get_transaction_id
@@ -418,8 +431,8 @@ virtual class uvm_transaction extends uvm_object;
   // with the sequence ID to route responses in sequencers and to correlate
   // responses to requests.
 
-  // @uvm-ieee 1800.2-2017 auto 5.4.2.19
-  extern function int get_transaction_id();
+  // @uvm-ieee 1800.2-2020 auto 5.4.2.18
+  extern function uvm_transaction_id_t get_transaction_id();
 
        
   // Variable -- NODOCS -- events
@@ -427,49 +440,8 @@ virtual class uvm_transaction extends uvm_object;
   // The event pool instance for this transaction. This pool is used to track
   // various milestones: by default, begin, accept, and end
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  const uvm_event_pool events = new("events");
-`else
   const local uvm_event_pool events = new("events");
-`endif 
 
-
-  // Variable -- NODOCS -- begin_event
-  //
-  // A ~uvm_event#(uvm_object)~ that is triggered when this transaction's actual execution on the
-  // bus begins, typically as a result of a driver calling <uvm_component::begin_tr>. 
-  // Processes that wait on this event will block until the transaction has
-  // begun. 
-  //
-  // For more information, see the general discussion for <uvm_transaction>.
-  // See <uvm_event#(T)> for details on the event API.
-  //
-`ifdef UVM_ENABLE_DEPRECATED_API
-  uvm_event#(uvm_object) begin_event;
-`endif
-
-  // Variable -- NODOCS -- end_event
-  //
-  // A ~uvm_event#(uvm_object)~ that is triggered when this transaction's actual execution on
-  // the bus ends, typically as a result of a driver calling <uvm_component::end_tr>. 
-  // Processes that wait on this event will block until the transaction has
-  // ended. 
-  //
-  // For more information, see the general discussion for <uvm_transaction>.
-  // See <uvm_event#(T)> for details on the event API.
-  //
-  //| virtual task my_sequence::body();
-  //|  ...
-  //|  start_item(item);    \ 
-  //|  item.randomize();     } `uvm_do(item)
-  //|  finish_item(item);   /
-  //|  // return from finish item does not always mean item is completed
-  //|  item.end_event.wait_on();
-  //|  ...
-  // 
-`ifdef UVM_ENABLE_DEPRECATED_API
-  uvm_event#(uvm_object) end_event;
-`endif
 
   //----------------------------------------------------------------------------
   //
@@ -483,10 +455,10 @@ virtual class uvm_transaction extends uvm_object;
   extern virtual function void do_copy   (uvm_object rhs);
 
 
-  extern protected function int m_begin_tr (time    begin_time=0, 
-                                                int parent_handle=0);
+  extern protected function uvm_tr_handle_t m_begin_tr (time    begin_time=0, 
+                                                uvm_tr_handle_t parent_handle=0);
 
-  local int m_transaction_id = -1;
+  local uvm_transaction_id_t m_transaction_id = -1;
 
   local time    begin_time=-1;
   local time    end_time=-1;
@@ -495,6 +467,11 @@ virtual class uvm_transaction extends uvm_object;
   local uvm_component initiator;
   local uvm_tr_stream stream_handle;
   local uvm_recorder      tr_recorder;
+
+  // @uvm-compat - Added for compatibility with 1.2.
+  uvm_event#(uvm_object) begin_event;
+  // @uvm-compat - Added for compatibility with 1.2.
+  uvm_event#(uvm_object) end_event;
 
 endclass
 
@@ -513,20 +490,16 @@ function uvm_transaction::new (string name="",
   super.new(name);
   this.initiator = initiator;
   m_transaction_id = -1;
-`ifdef UVM_ENABLE_DEPRECATED_API
-  begin_event = events.get("begin");
-  end_event = events.get("end");
-`endif
 endfunction // uvm_transaction
 
 
 // set_transaction_id
-function void uvm_transaction::set_transaction_id(int id);
+function void uvm_transaction::set_transaction_id(uvm_transaction_id_t id);
     m_transaction_id = id;
 endfunction
 
 // get_transaction_id
-function int uvm_transaction::get_transaction_id();
+function uvm_transaction_id_t uvm_transaction::get_transaction_id();
     return (m_transaction_id);
 endfunction
 
@@ -615,23 +588,41 @@ function void uvm_transaction::do_print (uvm_printer printer);
   uvm_component tmp_initiator; //work around $swrite bug
   super.do_print(printer);
   if(accept_time != -1)
-    printer.print_time("accept_time", accept_time);
+    begin
+      printer.print_time("accept_time", accept_time);
+    end
+
   if(begin_time != -1)
-    printer.print_time("begin_time", begin_time);
+    begin
+      printer.print_time("begin_time", begin_time);
+    end
+
   if(end_time != -1)
-    printer.print_time("end_time", end_time);
-  if(initiator != null) begin
-    tmp_initiator = initiator;
-    $swrite(str,"@%0d", tmp_initiator.get_inst_id());
-    printer.print_generic("initiator", initiator.get_type_name(), -1, str);
-  end
+    begin
+      printer.print_time("end_time", end_time);
+    end
+
+  if(initiator != null) 
+    begin
+      tmp_initiator = initiator;
+      $swrite(str,"@%0d", tmp_initiator.get_inst_id());
+      printer.print_generic("initiator", initiator.get_type_name(), -1, str);
+    end
 endfunction
 
 function void uvm_transaction::do_copy (uvm_object rhs);
   uvm_transaction txn;
   super.do_copy(rhs);
-  if(rhs == null) return;
-  if(!$cast(txn, rhs) ) return;
+  if(rhs == null) 
+    begin
+      return;
+    end
+
+  if(!$cast(txn, rhs) ) 
+    begin
+      return;
+    end
+
 
   accept_time = txn.accept_time;
   begin_time = txn.begin_time;
@@ -648,23 +639,33 @@ function void uvm_transaction::do_record (uvm_recorder recorder);
   string s;
   super.do_record(recorder);
   if(accept_time != -1) 
-     recorder.record_field("accept_time", accept_time, $bits(accept_time), UVM_TIME);
-  if(initiator != null) begin
-    uvm_recursion_policy_enum p = recorder.get_recursion_policy();
-    recorder.set_recursion_policy(UVM_REFERENCE);
-    recorder.record_object("initiator", initiator);
-    recorder.set_recursion_policy(p);
-  end
+    begin
+      recorder.record_field("accept_time", accept_time, $bits(accept_time), UVM_TIME);
+    end
+
+  if(initiator != null) 
+    begin
+      uvm_recursion_policy_enum p = recorder.get_recursion_policy();
+      recorder.set_recursion_policy(UVM_REFERENCE);
+      recorder.record_object("initiator", initiator);
+      recorder.set_recursion_policy(p);
+    end
 endfunction
 
 // get_tr_handle
 // ---------
 
-function int uvm_transaction::get_tr_handle ();
+function uvm_tr_handle_t uvm_transaction::get_tr_handle ();
    if (tr_recorder != null)
-     return tr_recorder.get_handle();
+     begin
+       return tr_recorder.get_handle();
+     end
+
    else 
-     return 0;
+     begin
+       return 0;
+     end
+
 endfunction
 
 
@@ -698,89 +699,124 @@ function void uvm_transaction::accept_tr (time accept_time = 0);
   uvm_event#(uvm_object) e;
    
   if(accept_time != 0)
-    this.accept_time = accept_time;
+    begin
+      this.accept_time = accept_time;
+    end
+
   else
-    this.accept_time = $realtime;
+    begin
+      this.accept_time = $realtime;
+    end
+
 
   do_accept_tr();
   e = events.get("accept");
 
   if(e!=null) 
-    e.trigger();
+    begin
+      e.trigger();
+    end
+
 endfunction
 
 // begin_tr
 // -----------
 
-function int uvm_transaction::begin_tr (time begin_time=0); 
-  return m_begin_tr(begin_time);
+function uvm_tr_handle_t uvm_transaction::begin_tr (
+     time begin_time = 0
+     , uvm_tr_handle_t parent_handle = 0
+); 
+   return m_begin_tr(
+      begin_time 
+      , parent_handle 
+   );
 endfunction
 
 // begin_child_tr
 // --------------
 
 //Use a parent handle of zero to link to the parent after begin
-function int uvm_transaction::begin_child_tr (time begin_time=0,
-                                                  int parent_handle=0); 
+function uvm_tr_handle_t uvm_transaction::begin_child_tr (time begin_time=0,
+                                                  uvm_tr_handle_t parent_handle=0); 
   return m_begin_tr(begin_time, parent_handle);
 endfunction
 
 // m_begin_tr
 // -----------
 
-function int uvm_transaction::m_begin_tr (time begin_time=0, 
-                                              int parent_handle=0);
+function uvm_tr_handle_t uvm_transaction::m_begin_tr (time begin_time=0, 
+                                              uvm_tr_handle_t parent_handle=0);
    time tmp_time = (begin_time == 0) ? $realtime : begin_time;
    uvm_recorder parent_recorder;
 
    if (parent_handle != 0)
-     parent_recorder = uvm_recorder::get_recorder_from_handle(parent_handle);
+     begin
+       parent_recorder = uvm_recorder::get_recorder_from_handle(parent_handle);
+     end
+
    
    // If we haven't ended the previous record, end it.
    if (tr_recorder != null)
      // Don't free the handle, someone else may be using it...
-     end_tr(tmp_time);
+     begin
+       end_tr(tmp_time);
+     end
+
 
    // May want to establish predecessor/successor relation 
    // (don't free handle until then)
-   if(is_recording_enabled()) begin 
-      uvm_tr_database db = stream_handle.get_db();
+   if(is_recording_enabled()) 
+     begin 
+       uvm_tr_database db = stream_handle.get_db();
       
-      this.end_time = -1;
-      this.begin_time = tmp_time;
+       this.end_time = -1;
+       this.begin_time = tmp_time;
       
-      if(parent_recorder == null)
-        tr_recorder = stream_handle.open_recorder(get_type_name(),
+       if(parent_recorder == null)
+       begin
+         tr_recorder = stream_handle.open_recorder(get_type_name(),
                                                   this.begin_time,
                                                   "Begin_No_Parent, Link");
-      else begin
+       end
+
+       else 
+       begin
          tr_recorder = stream_handle.open_recorder(get_type_name(),
                                                    this.begin_time,
                                                    "Begin_End, Link");
 
          if (tr_recorder != null)
+         begin
            db.establish_link(uvm_parent_child_link::get_link(parent_recorder, tr_recorder));
-      end
+         end
 
-      if (tr_recorder != null)
-        m_begin_tr = tr_recorder.get_handle();
-      else
-        m_begin_tr = 0;
-   end
-   else begin
-      tr_recorder = null;
-      this.end_time = -1;
-      this.begin_time = tmp_time;
+       end
 
-      m_begin_tr = 0;
-   end
+       if (tr_recorder != null)
+       begin
+         m_begin_tr = tr_recorder.get_handle();
+       end
+
+       else
+       begin
+         m_begin_tr = 0;
+       end
+
+     end
+   else 
+     begin
+       tr_recorder = null;
+       this.end_time = -1;
+       this.begin_time = tmp_time;
+
+       m_begin_tr = 0;
+     end
    
    do_begin_tr(); //execute callback before event trigger
    
    begin
-      uvm_event#(uvm_object) begin_event ;
-      begin_event = events.get("begin");
-      begin_event.trigger();
+     begin_event = events.get("begin");
+     begin_event.trigger();
    end
 
 endfunction
@@ -794,23 +830,23 @@ function void uvm_transaction::end_tr (time end_time=0, bit free_handle=1);
 
    do_end_tr(); // Callback prior to actual ending of transaction
 
-   if(is_recording_enabled() && (tr_recorder != null)) begin
-      record(tr_recorder);
+   if(is_recording_enabled() && (tr_recorder != null)) 
+     begin
+       record(tr_recorder);
 
-      tr_recorder.close(this.end_time);
+       tr_recorder.close(this.end_time);
 
-      if(free_handle) 
-        begin  
-           // once freed, can no longer link to
-           tr_recorder.free();
-        end
-   end // if (is_active())
+       if(free_handle) 
+       begin  
+         // once freed, can no longer link to
+         tr_recorder.free();
+       end
+     end // if (is_active())
 
    tr_recorder = null;
 
    begin
-      uvm_event#(uvm_object) end_event ;
-      end_event = events.get("end") ;
-      end_event.trigger();
+     end_event = events.get("end") ;
+     end_event.trigger();
    end
 endfunction

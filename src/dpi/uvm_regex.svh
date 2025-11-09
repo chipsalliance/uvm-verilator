@@ -1,6 +1,7 @@
 //----------------------------------------------------------------------
-// Copyright 2010-2012 Mentor Graphics Corporation
 // Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2012 Mentor Graphics Corporation
+// Copyright 2020-2024 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -18,22 +19,91 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/dpi/uvm_regex.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 
 
 `ifndef UVM_REGEX_NO_DPI
-import "DPI-C" context function int uvm_re_match(string re, string str);
-import "DPI-C" context function string uvm_glob_to_re(string glob);
+import "DPI-C" function string uvm_re_deglobbed(string glob, bit with_brackets);
+import "DPI-C" function string uvm_re_buffer();
+import "DPI-C" function void uvm_re_free(chandle rexp);
+import "DPI-C" function chandle uvm_re_comp(string re, bit deglob);
+import "DPI-C" function int uvm_re_exec(chandle rexp, string str);
+import "DPI-C" function chandle uvm_re_compexec(string re, string str, bit deglob, output int exec_ret);
+import "DPI-C" function bit uvm_re_compexecfree(string re, string str, bit deglob, output int exec_ret);
+
+typedef class uvm_regex_cache;
+
+// The uvm_re_match cache is disabled by default, to avoid 
+// potential issues with save-and-restore causing illegal c-side 
+// dereferencing.  When enabled, uvm_re_match should be significantly 
+// faster.   
+`ifdef UVM_ENABLE_RE_MATCH_CACHE
+function int uvm_re_match(string re, string str, bit deglob = 0);
+  uvm_regex_cache cache;
+  chandle cached[$];
+  int retval;
+  
+  cache = uvm_regex_cache::get_inst();
+  cached = cache.get(re);
+  if (cached.size()) begin
+    // Cache hit, use pre-compiled regex
+    retval = uvm_re_exec(cached[0], str);
+  end
+  else begin
+    // Cache miss, compile and cache regex
+    chandle rexp;
+    rexp = uvm_re_compexec(re, str, deglob, retval);
+    if (rexp == null) begin
+      uvm_report_error("UVM/DPI/REGEX", uvm_re_buffer());
+    end
+    else begin
+      cache.put(re, rexp);
+    end
+  end // else: !if(cached.size())
+  return retval;
+endfunction : uvm_re_match
+
+`else // !`ifdef UVM_ENABLE_RE_MATCH_CACHE
+
+function int uvm_re_match(string re, string str, bit deglob = 0);
+  int retval;
+  bit success;
+  success = uvm_re_compexecfree(re, str, deglob, retval);
+  if (!success) begin
+    uvm_report_error("UVM/DPI/REGEX", uvm_re_buffer());
+  end
+  return retval;
+endfunction : uvm_re_match
+
+`endif // !`ifdef UVM_ENABLE_RE_MATCH_CACHE
+
+
+function string uvm_glob_to_re(string glob);
+  return uvm_re_deglobbed(glob, 1);
+endfunction : uvm_glob_to_re
 
 `else
 
 // The Verilog only version does not match regular expressions,
 // it only does glob style matching.
-function int uvm_re_match(string re, string str);
+// NOTE: The deglob argument is unused in Verilog only mode,
+// as it doesn't make any sense.
+function int uvm_re_match(string re, string str, bit deglob = 0);
   int e, es, s, ss;
   string tmp;
   e  = 0; s  = 0;
   es = 0; ss = 0;
 
+  
   if(re.len() == 0)
     return 0;
 

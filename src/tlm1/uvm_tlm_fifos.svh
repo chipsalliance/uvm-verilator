@@ -1,10 +1,11 @@
 //
 //------------------------------------------------------------------------------
+// Copyright 2007-2020 Cadence Design Systems, Inc.
 // Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2024 Microsoft
+// Copyright 2014-2024 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2018 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,6 +22,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/tlm1/uvm_tlm_fifos.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 typedef class uvm_tlm_event;
 
@@ -45,7 +56,7 @@ typedef class uvm_tlm_event;
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 18.2.8.2
+// @uvm-ieee 1800.2-2020 auto 18.2.8.2
 class uvm_tlm_fifo #(type T=int) extends uvm_tlm_fifo_base #(T);
 
   `uvm_component_param_utils(uvm_tlm_fifo#(T))
@@ -53,7 +64,11 @@ class uvm_tlm_fifo #(type T=int) extends uvm_tlm_fifo_base #(T);
 
   local mailbox #( T ) m;
   local int m_size;
-  protected int m_pending_blocked_gets;
+ `ifndef UVM_USE_PROCESS_CONTAINER 
+  protected bit m_pending_blocked_gets[process];
+ `else
+  protected bit m_pending_blocked_gets[process_container_c];
+ `endif 
 
 
   // Function -- NODOCS -- new
@@ -115,9 +130,15 @@ class uvm_tlm_fifo #(type T=int) extends uvm_tlm_fifo_base #(T);
   endtask
 
   virtual task get( output T t );
-    m_pending_blocked_gets++;
+  `ifndef UVM_USE_PROCESS_CONTAINER
+    process pid;
+    pid = process::self();
+  `else
+    process_container_c pid=new(process::self());
+  `endif     
+    m_pending_blocked_gets[pid] = 1;
     m.get( t );
-    m_pending_blocked_gets--;
+    m_pending_blocked_gets.delete(pid);
     get_ap.write( t );
   endtask
   
@@ -154,8 +175,36 @@ class uvm_tlm_fifo #(type T=int) extends uvm_tlm_fifo_base #(T);
     return m_size == 0 || m.num() < m_size;
   endfunction  
 
+  // undocumented function for clearing zombie gets
+  protected function void m_clear_zombie_gets();
+  `ifndef UVM_USE_PROCESS_CONTAINER
+    process zombie_gets[$];
+  `else
+    process_container_c zombie_gets[$];
+  `endif  
+    foreach (m_pending_blocked_gets[i]) begin
+      int status;
+  `ifndef UVM_USE_PROCESS_CONTAINER
+      status = i.status();
+  `else
+      status = i.p.status();
+  `endif
+      if (status == process::KILLED) begin
+        zombie_gets.push_back(i);
+      end
+
+    end
+
+    foreach (zombie_gets[i]) begin
+      
+      m_pending_blocked_gets.delete(zombie_gets[i]);
+    end
+
+  endfunction : m_clear_zombie_gets
+  
   virtual function bit can_get();
-    return m.num() > 0 && m_pending_blocked_gets == 0;
+    m_clear_zombie_gets();
+    return m.num() > 0 && m_pending_blocked_gets.size() == 0;
   endfunction
   
   virtual function bit can_peek();
@@ -172,13 +221,20 @@ class uvm_tlm_fifo #(type T=int) extends uvm_tlm_fifo_base #(T);
     T t;
     bit r;
 
-    r = 1; 
-    while( r ) r = try_get( t ) ;
+    m_clear_zombie_gets();
     
-    if( m.num() > 0 && m_pending_blocked_gets != 0 ) begin
+    if( m.num() > 0 && m_pending_blocked_gets.size() != 0 ) begin
       uvm_report_error("flush failed" ,
-		       "there are blocked gets preventing the flush", UVM_NONE);
+               "there are blocked gets preventing the flush", UVM_NONE);
+      return;
     end
+
+    r = 1; 
+    while( r ) begin
+      r = (m.try_get(t) != 0);
+    end
+
+    
   
   endfunction
  

@@ -1,11 +1,11 @@
 //----------------------------------------------------------------------
+// Copyright 2010-2012 AMD
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2013 Cisco Systems, Inc.
 // Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2010-2012 AMD
-// Copyright 2014-2015 NVIDIA Corporation
-// Copyright 2013 Cisco Systems, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -23,6 +23,16 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/seq/uvm_sequence.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 
 //------------------------------------------------------------------------------
 //
@@ -33,7 +43,7 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 14.3.1
+// @uvm-ieee 1800.2-2020 auto 14.3.1
 virtual class uvm_sequence #(type REQ = uvm_sequence_item,
                              type RSP = REQ) extends uvm_sequence_base;
 
@@ -59,7 +69,7 @@ virtual class uvm_sequence #(type REQ = uvm_sequence_item,
   //
   // Creates and initializes a new sequence object.
 
-  // @uvm-ieee 1800.2-2017 auto 14.3.3.1
+  // @uvm-ieee 1800.2-2020 auto 14.3.3.1
   function new (string name = "uvm_sequence");
     super.new(name);
   endfunction
@@ -95,10 +105,13 @@ virtual class uvm_sequence #(type REQ = uvm_sequence_item,
   // Note that a driver that only calls get will never show a current item,
   // since the item is completed at the same time as it is requested.
 
-  // @uvm-ieee 1800.2-2017 auto 14.3.3.2
+  // @uvm-ieee 1800.2-2020 auto 14.3.3.2
   function REQ get_current_item();
-    if (!$cast(param_sequencer, m_sequencer))
+    if (!$cast(param_sequencer, m_sequencer)) begin
+      
       uvm_report_fatal("SGTCURR", "Failure to cast m_sequencer to the parameterized sequencer", UVM_NONE);
+    end
+
     return (param_sequencer.get_current_item());
   endfunction
 
@@ -121,7 +134,7 @@ virtual class uvm_sequence #(type REQ = uvm_sequence_item,
   // unless the error reporting is disabled via
   // set_response_queue_error_report_enabled.
 
-  // @uvm-ieee 1800.2-2017 auto 14.3.3.3
+  // @uvm-ieee 1800.2-2020 auto 14.3.3.3
   virtual task get_response(output RSP response, input int transaction_id = -1);
     uvm_sequence_item rsp;
     get_base_response( rsp, transaction_id);

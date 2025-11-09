@@ -1,11 +1,11 @@
 //
 // -------------------------------------------------------------
+// Copyright 2010 AMD
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2004-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2010 AMD
-// Copyright 2014-2015 NVIDIA Corporation
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -23,7 +23,17 @@
 //    permissions and limitations under the License.
 // -------------------------------------------------------------
 //
- 
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/reg/uvm_reg_adapter.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 //------------------------------------------------------------------------------
 // Title -- NODOCS -- Classes for Adapting Between Register and Bus Operations
 //
@@ -40,7 +50,7 @@
 // and a specific bus transaction. 
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 19.2.1.1
+// @uvm-ieee 1800.2-2020 auto 19.2.1.1
 virtual class uvm_reg_adapter extends uvm_object;
 
 
@@ -51,7 +61,7 @@ virtual class uvm_reg_adapter extends uvm_object;
   //
   // Create a new instance of this type, giving it the optional ~name~.
 
-  // @uvm-ieee 1800.2-2017 auto 19.2.1.2.1
+  // @uvm-ieee 1800.2-2020 auto 19.2.1.2.1
   function new(string name="");
     super.new(name);
   endfunction
@@ -93,7 +103,7 @@ virtual class uvm_reg_adapter extends uvm_object;
   // the corresponding members from the given generic ~rw~ bus operation, then
   // return it.
 
-  // @uvm-ieee 1800.2-2017 auto 19.2.1.2.5
+  // @uvm-ieee 1800.2-2020 auto 19.2.1.2.5
   pure virtual function uvm_sequence_item reg2bus(const ref uvm_reg_bus_op rw);
 
 
@@ -105,7 +115,7 @@ virtual class uvm_reg_adapter extends uvm_object;
   // is not allocated from scratch. This is to accommodate applications
   // where the bus response must be returned in the original request.
 
-  // @uvm-ieee 1800.2-2017 auto 19.2.1.2.6
+  // @uvm-ieee 1800.2-2020 auto 19.2.1.2.6
   pure virtual function void bus2reg(uvm_sequence_item bus_item,
                                      ref uvm_reg_bus_op rw);
 
@@ -113,7 +123,7 @@ virtual class uvm_reg_adapter extends uvm_object;
   local uvm_reg_item m_item;
 
   
-  // @uvm-ieee 1800.2-2017 auto 19.2.1.2.7
+  // @uvm-ieee 1800.2-2020 auto 19.2.1.2.7
   virtual function uvm_reg_item get_item();
     return m_item;
   endfunction
@@ -171,7 +181,7 @@ endclass
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 19.2.2.1
+// @uvm-ieee 1800.2-2020 auto 19.2.2.1
 class uvm_reg_tlm_adapter extends uvm_reg_adapter;
 
   `uvm_object_utils(uvm_reg_tlm_adapter)
@@ -184,7 +194,7 @@ class uvm_reg_tlm_adapter extends uvm_reg_adapter;
   //
   // Converts a <uvm_reg_bus_op> struct to a <uvm_tlm_gp> item.
 
-  // @uvm-ieee 1800.2-2017 auto 19.2.2.2.1
+  // @uvm-ieee 1800.2-2020 auto 19.2.2.2.1
   virtual function uvm_sequence_item reg2bus(const ref uvm_reg_bus_op rw);
 
      uvm_tlm_gp gp = uvm_tlm_gp::type_id::create("tlm_gp",, this.get_full_name());
@@ -192,9 +202,15 @@ class uvm_reg_tlm_adapter extends uvm_reg_adapter;
      uvm_reg_addr_t addr=rw.addr;
 
      if (rw.kind == UVM_WRITE)
-        gp.set_command(UVM_TLM_WRITE_COMMAND);
+       begin
+         gp.set_command(UVM_TLM_WRITE_COMMAND);
+       end
+
      else
-        gp.set_command(UVM_TLM_READ_COMMAND);
+       begin
+         gp.set_command(UVM_TLM_READ_COMMAND);
+       end
+
 
      gp.set_address(addr);
 
@@ -206,10 +222,11 @@ class uvm_reg_tlm_adapter extends uvm_reg_adapter;
      gp.m_data = new [gp.get_streaming_width()];
      gp.m_length = nbytes; 
 
-     for (int i = 0; i < nbytes; i++) begin
-        gp.m_data[i] = rw.data[i*8+:8];
-        gp.m_byte_enable[i] = (i > nbytes) ? 8'h00 : (rw.byte_en[i] ? 8'hFF : 8'h00);
-     end
+     for (int i = 0; i < nbytes; i++) 
+       begin
+         gp.m_data[i] = rw.data[i*8+:8];
+         gp.m_byte_enable[i] = (i > nbytes) ? 8'h00 : (rw.byte_en[i] ? 8'hFF : 8'h00);
+       end
 
      return gp;
 
@@ -217,35 +234,50 @@ class uvm_reg_tlm_adapter extends uvm_reg_adapter;
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 19.2.2.2.2
+  // @uvm-ieee 1800.2-2020 auto 19.2.2.2.2
   virtual function void bus2reg(uvm_sequence_item bus_item,
                                 ref uvm_reg_bus_op rw);
 
     uvm_tlm_gp gp;
     int nbytes;
 
-    if (bus_item == null)
-     `uvm_fatal("REG/NULL_ITEM","bus2reg: bus_item argument is null") 
+    if (bus_item == null) 
+      begin
+        `uvm_fatal("REG/NULL_ITEM","bus2reg: bus_item argument is null")
+      end
 
-    if (!$cast(gp,bus_item)) begin
-      `uvm_error("WRONG_TYPE","Provided bus_item is not of type uvm_tlm_gp")
-      return;
-    end
+    if (!$cast(gp,bus_item)) 
+      begin
+        `uvm_error("WRONG_TYPE","Provided bus_item is not of type uvm_tlm_gp")
+        return;
+      end
 
     if (gp.get_command() == UVM_TLM_WRITE_COMMAND)
-      rw.kind = UVM_WRITE;
+      begin
+        rw.kind = UVM_WRITE;
+      end
+
     else
-      rw.kind = UVM_READ;
+      begin
+        rw.kind = UVM_READ;
+      end
+
 
     rw.addr = gp.get_address();
 
     rw.byte_en = 0;
     foreach (gp.m_byte_enable[i])
-      rw.byte_en[i] = gp.m_byte_enable[i];
+      begin
+        rw.byte_en[i] = gp.m_byte_enable[i];
+      end
+
 
     rw.data = 0;
     foreach (gp.m_data[i])
-      rw.data[i*8+:8] = gp.m_data[i];
+      begin
+        rw.data[i*8+:8] = gp.m_data[i];
+      end
+
 
     rw.status = (gp.is_response_ok()) ? UVM_IS_OK : UVM_NOT_OK;
 

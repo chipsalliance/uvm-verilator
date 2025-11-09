@@ -1,10 +1,10 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2010 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2015-2024 NVIDIA Corporation
+// Copyright 2010 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 // 
 //    Licensed under the Apache License, Version 2.0 (the
@@ -23,7 +23,17 @@
 // -------------------------------------------------------------
 // 
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/reg/sequences/uvm_reg_mem_built_in_seq.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 //------------------------------------------------------------------------------
+
 // Class -- NODOCS -- uvm_reg_mem_built_in_seq
 //
 // Sequence that executes a user-defined selection
@@ -31,12 +41,13 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto E.8.1
+
+// @uvm-ieee 1800.2-2020 auto E.8.1
 class uvm_reg_mem_built_in_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_item));
 
    `uvm_object_utils(uvm_reg_mem_built_in_seq)
 
-   // @uvm-ieee 1800.2-2017 auto E.8.3.1
+   // @uvm-ieee 1800.2-2020 auto E.8.3.1
    function new(string name="uvm_reg_mem_built_in_seq");
      super.new(name);
    endfunction
@@ -60,12 +71,12 @@ class uvm_reg_mem_built_in_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg
    // Executes any or all the built-in register and memory sequences.
    // Do not call directly. Use seq.start() instead.
    
-   // @uvm-ieee 1800.2-2017 auto E.8.3.2
+   // @uvm-ieee 1800.2-2020 auto E.8.3.2
    virtual task body();
 
       if (model == null) begin
-         `uvm_error("uvm_reg_mem_built_in_seq", "Not block or system specified to run sequence on")
-         return;
+        `uvm_error("uvm_reg_mem_built_in_seq", "Not block or system specified to run sequence on")
+        return;
       end
 
       uvm_report_info("START_SEQ",{"\n\nStarting ",get_name()," sequence...\n"},UVM_LOW);

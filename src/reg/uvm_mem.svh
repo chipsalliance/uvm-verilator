@@ -1,13 +1,14 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2018 Intel Corporation
-// Copyright 2004-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2018 Intel Corporation
+// Copyright 2010-2020 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2004-2018 Synopsys, Inc.
+// Copyright 2020 Verific
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -25,10 +26,20 @@
 //    permissions and limitations under the License.
 // -------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/reg/uvm_mem.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 //------------------------------------------------------------------------------
 // CLASS -- NODOCS -- uvm_mem
 //------------------------------------------------------------------------------
+
 // Memory abstraction base class
 //
 // A memory is a collection of contiguous locations.
@@ -42,7 +53,7 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 18.6.1
+// @uvm-ieee 1800.2-2020 auto 18.6.1
 class uvm_mem extends uvm_object;
 // See Mantis 6040. I did NOT make this class virtual because it 
 // seems to break a lot of existing tests and code. 
@@ -75,7 +86,7 @@ class uvm_mem extends uvm_object;
    //----------------------
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.3.1
+   // @uvm-ieee 1800.2-2020 auto 18.6.3.1
    extern function new (string           name,
                         longint unsigned size,
                         int unsigned     n_bits,
@@ -84,13 +95,13 @@ class uvm_mem extends uvm_object;
 
    
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.3.2
+   // @uvm-ieee 1800.2-2020 auto 18.6.3.2
    extern function void configure (uvm_reg_block parent,
                                    string        hdl_path = "");
 
    
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.3.3
+   // @uvm-ieee 1800.2-2020 auto 18.6.3.3
    extern virtual function void set_offset (uvm_reg_map    map,
                                             uvm_reg_addr_t offset,
                                             bit            unmapped = 0);
@@ -138,23 +149,23 @@ class uvm_mem extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.1
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.1
    extern virtual function uvm_reg_block get_parent ();
    extern virtual function uvm_reg_block get_block  ();
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.2
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.2
    extern virtual function int get_n_maps ();
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.3
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.3
    extern function bit is_in_map (uvm_reg_map map);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.4
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.4
    extern virtual function void get_maps (ref uvm_reg_map maps[$]);
 
 
@@ -164,12 +175,12 @@ class uvm_mem extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.5
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.5
    extern virtual function string get_rights (uvm_reg_map map = null);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.6
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.6
    extern virtual function string get_access(uvm_reg_map map = null);
 
 
@@ -202,22 +213,22 @@ class uvm_mem extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.11
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.11
    extern virtual function void get_virtual_registers(ref uvm_vreg regs[$]);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.12
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.12
    extern virtual function void get_virtual_fields(ref uvm_vreg_field fields[$]);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.13
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.13
    extern virtual function uvm_vreg get_vreg_by_name(string name);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.14
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.14
    extern virtual function uvm_vreg_field  get_vfield_by_name(string name);
 
 
@@ -235,19 +246,19 @@ class uvm_mem extends uvm_object;
 
    
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.15
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.15
    extern virtual function uvm_reg_addr_t  get_offset (uvm_reg_addr_t offset = 0,
                                                        uvm_reg_map    map = null);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.16
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.16
    extern virtual function uvm_reg_addr_t  get_address(uvm_reg_addr_t  offset = 0,
                                                        uvm_reg_map   map = null);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.4.17
+   // @uvm-ieee 1800.2-2020 auto 18.6.4.17
    extern virtual function int get_addresses(uvm_reg_addr_t     offset = 0,
                                              uvm_reg_map        map=null,
                                              ref uvm_reg_addr_t addr[]);
@@ -258,7 +269,7 @@ class uvm_mem extends uvm_object;
    //------------------
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.5.1
+   // @uvm-ieee 1800.2-2020 auto 18.6.5.1
    extern virtual task write(output uvm_status_e       status,
                              input  uvm_reg_addr_t     offset,
                              input  uvm_reg_data_t     value,
@@ -272,7 +283,7 @@ class uvm_mem extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.5.2
+   // @uvm-ieee 1800.2-2020 auto 18.6.5.2
    extern virtual task read(output uvm_status_e        status,
                             input  uvm_reg_addr_t      offset,
                             output uvm_reg_data_t      value,
@@ -286,7 +297,7 @@ class uvm_mem extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.5.3
+   // @uvm-ieee 1800.2-2020 auto 18.6.5.3
    extern virtual task burst_write(output uvm_status_e      status,
                                    input  uvm_reg_addr_t    offset,
                                    input  uvm_reg_data_t    value[],
@@ -300,7 +311,7 @@ class uvm_mem extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.5.4
+   // @uvm-ieee 1800.2-2020 auto 18.6.5.4
    extern virtual task burst_read(output uvm_status_e      status,
                                   input  uvm_reg_addr_t    offset,
                                   ref    uvm_reg_data_t    value[],
@@ -314,7 +325,7 @@ class uvm_mem extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.5.5
+   // @uvm-ieee 1800.2-2020 auto 18.6.5.5
    extern virtual task poke(output uvm_status_e       status,
                             input  uvm_reg_addr_t     offset,
                             input  uvm_reg_data_t     value,
@@ -326,7 +337,7 @@ class uvm_mem extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.5.6
+   // @uvm-ieee 1800.2-2020 auto 18.6.5.6
    extern virtual task peek(output uvm_status_e       status,
                             input  uvm_reg_addr_t     offset,
                             output uvm_reg_data_t     value,
@@ -351,7 +362,7 @@ class uvm_mem extends uvm_object;
    //-----------------
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.6.2
+   // @uvm-ieee 1800.2-2020 auto 18.6.6.2
    extern function void set_frontdoor(uvm_reg_frontdoor ftdr,
                                       uvm_reg_map map = null,
                                       string fname = "",
@@ -359,7 +370,7 @@ class uvm_mem extends uvm_object;
    
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.6.1
+   // @uvm-ieee 1800.2-2020 auto 18.6.6.1
    extern function uvm_reg_frontdoor get_frontdoor(uvm_reg_map map = null);
 
 
@@ -368,30 +379,30 @@ class uvm_mem extends uvm_object;
    //----------------
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.7.2
+   // @uvm-ieee 1800.2-2020 auto 18.6.7.2
    extern function void set_backdoor (uvm_reg_backdoor bkdr,
                                       string fname = "",
                                       int lineno = 0);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.7.1
+   // @uvm-ieee 1800.2-2020 auto 18.6.7.1
    extern function uvm_reg_backdoor get_backdoor(bit inherited = 1);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.7.3
+   // @uvm-ieee 1800.2-2020 auto 18.6.7.3
    extern function void clear_hdl_path (string kind = "RTL");
 
    
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.7.4
+   // @uvm-ieee 1800.2-2020 auto 18.6.7.4
    extern function void add_hdl_path (uvm_hdl_path_slice slices[],
                                       string kind = "RTL");
    
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.7.5
+   // @uvm-ieee 1800.2-2020 auto 18.6.7.5
    extern function void add_hdl_path_slice(string name,
                                            int offset,
                                            int size,
@@ -400,33 +411,33 @@ class uvm_mem extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.7.6
+   // @uvm-ieee 1800.2-2020 auto 18.6.7.6
    extern function bit  has_hdl_path (string kind = "");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.7.7
+   // @uvm-ieee 1800.2-2020 auto 18.6.7.7
    extern function void get_hdl_path (ref uvm_hdl_path_concat paths[$],
                                       input string kind = "");
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.7.9
+   // @uvm-ieee 1800.2-2020 auto 18.6.7.9
    extern function void get_full_hdl_path (ref uvm_hdl_path_concat paths[$],
                                            input string kind = "",
                                            input string separator = ".");
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.7.8
+   // @uvm-ieee 1800.2-2020 auto 18.6.7.8
    extern function void get_hdl_path_kinds (ref string kinds[$]);
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.7.10
+   // @uvm-ieee 1800.2-2020 auto 18.6.7.10
    extern virtual protected task backdoor_read(uvm_reg_item rw);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.7.11
+   // @uvm-ieee 1800.2-2020 auto 18.6.7.11
    extern virtual task backdoor_write(uvm_reg_item rw);
 
    
@@ -441,22 +452,22 @@ class uvm_mem extends uvm_object;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.9.1
+   // @uvm-ieee 1800.2-2020 auto 18.6.9.1
    virtual task pre_write(uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.9.2
+   // @uvm-ieee 1800.2-2020 auto 18.6.9.2
    virtual task post_write(uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.9.3
+   // @uvm-ieee 1800.2-2020 auto 18.6.9.3
    virtual task pre_read(uvm_reg_item rw); endtask
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.9.4
+   // @uvm-ieee 1800.2-2020 auto 18.6.9.4
    virtual task post_read(uvm_reg_item rw); endtask
 
 
@@ -465,32 +476,32 @@ class uvm_mem extends uvm_object;
    //----------------
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.8.1
+   // @uvm-ieee 1800.2-2020 auto 18.6.8.1
    extern protected function uvm_reg_cvr_t build_coverage(uvm_reg_cvr_t models);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.8.2
+   // @uvm-ieee 1800.2-2020 auto 18.6.8.2
    extern virtual protected function void add_coverage(uvm_reg_cvr_t models);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.8.3
+   // @uvm-ieee 1800.2-2020 auto 18.6.8.3
    extern virtual function bit has_coverage(uvm_reg_cvr_t models);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.8.5
+   // @uvm-ieee 1800.2-2020 auto 18.6.8.5
    extern virtual function uvm_reg_cvr_t set_coverage(uvm_reg_cvr_t is_on);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.8.4
+   // @uvm-ieee 1800.2-2020 auto 18.6.8.4
    extern virtual function bit get_coverage(uvm_reg_cvr_t is_on);
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.6.8.6
+   // @uvm-ieee 1800.2-2020 auto 18.6.8.6
    protected virtual function void  sample(uvm_reg_addr_t offset,
                                            bit            is_read,
                                            uvm_reg_map    map);
@@ -534,8 +545,8 @@ function uvm_mem::new (string           name,
    super.new(name);
    m_locked = 0;
    if (n_bits == 0) begin
-      `uvm_error("RegModel", {"Memory '",get_full_name(),"' cannot have 0 bits"})
-      n_bits = 1;
+     `uvm_error("RegModel", {"Memory '",get_full_name(),"' cannot have 0 bits"})
+     n_bits = 1;
    end
    m_size      = size;
    m_n_bits    = n_bits;
@@ -544,8 +555,11 @@ function uvm_mem::new (string           name,
    m_has_cover = has_coverage;
    m_hdl_paths_pool = new("hdl_paths");
 
-   if (n_bits > m_max_size)
-      m_max_size = n_bits;
+   if (n_bits > m_max_size) begin
+      
+     m_max_size = n_bits;
+   end
+
 
 endfunction: new
 
@@ -555,32 +569,36 @@ endfunction: new
 function void uvm_mem::configure(uvm_reg_block  parent,
                                  string         hdl_path="");
 
-   if (parent == null)
-     `uvm_fatal("REG/NULL_PARENT","configure: parent argument is null") 
+   if (parent == null) begin
+     `uvm_fatal("REG/NULL_PARENT","configure: parent argument is null")
+   end
 
    m_parent = parent;
 
    if (m_access != "RW" && m_access != "RO") begin
-      `uvm_error("RegModel", {"Memory '",get_full_name(),"' can only be RW or RO"})
-      m_access = "RW";
+     `uvm_error("RegModel", {"Memory '",get_full_name(),"' can only be RW or RO"})
+     m_access = "RW";
    end
 
    begin
-      uvm_mem_mam_cfg cfg = new;
+     uvm_mem_mam_cfg cfg = new;
 
-      cfg.n_bytes      = ((m_n_bits-1) / 8) + 1;
-      cfg.start_offset = 0;
-      cfg.end_offset   = m_size-1;
+     cfg.n_bytes      = ((m_n_bits-1) / 8) + 1;
+     cfg.start_offset = 0;
+     cfg.end_offset   = m_size-1;
 
-      cfg.mode     = uvm_mem_mam::GREEDY;
-      cfg.locality = uvm_mem_mam::BROAD;
+     cfg.mode     = uvm_mem_mam::GREEDY;
+     cfg.locality = uvm_mem_mam::BROAD;
 
-      mam = new(get_full_name(), cfg, this);
+     mam = new(get_full_name(), cfg, this);
    end
 
    m_parent.add_mem(this);
 
-   if (hdl_path != "") add_hdl_path_slice(hdl_path, -1, -1);
+   if (hdl_path != "") begin
+     add_hdl_path_slice(hdl_path, -1, -1);
+   end
+
 endfunction: configure
 
 
@@ -593,15 +611,18 @@ function void uvm_mem::set_offset (uvm_reg_map    map,
    uvm_reg_map orig_map = map;
 
    if (m_maps.num() > 1 && map == null) begin
-      `uvm_error("RegModel",{"set_offset requires a non-null map when memory '",
-                 get_full_name(),"' belongs to more than one map."})
-      return;
+     `uvm_error("RegModel",{"set_offset requires a non-null map when memory '",
+     get_full_name(),"' belongs to more than one map."})
+     return;
    end
 
    map = get_local_map(map);
 
-   if (map == null)
+   if (map == null) begin
+     
      return;
+   end
+
    
    map.m_set_mem_offset(this, offset, unmapped);
 endfunction
@@ -624,8 +645,11 @@ endfunction: Xlock_modelX
 // get_full_name
 
 function string uvm_mem::get_full_name();
-   if (m_parent == null)
-      return get_name();
+   if (m_parent == null) begin
+      
+     return get_name();
+   end
+
    
    return {m_parent.get_full_name(), ".", get_name()};
 
@@ -649,23 +673,32 @@ endfunction: get_n_maps
 // get_maps
 
 function void uvm_mem::get_maps(ref uvm_reg_map maps[$]);
-   foreach (m_maps[map])
+   foreach (m_maps[map]) begin
+     
      maps.push_back(map);
+   end
+
 endfunction
 
 
 // is_in_map
 
 function bit uvm_mem::is_in_map(uvm_reg_map map);
-   if (m_maps.exists(map))
+   if (m_maps.exists(map)) begin
+     
      return 1;
+   end
+
    foreach (m_maps[l]) begin
-    uvm_reg_map local_map=l;
+     uvm_reg_map local_map=l;
      uvm_reg_map parent_map = local_map.get_parent_map();
 
      while (parent_map != null) begin
-       if (parent_map == map)
+       if (parent_map == map) begin
+         
          return 1;
+       end
+
        parent_map = parent_map.get_parent_map();
      end
    end
@@ -676,17 +709,26 @@ endfunction
 // get_local_map
 
 function uvm_reg_map uvm_mem::get_local_map(uvm_reg_map map);
-   if (map == null)
+   if (map == null) begin
+     
      return get_default_map();
-   if (m_maps.exists(map))
-     return map; 
+   end
+
+   if (m_maps.exists(map)) begin
+     
+     return map;
+   end
+ 
    foreach (m_maps[l]) begin
      uvm_reg_map local_map = l;
      uvm_reg_map parent_map = local_map.get_parent_map();
 
      while (parent_map != null) begin
-       if (parent_map == map)
+       if (parent_map == map) begin
+         
          return local_map;
+       end
+
        parent_map = parent_map.get_parent_map();
      end
    end
@@ -702,14 +744,15 @@ function uvm_reg_map uvm_mem::get_default_map();
 
    // if mem is not associated with any may, return ~null~
    if (m_maps.num() == 0) begin
-      `uvm_warning("RegModel", 
-        {"Memory '",get_full_name(),"' is not registered with any map"})
-      return null;
+     `uvm_warning("RegModel", 
+     {"Memory '",get_full_name(),"' is not registered with any map"})
+     return null;
    end
 
    // if only one map, choose that
    if (m_maps.num() == 1) begin
      void'(m_maps.first(get_default_map));
+     return get_default_map ;
    end
 
    // try to choose one based on default_map in parent blocks.
@@ -719,8 +762,11 @@ function uvm_reg_map uvm_mem::get_default_map();
      uvm_reg_map default_map = blk.get_default_map();
      if (default_map != null) begin
        uvm_reg_map local_map = get_local_map(default_map);
-       if (local_map != null)
+       if (local_map != null) begin
+         
          return local_map;
+       end
+
      end
    end
 
@@ -735,41 +781,72 @@ endfunction
 
 function string uvm_mem::get_access(uvm_reg_map map = null);
    get_access = m_access;
-   if (get_n_maps() == 1) return get_access;
+   if (get_n_maps() == 1) begin
+     return get_access;
+   end
+
 
    map = get_local_map(map);
-   if (map == null) return get_access;
+   if (map == null) begin
+     return get_access;
+   end
+
 
    // Is the memory restricted in this map?
    case (get_rights(map))
-     "RW":
+     "RW": begin
        // No restrictions
+       
        return get_access;
+     end
 
-     "RO":
+
+     "RO": begin
+       
        case (get_access)
-         "RW", "RO": get_access = "RO";
+         "RW", "RO": begin
+           get_access = "RO";
+         end
 
-         "WO":    `uvm_error("RegModel", {"WO memory '",get_full_name(),
-                       "' restricted to RO in map '",map.get_full_name(),"'"})
 
-         default: `uvm_error("RegModel", {"Memory '",get_full_name(),
-                       "' has invalid access mode, '",get_access,"'"})
+         "WO": begin
+           `uvm_error("RegModel", {"WO memory '",get_full_name(),
+           "' restricted to RO in map '",map.get_full_name(),"'"})
+         end
+
+         default: begin
+           `uvm_error("RegModel", {"Memory '",get_full_name(),
+           "' has invalid access mode, '",get_access,"'"})
+         end
        endcase
+     end
 
-     "WO":
+
+     "WO": begin
+       
        case (get_access)
-         "RW", "WO": get_access = "WO";
+         "RW", "WO": begin
+           get_access = "WO";
+         end
 
-         "RO":    `uvm_error("RegModel", {"RO memory '",get_full_name(),
-                       "' restricted to WO in map '",map.get_full_name(),"'"})
 
-         default: `uvm_error("RegModel", {"Memory '",get_full_name(),
-                       "' has invalid access mode, '",get_access,"'"})
+         "RO": begin
+           `uvm_error("RegModel", {"RO memory '",get_full_name(),
+           "' restricted to WO in map '",map.get_full_name(),"'"})
+         end
+
+         default: begin
+           `uvm_error("RegModel", {"Memory '",get_full_name(),
+           "' has invalid access mode, '",get_access,"'"})
+         end
        endcase
+     end
 
-     default: `uvm_error("RegModel", {"Shared memory '",get_full_name(),
-                  "' is not shared in map '",map.get_full_name(),"'"})
+
+     default: begin
+       `uvm_error("RegModel", {"Shared memory '",get_full_name(),
+       "' is not shared in map '",map.get_full_name(),"'"})
+     end
    endcase
 endfunction: get_access
 
@@ -782,13 +859,16 @@ function string uvm_mem::get_rights(uvm_reg_map map = null);
 
    // No right restrictions if not shared
    if (m_maps.num() <= 1) begin
-      return "RW";
+     return "RW";
    end
 
    map = get_local_map(map);
 
-   if (map == null)
+   if (map == null) begin
+     
      return "RW";
+   end
+
 
    info = map.get_mem_map_info(this);
    return info.rights;
@@ -806,16 +886,19 @@ function uvm_reg_addr_t uvm_mem::get_offset(uvm_reg_addr_t offset = 0,
 
    map = get_local_map(map);
 
-   if (map == null)
+   if (map == null) begin
+     
      return -1;
+   end
+
    
    map_info = map.get_mem_map_info(this);
    
    if (map_info.unmapped) begin
-      `uvm_warning("RegModel", {"Memory '",get_name(),
-                   "' is unmapped in map '",
-                   ((orig_map == null) ? map.get_full_name() : orig_map.get_full_name()),"'"})
-      return -1;
+     `uvm_warning("RegModel", {"Memory '",get_name(),
+     "' is unmapped in map '",
+     ((orig_map == null) ? map.get_full_name() : orig_map.get_full_name()),"'"})
+     return -1;
    end
          
    return map_info.offset;
@@ -827,8 +910,11 @@ endfunction: get_offset
 // get_virtual_registers
 
 function void uvm_mem::get_virtual_registers(ref uvm_vreg regs[$]);
-  foreach (m_vregs[vreg])
-     regs.push_back(vreg);
+  foreach (m_vregs[vreg]) begin
+     
+    regs.push_back(vreg);
+  end
+
 endfunction
 
 
@@ -836,8 +922,8 @@ endfunction
 
 function void uvm_mem::get_virtual_fields(ref uvm_vreg_field fields[$]);
 
-  foreach (m_vregs[l])
-  begin
+  foreach (m_vregs[l]) begin
+  
     uvm_vreg vreg = l;
     vreg.get_fields(fields);
   end
@@ -852,9 +938,15 @@ function uvm_vreg_field uvm_mem::get_vfield_by_name(string name);
 
   get_virtual_fields(vfields);
 
-  foreach (vfields[i])
-    if (vfields[i].get_name() == name)
+  foreach (vfields[i]) begin
+    
+    if (vfields[i].get_name() == name) begin
+      
       return vfields[i];
+    end
+
+  end
+
 
   `uvm_warning("RegModel", {"Unable to find virtual field '",name,
                        "' in memory '",get_full_name(),"'"})
@@ -866,11 +958,14 @@ endfunction: get_vfield_by_name
 
 function uvm_vreg uvm_mem::get_vreg_by_name(string name);
 
-  foreach (m_vregs[l])
-  begin
+  foreach (m_vregs[l]) begin
+  
     uvm_vreg vreg = l;
-    if (vreg.get_name() == name)
+    if (vreg.get_name() == name) begin
+      
       return vreg;
+    end
+
   end
 
   `uvm_warning("RegModel", {"Unable to find virtual register '",name,
@@ -900,24 +995,39 @@ function int uvm_mem::get_addresses(uvm_reg_addr_t offset = 0,
    uvm_reg_map system_map;
    uvm_reg_map orig_map = map;
 
+   if (offset >= m_size) begin
+     `uvm_warning("RegModel", $sformatf("Offset '%0x' lies outside of memory '%s', which has a size of %0x",
+     offset,
+     get_name(),
+     m_size))
+     return -1;
+   end
+  
    map = get_local_map(map);
 
-   if (map == null)
-     return 0;
+   if (map == null) begin
+     `uvm_warning("RegModel", $sformatf("Memory '%s' not found in map '%s'",
+     get_name(),
+     (orig_map == null) ? "<null>" : orig_map.get_full_name()))
+     return -1;
+   end
 
    map_info = map.get_mem_map_info(this);
 
    if (map_info.unmapped) begin
-      `uvm_warning("RegModel", {"Memory '",get_name(),
-                   "' is unmapped in map '",
-                   ((orig_map == null) ? map.get_full_name() : orig_map.get_full_name()),"'"})
-      return 0;
+     `uvm_warning("RegModel", {"Memory '",get_name(),
+     "' is unmapped in map '",
+     ((orig_map == null) ? map.get_full_name() : orig_map.get_full_name()),"'"})
+     return -1;
    end
 
    addr = map_info.addr;
 
-   foreach (addr[i])
-      addr[i] = addr[i] + map_info.mem_range.stride * offset;
+   foreach (addr[i]) begin
+      
+     addr[i] = addr[i] + map_info.mem_range.stride * offset;
+   end
+
 
    return map.get_n_bytes();
 
@@ -996,8 +1106,8 @@ endfunction: has_coverage
 
 function uvm_reg_cvr_t uvm_mem::set_coverage(uvm_reg_cvr_t is_on);
    if (is_on == uvm_reg_cvr_t'(UVM_NO_COVERAGE)) begin
-      m_cover_on = is_on;
-      return m_cover_on;
+     m_cover_on = is_on;
+     return m_cover_on;
    end
 
    m_cover_on = m_has_cover & is_on;
@@ -1009,7 +1119,10 @@ endfunction: set_coverage
 // get_coverage
 
 function bit uvm_mem::get_coverage(uvm_reg_cvr_t is_on);
-   if (has_coverage(is_on) == 0) return 0;
+   if (has_coverage(is_on) == 0) begin
+     return 0;
+   end
+
    return ((m_cover_on & is_on) == is_on);
 endfunction: get_coverage
 
@@ -1036,22 +1149,22 @@ task uvm_mem::write(output uvm_status_e      status,
 
    // create an abstract transaction for this operation
    uvm_reg_item rw = uvm_reg_item::type_id::create("mem_write",,get_full_name());
-   rw.element      = this;
-   rw.element_kind = UVM_MEM;
-   rw.kind         = UVM_WRITE;
-   rw.offset       = offset;
-   rw.value[0]     = value;
-   rw.path         = path;
-   rw.map          = map;
-   rw.parent       = parent;
-   rw.prior        = prior;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_element_kind(UVM_MEM);
+   rw.set_kind(UVM_WRITE);
+   rw.set_value(value,0);
+   rw.set_offset(offset);
+   rw.set_door(path);
+   rw.set_map(map);
+   rw.set_parent_sequence(parent);
+   rw.set_priority(prior);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
    do_write(rw);
 
-   status = rw.status;
+   status = rw.get_status();
 
 endtask: write
 
@@ -1071,23 +1184,23 @@ task uvm_mem::read(output uvm_status_e       status,
    
    uvm_reg_item rw;
    rw = uvm_reg_item::type_id::create("mem_read",,get_full_name());
-   rw.element      = this;
-   rw.element_kind = UVM_MEM;
-   rw.kind         = UVM_READ;
-   rw.value[0]     = 0;
-   rw.offset       = offset;
-   rw.path         = path;
-   rw.map          = map;
-   rw.parent       = parent;
-   rw.prior        = prior;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_element_kind(UVM_MEM);
+   rw.set_kind(UVM_READ);
+   rw.set_value(0,0);
+   rw.set_offset(offset);
+   rw.set_door(path);
+   rw.set_map(map);
+   rw.set_parent_sequence(parent);
+   rw.set_priority(prior);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
    do_read(rw);
 
-   status = rw.status;
-   value = rw.value[0];
+   status = rw.get_status();
+   value = rw.get_value(0);
 
 endtask: read
 
@@ -1107,22 +1220,22 @@ task uvm_mem::burst_write(output uvm_status_e       status,
 
    uvm_reg_item rw;
    rw = uvm_reg_item::type_id::create("mem_burst_write",,get_full_name());
-   rw.element      = this;
-   rw.element_kind = UVM_MEM;
-   rw.kind         = UVM_BURST_WRITE;
-   rw.offset       = offset;
-   rw.value        = value;
-   rw.path         = path;
-   rw.map          = map;
-   rw.parent       = parent;
-   rw.prior        = prior;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_element_kind(UVM_MEM);
+   rw.set_kind(UVM_BURST_WRITE);
+   rw.set_offset(offset);
+   rw.set_value_array(value);
+   rw.set_door(path);
+   rw.set_map(map);
+   rw.set_parent_sequence(parent);
+   rw.set_priority(prior);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
    do_write(rw);
 
-   status = rw.status;
+   status = rw.get_status();
 
 endtask: burst_write
 
@@ -1142,23 +1255,23 @@ task uvm_mem::burst_read(output uvm_status_e       status,
 
    uvm_reg_item rw;
    rw = uvm_reg_item::type_id::create("mem_burst_read",,get_full_name());
-   rw.element      = this;
-   rw.element_kind = UVM_MEM;
-   rw.kind         = UVM_BURST_READ;
-   rw.offset       = offset;
-   rw.value        = value;
-   rw.path         = path;
-   rw.map          = map;
-   rw.parent       = parent;
-   rw.prior        = prior;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_element_kind(UVM_MEM);
+   rw.set_kind(UVM_BURST_READ);
+   rw.set_offset(offset);
+   rw.set_value_array(value);
+   rw.set_door(path);
+   rw.set_map(map);
+   rw.set_parent_sequence(parent);
+   rw.set_priority(prior);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
    do_read(rw);
 
-   status = rw.status;
-   value  = rw.value;
+   status = rw.get_status();
+   rw.get_value_array(value);
 
 endtask: burst_read
 
@@ -1170,99 +1283,134 @@ task uvm_mem::do_write(uvm_reg_item rw);
    uvm_mem_cb_iter  cbs = new(this);
    uvm_reg_map_info map_info;
    
-   m_fname  = rw.fname;
-   m_lineno = rw.lineno;
+   m_fname  = rw.get_fname();
+   m_lineno = rw.get_line();
 
-   if (!Xcheck_accessX(rw, map_info))
+   if (!Xcheck_accessX(rw, map_info)) begin
+     
      return;
+   end
+
 
    m_write_in_progress = 1'b1;
 
-   rw.status = UVM_IS_OK;
+   rw.set_status(UVM_IS_OK);
    
    // PRE-WRITE CBS
    pre_write(rw);
-   for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
-      cb.pre_write(rw);
-
-   if (rw.status != UVM_IS_OK) begin
-      m_write_in_progress = 1'b0;
-
-      return;
+   for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next()) begin
+      
+     cb.pre_write(rw);
    end
 
-   rw.status = UVM_NOT_OK;
+
+   if (rw.get_status() != UVM_IS_OK) begin
+     m_write_in_progress = 1'b0;
+
+     return;
+   end
+
+   rw.set_status(UVM_NOT_OK);
 
    // FRONTDOOR
-   if (rw.path == UVM_FRONTDOOR) begin
-
-      uvm_reg_map system_map = rw.local_map.get_root_map();
+   if (rw.get_door() == UVM_FRONTDOOR) begin
+     uvm_reg_map rw_local_map = rw.get_local_map();
+     uvm_reg_map system_map = rw_local_map.get_root_map();
       
-      if (map_info.frontdoor != null) begin
-         uvm_reg_frontdoor fd = map_info.frontdoor;
-         fd.rw_info = rw;
-         if (fd.sequencer == null)
-           fd.sequencer = system_map.get_sequencer();
-         fd.start(fd.sequencer, rw.parent);
-      end
-      else begin
-         rw.local_map.do_write(rw);
-      end
+     if (map_info.frontdoor != null) begin
+       uvm_reg_frontdoor fd = map_info.frontdoor;
+       fd.rw_info = rw;
+       if (fd.sequencer == null) begin
+           
+         fd.sequencer = system_map.get_sequencer();
+       end
 
-      if (rw.status != UVM_NOT_OK)
-         for (uvm_reg_addr_t idx = rw.offset;
-              idx <= rw.offset + rw.value.size();
-              idx++) begin
-            XsampleX(map_info.mem_range.stride * idx, 0, rw.map);
-            m_parent.XsampleX(map_info.offset +
+       fd.start(fd.sequencer, rw.get_parent_sequence());
+     end
+     else begin
+       rw_local_map.do_write(rw);
+     end
+
+     if (rw.get_status() != UVM_NOT_OK) begin
+         
+       for (uvm_reg_addr_t idx = rw.get_offset();
+         idx <= rw.get_offset() + rw.get_value_size();
+         idx++) begin
+         XsampleX(map_info.mem_range.stride * idx, 0, rw.get_map());
+         m_parent.XsampleX(map_info.offset +
                              (map_info.mem_range.stride * idx),
-                              0, rw.map);
-         end
+                              0, rw.get_map());
+       end
+     end
+
    end
       
    // BACKDOOR     
    else begin
-      // Mimick front door access, i.e. do not write read-only memories
-      if (get_access(rw.map) inside {"RW", "WO"}) begin
-         uvm_reg_backdoor bkdr = get_backdoor();
-         if (bkdr != null)
-            bkdr.write(rw);
-         else
-            backdoor_write(rw);
-      end
-      else
-         rw.status = UVM_NOT_OK;
+     // Mimick front door access, i.e. do not write read-only memories
+     if (get_access(rw.get_map()) inside {"RW", "WO"}) begin
+       uvm_reg_backdoor bkdr = get_backdoor();
+       if (bkdr != null) begin
+            
+         bkdr.write(rw);
+       end
+
+       else begin
+            
+         backdoor_write(rw);
+       end
+
+     end
+     else begin
+         
+       rw.set_status(UVM_NOT_OK);
+     end
+
    end
 
    // POST-WRITE CBS
    post_write(rw);
-   for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
-      cb.post_write(rw);
+   for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next()) begin
+      
+     cb.post_write(rw);
+   end
+
 
    // REPORT
    if (uvm_report_enabled(UVM_HIGH, UVM_INFO, "RegModel")) begin
      string path_s,value_s,pre_s,range_s;
-     if (rw.path == UVM_FRONTDOOR)
+     uvm_reg_map rw_map = rw.get_map();
+     if (rw.get_door() == UVM_FRONTDOOR) begin
+       
        path_s = (map_info.frontdoor != null) ? "user frontdoor" :
-                                               {"map ",rw.map.get_full_name()};
-     else
-       path_s = (get_backdoor() != null) ? "user backdoor" : "DPI backdoor";
+                                               {"map ",rw_map.get_full_name()};
+     end
 
-     if (rw.value.size() > 1) begin
+     else begin
+       
+       path_s = (get_backdoor() != null) ? "user backdoor" : "DPI backdoor";
+     end
+
+
+     if (rw.get_value_size() > 1) begin
+       int rw_value_size = rw.get_value_size();
        value_s = "='{";
        pre_s = "Burst ";
-       foreach (rw.value[i])
-         value_s = {value_s,$sformatf("%0h,",rw.value[i])};
+       for(int i = 0; i < rw_value_size; i++) begin       
+         
+         value_s = {value_s,$sformatf("%0h,",rw.get_value(i))};
+       end
+
        value_s[value_s.len()-1]="}";
-       range_s = $sformatf("[%0d:%0d]",rw.offset,rw.offset+rw.value.size());
+       range_s = $sformatf("[%0d:%0d]",rw.get_offset(),rw.get_offset()+rw.get_value_size());
      end
      else begin
-       value_s = $sformatf("=%0h",rw.value[0]);
-       range_s = $sformatf("[%0d]",rw.offset);
+       value_s = $sformatf("=%0h",rw.get_value(0));
+       range_s = $sformatf("[%0d]",rw.get_offset());
      end
 
      `uvm_info("RegModel", {pre_s,"Wrote memory via ",path_s,": ",
-                                  get_full_name(),range_s,value_s}, UVM_HIGH)
+     get_full_name(),range_s,value_s}, UVM_HIGH)
    end
 
    m_write_in_progress = 1'b0;
@@ -1277,100 +1425,137 @@ task uvm_mem::do_read(uvm_reg_item rw);
    uvm_mem_cb_iter cbs = new(this);
    uvm_reg_map_info map_info;
    
-   m_fname = rw.fname;
-   m_lineno = rw.lineno;
+   m_fname = rw.get_fname();
+   m_lineno = rw.get_line();
 
-   if (!Xcheck_accessX(rw, map_info))
+   if (!Xcheck_accessX(rw, map_info)) begin
+     
      return;
+   end
+
 
    m_read_in_progress = 1'b1;
 
-   rw.status = UVM_IS_OK;
+   rw.set_status(UVM_IS_OK);
    
    // PRE-READ CBS
    pre_read(rw);
-   for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
-      cb.pre_read(rw);
-
-   if (rw.status != UVM_IS_OK) begin
-      m_read_in_progress = 1'b0;
-
-      return;
+   for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next()) begin
+      
+     cb.pre_read(rw);
    end
 
-   rw.status = UVM_NOT_OK;
+
+   if (rw.get_status() != UVM_IS_OK) begin
+     m_read_in_progress = 1'b0;
+
+     return;
+   end
+
+   rw.set_status(UVM_NOT_OK);
 
    // FRONTDOOR
-   if (rw.path == UVM_FRONTDOOR) begin
-      
-      uvm_reg_map system_map = rw.local_map.get_root_map();
+   if (rw.get_door() == UVM_FRONTDOOR) begin
+     uvm_reg_map rw_local_map = rw.get_local_map();
+     uvm_reg_map system_map = rw_local_map.get_root_map();
          
-      if (map_info.frontdoor != null) begin
-         uvm_reg_frontdoor fd = map_info.frontdoor;
-         fd.rw_info = rw;
-         if (fd.sequencer == null)
-           fd.sequencer = system_map.get_sequencer();
-         fd.start(fd.sequencer, rw.parent);
-      end
-      else begin
-         rw.local_map.do_read(rw);
-      end
+     if (map_info.frontdoor != null) begin
+       uvm_reg_frontdoor fd = map_info.frontdoor;
+       fd.rw_info = rw;
+       if (fd.sequencer == null) begin
+           
+         fd.sequencer = system_map.get_sequencer();
+       end
 
-      if (rw.status != UVM_NOT_OK)
-         for (uvm_reg_addr_t idx = rw.offset;
-              idx <= rw.offset + rw.value.size();
-              idx++) begin
-            XsampleX(map_info.mem_range.stride * idx, 1, rw.map);
-            m_parent.XsampleX(map_info.offset +
+       fd.start(fd.sequencer, rw.get_parent_sequence());
+     end
+     else begin
+       rw_local_map.do_read(rw);
+     end
+
+     if (rw.get_status() != UVM_NOT_OK) begin
+         
+       for (uvm_reg_addr_t idx = rw.get_offset();
+         idx <= rw.get_offset() + rw.get_value_size();
+         idx++) begin
+         XsampleX(map_info.mem_range.stride * idx, 1, rw.get_map());
+         m_parent.XsampleX(map_info.offset +
                              (map_info.mem_range.stride * idx),
-                              1, rw.map);
-         end
+                              1, rw.get_map());
+       end
+     end
+
    end
 
    // BACKDOOR
    else begin
-      // Mimick front door access, i.e. do not read write-only memories
-      if (get_access(rw.map) inside {"RW", "RO"}) begin
-         uvm_reg_backdoor bkdr = get_backdoor();
-         if (bkdr != null)
-            bkdr.read(rw);
-         else
-            backdoor_read(rw);
-      end
-      else
-         rw.status = UVM_NOT_OK;
+     // Mimick front door access, i.e. do not read write-only memories
+     if (get_access(rw.get_map()) inside {"RW", "RO"}) begin
+       uvm_reg_backdoor bkdr = get_backdoor();
+       if (bkdr != null) begin
+            
+         bkdr.read(rw);
+       end
+
+       else begin
+            
+         backdoor_read(rw);
+       end
+
+     end
+     else begin
+         
+       rw.set_status(UVM_NOT_OK);
+     end
+
    end
 
 
    // POST-READ CBS
-   post_read(rw);
-   for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next())
-      cb.post_read(rw);
+   for (uvm_reg_cbs cb=cbs.first(); cb!=null; cb=cbs.next()) begin
+      
+     cb.post_read(rw);
+   end
 
+
+   post_read(rw);
+   
    // REPORT
    if (uvm_report_enabled(UVM_HIGH, UVM_INFO, "RegModel")) begin
+     uvm_reg_map rw_map;
      string path_s,value_s,pre_s,range_s;
-     if (rw.path == UVM_FRONTDOOR)
+     rw_map = rw.get_map();
+     if (rw.get_door() == UVM_FRONTDOOR) begin
+       
        path_s = (map_info.frontdoor != null) ? "user frontdoor" :
-                                               {"map ",rw.map.get_full_name()};
-     else
-       path_s = (get_backdoor() != null) ? "user backdoor" : "DPI backdoor";
+                                               {"map ",rw_map.get_full_name()};
+     end
 
-     if (rw.value.size() > 1) begin
+     else begin
+       
+       path_s = (get_backdoor() != null) ? "user backdoor" : "DPI backdoor";
+     end
+
+
+     if (rw.get_value_size() > 1) begin
+       int rw_value_size = rw.get_value_size();
        value_s = "='{";
        pre_s = "Burst ";
-       foreach (rw.value[i])
-         value_s = {value_s,$sformatf("%0h,",rw.value[i])};
+       for(int i = 0; i < rw_value_size; i++) begin
+         
+         value_s = {value_s,$sformatf("%0h,",rw.get_value(i))};
+       end
+
        value_s[value_s.len()-1]="}";
-       range_s = $sformatf("[%0d:%0d]",rw.offset,(rw.offset+rw.value.size()));
+       range_s = $sformatf("[%0d:%0d]",rw.get_offset(),(rw.get_offset()+rw_value_size));
      end
      else begin
-       value_s = $sformatf("=%0h",rw.value[0]);
-       range_s = $sformatf("[%0d]",rw.offset);
+       value_s = $sformatf("=%0h",rw.get_value(0));
+       range_s = $sformatf("[%0d]",rw.get_offset());
      end
 
-      `uvm_info("RegModel", {pre_s,"Read memory via ",path_s,": ",
-                                   get_full_name(),range_s,value_s}, UVM_HIGH)
+     `uvm_info("RegModel", {pre_s,"Read memory via ",path_s,": ",
+     get_full_name(),range_s,value_s}, UVM_HIGH)
    end
 
    m_read_in_progress = 1'b0;
@@ -1383,76 +1568,93 @@ endtask: do_read
 function bit uvm_mem::Xcheck_accessX(input uvm_reg_item rw,
                                      output uvm_reg_map_info map_info);
 
-   if (rw.offset >= m_size) begin
-      `uvm_error(get_type_name(), 
-         $sformatf("Offset 'h%0h exceeds size of memory, 'h%0h",
-           rw.offset, m_size))
-      rw.status = UVM_NOT_OK;
-      return 0;
+   if (rw.get_offset() >= m_size) begin
+     `uvm_error(get_type_name(), 
+     $sformatf("Offset 'h%0h exceeds size of memory, 'h%0h",
+     rw.get_offset(), m_size))
+     rw.set_status(UVM_NOT_OK);
+     return 0;
    end
 
-   if (rw.path == UVM_DEFAULT_DOOR)
-     rw.path = m_parent.get_default_door();
-
-   if (rw.path == UVM_BACKDOOR) begin
-      if (get_backdoor() == null && !has_hdl_path()) begin
-         `uvm_warning("RegModel",
-            {"No backdoor access available for memory '",get_full_name(),
-            "' . Using frontdoor instead."})
-         rw.path = UVM_FRONTDOOR;
-      end
-      else if (rw.map == null) begin
-         if (get_default_map() != null)
-            rw.map = get_default_map();
-         else
-           rw.map = uvm_reg_map::backdoor();
-      end
-      //otherwise use the map specified in user's call to memory read/write
+   if (rw.get_door() == UVM_DEFAULT_DOOR) begin
+     
+     rw.set_door(m_parent.get_default_door());
    end
 
-   if (rw.path != UVM_BACKDOOR) begin
 
-     rw.local_map = get_local_map(rw.map);
+   if (rw.get_door() == UVM_BACKDOOR) begin
+     if (get_backdoor() == null && !has_hdl_path()) begin
+       `uvm_warning("RegModel",
+       {"No backdoor access available for memory '",get_full_name(),
+       "' . Using frontdoor instead."})
+       rw.set_door(UVM_FRONTDOOR);
+     end
+     else if (rw.get_map() == null) begin
+       if (get_default_map() != null) begin
+            
+         rw.set_map(get_default_map());
+       end
 
-     if (rw.local_map == null) begin
-        `uvm_error(get_type_name(), 
-           {"No transactor available to physically access memory from map '",
-            rw.map.get_full_name(),"'"})
-        rw.status = UVM_NOT_OK;
-        return 0;
+       else begin
+           
+         rw.set_map(uvm_reg_map::backdoor());
+       end
+
+     end
+     //otherwise use the map specified in user's call to memory read/write
+   end
+
+   if (rw.get_door() != UVM_BACKDOOR) begin
+     uvm_reg_map rw_local_map;
+     uvm_reg_map rw_map;
+     
+     rw_map = rw.get_map();
+     rw.set_local_map(get_local_map(rw_map));
+      
+    
+     if (rw.get_local_map() == null) begin
+       `uvm_error(get_type_name(), 
+       {"No transactor available to physically access memory from map '",
+       rw_map.get_full_name(),"'"})
+       rw.set_status(UVM_NOT_OK);
+       return 0;
      end
 
-     map_info = rw.local_map.get_mem_map_info(this);
+     rw_local_map = rw.get_local_map();
+     map_info = rw_local_map.get_mem_map_info(this);
 
      if (map_info.frontdoor == null) begin
 
-        if (map_info.unmapped) begin
-           `uvm_error("RegModel", {"Memory '",get_full_name(),
-                      "' unmapped in map '", rw.map.get_full_name(),
-                      "' and does not have a user-defined frontdoor"})
-           rw.status = UVM_NOT_OK;
-           return 0;
-        end
+       if (map_info.unmapped) begin
+         `uvm_error("RegModel", {"Memory '",get_full_name(),
+         "' unmapped in map '", rw_map.get_full_name(),
+         "' and does not have a user-defined frontdoor"})
+         rw.set_status(UVM_NOT_OK);
+         return 0;
+       end
 
-        if ((rw.value.size() > 1)) begin
-           if (get_n_bits() > rw.local_map.get_n_bytes()*8) begin
-              `uvm_error("RegModel",
-                    $sformatf("Cannot burst a %0d-bit memory through a narrower data path (%0d bytes)",
-                    get_n_bits(), rw.local_map.get_n_bytes()*8))
-              rw.status = UVM_NOT_OK;
-              return 0;
-           end
-           if (rw.offset + rw.value.size() > m_size) begin
-              `uvm_error("RegModel",
-                  $sformatf("Burst of size 'd%0d starting at offset 'd%0d exceeds size of memory, 'd%0d",
-                      rw.value.size(), rw.offset, m_size))
-              return 0;
-           end
-        end
+       if ((rw.get_value_size() > 1)) begin
+         if (get_n_bits() > rw_local_map.get_n_bytes()*8) begin
+           `uvm_error("RegModel",
+           $sformatf("Cannot burst a %0d-bit memory through a narrower data path (%0d bytes)",
+           get_n_bits(), rw_local_map.get_n_bytes()*8))
+           rw.set_status(UVM_NOT_OK);
+           return 0;
+         end
+         if (rw.get_offset() + rw.get_value_size() > m_size) begin
+           `uvm_error("RegModel",
+           $sformatf("Burst of size 'd%0d starting at offset 'd%0d exceeds size of memory, 'd%0d",
+           rw.get_value_size(), rw.get_offset(), m_size))
+           return 0;
+         end
+       end
      end
 
-     if (rw.map == null)
-       rw.map = rw.local_map;
+     if (rw.get_map() == null) begin
+       
+       rw.set_map(rw.get_local_map());
+     end
+
    end
 
    return 1;
@@ -1480,32 +1682,38 @@ task uvm_mem::poke(output uvm_status_e      status,
    m_lineno = lineno;
 
    if (bkdr == null && !has_hdl_path(kind)) begin
-      `uvm_error("RegModel", {"No backdoor access available in memory '",
-                             get_full_name(),"'"})
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel", {"No backdoor access available in memory '",
+     get_full_name(),"'"})
+     status = UVM_NOT_OK;
+     return;
    end
 
    // create an abstract transaction for this operation
    rw = uvm_reg_item::type_id::create("mem_poke_item",,get_full_name());
-   rw.element      = this;
-   rw.path         = UVM_BACKDOOR;
-   rw.element_kind = UVM_MEM;
-   rw.kind         = UVM_WRITE;
-   rw.offset       = offset;
-   rw.value[0]     = value & ((1 << m_n_bits)-1);
-   rw.bd_kind      = kind;
-   rw.parent       = parent;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_door(UVM_BACKDOOR);
+   rw.set_element_kind(UVM_MEM);
+   rw.set_kind(UVM_WRITE);
+   rw.set_offset(offset);
+   rw.set_value((value & ((1 << m_n_bits)-1)), 0);
+   rw.set_bd_kind(kind);
+   rw.set_parent_sequence(parent);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
-   if (bkdr != null)
+   if (bkdr != null) begin
+     
      bkdr.write(rw);
-   else
-     backdoor_write(rw);
+   end
 
-   status = rw.status;
+   else begin
+     
+     backdoor_write(rw);
+   end
+
+
+   status = rw.get_status();
 
    `uvm_info("RegModel", $sformatf("Poked memory '%s[%0d]' with value 'h%h",
                               get_full_name(), offset, value),UVM_HIGH)
@@ -1530,32 +1738,38 @@ task uvm_mem::peek(output uvm_status_e      status,
    m_lineno = lineno;
 
    if (bkdr == null && !has_hdl_path(kind)) begin
-      `uvm_error("RegModel", {"No backdoor access available in memory '",
-                 get_full_name(),"'"})
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel", {"No backdoor access available in memory '",
+     get_full_name(),"'"})
+     status = UVM_NOT_OK;
+     return;
    end
 
    // create an abstract transaction for this operation
    rw = uvm_reg_item::type_id::create("mem_peek_item",,get_full_name());
-   rw.element      = this;
-   rw.path         = UVM_BACKDOOR;
-   rw.element_kind = UVM_MEM;
-   rw.kind         = UVM_READ;
-   rw.offset       = offset;
-   rw.bd_kind      = kind;
-   rw.parent       = parent;
-   rw.extension    = extension;
-   rw.fname        = fname;
-   rw.lineno       = lineno;
+   rw.set_element(this);
+   rw.set_door(UVM_BACKDOOR);
+   rw.set_element_kind(UVM_MEM);
+   rw.set_kind(UVM_READ);
+   rw.set_offset(offset);
+   rw.set_bd_kind(kind);
+   rw.set_parent_sequence(parent);
+   rw.set_extension(extension);
+   rw.set_fname(fname);
+   rw.set_line(lineno);
 
-   if (bkdr != null)
+   if (bkdr != null) begin
+     
      bkdr.read(rw);
-   else
-     backdoor_read(rw);
+   end
 
-   status = rw.status;
-   value  = rw.value[0];
+   else begin
+     
+     backdoor_read(rw);
+   end
+
+
+   status = rw.get_status();
+   value  = rw.get_value(0);
 
    `uvm_info("RegModel", $sformatf("Peeked memory '%s[%0d]' has value 'h%h",
                          get_full_name(), offset, value),UVM_HIGH)
@@ -1579,9 +1793,9 @@ function void uvm_mem::set_frontdoor(uvm_reg_frontdoor ftdr,
    map = get_local_map(map);
 
    if (map == null) begin
-      `uvm_error("RegModel", {"Memory '",get_full_name(),
-                 "' not found in map '", map.get_full_name(),"'"})
-      return;
+     `uvm_error("RegModel", {"Memory '",get_full_name(),
+     "' not found in map '", map.get_full_name(),"'"})
+     return;
    end
 
    map_info = map.get_mem_map_info(this);
@@ -1598,9 +1812,9 @@ function uvm_reg_frontdoor uvm_mem::get_frontdoor(uvm_reg_map map = null);
    map = get_local_map(map);
 
    if (map == null) begin
-      `uvm_error("RegModel", {"Memory '",get_full_name(),
-                 "' not found in map '", map.get_full_name(),"'"})
-      return null;
+     `uvm_error("RegModel", {"Memory '",get_full_name(),
+     "' not found in map '", map.get_full_name(),"'"})
+     return null;
    end
 
    map_info = map.get_mem_map_info(this);
@@ -1652,59 +1866,66 @@ function uvm_status_e uvm_mem::backdoor_read_func(uvm_reg_item rw);
   uvm_hdl_path_concat paths[$];
   uvm_hdl_data_t val;
   bit ok=1;
+  int rw_value_size;
 
-  get_full_hdl_path(paths,rw.bd_kind);
+  get_full_hdl_path(paths,rw.get_bd_kind());
 
-  foreach (rw.value[mem_idx]) begin
-     string idx;
-     idx.itoa(rw.offset + mem_idx);
-     foreach (paths[i]) begin
-        uvm_hdl_path_concat hdl_concat = paths[i];
-        val = 0;
-        foreach (hdl_concat.slices[j]) begin
-           string hdl_path = {hdl_concat.slices[j].path, "[", idx, "]"};
+  rw_value_size = rw.get_value_size();
+  
+  for(int mem_idx = 0; mem_idx < rw_value_size; mem_idx++) begin
+    //  foreach (rw.value[mem_idx]) begin
+    string idx;
+    idx.itoa(rw.get_offset() + mem_idx);
+    foreach (paths[i]) begin
+      uvm_hdl_path_concat hdl_concat = paths[i];
+      val = 0;
+      foreach (hdl_concat.slices[j]) begin
+        string hdl_path = {hdl_concat.slices[j].path, "[", idx, "]"};
 
-           `uvm_info("RegModel", {"backdoor_read from ",hdl_path},UVM_DEBUG)
+        `uvm_info("RegModel", {"backdoor_read from ",hdl_path},UVM_DEBUG)
  
-           if (hdl_concat.slices[j].offset < 0) begin
-              ok &= uvm_hdl_read(hdl_path, val);
-              continue;
-           end
-           begin
-              uvm_reg_data_t slice;
-              int k = hdl_concat.slices[j].offset;
-              ok &= uvm_hdl_read(hdl_path, slice);
-              repeat (hdl_concat.slices[j].size) begin
-                 val[k++] = slice[0];
-                 slice >>= 1;
-              end
-           end
+        if (hdl_concat.slices[j].offset < 0) begin
+          ok &= uvm_hdl_read(hdl_path, val);
+          continue;
         end
-
-        val &= (1 << m_n_bits)-1;
-
-        if (i == 0)
-           rw.value[mem_idx] = val;
-
-        if (val != rw.value[mem_idx]) begin
-           `uvm_error("RegModel", $sformatf("Backdoor read of register %s with multiple HDL copies: values are not the same: %0h at path '%s', and %0h at path '%s'. Returning first value.",
-               get_full_name(), rw.value[mem_idx], uvm_hdl_concat2string(paths[0]),
-               val, uvm_hdl_concat2string(paths[i])))
-           return UVM_NOT_OK;
-         end
+        begin
+          uvm_reg_data_t slice;
+          int k = hdl_concat.slices[j].offset;
+          ok &= uvm_hdl_read(hdl_path, slice);
+          repeat (hdl_concat.slices[j].size) begin
+            val[k++] = slice[0];
+            slice >>= 1;
+          end
+        end
       end
+
+      val &= (1 << m_n_bits)-1;
+
+      if (i == 0) begin
+           
+        rw.set_value(val, mem_idx);
+      end
+
+
+      if (val != rw.get_value(mem_idx)) begin
+        `uvm_error("RegModel", $sformatf("Backdoor read of register %s with multiple HDL copies: values are not the same: %0h at path '%s', and %0h at path '%s'. Returning first value.",
+        get_full_name(), rw.get_value(mem_idx), uvm_hdl_concat2string(paths[0]),
+        val, uvm_hdl_concat2string(paths[i])))
+        return UVM_NOT_OK;
+      end
+    end
   end
 
-  rw.status = (ok) ? UVM_IS_OK : UVM_NOT_OK;
+  rw.set_status((ok) ? UVM_IS_OK : UVM_NOT_OK);
 
-  return rw.status;
+  return rw.get_status();
 endfunction
 
 
 // backdoor_read
 
 task uvm_mem::backdoor_read(uvm_reg_item rw);
-  rw.status = backdoor_read_func(rw);
+  rw.set_status(backdoor_read_func(rw));
 endtask
 
 
@@ -1714,32 +1935,33 @@ task uvm_mem::backdoor_write(uvm_reg_item rw);
 
   uvm_hdl_path_concat paths[$];
   bit ok=1;
-
+  int rw_value_size = rw.get_value_size();
    
-  get_full_hdl_path(paths,rw.bd_kind);
+  get_full_hdl_path(paths,rw.get_bd_kind());
    
-  foreach (rw.value[mem_idx]) begin
-     string idx;
-     idx.itoa(rw.offset + mem_idx);
-     foreach (paths[i]) begin
-       uvm_hdl_path_concat hdl_concat = paths[i];
-       foreach (hdl_concat.slices[j]) begin
-          `uvm_info("RegModel", $sformatf("backdoor_write to %s ",hdl_concat.slices[j].path),UVM_DEBUG)
+   
+  for(int mem_idx = 0; mem_idx < rw_value_size; mem_idx++) begin
+    string idx;
+    idx.itoa(rw.get_offset() + mem_idx);
+    foreach (paths[i]) begin
+      uvm_hdl_path_concat hdl_concat = paths[i];
+      foreach (hdl_concat.slices[j]) begin
+        `uvm_info("RegModel", $sformatf("backdoor_write to %s ",hdl_concat.slices[j].path),UVM_DEBUG)
  
-          if (hdl_concat.slices[j].offset < 0) begin
-             ok &= uvm_hdl_deposit({hdl_concat.slices[j].path,"[", idx, "]"},rw.value[mem_idx]);
-             continue;
-          end
-          begin
-            uvm_reg_data_t slice;
-            slice = rw.value[mem_idx] >> hdl_concat.slices[j].offset;
-            slice &= (1 << hdl_concat.slices[j].size)-1;
-            ok &= uvm_hdl_deposit({hdl_concat.slices[j].path, "[", idx, "]"}, slice);
-          end
-       end
-     end
+        if (hdl_concat.slices[j].offset < 0) begin
+          ok &= uvm_hdl_deposit({hdl_concat.slices[j].path,"[", idx, "]"},rw.get_value(mem_idx));
+          continue;
+        end
+        begin
+          uvm_reg_data_t slice;
+          slice = rw.get_value(mem_idx) >> hdl_concat.slices[j].offset;
+          slice &= (1 << hdl_concat.slices[j].size)-1;
+          ok &= uvm_hdl_deposit({hdl_concat.slices[j].path, "[", idx, "]"}, slice);
+        end
+      end
+    end
   end
-  rw.status = (ok ? UVM_IS_OK : UVM_NOT_OK);
+  rw.set_status(ok ? UVM_IS_OK : UVM_NOT_OK);
 endtask
 
 
@@ -1753,8 +1975,11 @@ function void uvm_mem::clear_hdl_path(string kind = "RTL");
     return;
   end
 
-  if (kind == "")
+  if (kind == "") begin
+    
     kind = m_parent.get_default_hdl_path();
+  end
+
 
   if (!m_hdl_paths_pool.exists(kind)) begin
     `uvm_warning("RegModel",{"Unknown HDL Abstraction '",kind,"'"})
@@ -1787,11 +2012,14 @@ function void uvm_mem::add_hdl_path_slice(string name,
     uvm_hdl_path_concat concat;
 
     if (first || paths.size() == 0) begin
-       concat = new();
-       paths.push_back(concat);
+      concat = new();
+      paths.push_back(concat);
     end
-    else
-       concat = paths.get(paths.size()-1);
+    else begin
+       
+      concat = paths.get(paths.size()-1);
+    end
+
      
     concat.add_path(name, offset, size);
 endfunction
@@ -1800,8 +2028,11 @@ endfunction
 // has_hdl_path
 
 function bit  uvm_mem::has_hdl_path(string kind = "");
-  if (kind == "")
+  if (kind == "") begin
+    
     kind = m_parent.get_default_hdl_path();
+  end
+
   
   return m_hdl_paths_pool.exists(kind);
 endfunction
@@ -1814,20 +2045,23 @@ function void uvm_mem::get_hdl_path(ref uvm_hdl_path_concat paths[$],
 
   uvm_queue #(uvm_hdl_path_concat) hdl_paths;
 
-  if (kind == "")
-     kind = m_parent.get_default_hdl_path();
+  if (kind == "") begin
+     
+    kind = m_parent.get_default_hdl_path();
+  end
+
 
   if (!has_hdl_path(kind)) begin
     `uvm_error("RegModel",
-        {"Memory does not have hdl path defined for abstraction '",kind,"'"})
+    {"Memory does not have hdl path defined for abstraction '",kind,"'"})
     return;
   end
 
   hdl_paths = m_hdl_paths_pool.get(kind);
 
   for (int i=0; i<hdl_paths.size();i++) begin
-     uvm_hdl_path_concat t = hdl_paths.get(i);
-     paths.push_back(t);
+    uvm_hdl_path_concat t = hdl_paths.get(i);
+    paths.push_back(t);
   end
 
 endfunction
@@ -1838,10 +2072,16 @@ endfunction
 function void uvm_mem::get_hdl_path_kinds (ref string kinds[$]);
   string kind;
   kinds.delete();
-  if (!m_hdl_paths_pool.first(kind))
+  if (!m_hdl_paths_pool.first(kind)) begin
+    
     return;
-  do
+  end
+
+  do begin
+    
     kinds.push_back(kind);
+  end
+
   while (m_hdl_paths_pool.next(kind));
 endfunction
 
@@ -1851,38 +2091,47 @@ function void uvm_mem::get_full_hdl_path(ref uvm_hdl_path_concat paths[$],
                                          input string kind = "",
                                          input string separator = ".");
 
-   if (kind == "")
-      kind = m_parent.get_default_hdl_path();
+   if (kind == "") begin
+      
+     kind = m_parent.get_default_hdl_path();
+   end
+
    
    if (!has_hdl_path(kind)) begin
-      `uvm_error("RegModel",
-          {"Memory does not have hdl path defined for abstraction '",kind,"'"})
-      return;
+     `uvm_error("RegModel",
+     {"Memory does not have hdl path defined for abstraction '",kind,"'"})
+     return;
    end
 
    begin
-      uvm_queue #(uvm_hdl_path_concat) hdl_paths = m_hdl_paths_pool.get(kind);
-      string parent_paths[$];
+     uvm_queue #(uvm_hdl_path_concat) hdl_paths = m_hdl_paths_pool.get(kind);
+     string parent_paths[$];
 
-      m_parent.get_full_hdl_path(parent_paths, kind, separator);
+     m_parent.get_full_hdl_path(parent_paths, kind, separator);
 
-      for (int i=0; i<hdl_paths.size();i++) begin
-         uvm_hdl_path_concat hdl_concat = hdl_paths.get(i);
+     for (int i=0; i<hdl_paths.size();i++) begin
+       uvm_hdl_path_concat hdl_concat = hdl_paths.get(i);
 
-         foreach (parent_paths[j])  begin
-            uvm_hdl_path_concat t = new;
+       foreach (parent_paths[j])  begin
+         uvm_hdl_path_concat t = new;
 
-            foreach (hdl_concat.slices[k]) begin
-               if (hdl_concat.slices[k].path == "")
-                  t.add_path(parent_paths[j]);
-               else
-                  t.add_path({ parent_paths[j], separator, hdl_concat.slices[k].path },
+         foreach (hdl_concat.slices[k]) begin
+           if (hdl_concat.slices[k].path == "") begin
+                  
+             t.add_path(parent_paths[j]);
+           end
+
+           else begin
+                  
+             t.add_path({ parent_paths[j], separator, hdl_concat.slices[k].path },
                              hdl_concat.slices[k].offset,
                              hdl_concat.slices[k].size);
-            end
-            paths.push_back(t);
+           end
+
          end
-      end
+         paths.push_back(t);
+       end
+     end
    end
 endfunction
 
@@ -1911,10 +2160,16 @@ function string uvm_mem::convert2string();
    $sformat(convert2string, "%sMemory %s -- %0dx%0d bits", prefix,
             get_full_name(), get_size(), get_n_bits());
 
-   if (m_maps.num()==0)
+   if (m_maps.num()==0) begin
+     
      convert2string = {convert2string, "  (unmapped)\n"};
-   else
+   end
+
+   else begin
+     
      convert2string = {convert2string, "\n"};
+   end
+
    foreach (m_maps[map]) begin
      uvm_reg_map parent_map = map;
      int unsigned offset;
@@ -1933,15 +2188,21 @@ function string uvm_mem::convert2string();
    end
    prefix = "  ";
    if (m_read_in_progress == 1'b1) begin
-      if (m_fname != "" && m_lineno != 0)
-         $sformat(res_str, "%s:%0d ",m_fname, m_lineno);
-      convert2string = {convert2string, "  ", res_str,
+     if (m_fname != "" && m_lineno != 0) begin
+         
+       $sformat(res_str, "%s:%0d ",m_fname, m_lineno);
+     end
+
+     convert2string = {convert2string, "  ", res_str,
                        "currently executing read method"}; 
    end
    if ( m_write_in_progress == 1'b1) begin
-      if (m_fname != "" && m_lineno != 0)
-         $sformat(res_str, "%s:%0d ",m_fname, m_lineno);
-      convert2string = {convert2string, "  ", res_str,
+     if (m_fname != "" && m_lineno != 0) begin
+         
+       $sformat(res_str, "%s:%0d ",m_fname, m_lineno);
+     end
+
+     convert2string = {convert2string, "  ", res_str,
                        "currently executing write method"}; 
    end
 endfunction
@@ -2004,6 +2265,9 @@ endfunction
 // Xdelete_vregX
 
 function void uvm_mem::Xdelete_vregX(uvm_vreg vreg);
-   if (m_vregs.exists(vreg))
+   if (m_vregs.exists(vreg)) begin
+     
      m_vregs.delete(vreg);
+   end
+
 endfunction

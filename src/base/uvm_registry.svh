@@ -1,13 +1,13 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2018 Qualcomm, Inc.
-// Copyright 2014 Intel Corporation
-// Copyright 2011-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2011 AMD
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2018 Cisco Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2020 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
+// Copyright 2018 Qualcomm, Inc.
+// Copyright 2011-2014 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -25,6 +25,16 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_registry.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 `ifndef UVM_REGISTRY_SVH
 `define UVM_REGISTRY_SVH
 
@@ -41,9 +51,9 @@ typedef class uvm_registry_object_creator;
 
 // Class: uvm_component_registry#(T,Tname)
 // Implementation of uvm_component_registry#(T,Tname), as defined by section
-// 8.2.3.1 of 1800.2-2017.
+// 8.2.3.1 of 1800.2-2020.
   
-// @uvm-ieee 1800.2-2017 auto 8.2.3.1
+// @uvm-ieee 1800.2-2020 auto 8.2.3.1
 class uvm_component_registry #(type T=uvm_component, string Tname="<unknown>")
                                            extends uvm_object_wrapper;
   typedef uvm_component_registry #(T,Tname) this_type;
@@ -56,7 +66,7 @@ class uvm_component_registry #(type T=uvm_component, string Tname="<unknown>")
   // called by the factory after determining the type of object to create.
   // You should not call this method directly. Call <create> instead.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.3.2.1
+  // @uvm-ieee 1800.2-2020 auto 8.2.3.2.1
   virtual function uvm_component create_component (string name,
                                                    uvm_component parent);
     T obj;
@@ -74,21 +84,24 @@ class uvm_component_registry #(type T=uvm_component, string Tname="<unknown>")
   // Returns the value given by the string parameter, ~Tname~. This method
   // overrides the method in <uvm_object_wrapper>.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.3.2.2
+  // @uvm-ieee 1800.2-2020 auto 8.2.3.2.2
   virtual function string get_type_name();
      common_type common = common_type::get();
      return common.get_type_name();
   endfunction
 
-
+  // @uvm-ieee 1800.2-2020 manual 8.2.4.2.3
   static function this_type get();
      static this_type m_inst;
-     if (m_inst == null)
+     if (m_inst == null) begin
+       
        m_inst = new();
+     end
+
     return m_inst;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.3.2.7
+  // @uvm-ieee 1800.2-2020 auto 8.2.3.2.7
   virtual function void initialize();
      common_type common = common_type::get();
      common.initialize();
@@ -103,7 +116,7 @@ class uvm_component_registry #(type T=uvm_component, string Tname="<unknown>")
   // ~parent~'s context. The new instance will have the given leaf ~name~
   // and ~parent~.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.3.2.4
+  // @uvm-ieee 1800.2-2020 auto 8.2.3.2.4
   static function T create(string name, uvm_component parent, string contxt="");
     return common_type::create( name, parent, contxt );
   endfunction
@@ -116,7 +129,7 @@ class uvm_component_registry #(type T=uvm_component, string Tname="<unknown>")
   // ~T~, represented by this proxy, provided no instance override applies. The
   // original type, ~T~, is typically a super class of the override type.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.3.2.5
+  // @uvm-ieee 1800.2-2020 auto 8.2.3.2.5
   static function void set_type_override (uvm_object_wrapper override_type,
                                           bit replace=1);
     common_type::set_type_override( override_type, replace );
@@ -138,7 +151,7 @@ class uvm_component_registry #(type T=uvm_component, string Tname="<unknown>")
   // registered with the override. The ~inst_path~ may contain wildcards for
   // matching against multiple contexts.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.3.2.6
+  // @uvm-ieee 1800.2-2020 auto 8.2.3.2.6
   static function void set_inst_override(uvm_object_wrapper override_type,
                                          string inst_path,
                                          uvm_component parent=null);
@@ -162,9 +175,9 @@ endclass
 
 // Class: uvm_object_registry#(T,Tname)
 // Implementation of uvm_object_registry#(T,Tname), as defined by section
-// 8.2.4.1 of 1800.2-2017.
+// 8.2.4.1 of 1800.2-2020.
 
-// @uvm-ieee 1800.2-2017 auto 8.2.4.1
+// @uvm-ieee 1800.2-2020 auto 8.2.4.1
 class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
                                         extends uvm_object_wrapper;
   typedef uvm_object_registry #(T,Tname) this_type;
@@ -177,11 +190,17 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
   // It is called by the factory after determining the type of object to create.
   // You should not call this method directly. Call <create> instead.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.4.2.1
+  // @uvm-ieee 1800.2-2020 auto 8.2.4.2.1
   virtual function uvm_object create_object(string name="");
     T obj;
-    if (name=="") obj = new();
-    else obj = new(name);
+    if (name=="") begin
+      obj = new();
+    end
+
+    else begin
+      obj = new(name);
+    end
+
     return obj;
   endfunction
 
@@ -194,7 +213,7 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
   // Returns the value given by the string parameter, ~Tname~. This method
   // overrides the method in <uvm_object_wrapper>.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.4.2.2
+  // @uvm-ieee 1800.2-2020 auto 8.2.4.2.2
   virtual function string get_type_name();
      common_type common = common_type::get();
      return common.get_type_name();
@@ -206,8 +225,11 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
 
   static function this_type get();
      static this_type m_inst;
-     if (m_inst == null)
+     if (m_inst == null) begin
+       
        m_inst = new();
+     end
+
     return m_inst;
   endfunction
 
@@ -220,7 +242,7 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
   // ~parent~'s context. The new instance will have the given leaf ~name~,
   // if provided.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.4.2.4
+  // @uvm-ieee 1800.2-2020 auto 8.2.4.2.4
   static function T create (string name="", uvm_component parent=null,
                             string contxt="");
     return common_type::create( name, parent, contxt );
@@ -234,7 +256,7 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
   // represented by this proxy, provided no instance override applies. The
   // original type, ~T~, is typically a super class of the override type.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.4.2.5
+  // @uvm-ieee 1800.2-2020 auto 8.2.4.2.5
   static function void set_type_override (uvm_object_wrapper override_type,
                                           bit replace=1);
     common_type::set_type_override( override_type, replace );
@@ -256,7 +278,7 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
   // registered with the override. The ~inst_path~ may contain wildcards for
   // matching against multiple contexts.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.4.2.6
+  // @uvm-ieee 1800.2-2020 auto 8.2.4.2.6
   static function void set_inst_override(uvm_object_wrapper override_type,
                                          string inst_path,
                                          uvm_component parent=null);
@@ -275,7 +297,7 @@ class uvm_object_registry #(type T=uvm_object, string Tname="<unknown>")
      return 1;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.4.2.7
+  // @uvm-ieee 1800.2-2020 auto 8.2.4.2.7
   virtual function void initialize();
      common_type common = common_type::get();
      common.initialize();
@@ -284,9 +306,9 @@ endclass
 
 // Class: uvm_abstract_component_registry#(T,Tname)
 // Implementation of uvm_abstract_component_registry#(T,Tname), as defined by section
-// 8.2.5.1.1 of 1800.2-2017.
+// 8.2.5.1.1 of 1800.2-2020.
 
-// @uvm-ieee 1800.2-2017 auto 8.2.5.1.1
+// @uvm-ieee 1800.2-2020 auto 8.2.5.1.1
 class uvm_abstract_component_registry #(type T=uvm_component, string Tname="<unknown>")
                                            extends uvm_object_wrapper;
   typedef uvm_abstract_component_registry #(T,Tname) this_type;
@@ -299,7 +321,7 @@ class uvm_abstract_component_registry #(type T=uvm_component, string Tname="<unk
   // called by the factory after determining the type of object to create.
   // You should not call this method directly. Call <create> instead.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.5.1.2
+  // @uvm-ieee 1800.2-2020 auto 8.2.5.1.2
   virtual function uvm_component create_component (string name,
                                                    uvm_component parent);
     `uvm_error(
@@ -331,8 +353,11 @@ class uvm_abstract_component_registry #(type T=uvm_component, string Tname="<unk
 
   static function this_type get();
     static this_type m_inst;
-     if (m_inst == null)
+     if (m_inst == null) begin
+       
        m_inst = new();
+     end
+
     return m_inst;
   endfunction
 
@@ -405,9 +430,9 @@ endclass
 
 // Class: uvm_abstract_object_registry#(T,Tname)
 // Implementation of uvm_abstract_object_registry#(T,Tname), as defined by section
-// 8.2.5.2.1 of 1800.2-2017.
+// 8.2.5.2.1 of 1800.2-2020.
 
-// @uvm-ieee 1800.2-2017 auto 8.2.5.2.1
+// @uvm-ieee 1800.2-2020 auto 8.2.5.2.1
 class uvm_abstract_object_registry #(type T=uvm_object, string Tname="<unknown>")
                                         extends uvm_object_wrapper;
   typedef uvm_abstract_object_registry #(T,Tname) this_type;
@@ -420,7 +445,7 @@ class uvm_abstract_object_registry #(type T=uvm_object, string Tname="<unknown>"
   // It is called by the factory after determining the type of object to create.
   // You should not call this method directly. Call <create> instead.
 
-  // @uvm-ieee 1800.2-2017 auto 8.2.5.2.2
+  // @uvm-ieee 1800.2-2020 auto 8.2.5.2.2
   virtual function uvm_object create_object(string name="");
     `uvm_error(
       "UVM/ABST_RGTRY/CREATE_ABSTRACT_OBJ",
@@ -450,8 +475,11 @@ class uvm_abstract_object_registry #(type T=uvm_object, string Tname="<unknown>"
 
   static function this_type get();
     static this_type m_inst;
-     if (m_inst == null)
+     if (m_inst == null) begin
+       
        m_inst = new();
+     end
+
     return m_inst;
   endfunction
 
@@ -539,7 +567,7 @@ class uvm_registry_common #( type Tregistry=int, type Tcreator=int, type Tcreate
 
   static function string type_name();
      if((Tname == "<unknown>") && (m__type_aliases.size() != 0)) begin
-        return m__type_aliases[0];
+       return m__type_aliases[0];
      end
      return Tname;
   endfunction : type_name
@@ -550,15 +578,21 @@ class uvm_registry_common #( type Tregistry=int, type Tcreator=int, type Tcreate
 
   static function this_type get();
      static this_type m_inst;
-     if (m_inst == null)
+     if (m_inst == null) begin
+       
        m_inst = new();
+     end
+
      return m_inst;
   endfunction : get
 
   static function Tcreated create(string name, uvm_component parent, string contxt);
     uvm_object obj;
-    if (contxt == "" && parent != null)
+    if (contxt == "" && parent != null) begin
+      
       contxt = parent.get_full_name();
+    end
+
     obj = Tcreator::create_by_type( Tregistry::get(), contxt, name, parent );
     if (!$cast(create, obj)) begin
       string msg;
@@ -584,10 +618,16 @@ class uvm_registry_common #( type Tregistry=int, type Tcreator=int, type Tcreate
     uvm_factory factory=uvm_factory::get();
 
     if (parent != null) begin
-      if (inst_path == "")
+      if (inst_path == "") begin
+        
         inst_path = parent.get_full_name();
-      else
+      end
+
+      else begin
+        
         inst_path = {parent.get_full_name(),".",inst_path};
+      end
+
     end
     factory.set_inst_override_by_type(Tregistry::get(),override_type,inst_path);
   endfunction
@@ -596,11 +636,11 @@ class uvm_registry_common #( type Tregistry=int, type Tcreator=int, type Tcreate
      m__type_aliases.push_back(alias_name);
      m__type_aliases.sort();
      if (uvm_pkg::get_core_state() != UVM_CORE_UNINITIALIZED) begin
-        uvm_factory factory = uvm_factory::get();
-        Tregistry rgtry = Tregistry::get();
-        if (factory.is_type_registered(rgtry)) begin
-           factory.set_type_alias(alias_name,rgtry);
-        end
+       uvm_factory factory = uvm_factory::get();
+       Tregistry rgtry = Tregistry::get();
+       if (factory.is_type_registered(rgtry)) begin
+         factory.set_type_alias(alias_name,rgtry);
+       end
      end
   endfunction
 
@@ -608,12 +648,12 @@ class uvm_registry_common #( type Tregistry=int, type Tcreator=int, type Tcreate
      Tregistry rgtry = Tregistry::get();
      // If the core is uninitialized, we defer initialization
      if (uvm_pkg::get_core_state() == UVM_CORE_UNINITIALIZED) begin
-	     uvm_pkg::uvm_deferred_init.push_back(rgtry);
+       uvm_pkg::uvm_deferred_init.push_back(rgtry);
      end
      // If the core is initialized, then we're static racing,
      // initialize immediately
      else begin
-	     rgtry.initialize();
+       rgtry.initialize();
      end
      return 1;
   endfunction
@@ -626,7 +666,7 @@ class uvm_registry_common #( type Tregistry=int, type Tcreator=int, type Tcreate
      // add aliases that were set before
      // the wrapper was registered with the factory
      foreach(m__type_aliases[i]) begin
-        factory.set_type_alias(m__type_aliases[i],rgtry);
+       factory.set_type_alias(m__type_aliases[i],rgtry);
      end
   endfunction
 endclass

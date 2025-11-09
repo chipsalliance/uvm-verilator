@@ -1,12 +1,12 @@
 //----------------------------------------------------------------------
-// Copyright 2012 Paradigm Works
-// Copyright 2007-2013 Mentor Graphics Corporation
-// Copyright 2010-2011 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2011-2012 Cypress Semiconductor Corp.
+// Copyright 2007-2013 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
+// Copyright 2012 Paradigm Works
+// Copyright 2010-2011 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -24,14 +24,20 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_version.svh $
+// $Rev:      2024-08-22 11:25:40 -0700 $
+// $Hash:     2f4242f2c7d7a4f69948682895557eb89e24c414 $
+//
+//----------------------------------------------------------------------
+
+
 `ifndef UVM_VERSION_SVH
 `define UVM_VERSION_SVH
 
-parameter string UVM_VERSION_STRING = "Accellera:1800.2-2017:UVM:1.0";
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-   parameter string uvm_revision = UVM_VERSION_STRING;
-`endif // UVM_ENABLE_DEPRECATED_API
+parameter string UVM_VERSION_STRING = "Accellera:1800.2:UVM:2020.3.1";
 
 function string uvm_revision_string();
   return UVM_VERSION_STRING;

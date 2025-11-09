@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2007-2014 Mentor Graphics Corporation
 // Copyright 2011 AMD
-// Copyright 2014-2018 NVIDIA Corporation
-// Copyright 2013 Cisco Systems, Inc.
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2013 Cisco Systems, Inc.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
 // Copyright 2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -22,6 +22,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_common_phases.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 // Title -- NODOCS -- UVM Common Phases
 // 
@@ -64,7 +74,7 @@
 // Exit Criteria:
 //  - All <uvm_component>s have been instantiated.
 
-// @uvm-ieee 1800.2-2017 auto 9.8.1.1
+// @uvm-ieee 1800.2-2020 auto 9.8.1.1
 class uvm_build_phase extends uvm_topdown_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
       comp.build_phase(phase); 
@@ -77,7 +87,10 @@ class uvm_build_phase extends uvm_topdown_phase;
    //
    static function uvm_build_phase get();
       if(m_inst == null)
-         m_inst = new();
+        begin
+          m_inst = new();
+        end
+
       return m_inst; 
    endfunction
    protected function new(string name="build");
@@ -108,7 +121,7 @@ endclass
 // - All independent phase domains are set.
 //
 
-// @uvm-ieee 1800.2-2017 auto 9.8.1.2
+// @uvm-ieee 1800.2-2020 auto 9.8.1.2
 class uvm_connect_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
       comp.connect_phase(phase); 
@@ -120,7 +133,10 @@ class uvm_connect_phase extends uvm_bottomup_phase;
    // Returns the singleton phase handle 
    static function uvm_connect_phase get();
       if(m_inst == null)
-         m_inst = new();
+        begin
+          m_inst = new();
+        end
+
       return m_inst; 
    endfunction
    protected function new(string name="connect");
@@ -148,7 +164,7 @@ endclass
 // Exit Criteria:
 // - None.
 
-// @uvm-ieee 1800.2-2017 auto 9.8.1.3
+// @uvm-ieee 1800.2-2020 auto 9.8.1.3
 class uvm_end_of_elaboration_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
       comp.end_of_elaboration_phase(phase); 
@@ -159,9 +175,10 @@ class uvm_end_of_elaboration_phase extends uvm_bottomup_phase;
    // Function -- NODOCS -- get
    // Returns the singleton phase handle 
    static function uvm_end_of_elaboration_phase get();
-      if(m_inst == null) begin 
-         m_inst = new();
-      end
+      if(m_inst == null) 
+        begin 
+          m_inst = new();
+        end
       return m_inst; 
    endfunction
    protected function new(string name="end_of_elaboration");
@@ -193,7 +210,7 @@ endclass
 // - None.
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.1.4
+// @uvm-ieee 1800.2-2020 auto 9.8.1.4
 class uvm_start_of_simulation_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
       comp.start_of_simulation_phase(phase); 
@@ -205,7 +222,10 @@ class uvm_start_of_simulation_phase extends uvm_bottomup_phase;
    // Returns the singleton phase handle 
    static function uvm_start_of_simulation_phase get();
       if(m_inst == null)
-         m_inst = new();
+        begin
+          m_inst = new();
+        end
+
       return m_inst; 
    endfunction
    protected function new(string name="start_of_simulation");
@@ -214,7 +234,7 @@ class uvm_start_of_simulation_phase extends uvm_bottomup_phase;
 endclass
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.1.5
+// @uvm-ieee 1800.2-2020 auto 9.8.1.5
 class uvm_run_phase extends uvm_task_phase; 
    virtual task exec_task(uvm_component comp, uvm_phase phase); 
       comp.run_phase(phase); 
@@ -226,7 +246,10 @@ class uvm_run_phase extends uvm_task_phase;
    // Returns the singleton phase handle 
    static function uvm_run_phase get(); 
       if(m_inst == null)
-         m_inst = new; 
+        begin
+          m_inst = new;
+        end
+ 
       return m_inst; 
    endfunction
    protected function new(string name="run"); 
@@ -236,7 +259,7 @@ endclass
 
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.1.6
+// @uvm-ieee 1800.2-2020 auto 9.8.1.6
 class uvm_extract_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
       comp.extract_phase(phase); 
@@ -248,7 +271,10 @@ class uvm_extract_phase extends uvm_bottomup_phase;
    // Returns the singleton phase handle 
    static function uvm_extract_phase get();
       if(m_inst == null)
-         m_inst = new();
+        begin
+          m_inst = new();
+        end
+
       return m_inst; 
    endfunction
    protected function new(string name="extract");
@@ -257,7 +283,7 @@ class uvm_extract_phase extends uvm_bottomup_phase;
 endclass
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.1.7
+// @uvm-ieee 1800.2-2020 auto 9.8.1.7
 class uvm_check_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
       comp.check_phase(phase); 
@@ -269,7 +295,10 @@ class uvm_check_phase extends uvm_bottomup_phase;
    // Returns the singleton phase handle 
    static function uvm_check_phase get();
       if(m_inst == null)
-         m_inst = new();
+        begin
+          m_inst = new();
+        end
+
       return m_inst; 
    endfunction
    protected function new(string name="check");
@@ -278,7 +307,7 @@ class uvm_check_phase extends uvm_bottomup_phase;
 endclass
 
 
-// @uvm-ieee 1800.2-2017 auto 9.8.1.8
+// @uvm-ieee 1800.2-2020 auto 9.8.1.8
 class uvm_report_phase extends uvm_bottomup_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
       comp.report_phase(phase); 
@@ -290,7 +319,10 @@ class uvm_report_phase extends uvm_bottomup_phase;
    // Returns the singleton phase handle 
    static function uvm_report_phase get();
       if(m_inst == null)
-         m_inst = new();
+        begin
+          m_inst = new();
+        end
+
       return m_inst; 
    endfunction
    protected function new(string name="report");
@@ -317,7 +349,7 @@ endclass
 // - Ready to exit simulator.
 //
 
-// @uvm-ieee 1800.2-2017 auto 9.8.1.9
+// @uvm-ieee 1800.2-2020 auto 9.8.1.9
 class uvm_final_phase extends uvm_topdown_phase;
    virtual function void exec_func(uvm_component comp, uvm_phase phase);
       comp.final_phase(phase); 
@@ -329,7 +361,10 @@ class uvm_final_phase extends uvm_topdown_phase;
    // Returns the singleton phase handle 
    static function uvm_final_phase get();
       if(m_inst == null)
-         m_inst = new();
+        begin
+          m_inst = new();
+        end
+
       return m_inst; 
    endfunction
    protected function new(string name="final");

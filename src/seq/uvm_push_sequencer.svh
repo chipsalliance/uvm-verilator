@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2018 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
+// Copyright 2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -20,6 +20,16 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/seq/uvm_push_sequencer.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 
 //------------------------------------------------------------------------------
 //
@@ -27,7 +37,7 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 15.6.1
+// @uvm-ieee 1800.2-2020 auto 15.6.1
 class uvm_push_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
                                    extends uvm_sequencer_param_base #(REQ, RSP);
 
@@ -43,7 +53,7 @@ class uvm_push_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.6.3.2
+  // @uvm-ieee 1800.2-2020 auto 15.6.3.2
   function new (string name, uvm_component parent=null);
     super.new(name, parent);
     req_port = new ("req_port", this);
@@ -59,20 +69,27 @@ class uvm_push_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
   // <uvm_push_driver #(REQ,RSP)>, which would be responsible for
   // executing the item.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.6.3.3
   task run_phase(uvm_phase phase);
     REQ t;
     int selected_sequence;
 
     fork
-      super.run_phase(phase);
-      forever
+      begin
+        super.run_phase(phase);
+      end
+
+      begin
+        forever
         begin
-          m_select_sequence();
-          m_req_fifo.get(t);
+          m_safe_select_item(0, t);
+          sequence_item_requested = 0;
           req_port.put(t);
           m_wait_for_item_sequence_id = t.get_sequence_id();
           m_wait_for_item_transaction_id = t.get_transaction_id();
         end
+      end
+
     join
   endtask
 

@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
-// Copyright 2007-2012 Mentor Graphics Corporation
-// Copyright 2010-2011 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2015 NVIDIA Corporation
+// Copyright 2007-2012 Mentor Graphics Corporation
+// Copyright 2015-2024 NVIDIA Corporation
+// Copyright 2010-2011 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -19,6 +19,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //-----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/macros/uvm_callback_defines.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 `ifndef UVM_CB_MACROS_SVH
 `define UVM_CB_MACROS_SVH
@@ -57,7 +67,7 @@
 //| endclass
 //-----------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto B.4.1
+// @uvm-ieee 1800.2-2020 auto B.4.1
 `define uvm_register_cb(T,CB) \
   static local bit m_register_cb_``CB = uvm_callbacks#(T,CB)::m_register_pair(`"T`",`"CB`");
 
@@ -97,7 +107,7 @@
 //| endclass
 //-----------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto B.4.2
+// @uvm-ieee 1800.2-2020 auto B.4.2
 `define uvm_set_super_type(T,ST) \
   static local bit m_register_``T``ST = uvm_derived_callbacks#(T,ST)::register_super_type(`"T`",`"ST`"); 
 
@@ -139,7 +149,7 @@
 //-----------------------------------------------------------------------------
 
 
-// @uvm-ieee 1800.2-2017 auto B.4.3
+// @uvm-ieee 1800.2-2020 auto B.4.3
 `define uvm_do_callbacks(T,CB,METHOD) \
   `uvm_do_obj_callbacks(T,CB,this,METHOD)
 
@@ -163,7 +173,7 @@
 //|    ...
 //-----------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto B.4.4
+// @uvm-ieee 1800.2-2020 auto B.4.4
 `define uvm_do_obj_callbacks(T,CB,OBJ,METHOD) \
    begin \
      uvm_callback_iter#(T,CB) iter = new(OBJ); \
@@ -232,7 +242,7 @@
 //-----------------------------------------------------------------------------
 
 
-// @uvm-ieee 1800.2-2017 auto B.4.5
+// @uvm-ieee 1800.2-2020 auto B.4.5
 `define uvm_do_callbacks_exit_on(T,CB,METHOD,VAL) \
   `uvm_do_obj_callbacks_exit_on(T,CB,this,METHOD,VAL) \
 
@@ -258,7 +268,7 @@
 // of functions that return a ~bit~ value, as in the above example.
 //-----------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto B.4.6
+// @uvm-ieee 1800.2-2020 auto B.4.6
 `define uvm_do_obj_callbacks_exit_on(T,CB,OBJ,METHOD,VAL) \
    begin \
      uvm_callback_iter#(T,CB) iter = new(OBJ); \

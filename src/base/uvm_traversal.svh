@@ -1,6 +1,7 @@
 //----------------------------------------------------------------------
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2022 Marvell International Ltd.
+// Copyright 2014-2024 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -18,6 +19,16 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_traversal.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 //------------------------------------------------------------------------------
 //
 // CLASS -- NODOCS -- uvm_visitor #(NODE)
@@ -28,7 +39,7 @@
 // 
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto F.5.1.1
+// @uvm-ieee 1800.2-2020 auto F.5.1.1
 virtual class uvm_visitor#(type NODE=uvm_component) extends uvm_object;
   function new (string name = "");
     super.new(name);
@@ -38,18 +49,18 @@ virtual class uvm_visitor#(type NODE=uvm_component) extends uvm_object;
   //
   // This method will be invoked by the visitor before the first NODE is visited
   
-  // @uvm-ieee 1800.2-2017 auto F.5.1.2.1
+  // @uvm-ieee 1800.2-2020 auto F.5.1.2.1
   virtual function void begin_v(); endfunction
   
   // Function -- NODOCS -- end_v
   //
   // This method will be invoked by the visitor after the last NODE is visited
     
-  // @uvm-ieee 1800.2-2017 auto F.5.1.2.2
+  // @uvm-ieee 1800.2-2020 auto F.5.1.2.2
   virtual function void end_v(); endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto F.5.1.2.3
+  // @uvm-ieee 1800.2-2020 auto F.5.1.2.3
   pure virtual function void visit(NODE node);
 endclass
 
@@ -63,9 +74,9 @@ endclass
 // 
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto F.5.2.1
+// @uvm-ieee 1800.2-2020 auto F.5.2.1
 virtual class uvm_structure_proxy#(type STRUCTURE=uvm_component) extends uvm_object;
-  // @uvm-ieee 1800.2-2017 auto F.5.2.2.1
+  // @uvm-ieee 1800.2-2020 auto F.5.2.2.1
   function new (string name = "");
     super.new(name);
   endfunction     
@@ -74,7 +85,7 @@ virtual class uvm_structure_proxy#(type STRUCTURE=uvm_component) extends uvm_obj
   //
   // This method will be return in ~children~ a set of the direct subelements of ~s~
     
-  // @uvm-ieee 1800.2-2017 auto F.5.2.2.2
+  // @uvm-ieee 1800.2-2020 auto F.5.2.2.2
   pure virtual function void get_immediate_children(STRUCTURE s, ref STRUCTURE children[$]);
 endclass    
 
@@ -86,7 +97,7 @@ endclass
 // 
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto F.5.3.1
+// @uvm-ieee 1800.2-2020 auto F.5.3.1
 virtual class uvm_visitor_adapter#(type STRUCTURE=uvm_component,VISITOR=uvm_visitor#(STRUCTURE)) extends uvm_object;
   // Function -- NODOCS -- accept()
   //
@@ -95,10 +106,10 @@ virtual class uvm_visitor_adapter#(type STRUCTURE=uvm_component,VISITOR=uvm_visi
   // by invoking ~p~.get_immediate_children().~invoke_begin_end~ determines whether the visitors begin/end functions 
   // should be invoked prior to traversal.
   
-  // @uvm-ieee 1800.2-2017 auto F.5.3.2.2
+  // @uvm-ieee 1800.2-2020 auto F.5.3.2.2
   pure virtual function void accept(STRUCTURE s, VISITOR v,uvm_structure_proxy#(STRUCTURE) p, bit invoke_begin_end=1);
 
-  // @uvm-ieee 1800.2-2017 auto F.5.3.2.1
+  // @uvm-ieee 1800.2-2020 auto F.5.3.2.1
   function new (string name = "");
     super.new(name);
   endfunction 
@@ -113,11 +124,11 @@ endclass
 // 
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto F.5.4.1
+// @uvm-ieee 1800.2-2020 auto F.5.4.1
 class uvm_top_down_visitor_adapter#(type STRUCTURE=uvm_component,VISITOR=uvm_visitor#(STRUCTURE)) extends 
   uvm_visitor_adapter#(STRUCTURE,VISITOR);
 
-  // @uvm-ieee 1800.2-2017 auto F.5.4.2
+  // @uvm-ieee 1800.2-2020 auto F.5.4.2
   function new (string name = "");
     super.new(name);
   endfunction         
@@ -126,16 +137,25 @@ class uvm_top_down_visitor_adapter#(type STRUCTURE=uvm_component,VISITOR=uvm_vis
     STRUCTURE c[$];
 
     if(invoke_begin_end)
-      v.begin_v();
+      begin
+        v.begin_v();
+      end
+
 
     v.visit(s);
     p.get_immediate_children(s, c);
 
     foreach(c[idx])
-      accept(c[idx],v,p,0);
+      begin
+        accept(c[idx],v,p,0);
+      end
+
 
     if(invoke_begin_end)
-      v.end_v();
+      begin
+        v.end_v();
+      end
+
 
   endfunction
 endclass
@@ -149,11 +169,11 @@ endclass
 // 
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto F.5.5.1
+// @uvm-ieee 1800.2-2020 auto F.5.5.1
 class uvm_bottom_up_visitor_adapter#(type STRUCTURE=uvm_component,VISITOR=uvm_visitor#(STRUCTURE)) extends 
   uvm_visitor_adapter#(STRUCTURE,VISITOR);
 
-  // @uvm-ieee 1800.2-2017 auto F.5.5.2
+  // @uvm-ieee 1800.2-2020 auto F.5.5.2
   function new (string name = "");
     super.new(name);
   endfunction         
@@ -162,16 +182,25 @@ class uvm_bottom_up_visitor_adapter#(type STRUCTURE=uvm_component,VISITOR=uvm_vi
     STRUCTURE c[$];
 
     if(invoke_begin_end)
-      v.begin_v();
+      begin
+        v.begin_v();
+      end
+
 
     p.get_immediate_children(s, c);
     foreach(c[idx])
-      accept(c[idx],v,p,0);
+      begin
+        accept(c[idx],v,p,0);
+      end
+
 
     v.visit(s);
 
     if(invoke_begin_end)
-      v.end_v();
+      begin
+        v.end_v();
+      end
+
 
   endfunction
 endclass
@@ -184,11 +213,11 @@ endclass
 // During traversal will visit all direct children of ~s~ before all grand-children are visited. 
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto F.5.6.1
+// @uvm-ieee 1800.2-2020 auto F.5.6.1
 class uvm_by_level_visitor_adapter#(type STRUCTURE=uvm_component,VISITOR=uvm_visitor#(STRUCTURE)) extends 
   uvm_visitor_adapter#(STRUCTURE,VISITOR);
 
-  // @uvm-ieee 1800.2-2017 auto F.5.6.2
+  // @uvm-ieee 1800.2-2020 auto F.5.6.2
   function new (string name = "");
     super.new(name);
   endfunction         
@@ -198,22 +227,30 @@ class uvm_by_level_visitor_adapter#(type STRUCTURE=uvm_component,VISITOR=uvm_vis
     c.push_back(s);
 
     if(invoke_begin_end)
-      v.begin_v();
+      begin
+        v.begin_v();
+      end
 
-    while(c.size() > 0) begin
-      STRUCTURE q[$];
-      foreach(c[idx]) begin
-        STRUCTURE t[$]; 
 
-        v.visit(c[idx]);
-        p.get_immediate_children(c[idx], t);
-        q = {q,t};
+    while(c.size() > 0) 
+      begin
+        STRUCTURE q[$];
+        foreach(c[idx]) 
+        begin
+          STRUCTURE t[$]; 
+
+          v.visit(c[idx]);
+          p.get_immediate_children(c[idx], t);
+          q = {q,t};
+        end 
+        c=q;
       end 
-      c=q;
-    end 
 
     if(invoke_begin_end)
-      v.end_v();
+      begin
+        v.end_v();
+      end
+
   endfunction
 endclass
 
@@ -224,13 +261,13 @@ endclass
 // The class is providing the proxy to extract the direct subcomponents of ~s~ 
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto F.5.7.1
+// @uvm-ieee 1800.2-2020 auto F.5.7.1
 class uvm_component_proxy extends uvm_structure_proxy#(uvm_component);
   virtual function void get_immediate_children(STRUCTURE s, ref STRUCTURE children[$]);   
     s.get_children(children);   
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto F.5.7.2
+  // @uvm-ieee 1800.2-2020 auto F.5.7.2
   function new (string name = "");
     super.new(name);
   endfunction 
@@ -269,11 +306,30 @@ class uvm_component_name_check_visitor extends uvm_visitor#(uvm_component);
 
   virtual function void visit(NODE node);
     // dont check the root component
-    if(_root != node) begin
-      if ( ! uvm_is_match( get_name_constraint(), node.get_name() ) ) begin
-        `uvm_warning("UVM/COMP/NAME",$sformatf("the name \"%s\" of the component \"%s\" violates the uvm component name constraints",node.get_name(),node.get_full_name()))
+    if(_root != node) 
+      begin
+`ifdef UVM_REGEX_NO_DPI
+        static bit warned ;
+        if (!warned) begin
+        `uvm_warning("NO_VISIT_CHECK","Because UVM_REGEX_NO_DPI is defined, no uvm component name constraints will be checked")
+        warned = 1;
       end
-    end
+`else
+        string regex = get_name_constraint();
+        // if we don't have something surrounded by "/" characters, add them
+        if ((regex.len() <= 2) || 
+        (regex[0] != "/") || 
+        (regex[regex.len()-1] != "/"))
+        begin
+          regex = {"/",regex,"/"};
+        end
+
+        if ( ! uvm_is_match( regex, node.get_name() ) ) 
+        begin
+          `uvm_warning("UVM/COMP/NAME",$sformatf("the name \"%s\" of the component \"%s\" violates the uvm component name constraints",node.get_name(),node.get_full_name()))
+        end
+`endif
+      end
   endfunction 
 
   function new (string name = "");

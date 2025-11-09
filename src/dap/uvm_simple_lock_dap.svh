@@ -1,10 +1,10 @@
 // 
 //------------------------------------------------------------------------------
-// Copyright 2007-2009 Mentor Graphics Corporation
-// Copyright 2014 Intel Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2015 NVIDIA Corporation
 // Copyright 2017 Cisco Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2009 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,6 +21,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/dap/uvm_simple_lock_dap.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 // Class -- NODOCS -- uvm_simple_lock_dap
 // Provides a 'Simple Lock' Data Access Policy.
@@ -62,12 +72,13 @@ class uvm_simple_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    // ~set~ will result in an error if the DAP has
    // been locked.
    virtual function void set(T value);
-      if (m_locked)
+      if (m_locked) begin
         `uvm_error("UVM/SIMPLE_LOCK_DAP/SAG",
-                   $sformatf("Attempt to set new value on '%s', but the data access policy forbids setting while locked!",
-                             get_full_name()))
+        $sformatf("Attempt to set new value on '%s', but the data access policy forbids setting while locked!",
+        get_full_name()))
+      end
       else begin
-         m_value = value;
+        m_value = value;
       end
    endfunction : set
 
@@ -79,11 +90,14 @@ class uvm_simple_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    // to the DAP being locked.  No errors will be reported
    // if ~try_set~ fails.
    virtual function bit try_set(T value);
-      if (m_locked)
+      if (m_locked) begin
+        
         return 0;
+      end
+
       else begin
-         m_value = value;
-         return 1;
+        m_value = value;
+        return 1;
       end
    endfunction : try_set
    
@@ -158,10 +172,16 @@ class uvm_simple_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    
    // Function- convert2string
    virtual function string convert2string();
-      if (m_locked)
+      if (m_locked) begin
+        
         return $sformatf("(%s) %0p [LOCKED]", `uvm_typename(m_value), m_value);
-      else
+      end
+
+      else begin
+        
         return $sformatf("(%s) %0p [UNLOCKED]", `uvm_typename(m_value), m_value);
+      end
+
    endfunction : convert2string
    
    // Function- do_print

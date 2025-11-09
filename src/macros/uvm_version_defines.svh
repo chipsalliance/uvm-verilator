@@ -1,11 +1,12 @@
 //----------------------------------------------------------------------
-// Copyright 2011-2012 Paradigm Works
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2010-2013 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2014-2015 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
+// Copyright 2019-2020 Marvell International Ltd.
+// Copyright 2007-2022 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
+// Copyright 2011-2012 Paradigm Works
+// Copyright 2010-2013 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -23,10 +24,20 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/macros/uvm_version_defines.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 `ifndef UVM_VERSION_DEFINES_SVH
 `define UVM_VERSION_DEFINES_SVH
 
-`define UVM_VERSION 2016
+   `define UVM_VERSION 2020
 
 
 // Title --NODOCS-- UVM Version Defines
@@ -36,11 +47,26 @@
 // how this implementation release relates to previous UVM 
 // implementation releases from Accellera.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-// Macro --NODOCS-- UVM_POST_VERSION_1_1
-// Indicates that this version of the UVM came after the
-// 1.1 versions, including the various 1.1 fix revisions.  
-`define UVM_POST_VERSION_1_1
-`endif // UVM_ENABLE_DEPRECATED_API
+   `define UVM_VERSION_POST_2017
+   `define UVM_VERSION_POST_2017_1_0   
+   `define UVM_VERSION_POST_2017_1_1
+   `define UVM_VERSION_POST_2020_1_0
+   `define UVM_VERSION_POST_2020_1_1
+   `define UVM_VERSION_POST_2020_2_0
+   
+// These defines are used in earlier versions of UVM
+// They are provided here with mappings relevant to IEEE 1800.2 2020 v2.0  
+//@back_compat   
+  `define UVM_NAME UVM
+  
+  `define UVM_MAJOR_REV 2020
+  `define UVM_MINOR_REV 3.0
+  
+  `define UVM_VERSION_STRING uvm_pkg::UVM_VERSION_STRING
+
+  // Defines for `ifdefs
+  `define UVM_POST_VERSION_1_1
+  `define UVM_POST_VERSION_1_2
+
 
 `endif // UVM_VERSION_DEFINES_SVH

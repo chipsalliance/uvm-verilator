@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -20,6 +20,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/tlm2/uvm_tlm2_imps.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 //----------------------------------------------------------------------
 // Title -- NODOCS -- UVM TLM 2 imps (interface implementations)
@@ -165,7 +175,7 @@
 // imp is instantiated the implementation object is bound.
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.8.1
+// @uvm-ieee 1800.2-2020 auto 12.3.8.1
 class uvm_tlm_b_transport_imp #(type T=uvm_tlm_generic_payload,
                             type IMP=int)
   extends uvm_port_base #(uvm_tlm_if #(T));
@@ -181,7 +191,7 @@ endclass
 // imp is instantiated the implementation object is bound.
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.8.2
+// @uvm-ieee 1800.2-2020 auto 12.3.8.2
 class uvm_tlm_nb_transport_fw_imp #(type T=uvm_tlm_generic_payload,
                                 type P=uvm_tlm_phase_e,
                                 type IMP=int)
@@ -198,7 +208,7 @@ endclass
 // imp is instantiated the implementation object is bound.
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.8.3
+// @uvm-ieee 1800.2-2020 auto 12.3.8.3
 class uvm_tlm_nb_transport_bw_imp #(type T=uvm_tlm_generic_payload,
                                 type P=uvm_tlm_phase_e,
                                 type IMP=int)

@@ -1,11 +1,11 @@
 //
 //-----------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2010-2013 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2011 AMD
-// Copyright 2015-2018 NVIDIA Corporation
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2015-2024 NVIDIA Corporation
+// Copyright 2010-2013 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -22,6 +22,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //-----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/tlm1/uvm_sqr_connections.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 //-----------------------------------------------------------------------------
 // Title -- NODOCS -- Sequence Item Pull Ports
@@ -42,7 +52,7 @@
 //
 //-----------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 15.2.2.1
+// @uvm-ieee 1800.2-2020 auto 15.2.2.1
 class uvm_seq_item_pull_port #(type REQ=int, type RSP=REQ)
   extends uvm_port_base #(uvm_sqr_if_base #(REQ, RSP));
   `UVM_SEQ_PORT(`UVM_SEQ_ITEM_PULL_MASK, "uvm_seq_item_pull_port")
@@ -62,7 +72,7 @@ endclass
 //
 //-----------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 15.2.2.2
+// @uvm-ieee 1800.2-2020 auto 15.2.2.2
 class uvm_seq_item_pull_export #(type REQ=int, type RSP=REQ)
   extends uvm_port_base #(uvm_sqr_if_base #(REQ, RSP));
   `UVM_EXPORT_COMMON(`UVM_SEQ_ITEM_PULL_MASK, "uvm_seq_item_pull_export")
@@ -79,7 +89,7 @@ endclass
 //
 //-----------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 15.2.2.3
+// @uvm-ieee 1800.2-2020 auto 15.2.2.3
 class uvm_seq_item_pull_imp #(type REQ=int, type RSP=REQ, type IMP=int)
   extends uvm_port_base #(uvm_sqr_if_base #(REQ, RSP));
    // Function -- NODOCS -- new

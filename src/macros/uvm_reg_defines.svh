@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2014-2015 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -20,6 +20,16 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/macros/uvm_reg_defines.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 //------------------------
 // File -- NODOCS -- Register Defines
 //------------------------
@@ -30,8 +40,9 @@
 //
 // Default value is 64. Used to define the <uvm_reg_addr_t> type.
 //
+
+// @uvm-ieee 1800.2-2020 manual B.6.4
 `ifndef UVM_REG_ADDR_WIDTH
- // @uvm-ieee 1800.2-2017 auto B.6.4
  `define UVM_REG_ADDR_WIDTH 64
 `endif
 
@@ -42,8 +53,9 @@
 //
 // Default value is 64. Used to define the <uvm_reg_data_t> type.
 //
+
+// @uvm-ieee 1800.2-2020 manual B.6.5
 `ifndef UVM_REG_DATA_WIDTH
- // @uvm-ieee 1800.2-2017 auto B.6.5
  `define UVM_REG_DATA_WIDTH 64
 `endif
 
@@ -55,6 +67,9 @@
 // Default value is one per byte in <`UVM_REG_DATA_WIDTH>.
 // Used to define the <uvm_reg_byte_en_t> type.
 //
+
+
+// @uvm-ieee 1800.2-2020 manual B.6.6
 `ifndef UVM_REG_BYTENABLE_WIDTH 
   `define UVM_REG_BYTENABLE_WIDTH ((`UVM_REG_DATA_WIDTH-1)/8+1) 
 `endif
@@ -66,7 +81,8 @@
 //
 // Default value is 32.
 //
+
+// @uvm-ieee 1800.2-2020 manual B.6.7
 `ifndef UVM_REG_CVR_WIDTH
- // @uvm-ieee 1800.2-2017 auto B.6.7
  `define UVM_REG_CVR_WIDTH 32
 `endif

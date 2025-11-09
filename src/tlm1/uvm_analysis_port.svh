@@ -1,9 +1,9 @@
 //
 //----------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2010 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2015 NVIDIA Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2015-2024 NVIDIA Corporation
+// Copyright 2010 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -20,6 +20,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/tlm1/uvm_analysis_port.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 
 //------------------------------------------------------------------------------
@@ -54,10 +64,11 @@
 //| endclass
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.2.10.1.1
+// @uvm-ieee 1800.2-2020 auto 12.2.10.1.1
 class uvm_analysis_port # (type T = int)
   extends uvm_port_base # (uvm_tlm_if_base #(T,T));
 
+  // @uvm-ieee 1800.2-2020 auto 12.2.10.1.3
   function new (string name, uvm_component parent);
     super.new (name, parent, UVM_PORT, 0, UVM_UNBOUNDED_CONNECTIONS);
     m_if_mask = `UVM_TLM_ANALYSIS_MASK;  
@@ -68,13 +79,16 @@ class uvm_analysis_port # (type T = int)
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.10.1.2
+  // @uvm-ieee 1800.2-2020 auto 12.2.10.1.4
   function void write (input T t);
     uvm_tlm_if_base # (T, T) tif;
     for (int i = 0; i < this.size(); i++) begin
       tif = this.get_if (i);
-      if ( tif == null )
+      if ( tif == null ) begin
+        
         uvm_report_fatal ("NTCONN", {"No uvm_tlm interface is connected to ", get_full_name(), " for executing write()"}, UVM_NONE);
+      end
+
       tif.write (t);
     end 
   endfunction
@@ -109,9 +123,10 @@ endclass
 //| endclass
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.2.10.2
+// @uvm-ieee 1800.2-2020 auto 12.2.10.2.1
 class uvm_analysis_imp #(type T=int, type IMP=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
+  // @uvm-ieee 1800.2-2020 auto 12.2.10.2.2
   `UVM_IMP_COMMON(`UVM_TLM_ANALYSIS_MASK,"uvm_analysis_imp",IMP)
   function void write (input T t);
     m_imp.write (t);
@@ -126,12 +141,12 @@ endclass
 // Exports a lower-level <uvm_analysis_imp> to its parent.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.2.10.3.1
+// @uvm-ieee 1800.2-2020 auto 12.2.10.3.1
 class uvm_analysis_export #(type T=int)
   extends uvm_port_base #(uvm_tlm_if_base #(T,T));
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.2.10.3.2
+  // @uvm-ieee 1800.2-2020 auto 12.2.10.3.2
   function new (string name, uvm_component parent = null);
     super.new (name, parent, UVM_EXPORT, 1, UVM_UNBOUNDED_CONNECTIONS);
     m_if_mask = `UVM_TLM_ANALYSIS_MASK;
@@ -148,8 +163,11 @@ class uvm_analysis_export #(type T=int)
     uvm_tlm_if_base #(T, T) tif;
     for (int i = 0; i < this.size(); i++) begin
       tif = this.get_if (i);
-      if (tif == null)
-         uvm_report_fatal ("NTCONN", {"No uvm_tlm interface is connected to ", get_full_name(), " for executing write()"}, UVM_NONE);
+      if (tif == null) begin
+         
+        uvm_report_fatal ("NTCONN", {"No uvm_tlm interface is connected to ", get_full_name(), " for executing write()"}, UVM_NONE);
+      end
+
       tif.write (t);
     end 
   endfunction

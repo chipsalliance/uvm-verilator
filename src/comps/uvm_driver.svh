@@ -1,10 +1,11 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2013 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2015-2018 NVIDIA Corporation
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2022 Marvell International Ltd.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2015-2024 NVIDIA Corporation
+// Copyright 2013 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,6 +22,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/comps/uvm_driver.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 typedef class uvm_sequence_item;
 
@@ -43,7 +54,7 @@ typedef class uvm_sequence_item;
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 13.7.1
+// @uvm-ieee 1800.2-2020 auto 13.7.1
 class uvm_driver #(type REQ=uvm_sequence_item,
                    type RSP=REQ) extends uvm_component;
 
@@ -86,7 +97,8 @@ class uvm_driver #(type REQ=uvm_sequence_item,
   endfunction // new
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
-	  if(seq_item_port.size<1)
-		  `uvm_warning("DRVCONNECT","the driver is not connected to a sequencer via the standard mechanisms enabled by connect()")
+    if(seq_item_port.size<1) begin
+      `uvm_warning("DRVCONNECT","seq_item_port (a uvm_seq_item_pull_port in uvm_driver) has not been connected to a sequencer")
+    end
   endfunction
 endclass

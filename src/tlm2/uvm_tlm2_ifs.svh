@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
 // Copyright 2014 Semifore
 // Copyright 2010-2018 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -20,6 +20,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/tlm2/uvm_tlm2_ifs.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 // File -- NODOCS -- UVM TLM 2 Types
 typedef class uvm_time;
@@ -82,9 +92,9 @@ typedef enum
 //  - <b_transport>
 //
 
-// @uvm-ieee 1800.2-2017 auto 12.3.2.1
+// @uvm-ieee 1800.2-2020 auto 12.3.2.1
 class uvm_tlm_if #(type T=uvm_tlm_generic_payload,
-               type P=uvm_tlm_phase_e);
+               type P=uvm_tlm_phase_e) extends uvm_void;
    //----------------------------------------------------------------------
    // Group -- NODOCS -- tlm transport methods
    //
@@ -109,8 +119,8 @@ class uvm_tlm_if #(type T=uvm_tlm_generic_payload,
    // for more details on the semantics and rules of the nonblocking
    // transport interface.
    
-  // @uvm-ieee 1800.2-2017 auto 12.3.2.2.1
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.3
+  // @uvm-ieee 1800.2-2020 auto 12.3.2.2.1
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.3
   virtual function uvm_tlm_sync_e nb_transport_fw(T t, ref P p, input uvm_tlm_time delay);
     `uvm_error("nb_transport_fw", `UVM_TLM_FUNCTION_ERROR)
     return UVM_TLM_ACCEPTED;
@@ -153,7 +163,7 @@ class uvm_tlm_if #(type T=uvm_tlm_generic_payload,
    //|    ...
    //| endclass
    
-  // @uvm-ieee 1800.2-2017 auto 12.3.2.2.2
+  // @uvm-ieee 1800.2-2020 auto 12.3.2.2.2
   virtual function uvm_tlm_sync_e nb_transport_bw(T t, ref P p, input uvm_tlm_time delay);
     `uvm_error("nb_transport_bw", `UVM_TLM_FUNCTION_ERROR)
     return UVM_TLM_ACCEPTED;
@@ -177,7 +187,7 @@ class uvm_tlm_if #(type T=uvm_tlm_generic_payload,
    // allows the timing points to be offset from the simulation times
    // at which the task call and return are executed.
    
-  // @uvm-ieee 1800.2-2017 auto 12.3.2.2.3
+  // @uvm-ieee 1800.2-2020 auto 12.3.2.2.3
   virtual task b_transport(T t, uvm_tlm_time delay);
     `uvm_error("b_transport", `UVM_TLM_TASK_ERROR)
   endtask

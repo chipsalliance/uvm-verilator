@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2011-2018 Cadence Design Systems, Inc.
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2015-2024 NVIDIA Corporation
+// Copyright 2010-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -19,6 +19,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/tlm2/uvm_tlm2_sockets_base.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 //----------------------------------------------------------------------
 // Title -- NODOCS -- UVM TLM Socket Base Classes
@@ -46,10 +56,7 @@
 // IS-A forward imp; has no backward path except via the payload
 // contents.
 //----------------------------------------------------------------------
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual
-`endif
-class uvm_tlm_b_target_socket_base #(type T=uvm_tlm_generic_payload)
+virtual class uvm_tlm_b_target_socket_base #(type T=uvm_tlm_generic_payload)
   extends uvm_port_base #(uvm_tlm_if #(T));
 
   function new (string name, uvm_component parent);
@@ -67,10 +74,7 @@ endclass
 // IS-A forward port; has no backward path except via the payload
 // contents
 //----------------------------------------------------------------------
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual
-`endif
-class uvm_tlm_b_initiator_socket_base #(type T=uvm_tlm_generic_payload)
+virtual class uvm_tlm_b_initiator_socket_base #(type T=uvm_tlm_generic_payload)
   extends uvm_port_base #(uvm_tlm_if #(T));
 
   `UVM_PORT_COMMON(`UVM_TLM_B_MASK, "uvm_tlm_b_initiator_socket")
@@ -83,10 +87,7 @@ endclass
 //
 // IS-A forward imp; HAS-A backward port
 //----------------------------------------------------------------------
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual
-`endif
-class uvm_tlm_nb_target_socket_base #(type T=uvm_tlm_generic_payload,
+virtual class uvm_tlm_nb_target_socket_base #(type T=uvm_tlm_generic_payload,
                                    type P=uvm_tlm_phase_e)
   extends uvm_port_base #(uvm_tlm_if #(T,P));
 
@@ -108,10 +109,7 @@ endclass
 //
 // IS-A forward port; HAS-A backward imp
 //----------------------------------------------------------------------
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual 
-`endif
-class uvm_tlm_nb_initiator_socket_base #(type T=uvm_tlm_generic_payload,
+virtual class uvm_tlm_nb_initiator_socket_base #(type T=uvm_tlm_generic_payload,
                                       type P=uvm_tlm_phase_e)
   extends uvm_port_base #(uvm_tlm_if #(T,P));
 
@@ -134,10 +132,7 @@ endclass
 //
 // IS-A forward port; HAS-A backward export
 //----------------------------------------------------------------------
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual
-`endif
-class uvm_tlm_nb_passthrough_initiator_socket_base #(type T=uvm_tlm_generic_payload,
+virtual class uvm_tlm_nb_passthrough_initiator_socket_base #(type T=uvm_tlm_generic_payload,
                                                   type P=uvm_tlm_phase_e)
   extends uvm_port_base #(uvm_tlm_if #(T,P));
 
@@ -162,10 +157,7 @@ endclass
 //
 // IS-A forward export; HAS-A backward port
 //----------------------------------------------------------------------
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual 
-`endif
-class uvm_tlm_nb_passthrough_target_socket_base #(type T=uvm_tlm_generic_payload,
+virtual class uvm_tlm_nb_passthrough_target_socket_base #(type T=uvm_tlm_generic_payload,
                                                type P=uvm_tlm_phase_e)
   extends uvm_port_base #(uvm_tlm_if #(T,P));
 
@@ -190,10 +182,7 @@ endclass
 //
 // IS-A forward port
 //----------------------------------------------------------------------
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual 
-`endif
-class uvm_tlm_b_passthrough_initiator_socket_base #(type T=uvm_tlm_generic_payload)
+virtual class uvm_tlm_b_passthrough_initiator_socket_base #(type T=uvm_tlm_generic_payload)
   extends uvm_port_base #(uvm_tlm_if #(T));
 
   `UVM_PORT_COMMON(`UVM_TLM_B_MASK, "uvm_tlm_b_passthrough_initiator_socket")
@@ -207,10 +196,7 @@ endclass
 //
 // IS-A forward export
 //----------------------------------------------------------------------
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual 
-`endif
-class uvm_tlm_b_passthrough_target_socket_base #(type T=uvm_tlm_generic_payload)
+virtual class uvm_tlm_b_passthrough_target_socket_base #(type T=uvm_tlm_generic_payload)
   extends uvm_port_base #(uvm_tlm_if #(T));
 
   `UVM_EXPORT_COMMON(`UVM_TLM_B_MASK, "uvm_tlm_b_passthrough_target_socket")

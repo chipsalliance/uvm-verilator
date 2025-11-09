@@ -34,12 +34,18 @@ expected to be fed upstream into future new Accellera releases.
 GIT branches contain UVM versions supported or otherwise relevant, and may
 point to different revisions over time:
 
-- master: default branch. Currently matches "uvm-2017-1.0-vlt"
-- standard: branch with most recent Accellera standard release. Currently matches "uvm-2017-1.0".
+- master: default branch. Currently matches "uvm-2020-3.1-vlt"
+- standard: branch with most recent Accellera standard release. Currently matches "uvm-2020-3.1".
 - uvm-2017-1.0-vlt: UVM 2017 1.0 plus Verilator changes
 
 GIT tags point to specific upstream standard releases:
 
+- uvm-2020-3.1: Tag of Accellera release 3.1 from 2024-08.
+- uvm-2020-3.0: Tag of Accellera release 3.0 from 2024-02.
+- uvm-2020-2.0: Tag of Accellera release 2.0 from 2023-02.
+- uvm-2020-1.1: Tag of Accellera release 1.1 from 2021-02.
+- uvm-2020-1.0: Tag of Accellera release 1.0 from 2020-12.
+- uvm-2017-1.1: Tag of Accellera release 1.1 from 2020-06.
 - uvm-2017-1.0: Tag of Accellera release 1.0 from 2018-11.
 - uvm-2017-0.9: Tag of Accellera release 0.9 from 2018-06.
 - uvm-1.2: Tag of Accellera release 1.2 from 2014-06.

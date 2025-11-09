@@ -1,9 +1,9 @@
 //
 //------------------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2010-2012 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
+// Copyright 2010-2012 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,6 +21,16 @@
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/comps/uvm_agent.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 //------------------------------------------------------------------------------
 //
 // CLASS -- NODOCS -- uvm_agent
@@ -37,7 +47,7 @@
 // subtypes should contain only the monitor.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 13.4.1
+// @uvm-ieee 1800.2-2020 auto 13.4.1
 virtual class uvm_agent extends uvm_component;
   uvm_active_passive_enum is_active = UVM_ACTIVE;
 
@@ -56,7 +66,7 @@ virtual class uvm_agent extends uvm_component;
   //
   //| uvm_config_int::set(this, "<relative_path_to_agent>, "is_active", UVM_ACTIVE);
 
-  // @uvm-ieee 1800.2-2017 auto 13.4.2.1
+  // @uvm-ieee 1800.2-2020 auto 13.4.2.1
   function new (string name, uvm_component parent);
     super.new(name, parent);
   endfunction
@@ -75,12 +85,12 @@ virtual class uvm_agent extends uvm_component;
      rq = rp.lookup_name(get_full_name(), "is_active", null, 0);
      uvm_resource_pool::sort_by_precedence(rq);
      for (int i = 0; i < rq.size() && !found; i++) begin
-        uvm_resource_base rsrc = rq.get(i);
-	`uvm_resource_enum_read(/* SUCCESS */ found,
-				/* RSRC */    rsrc, 
-				/* TYPE */    uvm_active_passive_enum, 
-				/* VAL */     is_active, 
-				/* OBJ */     this)
+       uvm_resource_base rsrc = rq.get(i);
+       `uvm_resource_enum_read(/* SUCCESS */ found,
+       /* RSRC */    rsrc, 
+       /* TYPE */    uvm_active_passive_enum, 
+       /* VAL */     is_active, 
+       /* OBJ */     this)
      end
      
   endfunction
@@ -93,7 +103,7 @@ virtual class uvm_agent extends uvm_component;
   // override this behavior if a more complex algorithm is needed to determine
   // the active/passive nature of the agent.
 
-  // @uvm-ieee 1800.2-2017 auto 13.4.2.2
+  // @uvm-ieee 1800.2-2020 auto 13.4.2.2
   virtual function uvm_active_passive_enum get_is_active();
     return is_active;
   endfunction

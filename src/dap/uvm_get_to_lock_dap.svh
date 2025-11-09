@@ -1,9 +1,9 @@
 // 
 //------------------------------------------------------------------------------
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2014 Intel Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2015 NVIDIA Corporation
+// Copyright 2014 Intel Corporation
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -20,6 +20,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/dap/uvm_get_to_lock_dap.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 // Class -- NODOCS -- uvm_get_to_lock_dap
 // Provides a 'Get-To-Lock' Data Access Policy.
@@ -61,12 +71,13 @@ class uvm_get_to_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    // ~set~ will result in an error if the value has
    // already been retrieved via a call to ~get~.
    virtual function void set(T value);
-      if (m_locked)
+      if (m_locked) begin
         `uvm_error("UVM/GET_TO_LOCK_DAP/SAG",
-                   $sformatf("Attempt to set new value on '%s', but the data access policy forbids setting after a get!",
-                             get_full_name()))
+        $sformatf("Attempt to set new value on '%s', but the data access policy forbids setting after a get!",
+        get_full_name()))
+      end
       else begin
-         m_value = value;
+        m_value = value;
       end
    endfunction : set
 
@@ -78,11 +89,14 @@ class uvm_get_to_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    // to ~get~ having been called.  No errors will be reported
    // if ~try_set~ fails.
    virtual function bit try_set(T value);
-      if (m_locked)
+      if (m_locked) begin
+        
         return 0;
+      end
+
       else begin
-         m_value = value;
-         return 1;
+        m_value = value;
+        return 1;
       end
    endfunction : try_set
    
@@ -105,6 +119,16 @@ class uvm_get_to_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
       return 1;
    endfunction : try_get
 
+   // Function -- NODOCS -- is_locked
+   // Returns the state of the lock.
+   //
+   // Returns:
+   // 1 - The value is locked
+   // 0 - The value is unlocked
+   function bit is_locked();
+      return m_locked;
+   endfunction : is_locked
+   
    // Group -- NODOCS -- Introspection
    //
    // The ~uvm_get_to_lock_dap~ cannot support the standard UVM
@@ -133,10 +157,16 @@ class uvm_get_to_lock_dap#(type T=int) extends uvm_set_get_dap_base#(T);
    
    // Function- convert2string
    virtual function string convert2string();
-      if (m_locked)
+      if (m_locked) begin
+        
         return $sformatf("(%s) %0p [LOCKED]", `uvm_typename(m_value), m_value);
-      else
+      end
+
+      else begin
+        
         return $sformatf("(%s) %0p [UNLOCKED]", `uvm_typename(m_value), m_value);
+      end
+
    endfunction : convert2string
    
    // Function- do_print

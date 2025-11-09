@@ -1,9 +1,9 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2014 Semifore
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2010-2020 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
+// Copyright 2014 Semifore
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -22,6 +22,15 @@
 // -------------------------------------------------------------
 //
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/reg/uvm_reg_fifo.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 //------------------------------------------------------------------------------
 // Class -- NODOCS -- uvm_reg_fifo
@@ -35,7 +44,8 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 18.8.1
+
+// @uvm-ieee 1800.2-2020 auto 18.8.1
 class uvm_reg_fifo extends uvm_reg;
 
     local uvm_reg_field value;
@@ -60,7 +70,7 @@ class uvm_reg_fifo extends uvm_reg;
     //----------------------
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.8.3.1
+    // @uvm-ieee 1800.2-2020 auto 18.8.3.1
     function new(string name = "reg_fifo",
                  int unsigned size,
                  int unsigned n_bits,
@@ -82,7 +92,7 @@ class uvm_reg_fifo extends uvm_reg;
 
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.8.3.2
+    // @uvm-ieee 1800.2-2020 auto 18.8.3.2
     function void set_compare(uvm_check_e check=UVM_CHECK);
        value.set_compare(check);
     endfunction
@@ -134,7 +144,7 @@ class uvm_reg_fifo extends uvm_reg;
 
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.8.5.2
+    // @uvm-ieee 1800.2-2020 auto 18.8.5.2
     virtual function void set(uvm_reg_data_t  value,
                               string          fname = "",
                               int             lineno = 0);
@@ -150,7 +160,7 @@ class uvm_reg_fifo extends uvm_reg;
     
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.8.5.7
+    // @uvm-ieee 1800.2-2020 auto 18.8.5.5
     virtual task update(output uvm_status_e      status,
                         input  uvm_door_e        path = UVM_DEFAULT_DOOR,
                         input  uvm_reg_map       map = null,
@@ -160,14 +170,17 @@ class uvm_reg_fifo extends uvm_reg;
                         input  string            fname = "",
                         input  int               lineno = 0);
        uvm_reg_data_t upd;
-       if (!m_set_cnt || fifo.size() == 0)
-          return;
+       if (!m_set_cnt || fifo.size() == 0) begin
+          
+         return;
+       end
+
        m_update_in_progress = 1;
        for (int i=fifo.size()-m_set_cnt; m_set_cnt > 0; i++, m_set_cnt--) begin
          if (i >= 0) begin
-            //uvm_reg_data_t val = get();
-            //super.update(status,path,map,parent,prior,extension,fname,lineno);
-            write(status,fifo[i],path,map,parent,prior,extension,fname,lineno);
+           //uvm_reg_data_t val = get();
+           //super.update(status,path,map,parent,prior,extension,fname,lineno);
+           write(status,fifo[i],path,map,parent,prior,extension,fname,lineno);
          end
        end
        m_update_in_progress = 0;
@@ -183,7 +196,7 @@ class uvm_reg_fifo extends uvm_reg;
 
 
 
-    // @uvm-ieee 1800.2-2017 auto 18.8.5.1
+    // @uvm-ieee 1800.2-2020 auto 18.8.5.1
     virtual function uvm_reg_data_t get(string fname="", int lineno=0);
        //return fifo.pop_front();
        return fifo[0];
@@ -212,30 +225,36 @@ class uvm_reg_fifo extends uvm_reg;
 
       super.do_predict(rw,kind,be);
 
-      if (rw.status == UVM_NOT_OK)
+      if (rw.get_status() ==UVM_NOT_OK) begin
+        
         return;
+      end
+
 
       case (kind)
 
         UVM_PREDICT_WRITE,
-        UVM_PREDICT_DIRECT:
-        begin
-           if (fifo.size() != m_size && !m_update_in_progress)
-             fifo.push_back(this.value.value);
+        UVM_PREDICT_DIRECT: begin
+        
+          if (fifo.size() != m_size && !m_update_in_progress) begin
+             
+            fifo.push_back(this.value.value);
+          end
+
         end
 
-        UVM_PREDICT_READ:
-        begin
-           uvm_reg_data_t value = rw.value[0] & ((1 << get_n_bits())-1);
-           uvm_reg_data_t mirror_val;
-           if (fifo.size() == 0) begin
-             return;
-           end
-           mirror_val = fifo.pop_front();
-           if (this.value.get_compare() == UVM_CHECK && mirror_val != value) begin
-              `uvm_warning("MIRROR_MISMATCH",
-               $sformatf("Observed DUT read value 'h%0h != mirror value 'h%0h",value,mirror_val))
-           end
+        UVM_PREDICT_READ: begin
+        
+          uvm_reg_data_t value = rw.get_value(0) & ((1 << get_n_bits())-1);
+          uvm_reg_data_t mirror_val;
+          if (fifo.size() == 0) begin
+            return;
+          end
+          mirror_val = fifo.pop_front();
+          if (this.value.get_compare() == UVM_CHECK && mirror_val != value) begin
+            `uvm_warning("MIRROR_MISMATCH",
+            $sformatf("Observed DUT read value 'h%0h != mirror value 'h%0h",value,mirror_val))
+          end
         end
 
       endcase
@@ -257,12 +276,12 @@ class uvm_reg_fifo extends uvm_reg;
     virtual task pre_write(uvm_reg_item rw);
       if (m_set_cnt && !m_update_in_progress) begin
         `uvm_error("Needs Update","Must call update() after set() and before write()")
-        rw.status = UVM_NOT_OK;
+        rw.set_status(UVM_NOT_OK);
         return;
       end
       if (fifo.size() >= m_size && !m_update_in_progress) begin
         `uvm_error("FIFO Full","Write to full FIFO ignored")
-        rw.status = UVM_NOT_OK;
+        rw.set_status(UVM_NOT_OK);
         return;
       end
     endtask
@@ -279,7 +298,7 @@ class uvm_reg_fifo extends uvm_reg;
     virtual task pre_read(uvm_reg_item rw);
       // abort if fifo empty
       if (fifo.size() == 0) begin
-        rw.status = UVM_NOT_OK;
+        rw.set_status(UVM_NOT_OK);
         return;
       end
     endtask

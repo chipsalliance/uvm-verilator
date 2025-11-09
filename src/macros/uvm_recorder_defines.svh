@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------
-// Copyright 2007-2009 Mentor Graphics Corporation
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2018 NVIDIA Corporation
+// Copyright 2007-2009 Mentor Graphics Corporation
+// Copyright 2018-2024 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -18,6 +18,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/macros/uvm_recorder_defines.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 //------------------------------------------------------------------------------
 // Group -- NODOCS -- Recording Macros
@@ -77,7 +87,7 @@
     `define uvm_record_attribute(TR_HANDLE,NAME,VALUE,RECORDER=recorder) \
       $add_attribute(TR_HANDLE,VALUE,NAME);
   `else
-    // @uvm-ieee 1800.2-2017 auto B.2.3.1
+    // @uvm-ieee 1800.2-2020 auto B.2.3.1
     `define uvm_record_attribute(TR_HANDLE,NAME,VALUE,RECORDER=recorder) \
       RECORDER.record_generic(NAME, $sformatf("%p", VALUE)); 
   `endif
@@ -96,7 +106,7 @@
 //
 
 `ifndef uvm_record_int
-  // @uvm-ieee 1800.2-2017 auto B.2.3.2
+  // @uvm-ieee 1800.2-2020 auto B.2.3.2
   `define uvm_record_int(NAME,VALUE,SIZE,RADIX = UVM_NORADIX,RECORDER=recorder) \
     if (RECORDER != null && RECORDER.is_open()) begin \
       if (RECORDER.use_record_attribute()) \
@@ -122,7 +132,7 @@
 //
 
 `ifndef uvm_record_string
-  // @uvm-ieee 1800.2-2017 auto B.2.3.3
+  // @uvm-ieee 1800.2-2020 auto B.2.3.3
   `define uvm_record_string(NAME,VALUE,RECORDER=recorder) \
     if (RECORDER != null && RECORDER.is_open()) begin \
       if (RECORDER.use_record_attribute()) \
@@ -144,7 +154,7 @@
 // will be passed to <uvm_recorder::record_time>.
 //
 `ifndef uvm_record_time
-  // @uvm-ieee 1800.2-2017 auto B.2.3.4
+  // @uvm-ieee 1800.2-2020 auto B.2.3.4
   `define uvm_record_time(NAME,VALUE,RECORDER=recorder) \
     if (RECORDER != null && RECORDER.is_open()) begin \
       if (RECORDER.use_record_attribute()) \
@@ -167,7 +177,7 @@
 // will be passed to <uvm_recorder::record_field_real>.
 //
 `ifndef uvm_record_real
-  // @uvm-ieee 1800.2-2017 auto B.2.3.5
+  // @uvm-ieee 1800.2-2020 auto B.2.3.5
   `define uvm_record_real(NAME,VALUE,RECORDER=recorder) \
     if (RECORDER != null && RECORDER.is_open()) begin \
       if (RECORDER.use_record_attribute()) \
@@ -177,7 +187,7 @@
     end
 `endif
 
-// @uvm-ieee 1800.2-2017 auto B.2.3.6
+// @uvm-ieee 1800.2-2020 auto B.2.3.6
 `define uvm_record_field(NAME,VALUE,RECORDER=recorder) \
    if (RECORDER != null && RECORDER.is_open()) begin \
      if (RECORDER.use_record_attribute()) begin \
@@ -200,10 +210,41 @@
     end \
  end
 
+// uvm_record_object*
+// -----------------
+
+`define uvm_record_object(VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, RECORDER=recorder) \
+  `uvm_record_named_object(`"VALUE`", VALUE, RECURSION_POLICY, RECORDER)
+
+`define uvm_record_named_object(NAME, VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, RECORDER=recorder) \
+if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+    (RECURSION_POLICY != RECORDER.get_recursion_policy())) begin \
+  uvm_recursion_policy_enum __saved_recursion_policy  = RECORDER.get_recursion_policy(); \
+  RECORDER.set_recursion_policy(RECURSION_POLICY); \
+  `m_uvm_record_named_object(NAME, VALUE, RECORDER) \
+  RECORDER.set_recursion_policy(__saved_recursion_policy); \
+end \
+else begin \
+  `m_uvm_record_named_object(NAME, VALUE, RECORDER) \
+end
+
+
+`define m_uvm_record_named_object(NAME, VALUE, RECORDER) \
+if (RECORDER.object_recorded(VALUE, RECORDER.get_recursion_policy()) != uvm_policy::NEVER) begin \
+  uvm_recursion_policy_enum __saved_recursion_policy = RECORDER.get_recursion_policy(); \
+  RECORDER.set_recursion_policy(UVM_REFERENCE); \
+  RECORDER.record_object(NAME, VALUE); \
+  RECORDER.set_recursion_policy(__saved_recursion_policy); \
+end \
+else begin \
+  RECORDER.record_object(NAME, VALUE); \
+end
+
+
 // uvm_record_qda_int
 // ------------------
 
-`define uvm_record_qda_int(ARG, RADIX,RECORDER=recorder) \
+  `define uvm_record_qda_int(ARG, RADIX,RECORDER=recorder) \
   begin \
     int sz__ = $size(ARG); \
     if(sz__ == 0) begin \
@@ -230,29 +271,43 @@
 // uvm_record_qda_object
 // ---------------------
 
-`define uvm_record_qda_object(ARG,RECORDER=recorder) \
-  begin \
-    int sz__ = $size(ARG); \
-    if(sz__ == 0) begin \
-      `uvm_record_int(`"ARG`", 0, 32, UVM_DEC, RECORDER) \
-    end \
-    else if(sz__ < 10) begin \
-      foreach(ARG[i]) begin \
-        string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        RECORDER.record_object(nm__, ARG[i]); \
-      end \
-    end \
+`define uvm_record_qda_object(VALUE, RECURSION_POLICY=UVM_DEFAULT_POLICY, RECORDER=recorder) \
+   begin \
+    int sz__ = $size(VALUE); \
+     if(sz__ == 0) begin \
+      `uvm_record_int(`"VALUE`", 0, 32, UVM_DEC, RECORDER) \
+     end \
     else begin \
-      for(int i=0; i<5; ++i) begin \
-        string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        RECORDER.record_object(nm__, ARG[i]); \
-      end \
-      for(int i=sz__-5; i<sz__; ++i) begin \
-        string nm__ = $sformatf("%s[%0d]", `"ARG`", i); \
-        RECORDER.record_object(nm__, ARG[i]); \
-      end \
-    end \
-  end
+      uvm_recursion_policy_enum __tmp_recursion_policy; \
+      __tmp_recursion_policy  = RECORDER.get_recursion_policy(); \
+      if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+          (__tmp_recursion_policy != RECURSION_POLICY)) \
+        RECORDER.set_recursion_policy(RECURSION_POLICY); begin \
+        if(sz__ < 10) begin \
+          foreach(VALUE[__tmp_index]) begin \
+            `m_uvm_record_named_object($sformatf("%s[%0d]", `"VALUE`", __tmp_index), \
+                                      VALUE[__tmp_index], \
+                                      RECORDER) \
+           end \
+         end \
+         else begin \
+          for(int __tmp_index=0; __tmp_index<5; ++__tmp_index) begin \
+            `m_uvm_record_named_object($sformatf("%s[%0d]", `"VALUE`", __tmp_index), \
+                                      VALUE[__tmp_index], \
+                                      RECORDER) \
+          end \
+          for(int __tmp_index=sz__-5; __tmp_index<sz__; ++__tmp_index) begin \
+            `m_uvm_record_named_object($sformatf("%s[%0d]", `"VALUE`", __tmp_index), \
+                                      VALUE[__tmp_index], \
+                                      RECORDER) \
+          end \
+         end \
+       end \
+      if ((RECURSION_POLICY != UVM_DEFAULT_POLICY) && \
+          (__tmp_recursion_policy != RECURSION_POLICY)) \
+        RECORDER.set_recursion_policy(__tmp_recursion_policy); \
+     end \
+   end
 
 // uvm_record_qda_enum
 // --------------------
@@ -310,7 +365,7 @@
       end \
     end \
   end
-		 
+         
 // uvm_record_qda_real
 // ---------------------
 

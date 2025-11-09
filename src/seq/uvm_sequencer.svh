@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------
-// Copyright 2007-2011 Mentor Graphics Corporation
-// Copyright 2010-2014 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2010-2011 AMD
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2014 Cisco Systems, Inc.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
+// Copyright 2010-2014 Synopsys, Inc.
 // Copyright 2017 Verific
 //   All Rights Reserved Worldwide
 //
@@ -23,6 +23,16 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/seq/uvm_sequencer.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 
 //------------------------------------------------------------------------------
 //
@@ -30,21 +40,18 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 15.5.1
+// @uvm-ieee 1800.2-2020 auto 15.5.1
 class uvm_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
                                    extends uvm_sequencer_param_base #(REQ, RSP);
 
   typedef uvm_sequencer #( REQ , RSP) this_type;
-
-  bit sequence_item_requested;
-  bit get_next_item_called;
 
   `uvm_component_param_utils(this_type)
 
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.5.2.2
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.1
   extern function new (string name, uvm_component parent=null);
   
 
@@ -88,31 +95,37 @@ class uvm_sequencer #(type REQ=uvm_sequence_item, RSP=REQ)
   // Task -- NODOCS -- get_next_item
   // Retrieves the next available item from a sequence.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.3
   extern virtual task          get_next_item (output REQ t);
 
   // Task -- NODOCS -- try_next_item
   // Retrieves the next available item from a sequence if one is available.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.4
   extern virtual task          try_next_item (output REQ t);
 
   // Function -- NODOCS -- item_done
   // Indicates that the request is completed.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.5
   extern virtual function void item_done     (RSP item = null);
 
   // Task -- NODOCS -- put
   // Sends a response back to the sequence that issued the request.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.8
   extern virtual task          put           (RSP t);
 
   // Task -- NODOCS -- get
   // Retrieves the next available item from a sequence.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.6
   extern task                  get           (output REQ t);
 
   // Task -- NODOCS -- peek
   // Returns the current request item if one is in the FIFO.
   //
+  // @uvm-ieee 1800.2-2020 auto 15.5.2.7
   extern task                  peek          (output REQ t);
 
   /// Documented here for clarity, implemented in uvm_sequencer_base
@@ -208,18 +221,14 @@ task uvm_sequencer::get_next_item(output REQ t);
   // If a sequence_item has already been requested, then get_next_item()
   // should not be called again until item_done() has been called.
 
-  if (get_next_item_called == 1)
+  if (get_next_item_called == 1) begin
+    
     uvm_report_error(get_full_name(),
       "Get_next_item called twice without item_done or get in between", UVM_NONE);
-  
-  if (!sequence_item_requested)
-    m_select_sequence();
+  end
 
-  // Set flag indicating that the item has been requested to ensure that item_done or get
-  // is called between requests
-  sequence_item_requested = 1;
-  get_next_item_called = 1;
-  m_req_fifo.peek(t);
+  
+  m_safe_select_item(1, t);
 endtask
 
 
@@ -228,8 +237,9 @@ endtask
 
 task uvm_sequencer::try_next_item(output REQ t);
   int selected_sequence;
+  uvm_sequence_request selected_sequence_request;
+  bit found_item;
   time arb_time;
-  uvm_sequence_base seq;
 
   if (get_next_item_called == 1) begin
     uvm_report_error(get_full_name(), "get_next_item/try_next_item called twice without item_done or get in between", UVM_NONE);
@@ -238,34 +248,63 @@ task uvm_sequencer::try_next_item(output REQ t);
     
   // allow state from last transaction to settle such that sequences'
   // relevancy can be determined with up-to-date information
-  wait_for_sequences();
+  repeat (m_wait_for_sequences_count) begin
+    wait_for_sequences();
 
-  // choose the sequence based on relevancy
-  selected_sequence = m_choose_next_request();
+    // choose the sequence based on relevancy
+    selected_sequence = m_choose_next_request();
 
-  // return if none available
-  if (selected_sequence == -1) begin
-    t = null;
-    return;
+    if (selected_sequence != -1) begin
+      
+      break;
+    end
+
   end
 
-  // now, allow chosen sequence to resume
-  m_set_arbitration_completed(arb_sequence_q[selected_sequence].request_id);
-  seq = arb_sequence_q[selected_sequence].sequence_ptr;
-  arb_sequence_q.delete(selected_sequence);
-  m_update_lists();
-  sequence_item_requested = 1;
-  get_next_item_called = 1;
+  t = null;
 
-  // give it one NBA to put a new item in the fifo
-  wait_for_sequences();
+  // return if none available
+  while (selected_sequence != -1) begin
+  
+    // now, allow chosen sequence to resume
+    selected_sequence_request = arb_sequence_q[selected_sequence];
+    m_set_arbitration_completed(selected_sequence_request.request_id);
+    arb_sequence_q.delete(selected_sequence);
+    m_update_lists();
+    sequence_item_requested = 1;
+    get_next_item_called = 1;
 
-  // attempt to get the item; if it fails, produce an error and return
-  if (!m_req_fifo.try_peek(t))
-    uvm_report_error("TRY_NEXT_BLOCKED", {"try_next_item: the selected sequence '",
-      seq.get_full_name(), "' did not produce an item within an NBA delay. ",
-      "Sequences should not consume time between calls to start_item and finish_item. ",
-      "Returning null item."}, UVM_NONE);
+    repeat (m_wait_for_sequences_count) begin
+      // give it one NBA to put a new item in the fifo
+      wait_for_sequences();
+
+      // attempt to get the item; if it fails, produce an error and return
+      found_item = m_req_fifo.try_peek(t);
+      if (found_item) begin
+        
+        return;
+      end
+
+    end
+  
+    // re-arbitrate if the sequence was killed or finished after it won arbitration but before it was
+    // able to send its request.
+    if (selected_sequence_request.process_id.status inside {process::KILLED,process::FINISHED}) begin
+      // clean up arb_completed in case the sequence never saw that it won arbitration
+      if (arb_completed.exists(selected_sequence_request.request_id)) begin
+        arb_completed.delete(selected_sequence_request.request_id);
+      end
+      // choose the sequence based on relevancy
+      selected_sequence = m_choose_next_request();
+    end
+    else begin        
+      string msg = "try_next_item: the selected sequence '%s' did not produce an item within %0d wait_for_sequences call%s.  If the sequence requires more deltas/NBA within this time step, then the wait_for_sequences_count value for this sequencer should be increased.  Note that sequences should not consume non-delta/NBA time between calls to start_item and finish_item.  Returning null item.";
+      `uvm_error("TRY_NEXT_BLOCKED", $sformatf(msg, selected_sequence_request.sequence_ptr.get_full_name(),m_wait_for_sequences_count,
+      (m_wait_for_sequences_count>1)?"s":""))
+      return;
+    end // else: !if(selected_sequence_request.process_id.status inside {process::KILLED,process::FINISHED})
+
+  end // while (selected_sequence != -1)
 
 endtask
 
@@ -309,11 +348,7 @@ endtask
 // ---
 
 task uvm_sequencer::get(output REQ t);
-  if (sequence_item_requested == 0) begin
-    m_select_sequence();
-  end
-  sequence_item_requested = 1;
-  m_req_fifo.peek(t);
+  m_safe_select_item(0, t);
   item_done();
 endtask
 
@@ -322,15 +357,7 @@ endtask
 // ----
 
 task uvm_sequencer::peek(output REQ t);
-
-  if (sequence_item_requested == 0) begin
-    m_select_sequence();
-  end
-  
-  // Set flag indicating that the item has been requested to ensure that item_done or get
-  // is called between requests
-  sequence_item_requested = 1;
-  m_req_fifo.peek(t);
+  m_safe_select_item(0, t);
 endtask
 
 

@@ -1,12 +1,13 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2014 Intel Corporation
-// Copyright 2004-2010 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2021 Marvell International Ltd.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2015-2024 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2004-2010 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -25,9 +26,19 @@
 // -------------------------------------------------------------
 //
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/reg/uvm_reg_model.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 //------------------------------------------------------------------------------
 // TITLE -- NODOCS -- Global Declarations for the Register Layer
 //------------------------------------------------------------------------------
+
 //
 // This section defines globally available types, enums, and utility classes.
 //
@@ -174,10 +185,11 @@ typedef uvm_resource_db#(uvm_reg_cvr_t) uvm_reg_cvr_rsrc_db;
       UVM_DEFAULT_DOOR
    } uvm_door_e;
 
-`ifdef UVM_ENABLE_DEPRECATED_API
-   typedef uvm_door_e uvm_path_e;
-   parameter uvm_path_e UVM_DEFAULT_PATH = UVM_DEFAULT_DOOR;
-`endif
+   //@uvm-compat for compatibility with 1.2
+   parameter uvm_door_e UVM_DEFAULT_PATH = UVM_DEFAULT_DOOR ; 
+
+   //@uvm-compat for compatibility with 1.2
+   typedef uvm_door_e uvm_path_e ; 
 
 // Enum -- NODOCS -- uvm_check_e
 //
@@ -352,7 +364,8 @@ typedef enum bit [63:0] {
 //
 //------------------------------------------------------------------------------
 
-class uvm_hdl_path_concat;
+// @uvm-ieee 1800.2-2020 auto 17.2.3.2
+class uvm_hdl_path_concat extends uvm_void;
 
    // Variable -- NODOCS -- slices
    // Array of individual slices,
@@ -367,6 +380,7 @@ class uvm_hdl_path_concat;
 
    // Function -- NODOCS -- add_slice
    // Append the specified ~slice~ literal to the path concatenation
+   // @uvm-ieee 1800.2-2020 auto 17.2.3.3.4
    function void add_slice(uvm_hdl_path_slice slice);
       slices = new [slices.size()+1] (slices);
       slices[slices.size()-1] = slice;
@@ -399,15 +413,22 @@ function automatic string uvm_hdl_concat2string(uvm_hdl_path_concat concat);
    if (concat.slices.size() == 1 &&
        concat.slices[0].offset == -1 &&
        concat.slices[0].size == -1)
-      return concat.slices[0].path;
+     begin
+       return concat.slices[0].path;
+     end
 
-   foreach (concat.slices[i]) begin
-      uvm_hdl_path_slice slice=concat.slices[i];
 
-      image = { image, (i == 0) ? "" : ", ", slice.path };
-      if (slice.offset >= 0)
+   foreach (concat.slices[i]) 
+     begin
+       uvm_hdl_path_slice slice=concat.slices[i];
+
+       image = { image, (i == 0) ? "" : ", ", slice.path };
+       if (slice.offset >= 0)
+       begin
          image = { image, "@", $sformatf("[%0d +: %0d]", slice.offset, slice.size) };
-   end
+       end
+
+     end
 
    image = { image, "}" };
 
@@ -439,6 +460,7 @@ typedef struct packed {
 `include "reg/uvm_reg_map.svh"
 `include "reg/uvm_reg_block.svh"
 
+`include "reg/sequences/uvm_reg_randval.svh"
 `include "reg/sequences/uvm_reg_hw_reset_seq.svh"
 `include "reg/sequences/uvm_reg_bit_bash_seq.svh"
 `include "reg/sequences/uvm_mem_walk_seq.svh"

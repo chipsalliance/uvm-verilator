@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
-// Copyright 2009-2018 Mentor Graphics Corporation
-// Copyright 2010-2011 Synopsys, Inc.
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2009-2023 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
+// Copyright 2010-2011 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -19,6 +19,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/dpi/uvm_hdl_questa.c $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 #include "uvm_dpi.h"
 
@@ -66,13 +76,12 @@ static int uvm_hdl_max_width()
 int uvm_is_vhdl_path(char *path) {
 
   char *path_ptr = path;
-  int path_len, idx;
+  int path_len;
 
   mtiSignalIdT signal_id;
 
   path_len = strlen(path);
   path_ptr = (char*)(path+path_len-1);
-//  vpi_printf("in uvm_is_vhdl_path with path=%s path_len = %d", path, path_len);
   if (*path_ptr != ']') {
     signal_id = mti_FindSignal(path);
   } else {
@@ -81,24 +90,24 @@ int uvm_is_vhdl_path(char *path) {
       path_len--;
     }
     if(path == path_ptr) {
-//      vpi_printf("Something strange\n");
       return 0; // Something strange about string
     }
     if(*path_ptr == '[') {
       path_len--;
     }
-    char path_copy[1024];
-    strncpy(path_copy, path, path_len);
+
+    char path_copy[path_len+1];
+    int i;
+    for(i = 0; i < path_len; i++) {
+       path_copy[i] = path[i];
+    }    
+
     path_copy[path_len]='\0';
-//    vpi_printf("Normalised path is %s path_len = %d", path_copy, path_len);
     signal_id = mti_FindSignal(path_copy);
-//    vpi_printf("returned from MTI land\n");
   }
   if (signal_id) {
-//  vpi_printf("Returning OK\n");
     return 1;
   } else {
-//  vpi_printf("VHDL signal not found\n");
     return 0;
   }
 }
@@ -122,7 +131,7 @@ void
 string_to_vecval(char *s, int nbits, p_vpi_vecval value)
 {
   char *p;
-  int i, j, k;
+  int j, k;
   int bits_assigned;
   int chunks;
   int abit, bbit;
@@ -141,6 +150,7 @@ string_to_vecval(char *s, int nbits, p_vpi_vecval value)
       else if (c == '0') { abit = 0; bbit = 0; }
       else if (c == 'x') { abit = 1; bbit = 1; }
       else if (c == 'z') { abit = 0; bbit = 1; }
+      else { abit = 0; bbit = 0; }
 
       value[j].aval = value[j].aval << 1;
       value[j].bval = value[j].bval << 1;
@@ -177,7 +187,7 @@ vecval_to_string(int nbits, p_vpi_vecval value)
   static int   string_buffer_size = 16;
 
   char *p;
-  int i, j, k;
+  int j, k;
   int bits_assigned;
   int chunks;
   int abit, bbit;
@@ -209,6 +219,7 @@ vecval_to_string(int nbits, p_vpi_vecval value)
       else if ((abit == 0) && (bbit == 0)) c = '0';
       else if ((abit == 1) && (bbit == 1)) c = 'x';
       else if ((abit == 0) && (bbit == 1)) c = 'z';
+      else { c = 'x'; }
 
       p--;
       *p = c;
@@ -346,9 +357,8 @@ int uvm_register_get_vhdl(char *path, p_vpi_vecval value)
 {
     mtiSignalIdT signal_id;
     mtiTypeIdT   signal_type;
-    mtiInt32T *int_array;
     char *char_array;
-    int nbits;
+    int nbits = 0;
 
     char *path_ptr = path;
     int path_len;
@@ -381,7 +391,6 @@ int uvm_register_get_vhdl(char *path, p_vpi_vecval value)
       }
     } else {
       // A vectored access
-//      vpi_printf("Read access to a VHDL vector");
       while(path_ptr != path && *path_ptr != '[') {
         path_ptr--;
         path_len--;
@@ -410,22 +419,14 @@ int uvm_register_get_vhdl(char *path, p_vpi_vecval value)
 
           if(sscanf(path_ptr,"[%u:%u]",&lhs, &rhs)) {
             int i;
-            char index_str[20];
-  //          char path_str[80];
-  //          char vector_val[128];
-  //          char *bit_val[5];
-  //          char* fred;
-
             incr = (lhs>rhs) ? 1 : -1;
             width = (lhs>rhs) ? lhs-rhs+1 : rhs-lhs+1;
             char* vectors = vhdl_array_of_char2string(char_array, nbits);
-//            vpi_printf("Vector found was %s [%d:%d] incr is %d nbits is %d\n", vectors, lhs, rhs, incr, nbits);
             char reduced_vector[256];
             for (i = 0; i < width; i++) {
               reduced_vector[i] = vectors[(nbits-1)-lhs];
               lhs -= incr;
             }
-//            vpi_printf("Vector[%d:%d] is %s", lhs, rhs, reduced_vector);
             string_to_vecval(reduced_vector, width, value);
           } else {
             return 0;
@@ -440,19 +441,10 @@ int uvm_register_get_vhdl(char *path, p_vpi_vecval value)
             return 0;
           }
         }
-
-
-  //        string_to_vecval(
-  //          vhdl_array_of_char2string(char_array, nbits),
-  //          nbits,
-  //          value);
-
-
           mti_VsimFree(char_array);
           return 1;
 
         } else {
-//          vpi_printf("VHDL signal not for %s", path_copy);
           return 0;
         }
 
@@ -469,13 +461,13 @@ int uvm_register_get_vhdl(char *path, p_vpi_vecval value)
 int uvm_register_set_vhdl(char *path, p_vpi_vecval value, mtiForceTypeT forceType)
 {
     mtiSignalIdT signal_id;
-    mtiTypeIdT   signal_type, element_type;
-    mtiInt32T *int_array;
+    mtiTypeIdT   signal_type;
+
     char      *char_array;
     char *path_ptr = path;
     int path_len;
 
-    int nbits;
+    int nbits = 0;
     path_len = strlen(path);
     path_ptr = (char*)(path+path_len-1);
 
@@ -543,8 +535,6 @@ int uvm_register_set_vhdl(char *path, p_vpi_vecval value, mtiForceTypeT forceTyp
           char vector_val[128];
 
           strcpy(vector_val,vecval_to_string(nbits, value));
-//          vpi_printf("LHS %u RHS %u", lhs, rhs);
-//          vpi_printf("Vector string is %s", vector_val);
           incr = (lhs>rhs) ? 1 : -1;
           width = (lhs>rhs) ? lhs-rhs+1 : rhs-lhs+1;
 
@@ -552,17 +542,14 @@ int uvm_register_set_vhdl(char *path, p_vpi_vecval value, mtiForceTypeT forceTyp
             sprintf(index_str,"(%u)",rhs);
             rhs += incr;
             strcpy(path_str, path_copy);
-//            vpi_printf("Index string is %s\n", index_str);
             strcat(path_str,index_str);
             signal_id = mti_FindSignal(path_str);
 			if (forceType == MTI_RELEASE_SIGNAL) {
               mti_ReleaseSignal(signal_id);
 			} else {
               if(vector_val[(nbits-i)-1] == '1') {
-//              vpi_printf("Path string is %s = 1\n", path_str);
                 mti_ForceSignal(signal_id, (char*)"1", 0, MTI_FORCE_DEPOSIT, -1, -1);
               } else {
-//              vpi_printf("Path string is %s = 0\n", path_str);
                 mti_ForceSignal(signal_id, (char*)"0", 0, MTI_FORCE_DEPOSIT, -1, -1);
               }
 			}
@@ -576,20 +563,16 @@ int uvm_register_set_vhdl(char *path, p_vpi_vecval value, mtiForceTypeT forceTyp
           char vector_val[128];
 
           strcpy(vector_val,vecval_to_string(nbits, value));
-//          vpi_printf("Vector string is %s", vector_val);
             sprintf(index_str,"(%u)",rhs);
             strcpy(path_str, path_copy);
-//            vpi_printf("Index string is %s\n", index_str);
             strcat(path_str,index_str);
             signal_id = mti_FindSignal(path_str);
 			if (forceType == MTI_RELEASE_SIGNAL) {
               mti_ReleaseSignal(signal_id);
 			} else {
               if(vector_val[(nbits-1)-rhs] == '1') {
-//                vpi_printf("Path string is %s = 1\n", path_str);
                 mti_ForceSignal(signal_id, (char*)"1", 0, MTI_FORCE_DEPOSIT, -1, -1);
               } else {
-//                vpi_printf("Path string is %s = 0\n", path_str);
                 mti_ForceSignal(signal_id, (char*)"0", 0, MTI_FORCE_DEPOSIT, -1, -1);
               }
 			}
@@ -598,7 +581,6 @@ int uvm_register_set_vhdl(char *path, p_vpi_vecval value, mtiForceTypeT forceTyp
 
       }
 
-//      vpi_printf("Finished setting VHDL");
       mti_VsimFree(char_array);
       return 1;
     }
@@ -620,7 +602,7 @@ static int partsel = 0;
 static int uvm_hdl_set_vlog_partsel(char *path, p_vpi_vecval value, PLI_INT32 flag)
 {
   char *path_ptr = path;
-  int path_len, idx;
+  int path_len;
   svLogicVecVal bit_value;
 
   path_len = strlen(path);
@@ -664,6 +646,7 @@ static int uvm_hdl_set_vlog_partsel(char *path, p_vpi_vecval value, PLI_INT32 fl
     }
     return 1;
   }
+  return 0;
 }
 
 
@@ -676,7 +659,7 @@ static int uvm_hdl_set_vlog_partsel(char *path, p_vpi_vecval value, PLI_INT32 fl
 static int uvm_hdl_get_vlog_partsel(char *path, p_vpi_vecval value, PLI_INT32 flag)
 {
   char *path_ptr = path;
-  int path_len, idx;
+  int path_len;
   svLogicVecVal bit_value;
 
   path_len = strlen(path);
@@ -725,6 +708,7 @@ static int uvm_hdl_get_vlog_partsel(char *path, p_vpi_vecval value, PLI_INT32 fl
     partsel = 0;
     return 1;
   }
+  return 0;
 }
 
 
@@ -739,11 +723,9 @@ static int uvm_hdl_set_vlog(char *path, p_vpi_vecval value, PLI_INT32 flag)
   s_vpi_value value_s = { vpiIntVal, { 0 } };
   s_vpi_time  time_s = { vpiSimTime, 0, 0, 0.0 };
 
-  //vpi_printf("uvm_hdl_set_vlog(%s,%0x)\n",path,value[0].aval);
 
   int result = 0;
   result = uvm_hdl_set_vlog_partsel(path,value,flag);
-//  vpi_printf("Verilog path set %sx result is %0d\n", path, result);
   if (result < 0)
     return 0;
   if (result == 1)
@@ -773,15 +755,10 @@ static int uvm_hdl_set_vlog(char *path, p_vpi_vecval value, PLI_INT32 flag)
         maxsize = uvm_hdl_max_width();
 
     if (flag == vpiReleaseFlag) {
-      //size = vpi_get(vpiSize, r);
-      //value_p = (p_vpi_vecval)(malloc(((size-1)/32+1)*8*sizeof(s_vpi_vecval)));
-      //value = &value_p;
     }
     value_s.format = vpiVectorVal;
     value_s.value.vector = value;
     vpi_put_value(r, &value_s, &time_s, flag);
-    //if (value_p != NULL)
-    //  free(value_p);
     if (value == NULL) {
       value = value_s.value.vector;
     }
@@ -854,7 +831,6 @@ static int uvm_hdl_get_vlog(char *path, p_vpi_vecval value, PLI_INT32 flag)
                        M_UVM_NONE,
                        (char*)__FILE__,
                        __LINE__);
-      //tf_dofinish();
       vpi_release_handle(r);
       return 0;
     }
@@ -888,7 +864,6 @@ int uvm_hdl_check_path(char *path)
 
   // Check VHDL for Questa
   if(uvm_is_vhdl_path(path)) {
-    //vpi_printf((PLI_BYTE8*)"VHDL path found\n");
     return 1;
   }
 

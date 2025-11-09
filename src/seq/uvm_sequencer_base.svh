@@ -1,14 +1,16 @@
 //----------------------------------------------------------------------
-// Copyright 2007-2017 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2014 Intel Corporation
-// Copyright 2010-2017 Synopsys, Inc.
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2013 Verilab
 // Copyright 2010-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
-// Copyright 2013-2018 Cisco Systems, Inc.
 // Copyright 2012 Accellera Systems Initiative
+// Copyright 2007-2018 Cadence Design Systems, Inc.
+// Copyright 2013-2018 Cisco Systems, Inc.
+// Copyright 2014 Intel Corporation
+// Copyright 2020-2023 Marvell International Ltd.
+// Copyright 2007-2020 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
+// Copyright 2014 Semifore
+// Copyright 2010-2017 Synopsys, Inc.
+// Copyright 2020 Verific
+// Copyright 2013 Verilab
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -26,6 +28,16 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/seq/uvm_sequencer_base.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 typedef uvm_config_db#(uvm_sequence_base) uvm_config_seq;
 typedef class uvm_sequence_request;
 
@@ -40,14 +52,12 @@ endclass : uvm_sequence_process_wrapper
 // CLASS: uvm_sequencer_base
 //
 // The library implements some public API beyond what is documented
-// in 1800.2.  It also modifies some API described erroneously in 1800.2.
+// in 1800.2.  
 //
 //------------------------------------------------------------------------------
-`ifndef UVM_ENABLE_DEPRECATED_API
-virtual
-`endif
-// @uvm-ieee 1800.2-2017 auto 15.3.1
-class uvm_sequencer_base extends uvm_component;
+
+// @uvm-ieee 1800.2-2020 auto 15.3.1
+virtual class uvm_sequencer_base extends uvm_component;
 
   typedef enum {SEQ_TYPE_REQ,
                 SEQ_TYPE_LOCK} seq_req_t; 
@@ -73,24 +83,51 @@ class uvm_sequencer_base extends uvm_component;
   local static int              g_sequence_id = 1;
   local static int              g_sequencer_id = 1;
 
-
+  protected int                 m_wait_for_sequences_count;  // specifies the # of times the sequencer
+                                                             // should call wait_for_sequences().  A
+                                                             // value > 1 allows sequencer stacking.
   // Function -- NODOCS -- new
   //
   // Creates and initializes an instance of this class using the normal
   // constructor arguments for uvm_component: name is the name of the
   // instance, and parent is the handle to the hierarchical parent.
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.1
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.1
   extern function new (string name, uvm_component parent);
 
+  // Variable: wait_for_sequences_count
+  // Controls the number of wait_for_sequences calls when selecting next sequence.
+  //
+  // By default, the sequencers will wait for 1 ~wait_for_sequences~ call
+  // when selecting a new sequence.  When stacking sequencers, this will
+  // cause a problem as the single call in a low level sequencer is absorbed
+  // by the next call in the higher level sequencer(s).  This problem can be avoided
+  // by setting the value of "wait_for_sequences_count" to a value higher than
+  // 1 for the lower level sequencer(s) using the config database, e.g.:
+  //
+  //| uvm_config_db#(int)::set(this, "path.to.sequencer", "wait_for_sequences_count", 4);
+  //
+  // Setting wait_for_sequences_count less than 1 will be ignored.  
+  //
+  // Note: Each successively lower sequencer in a stack will require a higher wait_for_sequences_count
+  // value in order to absorb all potential wait_for_sequences() counts in each higher level
+  // of the stack.
+  //
+  // Note: Increasing this value will decrease the efficiency of the sequencer
+  // in the event of a get/get_next_item/peek/try_next_item call when no items
+  // are actually available.  As such, care should be taken to avoid unnecessarily
+  // increasing the value.
+  //
+  // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
+  extern virtual function void build_phase(uvm_phase phase);
+  
 
-
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.2
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.2
   extern function bit is_child (uvm_sequence_base parent, uvm_sequence_base child);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.3
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.3
   extern virtual function int user_priority_arbitration(int avail_sequences[$]);
 
 
@@ -102,7 +139,7 @@ class uvm_sequencer_base extends uvm_component;
   // sequencer, eventually causing response overflow unless
   // <uvm_sequence_base::set_response_queue_error_report_enabled> is called.
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.5
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.5
   extern virtual task execute_item(uvm_sequence_item item);
 
   // Hidden array, keeps track of running default sequences
@@ -186,97 +223,72 @@ class uvm_sequencer_base extends uvm_component;
   // other than delta cycles.  The driver is currently waiting for the next
   // item to be sent via the send_request call.
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.6
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.6
   extern virtual task wait_for_grant(uvm_sequence_base sequence_ptr,
                                      int item_priority = -1,
                                      bit lock_request = 0);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.7
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.7
   extern virtual task wait_for_item_done(uvm_sequence_base sequence_ptr,
                                          int transaction_id);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.8
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.8
   extern function bit is_blocked(uvm_sequence_base sequence_ptr);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.9
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.9
   extern function bit has_lock(uvm_sequence_base sequence_ptr);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.10
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.10
   extern virtual task lock(uvm_sequence_base sequence_ptr);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.11
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.11
   extern virtual task grab(uvm_sequence_base sequence_ptr);
 
-
-
-  // Function: unlock
-  //
-  //| extern virtual function void unlock(uvm_sequence_base sequence_ptr);
-  //
-  // Implementation of unlock, as defined in P1800.2-2017 section 15.3.2.12.
-  // 
-  // NOTE: unlock is documented in error as a virtual task, whereas it is 
-  // implemented as a virtual function.
-  //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
-
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.12
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.12
   extern virtual function void unlock(uvm_sequence_base sequence_ptr);
 
-
-  // Function: ungrab
-  //
-  //| extern virtual function void ungrab(uvm_sequence_base sequence_ptr);
-  //
-  // Implementation of ungrab, as defined in P1800.2-2017 section 15.3.2.13.
-  // 
-  // NOTE: ungrab is documented in error as a virtual task, whereas it is 
-  // implemented as a virtual function.
-  //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
-
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.13
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.13
   extern virtual function void  ungrab(uvm_sequence_base sequence_ptr);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.14
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.14
   extern virtual function void stop_sequences();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.15
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.15
   extern virtual function bit is_grabbed();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.16
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.16
   extern virtual function uvm_sequence_base current_grabber();
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.17
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.17
   extern virtual function bit has_do_available();
 
  
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.19
-  extern function void set_arbitration(UVM_SEQ_ARB_TYPE val);
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.19
+  extern function void set_arbitration(uvm_sequencer_arb_mode val);
 
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.18
-  extern function UVM_SEQ_ARB_TYPE get_arbitration();
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.18
+  extern function uvm_sequencer_arb_mode get_arbitration();
 
 
   // Task -- NODOCS -- wait_for_sequences
@@ -296,17 +308,17 @@ class uvm_sequencer_base extends uvm_component;
   //
   // This function may only be called after a <wait_for_grant> call.
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.20
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.20
   extern virtual function void send_request(uvm_sequence_base sequence_ptr,
                                             uvm_sequence_item t,
                                             bit rerandomize = 0);
 
 
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.21
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.21
   extern virtual function void set_max_zero_time_wait_relevant_count(int new_val) ;
 
   // Added in IEEE. Not in UVM 1.2
-  // @uvm-ieee 1800.2-2017 auto 15.3.2.4
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.4
   extern virtual function uvm_sequence_base get_arbitration_sequence( int index );
 
   //----------------------------------------------------------------------------
@@ -316,7 +328,7 @@ class uvm_sequencer_base extends uvm_component;
   extern protected function void grant_queued_locks();
 
 
-  extern protected task          m_select_sequence();
+  extern protected task          m_select_sequence(output uvm_sequence_request selected_sequence_request);
   extern protected function int  m_choose_next_request();
   extern           task          m_wait_for_arbitration_completed(int request_id);
   extern           function void m_set_arbitration_completed(int request_id);
@@ -364,11 +376,10 @@ class uvm_sequencer_base extends uvm_component;
 `endif
 
 // Macro: UVM_DISABLE_AUTO_ITEM_RECORDING
-// Performs the same function as the 1800.2 define UVM_DISABLE_RECORDING,
+// Performs the same function as the deprecated 1800.2 define UVM_DISABLE_RECORDING,
 // globally turning off automatic item recording when defined by the user.  
-// Provided for backward compatibility.
 //
-// @uvm-contrib This API is being considered for potential contribution to 1800.2
+// @uvm-accellera
 
 `ifdef UVM_DISABLE_AUTO_ITEM_RECORDING
   local bit m_auto_item_recording = 0;
@@ -379,7 +390,7 @@ class uvm_sequencer_base extends uvm_component;
 
   // Access to following internal methods provided via seq_item_export
 
-  // Function: disable_auto_item_recording
+  // Function -- NODOCS -- disable_auto_item_recording
   //
   // Disables auto_item_recording
   // 
@@ -390,12 +401,13 @@ class uvm_sequencer_base extends uvm_component;
   // This function is implemented here to allow <uvm_push_sequencer#(REQ,RSP)>
   // and <uvm_push_driver#(REQ,RSP)> access to the call.
   //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
+
+  // @uvm-ieee 1800.2-2020 auto 15.3.2.22
   virtual function void disable_auto_item_recording();
     m_auto_item_recording = 0;
   endfunction
 
-  // Function: is_auto_item_recording_enabled
+  // Function -- NODOCS -- is_auto_item_recording_enabled
   //
   // Returns 1 is auto_item_recording is enabled,
   // otherwise 0
@@ -407,7 +419,6 @@ class uvm_sequencer_base extends uvm_component;
   // This function is implemented here to allow <uvm_push_sequencer#(REQ,RSP)>
   // and <uvm_push_driver#(REQ,RSP)> access to the call.
   //
-  // @uvm-contrib This API is being considered for potential contribution to 1800.2
   virtual function bit is_auto_item_recording_enabled();
     return m_auto_item_recording;
   endfunction
@@ -431,8 +442,24 @@ function uvm_sequencer_base::new (string name, uvm_component parent);
   m_sequencer_id = g_sequencer_id++;
   m_lock_arb_size = -1;
   all_sequencer_insts[m_sequencer_id]=this;
+  m_wait_for_sequences_count = 1; // default
 endfunction
 
+// build_phase
+// -----------
+function void uvm_sequencer_base::build_phase(uvm_phase phase);
+  super.build_phase(phase);
+  if (!uvm_config_db#(uvm_bitstream_t)::get(this, "", "wait_for_sequences_count", m_wait_for_sequences_count)) begin
+    
+    void'(uvm_config_db#(int)::get(this, "", "wait_for_sequences_count", m_wait_for_sequences_count));
+  end
+
+  
+  if (m_wait_for_sequences_count < 1) begin
+    `uvm_warning("UVM/SQR/WFSC", $sformatf("attempt to set wait_for_sequences_count to '%0d' will be ignored, values must be 1 or greater!", m_wait_for_sequences_count))
+    m_wait_for_sequences_count = 1;
+  end
+endfunction : build_phase
 
 // do_print
 // --------
@@ -440,15 +467,21 @@ endfunction
 function void uvm_sequencer_base::do_print (uvm_printer printer);
   super.do_print(printer);
   printer.print_array_header("arbitration_queue", arb_sequence_q.size());
-  foreach (arb_sequence_q[i])
+  foreach (arb_sequence_q[i]) begin
+    
     printer.print_string($sformatf("[%0d]", i),
        $sformatf("%s@seqid%0d",arb_sequence_q[i].request.name(),arb_sequence_q[i].sequence_id), "[");
+  end
+
   printer.print_array_footer(arb_sequence_q.size());
 
   printer.print_array_header("lock_queue", lock_list.size());
-  foreach(lock_list[i])
+  foreach(lock_list[i]) begin
+    
     printer.print_string($sformatf("[%0d]", i),
        $sformatf("%s@seqid%0d",lock_list[i].get_full_name(),lock_list[i].get_sequence_id()), "[");
+  end
+
   printer.print_array_footer(lock_list.size());
 endfunction
 
@@ -493,8 +526,11 @@ endfunction
 
 function int uvm_sequencer_base::m_register_sequence(uvm_sequence_base sequence_ptr);
 
-  if (sequence_ptr.m_get_sqr_sequence_id(m_sequencer_id, 1) > 0)
+  if (sequence_ptr.m_get_sqr_sequence_id(m_sequencer_id, 1) > 0) begin
+    
     return sequence_ptr.get_sequence_id();
+  end
+
 
   sequence_ptr.m_set_sqr_sequence_id(m_sequencer_id, g_sequence_id++);
   reg_sequences[sequence_ptr.get_sequence_id()] = sequence_ptr;
@@ -518,8 +554,11 @@ function uvm_sequence_base uvm_sequencer_base::m_find_sequence(int sequence_id);
     return(null);
   end
 
-  if (!reg_sequences.exists(sequence_id))
+  if (!reg_sequences.exists(sequence_id)) begin
+    
     return null;
+  end
+
   return reg_sequences[sequence_id];
 endfunction
 
@@ -528,8 +567,11 @@ endfunction
 // ---------------------
 
 function void uvm_sequencer_base::m_unregister_sequence(int sequence_id);
-  if (!reg_sequences.exists(sequence_id))
+  if (!reg_sequences.exists(sequence_id)) begin
+    
     return;
+  end
+
   reg_sequences.delete(sequence_id);
 endfunction
 
@@ -551,25 +593,25 @@ endfunction
 function void uvm_sequencer_base::grant_queued_locks();
     // remove and report any zombies
     begin
-       uvm_sequence_request zombies[$];
-       zombies = arb_sequence_q.find(item) with (item.request==SEQ_TYPE_LOCK && item.process_id.status inside {process::KILLED,process::FINISHED});
-       foreach(zombies[idx]) begin
-          `uvm_error("SEQLCKZMB", $sformatf("The task responsible for requesting a lock on sequencer '%s' for sequence '%s' has been killed, to avoid a deadlock the sequence will be removed from the arbitration queues", this.get_full_name(), zombies[idx].sequence_ptr.get_full_name()))
-          remove_sequence_from_queues(zombies[idx].sequence_ptr);
-       end
+      uvm_sequence_request zombies[$];
+      zombies = arb_sequence_q.find(item) with (item.request==SEQ_TYPE_LOCK && item.process_id.status inside {process::KILLED,process::FINISHED});
+      foreach(zombies[idx]) begin
+        `uvm_error("SEQLCKZMB", $sformatf("The task responsible for requesting a lock on sequencer '%s' for sequence '%s' has been killed, to avoid a deadlock the sequence will be removed from the arbitration queues", this.get_full_name(), zombies[idx].sequence_ptr.get_full_name()))
+        remove_sequence_from_queues(zombies[idx].sequence_ptr);
+      end
     end
  
     // grant the first lock request that is not blocked, if any
     begin
-       int lock_req_indices[$];
-       lock_req_indices = arb_sequence_q.find_first_index(item) with (item.request==SEQ_TYPE_LOCK && is_blocked(item.sequence_ptr) == 0);
-       if(lock_req_indices.size()) begin
-          uvm_sequence_request lock_req = arb_sequence_q[lock_req_indices[0]];
-          lock_list.push_back(lock_req.sequence_ptr);
-          m_set_arbitration_completed(lock_req.request_id);
-          arb_sequence_q.delete(lock_req_indices[0]);
-          m_update_lists();
-       end
+      int lock_req_indices[$];
+      lock_req_indices = arb_sequence_q.find_first_index(item) with (item.request==SEQ_TYPE_LOCK && is_blocked(item.sequence_ptr) == 0);
+      if(lock_req_indices.size()) begin
+        uvm_sequence_request lock_req = arb_sequence_q[lock_req_indices[0]];
+        lock_list.push_back(lock_req.sequence_ptr);
+        m_set_arbitration_completed(lock_req.request_id);
+        arb_sequence_q.delete(lock_req_indices[0]);
+        m_update_lists();
+      end
     end
 endfunction
 
@@ -577,20 +619,28 @@ endfunction
 // m_select_sequence
 // -----------------
 
-task uvm_sequencer_base::m_select_sequence();
+task uvm_sequencer_base::m_select_sequence(output uvm_sequence_request selected_sequence_request);
    int selected_sequence;
 
     // Select a sequence
     do begin
-      wait_for_sequences();
-      selected_sequence = m_choose_next_request();
+      repeat(m_wait_for_sequences_count) begin
+        wait_for_sequences();
+        selected_sequence = m_choose_next_request();
+        if (selected_sequence != -1) begin
+          
+          break;
+        end
+
+      end
       if (selected_sequence == -1) begin
         m_wait_for_available_sequence();
       end
     end while (selected_sequence == -1);
     // issue grant
     if (selected_sequence >= 0) begin
-      m_set_arbitration_completed(arb_sequence_q[selected_sequence].request_id);
+      selected_sequence_request = arb_sequence_q[selected_sequence];
+      m_set_arbitration_completed(selected_sequence_request.request_id);
       arb_sequence_q.delete(selected_sequence);
       m_update_lists();
     end
@@ -620,22 +670,34 @@ function int uvm_sequencer_base::m_choose_next_request();
 
   i = 0;
   while (i < arb_sequence_q.size()) begin
-     if ((arb_sequence_q[i].process_id.status == process::KILLED) ||
-         (arb_sequence_q[i].process_id.status == process::FINISHED)) begin
-        `uvm_error("SEQREQZMB", $sformatf("The task responsible for requesting a wait_for_grant on sequencer '%s' for sequence '%s' has been killed, to avoid a deadlock the sequence will be removed from the arbitration queues", this.get_full_name(), arb_sequence_q[i].sequence_ptr.get_full_name()))
-         remove_sequence_from_queues(arb_sequence_q[i].sequence_ptr);
-         continue;
-     end
+    if ((arb_sequence_q[i].process_id.status == process::KILLED) ||
+    (arb_sequence_q[i].process_id.status == process::FINISHED)) begin
+      `uvm_error("SEQREQZMB", $sformatf("The task responsible for requesting a wait_for_grant on sequencer '%s' for sequence '%s' has been killed, to avoid a deadlock the sequence will be removed from the arbitration queues", this.get_full_name(), arb_sequence_q[i].sequence_ptr.get_full_name()))
+      remove_sequence_from_queues(arb_sequence_q[i].sequence_ptr);
+      continue;
+    end
 
-    if (i < arb_sequence_q.size())
-      if (arb_sequence_q[i].request == SEQ_TYPE_REQ)
-        if (is_blocked(arb_sequence_q[i].sequence_ptr) == 0)
+    if (i < arb_sequence_q.size()) begin
+      
+      if (arb_sequence_q[i].request == SEQ_TYPE_REQ) begin
+        
+        if (is_blocked(arb_sequence_q[i].sequence_ptr) == 0) begin
+          
           if (arb_sequence_q[i].sequence_ptr.is_relevant() == 1) begin
             if (m_arbitration == UVM_SEQ_ARB_FIFO) begin
               return i;
             end
-            else avail_sequences.push_back(i);
+            else begin
+              avail_sequences.push_back(i);
+            end
+
           end
+        end
+
+      end
+
+    end
+
 
     i++;
   end
@@ -661,10 +723,16 @@ function int uvm_sequencer_base::m_choose_next_request();
         i--;
       end
     end
-    if (avail_sequences.size() < 1)
+    if (avail_sequences.size() < 1) begin
+      
       return -1;
-    if (avail_sequences.size() == 1)
+    end
+
+    if (avail_sequences.size() == 1) begin
+      
       return avail_sequences[0];
+    end
+
   end
 
   //  Weighted Priority Distribution
@@ -680,7 +748,7 @@ function int uvm_sequencer_base::m_choose_next_request();
     sum_priority_val = 0;
     for (i = 0; i < avail_sequences.size(); i++) begin
       if ((m_get_seq_item_priority(arb_sequence_q[avail_sequences[i]]) +
-           sum_priority_val) > temp) begin
+      sum_priority_val) > temp) begin
         return avail_sequences[i];
       end
       sum_priority_val += m_get_seq_item_priority(arb_sequence_q[avail_sequences[i]]);
@@ -778,33 +846,33 @@ task uvm_sequencer_base::m_wait_for_available_sequence();
       fork
         begin
           fork
-              begin
-                // One path in fork is for any wait_for_relevant to return
-                m_is_relevant_completed = 0;
+            begin
+              // One path in fork is for any wait_for_relevant to return
+              m_is_relevant_completed = 0;
 
-                for(i = 0; i < is_relevant_entries.size(); i++) begin
+              for(i = 0; i < is_relevant_entries.size(); i++) begin
                 fork
-                    automatic int k = i;
+                  automatic int k = i;
 
                   begin
                     arb_sequence_q[is_relevant_entries[k]].sequence_ptr.wait_for_relevant();
                     if ($realtime != m_last_wait_relevant_time) begin
-                       m_last_wait_relevant_time = $realtime ;
-                       m_wait_relevant_count = 0 ;
+                      m_last_wait_relevant_time = $realtime ;
+                      m_wait_relevant_count = 0 ;
                     end
                     else begin
-                       m_wait_relevant_count++ ;
-                       if (m_wait_relevant_count > m_max_zero_time_wait_relevant_count) begin
-                          `uvm_fatal("SEQRELEVANTLOOP",$sformatf("Zero time loop detected, passed wait_for_relevant %0d times without time advancing",m_wait_relevant_count))
-                       end
+                      m_wait_relevant_count++ ;
+                      if (m_wait_relevant_count > m_max_zero_time_wait_relevant_count) begin
+                        `uvm_fatal("SEQRELEVANTLOOP",$sformatf("Zero time loop detected, passed wait_for_relevant %0d times without time advancing",m_wait_relevant_count))
+                      end
                     end
                     m_is_relevant_completed = 1;
                   end
                 join_none
 
-                end
-                wait (m_is_relevant_completed > 0);
               end
+              wait (m_is_relevant_completed > 0);
+            end
 
             // The other path in the fork is for any queue entry to change
             begin
@@ -851,16 +919,16 @@ task uvm_sequencer_base::m_wait_for_arbitration_completed(int request_id);
   int lock_arb_size;
 
   // Search the list of arb_wait_q, see if this item is done
-  forever
-    begin
-      lock_arb_size  = m_lock_arb_size;
+  forever begin
+    
+    lock_arb_size  = m_lock_arb_size;
 
-      if (arb_completed.exists(request_id)) begin
-        arb_completed.delete(request_id);
-        return;
-      end
-      wait (lock_arb_size != m_lock_arb_size);
+    if (arb_completed.exists(request_id)) begin
+      arb_completed.delete(request_id);
+      return;
     end
+    wait (lock_arb_size != m_lock_arb_size);
+  end
 endtask
 
 
@@ -918,6 +986,8 @@ task uvm_sequencer_base::execute_item(uvm_sequence_item item);
   seq.set_sequencer(this);
   seq.start_item(item);
   seq.finish_item(item);
+  remove_sequence_from_queues(seq);
+
 endtask
 
 
@@ -930,9 +1000,12 @@ task uvm_sequencer_base::wait_for_grant(uvm_sequence_base sequence_ptr,
   uvm_sequence_request req_s;
   int my_seq_id;
 
-  if (sequence_ptr == null)
+  if (sequence_ptr == null) begin
+    
     uvm_report_fatal("uvm_sequencer",
        "wait_for_grant passed null sequence_ptr", UVM_NONE);
+  end
+
 
   my_seq_id = m_register_sequence(sequence_ptr);
 
@@ -984,11 +1057,17 @@ task uvm_sequencer_base::wait_for_item_done(uvm_sequence_base sequence_ptr,
   m_wait_for_item_sequence_id = -1;
   m_wait_for_item_transaction_id = -1;
 
-  if (transaction_id == -1)
+  if (transaction_id == -1) begin
+    
     wait (m_wait_for_item_sequence_id == sequence_id);
-  else
+  end
+
+  else begin
+    
     wait ((m_wait_for_item_sequence_id == sequence_id &&
            m_wait_for_item_transaction_id == transaction_id));
+  end
+
 endtask
 
 
@@ -997,18 +1076,21 @@ endtask
 
 function bit uvm_sequencer_base::is_blocked(uvm_sequence_base sequence_ptr);
 
-  if (sequence_ptr == null)
+  if (sequence_ptr == null) begin
+    
     uvm_report_fatal("uvm_sequence_controller",
                      "is_blocked passed null sequence_ptr", UVM_NONE);
+  end
 
-    foreach (lock_list[i]) begin
-      if ((lock_list[i].get_inst_id() !=
-           sequence_ptr.get_inst_id()) &&
-          (is_child(lock_list[i], sequence_ptr) == 0)) begin
-        return 1;
-      end
+
+  foreach (lock_list[i]) begin
+    if ((lock_list[i].get_inst_id() !=
+    sequence_ptr.get_inst_id()) &&
+    (is_child(lock_list[i], sequence_ptr) == 0)) begin
+      return 1;
     end
-    return 0;
+  end
+  return 0;
 endfunction
 
 
@@ -1018,9 +1100,12 @@ endfunction
 function bit uvm_sequencer_base::has_lock(uvm_sequence_base sequence_ptr);
   int my_seq_id;
 
-  if (sequence_ptr == null)
+  if (sequence_ptr == null) begin
+    
     uvm_report_fatal("uvm_sequence_controller",
                      "has_lock passed null sequence_ptr", UVM_NONE);
+  end
+
   my_seq_id = m_register_sequence(sequence_ptr);
     foreach (lock_list[i]) begin
       if (lock_list[i].get_inst_id() == sequence_ptr.get_inst_id()) begin
@@ -1040,9 +1125,12 @@ task uvm_sequencer_base::m_lock_req(uvm_sequence_base sequence_ptr, bit lock);
   int my_seq_id;
   uvm_sequence_request new_req;
 
-  if (sequence_ptr == null)
+  if (sequence_ptr == null) begin
+    
     uvm_report_fatal("uvm_sequence_controller",
                      "lock_req passed null sequence_ptr", UVM_NONE);
+  end
+
 
   my_seq_id = m_register_sequence(sequence_ptr);
   new_req = new();
@@ -1083,18 +1171,21 @@ function void uvm_sequencer_base::m_unlock_req(uvm_sequence_base sequence_ptr);
   end
 
   begin
-	  int q[$];
-	  int seqid=sequence_ptr.get_inst_id();
-	  q=lock_list.find_first_index(item) with (item.get_inst_id() == seqid);
-	  if(q.size()==1) begin
-	      lock_list.delete(q[0]);
-		  grant_queued_locks(); // grant lock requests
-		  m_update_lists();
-	  end
-	  else
-		  uvm_report_warning("SQRUNL",
+    int q[$];
+    int seqid=sequence_ptr.get_inst_id();
+    q=lock_list.find_first_index(item) with (item.get_inst_id() == seqid);
+    if(q.size()==1) begin
+      lock_list.delete(q[0]);
+      grant_queued_locks(); // grant lock requests
+      m_update_lists();
+    end
+    else begin
+          
+      uvm_report_warning("SQRUNL",
            {"Sequence '", sequence_ptr.get_full_name(),
             "' called ungrab / unlock, but didn't have lock"}, UVM_NONE);
+    end
+
 
   end
 endfunction
@@ -1144,40 +1235,42 @@ function void uvm_sequencer_base::remove_sequence_from_queues(
 
   // Remove all queued items for this sequence and any child sequences
   i = 0;
-  do
-    begin
-      if (arb_sequence_q.size() > i) begin
-        if ((arb_sequence_q[i].sequence_id == seq_id) ||
-            (is_child(sequence_ptr, arb_sequence_q[i].sequence_ptr))) begin
-          if (sequence_ptr.get_sequence_state() == UVM_FINISHED)
-            `uvm_error("SEQFINERR", $sformatf("Parent sequence '%s' should not finish before all items from itself and items from descendent sequences are processed.  The item request from the sequence '%s' is being removed.", sequence_ptr.get_full_name(), arb_sequence_q[i].sequence_ptr.get_full_name()))
-          arb_sequence_q.delete(i);
-          m_update_lists();
+  do begin
+    
+    if (arb_sequence_q.size() > i) begin
+      if ((arb_sequence_q[i].sequence_id == seq_id) ||
+      (is_child(sequence_ptr, arb_sequence_q[i].sequence_ptr))) begin
+        if (sequence_ptr.get_sequence_state() == UVM_FINISHED) begin
+          `uvm_error("SEQFINERR", $sformatf("Parent sequence '%s' should not finish before all items from itself and items from descendent sequences are processed.  The item request from the sequence '%s' is being removed.", sequence_ptr.get_full_name(), arb_sequence_q[i].sequence_ptr.get_full_name()))
         end
-        else begin
-          i++;
-        end
+        arb_sequence_q.delete(i);
+        m_update_lists();
+      end
+      else begin
+        i++;
       end
     end
+  end
   while (i < arb_sequence_q.size());
 
   // remove locks for this sequence, and any child sequences
   i = 0;
-  do
-    begin
-      if (lock_list.size() > i) begin
-        if ((lock_list[i].get_inst_id() == sequence_ptr.get_inst_id()) ||
-            (is_child(sequence_ptr, lock_list[i]))) begin
-          if (sequence_ptr.get_sequence_state() == UVM_FINISHED)
-            `uvm_error("SEQFINERR", $sformatf("Parent sequence '%s' should not finish before locks from itself and descedent sequences are removed.  The lock held by the child sequence '%s' is being removed.",sequence_ptr.get_full_name(), lock_list[i].get_full_name()))
-          lock_list.delete(i);
-          m_update_lists();
+  do begin
+    
+    if (lock_list.size() > i) begin
+      if ((lock_list[i].get_inst_id() == sequence_ptr.get_inst_id()) ||
+      (is_child(sequence_ptr, lock_list[i]))) begin
+        if (sequence_ptr.get_sequence_state() == UVM_FINISHED) begin
+          `uvm_error("SEQFINERR", $sformatf("Parent sequence '%s' should not finish before locks from itself and descedent sequences are removed.  The lock held by the child sequence '%s' is being removed.",sequence_ptr.get_full_name(), lock_list[i].get_full_name()))
         end
-        else begin
-          i++;
-        end
+        lock_list.delete(i);
+        m_update_lists();
+      end
+      else begin
+        i++;
       end
     end
+  end
   while (i < lock_list.size());
 
   // Unregister the sequence_id, so that any returning data is dropped
@@ -1192,11 +1285,11 @@ function void uvm_sequencer_base::stop_sequences();
   uvm_sequence_base seq_ptr;
 
   seq_ptr = m_find_sequence(-1);
-  while (seq_ptr != null)
-    begin
-      kill_sequence(seq_ptr);
-      seq_ptr = m_find_sequence(-1);
-    end
+  while (seq_ptr != null) begin
+    
+    kill_sequence(seq_ptr);
+    seq_ptr = m_find_sequence(-1);
+  end
 endfunction
 
 
@@ -1243,7 +1336,7 @@ function bit uvm_sequencer_base::has_do_available();
 
   foreach (arb_sequence_q[i]) begin
     if ((arb_sequence_q[i].sequence_ptr.is_relevant() == 1) &&
-        (is_blocked(arb_sequence_q[i].sequence_ptr) == 0)) begin
+    (is_blocked(arb_sequence_q[i].sequence_ptr) == 0)) begin
       return 1;
     end
   end
@@ -1254,7 +1347,7 @@ endfunction
 // set_arbitration
 // ---------------
 
-function void uvm_sequencer_base::set_arbitration(UVM_SEQ_ARB_TYPE val);
+function void uvm_sequencer_base::set_arbitration(uvm_sequencer_arb_mode val);
   m_arbitration = val;
 endfunction
 
@@ -1262,7 +1355,7 @@ endfunction
 // get_arbitration
 // ---------------
 
-function UVM_SEQ_ARB_TYPE uvm_sequencer_base::get_arbitration();
+function uvm_sequencer_arb_mode uvm_sequencer_base::get_arbitration();
   return m_arbitration;
 endfunction
 
@@ -1338,7 +1431,7 @@ function void uvm_sequencer_base::start_phase_sequence(uvm_phase phase);
       seq = sbr.read(this);
       if (seq == null) begin
         `uvm_info("UVM/SQR/PH/DEF/SB/NULL", {"Default phase sequence for phase '",
-                                             phase.get_name(),"' explicitly disabled"}, UVM_FULL)
+        phase.get_name(),"' explicitly disabled"}, UVM_FULL)
         return;
       end
     end
@@ -1350,15 +1443,15 @@ function void uvm_sequencer_base::start_phase_sequence(uvm_phase phase);
       wrapper = owr.read(this);
       if (wrapper == null) begin
         `uvm_info("UVM/SQR/PH/DEF/OW/NULL", {"Default phase sequence for phase '",
-                                             phase.get_name(),"' explicitly disabled"}, UVM_FULL)
+        phase.get_name(),"' explicitly disabled"}, UVM_FULL)
         return;
       end
 
       if (!$cast(seq, f.create_object_by_type(wrapper, get_full_name(),
-                                              wrapper.get_type_name()))
-          || seq == null) begin
+      wrapper.get_type_name()))
+      || seq == null) begin
         `uvm_warning("PHASESEQ", {"Default sequence for phase '",
-                                  phase.get_name(),"' %s is not a sequence type"})
+        phase.get_name(),"' %s is not a sequence type"})
         return;
       end
     end
@@ -1366,7 +1459,7 @@ function void uvm_sequencer_base::start_phase_sequence(uvm_phase phase);
 
   if (seq == null) begin
     `uvm_info("PHASESEQ", {"No default phase sequence for phase '",
-                           phase.get_name(),"'"}, UVM_FULL)
+    phase.get_name(),"'"}, UVM_FULL)
     return;
   end
 
@@ -1380,21 +1473,21 @@ function void uvm_sequencer_base::start_phase_sequence(uvm_phase phase);
 
   if (seq.get_randomize_enabled() && !seq.randomize()) begin
     `uvm_warning("STRDEFSEQ", {"Randomization failed for default sequence '",
-                               seq.get_type_name(),"' for phase '", phase.get_name(),"'"})
+    seq.get_type_name(),"' for phase '", phase.get_name(),"'"})
     return;
   end
 
   fork begin
-    uvm_sequence_process_wrapper w = new();
-    // reseed this process for random stability
-    w.pid = process::self();
-    w.seq = seq;
-    w.pid.srandom(uvm_create_random_seed(seq.get_type_name(), this.get_full_name()));
-    m_default_sequences[phase] = w;
-    // this will either complete naturally, or be killed later
-    seq.start(this);
-    m_default_sequences.delete(phase);
-  end
+      uvm_sequence_process_wrapper w = new();
+      // reseed this process for random stability
+      w.pid = process::self();
+      w.seq = seq;
+      w.pid.srandom(uvm_create_random_seed(seq.get_type_name(), this.get_full_name()));
+      m_default_sequences[phase] = w;
+      // this will either complete naturally, or be killed later
+      seq.start(this);
+      m_default_sequences.delete(phase);
+    end
   join_none
 
 endfunction
@@ -1404,15 +1497,15 @@ endfunction
 
 function void uvm_sequencer_base::stop_phase_sequence(uvm_phase phase);
     if (m_default_sequences.exists(phase)) begin
-        `uvm_info("PHASESEQ",
-                  {"Killing default sequence '", m_default_sequences[phase].seq.get_type_name(),
-                   "' for phase '", phase.get_name(), "'"}, UVM_FULL)
-        m_default_sequences[phase].seq.kill();
+      `uvm_info("PHASESEQ",
+      {"Killing default sequence '", m_default_sequences[phase].seq.get_type_name(),
+      "' for phase '", phase.get_name(), "'"}, UVM_FULL)
+      m_default_sequences[phase].seq.kill();
     end
     else begin
-        `uvm_info("PHASESEQ",
-                  {"No default sequence to kill for phase '", phase.get_name(), "'"},
-                  UVM_FULL)
+      `uvm_info("PHASESEQ",
+      {"No default sequence to kill for phase '", phase.get_name(), "'"},
+      UVM_FULL)
     end
 endfunction : stop_phase_sequence
 

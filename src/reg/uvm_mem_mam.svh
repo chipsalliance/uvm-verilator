@@ -1,12 +1,12 @@
 //
 // -------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2014 Semifore
-// Copyright 2004-2014 Synopsys, Inc.
-// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2010 AMD
-// Copyright 2014-2018 NVIDIA Corporation
+// Copyright 2010-2018 Cadence Design Systems, Inc.
 // Copyright 2018 Cisco Systems, Inc.
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2014-2024 NVIDIA Corporation
+// Copyright 2014-2020 Semifore
+// Copyright 2004-2014 Synopsys, Inc.
 //    All Rights Reserved Worldwide
 //
 //    Licensed under the Apache License, Version 2.0 (the
@@ -24,6 +24,15 @@
 //    permissions and limitations under the License.
 // -------------------------------------------------------------
 //
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/reg/uvm_mem_mam.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 //
@@ -43,7 +52,6 @@
 // A region will remain reserved until it is explicitly released. 
 //
 //------------------------------------------------------------------------------
-
 
 `ifndef UVM_MEM_MAM__SV
 `define UVM_MEM_MAM__SV
@@ -67,8 +75,8 @@ typedef class uvm_mem;
 // contiguous address space.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 18.12.1
-class uvm_mem_mam;
+// @uvm-ieee 1800.2-2020 auto 18.12.1
+class uvm_mem_mam extends uvm_void;
 
    //----------------------
    // Group -- NODOCS -- Initialization
@@ -172,7 +180,7 @@ class uvm_mem_mam;
    //
    // Regions can be reserved to create "holes" in the managed address space.
    //
-   extern function uvm_mem_region reserve_region(bit [63:0]   start_offset,
+   extern function uvm_mem_region reserve_region(uvm_reg_addr_t   start_offset,
                                                  int unsigned n_bytes,
                                                  string       fname = "",
                                                  int          lineno = 0);
@@ -280,11 +288,11 @@ endclass: uvm_mem_mam
 // methods. 
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 18.12.7.1
-class uvm_mem_region;
+// @uvm-ieee 1800.2-2020 auto 18.12.7.1
+class uvm_mem_region extends uvm_void;
 
-   /*local*/ bit [63:0] Xstart_offsetX;  // Can't be local since function
-   /*local*/ bit [63:0] Xend_offsetX;    // calls not supported in constraints
+   /*local*/ uvm_reg_addr_t Xstart_offsetX;  // Can't be local since function
+   /*local*/ uvm_reg_addr_t Xend_offsetX;    // calls not supported in constraints
 
    local int unsigned len;
    local int unsigned n_bytes;
@@ -294,11 +302,11 @@ class uvm_mem_region;
 
    /*local*/ uvm_vreg XvregX;
 
-   extern /*local*/ function new(bit [63:0]   start_offset,
-                                 bit [63:0]   end_offset,
-                                 int unsigned len,
-                                 int unsigned n_bytes,
-                                 uvm_mem_mam      parent);
+   extern /*local*/ function new(uvm_reg_addr_t  start_offset,
+                                 uvm_reg_addr_t  end_offset,
+                                 int unsigned    len,
+                                 int unsigned    n_bytes,
+                                 uvm_mem_mam     parent);
 
    // Function -- NODOCS -- get_start_offset
    //
@@ -307,7 +315,8 @@ class uvm_mem_region;
    // Return the address offset, within the memory,
    // where this memory region starts.
    //
-   extern function bit [63:0] get_start_offset();
+   // @uvm-ieee 1800.2-2020 auto 18.12.7.2.1
+   extern function uvm_reg_addr_t get_start_offset();
 
 
    // Function -- NODOCS -- get_end_offset
@@ -317,7 +326,8 @@ class uvm_mem_region;
    // Return the address offset, within the memory,
    // where this memory region ends.
    //
-   extern function bit [63:0] get_end_offset();
+   // @uvm-ieee 1800.2-2020 auto 18.12.7.2.2
+   extern function uvm_reg_addr_t get_end_offset();
 
 
    // Function -- NODOCS -- get_len
@@ -343,22 +353,22 @@ class uvm_mem_region;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.12.7.2.5
+   // @uvm-ieee 1800.2-2020 auto 18.12.7.2.5
    extern function void release_region();
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.12.7.2.6
+   // @uvm-ieee 1800.2-2020 auto 18.12.7.2.6
    extern function uvm_mem get_memory();
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.12.7.2.7
+   // @uvm-ieee 1800.2-2020 auto 18.12.7.2.7
    extern function uvm_vreg get_virtual_registers();
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.12.7.2.8
+   // @uvm-ieee 1800.2-2020 auto 18.12.7.2.8
    extern task write(output uvm_status_e       status,
                      input  uvm_reg_addr_t     offset,
                      input  uvm_reg_data_t     value,
@@ -372,7 +382,7 @@ class uvm_mem_region;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.12.7.2.9
+   // @uvm-ieee 1800.2-2020 auto 18.12.7.2.9
    extern task read(output uvm_status_e       status,
                     input  uvm_reg_addr_t     offset,
                     output uvm_reg_data_t     value,
@@ -386,7 +396,7 @@ class uvm_mem_region;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.12.7.2.10
+   // @uvm-ieee 1800.2-2020 auto 18.12.7.2.10
    extern task burst_write(output uvm_status_e       status,
                            input  uvm_reg_addr_t     offset,
                            input  uvm_reg_data_t     value[],
@@ -400,7 +410,7 @@ class uvm_mem_region;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.12.7.2.11
+   // @uvm-ieee 1800.2-2020 auto 18.12.7.2.11
    extern task burst_read(output uvm_status_e       status,
                           input  uvm_reg_addr_t     offset,
                           output uvm_reg_data_t     value[],
@@ -414,7 +424,7 @@ class uvm_mem_region;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.12.7.2.12
+   // @uvm-ieee 1800.2-2020 auto 18.12.7.2.12
    extern task poke(output uvm_status_e       status,
                     input  uvm_reg_addr_t     offset,
                     input  uvm_reg_data_t     value,
@@ -425,7 +435,7 @@ class uvm_mem_region;
 
 
 
-   // @uvm-ieee 1800.2-2017 auto 18.12.7.2.13
+   // @uvm-ieee 1800.2-2020 auto 18.12.7.2.13
    extern task peek(output uvm_status_e       status,
                     input  uvm_reg_addr_t     offset,
                     output uvm_reg_data_t     value,
@@ -454,23 +464,23 @@ endclass
 // it can be implemented in the pre/post_randomize() method.
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 18.12.8.1
-class uvm_mem_mam_policy;
+// @uvm-ieee 1800.2-2020 auto 18.12.8.1
+class uvm_mem_mam_policy extends uvm_void;
    // variable -- NODOCS -- len
    // Number of addresses required
    int unsigned len;
 
    // variable -- NODOCS -- start_offset
    // The starting offset of the region
-   rand bit [63:0] start_offset;
+   rand uvm_reg_addr_t start_offset;
 
    // variable -- NODOCS -- min_offset
    // Minimum address offset in the managed address space
-   bit [63:0] min_offset;
+   uvm_reg_addr_t min_offset;
 
    // variable -- NODOCS -- max_offset
    // Maximum address offset in the managed address space
-   bit [63:0] max_offset;
+   uvm_reg_addr_t max_offset;
 
    // variable -- NODOCS -- in_use
    // Regions already allocated in the managed address space
@@ -483,8 +493,8 @@ class uvm_mem_mam_policy;
 
    constraint uvm_mem_mam_policy_no_overlap {
       foreach (in_use[i]) {
-         !(start_offset <= in_use[i].Xend_offsetX &&
-           start_offset + len - 1 >= in_use[i].Xstart_offsetX);
+        !(start_offset <= in_use[i].Xend_offsetX &&
+        start_offset + len - 1 >= in_use[i].Xstart_offsetX);
       }
    }
 
@@ -493,8 +503,8 @@ endclass
 
 
 
-// @uvm-ieee 1800.2-2017 auto 18.12.9.1
-class uvm_mem_mam_cfg;
+// @uvm-ieee 1800.2-2020 auto 18.12.9.1
+class uvm_mem_mam_cfg extends uvm_void;
    // variable -- NODOCS -- n_bytes
    // Number of bytes in each memory location
    rand int unsigned n_bytes;
@@ -502,11 +512,11 @@ class uvm_mem_mam_cfg;
 // Mantis 6601 calls for these two offset fields to be type longint unsigned
    // variable -- NODOCS -- start_offset
    // Lowest address of managed space
-   rand bit [63:0] start_offset;
+   rand uvm_reg_addr_t start_offset;
 
    // variable -- NODOCS -- end_offset
    // Last address of managed space
-   rand bit [63:0] end_offset;
+   rand uvm_reg_addr_t end_offset;
 
    // variable -- NODOCS -- mode
    // Region allocation mode
@@ -528,8 +538,8 @@ endclass
 //  Implementation
 //------------------------------------------------------------------
 
-function uvm_mem_region::new(bit [63:0] start_offset,
-                             bit [63:0] end_offset,
+function uvm_mem_region::new(uvm_reg_addr_t start_offset,
+                             uvm_reg_addr_t end_offset,
                              int unsigned len,
                              int unsigned n_bytes,
                              uvm_mem_mam      parent);
@@ -542,12 +552,12 @@ function uvm_mem_region::new(bit [63:0] start_offset,
 endfunction: new
 
 
-function bit [63:0] uvm_mem_region::get_start_offset();
+function uvm_reg_addr_t uvm_mem_region::get_start_offset();
    return this.Xstart_offsetX;
 endfunction: get_start_offset
 
 
-function bit [63:0] uvm_mem_region::get_end_offset();
+function uvm_reg_addr_t uvm_mem_region::get_end_offset();
    return this.Xend_offsetX;
 endfunction: get_end_offset
 
@@ -595,31 +605,34 @@ endfunction: new
 function uvm_mem_mam_cfg uvm_mem_mam::reconfigure(uvm_mem_mam_cfg cfg = null);
    uvm_root top;
    uvm_coreservice_t cs;
-   if (cfg == null)
+   if (cfg == null) begin
+     
      return this.cfg;
+   end
+
 
    cs = uvm_coreservice_t::get();
    top = cs.get_root();
 
    // Cannot reconfigure n_bytes
    if (cfg.n_bytes !== this.cfg.n_bytes) begin
-      top.uvm_report_error("uvm_mem_mam",
+     top.uvm_report_error("uvm_mem_mam",
                  $sformatf("Cannot reconfigure Memory Allocation Manager with a different number of bytes (%0d !== %0d)",
                            cfg.n_bytes, this.cfg.n_bytes), UVM_LOW);
-      return this.cfg;
+     return this.cfg;
    end
 
    // All currently allocated regions must fall within the new space
    foreach (this.in_use[i]) begin
-      if (this.in_use[i].get_start_offset() < cfg.start_offset ||
-          this.in_use[i].get_end_offset() > cfg.end_offset) begin
-         top.uvm_report_error("uvm_mem_mam",
+     if (this.in_use[i].get_start_offset() < cfg.start_offset ||
+     this.in_use[i].get_end_offset() > cfg.end_offset) begin
+       top.uvm_report_error("uvm_mem_mam",
                     $sformatf("Cannot reconfigure Memory Allocation Manager with a currently allocated region outside of the managed address range ([%0d:%0d] outside of [%0d:%0d])",
                               this.in_use[i].get_start_offset(),
                               this.in_use[i].get_end_offset(),
                               cfg.start_offset, cfg.end_offset), UVM_LOW);
-         return this.cfg;
-      end
+       return this.cfg;
+     end
    end
 
    reconfigure = this.cfg;
@@ -627,31 +640,31 @@ function uvm_mem_mam_cfg uvm_mem_mam::reconfigure(uvm_mem_mam_cfg cfg = null);
 endfunction: reconfigure
 
 
-function uvm_mem_region uvm_mem_mam::reserve_region(bit [63:0]   start_offset,
-                                                int unsigned n_bytes,
-                                                string       fname = "",
-                                                int          lineno = 0);
-   bit [63:0] end_offset;
+function uvm_mem_region uvm_mem_mam::reserve_region(uvm_reg_addr_t start_offset,
+                                                    int unsigned   n_bytes,
+                                                    string         fname = "",
+                                                    int            lineno = 0);
+   uvm_reg_addr_t end_offset;
    this.fname = fname;
    this.lineno = lineno;
    if (n_bytes == 0) begin
-      `uvm_error("RegModel", "Cannot reserve 0 bytes")
-      return null;
+     `uvm_error("RegModel", "Cannot reserve 0 bytes")
+     return null;
    end
 
    if (start_offset < this.cfg.start_offset) begin
-      `uvm_error("RegModel", $sformatf("Cannot reserve before start of memory space: 'h%h < 'h%h",
-                                     start_offset, this.cfg.start_offset))
-      return null;
+     `uvm_error("RegModel", $sformatf("Cannot reserve before start of memory space: 'h%h < 'h%h",
+     start_offset, this.cfg.start_offset))
+     return null;
    end
 
    end_offset = start_offset + ((n_bytes-1) / this.cfg.n_bytes);
    n_bytes = (end_offset - start_offset + 1) * this.cfg.n_bytes;
 
    if (end_offset > this.cfg.end_offset) begin
-      `uvm_error("RegModel", $sformatf("Cannot reserve past end of memory space: 'h%h > 'h%h",
-                                     end_offset, this.cfg.end_offset))
-      return null;
+     `uvm_error("RegModel", $sformatf("Cannot reserve past end of memory space: 'h%h > 'h%h",
+     end_offset, this.cfg.end_offset))
+     return null;
    end
     
     `uvm_info("RegModel",$sformatf("Attempting to reserve ['h%h:'h%h]...",
@@ -661,22 +674,22 @@ function uvm_mem_region uvm_mem_mam::reserve_region(bit [63:0]   start_offset,
 
 
    foreach (this.in_use[i]) begin
-      if (start_offset <= this.in_use[i].get_end_offset() &&
-          end_offset >= this.in_use[i].get_start_offset()) begin
-         // Overlap!
-         `uvm_error("RegModel", $sformatf("Cannot reserve ['h%h:'h%h] because it overlaps with %s",
-                                        start_offset, end_offset,
-                                        this.in_use[i].convert2string()))
-         return null;
-      end
+     if (start_offset <= this.in_use[i].get_end_offset() &&
+     end_offset >= this.in_use[i].get_start_offset()) begin
+       // Overlap!
+       `uvm_error("RegModel", $sformatf("Cannot reserve ['h%h:'h%h] because it overlaps with %s",
+       start_offset, end_offset,
+       this.in_use[i].convert2string()))
+       return null;
+     end
 
-      // Regions are stored in increasing start offset
-      if (start_offset > this.in_use[i].get_start_offset()) begin
-         reserve_region = new(start_offset, end_offset,
+     // Regions are stored in increasing start offset
+     if (start_offset > this.in_use[i].get_start_offset()) begin
+       reserve_region = new(start_offset, end_offset,
                               end_offset - start_offset + 1, n_bytes, this);
-         this.in_use.insert(i, reserve_region);
-         return reserve_region;
-      end
+       this.in_use.insert(i, reserve_region);
+       return reserve_region;
+     end
    end
 
    reserve_region = new(start_offset, end_offset,
@@ -691,7 +704,10 @@ function uvm_mem_region uvm_mem_mam::request_region(int unsigned      n_bytes,
                                                 int               lineno = 0);
    this.fname = fname;
    this.lineno = lineno;
-   if (alloc == null) alloc = this.default_alloc;
+   if (alloc == null) begin
+     alloc = this.default_alloc;
+   end
+
 
    alloc.len        = (n_bytes-1) / this.cfg.n_bytes + 1;
    alloc.min_offset = this.cfg.start_offset;
@@ -699,8 +715,8 @@ function uvm_mem_region uvm_mem_mam::request_region(int unsigned      n_bytes,
    alloc.in_use     = this.in_use;
 
    if (!alloc.randomize()) begin
-      `uvm_error("RegModel", "Unable to randomize policy")
-      return null;
+     `uvm_error("RegModel", "Unable to randomize policy")
+     return null;
    end
 
    return reserve_region(alloc.start_offset, n_bytes);
@@ -709,13 +725,16 @@ endfunction: request_region
 
 function void uvm_mem_mam::release_region(uvm_mem_region region);
 
-   if (region == null) return;
+   if (region == null) begin
+     return;
+   end
+
 
    foreach (this.in_use[i]) begin
-      if (this.in_use[i] == region) begin
-         this.in_use.delete(i);
-         return;
-      end
+     if (this.in_use[i] == region) begin
+       this.in_use.delete(i);
+       return;
+     end
    end
    `uvm_error("RegModel", {"Attempting to release unallocated region\n",
                       region.convert2string()})
@@ -730,19 +749,22 @@ endfunction: release_all_regions
 function string uvm_mem_mam::convert2string();
    convert2string = "Allocated memory regions:\n";
    foreach (this.in_use[i]) begin
-      $sformat(convert2string, "%s   %s\n", convert2string,
+     $sformat(convert2string, "%s   %s\n", convert2string,
                this.in_use[i].convert2string());
    end
 endfunction: convert2string
 
 
 function uvm_mem_region uvm_mem_mam::for_each(bit reset = 0);
-   if (reset) this.for_each_idx = -1;
+   if (reset) begin
+     this.for_each_idx = -1;
+   end
+
 
    this.for_each_idx++;
 
    if (this.for_each_idx >= this.in_use.size()) begin
-      return null;
+     return null;
    end
 
    return this.in_use[this.for_each_idx];
@@ -770,17 +792,17 @@ task uvm_mem_region::write(output uvm_status_e       status,
    this.lineno = lineno;
 
    if (mem == null) begin
-      `uvm_error("RegModel", "Cannot use uvm_mem_region::write() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel", "Cannot use uvm_mem_region::write() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
+     status = UVM_NOT_OK;
+     return;
    end
 
    if (offset > this.len) begin
-      `uvm_error("RegModel",
-                 $sformatf("Attempting to write to an offset outside of the allocated region (%0d > %0d)",
-                           offset, this.len))
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel",
+     $sformatf("Attempting to write to an offset outside of the allocated region (%0d > %0d)",
+     offset, this.len))
+     status = UVM_NOT_OK;
+     return;
    end
 
    mem.write(status, offset + this.get_start_offset(), value,
@@ -803,17 +825,17 @@ task uvm_mem_region::read(output uvm_status_e       status,
    this.lineno = lineno;
 
    if (mem == null) begin
-      `uvm_error("RegModel", "Cannot use uvm_mem_region::read() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel", "Cannot use uvm_mem_region::read() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
+     status = UVM_NOT_OK;
+     return;
    end
 
    if (offset > this.len) begin
-      `uvm_error("RegModel",
-                 $sformatf("Attempting to read from an offset outside of the allocated region (%0d > %0d)",
-                           offset, this.len))
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel",
+     $sformatf("Attempting to read from an offset outside of the allocated region (%0d > %0d)",
+     offset, this.len))
+     status = UVM_NOT_OK;
+     return;
    end
 
    mem.read(status, offset + this.get_start_offset(), value,
@@ -836,17 +858,17 @@ task uvm_mem_region::burst_write(output uvm_status_e       status,
    this.lineno = lineno;
 
    if (mem == null) begin
-      `uvm_error("RegModel", "Cannot use uvm_mem_region::burst_write() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel", "Cannot use uvm_mem_region::burst_write() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
+     status = UVM_NOT_OK;
+     return;
    end
 
    if (offset + value.size() > this.len) begin
-      `uvm_error("RegModel",
-                 $sformatf("Attempting to burst-write to an offset outside of the allocated region (burst to [%0d:%0d] > mem_size %0d)",
-                           offset,offset+value.size(),this.len))
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel",
+     $sformatf("Attempting to burst-write to an offset outside of the allocated region (burst to [%0d:%0d] > mem_size %0d)",
+     offset,offset+value.size(),this.len))
+     status = UVM_NOT_OK;
+     return;
    end
 
    mem.burst_write(status, offset + get_start_offset(), value,
@@ -870,17 +892,17 @@ task uvm_mem_region::burst_read(output uvm_status_e       status,
    this.lineno = lineno;
 
    if (mem == null) begin
-      `uvm_error("RegModel", "Cannot use uvm_mem_region::burst_read() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel", "Cannot use uvm_mem_region::burst_read() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
+     status = UVM_NOT_OK;
+     return;
    end
 
    if (offset + value.size() > this.len) begin
-      `uvm_error("RegModel",
-                 $sformatf("Attempting to burst-read to an offset outside of the allocated region (burst to [%0d:%0d] > mem_size %0d)",
-                           offset,offset+value.size(),this.len))
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel",
+     $sformatf("Attempting to burst-read to an offset outside of the allocated region (burst to [%0d:%0d] > mem_size %0d)",
+     offset,offset+value.size(),this.len))
+     status = UVM_NOT_OK;
+     return;
    end
 
    mem.burst_read(status, offset + get_start_offset(), value,
@@ -901,17 +923,17 @@ task uvm_mem_region::poke(output uvm_status_e       status,
    this.lineno = lineno;
 
    if (mem == null) begin
-      `uvm_error("RegModel", "Cannot use uvm_mem_region::poke() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel", "Cannot use uvm_mem_region::poke() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
+     status = UVM_NOT_OK;
+     return;
    end
 
    if (offset > this.len) begin
-      `uvm_error("RegModel",
-                 $sformatf("Attempting to poke to an offset outside of the allocated region (%0d > %0d)",
-                           offset, this.len))
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel",
+     $sformatf("Attempting to poke to an offset outside of the allocated region (%0d > %0d)",
+     offset, this.len))
+     status = UVM_NOT_OK;
+     return;
    end
 
    mem.poke(status, offset + this.get_start_offset(), value, "", parent, extension);
@@ -930,17 +952,17 @@ task uvm_mem_region::peek(output uvm_status_e       status,
    this.lineno = lineno;
 
    if (mem == null) begin
-      `uvm_error("RegModel", "Cannot use uvm_mem_region::peek() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel", "Cannot use uvm_mem_region::peek() on a region that was allocated by a Memory Allocation Manager that was not associated with a uvm_mem instance")
+     status = UVM_NOT_OK;
+     return;
    end
 
    if (offset > this.len) begin
-      `uvm_error("RegModel",
-                 $sformatf("Attempting to peek from an offset outside of the allocated region (%0d > %0d)",
-                           offset, this.len))
-      status = UVM_NOT_OK;
-      return;
+     `uvm_error("RegModel",
+     $sformatf("Attempting to peek from an offset outside of the allocated region (%0d > %0d)",
+     offset, this.len))
+     status = UVM_NOT_OK;
+     return;
    end
 
    mem.peek(status, offset + this.get_start_offset(), value, "", parent, extension);

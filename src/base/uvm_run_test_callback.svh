@@ -1,7 +1,7 @@
 //
 //----------------------------------------------------------------------
 // Copyright 2018 Cadence Design Systems, Inc.
-// Copyright 2018 NVIDIA Corporation
+// Copyright 2018-2024 NVIDIA Corporation
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -19,29 +19,38 @@
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto F.6.1
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_run_test_callback.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
+// @uvm-ieee 1800.2-2020 auto F.6.1
 virtual class uvm_run_test_callback extends uvm_callback;
 
-  // @uvm-ieee 1800.2-2017 auto F.6.2.1
-  // @uvm-ieee 1800.2-2017 auto F.7.1.1
+  // @uvm-ieee 1800.2-2020 auto F.6.2.1
   extern function new( string name="uvm_run_test_callback");
 
-  // @uvm-ieee 1800.2-2017 auto F.6.2.2
+  // @uvm-ieee 1800.2-2020 auto F.6.2.2
   virtual function void pre_run_test();
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto F.6.2.3
+  // @uvm-ieee 1800.2-2020 auto F.6.2.3
   virtual function void post_run_test();
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto F.6.2.4
+  // @uvm-ieee 1800.2-2020 auto F.6.2.4
   virtual function void pre_abort();
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto F.6.2.5
+  // @uvm-ieee 1800.2-2020 auto F.6.2.5
   extern static function bit add( uvm_run_test_callback cb );
 
-  // @uvm-ieee 1800.2-2017 auto F.6.2.6
+  // @uvm-ieee 1800.2-2020 auto F.6.2.6
   extern static function bit delete( uvm_run_test_callback cb );
 
 

@@ -1,10 +1,11 @@
 //-----------------------------------------------------------------------------
 // Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2007-2014 Mentor Graphics Corporation
-// Copyright 2013-2018 NVIDIA Corporation
 // Copyright 2017-2018 Cisco Systems, Inc.
+// Copyright 2014-2020 Intel Corporation
+// Copyright 2021-2022 Marvell International Ltd.
+// Copyright 2007-2014 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
 // Copyright 2018 Qualcomm, Inc.
-// Copyright 2014 Intel Corporation
 // Copyright 2013-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -23,6 +24,16 @@
 //   permissions and limitations under the License.
 //-----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_comparer.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
 //------------------------------------------------------------------------------
 //
 // CLASS -- NODOCS -- uvm_comparer
@@ -35,16 +46,16 @@
 //
 //------------------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 16.3.1
+// @uvm-ieee 1800.2-2020 auto 16.3.1
 class uvm_comparer extends uvm_policy;
-	
-   // @uvm-ieee 1800.2-2017 auto 16.3.2.3
+    
+   // @uvm-ieee 1800.2-2020 auto 16.3.2.3
    `uvm_object_utils(uvm_comparer)
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.2.2
+  // @uvm-ieee 1800.2-2020 auto 16.3.2.2
   extern virtual function void flush();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.5
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.5
   extern virtual function uvm_policy::recursion_state_e object_compared(
      uvm_object lhs,
      uvm_object rhs,
@@ -52,45 +63,51 @@ class uvm_comparer extends uvm_policy;
      output bit ret_val
   );
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.8
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.8
   extern virtual function string get_miscompares();
 
   extern virtual function int unsigned get_result();
 
   extern virtual function void set_result(int unsigned result) ;
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.4.1
+  // @uvm-ieee 1800.2-2020 auto 16.3.4.1
   extern virtual function void set_recursion_policy( uvm_recursion_policy_enum policy);
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.4.1
+  // @uvm-ieee 1800.2-2020 auto 16.3.4.1
   extern virtual function uvm_recursion_policy_enum get_recursion_policy();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.4.2
+  // @uvm-ieee 1800.2-2020 auto 16.3.4.2
   extern virtual function void set_check_type( bit enabled );
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.4.2
+  // @uvm-ieee 1800.2-2020 auto 16.3.4.2
   extern virtual function bit get_check_type();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.5.1
+  // @uvm-ieee 1800.2-2020 auto 16.3.5.1
   extern virtual function void set_show_max (int unsigned show_max);
 
   extern virtual function int unsigned get_show_max ();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.5.2
+  // @uvm-ieee 1800.2-2020 auto 16.3.5.2
   extern virtual function void set_verbosity (int unsigned verbosity);
 
   extern virtual function int unsigned get_verbosity ();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.5.3
+  // @uvm-ieee 1800.2-2020 auto 16.3.5.3
   extern virtual function void set_severity (uvm_severity severity);
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.5.3
+  // @uvm-ieee 1800.2-2020 auto 16.3.5.3
   extern virtual function uvm_severity get_severity ();
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.6
+  // @uvm-ieee 1800.2-2020 auto 16.3.6
   extern virtual function void set_threshold (int unsigned threshold);
 
   extern virtual function int unsigned get_threshold ();
+
+  //@uvm-compat
+  bit physical = 1;
+
+  //@uvm-compat
+  bit abstract = 1 ;
 
   typedef struct {
      recursion_state_e state;
@@ -101,23 +118,16 @@ class uvm_comparer extends uvm_policy;
   // Variable -- NODOCS -- policy
   //
   // Determines whether comparison is UVM_DEEP, UVM_REFERENCE, or UVM_SHALLOW.
-
-`ifdef UVM_ENABLE_DEPRECATED_API
+  // @uvm-compat , for compatibility with 1.2
   uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
-`else
-  local uvm_recursion_policy_enum policy = UVM_DEFAULT_POLICY;
-`endif
 
   // Variable -- NODOCS -- show_max
   //
   // Sets the maximum number of messages to send to the printer for miscompares
   // of an object. 
 
-`ifdef UVM_ENABLE_DEPRECATED_API
+  // @uvm-compat , for compatibility with 1.2
   int unsigned show_max = 1;
-`else
-  local int unsigned show_max = 1;
-`endif
 
   // Variable -- NODOCS -- verbosity
   //
@@ -126,11 +136,8 @@ class uvm_comparer extends uvm_policy;
   // The verbosity setting is used by the messaging mechanism to determine
   // whether messages should be suppressed or shown.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
+  // @uvm-compat , for compatibility with 1.2
   int unsigned verbosity = UVM_LOW;
-`else
-  local int unsigned verbosity = UVM_LOW;
-`endif
 
 
   // Variable -- NODOCS -- sev
@@ -140,11 +147,8 @@ class uvm_comparer extends uvm_policy;
   // The severity setting is used by the messaging mechanism for printing and
   // filtering messages.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
+  // @uvm-compat , for compatibility with 1.2
   uvm_severity sev = UVM_INFO;
-`else
-  local uvm_severity sev = UVM_INFO;
-`endif
 
 
   // Variable -- NODOCS -- miscompares
@@ -154,41 +158,8 @@ class uvm_comparer extends uvm_policy;
   // The string holds the last set of miscompares that occurred during a
   // comparison.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
+  // @uvm-compat , for compatibility with 1.2
   string miscompares = "";
-`else
-  local string miscompares = "";
-`endif
-
-   
-`ifdef UVM_ENABLE_DEPRECATED_API
-  // Variable -- NODOCS -- physical
-  //
-  // This bit provides a filtering mechanism for fields. 
-  //
-  // The abstract and physical settings allow an object to distinguish between
-  // two different classes of fields.
-  //
-  // It is up to you, in the <uvm_object::do_compare> method, to test the
-  // setting of this field if you want to use the physical trait as a filter.
-
-  bit physical = 1;
-`endif
-
-
-`ifdef UVM_ENABLE_DEPRECATED_API
-  // Variable -- NODOCS -- abstract
-  //
-  // This bit provides a filtering mechanism for fields. 
-  //
-  // The abstract and physical settings allow an object to distinguish between
-  // two different classes of fields.
-  //
-  // It is up to you, in the <uvm_object::do_compare> method, to test the
-  // setting of this field if you want to use the abstract trait as a filter.
-
-  bit abstract = 1;
-`endif
 
   // Variable -- NODOCS -- check_type
   //
@@ -199,12 +170,8 @@ class uvm_comparer extends uvm_policy;
   // to set this to 0 when the two operands are related by inheritance but are
   // different types.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
+  // @uvm-compat , for compatibility with 1.2
   bit check_type = 1;
-`else
-  local bit check_type = 1;
-`endif
-
 
   // Variable -- NODOCS -- result
   // 
@@ -212,29 +179,26 @@ class uvm_comparer extends uvm_policy;
   // You can use the result to determine the number of miscompares that
   // were found.
 
-`ifdef UVM_ENABLE_DEPRECATED_API
+  // @uvm-compat , for compatibility with 1.2
   int unsigned result = 0;
-`else
-  local int unsigned result = 0;
-`endif
 
   local int unsigned m_threshold;
 
-	// @uvm-ieee 1800.2-2017 auto 16.3.2.1
-	function new(string name="");
-	   super.new(name);
-	   m_threshold = 1;
-	endfunction
+    // @uvm-ieee 1800.2-2020 auto 16.3.2.1
+    function new(string name="");
+       super.new(name);
+       m_threshold = 1;
+    endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.2.4
+  // @uvm-ieee 1800.2-2020 auto 16.3.2.4
   static function void set_default (uvm_comparer comparer) ;
      uvm_coreservice_t coreservice ;
      coreservice = uvm_coreservice_t::get() ;
      coreservice.set_default_comparer(comparer) ;
   endfunction
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.2.5
+  // @uvm-ieee 1800.2-2020 auto 16.3.2.5
   static function uvm_comparer get_default () ;
      uvm_coreservice_t coreservice ;
      coreservice = uvm_coreservice_t::get() ;
@@ -256,7 +220,7 @@ class uvm_comparer extends uvm_policy;
   //
   // The radix is used for reporting purposes, the default radix is hex.
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.1
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.1
   virtual function bit compare_field (string name, 
                                       uvm_bitstream_t lhs, 
                                       uvm_bitstream_t rhs, 
@@ -265,42 +229,45 @@ class uvm_comparer extends uvm_policy;
     uvm_bitstream_t mask;
     string msg;
   
-    if(size <= 64)
+    if(size <= 64) begin
+      
       return compare_field_int(name, lhs, rhs, size, radix);
+    end
+
   
     mask = -1;
     mask >>= (UVM_STREAMBITS-size);
     if((lhs & mask) !== (rhs & mask)) begin
       case (radix)
         UVM_BIN: begin
-              $swrite(msg, "%s: lhs = 'b%0b : rhs = 'b%0b", 
+          $swrite(msg, "%s: lhs = 'b%0b : rhs = 'b%0b", 
                        name, lhs&mask, rhs&mask);
-             end
+        end
         UVM_OCT: begin
-              $swrite(msg, "%s: lhs = 'o%0o : rhs = 'o%0o", 
+          $swrite(msg, "%s: lhs = 'o%0o : rhs = 'o%0o", 
                        name, lhs&mask, rhs&mask);
-             end
+        end
         UVM_DEC: begin
-              $swrite(msg, "%s: lhs = %0d : rhs = %0d", 
+          $swrite(msg, "%s: lhs = %0d : rhs = %0d", 
                        name, lhs&mask, rhs&mask);
-             end
+        end
         UVM_TIME: begin
-            $swrite(msg, "%s: lhs = %0t : rhs = %0t", 
+          $swrite(msg, "%s: lhs = %0t : rhs = %0t", 
                name, lhs&mask, rhs&mask);
         end
         UVM_STRING: begin
-              $swrite(msg, "%s: lhs = %0s : rhs = %0s", 
+          $swrite(msg, "%s: lhs = %0s : rhs = %0s", 
                        name, lhs&mask, rhs&mask);
-             end
+        end
         UVM_ENUM: begin
-              //Printed as decimal, user should cuse compare string for enum val
-              $swrite(msg, "%s: lhs = %0d : rhs = %0d", 
+          //Printed as decimal, user should cuse compare string for enum val
+          $swrite(msg, "%s: lhs = %0d : rhs = %0d", 
                        name, lhs&mask, rhs&mask);
-              end
+        end
         default: begin
-              $swrite(msg, "%s: lhs = 'h%0x : rhs = 'h%0x", 
+          $swrite(msg, "%s: lhs = 'h%0x : rhs = 'h%0x", 
                        name, lhs&mask, rhs&mask);
-             end
+        end
       endcase
       print_msg(msg);
       return 0;
@@ -316,7 +283,7 @@ class uvm_comparer extends uvm_policy;
   // small integers, less than or equal to 64 bits. It is automatically called
   // by <compare_field> if the operand size is less than or equal to 64.
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.2
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.2
   virtual function bit compare_field_int (string name, 
                                           uvm_integral_t lhs, 
                                           uvm_integral_t rhs, 
@@ -324,40 +291,44 @@ class uvm_comparer extends uvm_policy;
                                           uvm_radix_enum radix=UVM_NORADIX); 
     logic [63:0] mask;
     string msg;
-  
+    if(size > 64) begin
+      `uvm_error("UVM/COMPARER/INT/BAD_SIZE",$sformatf("compare_field_int cannot be called with operand size of more than 64 bits. Input argument size=%0d",size))
+      return 0;
+    end
+    
     mask = -1;
     mask >>= (64-size);
     if((lhs & mask) !== (rhs & mask)) begin
       case (radix)
         UVM_BIN: begin
-              $swrite(msg, "%s: lhs = 'b%0b : rhs = 'b%0b", 
+          $swrite(msg, "%s: lhs = 'b%0b : rhs = 'b%0b", 
                        name, lhs&mask, rhs&mask);
-             end
+        end
         UVM_OCT: begin
-              $swrite(msg, "%s: lhs = 'o%0o : rhs = 'o%0o", 
+          $swrite(msg, "%s: lhs = 'o%0o : rhs = 'o%0o", 
                        name, lhs&mask, rhs&mask);
-             end
+        end
         UVM_DEC: begin
-              $swrite(msg, "%s: lhs = %0d : rhs = %0d", 
+          $swrite(msg, "%s: lhs = %0d : rhs = %0d", 
                        name, lhs&mask, rhs&mask);
-             end
+        end
         UVM_TIME: begin
-            $swrite(msg, "%s: lhs = %0t : rhs = %0t", 
+          $swrite(msg, "%s: lhs = %0t : rhs = %0t", 
                name, lhs&mask, rhs&mask);
         end
         UVM_STRING: begin
-              $swrite(msg, "%s: lhs = %0s : rhs = %0s", 
+          $swrite(msg, "%s: lhs = %0s : rhs = %0s", 
                        name, lhs&mask, rhs&mask);
-             end
+        end
         UVM_ENUM: begin
-              //Printed as decimal, user should cuse compare string for enum val
-              $swrite(msg, "%s: lhs = %0d : rhs = %0d", 
+          //Printed as decimal, user should cuse compare string for enum val
+          $swrite(msg, "%s: lhs = %0d : rhs = %0d", 
                        name, lhs&mask, rhs&mask);
-              end
+        end
         default: begin
-              $swrite(msg, "%s: lhs = 'h%0x : rhs = 'h%0x", 
+          $swrite(msg, "%s: lhs = 'h%0x : rhs = 'h%0x", 
                        name, lhs&mask, rhs&mask);
-             end
+        end
       endcase
       print_msg(msg);
       return 0;
@@ -371,7 +342,7 @@ class uvm_comparer extends uvm_policy;
   // This method is the same as <compare_field> except that the arguments are
   // real numbers.
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.3
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.3
   virtual function bit compare_field_real (string name, 
                                           real lhs, 
                                           real rhs);
@@ -388,22 +359,40 @@ class uvm_comparer extends uvm_policy;
   // Stores the passed-in names of the objects in the hierarchy
   local string m_object_names[$];
   local function string m_current_context(string name="");
-    if (m_object_names.size()  == 0)
-      return name; //??
-    else if ((m_object_names.size() == 1) && (name==""))
+    if (m_object_names.size()  == 0) begin
+      
+      return name;
+    end
+ //??
+    else if ((m_object_names.size() == 1) && (name=="")) begin
+      
       return m_object_names[0];
+    end
+
     else begin
       string     full_name;
       foreach(m_object_names[i]) begin
-        if (i == m_object_names.size() - 1)
+        if (i == m_object_names.size() - 1) begin
+          
           full_name = {full_name, m_object_names[i]};
-        else
+        end
+
+        else begin
+          
           full_name  = {full_name, m_object_names[i], "."};
+        end
+
       end
-      if (name != "")
+      if (name != "") begin
+        
         return {full_name, ".", name};
-      else
+      end
+
+      else begin
+        
         return full_name;
+      end
+
     end
   endfunction : m_current_context
   
@@ -420,7 +409,7 @@ class uvm_comparer extends uvm_policy;
   // types match (the return from ~lhs.get_type_name()~ matches
   // ~rhs.get_type_name()~).
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.4
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.4
   virtual function bit compare_object (string name,
                                        uvm_object lhs,
                                        uvm_object rhs);
@@ -430,8 +419,11 @@ class uvm_comparer extends uvm_policy;
     bit ret_val = 1;
 
     // Fast Pass
-    if (rhs == lhs)
+    if (rhs == lhs) begin
+      
       return ret_val;
+    end
+
 
     // Push the name on the stack
     m_object_names.push_back(name);
@@ -460,10 +452,11 @@ class uvm_comparer extends uvm_policy;
     if (ret_val) begin
       // Warn on possible infinite loop
       prev_state      = object_compared(lhs,rhs,get_recursion_policy(),ret_val);
-      if (prev_state != uvm_policy::NEVER) // 
+      if (prev_state != uvm_policy::NEVER) begin
+        
         `uvm_warning("UVM/COPIER/LOOP", {"Possible loop when comparing '", 
-                                         lhs.get_full_name(), "' to '", rhs.get_full_name(), "'"})
-    
+        lhs.get_full_name(), "' to '", rhs.get_full_name(), "'"})
+      end    
 
       push_active_object(lhs);
       m_recur_states[lhs][rhs][get_recursion_policy()]  = '{uvm_policy::STARTED,0};
@@ -490,8 +483,11 @@ class uvm_comparer extends uvm_policy;
 
       // If do_compare() returned 1, check for a change
       // in the result count.
-      if (ret_val && (get_result() > old_result))
+      if (ret_val && (get_result() > old_result)) begin
+        
         ret_val = 0;
+      end
+
 
       // Save off the comparison result
       m_recur_states[lhs][rhs][get_recursion_policy()]  = '{uvm_policy::FINISHED,ret_val};
@@ -509,12 +505,18 @@ class uvm_comparer extends uvm_policy;
       // If there are stored results
       if(get_result()) begin
         // If there's a display limit that we've hit
-        if (get_show_max() && (get_show_max() < get_result())) 
+        if (get_show_max() && (get_show_max() < get_result())) begin 
+          
           $swrite(msg, "%0d Miscompare(s) (%0d shown) for object ",
                   result, show_max);
+        end
+
         // Else there's either no limit, or we didn't hit it
-        else
+        else begin
+          
           $swrite(msg, "%0d Miscompare(s) for object ", result);
+        end
+
       end
 
       uvm_pkg::uvm_report(sev, "MISCMP", $sformatf("%s%s@%0d vs. %s@%0d", msg,
@@ -522,7 +524,7 @@ class uvm_comparer extends uvm_policy;
                                                    (lhs == null) ? 0 : lhs.get_inst_id(), 
                                                    (rhs == null) ? "<null>" : rhs.get_name(), 
                                                    (rhs == null) ? 0 : rhs.get_inst_id()),
-			  get_verbosity(), `uvm_file, `uvm_line);
+              get_verbosity(), `uvm_file, `uvm_line);
         
     end // if (!ret_val && (get_active_object_depth() == 1))
     
@@ -538,7 +540,7 @@ class uvm_comparer extends uvm_policy;
   //
   // The ~lhs~ and ~rhs~ objects are the two objects used for comparison.
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.6
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.6
   virtual function bit compare_string (string name,
                                        string lhs,
                                        string rhs);
@@ -562,7 +564,7 @@ class uvm_comparer extends uvm_policy;
   // is printed to standard-out using the current verbosity and severity
   // settings. See the <verbosity> and <sev> variables for more information.
 
-  // @uvm-ieee 1800.2-2017 auto 16.3.3.7
+  // @uvm-ieee 1800.2-2020 auto 16.3.3.7
   function void print_msg (string msg);
      
     string tmp = m_current_context(msg);
@@ -570,7 +572,7 @@ class uvm_comparer extends uvm_policy;
     if((get_show_max() == 0) ||
        (get_result() <= get_show_max())) begin
       msg = {"Miscompare for ", tmp};
-       uvm_pkg::uvm_report(sev, "MISCMP", msg, get_verbosity(), `uvm_file, `uvm_line);
+      uvm_pkg::uvm_report(sev, "MISCMP", msg, get_verbosity(), `uvm_file, `uvm_line);
     end
     miscompares = { miscompares, tmp, "\n" };
   endfunction
@@ -585,13 +587,13 @@ class uvm_comparer extends uvm_policy;
   function void print_msg_object(uvm_object lhs, uvm_object rhs);
     string tmp = $sformatf("%s: lhs = @%0d : rhs = @%0d",
                            m_current_context(), 
-                           (lhs != null ? lhs.get_inst_id() : 0), 	
+                           (lhs != null ? lhs.get_inst_id() : 0),     
                            (rhs != null ? rhs.get_inst_id() : 0));
     result++;
     
     if((get_show_max() == 0) ||
        (get_result() <= get_show_max())) begin
-       uvm_pkg::uvm_report(sev, 
+      uvm_pkg::uvm_report(sev, 
                            "MISCMP", 
                            {"Miscompare for ", tmp}, 
                            get_verbosity(), 
@@ -620,13 +622,25 @@ function uvm_policy::recursion_state_e uvm_comparer::object_compared(
   uvm_recursion_policy_enum recursion,
   output bit ret_val
 );
-  if (!m_recur_states.exists(lhs)) return NEVER ;
-  else if (!m_recur_states[lhs].exists(rhs)) return NEVER ;
-  else if (!m_recur_states[lhs][rhs].exists(recursion)) return NEVER ;
+  if (!m_recur_states.exists(lhs)) begin
+    return NEVER ;
+  end
+
+  else if (!m_recur_states[lhs].exists(rhs)) begin
+    return NEVER ;
+  end
+
+  else if (!m_recur_states[lhs][rhs].exists(recursion)) begin
+    return NEVER ;
+  end
+
   else begin
-     if (m_recur_states[lhs][rhs][recursion].state == FINISHED) 
-        ret_val = m_recur_states[lhs][rhs][recursion].ret_val;
-     return m_recur_states[lhs][rhs][recursion].state ;
+    if (m_recur_states[lhs][rhs][recursion].state == FINISHED) begin 
+        
+      ret_val = m_recur_states[lhs][rhs][recursion].ret_val;
+    end
+
+    return m_recur_states[lhs][rhs][recursion].state ;
   end
 endfunction
 

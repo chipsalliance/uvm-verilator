@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2015-2024 NVIDIA Corporation
+// Copyright 2010-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -19,6 +19,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/tlm2/uvm_tlm2_sockets.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
 
 //----------------------------------------------------------------------
 // Title -- NODOCS -- UVM TLM Sockets
@@ -55,18 +65,18 @@
 // contents
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.2.1
+// @uvm-ieee 1800.2-2020 auto 12.3.5.2.1
 class uvm_tlm_b_initiator_socket #(type T=uvm_tlm_generic_payload)
                            extends uvm_tlm_b_initiator_socket_base #(T);
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.2.3
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.2.3
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction 
    
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.2.4
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.2.4
   function void connect(this_type provider);
 
     uvm_tlm_b_passthrough_initiator_socket_base #(T) initiator_pt_socket;
@@ -79,8 +89,11 @@ class uvm_tlm_b_initiator_socket #(type T=uvm_tlm_generic_payload)
 
     if($cast(initiator_pt_socket, provider)  ||
        $cast(target_pt_socket, provider)     ||
-       $cast(target_socket, provider))
+       $cast(target_socket, provider)) begin
+      
       return;
+    end
+
 
     c = get_comp();
     `uvm_error_context(get_type_name(),
@@ -103,7 +116,7 @@ endclass
 //
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.1.1
+// @uvm-ieee 1800.2-2020 auto 12.3.5.1.1
 class uvm_tlm_b_target_socket #(type IMP=int,
                                 type T=uvm_tlm_generic_payload)
   extends uvm_tlm_b_target_socket_base #(T);
@@ -111,18 +124,25 @@ class uvm_tlm_b_target_socket #(type IMP=int,
   local IMP m_imp;
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.1.3
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.1.3
   function new (string name, uvm_component parent, IMP imp = null);
     super.new (name, parent);
-    if (imp == null) $cast(m_imp, parent);
-    else m_imp = imp;
-    if (m_imp == null)
-       `uvm_error("UVM/TLM2/NOIMP", {"b_target socket ", name,
-                                     " has no implementation"})
+    if (imp == null) begin
+      $cast(m_imp, parent);
+    end
+
+    else begin
+      m_imp = imp;
+    end
+
+    if (m_imp == null) begin
+      `uvm_error("UVM/TLM2/NOIMP", {"b_target socket ", name,
+      " has no implementation"})
+    end
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.1.4
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.1.4
   function void connect(this_type provider);
 
     uvm_component c;
@@ -150,7 +170,7 @@ endclass
 //
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.4.1
+// @uvm-ieee 1800.2-2020 auto 12.3.5.4.1
 class uvm_tlm_nb_initiator_socket #(type IMP=int,
                                     type T=uvm_tlm_generic_payload,
                                     type P=uvm_tlm_phase_e)
@@ -159,18 +179,22 @@ class uvm_tlm_nb_initiator_socket #(type IMP=int,
   uvm_tlm_nb_transport_bw_imp #(T,P,IMP) bw_imp;
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.4.3
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.4.3
   function new(string name, uvm_component parent, IMP imp = null);
     super.new (name, parent);
-    if (imp == null) $cast(imp, parent);
-    if (imp == null)
-       `uvm_error("UVM/TLM2/NOIMP", {"nb_initiator socket ", name,
-                                     " has no implementation"})
+    if (imp == null) begin
+      $cast(imp, parent);
+    end
+
+    if (imp == null) begin
+      `uvm_error("UVM/TLM2/NOIMP", {"nb_initiator socket ", name,
+      " has no implementation"})
+    end
     bw_imp = new("bw_imp", imp);
   endfunction
 
 
-   // @uvm-ieee 1800.2-2017 auto 12.3.5.4.4
+   // @uvm-ieee 1800.2-2020 auto 12.3.5.4.4
    function void connect(this_type provider);
 
     uvm_tlm_nb_passthrough_initiator_socket_base #(T,P) initiator_pt_socket;
@@ -216,7 +240,7 @@ endclass
 //
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.3.1
+// @uvm-ieee 1800.2-2020 auto 12.3.5.3.1
 class uvm_tlm_nb_target_socket #(type IMP=int,
                                  type T=uvm_tlm_generic_payload,
                                  type P=uvm_tlm_phase_e)
@@ -225,19 +249,26 @@ class uvm_tlm_nb_target_socket #(type IMP=int,
   local IMP m_imp;
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.3.3
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.3.3
   function new (string name, uvm_component parent, IMP imp = null);
     super.new (name, parent);
-    if (imp == null) $cast(m_imp, parent);
-    else m_imp = imp;
+    if (imp == null) begin
+      $cast(m_imp, parent);
+    end
+
+    else begin
+      m_imp = imp;
+    end
+
     bw_port = new("bw_port", get_comp());
-    if (m_imp == null)
-       `uvm_error("UVM/TLM2/NOIMP", {"nb_target socket ", name,
-                                     " has no implementation"})
+    if (m_imp == null) begin
+      `uvm_error("UVM/TLM2/NOIMP", {"nb_target socket ", name,
+      " has no implementation"})
+    end
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.3.4
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.3.4
   function void connect(this_type provider);
 
     uvm_component c;
@@ -260,10 +291,11 @@ endclass
 // IS-A forward port;
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.7
+// @uvm-ieee 1800.2-2020 auto 12.3.5.7.1
 class uvm_tlm_b_passthrough_initiator_socket #(type T=uvm_tlm_generic_payload)
   extends uvm_tlm_b_passthrough_initiator_socket_base #(T);
 
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.7.3
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction
@@ -271,6 +303,7 @@ class uvm_tlm_b_passthrough_initiator_socket #(type T=uvm_tlm_generic_payload)
    // Function  -- NODOCS -- connect
    //
    // Connect this socket to the specified <uvm_tlm_b_target_socket>
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.7.4
   function void connect(this_type provider);
 
     uvm_tlm_b_passthrough_initiator_socket_base #(T) initiator_pt_socket;
@@ -283,8 +316,11 @@ class uvm_tlm_b_passthrough_initiator_socket #(type T=uvm_tlm_generic_payload)
 
     if($cast(initiator_pt_socket, provider) ||
        $cast(target_pt_socket, provider)    ||
-       $cast(target_socket, provider))
+       $cast(target_socket, provider)) begin
+      
       return;
+    end
+
 
     c = get_comp();
     `uvm_error_context(get_type_name(), "type mismatch in connect -- connection cannot be completed", c)
@@ -294,10 +330,11 @@ class uvm_tlm_b_passthrough_initiator_socket #(type T=uvm_tlm_generic_payload)
 endclass
 
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.8
+// @uvm-ieee 1800.2-2020 auto 12.3.5.8.1
 class uvm_tlm_b_passthrough_target_socket #(type T=uvm_tlm_generic_payload)
   extends uvm_tlm_b_passthrough_target_socket_base #(T);
 
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.8.3
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction 
@@ -305,6 +342,7 @@ class uvm_tlm_b_passthrough_target_socket #(type T=uvm_tlm_generic_payload)
    // Function  -- NODOCS -- connect
    //
    // Connect this socket to the specified <uvm_tlm_b_initiator_socket>
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.8.4
   function void connect(this_type provider);
 
     uvm_tlm_b_passthrough_target_socket_base #(T) target_pt_socket;
@@ -315,8 +353,11 @@ class uvm_tlm_b_passthrough_target_socket #(type T=uvm_tlm_generic_payload)
     super.connect(provider);
 
     if($cast(target_pt_socket, provider)    ||
-       $cast(target_socket, provider))
+       $cast(target_socket, provider)) begin
+      
       return;
+    end
+
 
     c = get_comp();
     `uvm_error_context(get_type_name(),
@@ -333,11 +374,12 @@ endclass
 // IS-A forward port; HAS-A backward export
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.5
+// @uvm-ieee 1800.2-2020 auto 12.3.5.5.1
 class uvm_tlm_nb_passthrough_initiator_socket #(type T=uvm_tlm_generic_payload,
                                              type P=uvm_tlm_phase_e)
   extends uvm_tlm_nb_passthrough_initiator_socket_base #(T,P);
 
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.5.3
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction
@@ -345,6 +387,7 @@ class uvm_tlm_nb_passthrough_initiator_socket #(type T=uvm_tlm_generic_payload,
    // Function  -- NODOCS -- connect
    //
    // Connect this socket to the specified <uvm_tlm_nb_target_socket>
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.5.4
   function void connect(this_type provider);
 
     uvm_tlm_nb_passthrough_initiator_socket_base #(T,P) initiator_pt_socket;
@@ -384,17 +427,18 @@ endclass
 // IS-A forward export; HAS-A backward port
 //----------------------------------------------------------------------
 
-// @uvm-ieee 1800.2-2017 auto 12.3.5.6.1
+// @uvm-ieee 1800.2-2020 auto 12.3.5.6.1
 class uvm_tlm_nb_passthrough_target_socket #(type T=uvm_tlm_generic_payload,
                                           type P=uvm_tlm_phase_e)
   extends uvm_tlm_nb_passthrough_target_socket_base #(T,P);
 
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.6.3
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction
 
 
-  // @uvm-ieee 1800.2-2017 auto 12.3.5.6.2
+  // @uvm-ieee 1800.2-2020 auto 12.3.5.6.4
   function void connect(this_type provider);
 
     uvm_tlm_nb_passthrough_target_socket_base #(T,P) target_pt_socket;

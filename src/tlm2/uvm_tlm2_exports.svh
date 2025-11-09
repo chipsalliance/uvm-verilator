@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------
-// Copyright 2010-2011 Mentor Graphics Corporation
-// Copyright 2010-2018 Synopsys, Inc.
 // Copyright 2010-2018 Cadence Design Systems, Inc.
-// Copyright 2015-2018 NVIDIA Corporation
+// Copyright 2010-2011 Mentor Graphics Corporation
+// Copyright 2015-2024 NVIDIA Corporation
+// Copyright 2010-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
 //   Licensed under the Apache License, Version 2.0 (the
@@ -21,6 +21,16 @@
 //----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/tlm2/uvm_tlm2_exports.svh $
+// $Rev:      2024-02-08 13:43:04 -0800 $
+// $Hash:     29e1e3f8ee4d4aa2035dba1aba401ce1c19aa340 $
+//
+//----------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------
 // Title -- NODOCS -- UVM TLM 2 Export Classes
 //
 // This section defines the export classes for connecting TLM2
@@ -32,7 +42,7 @@
 //
 // Blocking transport export class.
 
-// @uvm-ieee 1800.2-2017 auto 12.3.7.1
+// @uvm-ieee 1800.2-2020 auto 12.3.7.1
 class uvm_tlm_b_transport_export #(type T=uvm_tlm_generic_payload)
   extends uvm_port_base #(uvm_tlm_if #(T));
   `UVM_EXPORT_COMMON(`UVM_TLM_B_MASK, "uvm_tlm_b_transport_export")
@@ -45,7 +55,7 @@ endclass
 //
 // Non-blocking forward transport export class 
 
-// @uvm-ieee 1800.2-2017 auto 12.3.7.2
+// @uvm-ieee 1800.2-2020 auto 12.3.7.2
 class uvm_tlm_nb_transport_fw_export #(type T=uvm_tlm_generic_payload,
                                    type P=uvm_tlm_phase_e)
   extends uvm_port_base #(uvm_tlm_if #(T,P));
@@ -59,7 +69,7 @@ endclass
 //
 // Non-blocking backward transport export class 
 
-// @uvm-ieee 1800.2-2017 auto 12.3.7.3
+// @uvm-ieee 1800.2-2020 auto 12.3.7.3
 class uvm_tlm_nb_transport_bw_export #(type T=uvm_tlm_generic_payload,
                                    type P=uvm_tlm_phase_e)
   extends uvm_port_base #(uvm_tlm_if #(T,P));

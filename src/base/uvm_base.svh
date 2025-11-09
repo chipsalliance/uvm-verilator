@@ -1,11 +1,13 @@
 //
 //----------------------------------------------------------------------
-// Copyright 2007-2018 Cadence Design Systems, Inc.
-// Copyright 2007-2011 Mentor Graphics Corporation
 // Copyright 2010-2012 AMD
-// Copyright 2013-2018 NVIDIA Corporation
+// Copyright 2007-2018 Cadence Design Systems, Inc.
 // Copyright 2017 Cisco Systems, Inc.
 // Copyright 2011 Cypress Semiconductor Corp.
+// Copyright 2023 Intel Corporation
+// Copyright 2021 Marvell International Ltd.
+// Copyright 2007-2011 Mentor Graphics Corporation
+// Copyright 2013-2024 NVIDIA Corporation
 // Copyright 2010-2018 Synopsys, Inc.
 //   All Rights Reserved Worldwide
 //
@@ -23,6 +25,16 @@
 //   the License for the specific language governing
 //   permissions and limitations under the License.
 //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Git details (see DEVELOPMENT.md):
+//
+// $File:     src/base/uvm_base.svh $
+// $Rev:      2024-07-18 12:43:22 -0700 $
+// $Hash:     c114e948eeee0286b84392c4185deb679aac54b3 $
+//
+//----------------------------------------------------------------------
+
 
 `ifndef UVM_BASE_SVH
 `define UVM_BASE_SVH
@@ -56,10 +68,13 @@
   // Resources/configuration facility
   `include "base/uvm_spell_chkr.svh"
   `include "base/uvm_resource_base.svh"
+  `include "base/uvm_resource_pool.svh"
   `include "base/uvm_resource.svh"
   `include "base/uvm_resource_specializations.svh"
+  `include "base/uvm_resource_db_implementation.svh"
   `include "base/uvm_resource_db.svh"
   `include "base/uvm_resource_db_options.svh"
+  `include "base/uvm_config_db_implementation.svh"
   `include "base/uvm_config_db.svh"
 
 
@@ -70,6 +85,7 @@
   `include "base/uvm_printer.svh"
   `include "base/uvm_comparer.svh"
   `include "base/uvm_packer.svh"
+  `include "base/uvm_packer_array_extension.svh"
   `include "base/uvm_links.svh"
   `include "base/uvm_tr_database.svh"
   `include "base/uvm_text_tr_database.svh"
@@ -103,6 +119,7 @@
   `include "base/uvm_task_phase.svh"
   `include "base/uvm_common_phases.svh"
   `include "base/uvm_runtime_phases.svh"
+  `include "base/uvm_phase_hopper.svh"
 
   `include "base/uvm_run_test_callback.svh"
   `include "base/uvm_component.svh"
@@ -114,8 +131,20 @@
 
   // Command Line Processor
   `include "base/uvm_cmdline_processor.svh"
+  `include "base/uvm_cmdline_report.svh"
   
   // traversal utilities
   `include "base/uvm_traversal.svh"
 
+  // Caches
+  `include "base/uvm_cache.svh"
+  `include "base/uvm_lru_cache.svh"
+ `ifndef UVM_REGEX_NO_DPI
+  `include "base/uvm_regex_cache.svh"
+ `endif
+
+  // Process guards
+ `include "base/uvm_process_guard_base.svh"
+ `include "base/uvm_process_guard.svh"
+  
 `endif // UVM_BASE_SVH
