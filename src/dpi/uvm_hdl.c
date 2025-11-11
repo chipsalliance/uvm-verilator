@@ -30,12 +30,15 @@
 //----------------------------------------------------------------------
 
 
-// hdl vendor backends are defined for VCS,QUESTA,XCELIUM
+// hdl vendor backends are defined for VCS,QUESTA,VERILATOR,XCELIUM
 #if defined(VCS) || defined(VCSMX)
 #include "uvm_hdl_vcs.c"
 #else
 #ifdef QUESTA
 #include "uvm_hdl_questa.c"
+#else
+#ifdef VERILATOR
+#include "uvm_hdl_verilator.c"
 #else
 #if defined(XCELIUM) || defined(NCSC)
 #include "uvm_hdl_xcelium.c"
@@ -44,4 +47,4 @@
 #endif
 #endif
 #endif
-
+#endif

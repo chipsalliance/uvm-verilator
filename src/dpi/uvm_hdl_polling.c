@@ -530,8 +530,8 @@ void * uvm_polling_create(char *name, int sv_key) {
    // Check the object is indeed a vector variable or net; error if not.
    objType = vpi_get(vpiType, obj);
    if (!isVerilogType(objType)) {
-	      sprintf(buffer0,name, sv_key, objType);
-	      sprintf(buffer1,name);
+        sprintf(buffer0, str2, name, sv_key, objType);
+        sprintf(buffer1, str1, name);
         uvm_polling_report_info(&buffer0[0]);
         uvm_polling_report_info(&buffer1[0]);
       return NULL;
